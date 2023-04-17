@@ -7,7 +7,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-aot-graalvm-support</artifactId>
-    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
+    <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;current} -->
 
     <packaging>jar</packaging>
     <name>Microsoft Azure GraalVM support</name>

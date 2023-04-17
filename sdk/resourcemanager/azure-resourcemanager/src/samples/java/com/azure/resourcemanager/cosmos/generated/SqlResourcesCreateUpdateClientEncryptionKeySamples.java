@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.KeyWrapMetadata;
 /** Samples for SqlResources CreateUpdateClientEncryptionKey. */
 public final class SqlResourcesCreateUpdateClientEncryptionKeySamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBClientEncryptionKeyCreateUpdate.

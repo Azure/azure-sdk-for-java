@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedHsms GetByResourceGroup. */
 public final class ManagedHsmsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_Get.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_Get.json
      */
     /**
      * Sample code: Retrieve a managed HSM Pool.
@@ -22,6 +20,6 @@ public final class ManagedHsmsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getManagedHsms()
-            .getByResourceGroupWithResponse("hsm-group", "hsm1", Context.NONE);
+            .getByResourceGroupWithResponse("hsm-group", "hsm1", com.azure.core.util.Context.NONE);
     }
 }

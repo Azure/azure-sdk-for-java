@@ -24,12 +24,11 @@ import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import static com.azure.core.util.polling.PollingUtil.operationResourceCanPoll;
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 
 /**
@@ -127,17 +126,10 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
 
     @Override
     public boolean canPoll(Response<?> initialResponse) {
-        HttpHeader operationLocationHeader = initialResponse.getHeaders().get(operationLocationHeaderName);
-        if (operationLocationHeader != null) {
-            try {
-                new URL(getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
-                return true;
-            } catch (MalformedURLException e) {
-                return false;
-            }
-        }
-        return false;
+        return operationResourceCanPoll(initialResponse, operationLocationHeaderName, endpoint, LOGGER);
     }
+
+
 
     @Override
     public PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,

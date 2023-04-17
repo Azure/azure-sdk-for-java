@@ -10,22 +10,26 @@ import com.azure.core.util.Context;
 /** Resource collection API of QuotaOperations. */
 public interface QuotaOperations {
     /**
-     * List all the operations supported by the Microsoft.Quota resource provider.
+     * GET quota operations.
+     *
+     * <p>List all the operations supported by the Microsoft.Quota resource provider.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationResponse> list();
 
     /**
-     * List all the operations supported by the Microsoft.Quota resource provider.
+     * GET quota operations.
+     *
+     * <p>List all the operations supported by the Microsoft.Quota resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationResponse> list(Context context);
 }

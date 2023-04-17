@@ -114,7 +114,7 @@ public final class ClusterResourceProperties {
     private List<SeedNode> seedNodes;
 
     /*
-     * Number of hours to wait between taking a backup of the cluster. To disable backups, set this property to 0.
+     * (Deprecated) Number of hours to wait between taking a backup of the cluster.
      */
     @JsonProperty(value = "hoursBetweenBackups")
     private Integer hoursBetweenBackups;
@@ -130,6 +130,12 @@ public final class ClusterResourceProperties {
      */
     @JsonProperty(value = "cassandraAuditLoggingEnabled")
     private Boolean cassandraAuditLoggingEnabled;
+
+    /*
+     * Error related to resource provisioning.
+     */
+    @JsonProperty(value = "provisionError")
+    private CassandraError provisionError;
 
     /** Creates an instance of ClusterResourceProperties class. */
     public ClusterResourceProperties() {
@@ -435,8 +441,8 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the hoursBetweenBackups property: Number of hours to wait between taking a backup of the cluster. To disable
-     * backups, set this property to 0.
+     * Get the hoursBetweenBackups property: (Deprecated) Number of hours to wait between taking a backup of the
+     * cluster.
      *
      * @return the hoursBetweenBackups value.
      */
@@ -445,8 +451,8 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Set the hoursBetweenBackups property: Number of hours to wait between taking a backup of the cluster. To disable
-     * backups, set this property to 0.
+     * Set the hoursBetweenBackups property: (Deprecated) Number of hours to wait between taking a backup of the
+     * cluster.
      *
      * @param hoursBetweenBackups the hoursBetweenBackups value to set.
      * @return the ClusterResourceProperties object itself.
@@ -497,6 +503,26 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the provisionError property: Error related to resource provisioning.
+     *
+     * @return the provisionError value.
+     */
+    public CassandraError provisionError() {
+        return this.provisionError;
+    }
+
+    /**
+     * Set the provisionError property: Error related to resource provisioning.
+     *
+     * @param provisionError the provisionError value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withProvisionError(CassandraError provisionError) {
+        this.provisionError = provisionError;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -519,6 +545,9 @@ public final class ClusterResourceProperties {
         }
         if (seedNodes() != null) {
             seedNodes().forEach(e -> e.validate());
+        }
+        if (provisionError() != null) {
+            provisionError().validate();
         }
     }
 }

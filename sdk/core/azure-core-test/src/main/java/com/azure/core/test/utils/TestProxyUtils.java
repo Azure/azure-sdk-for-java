@@ -50,6 +50,7 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
+            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -59,7 +60,7 @@ public class TestProxyUtils {
 
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     private static final List<String>
-        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key"));
+        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
     private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";

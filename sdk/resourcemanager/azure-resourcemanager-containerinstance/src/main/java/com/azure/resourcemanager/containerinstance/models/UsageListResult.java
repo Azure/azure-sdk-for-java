@@ -18,6 +18,10 @@ public final class UsageListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<UsageInner> value;
 
+    /** Creates an instance of UsageListResult class. */
+    public UsageListResult() {
+    }
+
     /**
      * Get the value property: The usage data.
      *

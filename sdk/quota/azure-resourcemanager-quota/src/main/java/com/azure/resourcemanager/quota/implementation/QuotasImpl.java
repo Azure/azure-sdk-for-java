@@ -14,10 +14,9 @@ import com.azure.resourcemanager.quota.fluent.models.CurrentQuotaLimitBaseInner;
 import com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase;
 import com.azure.resourcemanager.quota.models.Quotas;
 import com.azure.resourcemanager.quota.models.QuotasGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QuotasImpl implements Quotas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QuotasImpl.class);
 
     private final QuotasClient innerClient;
 
@@ -28,15 +27,6 @@ public final class QuotasImpl implements Quotas {
         this.serviceManager = serviceManager;
     }
 
-    public CurrentQuotaLimitBase get(String resourceName, String scope) {
-        CurrentQuotaLimitBaseInner inner = this.serviceClient().get(resourceName, scope);
-        if (inner != null) {
-            return new CurrentQuotaLimitBaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CurrentQuotaLimitBase> getWithResponse(String resourceName, String scope, Context context) {
         QuotasGetResponse inner = this.serviceClient().getWithResponse(resourceName, scope, context);
         if (inner != null) {
@@ -45,6 +35,15 @@ public final class QuotasImpl implements Quotas {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CurrentQuotaLimitBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CurrentQuotaLimitBase get(String resourceName, String scope) {
+        CurrentQuotaLimitBaseInner inner = this.serviceClient().get(resourceName, scope);
+        if (inner != null) {
+            return new CurrentQuotaLimitBaseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -66,7 +65,7 @@ public final class QuotasImpl implements Quotas {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
@@ -75,7 +74,7 @@ public final class QuotasImpl implements Quotas {
             Utils
                 .getValueFromIdByParameterName(id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
@@ -89,7 +88,7 @@ public final class QuotasImpl implements Quotas {
                 .getValueFromIdByParameterName(
                     id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "resourceName");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'quotas'.", id)));
@@ -98,7 +97,7 @@ public final class QuotasImpl implements Quotas {
             Utils
                 .getValueFromIdByParameterName(id, "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}", "scope");
         if (scope == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));

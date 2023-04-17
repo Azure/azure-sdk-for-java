@@ -8,12 +8,8 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.util.serializer.AccessPolicy;
-import com.azure.core.util.serializer.SignedIdentifierInner;
-import com.azure.core.util.serializer.SignedIdentifiersWrapper;
-import com.azure.core.util.serializer.Slideshow;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -21,9 +17,14 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.AccessPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.SignedIdentifierInner;
+import com.azure.core.util.serializer.SignedIdentifiersWrapper;
+import com.azure.core.util.serializer.Slideshow;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -113,7 +114,8 @@ public class RestProxyXMLTests {
     public void canWriteXMLRequest() throws Exception {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("http://unused/SetContainerACLs"));
+        HttpRequest request = new HttpRequest(HttpMethod.PUT,
+            UrlBuilder.parse("http://unused/SetContainerACLs").toUrl());
         request.setBody(bytes);
 
         SignedIdentifierInner si = new SignedIdentifierInner();

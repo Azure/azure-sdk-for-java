@@ -31,6 +31,10 @@ public final class MhsmPrivateEndpointConnectionProperties {
     @JsonProperty(value = "provisioningState")
     private PrivateEndpointConnectionProvisioningState provisioningState;
 
+    /** Creates an instance of MhsmPrivateEndpointConnectionProperties class. */
+    public MhsmPrivateEndpointConnectionProperties() {
+    }
+
     /**
      * Get the privateEndpoint property: Properties of the private endpoint object.
      *

@@ -163,6 +163,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final String subscriptionName;
     private final ServiceBusTracer tracer;
     private Disposable monitorDisposable;
+    private boolean wasStopped = false;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -242,6 +243,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             return;
         }
 
+        if (wasStopped) {
+            wasStopped = false;
+            LOGGER.warning("Starting Processor that was stopped before is not recommended, and this feature may be deprecated in the future. "
+                + "Please close this processor instance and create a new one to restart processing. "
+                + "Refer to the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/34464 for more details");
+        }
+
         if (asyncClient.get() == null) {
             ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
                 ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
@@ -269,6 +277,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * processor can resume processing messages by calling {@link #start()} again.
      */
     public synchronized void stop() {
+        wasStopped = true;
         isRunning.set(false);
     }
 

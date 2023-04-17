@@ -131,7 +131,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testMismatch() {
         HttpClient client = interceptorManager.getPlaybackClient();
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").setPath("first/path").toUrl();
         } catch (MalformedURLException e) {
@@ -149,7 +149,7 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("first/path").setScheme("http").toUrl();
         } catch (MalformedURLException e) {
@@ -171,7 +171,7 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url = null;
+        URL url;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("echoheaders").setScheme("http").toUrl();
         } catch (MalformedURLException e) {
@@ -179,9 +179,9 @@ public class TestProxyTests extends TestProxyTestBase {
         }
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(HttpHeaderName.fromString("header1"), "value1");
-        request.setHeader(HttpHeaderName.fromString("header2"), "value2");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(HttpHeaderName.fromString("header1"), "value1")
+            .setHeader(HttpHeaderName.fromString("header2"), "value2");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -201,9 +201,13 @@ public class TestProxyTests extends TestProxyTestBase {
             throw new RuntimeException(e);
         }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            // For this test set an Accept header as most HttpClients will use a default which could result in this
+            // test being flaky
+            .setHeader(HttpHeaderName.ACCEPT, "*/*");
+
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
-            assertEquals("first path", response.getBodyAsString().block());
+            assertEquals("first path", response.getBodyAsBinaryData().toString());
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -244,9 +248,12 @@ public class TestProxyTests extends TestProxyTestBase {
             throw new RuntimeException(e);
         }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY");
-        request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            // For this test set an Accept header as most HttpClients will use a default which could result in this
+            // test being flaky
+            .setHeader(HttpHeaderName.ACCEPT, "*/*");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
 
@@ -284,9 +291,12 @@ public class TestProxyTests extends TestProxyTestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY");
-        request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+            .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            // For this test set an Accept header as most HttpClients will use a default which could result in this
+            // test being flaky
+            .setHeader(HttpHeaderName.ACCEPT, "*/*");
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -319,23 +329,21 @@ public class TestProxyTests extends TestProxyTestBase {
         request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-
             assertEquals(response.getStatusCode(), 200);
-
             assertEquals(200, response.getStatusCode());
-
-            RecordedTestProxyData recordedTestProxyData = readDataFromFile();
-            RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-            // default regex sanitizers
-            assertEquals("http://REDACTED/fr/path/2", record.getUri());
-
-            // user delegation sanitizers
-            assertTrue(record.getResponse().get("Body").contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
-            assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
-
-            // custom body regex
-            assertEquals(record.getResponse().get("TableName"), REDACTED);
         }
+
+        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+        // default regex sanitizers
+        assertEquals("http://REDACTED/fr/path/2", record.getUri());
+
+        // user delegation sanitizers
+        assertTrue(record.getResponse().get("Body").contains("<UserDelegationKey><SignedTid>REDACTED</SignedTid></UserDelegationKey>"));
+        assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
+
+        // custom body regex
+        assertEquals(record.getResponse().get("TableName"), REDACTED);
     }
 
     @Test

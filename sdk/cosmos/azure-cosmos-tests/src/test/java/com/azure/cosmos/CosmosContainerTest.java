@@ -119,6 +119,42 @@ public class CosmosContainerTest extends TestSuiteBase {
         path1.setClientEncryptionKeyId("containerTestKey1");
 
         ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
+        path2.setPath("/mypk");
+        path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path2.setEncryptionType("Deterministic");
+        path2.setClientEncryptionKeyId("containerTestKey2");
+
+        ClientEncryptionIncludedPath path3 = new ClientEncryptionIncludedPath();
+        path3.setPath("/id");
+        path3.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path3.setEncryptionType("Deterministic");
+        path3.setClientEncryptionKeyId("containerTestKey2");
+
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(path1);
+        paths.add(path2);
+        paths.add(path3);
+
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 2);
+        containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
+        validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createContainer_withPartitionKeyWrongPolicyFormatVersion() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
+        path1.setPath("/mypk");
+        path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path1.setEncryptionType("Deterministic");
+        path1.setClientEncryptionKeyId("containerTestKey1");
+
+        ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
         path2.setPath("/path2");
         path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
         path2.setEncryptionType("Deterministic");
@@ -128,12 +164,87 @@ public class CosmosContainerTest extends TestSuiteBase {
         paths.add(path1);
         paths.add(path2);
 
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
-        containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 1);
+        CosmosContainerResponse containerResponse = null;
 
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        //Verify partition key in CosmosContainerProperties constructor with encrypted field.
+        try {
+            containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+            containerResponse = createdDatabase.createContainer(containerProperties);
+            fail("createContainer should fail as mypk which is part of the partition key cannot be encrypted with " +
+                "PolicyFormatVersion 1.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1. Please use PolicyFormatVersion 2.");
+        }
+
+
+        //Verify for composite key
+        collectionName = UUID.randomUUID().toString();
+        containerProperties = new CosmosContainerProperties(collectionName, "/mypk/mypk1");
+        try {
+            containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+            containerResponse = createdDatabase.createContainer(containerProperties);
+            fail("createContainer should fail as mypk which is part of the partition key cannot be encrypted with " +
+                "PolicyFormatVersion 1.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1. Please use PolicyFormatVersion 2.");
+        }
+
+
+        //Verify setPartitionKeyDefinition with encrypted field.
+        collectionName = UUID.randomUUID().toString();
+        containerProperties = new CosmosContainerProperties(collectionName, "/differentKey");
+        try {
+            containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+            PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+            List<String> keyPaths = new ArrayList<>();
+            keyPaths.add("/mypk");
+            partitionKeyDefinition.setPaths(keyPaths);
+            containerProperties.setPartitionKeyDefinition(partitionKeyDefinition);
+            containerResponse = createdDatabase.createContainer(containerProperties);
+            fail("createContainer should fail as mypk which is part of the partition key cannot be encrypted with " +
+                "PolicyFormatVersion 1.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be encrypted with PolicyFormatVersion 1. Please use PolicyFormatVersion 2.");
+        }
+
+        //This should pass as we check only the first key of the composite key.
+        collectionName = UUID.randomUUID().toString();
+        containerProperties = new CosmosContainerProperties(collectionName, "/mypk1/mypk");
+        containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+        containerResponse = createdDatabase.createContainer(containerProperties);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createEncryptionPolicy_withIdWrongPolicyFormatVersion() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
+        path1.setPath("/id");
+        path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path1.setEncryptionType("Deterministic");
+        path1.setClientEncryptionKeyId("containerTestKey1");
+
+        ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
+        path2.setPath("/path2");
+        path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path2.setEncryptionType("Deterministic");
+        path2.setClientEncryptionKeyId("containerTestKey2");
+
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(path1);
+        paths.add(path2);
+
+        try {
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 1);
+            fail("clientEncryptionPolicy should fail as id which is part of the partition key cannot be encrypted with " +
+                "PolicyFormatVersion 1.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Path /id cannot be encrypted with policyFormatVersion 1.");
+        }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -157,18 +268,18 @@ public class CosmosContainerTest extends TestSuiteBase {
         paths.add(path1);
         paths.add(path2);
 
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 2);
         CosmosContainerResponse containerResponse = null;
 
         //Verify partition key in CosmosContainerProperties constructor with encrypted field.
         try {
             containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
             containerResponse = createdDatabase.createContainer(containerProperties);
-            fail("createContainer should fail as mypk which is part of the partition key cannot be included in the " +
-                "ClientEncryptionPolicy.");
+            fail("createContainer should fail as mypk which is part of the partition key has to be encrypted with " +
+                "Deterministic type encryption.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be included in" +
-                " the ClientEncryptionPolicy.");
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key has to be encrypted with " +
+                "Deterministic type Encryption.");
         }
 
 
@@ -178,11 +289,11 @@ public class CosmosContainerTest extends TestSuiteBase {
         try {
             containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
             containerResponse = createdDatabase.createContainer(containerProperties);
-            fail("createContainer should fail as mypk which is part of the partition key cannot be included in the " +
-                "ClientEncryptionPolicy.");
+            fail("createContainer should fail as mypk which is part of the partition key has to be encrypted with " +
+                "Deterministic type encryption.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be included in" +
-                " the ClientEncryptionPolicy.");
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key has to be encrypted with " +
+                "Deterministic type Encryption.");
         }
 
 
@@ -197,11 +308,11 @@ public class CosmosContainerTest extends TestSuiteBase {
             partitionKeyDefinition.setPaths(keyPaths);
             containerProperties.setPartitionKeyDefinition(partitionKeyDefinition);
             containerResponse = createdDatabase.createContainer(containerProperties);
-            fail("createContainer should fail as mypk which is part of the partition key cannot be included in the " +
-                "ClientEncryptionPolicy.");
+            fail("createContainer should fail as mypk which is part of the partition key has to be encrypted with " +
+                "Deterministic type encryption.");
         } catch (IllegalArgumentException ex) {
-            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key cannot be included in" +
-                " the ClientEncryptionPolicy.");
+            assertThat(ex.getMessage()).isEqualTo("Path mypk which is part of the partition key has to be encrypted with " +
+                "Deterministic type Encryption.");
         }
 
         //This should pass as we check only the first key of the composite key.
@@ -211,6 +322,36 @@ public class CosmosContainerTest extends TestSuiteBase {
         containerResponse = createdDatabase.createContainer(containerProperties);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void createEncryptionPolicy_withIdWrongEncryptionType() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
+        path1.setPath("/id");
+        path1.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path1.setEncryptionType("Randomized");
+        path1.setClientEncryptionKeyId("containerTestKey1");
+
+        ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
+        path2.setPath("/path2");
+        path2.setEncryptionAlgorithm("AEAD_AES_256_CBC_HMAC_SHA256");
+        path2.setEncryptionType("Deterministic");
+        path2.setClientEncryptionKeyId("containerTestKey2");
+
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(path1);
+        paths.add(path2);
+
+        try {
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths, 2);
+            fail("clientEncryptionPolicy should fail as id which is part of the partition key has to be encrypted with " +
+                "Deterministic type Encryption.");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).isEqualTo("Only deterministic encryption type is supported for path /id.");
+        }
     }
 
     @DataProvider
@@ -594,7 +735,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertFeedRange(
             feedRanges.get(1),
             "{\"Range\":{\"min\":\"15555555555555555555555555555555\"," +
-            "\"max\":\"2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}}");
+                "\"max\":\"2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}}");
         assertFeedRange(
             feedRanges.get(2),
             "{\"Range\":{\"min\":\"2AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"max\":\"FF\"}}");
@@ -678,17 +819,17 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
         CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
-                                                          .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                              new IndexingPolicy().setAutomatic(false).setIndexingMode(IndexingMode.NONE)));
+            .replace(containerResponse.getProperties().setIndexingPolicy(
+                new IndexingPolicy().setAutomatic(false).setIndexingMode(IndexingMode.NONE)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.NONE);
         assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
             .isEqualTo(false);
 
         replaceResponse = createdDatabase.getContainer(containerProperties.getId())
-                                                          .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                              new IndexingPolicy().setAutomatic(true).setIndexingMode(IndexingMode.CONSISTENT)),
-                                                              options);
+            .replace(containerResponse.getProperties().setIndexingPolicy(
+                new IndexingPolicy().setAutomatic(true).setIndexingMode(IndexingMode.CONSISTENT)),
+                options);
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.CONSISTENT);
         assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
@@ -711,10 +852,10 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse replaceResponse =
             createdDatabase.getContainer(containerProperties.getId())
-                           .replace(containerResponse
-                                 .getProperties()
-                                 .setChangeFeedPolicy(
-                                     ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(4))));
+                .replace(containerResponse
+                    .getProperties()
+                    .setChangeFeedPolicy(
+                        ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(4))));
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
@@ -738,10 +879,10 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse replaceResponse =
             createdDatabase.getContainer(containerProperties.getId())
-                           .replace(containerResponse
-                               .getProperties()
-                               .setChangeFeedPolicy(
-                                   ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(6))));
+                .replace(containerResponse
+                    .getProperties()
+                    .setChangeFeedPolicy(
+                        ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(6))));
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())

@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
       <module>azure-messaging-webpubsub</module>
+      <module>azure-messaging-webpubsub-client</module>
       <module>azure-resourcemanager-webpubsub</module>
   </modules>
 </project>

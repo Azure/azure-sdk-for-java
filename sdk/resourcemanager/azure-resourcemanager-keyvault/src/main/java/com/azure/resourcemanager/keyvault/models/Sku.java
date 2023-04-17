@@ -23,6 +23,10 @@ public final class Sku {
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
+
     /**
      * Get the family property: SKU family name.
      *
