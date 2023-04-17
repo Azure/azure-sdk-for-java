@@ -22,11 +22,11 @@ public class OpenConnectionTask extends CompletableFuture<OpenConnectionResponse
     private int minConnectionsRequiredForEndpoint;
     private final IRetryPolicy retryPolicy;
 
-    OpenConnectionTask(
-        String collectionRid,
-        URI serviceEndpoint,
-        Uri addressUri,
-        int minConnectionsRequiredForEndpoint) {
+    public OpenConnectionTask(
+            String collectionRid,
+            URI serviceEndpoint,
+            Uri addressUri,
+            int minConnectionsRequiredForEndpoint) {
         this.collectionRid = collectionRid;
         this.serviceEndpoint = serviceEndpoint;
         this.addressUri = addressUri;

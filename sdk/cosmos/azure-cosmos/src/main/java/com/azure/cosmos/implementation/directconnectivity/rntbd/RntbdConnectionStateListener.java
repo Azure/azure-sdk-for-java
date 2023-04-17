@@ -71,15 +71,13 @@ public class RntbdConnectionStateListener {
                 logger.debug("Will not raise the connection state change event for error", exception);
             }
         }
-
-        openConnectionIfNeeded(exception);
     }
 
     public RntbdConnectionStateListenerMetrics getMetrics() {
         return this.metrics;
     }
 
-    private void openConnectionIfNeeded(Throwable exception) {
+    public void openConnectionIfNeeded(Throwable exception) {
 
         if (this.endpoint.isClosed()) {
             return;
