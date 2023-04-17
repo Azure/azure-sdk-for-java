@@ -53,31 +53,31 @@ public final class CallAutomationClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param callInvite call invitee's information
+     * @param targetParticipant call invitee's information
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CallInvite callInvite,
+    public CreateCallResult createCall(CallInvite targetParticipant,
                                        String callbackUrl) {
-        return callAutomationAsyncClient.createCall(callInvite, callbackUrl).block();
+        return callAutomationAsyncClient.createCall(targetParticipant, callbackUrl).block();
     }
 
     /**
      * Create a call connection request from a source identity to a list of target identity.
      *
-     * @param targets The list of targets.
+     * @param targetParticipants The list of targetParticipants.
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targets,
+    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targetParticipants,
                                             String callbackUrl) {
-        return callAutomationAsyncClient.createGroupCall(targets, callbackUrl).block();
+        return callAutomationAsyncClient.createGroupCall(targetParticipants, callbackUrl).block();
     }
 
     /**
@@ -140,13 +140,13 @@ public final class CallAutomationClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param target {@link CallInvite} represent redirect target
+     * @param targetParticipant {@link CallInvite} represent redirect targetParticipant
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void redirectCall(String incomingCallContext, CallInvite target) {
-        callAutomationAsyncClient.redirectCall(incomingCallContext, target).block();
+    public void redirectCall(String incomingCallContext, CallInvite targetParticipant) {
+        callAutomationAsyncClient.redirectCall(incomingCallContext, targetParticipant).block();
     }
 
     /**

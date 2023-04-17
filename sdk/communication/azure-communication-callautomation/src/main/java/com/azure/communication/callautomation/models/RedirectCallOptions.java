@@ -18,17 +18,17 @@ public class RedirectCallOptions {
     /**
      * Information of target of being redirected to.
      */
-    private final CallInvite target;
+    private final CallInvite targetParticipant;
 
     /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param target Information of target of being redirected to.
+     * @param targetParticipant Information of target of being redirected to.
      */
-    public RedirectCallOptions(String incomingCallContext, CallInvite target) {
+    public RedirectCallOptions(String incomingCallContext, CallInvite targetParticipant) {
         this.incomingCallContext = incomingCallContext;
-        this.target = target;
+        this.targetParticipant = targetParticipant;
     }
 
     /**
@@ -44,7 +44,7 @@ public class RedirectCallOptions {
      * Information of target of being redirected to
      * @return the callInvite to redirect target
      */
-    public CallInvite getTarget() {
-        return target;
+    public CallInvite getTargetParticipant() {
+        return targetParticipant;
     }
 }

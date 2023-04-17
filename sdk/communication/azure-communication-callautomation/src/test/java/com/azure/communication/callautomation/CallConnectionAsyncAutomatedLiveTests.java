@@ -70,8 +70,8 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             String anotherUniqueId = serviceBusWithNewCall(caller, anotherReceiver);
 
             // create a call
-            List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
-            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
+            List<CommunicationIdentifier> targetParticipants = new ArrayList<>(Arrays.asList(receiver));
+            CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targetParticipants,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
@@ -100,8 +100,8 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(callConnectedEventData);
 
             // add another receiver to the call
-            targets.clear();
-            targets.add(anotherReceiver);
+            targetParticipants.clear();
+            targetParticipants.add(anotherReceiver);
             AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(receiver));
             Response<AddParticipantResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantWithResponse(addParticipantsOptions).block();
             assertNotNull(addParticipantsResultResponse);

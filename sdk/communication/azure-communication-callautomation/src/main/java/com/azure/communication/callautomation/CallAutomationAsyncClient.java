@@ -99,32 +99,32 @@ public final class CallAutomationAsyncClient {
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param callInvite Call invitee's information
+     * @param targetParticipant Call invitee's information
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CallInvite callInvite,
+    public Mono<CreateCallResult> createCall(CallInvite targetParticipant,
                                              String callbackUrl) {
-        CreateCallOptions createCallOptions = new CreateCallOptions(callInvite, callbackUrl);
+        CreateCallOptions createCallOptions = new CreateCallOptions(targetParticipant, callbackUrl);
         return createCallWithResponse(createCallOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a call connection request from a source identity to a list of target identity.
      *
-     * @param targets The list of targets.
+     * @param targetParticipants The list of targetParticipants.
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createGroupCall(List<CommunicationIdentifier> targets,
+    public Mono<CreateCallResult> createGroupCall(List<CommunicationIdentifier> targetParticipants,
                                                   String callbackUrl) {
-        CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(targets, callbackUrl);
+        CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(targetParticipants, callbackUrl);
         return createGroupCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -204,7 +204,7 @@ public final class CallAutomationAsyncClient {
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateCallOptions createCallOptions) {
         List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>();
-        targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTarget()));
+        targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTargetParticipant()));
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
@@ -236,7 +236,7 @@ public final class CallAutomationAsyncClient {
     }
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateGroupCallOptions createCallGroupOptions) {
-        List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargets()
+        List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargetParticipants()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
@@ -352,14 +352,14 @@ public final class CallAutomationAsyncClient {
      * Redirect a call
      *
      * @param incomingCallContext The incoming call context.
-     * @param target {@link CallInvite} represent redirect target
+     * @param targetParticipant {@link CallInvite} represent redirect targetParticipant
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, CallInvite target) {
-        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, target);
+    public Mono<Void> redirectCall(String incomingCallContext, CallInvite targetParticipant) {
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(incomingCallContext, targetParticipant);
         return redirectCallWithResponse(redirectCallOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -382,13 +382,13 @@ public final class CallAutomationAsyncClient {
 
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
-                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget().getTarget()));
+                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (redirectCallOptions.getTarget().getSipHeaders() != null || redirectCallOptions.getTarget().getVoipHeaders() != null) {
+            if (redirectCallOptions.getTargetParticipant().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(redirectCallOptions.getTarget().getSipHeaders());
-                customContext.setVoipHeaders(redirectCallOptions.getTarget().getVoipHeaders());
+                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 

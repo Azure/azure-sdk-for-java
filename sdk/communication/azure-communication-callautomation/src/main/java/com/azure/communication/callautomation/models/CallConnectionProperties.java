@@ -26,7 +26,7 @@ public final class CallConnectionProperties {
     private final CommunicationIdentifier sourceIdentity;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private final String sourceDisplayName;
-    private final List<CommunicationIdentifier> targets;
+    private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
     private final URI callbackUri;
     private final String mediaSubscriptionId;
@@ -51,7 +51,7 @@ public final class CallConnectionProperties {
         this.sourceCallerIdNumber = null;
         this.sourceDisplayName = null;
         this.serverCallId = null;
-        this.targets = null;
+        this.targetParticipants = null;
         this.callConnectionState = null;
         this.callbackUri = null;
         this.mediaSubscriptionId = null;
@@ -69,7 +69,7 @@ public final class CallConnectionProperties {
         this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
-        this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+        this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
         this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
@@ -80,8 +80,8 @@ public final class CallConnectionProperties {
      *
      * @return list of targets
      */
-    public List<CommunicationIdentifier> getTargets() {
-        return targets;
+    public List<CommunicationIdentifier> getTargetParticipants() {
+        return targetParticipants;
     }
 
     /**
