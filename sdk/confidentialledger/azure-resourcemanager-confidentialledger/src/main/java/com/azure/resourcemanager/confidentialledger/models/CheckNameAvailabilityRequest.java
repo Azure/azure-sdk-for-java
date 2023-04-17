@@ -22,6 +22,10 @@ public final class CheckNameAvailabilityRequest {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    public CheckNameAvailabilityRequest() {
+    }
+
     /**
      * Get the name property: The name of the resource for which availability needs to be checked.
      *
