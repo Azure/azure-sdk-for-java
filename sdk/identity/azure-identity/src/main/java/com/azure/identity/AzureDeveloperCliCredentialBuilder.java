@@ -61,8 +61,8 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
      * @param duration The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public AzureDeveloperCliCredentialBuilder azureDeveloperCliCredentialTimeout(Duration duration) {
-        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
+    public AzureDeveloperCliCredentialBuilder processTimeout(Duration duration) {
+        this.identityClientOptions.setProcessTimeout(duration);
         return this;
     }
 
