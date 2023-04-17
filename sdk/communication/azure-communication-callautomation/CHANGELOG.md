@@ -3,6 +3,8 @@
 ## 1.0.0-beta.2 (Unreleased)
 
 ### Features Added
+- Continuous Dtmf Detection
+- Send Dtmf
 
 ### Breaking Changes
 
