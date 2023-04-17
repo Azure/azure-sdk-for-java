@@ -240,6 +240,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logBody(logBuilder, logger, contentType, content.toString());
         } else if (content instanceof InputStreamContent) {
             // TODO (limolkova) Implement sync version with logging stream wrapper
+            // in the meantime, we know that original content is not octet/stream (we don't log those)
+            // so it's ok to just use string body here
             String contentString = content.toString();
             request.setBody(contentString);
             logBody(logBuilder, logger, contentType, contentString);
