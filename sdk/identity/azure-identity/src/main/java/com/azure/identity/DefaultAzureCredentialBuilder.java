@@ -220,11 +220,11 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     /**
      * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI) that rely on separate process
      * invocations.
-     * @param processTimeout The {@link Duration} to wait.
+     * @param developerCredentialTimout The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public DefaultAzureCredentialBuilder processTimeout(Duration processTimeout) {
-        this.identityClientOptions.setProcessTimeout(processTimeout);
+    public DefaultAzureCredentialBuilder developerCredentialTimeout(Duration developerCredentialTimout) {
+        this.identityClientOptions.setProcessTimeout(developerCredentialTimout);
         return this;
     }
 
