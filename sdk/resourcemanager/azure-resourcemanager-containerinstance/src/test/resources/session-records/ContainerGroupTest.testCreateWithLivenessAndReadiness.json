@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2023-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.22.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "f367cdf1-c1bb-4259-9130-647bf61b94be",
@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2023-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.22.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "b0fdf442-925d-407f-a565-7a0db10cae57"
@@ -134,7 +134,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2023-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.22.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "1d40742b-5d90-4570-86e7-699d9171c35c",
@@ -161,7 +161,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg94436433a20/providers/Microsoft.ContainerInstance/containerGroups/container21534e69?api-version=2023-05-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerinstance/2.22.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "72c3f092-2dcb-4877-8eda-f73cdbe29ee2",
