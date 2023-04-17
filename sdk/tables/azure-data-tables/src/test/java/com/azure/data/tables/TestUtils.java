@@ -211,7 +211,7 @@ public final class TestUtils {
 
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
         customSanitizers.add(new TestProxySanitizer("content-type", ".* boundary=(?<bound>.*)", "REDACTED", TestProxySanitizerType.HEADER).setGroupForReplace("bound"));
-        customSanitizers.add(new TestProxySanitizer(null, ".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL).setGroupForReplace("query"));
+        customSanitizers.add(new TestProxySanitizer(".*\\\\?(?<query>.*)", "REDACTED", TestProxySanitizerType.URL).setGroupForReplace("query"));
         customSanitizers.add(new TestProxySanitizer("Location", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("DataServiceId", URL_REGEX, "REDACTED", TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
