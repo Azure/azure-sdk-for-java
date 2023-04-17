@@ -16,6 +16,10 @@ public final class LogsInner {
     @JsonProperty(value = "content")
     private String content;
 
+    /** Creates an instance of LogsInner class. */
+    public LogsInner() {
+    }
+
     /**
      * Get the content property: The content of the log.
      *

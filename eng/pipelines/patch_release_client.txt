@@ -25,6 +25,8 @@ com.azure:azure-ai-textanalytics # Tests owner: mssfang
 com.azure:azure-communication-chat # Tests owner: jiminwen
 com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-communication-identity # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
+com.azure:azure-communication-phonenumbers # Tests owner: whisper6284, miguhern, danielortega-msft
+com.azure:azure-communication-sms # Tests owner: besh2014, DimaKolomiiets
 com.azure:azure-containers-containerregistry # Tests owner: lmolkova
 com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
