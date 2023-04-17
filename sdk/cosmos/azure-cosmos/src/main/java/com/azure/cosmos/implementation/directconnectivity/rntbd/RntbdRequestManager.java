@@ -333,7 +333,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             }
             context.flush().close().addListener(future -> {
                 if (future.isDone()) {
-                    this.rntbdConnectionStateListener.openConnectionIfNeeded(cause);
+                    this.rntbdConnectionStateListener.openConnectionIfNeeded();
                 }
             });
         }
@@ -456,7 +456,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 context.channel().attr(FAULT_INJECTION_RULE_ID_KEY).set(((RntbdFaultInjectionConnectionCloseEvent) event).getFaultInjectionRuleId());
                 context.close().addListener(future -> {
                     if (future.isDone()) {
-                        this.rntbdConnectionStateListener.openConnectionIfNeeded(new ClosedChannelException());
+                        this.rntbdConnectionStateListener.openConnectionIfNeeded();
                     }
                 });
                 return;

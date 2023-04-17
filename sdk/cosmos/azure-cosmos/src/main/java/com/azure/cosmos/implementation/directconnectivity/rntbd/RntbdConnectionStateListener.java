@@ -77,7 +77,7 @@ public class RntbdConnectionStateListener {
         return this.metrics;
     }
 
-    public void openConnectionIfNeeded(Throwable exception) {
+    public void openConnectionIfNeeded() {
 
         if (this.endpoint.isClosed()) {
             return;
