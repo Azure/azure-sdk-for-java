@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
-import com.azure.resourcemanager.containerinstance.models.UserAssignedIdentities;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
@@ -23,7 +23,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
     private final ClientLogger logger = new ClientLogger(getClass());
 
     private List<String> creatableIdentityKeys;
-    private Map<String, UserAssignedIdentities> userAssignedIdentities;
+    private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
 
     ContainerGroupMsiHandler(ContainerGroupImpl containerGroup) {
         super(containerGroup.manager().authorizationManager(), containerGroup.taskGroup(), containerGroup.idProvider());
@@ -36,7 +36,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
         for (String key : this.creatableIdentityKeys) {
             Identity identity = (Identity) this.containerGroup.taskGroup().taskResult(key);
             Objects.requireNonNull(identity);
-            this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentities());
+            this.userAssignedIdentities.put(identity.id(), new ContainerGroupIdentityUserAssignedIdentities());
         }
         this.creatableIdentityKeys.clear();
     }
@@ -86,7 +86,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
      */
     ContainerGroupMsiHandler withExistingExternalManagedServiceIdentity(Identity identity) {
         this.initContainerInstanceIdentity(ResourceIdentityType.USER_ASSIGNED);
-        this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentities());
+        this.userAssignedIdentities.put(identity.id(), new ContainerGroupIdentityUserAssignedIdentities());
         return this;
     }
 

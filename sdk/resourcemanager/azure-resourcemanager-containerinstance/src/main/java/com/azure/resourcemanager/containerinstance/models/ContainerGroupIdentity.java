@@ -39,7 +39,7 @@ public final class ContainerGroupIdentity {
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, UserAssignedIdentities> userAssignedIdentities;
+    private Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /** Creates an instance of ContainerGroupIdentity class. */
     public ContainerGroupIdentity() {
@@ -94,7 +94,7 @@ public final class ContainerGroupIdentity {
      *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, UserAssignedIdentities> userAssignedIdentities() {
+    public Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -105,7 +105,7 @@ public final class ContainerGroupIdentity {
      * @return the ContainerGroupIdentity object itself.
      */
     public ContainerGroupIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentities> userAssignedIdentities) {
+        Map<String, ContainerGroupIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

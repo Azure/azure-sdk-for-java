@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
  */
 @Immutable
-public final class UserAssignedIdentities {
+public final class ContainerGroupIdentityUserAssignedIdentities {
     /*
      * The principal id of user assigned identity.
      */
@@ -26,8 +26,8 @@ public final class UserAssignedIdentities {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of UserAssignedIdentities class. */
-    public UserAssignedIdentities() {
+    /** Creates an instance of ContainerGroupIdentityUserAssignedIdentities class. */
+    public ContainerGroupIdentityUserAssignedIdentities() {
     }
 
     /**

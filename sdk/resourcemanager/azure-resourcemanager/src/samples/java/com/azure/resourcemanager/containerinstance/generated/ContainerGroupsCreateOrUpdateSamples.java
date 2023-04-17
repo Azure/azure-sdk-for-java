@@ -12,6 +12,7 @@ import com.azure.resourcemanager.containerinstance.models.ConfidentialComputePro
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPriority;
@@ -35,7 +36,6 @@ import com.azure.resourcemanager.containerinstance.models.ResourceRequests;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
 import com.azure.resourcemanager.containerinstance.models.SecurityContextCapabilitiesDefinition;
 import com.azure.resourcemanager.containerinstance.models.SecurityContextDefinition;
-import com.azure.resourcemanager.containerinstance.models.UserAssignedIdentities;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 import java.io.IOException;
@@ -143,7 +143,7 @@ public final class ContainerGroupsCreateOrUpdateSamples {
                             .withUserAssignedIdentities(
                                 mapOf(
                                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/container-group-identity",
-                                    new UserAssignedIdentities())))
+                                    new ContainerGroupIdentityUserAssignedIdentities())))
                     .withContainers(
                         Arrays
                             .asList(
@@ -252,7 +252,7 @@ public final class ContainerGroupsCreateOrUpdateSamples {
                             .withUserAssignedIdentities(
                                 mapOf(
                                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name",
-                                    new UserAssignedIdentities())))
+                                    new ContainerGroupIdentityUserAssignedIdentities())))
                     .withContainers(
                         Arrays
                             .asList(
