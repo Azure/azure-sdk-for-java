@@ -8,7 +8,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.appplatform.fluent.ApiPortalCustomDomainsClient;
+import com.azure.resourcemanager.appplatform.fluent.ApiPortalsClient;
 import com.azure.resourcemanager.appplatform.fluent.AppPlatformManagementClient;
+import com.azure.resourcemanager.appplatform.fluent.ApplicationAcceleratorsClient;
+import com.azure.resourcemanager.appplatform.fluent.ApplicationLiveViewsClient;
 import com.azure.resourcemanager.appplatform.fluent.AppsClient;
 import com.azure.resourcemanager.appplatform.fluent.BindingsClient;
 import com.azure.resourcemanager.appplatform.fluent.BuildServiceAgentPoolsClient;
@@ -18,14 +22,22 @@ import com.azure.resourcemanager.appplatform.fluent.BuildpackBindingsClient;
 import com.azure.resourcemanager.appplatform.fluent.CertificatesClient;
 import com.azure.resourcemanager.appplatform.fluent.ConfigServersClient;
 import com.azure.resourcemanager.appplatform.fluent.ConfigurationServicesClient;
+import com.azure.resourcemanager.appplatform.fluent.ContainerRegistriesClient;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
+import com.azure.resourcemanager.appplatform.fluent.CustomizedAcceleratorsClient;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
+import com.azure.resourcemanager.appplatform.fluent.DevToolPortalsClient;
+import com.azure.resourcemanager.appplatform.fluent.GatewayCustomDomainsClient;
+import com.azure.resourcemanager.appplatform.fluent.GatewayRouteConfigsClient;
+import com.azure.resourcemanager.appplatform.fluent.GatewaysClient;
 import com.azure.resourcemanager.appplatform.fluent.MonitoringSettingsClient;
 import com.azure.resourcemanager.appplatform.fluent.OperationsClient;
+import com.azure.resourcemanager.appplatform.fluent.PredefinedAcceleratorsClient;
 import com.azure.resourcemanager.appplatform.fluent.RuntimeVersionsClient;
 import com.azure.resourcemanager.appplatform.fluent.ServiceRegistriesClient;
 import com.azure.resourcemanager.appplatform.fluent.ServicesClient;
 import com.azure.resourcemanager.appplatform.fluent.SkusClient;
+import com.azure.resourcemanager.appplatform.fluent.StoragesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -156,6 +168,42 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         return this.serviceRegistries;
     }
 
+    /** The ApplicationLiveViewsClient object to access its operations. */
+    private final ApplicationLiveViewsClient applicationLiveViews;
+
+    /**
+     * Gets the ApplicationLiveViewsClient object to access its operations.
+     *
+     * @return the ApplicationLiveViewsClient object.
+     */
+    public ApplicationLiveViewsClient getApplicationLiveViews() {
+        return this.applicationLiveViews;
+    }
+
+    /** The DevToolPortalsClient object to access its operations. */
+    private final DevToolPortalsClient devToolPortals;
+
+    /**
+     * Gets the DevToolPortalsClient object to access its operations.
+     *
+     * @return the DevToolPortalsClient object.
+     */
+    public DevToolPortalsClient getDevToolPortals() {
+        return this.devToolPortals;
+    }
+
+    /** The ContainerRegistriesClient object to access its operations. */
+    private final ContainerRegistriesClient containerRegistries;
+
+    /**
+     * Gets the ContainerRegistriesClient object to access its operations.
+     *
+     * @return the ContainerRegistriesClient object.
+     */
+    public ContainerRegistriesClient getContainerRegistries() {
+        return this.containerRegistries;
+    }
+
     /** The BuildServicesClient object to access its operations. */
     private final BuildServicesClient buildServices;
 
@@ -240,6 +288,18 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         return this.bindings;
     }
 
+    /** The StoragesClient object to access its operations. */
+    private final StoragesClient storages;
+
+    /**
+     * Gets the StoragesClient object to access its operations.
+     *
+     * @return the StoragesClient object.
+     */
+    public StoragesClient getStorages() {
+        return this.storages;
+    }
+
     /** The CertificatesClient object to access its operations. */
     private final CertificatesClient certificates;
 
@@ -312,6 +372,102 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         return this.skus;
     }
 
+    /** The GatewaysClient object to access its operations. */
+    private final GatewaysClient gateways;
+
+    /**
+     * Gets the GatewaysClient object to access its operations.
+     *
+     * @return the GatewaysClient object.
+     */
+    public GatewaysClient getGateways() {
+        return this.gateways;
+    }
+
+    /** The GatewayRouteConfigsClient object to access its operations. */
+    private final GatewayRouteConfigsClient gatewayRouteConfigs;
+
+    /**
+     * Gets the GatewayRouteConfigsClient object to access its operations.
+     *
+     * @return the GatewayRouteConfigsClient object.
+     */
+    public GatewayRouteConfigsClient getGatewayRouteConfigs() {
+        return this.gatewayRouteConfigs;
+    }
+
+    /** The GatewayCustomDomainsClient object to access its operations. */
+    private final GatewayCustomDomainsClient gatewayCustomDomains;
+
+    /**
+     * Gets the GatewayCustomDomainsClient object to access its operations.
+     *
+     * @return the GatewayCustomDomainsClient object.
+     */
+    public GatewayCustomDomainsClient getGatewayCustomDomains() {
+        return this.gatewayCustomDomains;
+    }
+
+    /** The ApiPortalsClient object to access its operations. */
+    private final ApiPortalsClient apiPortals;
+
+    /**
+     * Gets the ApiPortalsClient object to access its operations.
+     *
+     * @return the ApiPortalsClient object.
+     */
+    public ApiPortalsClient getApiPortals() {
+        return this.apiPortals;
+    }
+
+    /** The ApiPortalCustomDomainsClient object to access its operations. */
+    private final ApiPortalCustomDomainsClient apiPortalCustomDomains;
+
+    /**
+     * Gets the ApiPortalCustomDomainsClient object to access its operations.
+     *
+     * @return the ApiPortalCustomDomainsClient object.
+     */
+    public ApiPortalCustomDomainsClient getApiPortalCustomDomains() {
+        return this.apiPortalCustomDomains;
+    }
+
+    /** The ApplicationAcceleratorsClient object to access its operations. */
+    private final ApplicationAcceleratorsClient applicationAccelerators;
+
+    /**
+     * Gets the ApplicationAcceleratorsClient object to access its operations.
+     *
+     * @return the ApplicationAcceleratorsClient object.
+     */
+    public ApplicationAcceleratorsClient getApplicationAccelerators() {
+        return this.applicationAccelerators;
+    }
+
+    /** The CustomizedAcceleratorsClient object to access its operations. */
+    private final CustomizedAcceleratorsClient customizedAccelerators;
+
+    /**
+     * Gets the CustomizedAcceleratorsClient object to access its operations.
+     *
+     * @return the CustomizedAcceleratorsClient object.
+     */
+    public CustomizedAcceleratorsClient getCustomizedAccelerators() {
+        return this.customizedAccelerators;
+    }
+
+    /** The PredefinedAcceleratorsClient object to access its operations. */
+    private final PredefinedAcceleratorsClient predefinedAccelerators;
+
+    /**
+     * Gets the PredefinedAcceleratorsClient object to access its operations.
+     *
+     * @return the PredefinedAcceleratorsClient object.
+     */
+    public PredefinedAcceleratorsClient getPredefinedAccelerators() {
+        return this.predefinedAccelerators;
+    }
+
     /**
      * Initializes an instance of AppPlatformManagementClient client.
      *
@@ -336,11 +492,14 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-01";
+        this.apiVersion = "2023-03-01-preview";
         this.services = new ServicesClientImpl(this);
         this.configServers = new ConfigServersClientImpl(this);
         this.configurationServices = new ConfigurationServicesClientImpl(this);
         this.serviceRegistries = new ServiceRegistriesClientImpl(this);
+        this.applicationLiveViews = new ApplicationLiveViewsClientImpl(this);
+        this.devToolPortals = new DevToolPortalsClientImpl(this);
+        this.containerRegistries = new ContainerRegistriesClientImpl(this);
         this.buildServices = new BuildServicesClientImpl(this);
         this.buildpackBindings = new BuildpackBindingsClientImpl(this);
         this.buildServiceBuilders = new BuildServiceBuildersClientImpl(this);
@@ -348,11 +507,20 @@ public final class AppPlatformManagementClientImpl extends AzureServiceClient im
         this.monitoringSettings = new MonitoringSettingsClientImpl(this);
         this.apps = new AppsClientImpl(this);
         this.bindings = new BindingsClientImpl(this);
+        this.storages = new StoragesClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.customDomains = new CustomDomainsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.runtimeVersions = new RuntimeVersionsClientImpl(this);
         this.skus = new SkusClientImpl(this);
+        this.gateways = new GatewaysClientImpl(this);
+        this.gatewayRouteConfigs = new GatewayRouteConfigsClientImpl(this);
+        this.gatewayCustomDomains = new GatewayCustomDomainsClientImpl(this);
+        this.apiPortals = new ApiPortalsClientImpl(this);
+        this.apiPortalCustomDomains = new ApiPortalCustomDomainsClientImpl(this);
+        this.applicationAccelerators = new ApplicationAcceleratorsClientImpl(this);
+        this.customizedAccelerators = new CustomizedAcceleratorsClientImpl(this);
+        this.predefinedAccelerators = new PredefinedAcceleratorsClientImpl(this);
     }
 }

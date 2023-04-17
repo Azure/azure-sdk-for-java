@@ -27,8 +27,7 @@ public final class AppResourceInner extends ProxyResource {
     private ManagedIdentityProperties identity;
 
     /*
-     * The GEO location of the application, always the same with its parent
-     * resource
+     * The GEO location of the application, always the same with its parent resource
      */
     @JsonProperty(value = "location")
     private String location;
@@ -38,6 +37,10 @@ public final class AppResourceInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of AppResourceInner class. */
+    public AppResourceInner() {
+    }
 
     /**
      * Get the properties property: Properties of the App resource.

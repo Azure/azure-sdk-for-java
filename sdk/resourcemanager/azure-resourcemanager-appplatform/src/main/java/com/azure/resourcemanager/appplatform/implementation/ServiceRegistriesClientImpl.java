@@ -62,11 +62,10 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ServiceRegistriesService {
+    public interface ServiceRegistriesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries/{serviceRegistryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceRegistryResourceInner>> get(
@@ -81,8 +80,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries/{serviceRegistryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -97,8 +95,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries/{serviceRegistryName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -113,8 +110,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceRegistryResourceCollection>> list(
@@ -273,23 +269,6 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Service Registry and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceRegistryResourceInner get(String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return getAsync(resourceGroupName, serviceName, serviceRegistryName).block();
-    }
-
-    /**
-     * Get the Service Registry and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,6 +279,23 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     public Response<ServiceRegistryResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName, context).block();
+    }
+
+    /**
+     * Get the Service Registry and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param serviceRegistryName The name of Service Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Service Registry and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceRegistryResourceInner get(String resourceGroupName, String serviceName, String serviceRegistryName) {
+        return getWithResponse(resourceGroupName, serviceName, serviceRegistryName, Context.NONE).getValue();
     }
 
     /**
@@ -481,7 +477,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
     }
 
     /**
@@ -500,7 +496,9 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -751,7 +749,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
     }
 
     /**
@@ -770,7 +768,7 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName, context).getSyncPoller();
     }
 
     /**
@@ -1040,7 +1038,8 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1076,7 +1075,8 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

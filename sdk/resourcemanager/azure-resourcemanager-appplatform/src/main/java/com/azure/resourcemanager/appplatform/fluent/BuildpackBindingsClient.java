@@ -21,6 +21,50 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in BuildpackBindingsClient. */
 public interface BuildpackBindingsClient {
     /**
+     * Get collection of buildpack bindings under all builders.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<BuildpackBindingResourceInner> listForClusterAsync(String resourceGroupName, String serviceName);
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BuildpackBindingResourceInner> listForCluster(String resourceGroupName, String serviceName);
+
+    /**
+     * Get collection of buildpack bindings under all builders.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of buildpack bindings under all builders as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<BuildpackBindingResourceInner> listForCluster(
+        String resourceGroupName, String serviceName, Context context);
+
+    /**
      * Get a buildpack binding by name.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -73,28 +117,6 @@ public interface BuildpackBindingsClient {
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
      * @param buildpackBindingName The name of the Buildpack Binding Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a buildpack binding by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BuildpackBindingResourceInner get(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String builderName,
-        String buildpackBindingName);
-
-    /**
-     * Get a buildpack binding by name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
-     * @param buildpackBindingName The name of the Buildpack Binding Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,6 +131,28 @@ public interface BuildpackBindingsClient {
         String builderName,
         String buildpackBindingName,
         Context context);
+
+    /**
+     * Get a buildpack binding by name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param buildpackBindingName The name of the Buildpack Binding Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a buildpack binding by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BuildpackBindingResourceInner get(
+        String resourceGroupName,
+        String serviceName,
+        String buildServiceName,
+        String builderName,
+        String buildpackBindingName);
 
     /**
      * Create or update a buildpack binding.

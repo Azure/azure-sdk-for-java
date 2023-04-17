@@ -25,6 +25,10 @@ public final class ServiceRegistryResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ServiceRegistryResourceInner class. */
+    public ServiceRegistryResourceInner() {
+    }
+
     /**
      * Get the properties property: Service Registry properties payload.
      *

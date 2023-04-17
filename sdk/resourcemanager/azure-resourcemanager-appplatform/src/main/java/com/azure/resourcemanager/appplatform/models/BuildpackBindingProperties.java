@@ -28,6 +28,10 @@ public final class BuildpackBindingProperties {
     @JsonProperty(value = "launchProperties")
     private BuildpackBindingLaunchProperties launchProperties;
 
+    /** Creates an instance of BuildpackBindingProperties class. */
+    public BuildpackBindingProperties() {
+    }
+
     /**
      * Get the bindingType property: Buildpack Binding Type.
      *

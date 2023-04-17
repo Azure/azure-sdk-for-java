@@ -25,6 +25,10 @@ public final class ResourceSkuZoneDetails {
     @JsonProperty(value = "capabilities")
     private List<ResourceSkuCapabilities> capabilities;
 
+    /** Creates an instance of ResourceSkuZoneDetails class. */
+    public ResourceSkuZoneDetails() {
+    }
+
     /**
      * Get the name property: Gets the set of zones that the SKU is available in with the specified capabilities.
      *

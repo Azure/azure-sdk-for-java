@@ -75,11 +75,10 @@ public final class ServicesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ServicesService {
+    public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceInner>> getByResourceGroup(
@@ -93,8 +92,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -109,8 +107,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -124,8 +121,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -140,8 +136,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/listTestKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/listTestKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TestKeys>> listTestKeys(
@@ -155,8 +150,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/regenerateTestKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/regenerateTestKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TestKeys>> regenerateTestKey(
@@ -171,8 +165,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/disableTestEndpoint")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/disableTestEndpoint")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> disableTestEndpoint(
@@ -186,8 +179,7 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/enableTestEndpoint")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/enableTestEndpoint")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TestKeys>> enableTestEndpoint(
@@ -201,8 +193,41 @@ public final class ServicesClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/stop")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+            value = ManagementException.class,
+            code = {404, 409})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stop(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/start")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(
+            value = ManagementException.class,
+            code = {404, 409})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> start(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailability>> checkNameAvailability(
@@ -378,22 +403,6 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceResourceInner getByResourceGroup(String resourceGroupName, String serviceName) {
-        return getByResourceGroupAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Get a Service and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -404,6 +413,22 @@ public final class ServicesClientImpl
     public Response<ServiceResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * Get a Service and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Service and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceResourceInner getByResourceGroup(String resourceGroupName, String serviceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
     }
 
     /**
@@ -583,7 +608,7 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, resource).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, resource).getSyncPoller();
     }
 
     /**
@@ -602,7 +627,7 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, resource, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, resource, context).getSyncPoller();
     }
 
     /**
@@ -833,7 +858,7 @@ public final class ServicesClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
     }
 
     /**
@@ -851,7 +876,7 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
     }
 
     /**
@@ -1096,7 +1121,7 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource) {
-        return beginUpdateAsync(resourceGroupName, serviceName, resource).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serviceName, resource).getSyncPoller();
     }
 
     /**
@@ -1115,7 +1140,7 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, ServiceResourceInner resource, Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, resource, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serviceName, resource, context).getSyncPoller();
     }
 
     /**
@@ -1313,22 +1338,6 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestKeys listTestKeys(String resourceGroupName, String serviceName) {
-        return listTestKeysAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * List test keys for a Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1338,6 +1347,22 @@ public final class ServicesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TestKeys> listTestKeysWithResponse(String resourceGroupName, String serviceName, Context context) {
         return listTestKeysWithResponseAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * List test keys for a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test keys payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestKeys listTestKeys(String resourceGroupName, String serviceName) {
+        return listTestKeysWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
     }
 
     /**
@@ -1483,24 +1508,6 @@ public final class ServicesClientImpl
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param regenerateTestKeyRequest Parameters for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestKeys regenerateTestKey(
-        String resourceGroupName, String serviceName, RegenerateTestKeyRequestPayload regenerateTestKeyRequest) {
-        return regenerateTestKeyAsync(resourceGroupName, serviceName, regenerateTestKeyRequest).block();
-    }
-
-    /**
-     * Regenerate a test key for a Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param regenerateTestKeyRequest Parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1515,6 +1522,25 @@ public final class ServicesClientImpl
         Context context) {
         return regenerateTestKeyWithResponseAsync(resourceGroupName, serviceName, regenerateTestKeyRequest, context)
             .block();
+    }
+
+    /**
+     * Regenerate a test key for a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param regenerateTestKeyRequest Parameters for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test keys payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestKeys regenerateTestKey(
+        String resourceGroupName, String serviceName, RegenerateTestKeyRequestPayload regenerateTestKeyRequest) {
+        return regenerateTestKeyWithResponse(resourceGroupName, serviceName, regenerateTestKeyRequest, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1634,21 +1660,6 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableTestEndpoint(String resourceGroupName, String serviceName) {
-        disableTestEndpointAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Disable test endpoint functionality for a Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1659,6 +1670,21 @@ public final class ServicesClientImpl
     public Response<Void> disableTestEndpointWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return disableTestEndpointWithResponseAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * Disable test endpoint functionality for a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disableTestEndpoint(String resourceGroupName, String serviceName) {
+        disableTestEndpointWithResponse(resourceGroupName, serviceName, Context.NONE);
     }
 
     /**
@@ -1779,22 +1805,6 @@ public final class ServicesClientImpl
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test keys payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestKeys enableTestEndpoint(String resourceGroupName, String serviceName) {
-        return enableTestEndpointAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Enable test endpoint functionality for a Service.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1805,6 +1815,515 @@ public final class ServicesClientImpl
     public Response<TestKeys> enableTestEndpointWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return enableTestEndpointWithResponseAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * Enable test endpoint functionality for a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test keys payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestKeys enableTestEndpoint(String resourceGroupName, String serviceName) {
+        return enableTestEndpointWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String serviceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .stop(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
+        String resourceGroupName, String serviceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .stop(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                accept,
+                context);
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String serviceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, serviceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
+        String resourceGroupName, String serviceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, serviceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serviceName) {
+        return this.beginStopAsync(resourceGroupName, serviceName).getSyncPoller();
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serviceName, Context context) {
+        return this.beginStopAsync(resourceGroupName, serviceName, context).getSyncPoller();
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopAsync(String resourceGroupName, String serviceName) {
+        return beginStopAsync(resourceGroupName, serviceName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> stopAsync(String resourceGroupName, String serviceName, Context context) {
+        return beginStopAsync(resourceGroupName, serviceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String serviceName) {
+        stopAsync(resourceGroupName, serviceName).block();
+    }
+
+    /**
+     * Stop a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stop(String resourceGroupName, String serviceName, Context context) {
+        stopAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String serviceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .start(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
+        String resourceGroupName, String serviceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .start(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                accept,
+                context);
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String serviceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, serviceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
+        String resourceGroupName, String serviceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, serviceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serviceName) {
+        return this.beginStartAsync(resourceGroupName, serviceName).getSyncPoller();
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String serviceName, Context context) {
+        return this.beginStartAsync(resourceGroupName, serviceName, context).getSyncPoller();
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startAsync(String resourceGroupName, String serviceName) {
+        return beginStartAsync(resourceGroupName, serviceName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> startAsync(String resourceGroupName, String serviceName, Context context) {
+        return beginStartAsync(resourceGroupName, serviceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String serviceName) {
+        startAsync(resourceGroupName, serviceName).block();
+    }
+
+    /**
+     * Start a Service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server on status code 404, 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void start(String resourceGroupName, String serviceName, Context context) {
+        startAsync(resourceGroupName, serviceName, context).block();
     }
 
     /**
@@ -1929,21 +2448,6 @@ public final class ServicesClientImpl
      *
      * @param location the region.
      * @param availabilityParameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return name availability result payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters availabilityParameters) {
-        return checkNameAvailabilityAsync(location, availabilityParameters).block();
-    }
-
-    /**
-     * Checks that the resource name is valid and is not already in use.
-     *
-     * @param location the region.
-     * @param availabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1954,6 +2458,21 @@ public final class ServicesClientImpl
     public Response<NameAvailability> checkNameAvailabilityWithResponse(
         String location, NameAvailabilityParameters availabilityParameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, availabilityParameters, context).block();
+    }
+
+    /**
+     * Checks that the resource name is valid and is not already in use.
+     *
+     * @param location the region.
+     * @param availabilityParameters Parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return name availability result payload.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailability checkNameAvailability(String location, NameAvailabilityParameters availabilityParameters) {
+        return checkNameAvailabilityWithResponse(location, availabilityParameters, Context.NONE).getValue();
     }
 
     /**
@@ -2280,7 +2799,8 @@ public final class ServicesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2317,7 +2837,8 @@ public final class ServicesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2355,7 +2876,8 @@ public final class ServicesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2391,7 +2913,8 @@ public final class ServicesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

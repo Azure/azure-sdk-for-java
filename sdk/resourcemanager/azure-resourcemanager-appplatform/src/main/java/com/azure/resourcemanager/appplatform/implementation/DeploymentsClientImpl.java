@@ -36,8 +36,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.DeploymentsClient;
 import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.models.LogFileUrlResponseInner;
+import com.azure.resourcemanager.appplatform.fluent.models.RemoteDebuggingInner;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceCollection;
 import com.azure.resourcemanager.appplatform.models.DiagnosticParameters;
+import com.azure.resourcemanager.appplatform.models.RemoteDebuggingPayload;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +73,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface DeploymentsService {
+    public interface DeploymentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentResourceInner>> get(
@@ -91,8 +92,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -109,8 +109,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -126,8 +125,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -144,8 +142,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentResourceCollection>> list(
@@ -161,8 +158,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/deployments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/deployments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentResourceCollection>> listForCluster(
@@ -177,8 +173,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -194,8 +189,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/stop")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/stop")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(
@@ -211,8 +205,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/restart")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/restart")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
@@ -228,8 +221,56 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/getLogFileUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/enableRemoteDebugging")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> enableRemoteDebugging(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @PathParam("deploymentName") String deploymentName,
+            @BodyParam("application/json") RemoteDebuggingPayload remoteDebuggingPayload,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/disableRemoteDebugging")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> disableRemoteDebugging(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/getRemoteDebuggingConfig")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RemoteDebuggingInner>> getRemoteDebuggingConfig(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("appName") String appName,
+            @PathParam("deploymentName") String deploymentName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/getLogFileUrl")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogFileUrlResponseInner>> getLogFileUrl(
@@ -245,8 +286,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateHeapDump")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateHeapDump")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> generateHeapDump(
@@ -263,8 +303,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateThreadDump")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/generateThreadDump")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> generateThreadDump(
@@ -281,8 +320,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/deployments/{deploymentName}/startJFR")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/deployments/{deploymentName}/startJFR")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startJfr(
@@ -462,25 +500,6 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentResourceInner get(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return getAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
-
-    /**
-     * Get a Deployment and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -491,6 +510,25 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public Response<DeploymentResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
+    }
+
+    /**
+     * Get a Deployment and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Deployment and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentResourceInner get(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return getWithResponse(resourceGroupName, serviceName, appName, deploymentName, Context.NONE).getValue();
     }
 
     /**
@@ -726,7 +764,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String appName,
         String deploymentName,
         DeploymentResourceInner deploymentResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
             .getSyncPoller();
     }
 
@@ -753,7 +792,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String deploymentName,
         DeploymentResourceInner deploymentResource,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
             .getSyncPoller();
     }
@@ -1045,7 +1085,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -1065,7 +1105,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
     }
 
     /**
@@ -1378,7 +1418,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String appName,
         String deploymentName,
         DeploymentResourceInner deploymentResource) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
+        return this
+            .beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource)
             .getSyncPoller();
     }
 
@@ -1405,7 +1446,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String deploymentName,
         DeploymentResourceInner deploymentResource,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, serviceName, appName, deploymentName, deploymentResource, context)
             .getSyncPoller();
     }
 
@@ -2168,7 +2210,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -2188,7 +2230,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginStartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
     }
 
     /**
@@ -2450,7 +2492,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -2470,7 +2512,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginStopAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
     }
 
     /**
@@ -2732,7 +2774,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName).getSyncPoller();
     }
 
     /**
@@ -2752,7 +2794,7 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
-        return beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, serviceName, appName, deploymentName, context).getSyncPoller();
     }
 
     /**
@@ -2832,6 +2874,893 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public void restart(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         restartAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> enableRemoteDebuggingWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (remoteDebuggingPayload != null) {
+            remoteDebuggingPayload.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .enableRemoteDebugging(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            deploymentName,
+                            remoteDebuggingPayload,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> enableRemoteDebuggingWithResponseAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (remoteDebuggingPayload != null) {
+            remoteDebuggingPayload.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .enableRemoteDebugging(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                deploymentName,
+                remoteDebuggingPayload,
+                accept,
+                context);
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            enableRemoteDebuggingWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload);
+        return this
+            .client
+            .<RemoteDebuggingInner, RemoteDebuggingInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                RemoteDebuggingInner.class,
+                RemoteDebuggingInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        final RemoteDebuggingPayload remoteDebuggingPayload = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            enableRemoteDebuggingWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload);
+        return this
+            .client
+            .<RemoteDebuggingInner, RemoteDebuggingInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                RemoteDebuggingInner.class,
+                RemoteDebuggingInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            enableRemoteDebuggingWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload, context);
+        return this
+            .client
+            .<RemoteDebuggingInner, RemoteDebuggingInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RemoteDebuggingInner.class, RemoteDebuggingInner.class, context);
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        final RemoteDebuggingPayload remoteDebuggingPayload = null;
+        return this
+            .beginEnableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload)
+            .getSyncPoller();
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context) {
+        return this
+            .beginEnableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload) {
+        return beginEnableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        final RemoteDebuggingPayload remoteDebuggingPayload = null;
+        return beginEnableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context) {
+        return beginEnableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemoteDebuggingInner enableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        final RemoteDebuggingPayload remoteDebuggingPayload = null;
+        return enableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload)
+            .block();
+    }
+
+    /**
+     * Enable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemoteDebuggingInner enableRemoteDebugging(
+        String resourceGroupName,
+        String serviceName,
+        String appName,
+        String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload,
+        Context context) {
+        return enableRemoteDebuggingAsync(
+                resourceGroupName, serviceName, appName, deploymentName, remoteDebuggingPayload, context)
+            .block();
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> disableRemoteDebuggingWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .disableRemoteDebugging(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            deploymentName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> disableRemoteDebuggingWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .disableRemoteDebugging(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                deploymentName,
+                accept,
+                context);
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            disableRemoteDebuggingWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName);
+        return this
+            .client
+            .<RemoteDebuggingInner, RemoteDebuggingInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                RemoteDebuggingInner.class,
+                RemoteDebuggingInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            disableRemoteDebuggingWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context);
+        return this
+            .client
+            .<RemoteDebuggingInner, RemoteDebuggingInner>getLroResult(
+                mono, this.client.getHttpPipeline(), RemoteDebuggingInner.class, RemoteDebuggingInner.class, context);
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return this
+            .beginDisableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginDisableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        return this
+            .beginDisableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RemoteDebuggingInner> disableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return beginDisableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RemoteDebuggingInner> disableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        return beginDisableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemoteDebuggingInner disableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return disableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName).block();
+    }
+
+    /**
+     * Disable remote debugging.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemoteDebuggingInner disableRemoteDebugging(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        return disableRemoteDebuggingAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
+    }
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<RemoteDebuggingInner>> getRemoteDebuggingConfigWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getRemoteDebuggingConfig(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            appName,
+                            deploymentName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RemoteDebuggingInner>> getRemoteDebuggingConfigWithResponseAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (appName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appName is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getRemoteDebuggingConfig(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                appName,
+                deploymentName,
+                accept,
+                context);
+    }
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RemoteDebuggingInner> getRemoteDebuggingConfigAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return getRemoteDebuggingConfigWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RemoteDebuggingInner> getRemoteDebuggingConfigWithResponse(
+        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
+        return getRemoteDebuggingConfigWithResponseAsync(
+                resourceGroupName, serviceName, appName, deploymentName, context)
+            .block();
+    }
+
+    /**
+     * Get remote debugging config.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemoteDebuggingInner getRemoteDebuggingConfig(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return getRemoteDebuggingConfigWithResponse(
+                resourceGroupName, serviceName, appName, deploymentName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2978,25 +3907,6 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogFileUrlResponseInner getLogFileUrl(
-        String resourceGroupName, String serviceName, String appName, String deploymentName) {
-        return getLogFileUrlAsync(resourceGroupName, serviceName, appName, deploymentName).block();
-    }
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3007,6 +3917,26 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public Response<LogFileUrlResponseInner> getLogFileUrlWithResponse(
         String resourceGroupName, String serviceName, String appName, String deploymentName, Context context) {
         return getLogFileUrlWithResponseAsync(resourceGroupName, serviceName, appName, deploymentName, context).block();
+    }
+
+    /**
+     * Get deployment log file URL.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment log file URL.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogFileUrlResponseInner getLogFileUrl(
+        String resourceGroupName, String serviceName, String appName, String deploymentName) {
+        return getLogFileUrlWithResponse(resourceGroupName, serviceName, appName, deploymentName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3233,7 +4163,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String appName,
         String deploymentName,
         DiagnosticParameters diagnosticParameters) {
-        return beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+        return this
+            .beginGenerateHeapDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
             .getSyncPoller();
     }
 
@@ -3260,7 +4191,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String deploymentName,
         DiagnosticParameters diagnosticParameters,
         Context context) {
-        return beginGenerateHeapDumpAsync(
+        return this
+            .beginGenerateHeapDumpAsync(
                 resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
             .getSyncPoller();
     }
@@ -3593,8 +4525,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String appName,
         String deploymentName,
         DiagnosticParameters diagnosticParameters) {
-        return beginGenerateThreadDumpAsync(
-                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+        return this
+            .beginGenerateThreadDumpAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
             .getSyncPoller();
     }
 
@@ -3621,7 +4553,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String deploymentName,
         DiagnosticParameters diagnosticParameters,
         Context context) {
-        return beginGenerateThreadDumpAsync(
+        return this
+            .beginGenerateThreadDumpAsync(
                 resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
             .getSyncPoller();
     }
@@ -3954,7 +4887,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String appName,
         String deploymentName,
         DiagnosticParameters diagnosticParameters) {
-        return beginStartJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
+        return this
+            .beginStartJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters)
             .getSyncPoller();
     }
 
@@ -3981,8 +4915,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         String deploymentName,
         DiagnosticParameters diagnosticParameters,
         Context context) {
-        return beginStartJfrAsync(
-                resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
+        return this
+            .beginStartJfrAsync(resourceGroupName, serviceName, appName, deploymentName, diagnosticParameters, context)
             .getSyncPoller();
     }
 
@@ -4092,7 +5026,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4128,7 +5063,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4165,7 +5101,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4201,7 +5138,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

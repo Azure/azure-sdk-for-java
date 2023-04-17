@@ -17,6 +17,10 @@ public final class RegenerateTestKeyRequestPayload {
     @JsonProperty(value = "keyType", required = true)
     private TestKeyType keyType;
 
+    /** Creates an instance of RegenerateTestKeyRequestPayload class. */
+    public RegenerateTestKeyRequestPayload() {
+    }
+
     /**
      * Get the keyType property: Type of the test key.
      *

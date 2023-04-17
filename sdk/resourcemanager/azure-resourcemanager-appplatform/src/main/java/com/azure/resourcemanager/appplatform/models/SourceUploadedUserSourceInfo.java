@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
     /*
-     * Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be
+     * Selector for the artifact to be used for the deployment for multi-module projects. This should be
      * the relative path to the target module/project.
      */
     @JsonProperty(value = "artifactSelector")
@@ -27,6 +26,10 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
      */
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
+
+    /** Creates an instance of SourceUploadedUserSourceInfo class. */
+    public SourceUploadedUserSourceInfo() {
+    }
 
     /**
      * Get the artifactSelector property: Selector for the artifact to be used for the deployment for multi-module

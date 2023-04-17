@@ -36,15 +36,13 @@ public final class MetricSpecification {
     private String unit;
 
     /*
-     * Name of the metric category that the metric belongs to. A metric can
-     * only belong to a single category.
+     * Name of the metric category that the metric belongs to. A metric can only belong to a single category.
      */
     @JsonProperty(value = "category")
     private String category;
 
     /*
-     * Only provide one value for this field. Valid values: Average, Minimum,
-     * Maximum, Total, Count.
+     * Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
      */
     @JsonProperty(value = "aggregationType")
     private String aggregationType;
@@ -62,8 +60,7 @@ public final class MetricSpecification {
     private List<String> supportedTimeGrainTypes;
 
     /*
-     * Optional. If set to true, then zero will be returned for time duration
-     * where no metric is emitted/published.
+     * Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
      */
     @JsonProperty(value = "fillGapWithZero")
     private Boolean fillGapWithZero;
@@ -79,6 +76,10 @@ public final class MetricSpecification {
      */
     @JsonProperty(value = "sourceMdmNamespace")
     private String sourceMdmNamespace;
+
+    /** Creates an instance of MetricSpecification class. */
+    public MetricSpecification() {
+    }
 
     /**
      * Get the name property: Name of the metric.

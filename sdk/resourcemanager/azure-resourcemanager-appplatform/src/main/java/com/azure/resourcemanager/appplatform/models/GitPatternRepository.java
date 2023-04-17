@@ -78,6 +78,10 @@ public final class GitPatternRepository {
     @JsonProperty(value = "strictHostKeyChecking")
     private Boolean strictHostKeyChecking;
 
+    /** Creates an instance of GitPatternRepository class. */
+    public GitPatternRepository() {
+    }
+
     /**
      * Get the name property: Name of the repository.
      *

@@ -32,6 +32,10 @@ public final class DeploymentResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of DeploymentResourceInner class. */
+    public DeploymentResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the Deployment resource.
      *

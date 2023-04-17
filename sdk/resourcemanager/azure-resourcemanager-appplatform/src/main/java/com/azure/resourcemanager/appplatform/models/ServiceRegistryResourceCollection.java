@@ -25,6 +25,10 @@ public final class ServiceRegistryResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ServiceRegistryResourceCollection class. */
+    public ServiceRegistryResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of Service Registry resources.
      *

@@ -28,6 +28,10 @@ public final class PersistentDisk {
     @JsonProperty(value = "mountPath")
     private String mountPath;
 
+    /** Creates an instance of PersistentDisk class. */
+    public PersistentDisk() {
+    }
+
     /**
      * Get the sizeInGB property: Size of the persistent disk in GB.
      *

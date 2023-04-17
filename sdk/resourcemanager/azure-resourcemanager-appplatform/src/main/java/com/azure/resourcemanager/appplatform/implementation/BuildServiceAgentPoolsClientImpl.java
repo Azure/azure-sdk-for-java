@@ -63,11 +63,10 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface BuildServiceAgentPoolsService {
+    public interface BuildServiceAgentPoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/agentPools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/agentPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BuildServiceAgentPoolResourceCollection>> list(
@@ -82,8 +81,7 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BuildServiceAgentPoolResourceInner>> get(
@@ -99,8 +97,7 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updatePut(
@@ -482,25 +479,6 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return build service agent pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildServiceAgentPoolResourceInner get(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName) {
-        return getAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName).block();
-    }
-
-    /**
-     * Get build service agent pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param agentPoolName The name of the build service agent pool resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,6 +489,26 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     public Response<BuildServiceAgentPoolResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, context).block();
+    }
+
+    /**
+     * Get build service agent pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param agentPoolName The name of the build service agent pool resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return build service agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BuildServiceAgentPoolResourceInner get(
+        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName) {
+        return getWithResponse(resourceGroupName, serviceName, buildServiceName, agentPoolName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -753,7 +751,8 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
             String buildServiceName,
             String agentPoolName,
             BuildServiceAgentPoolResourceInner agentPoolResource) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
+        return this
+            .beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
             .getSyncPoller();
     }
 
@@ -781,7 +780,8 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
             String agentPoolName,
             BuildServiceAgentPoolResourceInner agentPoolResource,
             Context context) {
-        return beginUpdatePutAsync(
+        return this
+            .beginUpdatePutAsync(
                 resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, context)
             .getSyncPoller();
     }
@@ -897,7 +897,8 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -933,7 +934,8 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

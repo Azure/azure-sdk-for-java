@@ -16,6 +16,10 @@ public final class BuildpackProperties {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of BuildpackProperties class. */
+    public BuildpackProperties() {
+    }
+
     /**
      * Get the id property: Id of the buildpack.
      *

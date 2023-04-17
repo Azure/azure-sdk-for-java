@@ -22,6 +22,10 @@ public final class ServiceRegistryInstance {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of ServiceRegistryInstance class. */
+    public ServiceRegistryInstance() {
+    }
+
     /**
      * Get the name property: Name of the Service Registry instance.
      *

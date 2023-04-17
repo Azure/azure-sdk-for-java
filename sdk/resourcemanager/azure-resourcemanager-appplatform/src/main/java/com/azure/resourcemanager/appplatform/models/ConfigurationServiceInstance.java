@@ -22,6 +22,10 @@ public final class ConfigurationServiceInstance {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
+    /** Creates an instance of ConfigurationServiceInstance class. */
+    public ConfigurationServiceInstance() {
+    }
+
     /**
      * Get the name property: Name of the Application Configuration Service instance.
      *

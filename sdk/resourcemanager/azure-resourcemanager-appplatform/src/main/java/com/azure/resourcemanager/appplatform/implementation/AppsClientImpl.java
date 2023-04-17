@@ -68,11 +68,10 @@ public final class AppsClientImpl implements AppsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface AppsService {
+    public interface AppsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AppResourceInner>> get(
@@ -88,8 +87,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -105,8 +103,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -121,8 +118,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -138,8 +134,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AppResourceCollection>> list(
@@ -153,8 +148,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/getResourceUploadUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/getResourceUploadUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceUploadDefinition>> getResourceUploadUrl(
@@ -169,8 +163,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/setActiveDeployments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/setActiveDeployments")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> setActiveDeployments(
@@ -186,8 +179,7 @@ public final class AppsClientImpl implements AppsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/apps/{appName}/validateDomain")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/apps/{appName}/validateDomain")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainValidateResult>> validateDomain(
@@ -329,26 +321,6 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param syncStatus Indicates whether sync status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String syncStatus) {
-        return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -359,24 +331,6 @@ public final class AppsClientImpl implements AppsClient {
         final String syncStatus = null;
         return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppResourceInner get(String resourceGroupName, String serviceName, String appName) {
-        final String syncStatus = null;
-        return getAsync(resourceGroupName, serviceName, appName, syncStatus).block();
     }
 
     /**
@@ -397,6 +351,24 @@ public final class AppsClientImpl implements AppsClient {
     public Response<AppResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String syncStatus, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, syncStatus, context).block();
+    }
+
+    /**
+     * Get an App and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an App and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppResourceInner get(String resourceGroupName, String serviceName, String appName) {
+        final String syncStatus = null;
+        return getWithResponse(resourceGroupName, serviceName, appName, syncStatus, Context.NONE).getValue();
     }
 
     /**
@@ -589,7 +561,7 @@ public final class AppsClientImpl implements AppsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
     }
 
     /**
@@ -609,7 +581,9 @@ public final class AppsClientImpl implements AppsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, appResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -861,7 +835,7 @@ public final class AppsClientImpl implements AppsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName).getSyncPoller();
     }
 
     /**
@@ -880,7 +854,7 @@ public final class AppsClientImpl implements AppsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, appName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, appName, context).getSyncPoller();
     }
 
     /**
@@ -1145,7 +1119,7 @@ public final class AppsClientImpl implements AppsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serviceName, appName, appResource).getSyncPoller();
     }
 
     /**
@@ -1165,7 +1139,7 @@ public final class AppsClientImpl implements AppsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppResourceInner>, AppResourceInner> beginUpdate(
         String resourceGroupName, String serviceName, String appName, AppResourceInner appResource, Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serviceName, appName, appResource, context).getSyncPoller();
     }
 
     /**
@@ -1573,23 +1547,6 @@ public final class AppsClientImpl implements AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResourceUploadDefinition getResourceUploadUrl(String resourceGroupName, String serviceName, String appName) {
-        return getResourceUploadUrlAsync(resourceGroupName, serviceName, appName).block();
-    }
-
-    /**
-     * Get an resource upload URL for an App, which may be artifacts or source archive.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1600,6 +1557,23 @@ public final class AppsClientImpl implements AppsClient {
     public Response<ResourceUploadDefinition> getResourceUploadUrlWithResponse(
         String resourceGroupName, String serviceName, String appName, Context context) {
         return getResourceUploadUrlWithResponseAsync(resourceGroupName, serviceName, appName, context).block();
+    }
+
+    /**
+     * Get an resource upload URL for an App, which may be artifacts or source archive.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an resource upload URL for an App, which may be artifacts or source archive.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceUploadDefinition getResourceUploadUrl(String resourceGroupName, String serviceName, String appName) {
+        return getResourceUploadUrlWithResponse(resourceGroupName, serviceName, appName, Context.NONE).getValue();
     }
 
     /**
@@ -1816,7 +1790,8 @@ public final class AppsClientImpl implements AppsClient {
         String serviceName,
         String appName,
         ActiveDeploymentCollection activeDeploymentCollection) {
-        return beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection)
+        return this
+            .beginSetActiveDeploymentsAsync(resourceGroupName, serviceName, appName, activeDeploymentCollection)
             .getSyncPoller();
     }
 
@@ -1841,7 +1816,8 @@ public final class AppsClientImpl implements AppsClient {
         String appName,
         ActiveDeploymentCollection activeDeploymentCollection,
         Context context) {
-        return beginSetActiveDeploymentsAsync(
+        return this
+            .beginSetActiveDeploymentsAsync(
                 resourceGroupName, serviceName, appName, activeDeploymentCollection, context)
             .getSyncPoller();
     }
@@ -2098,25 +2074,6 @@ public final class AppsClientImpl implements AppsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param validatePayload Custom domain payload to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainValidateResult validateDomain(
-        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload) {
-        return validateDomainAsync(resourceGroupName, serviceName, appName, validatePayload).block();
-    }
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param validatePayload Custom domain payload to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2135,9 +2092,30 @@ public final class AppsClientImpl implements AppsClient {
     }
 
     /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainValidateResult validateDomain(
+        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload) {
+        return validateDomainWithResponse(resourceGroupName, serviceName, appName, validatePayload, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2173,7 +2151,8 @@ public final class AppsClientImpl implements AppsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

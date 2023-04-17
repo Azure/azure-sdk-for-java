@@ -26,6 +26,10 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
+    /** Creates an instance of NetCoreZipUploadedUserSourceInfo class. */
+    public NetCoreZipUploadedUserSourceInfo() {
+    }
+
     /**
      * Get the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
      *

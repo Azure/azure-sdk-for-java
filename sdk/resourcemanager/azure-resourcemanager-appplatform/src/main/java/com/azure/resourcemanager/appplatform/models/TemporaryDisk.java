@@ -22,6 +22,10 @@ public final class TemporaryDisk {
     @JsonProperty(value = "mountPath")
     private String mountPath;
 
+    /** Creates an instance of TemporaryDisk class. */
+    public TemporaryDisk() {
+    }
+
     /**
      * Get the sizeInGB property: Size of the temporary disk in GB.
      *

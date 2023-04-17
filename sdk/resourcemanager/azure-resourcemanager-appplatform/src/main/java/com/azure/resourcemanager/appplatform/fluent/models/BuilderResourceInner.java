@@ -25,6 +25,10 @@ public final class BuilderResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of BuilderResourceInner class. */
+    public BuilderResourceInner() {
+    }
+
     /**
      * Get the properties property: Property of the Builder resource.
      *

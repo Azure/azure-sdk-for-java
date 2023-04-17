@@ -25,6 +25,10 @@ public final class BuildServiceAgentPoolResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of BuildServiceAgentPoolResourceInner class. */
+    public BuildServiceAgentPoolResourceInner() {
+    }
+
     /**
      * Get the properties property: build service agent pool properties.
      *

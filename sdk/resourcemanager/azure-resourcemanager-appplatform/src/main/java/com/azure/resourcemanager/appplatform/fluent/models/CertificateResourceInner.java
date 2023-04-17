@@ -25,6 +25,10 @@ public final class CertificateResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of CertificateResourceInner class. */
+    public CertificateResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the certificate resource payload.
      *

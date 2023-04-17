@@ -16,6 +16,10 @@ public final class TriggeredBuildResult {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of TriggeredBuildResult class. */
+    public TriggeredBuildResult() {
+    }
+
     /**
      * Get the id property: The unique build id of this build result.
      *

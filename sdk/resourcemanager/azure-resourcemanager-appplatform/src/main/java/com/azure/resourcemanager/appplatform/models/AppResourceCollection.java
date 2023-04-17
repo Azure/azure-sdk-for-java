@@ -25,6 +25,10 @@ public final class AppResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AppResourceCollection class. */
+    public AppResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of App resources.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigServerState. */
+/** State of the config server. */
 public final class ConfigServerState extends ExpandableStringEnum<ConfigServerState> {
     /** Static value NotAvailable for ConfigServerState. */
     public static final ConfigServerState NOT_AVAILABLE = fromString("NotAvailable");
@@ -24,6 +24,15 @@ public final class ConfigServerState extends ExpandableStringEnum<ConfigServerSt
 
     /** Static value Updating for ConfigServerState. */
     public static final ConfigServerState UPDATING = fromString("Updating");
+
+    /**
+     * Creates a new instance of ConfigServerState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigServerState() {
+    }
 
     /**
      * Creates or finds a ConfigServerState from its string representation.

@@ -25,6 +25,10 @@ public final class BuildpackBindingResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BuildpackBindingResourceCollection class. */
+    public BuildpackBindingResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of BuildpackBinding resources.
      *

@@ -41,11 +41,10 @@ public final class BindingResourceProperties {
      */
     @JsonProperty(value = "bindingParameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, Object> bindingParameters;
+    private Map<String, String> bindingParameters;
 
     /*
-     * The generated Spring Boot property file for this binding. The secret
-     * will be deducted.
+     * The generated Spring Boot property file for this binding. The secret will be deducted.
      */
     @JsonProperty(value = "generatedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private String generatedProperties;
@@ -61,6 +60,10 @@ public final class BindingResourceProperties {
      */
     @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private String updatedAt;
+
+    /** Creates an instance of BindingResourceProperties class. */
+    public BindingResourceProperties() {
+    }
 
     /**
      * Get the resourceName property: The name of the bound resource.
@@ -125,7 +128,7 @@ public final class BindingResourceProperties {
      *
      * @return the bindingParameters value.
      */
-    public Map<String, Object> bindingParameters() {
+    public Map<String, String> bindingParameters() {
         return this.bindingParameters;
     }
 
@@ -135,7 +138,7 @@ public final class BindingResourceProperties {
      * @param bindingParameters the bindingParameters value to set.
      * @return the BindingResourceProperties object itself.
      */
-    public BindingResourceProperties withBindingParameters(Map<String, Object> bindingParameters) {
+    public BindingResourceProperties withBindingParameters(Map<String, String> bindingParameters) {
         this.bindingParameters = bindingParameters;
         return this;
     }

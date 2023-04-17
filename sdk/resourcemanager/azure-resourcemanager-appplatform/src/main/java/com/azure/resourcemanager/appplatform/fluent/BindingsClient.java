@@ -62,22 +62,6 @@ public interface BindingsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName);
-
-    /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,6 +71,22 @@ public interface BindingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BindingResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
+
+    /**
+     * Get a Binding and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Binding and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
      * Create a new Binding or update an exiting Binding.

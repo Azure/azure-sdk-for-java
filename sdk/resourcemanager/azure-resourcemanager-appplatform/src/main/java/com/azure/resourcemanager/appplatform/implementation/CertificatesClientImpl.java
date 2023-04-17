@@ -63,11 +63,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface CertificatesService {
+    public interface CertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateResourceInner>> get(
@@ -82,8 +81,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -99,8 +97,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -115,8 +112,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/certificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateResourceCollection>> list(
@@ -273,23 +269,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateResourceInner get(String resourceGroupName, String serviceName, String certificateName) {
-        return getAsync(resourceGroupName, serviceName, certificateName).block();
-    }
-
-    /**
-     * Get the certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -300,6 +279,23 @@ public final class CertificatesClientImpl implements CertificatesClient {
     public Response<CertificateResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, certificateName, context).block();
+    }
+
+    /**
+     * Get the certificate resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param certificateName The name of the certificate resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the certificate resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateResourceInner get(String resourceGroupName, String serviceName, String certificateName) {
+        return getWithResponse(resourceGroupName, serviceName, certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -518,7 +514,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String serviceName,
         String certificateName,
         CertificateResourceInner certificateResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, certificateName, certificateResource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, certificateName, certificateResource)
             .getSyncPoller();
     }
 
@@ -543,7 +540,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
         String certificateName,
         CertificateResourceInner certificateResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, certificateName, certificateResource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, certificateName, certificateResource, context)
             .getSyncPoller();
     }
 
@@ -814,7 +812,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String certificateName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, certificateName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, certificateName).getSyncPoller();
     }
 
     /**
@@ -833,7 +831,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String certificateName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, certificateName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, certificateName, context).getSyncPoller();
     }
 
     /**
@@ -1102,7 +1100,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1138,7 +1137,8 @@ public final class CertificatesClientImpl implements CertificatesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

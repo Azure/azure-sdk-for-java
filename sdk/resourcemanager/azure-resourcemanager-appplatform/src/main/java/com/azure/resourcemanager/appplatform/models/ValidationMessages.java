@@ -23,6 +23,10 @@ public final class ValidationMessages {
     @JsonProperty(value = "messages")
     private List<String> messages;
 
+    /** Creates an instance of ValidationMessages class. */
+    public ValidationMessages() {
+    }
+
     /**
      * Get the name property: The name of the configuration service git repository.
      *

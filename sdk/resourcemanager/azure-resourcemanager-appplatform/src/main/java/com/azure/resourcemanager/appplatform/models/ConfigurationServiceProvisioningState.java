@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigurationServiceProvisioningState. */
+/** State of the Application Configuration Service. */
 public final class ConfigurationServiceProvisioningState
     extends ExpandableStringEnum<ConfigurationServiceProvisioningState> {
     /** Static value Creating for ConfigurationServiceProvisioningState. */
@@ -25,6 +25,15 @@ public final class ConfigurationServiceProvisioningState
 
     /** Static value Deleting for ConfigurationServiceProvisioningState. */
     public static final ConfigurationServiceProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of ConfigurationServiceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationServiceProvisioningState() {
+    }
 
     /**
      * Creates or finds a ConfigurationServiceProvisioningState from its string representation.

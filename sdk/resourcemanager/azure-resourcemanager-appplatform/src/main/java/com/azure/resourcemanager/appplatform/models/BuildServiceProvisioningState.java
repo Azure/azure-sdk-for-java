@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildServiceProvisioningState. */
+/** Provisioning state of the KPack build service. */
 public final class BuildServiceProvisioningState extends ExpandableStringEnum<BuildServiceProvisioningState> {
     /** Static value Creating for BuildServiceProvisioningState. */
     public static final BuildServiceProvisioningState CREATING = fromString("Creating");
@@ -24,6 +24,15 @@ public final class BuildServiceProvisioningState extends ExpandableStringEnum<Bu
 
     /** Static value Deleting for BuildServiceProvisioningState. */
     public static final BuildServiceProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of BuildServiceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuildServiceProvisioningState() {
+    }
 
     /**
      * Creates or finds a BuildServiceProvisioningState from its string representation.

@@ -16,6 +16,10 @@ public final class BuildResultLogInner {
     @JsonProperty(value = "blobUrl")
     private String blobUrl;
 
+    /** Creates an instance of BuildResultLogInner class. */
+    public BuildResultLogInner() {
+    }
+
     /**
      * Get the blobUrl property: The public download URL of this build result log.
      *

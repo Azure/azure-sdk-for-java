@@ -13,6 +13,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -33,6 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.BuildServiceBuildersClient;
 import com.azure.resourcemanager.appplatform.fluent.models.BuilderResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentListInner;
 import com.azure.resourcemanager.appplatform.models.BuilderResourceCollection;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -64,11 +66,10 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface BuildServiceBuildersService {
+    public interface BuildServiceBuildersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BuilderResourceInner>> get(
@@ -84,8 +85,7 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +102,7 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -119,8 +118,7 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/builders")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BuilderResourceCollection>> list(
@@ -130,6 +128,22 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serviceName") String serviceName,
             @PathParam("buildServiceName") String buildServiceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/builders/{builderName}/listUsingDeployments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeploymentListInner>> listDeployments(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName,
+            @PathParam("builderName") String builderName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -290,25 +304,6 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param builderName The name of the builder resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPack builder.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuilderResourceInner get(
-        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
-        return getAsync(resourceGroupName, serviceName, buildServiceName, builderName).block();
-    }
-
-    /**
-     * Get a KPack builder.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param builderName The name of the builder resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,6 +314,25 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
     public Response<BuilderResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName, context).block();
+    }
+
+    /**
+     * Get a KPack builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a KPack builder.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BuilderResourceInner get(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
+        return getWithResponse(resourceGroupName, serviceName, buildServiceName, builderName, Context.NONE).getValue();
     }
 
     /**
@@ -552,7 +566,8 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
         String buildServiceName,
         String builderName,
         BuilderResourceInner builderResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName, builderResource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, buildServiceName, builderName, builderResource)
             .getSyncPoller();
     }
 
@@ -579,7 +594,8 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
         String builderName,
         BuilderResourceInner builderResource,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, buildServiceName, builderName, builderResource, context)
             .getSyncPoller();
     }
@@ -875,7 +891,7 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName).getSyncPoller();
     }
 
     /**
@@ -895,7 +911,9 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceName, buildServiceName, builderName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1188,9 +1206,189 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
     }
 
     /**
+     * List deployments that are using the builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<DeploymentListInner>> listDeploymentsWithResponseAsync(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (buildServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter buildServiceName is required and cannot be null."));
+        }
+        if (builderName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter builderName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listDeployments(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serviceName,
+                            buildServiceName,
+                            builderName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List deployments that are using the builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DeploymentListInner>> listDeploymentsWithResponseAsync(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (buildServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter buildServiceName is required and cannot be null."));
+        }
+        if (builderName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter builderName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listDeployments(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                serviceName,
+                buildServiceName,
+                builderName,
+                accept,
+                context);
+    }
+
+    /**
+     * List deployments that are using the builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeploymentListInner> listDeploymentsAsync(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
+        return listDeploymentsWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List deployments that are using the builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeploymentListInner> listDeploymentsWithResponse(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName, Context context) {
+        return listDeploymentsWithResponseAsync(resourceGroupName, serviceName, buildServiceName, builderName, context)
+            .block();
+    }
+
+    /**
+     * List deployments that are using the builder.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param builderName The name of the builder resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deployments resource ids.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentListInner listDeployments(
+        String resourceGroupName, String serviceName, String buildServiceName, String builderName) {
+        return listDeploymentsWithResponse(resourceGroupName, serviceName, buildServiceName, builderName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1226,7 +1424,8 @@ public final class BuildServiceBuildersClientImpl implements BuildServiceBuilder
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -48,22 +48,6 @@ public interface AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @param syncStatus Indicates whether sync status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AppResourceInner> getAsync(String resourceGroupName, String serviceName, String appName, String syncStatus);
-
-    /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -71,21 +55,6 @@ public interface AppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AppResourceInner> getAsync(String resourceGroupName, String serviceName, String appName);
-
-    /**
-     * Get an App and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an App and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AppResourceInner get(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Get an App and its properties.
@@ -104,6 +73,21 @@ public interface AppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AppResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String appName, String syncStatus, Context context);
+
+    /**
+     * Get an App and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an App and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppResourceInner get(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Create a new App or update an exiting App.
@@ -540,21 +524,6 @@ public interface AppsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an resource upload URL for an App, which may be artifacts or source archive.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceUploadDefinition getResourceUploadUrl(String resourceGroupName, String serviceName, String appName);
-
-    /**
-     * Get an resource upload URL for an App, which may be artifacts or source archive.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -564,6 +533,21 @@ public interface AppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ResourceUploadDefinition> getResourceUploadUrlWithResponse(
         String resourceGroupName, String serviceName, String appName, Context context);
+
+    /**
+     * Get an resource upload URL for an App, which may be artifacts or source archive.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an resource upload URL for an App, which may be artifacts or source archive.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ResourceUploadDefinition getResourceUploadUrl(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Set existing Deployment under the app as active.
@@ -751,23 +735,6 @@ public interface AppsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param validatePayload Custom domain payload to be validated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return validation result for custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainValidateResult validateDomain(
-        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload);
-
-    /**
-     * Check the resource name is valid as well as not in use.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param validatePayload Custom domain payload to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -781,4 +748,21 @@ public interface AppsClient {
         String appName,
         CustomDomainValidatePayload validatePayload,
         Context context);
+
+    /**
+     * Check the resource name is valid as well as not in use.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param validatePayload Custom domain payload to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainValidateResult validateDomain(
+        String resourceGroupName, String serviceName, String appName, CustomDomainValidatePayload validatePayload);
 }

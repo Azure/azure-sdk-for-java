@@ -58,21 +58,6 @@ public interface CertificatesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param certificateName The name of the certificate resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the certificate resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateResourceInner get(String resourceGroupName, String serviceName, String certificateName);
-
-    /**
-     * Get the certificate resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param certificateName The name of the certificate resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,6 +67,21 @@ public interface CertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CertificateResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String certificateName, Context context);
+
+    /**
+     * Get the certificate resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param certificateName The name of the certificate resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the certificate resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CertificateResourceInner get(String resourceGroupName, String serviceName, String certificateName);
 
     /**
      * Create or update certificate resource.

@@ -22,6 +22,10 @@ public final class BuildServiceAgentPoolProperties {
     @JsonProperty(value = "poolSize")
     private BuildServiceAgentPoolSizeProperties poolSize;
 
+    /** Creates an instance of BuildServiceAgentPoolProperties class. */
+    public BuildServiceAgentPoolProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the build service agent pool.
      *

@@ -22,6 +22,10 @@ public final class CustomDomainValidateResult {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of CustomDomainValidateResult class. */
+    public CustomDomainValidateResult() {
+    }
+
     /**
      * Get the isValid property: Indicates if domain name is valid.
      *

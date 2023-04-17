@@ -16,6 +16,10 @@ public final class ApplicationInsightsAgentVersions {
     @JsonProperty(value = "java", access = JsonProperty.Access.WRITE_ONLY)
     private String java;
 
+    /** Creates an instance of ApplicationInsightsAgentVersions class. */
+    public ApplicationInsightsAgentVersions() {
+    }
+
     /**
      * Get the java property: Indicates the version of application insight java agent.
      *

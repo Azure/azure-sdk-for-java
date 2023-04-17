@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BindingType. */
+/** Buildpack Binding Type. */
 public final class BindingType extends ExpandableStringEnum<BindingType> {
     /** Static value ApplicationInsights for BindingType. */
     public static final BindingType APPLICATION_INSIGHTS = fromString("ApplicationInsights");
@@ -27,6 +27,18 @@ public final class BindingType extends ExpandableStringEnum<BindingType> {
 
     /** Static value ElasticAPM for BindingType. */
     public static final BindingType ELASTIC_APM = fromString("ElasticAPM");
+
+    /** Static value CACertificates for BindingType. */
+    public static final BindingType CACERTIFICATES = fromString("CACertificates");
+
+    /**
+     * Creates a new instance of BindingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BindingType() {
+    }
 
     /**
      * Creates or finds a BindingType from its string representation.

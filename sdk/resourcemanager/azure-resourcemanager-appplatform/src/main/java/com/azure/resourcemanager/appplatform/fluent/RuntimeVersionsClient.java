@@ -36,16 +36,6 @@ public interface RuntimeVersionsClient {
     /**
      * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableRuntimeVersionsInner listRuntimeVersions();
-
-    /**
-     * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,4 +44,14 @@ public interface RuntimeVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AvailableRuntimeVersionsInner> listRuntimeVersionsWithResponse(Context context);
+
+    /**
+     * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailableRuntimeVersionsInner listRuntimeVersions();
 }

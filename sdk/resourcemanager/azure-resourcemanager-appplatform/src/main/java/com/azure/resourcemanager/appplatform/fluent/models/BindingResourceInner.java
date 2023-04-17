@@ -25,6 +25,10 @@ public final class BindingResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of BindingResourceInner class. */
+    public BindingResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the Binding resource.
      *

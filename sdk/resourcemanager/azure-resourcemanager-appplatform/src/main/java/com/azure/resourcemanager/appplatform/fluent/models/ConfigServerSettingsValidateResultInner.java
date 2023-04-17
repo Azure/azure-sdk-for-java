@@ -24,6 +24,10 @@ public final class ConfigServerSettingsValidateResultInner {
     @JsonProperty(value = "details")
     private List<ConfigServerSettingsErrorRecord> details;
 
+    /** Creates an instance of ConfigServerSettingsValidateResultInner class. */
+    public ConfigServerSettingsValidateResultInner() {
+    }
+
     /**
      * Get the isValid property: Indicate if the config server settings are valid.
      *

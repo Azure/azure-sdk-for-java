@@ -23,6 +23,10 @@ public final class NameAvailabilityParameters {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of NameAvailabilityParameters class. */
+    public NameAvailabilityParameters() {
+    }
+
     /**
      * Get the type property: Type of the resource to check name availability.
      *

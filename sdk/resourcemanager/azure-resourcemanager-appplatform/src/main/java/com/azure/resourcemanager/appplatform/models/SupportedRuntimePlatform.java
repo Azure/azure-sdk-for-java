@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportedRuntimePlatform. */
+/** The platform of this runtime version (possible values: "Java" or ".NET"). */
 public final class SupportedRuntimePlatform extends ExpandableStringEnum<SupportedRuntimePlatform> {
     /** Static value Java for SupportedRuntimePlatform. */
     public static final SupportedRuntimePlatform JAVA = fromString("Java");
 
     /** Static value .NET Core for SupportedRuntimePlatform. */
     public static final SupportedRuntimePlatform NET_CORE = fromString(".NET Core");
+
+    /**
+     * Creates a new instance of SupportedRuntimePlatform value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportedRuntimePlatform() {
+    }
 
     /**
      * Creates or finds a SupportedRuntimePlatform from its string representation.

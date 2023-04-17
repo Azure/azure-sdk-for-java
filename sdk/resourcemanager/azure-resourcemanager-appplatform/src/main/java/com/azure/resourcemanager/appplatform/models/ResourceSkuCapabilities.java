@@ -22,6 +22,10 @@ public final class ResourceSkuCapabilities {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of ResourceSkuCapabilities class. */
+    public ResourceSkuCapabilities() {
+    }
+
     /**
      * Get the name property: Gets an invariant to describe the feature.
      *

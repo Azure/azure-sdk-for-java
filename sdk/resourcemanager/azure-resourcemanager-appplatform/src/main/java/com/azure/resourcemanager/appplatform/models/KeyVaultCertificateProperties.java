@@ -39,6 +39,10 @@ public final class KeyVaultCertificateProperties extends CertificateProperties {
     @JsonProperty(value = "excludePrivateKey")
     private Boolean excludePrivateKey;
 
+    /** Creates an instance of KeyVaultCertificateProperties class. */
+    public KeyVaultCertificateProperties() {
+    }
+
     /**
      * Get the vaultUri property: The vault uri of user key vault.
      *

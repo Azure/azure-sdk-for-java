@@ -17,6 +17,10 @@ public final class LogFileUrlResponseInner {
     @JsonProperty(value = "url", required = true)
     private String url;
 
+    /** Creates an instance of LogFileUrlResponseInner class. */
+    public LogFileUrlResponseInner() {
+    }
+
     /**
      * Get the url property: URL of the log file.
      *

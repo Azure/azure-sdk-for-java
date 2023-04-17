@@ -23,6 +23,10 @@ public final class ConfigurationServiceGitPropertyValidateResult {
     @JsonProperty(value = "gitReposValidationResult")
     private List<ValidationMessages> gitReposValidationResult;
 
+    /** Creates an instance of ConfigurationServiceGitPropertyValidateResult class. */
+    public ConfigurationServiceGitPropertyValidateResult() {
+    }
+
     /**
      * Get the isValid property: Indicate if the configuration service settings are valid.
      *

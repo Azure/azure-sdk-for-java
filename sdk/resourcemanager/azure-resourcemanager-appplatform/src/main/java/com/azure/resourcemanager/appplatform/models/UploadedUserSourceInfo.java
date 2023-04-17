@@ -30,6 +30,10 @@ public class UploadedUserSourceInfo extends UserSourceInfo {
     @JsonProperty(value = "relativePath")
     private String relativePath;
 
+    /** Creates an instance of UploadedUserSourceInfo class. */
+    public UploadedUserSourceInfo() {
+    }
+
     /**
      * Get the relativePath property: Relative path of the storage which stores the source.
      *

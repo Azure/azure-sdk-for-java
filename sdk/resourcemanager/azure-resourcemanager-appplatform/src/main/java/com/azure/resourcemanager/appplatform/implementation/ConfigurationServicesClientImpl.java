@@ -67,11 +67,10 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ConfigurationServicesService {
+    public interface ConfigurationServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationServiceResourceInner>> get(
@@ -86,8 +85,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -103,8 +101,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -119,8 +116,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationServiceResourceCollection>> list(
@@ -134,8 +130,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}/validate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}/validate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> validate(
@@ -298,24 +293,6 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Application Configuration Service and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationServiceResourceInner get(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
-        return getAsync(resourceGroupName, serviceName, configurationServiceName).block();
-    }
-
-    /**
-     * Get the Application Configuration Service and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -326,6 +303,24 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     public Response<ConfigurationServiceResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, context).block();
+    }
+
+    /**
+     * Get the Application Configuration Service and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Application Configuration Service and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationServiceResourceInner get(
+        String resourceGroupName, String serviceName, String configurationServiceName) {
+        return getWithResponse(resourceGroupName, serviceName, configurationServiceName, Context.NONE).getValue();
     }
 
     /**
@@ -556,7 +551,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             String serviceName,
             String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, configurationServiceName, configurationServiceResource)
             .getSyncPoller();
     }
@@ -583,7 +579,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, context)
             .getSyncPoller();
     }
@@ -862,7 +859,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String configurationServiceName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName).getSyncPoller();
     }
 
     /**
@@ -881,7 +878,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName, context).getSyncPoller();
     }
 
     /**
@@ -1376,7 +1373,9 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             String serviceName,
             String configurationServiceName,
             ConfigurationServiceSettings settings) {
-        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings).getSyncPoller();
+        return this
+            .beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings)
+            .getSyncPoller();
     }
 
     /**
@@ -1403,7 +1402,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             String configurationServiceName,
             ConfigurationServiceSettings settings,
             Context context) {
-        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context)
+        return this
+            .beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context)
             .getSyncPoller();
     }
 
@@ -1506,7 +1506,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1542,7 +1543,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -25,6 +25,10 @@ public final class SupportedBuildpackResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SupportedBuildpackResourceInner class. */
+    public SupportedBuildpackResourceInner() {
+    }
+
     /**
      * Get the properties property: Supported buildpack resource properties.
      *

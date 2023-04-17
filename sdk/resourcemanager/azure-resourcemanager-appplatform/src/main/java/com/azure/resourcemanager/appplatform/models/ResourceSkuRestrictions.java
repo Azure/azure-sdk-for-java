@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class ResourceSkuRestrictions {
     /*
-     * Gets the type of restrictions. Possible values include: 'Location',
-     * 'Zone'
+     * Gets the type of restrictions. Possible values include: 'Location', 'Zone'
      */
     @JsonProperty(value = "type")
     private ResourceSkuRestrictionsType type;
@@ -32,11 +31,14 @@ public final class ResourceSkuRestrictions {
     private ResourceSkuRestrictionInfo restrictionInfo;
 
     /*
-     * Gets the reason for restriction. Possible values include: 'QuotaId',
-     * 'NotAvailableForSubscription'
+     * Gets the reason for restriction. Possible values include: 'QuotaId', 'NotAvailableForSubscription'
      */
     @JsonProperty(value = "reasonCode")
     private ResourceSkuRestrictionsReasonCode reasonCode;
+
+    /** Creates an instance of ResourceSkuRestrictions class. */
+    public ResourceSkuRestrictions() {
+    }
 
     /**
      * Get the type property: Gets the type of restrictions. Possible values include: 'Location', 'Zone'.

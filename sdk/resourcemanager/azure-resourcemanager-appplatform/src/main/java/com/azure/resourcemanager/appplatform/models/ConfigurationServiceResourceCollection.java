@@ -25,6 +25,10 @@ public final class ConfigurationServiceResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ConfigurationServiceResourceCollection class. */
+    public ConfigurationServiceResourceCollection() {
+    }
+
     /**
      * Get the value property: Collection of configuration service resources.
      *

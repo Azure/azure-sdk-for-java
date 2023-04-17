@@ -18,6 +18,10 @@ public final class AvailableRuntimeVersionsInner {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SupportedRuntimeVersion> value;
 
+    /** Creates an instance of AvailableRuntimeVersionsInner class. */
+    public AvailableRuntimeVersionsInner() {
+    }
+
     /**
      * Get the value property: A list of all supported runtime versions.
      *

@@ -35,6 +35,10 @@ public final class ConfigurationServiceProperties {
     @JsonProperty(value = "settings")
     private ConfigurationServiceSettings settings;
 
+    /** Creates an instance of ConfigurationServiceProperties class. */
+    public ConfigurationServiceProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of the Application Configuration Service.
      *

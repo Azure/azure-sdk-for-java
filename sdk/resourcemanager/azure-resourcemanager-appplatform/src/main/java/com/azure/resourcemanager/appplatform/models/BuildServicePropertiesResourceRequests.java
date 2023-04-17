@@ -22,6 +22,10 @@ public final class BuildServicePropertiesResourceRequests {
     @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private String memory;
 
+    /** Creates an instance of BuildServicePropertiesResourceRequests class. */
+    public BuildServicePropertiesResourceRequests() {
+    }
+
     /**
      * Get the cpu property: vCPU allocated to the entire build service node pool.
      *

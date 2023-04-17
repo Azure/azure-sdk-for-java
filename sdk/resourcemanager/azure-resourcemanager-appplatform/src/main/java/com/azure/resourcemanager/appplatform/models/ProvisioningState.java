@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/** Provisioning state of the Service. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Creating for ProvisioningState. */
     public static final ProvisioningState CREATING = fromString("Creating");
@@ -42,6 +42,15 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /** Static value MoveFailed for ProvisioningState. */
     public static final ProvisioningState MOVE_FAILED = fromString("MoveFailed");
+
+    /**
+     * Creates a new instance of ProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningState() {
+    }
 
     /**
      * Creates or finds a ProvisioningState from its string representation.

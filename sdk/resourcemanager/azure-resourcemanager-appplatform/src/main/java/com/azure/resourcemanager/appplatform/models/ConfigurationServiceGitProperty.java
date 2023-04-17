@@ -17,6 +17,10 @@ public final class ConfigurationServiceGitProperty {
     @JsonProperty(value = "repositories")
     private List<ConfigurationServiceGitRepository> repositories;
 
+    /** Creates an instance of ConfigurationServiceGitProperty class. */
+    public ConfigurationServiceGitProperty() {
+    }
+
     /**
      * Get the repositories property: Repositories of Application Configuration Service git property.
      *

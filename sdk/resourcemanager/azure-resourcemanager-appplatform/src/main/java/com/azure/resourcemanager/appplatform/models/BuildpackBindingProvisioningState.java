@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildpackBindingProvisioningState. */
+/** State of the Buildpack Binding. */
 public final class BuildpackBindingProvisioningState extends ExpandableStringEnum<BuildpackBindingProvisioningState> {
     /** Static value Creating for BuildpackBindingProvisioningState. */
     public static final BuildpackBindingProvisioningState CREATING = fromString("Creating");
@@ -24,6 +24,15 @@ public final class BuildpackBindingProvisioningState extends ExpandableStringEnu
 
     /** Static value Deleting for BuildpackBindingProvisioningState. */
     public static final BuildpackBindingProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Creates a new instance of BuildpackBindingProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuildpackBindingProvisioningState() {
+    }
 
     /**
      * Creates or finds a BuildpackBindingProvisioningState from its string representation.

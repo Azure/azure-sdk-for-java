@@ -24,6 +24,10 @@ public final class ResourceSkuCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ResourceSkuCollection class. */
+    public ResourceSkuCollection() {
+    }
+
     /**
      * Get the value property: Collection of resource SKU.
      *

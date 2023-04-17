@@ -78,6 +78,10 @@ public final class ConfigurationServiceGitRepository {
     @JsonProperty(value = "strictHostKeyChecking")
     private Boolean strictHostKeyChecking;
 
+    /** Creates an instance of ConfigurationServiceGitRepository class. */
+    public ConfigurationServiceGitRepository() {
+    }
+
     /**
      * Get the name property: Name of the repository.
      *

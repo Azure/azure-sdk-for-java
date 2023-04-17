@@ -58,11 +58,10 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface MonitoringSettingsService {
+    public interface MonitoringSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/monitoringSettings/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/monitoringSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitoringSettingResourceInner>> get(
@@ -76,8 +75,7 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/monitoringSettings/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/monitoringSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updatePut(
@@ -92,8 +90,7 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/monitoringSettings/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/monitoringSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updatePatch(
@@ -227,22 +224,6 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Monitoring Setting and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoringSettingResourceInner get(String resourceGroupName, String serviceName) {
-        return getAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Get the Monitoring Setting and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -253,6 +234,22 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
     public Response<MonitoringSettingResourceInner> getWithResponse(
         String resourceGroupName, String serviceName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * Get the Monitoring Setting and its properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Monitoring Setting and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MonitoringSettingResourceInner get(String resourceGroupName, String serviceName) {
+        return getWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
     }
 
     /**
@@ -448,7 +445,7 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoringSettingResourceInner>, MonitoringSettingResourceInner> beginUpdatePut(
         String resourceGroupName, String serviceName, MonitoringSettingResourceInner monitoringSettingResource) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, monitoringSettingResource).getSyncPoller();
+        return this.beginUpdatePutAsync(resourceGroupName, serviceName, monitoringSettingResource).getSyncPoller();
     }
 
     /**
@@ -470,7 +467,9 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
         String serviceName,
         MonitoringSettingResourceInner monitoringSettingResource,
         Context context) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, monitoringSettingResource, context).getSyncPoller();
+        return this
+            .beginUpdatePutAsync(resourceGroupName, serviceName, monitoringSettingResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -751,7 +750,7 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoringSettingResourceInner>, MonitoringSettingResourceInner> beginUpdatePatch(
         String resourceGroupName, String serviceName, MonitoringSettingResourceInner monitoringSettingResource) {
-        return beginUpdatePatchAsync(resourceGroupName, serviceName, monitoringSettingResource).getSyncPoller();
+        return this.beginUpdatePatchAsync(resourceGroupName, serviceName, monitoringSettingResource).getSyncPoller();
     }
 
     /**
@@ -773,7 +772,8 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
         String serviceName,
         MonitoringSettingResourceInner monitoringSettingResource,
         Context context) {
-        return beginUpdatePatchAsync(resourceGroupName, serviceName, monitoringSettingResource, context)
+        return this
+            .beginUpdatePatchAsync(resourceGroupName, serviceName, monitoringSettingResource, context)
             .getSyncPoller();
     }
 

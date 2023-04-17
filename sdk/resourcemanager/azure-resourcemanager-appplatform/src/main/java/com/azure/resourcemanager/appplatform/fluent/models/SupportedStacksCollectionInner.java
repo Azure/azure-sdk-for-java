@@ -24,6 +24,10 @@ public final class SupportedStacksCollectionInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SupportedStacksCollectionInner class. */
+    public SupportedStacksCollectionInner() {
+    }
+
     /**
      * Get the value property: Collection of supported stacks resources.
      *

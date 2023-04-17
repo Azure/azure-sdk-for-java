@@ -23,6 +23,12 @@ public final class ClusterResourceProperties {
     private NetworkProfile networkProfile;
 
     /*
+     * Additional Service settings in vnet injection instance
+     */
+    @JsonProperty(value = "vnetAddons")
+    private ServiceVNetAddons vnetAddons;
+
+    /*
      * Version of the Service
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
@@ -35,6 +41,24 @@ public final class ClusterResourceProperties {
     private String serviceId;
 
     /*
+     * The resource Id of the Managed Environment that the Spring Apps instance builds on
+     */
+    @JsonProperty(value = "managedEnvironmentId")
+    private String managedEnvironmentId;
+
+    /*
+     * The name of the resource group that contains the infrastructure resources
+     */
+    @JsonProperty(value = "infraResourceGroup")
+    private String infraResourceGroup;
+
+    /*
+     * Power state of the Service
+     */
+    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
+
+    /*
      * The zoneRedundant property.
      */
     @JsonProperty(value = "zoneRedundant")
@@ -45,6 +69,16 @@ public final class ClusterResourceProperties {
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
+
+    /*
+     * Purchasing 3rd party product of the Service resource.
+     */
+    @JsonProperty(value = "marketplaceResource")
+    private MarketplaceResource marketplaceResource;
+
+    /** Creates an instance of ClusterResourceProperties class. */
+    public ClusterResourceProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Service.
@@ -76,6 +110,26 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the vnetAddons property: Additional Service settings in vnet injection instance.
+     *
+     * @return the vnetAddons value.
+     */
+    public ServiceVNetAddons vnetAddons() {
+        return this.vnetAddons;
+    }
+
+    /**
+     * Set the vnetAddons property: Additional Service settings in vnet injection instance.
+     *
+     * @param vnetAddons the vnetAddons value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withVnetAddons(ServiceVNetAddons vnetAddons) {
+        this.vnetAddons = vnetAddons;
+        return this;
+    }
+
+    /**
      * Get the version property: Version of the Service.
      *
      * @return the version value.
@@ -91,6 +145,57 @@ public final class ClusterResourceProperties {
      */
     public String serviceId() {
         return this.serviceId;
+    }
+
+    /**
+     * Get the managedEnvironmentId property: The resource Id of the Managed Environment that the Spring Apps instance
+     * builds on.
+     *
+     * @return the managedEnvironmentId value.
+     */
+    public String managedEnvironmentId() {
+        return this.managedEnvironmentId;
+    }
+
+    /**
+     * Set the managedEnvironmentId property: The resource Id of the Managed Environment that the Spring Apps instance
+     * builds on.
+     *
+     * @param managedEnvironmentId the managedEnvironmentId value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withManagedEnvironmentId(String managedEnvironmentId) {
+        this.managedEnvironmentId = managedEnvironmentId;
+        return this;
+    }
+
+    /**
+     * Get the infraResourceGroup property: The name of the resource group that contains the infrastructure resources.
+     *
+     * @return the infraResourceGroup value.
+     */
+    public String infraResourceGroup() {
+        return this.infraResourceGroup;
+    }
+
+    /**
+     * Set the infraResourceGroup property: The name of the resource group that contains the infrastructure resources.
+     *
+     * @param infraResourceGroup the infraResourceGroup value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withInfraResourceGroup(String infraResourceGroup) {
+        this.infraResourceGroup = infraResourceGroup;
+        return this;
+    }
+
+    /**
+     * Get the powerState property: Power state of the Service.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -123,6 +228,26 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the marketplaceResource property: Purchasing 3rd party product of the Service resource.
+     *
+     * @return the marketplaceResource value.
+     */
+    public MarketplaceResource marketplaceResource() {
+        return this.marketplaceResource;
+    }
+
+    /**
+     * Set the marketplaceResource property: Purchasing 3rd party product of the Service resource.
+     *
+     * @param marketplaceResource the marketplaceResource value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withMarketplaceResource(MarketplaceResource marketplaceResource) {
+        this.marketplaceResource = marketplaceResource;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -130,6 +255,12 @@ public final class ClusterResourceProperties {
     public void validate() {
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (vnetAddons() != null) {
+            vnetAddons().validate();
+        }
+        if (marketplaceResource() != null) {
+            marketplaceResource().validate();
         }
     }
 }

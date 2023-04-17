@@ -49,7 +49,7 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface RuntimeVersionsService {
+    public interface RuntimeVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.AppPlatform/runtimeVersions")
         @ExpectedResponses({200})
@@ -122,18 +122,6 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
     /**
      * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AvailableRuntimeVersionsInner listRuntimeVersions() {
-        return listRuntimeVersionsAsync().block();
-    }
-
-    /**
-     * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -143,5 +131,17 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailableRuntimeVersionsInner> listRuntimeVersionsWithResponse(Context context) {
         return listRuntimeVersionsWithResponseAsync(context).block();
+    }
+
+    /**
+     * Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AvailableRuntimeVersionsInner listRuntimeVersions() {
+        return listRuntimeVersionsWithResponse(Context.NONE).getValue();
     }
 }

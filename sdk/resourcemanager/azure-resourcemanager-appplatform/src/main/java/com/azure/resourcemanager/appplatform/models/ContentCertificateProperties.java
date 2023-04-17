@@ -20,6 +20,10 @@ public final class ContentCertificateProperties extends CertificateProperties {
     @JsonProperty(value = "content")
     private String content;
 
+    /** Creates an instance of ContentCertificateProperties class. */
+    public ContentCertificateProperties() {
+    }
+
     /**
      * Get the content property: The content of uploaded certificate.
      *

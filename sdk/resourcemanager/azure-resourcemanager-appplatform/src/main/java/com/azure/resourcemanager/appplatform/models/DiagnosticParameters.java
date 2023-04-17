@@ -28,6 +28,10 @@ public final class DiagnosticParameters {
     @JsonProperty(value = "duration")
     private String duration;
 
+    /** Creates an instance of DiagnosticParameters class. */
+    public DiagnosticParameters() {
+    }
+
     /**
      * Get the appInstance property: App instance name.
      *
