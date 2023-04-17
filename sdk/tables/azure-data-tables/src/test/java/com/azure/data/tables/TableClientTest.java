@@ -13,9 +13,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
-import com.azure.data.tables.TestUtils.MockCredential;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicies;
 import com.azure.data.tables.models.TableAccessPolicy;
@@ -106,7 +106,7 @@ public class TableClientTest extends TableClientTestBase {
 
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
-            credential = new MockCredential();
+            credential = new MockTokenCredential();
         } else if (interceptorManager.isRecordMode()) {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.

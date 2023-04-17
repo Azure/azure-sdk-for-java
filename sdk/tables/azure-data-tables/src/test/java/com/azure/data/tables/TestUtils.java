@@ -3,9 +3,6 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -31,7 +28,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -226,19 +222,5 @@ public final class TestUtils {
             customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
             interceptorManager.addMatchers(customMatcher);
         }
-    }
-
-    static class MockCredential implements TokenCredential {
-
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("TEST TOKEN", OffsetDateTime.now().plusHours(2)));
-        }
-        
-        @Override
-        public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
-            return new AccessToken("TEST TOKEN", OffsetDateTime.now().plusHours(2));
-        }
-
     }
 }
