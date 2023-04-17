@@ -3,6 +3,9 @@
 
 package com.azure.core.util.logging;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -106,6 +109,14 @@ public class ClientLoggerJavaDocCodeSnippets {
         }
         // END: com.azure.core.util.logging.clientlogger.atError#deffered-value
 
+        Response<Void> response = getResponse();
+        // BEGIN: com.azure.core.util.logging.clientlogger.atLevel
+        LogLevel level = response.getStatusCode() == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
+        logger.atLevel(level)
+            .addKeyValue("key", "value")
+            .log("message");
+        // END: com.azure.core.util.logging.clientlogger.atLevel
+
         // BEGIN: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
         logger.atVerbose()
             .addKeyValue("key", 1L)
@@ -126,6 +137,10 @@ public class ClientLoggerJavaDocCodeSnippets {
             .addKeyValue("key", new LoggableObject("string representation"))
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "param1", "param2", "param3");
         // END: com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object
+    }
+
+    private Response<Void> getResponse() {
+        return new SimpleResponse<Void>(null, 200, null, null);
     }
 
     /**

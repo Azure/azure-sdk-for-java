@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-health-insights-cancerprofiling</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-health-insights-cancerprofiling;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-health-insights-cancerprofiling;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Health Insights - Cancer Profiling</name>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

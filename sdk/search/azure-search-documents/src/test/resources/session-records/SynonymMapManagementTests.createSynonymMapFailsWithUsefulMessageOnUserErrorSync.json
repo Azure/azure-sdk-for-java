@@ -1,31 +1,54 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "88ccedf3-0c30-4009-956b-cb30e7dbaa37",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "88ccedf3-0c30-4009-956b-cb30e7dbaa37",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:47:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "88ccedf3-0c30-4009-956b-cb30e7dbaa37",
-      "elapsed-time" : "8",
-      "Expires" : "-1",
-      "Content-Length" : "327",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequestParameter\",\"message\":\"Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule.\",\"details\":[{\"code\":\"InvalidSynonymMapSyntax\",\"message\":\"Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule.\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "88ccedf3-0c30-4009-956b-cb30e7dbaa37",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "test-synonym515769901686" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/synonymmaps?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "76",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:20:31 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "79d52cf0-24eb-4382-b268-130deef490d5"
+      },
+      "RequestBody": {
+        "name": "test-synonym49311cd7e801",
+        "format": "solr",
+        "synonyms": "a =\u003E b =\u003E c"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "79d52cf0-24eb-4382-b268-130deef490d5",
+        "Content-Language": "en",
+        "Content-Length": "327",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:20:30 GMT",
+        "elapsed-time": "7",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "79d52cf0-24eb-4382-b268-130deef490d5",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "79d52cf0-24eb-4382-b268-130deef490d5"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequestParameter",
+          "message": "Syntax error in line 1: \u0027a =\u003E b =\u003E c\u0027. Only one explicit mapping (=\u003E) can be specified in a synonym rule.",
+          "details": [
+            {
+              "code": "InvalidSynonymMapSyntax",
+              "message": "Syntax error in line 1: \u0027a =\u003E b =\u003E c\u0027. Only one explicit mapping (=\u003E) can be specified in a synonym rule."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "test-synonym49311cd7e801"
+  }
 }

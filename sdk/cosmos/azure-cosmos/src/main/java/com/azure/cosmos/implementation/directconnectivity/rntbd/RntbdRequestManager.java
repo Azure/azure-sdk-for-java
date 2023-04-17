@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
@@ -927,7 +928,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             final Map<String, String> requestHeaders = record.args().serviceRequest().getHeaders();
             final String requestUri = record.args().physicalAddressUri().getURI().toString();
 
-            final GoneException error = new GoneException(message, cause, null, requestUri);
+            final GoneException error = new GoneException(message, cause, null, requestUri, SubStatusCodes.UNKNOWN);
             BridgeInternal.setRequestHeaders(error, requestHeaders);
 
             if (StringUtils.isNotEmpty(faultInjectionRuleId)) {
@@ -1055,7 +1056,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                             break;
                         default:
                             GoneException goneExceptionFromService =
-                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                                new GoneException(error, lsn, partitionKeyRangeId, responseHeaders,
+                                    SubStatusCodes.SERVER_GENERATED_410);
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
                             cause = goneExceptionFromService;
                             break;
@@ -1088,7 +1090,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
+                    cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner,
+                        SubStatusCodes.SERVER_GENERATED_408);
                     break;
 
                 case StatusCodes.RETRY_WITH:
@@ -1096,7 +1099,8 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 case StatusCodes.SERVICE_UNAVAILABLE:
-                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders);
+                    cause = new ServiceUnavailableException(error, lsn, partitionKeyRangeId, responseHeaders,
+                        SubStatusCodes.SERVER_GENERATED_503);
                     break;
 
                 case StatusCodes.TOO_MANY_REQUESTS:

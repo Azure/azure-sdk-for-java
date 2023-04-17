@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for MongoDBResources CreateUpdateMongoUserDefinition. */
 public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionCreateUpdate.

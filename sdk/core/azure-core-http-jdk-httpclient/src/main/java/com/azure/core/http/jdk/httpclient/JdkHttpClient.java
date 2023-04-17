@@ -192,6 +192,7 @@ class JdkHttpClient implements HttpClient {
      * @param headers the JDK Http headers
      * @return the azure-core Http headers
      */
+    @SuppressWarnings("deprecation")
     static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders();
 

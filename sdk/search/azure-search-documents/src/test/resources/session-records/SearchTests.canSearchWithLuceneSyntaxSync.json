@@ -1,31 +1,49 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-hotel-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "29ba19e1-bd14-4e78-82a7-4f8b4b678981",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "29ba19e1-bd14-4e78-82a7-4f8b4b678981",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:29:15 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "29ba19e1-bd14-4e78-82a7-4f8b4b678981",
-      "elapsed-time" : "18",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "77",
-      "Body" : "{\"value\":[{\"@search.score\":0.66001964,\"HotelName\":\"Roach Motel\",\"Rating\":1}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "29ba19e1-bd14-4e78-82a7-4f8b4b678981",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-search-shared-hotel-instance\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "75",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:01:48 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a9ae1f8b-36d4-47ff-b5fb-19bbcc031242"
+      },
+      "RequestBody": {
+        "queryType": "full",
+        "search": "HotelName:roch~",
+        "select": "HotelName,Rating"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "a9ae1f8b-36d4-47ff-b5fb-19bbcc031242",
+        "Content-Length": "77",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:01:47 GMT",
+        "elapsed-time": "19",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "a9ae1f8b-36d4-47ff-b5fb-19bbcc031242",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "a9ae1f8b-36d4-47ff-b5fb-19bbcc031242"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "@search.score": 0.66001964,
+            "HotelName": "Roach Motel",
+            "Rating": 1
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }
