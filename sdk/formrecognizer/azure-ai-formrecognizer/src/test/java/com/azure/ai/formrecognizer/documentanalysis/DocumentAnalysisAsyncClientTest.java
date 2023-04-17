@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis;
 
+import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
@@ -76,7 +77,17 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
                                                                        DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
+                : httpClient),
+            serviceVersion,
+            false)
+            .buildAsyncClient();
+    }
+
+    private DocumentModelAdministrationAsyncClient getDocumentAdminAsyncClient(HttpClient httpClient,
+                                                                               DocumentAnalysisServiceVersion serviceVersion) {
+        return getDocumentModelAdminClientBuilder(
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
             false)

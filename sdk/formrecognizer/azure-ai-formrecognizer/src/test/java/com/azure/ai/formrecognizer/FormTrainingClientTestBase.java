@@ -10,39 +10,37 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
+import static com.azure.ai.formrecognizer.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class FormTrainingClientTestBase extends TestBase {
+public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
     private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
     private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -90,16 +88,19 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion) {
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(getEndpoint())
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .serviceVersion(serviceVersion);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+        } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
+
         return builder;
     }
 
@@ -287,15 +288,10 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         final long fileLength = new File(LOCAL_FILE_PATH + BLANK_PDF).length();
-
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
+        try {
+            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
         }
     }
 
