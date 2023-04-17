@@ -26,14 +26,15 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,7 +46,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -71,7 +71,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for Text Analytics client builder
  */
-public class TextAnalyticsClientBuilderTest extends TestBase {
+public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
     private static final String INVALID_KEY = "invalid key";
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
@@ -433,7 +433,13 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
                 .pipeline(getHttpPipeline(httpClient))
                 .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isPlaybackMode()) {
+            // since running in playback mode won't have the token credential, so skipping matching it.
+            interceptorManager.addMatchers(Arrays.asList(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
+        }
+
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -444,17 +450,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-            credential = new ClientSecretCredentialBuilder()
-                             .clientSecret(clientKey)
-                             .clientId(clientId)
-                             .tenantId(tenantId)
-                             .build();
+            credential = new DefaultAzureCredentialBuilder().build();
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -471,7 +467,9 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         if (credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
         }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
+
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
         if (getTestMode() == TestMode.RECORD) {
@@ -480,7 +478,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
                                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                                    .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                                    .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
                                     .build();
 
         return pipeline;
@@ -498,10 +496,10 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

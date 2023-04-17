@@ -1,12 +1,35 @@
 # Release History
 
-## 1.9.0-beta.3 (Unreleased)
+## 1.9.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.9.0-beta.3 (2023-04-13)
 
 ### Bugs Fixed
 - Add `disableInstanceDiscovery` to `DefaultAzureCredentialBuilder`
 
 ### Other Changes
 - Removed feature from previous betas to compute refresh values for managed identity tokens.
+
+## 1.8.2 (2023-04-10)
+
+### Bugs Fixed
+
+- Fixed a bug in managed identity not properly URLEncoding a value. [#34375](https://github.com/Azure/azure-sdk-for-java/pull/34375)
+
+### Other Changes	### Other Changes
+
+#### Dependency Updates	#### Dependency Updates
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.	- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.	- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `msal4j` from `1.13.5` to version `1.13.7`.	- Upgraded `msal4j` from `1.13.5` to version `1.13.7`.
 
 ## 1.9.0-beta.2 (2023-03-16)
 

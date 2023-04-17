@@ -1,67 +1,257 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0e624b6d-d76d-4366-a0ec-c3146a2f4eea",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "396",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:53:09 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b9d76430-e507-414c-8aee-c6899a7979ba"
+      },
+      "RequestBody": {
+        "displayName": "Test1",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+            },
+            {
+              "id": "1",
+              "text": "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "PiiEntityRecognition",
+            "parameters": {
+              "loggingOptOut": true,
+              "domain": "PHI",
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "a3dbc43a-09b4-468f-9bcf-01c471424c01",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:53:08 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/4a7f4fb6-bc33-447b-bcbf-07edb16df598?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "186",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "214",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/fdaf69c1-11ac-4c25-913f-503662a6def9?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "68105149-4666-4532-ac48-110a10a5278b",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Mon, 14 Nov 2022 19:23:04 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/4a7f4fb6-bc33-447b-bcbf-07edb16df598?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:53:39 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "1de8a9fb-1840-45fa-9cfd-e6f8fba4ad3c"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "03787ef2-971c-4064-92b8-f8607c507dc2",
+        "Content-Length": "1256",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:53:38 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "107",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "4a7f4fb6-bc33-447b-bcbf-07edb16df598",
+        "lastUpdatedDateTime": "2023-04-05T18:53:10Z",
+        "createdDateTime": "2023-04-05T18:53:08Z",
+        "expirationDateTime": "2023-04-06T18:53:08Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "PiiEntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:53:10.9335461Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "redactedText": "********* employee with ssn *********** is using our awesome API\u0027s.",
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.94
+                      },
+                      {
+                        "text": "859-98-0987",
+                        "category": "USSocialSecurityNumber",
+                        "offset": 28,
+                        "length": 11,
+                        "confidenceScore": 0.65
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "redactedText": "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.",
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "111000025",
+                        "category": "PhoneNumber",
+                        "offset": 18,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "111000025",
+                        "category": "ABARoutingNumber",
+                        "offset": 18,
+                        "length": 9,
+                        "confidenceScore": 0.75
+                      },
+                      {
+                        "text": "111000025",
+                        "category": "NZSocialWelfareNumber",
+                        "offset": 18,
+                        "length": 9,
+                        "confidenceScore": 0.65
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-01-15"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/fdaf69c1-11ac-4c25-913f-503662a6def9?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "556fb38f-c425-4a81-afde-b747df1d91ea"
-    },
-    "Response" : {
-      "content-length" : "1255",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "60",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "fa0b08db-d87a-47b0-800f-efceeffd5967",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"fdaf69c1-11ac-4c25-913f-503662a6def9\",\"lastUpdateDateTime\":\"2022-11-14T19:23:06Z\",\"createdDateTime\":\"2022-11-14T19:23:04Z\",\"expirationDateTime\":\"2022-11-15T19:23:04Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"PiiEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-11-14T19:23:06.7185487Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.94},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}]}}",
-      "Date" : "Mon, 14 Nov 2022 19:23:35 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/fdaf69c1-11ac-4c25-913f-503662a6def9?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f3bfccaf-3b1b-40ad-b659-4cbcdb812e34"
-    },
-    "Response" : {
-      "content-length" : "1255",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "64",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f993de96-5b95-4e41-b3c9-70b4ea66caae",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"fdaf69c1-11ac-4c25-913f-503662a6def9\",\"lastUpdateDateTime\":\"2022-11-14T19:23:06Z\",\"createdDateTime\":\"2022-11-14T19:23:04Z\",\"expirationDateTime\":\"2022-11-15T19:23:04Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"PiiEntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-11-14T19:23:06.7185487Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"redactedText\":\"********* employee with ssn *********** is using our awesome API's.\",\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.94},{\"text\":\"859-98-0987\",\"category\":\"USSocialSecurityNumber\",\"offset\":28,\"length\":11,\"confidenceScore\":0.65}],\"warnings\":[]},{\"redactedText\":\"Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.\",\"id\":\"1\",\"entities\":[{\"text\":\"111000025\",\"category\":\"PhoneNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.8},{\"text\":\"111000025\",\"category\":\"ABARoutingNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.75},{\"text\":\"111000025\",\"category\":\"NZSocialWelfareNumber\",\"offset\":18,\"length\":9,\"confidenceScore\":0.65}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-01-15\"}}]}}",
-      "Date" : "Mon, 14 Nov 2022 19:23:35 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/4a7f4fb6-bc33-447b-bcbf-07edb16df598?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:53:39 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "76104d47-6cbc-4533-b8a2-50c5be27f940"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "20bfba4c-af79-4251-a8ff-afbdada3ba04",
+        "Content-Length": "1256",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:53:38 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "193",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "4a7f4fb6-bc33-447b-bcbf-07edb16df598",
+        "lastUpdatedDateTime": "2023-04-05T18:53:10Z",
+        "createdDateTime": "2023-04-05T18:53:08Z",
+        "expirationDateTime": "2023-04-06T18:53:08Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "PiiEntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:53:10.9335461Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "redactedText": "********* employee with ssn *********** is using our awesome API\u0027s.",
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.94
+                      },
+                      {
+                        "text": "859-98-0987",
+                        "category": "USSocialSecurityNumber",
+                        "offset": 28,
+                        "length": 11,
+                        "confidenceScore": 0.65
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "redactedText": "Your ABA number - ********* - is the first 9 digits in the lower left hand corner of your personal check.",
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "111000025",
+                        "category": "PhoneNumber",
+                        "offset": 18,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "111000025",
+                        "category": "ABARoutingNumber",
+                        "offset": 18,
+                        "length": 9,
+                        "confidenceScore": 0.75
+                      },
+                      {
+                        "text": "111000025",
+                        "category": "NZSocialWelfareNumber",
+                        "offset": 18,
+                        "length": 9,
+                        "confidenceScore": 0.65
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-01-15"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

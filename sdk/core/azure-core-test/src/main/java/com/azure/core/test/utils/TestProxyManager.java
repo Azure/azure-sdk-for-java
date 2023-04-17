@@ -86,7 +86,7 @@ public class TestProxyManager {
                     TestProxyUtils.checkForTestProxyErrors(response);
                 } catch (Exception ignored) {
                 }
-                Thread.sleep(1000);
+                Thread.sleep(6000);
             }
             throw new RuntimeException("Test proxy did not initialize.");
 

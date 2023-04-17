@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-internal-avro</artifactId>
-  <version>12.7.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+  <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
 
   <name>Microsoft Azure internal Avro module for Storage</name>
   <description>This module contains internal use only avro parser code based for Microsoft Azure Storage client libraries.</description>
@@ -47,17 +47,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
 
     <dependency>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <version>2.4-M1-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

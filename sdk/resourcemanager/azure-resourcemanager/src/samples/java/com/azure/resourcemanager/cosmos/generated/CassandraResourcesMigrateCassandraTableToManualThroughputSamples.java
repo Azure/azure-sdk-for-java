@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for CassandraResources MigrateCassandraTableToManualThroughput. */
 public final class CassandraResourcesMigrateCassandraTableToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBCassandraTableMigrateToManualThroughput.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBCassandraTableMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBCassandraTableMigrateToManualThroughput.

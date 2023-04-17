@@ -18,6 +18,7 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -59,7 +60,7 @@ public final class IOUtils {
     public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException {
         Objects.requireNonNull(source, "'source' must not be null");
         Objects.requireNonNull(source, "'destination' must not be null");
-        ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
+        ByteBuffer buffer = ByteBuffer.allocate(getBufferSize(source));
         int read;
         do {
             buffer.clear();
@@ -83,7 +84,7 @@ public final class IOUtils {
         Objects.requireNonNull(source, "'source' must not be null");
         Objects.requireNonNull(source, "'destination' must not be null");
         return Mono.create(sink -> sink.onRequest(value -> {
-            ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
+            ByteBuffer buffer = ByteBuffer.allocate(getBufferSize(source));
             try {
                 transferAsynchronously(source, destination, buffer, sink);
             } catch (IOException e) {
@@ -176,6 +177,36 @@ public final class IOUtils {
                     .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
                         targetChannel, newResponse, onErrorResume, maxRetries, updatedRetryCount));
             });
+    }
+
+    /*
+     * Helper method to optimize the size of the read buffer to reduce the number of reads and writes that have to be
+     * performed. If the source and/or target is IO-based, file, network connection, etc, this reduces the number of
+     * calls that may have to be handled by the system.
+     */
+    private static int getBufferSize(ReadableByteChannel source) {
+        if (!(source instanceof SeekableByteChannel)) {
+            return DEFAULT_BUFFER_SIZE;
+        }
+
+        SeekableByteChannel seekableSource = (SeekableByteChannel) source;
+        try {
+            long size = seekableSource.size();
+            long position = seekableSource.position();
+
+            long count = size - position;
+
+            if (count > 1024 * 1024 * 1024) {
+                return 65536;
+            } else if (count > 1024 * 1024) {
+                return 32768;
+            } else {
+                return DEFAULT_BUFFER_SIZE;
+            }
+        } catch (IOException ex) {
+            // Don't let an IOException prevent transfer when we are only trying to gain information.
+            return DEFAULT_BUFFER_SIZE;
+        }
     }
 
     private IOUtils() {

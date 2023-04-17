@@ -831,7 +831,7 @@ public final class KeyClient {
      * &#47;&#47; Deleted date only works for SoftDelete Enabled Key Vault.
      * DeletedKey deletedKey = deleteKeyPollResponse.getValue&#40;&#41;;
      *
-     * System.out.printf&#40;&quot;Key delete date: %s%n&quot; + deletedKey.getDeletedOn&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Key delete date: %s%n&quot;, deletedKey.getDeletedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
      *
      * &#47;&#47; Key is being deleted on the server.

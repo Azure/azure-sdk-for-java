@@ -1,30 +1,43 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexers('indexer')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0",
-      "StatusCode" : "404",
-      "Date" : "Tue, 17 Jan 2023 20:21:15 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0",
-      "elapsed-time" : "7",
-      "Expires" : "-1",
-      "Content-Length" : "94",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'indexer' was not found in service 'alzimmer-basic'.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "33f59111-19cb-4b86-936c-1c88cb4b01f0",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "33f59111-19cb-4b86-936c-1c88cb4b01f0" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexers(\u0027indexer\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:26 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "98acc6d2-c5d5-4f64-a211-ab7e7c461c1c"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "98acc6d2-c5d5-4f64-a211-ab7e7c461c1c",
+        "Content-Language": "en",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:53:24 GMT",
+        "elapsed-time": "7",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "98acc6d2-c5d5-4f64-a211-ab7e7c461c1c",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "98acc6d2-c5d5-4f64-a211-ab7e7c461c1c"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "Indexer \u0027indexer\u0027 was not found in service \u0027azs-java-alzimmertestproxy\u0027."
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "98acc6d2-c5d5-4f64-a211-ab7e7c461c1c"
+  }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ import java.util.Objects;
 /**
  * Set manifest options.
  */
+@Fluent
 public final class SetManifestOptions {
     private final ManifestMediaType mediaType;
     private final BinaryData manifest;

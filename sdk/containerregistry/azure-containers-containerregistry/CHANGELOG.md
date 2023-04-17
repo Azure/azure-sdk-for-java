@@ -1,8 +1,16 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.5 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.0-beta.4 (2023-04-11)
 
 ### Breaking Changes from version 1.1.0-beta.3
 
@@ -16,14 +24,18 @@
   - Removed `DownloadBlobAsyncResult` and changes `ContainerRegistryContentAsyncClient.downloadStream` return type to `Mono<BinaryData>`.
   - Removed `Collection<ManifestMediaType> mediaTypes` parameter from `downloadManifestWithResponse` method on blob clients.
   - Renamed `ContainerRegistryContentClientBuilder.repository` method to `repositoryName`.
+  - Removed `ContainerRegistryContentAsyncClient.uploadBlob(Flux<ByteBuffer> content)` and `ContainerRegistryContentClient.uploadBlob(ReadableByteChannel stream, Context context)`, use `uploadBlob` methods that take `BinaryData` instead
 - Renamed `GetManifestResult.getMediaType` and `UploadManifestOptions.getMediaType` to `getManifestMediaType`.
 - Removed `GetManifestResult.asOciManifest` - use `GetManifestResult.getManifest().toObject(OciImageManifest.class)` instead.
 - Renamed `OciImageManifest.getConfig` and `setConfig` methods to `getConfiguration` and `setConfiguration`.
 - Renamed `OciAnnotations.getCreated` and `setCreated` methods to `getCreatedOn` and `setCreatedOn`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 ## 1.0.13 (2023-03-16)
 

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageRegistryCredential {
     /*
-     * The Docker image registry server without a protocol such as "http" and
-     * "https".
+     * The Docker image registry server without a protocol such as "http" and "https".
      */
     @JsonProperty(value = "server", required = true)
     private String server;
@@ -21,7 +20,7 @@ public final class ImageRegistryCredential {
     /*
      * The username for the private registry.
      */
-    @JsonProperty(value = "username", required = true)
+    @JsonProperty(value = "username")
     private String username;
 
     /*
@@ -41,6 +40,10 @@ public final class ImageRegistryCredential {
      */
     @JsonProperty(value = "identityUrl")
     private String identityUrl;
+
+    /** Creates an instance of ImageRegistryCredential class. */
+    public ImageRegistryCredential() {
+    }
 
     /**
      * Get the server property: The Docker image registry server without a protocol such as "http" and "https".
@@ -152,12 +155,6 @@ public final class ImageRegistryCredential {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property server in model ImageRegistryCredential"));
-        }
-        if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model ImageRegistryCredential"));
         }
     }
 

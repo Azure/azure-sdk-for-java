@@ -4,7 +4,7 @@
       "RequestUri": "http://REDACTED/fr/path/1",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Type": "application/json",
         "Ocp-Apim-Subscription-Key": "REDACTED",
@@ -13,7 +13,7 @@
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Length": "113",
         "Content-Type": "application/json",

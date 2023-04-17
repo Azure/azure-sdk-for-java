@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -20,7 +21,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -28,6 +29,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -51,12 +53,12 @@ public class RedirectPolicyTest {
             })
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(308, response.getStatusCode());
+        )) {
+            assertEquals(308, response.getStatusCode());
+        }
     }
 
     @ParameterizedTest
@@ -64,10 +66,9 @@ public class RedirectPolicyTest {
     public void defaultRedirectExpectedStatusCodes(int statusCode) throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                headers.put("Authorization", "12345");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders()
+                    .set(HttpHeaderName.LOCATION, "http://redirecthost/")
+                    .set(HttpHeaderName.AUTHORIZATION, "12345");
                 return Mono.just(new MockHttpResponse(request, statusCode, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -79,10 +80,10 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy())
             .build();
 
-        HttpResponse response = sendRequest(pipeline, HttpMethod.GET);
-
-        assertEquals(200, response.getStatusCode());
-        assertNull(response.getHeaders().getValue("Authorization"));
+        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+            assertEquals(200, response.getStatusCode());
+            assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
     }
 
     @ParameterizedTest
@@ -90,10 +91,9 @@ public class RedirectPolicyTest {
     public void defaultRedirectExpectedStatusCodesSync(int statusCode) throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                headers.put("Authorization", "12345");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders()
+                    .set(HttpHeaderName.LOCATION, "http://redirecthost/")
+                    .set(HttpHeaderName.AUTHORIZATION, "12345");
                 return Mono.just(new MockHttpResponse(request, statusCode, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -105,19 +105,18 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy())
             .build();
 
-        HttpResponse response = sendRequestSync(pipeline, HttpMethod.GET);
-
-        assertEquals(200, response.getStatusCode());
-        assertNull(response.getHeaders().getValue("Authorization"));
+        try (HttpResponse response = sendRequestSync(pipeline, HttpMethod.GET)) {
+            assertEquals(200, response.getStatusCode());
+            assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
     }
 
     @SyncAsyncTest
     public void redirectForNAttempts() throws Exception {
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Location", "http://redirecthost/" + requestCount[0]);
-            HttpHeaders httpHeader = new HttpHeaders(headers);
+            HttpHeaders httpHeader = new HttpHeaders()
+                .set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]);
             requestCount[0]++;
             return Mono.just(new MockHttpResponse(request, 308, httpHeader));
         });
@@ -127,22 +126,20 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(5, httpClient.getCount());
-        assertEquals(308, response.getStatusCode());
+        )) {
+            assertEquals(5, httpClient.getCount());
+            assertEquals(308, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void redirectNonAllowedMethodTest() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -154,23 +151,21 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.POST),
             () -> sendRequest(pipeline, HttpMethod.POST)
-        );
-
-        // not redirected to 200
-        assertEquals(1, httpClient.getCount());
-        assertEquals(308, response.getStatusCode());
+        )) {
+            // not redirected to 200
+            assertEquals(1, httpClient.getCount());
+            assertEquals(308, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void redirectAllowedStatusCodesTest() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -182,27 +177,23 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(2, httpClient.getCount());
-        assertEquals(200, response.getStatusCode());
+        )) {
+            assertEquals(2, httpClient.getCount());
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void alreadyAttemptedUrlsTest() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else if (request.getUrl().toString().equals("http://redirecthost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -214,22 +205,21 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(2, httpClient.getCount());
-        assertEquals(308, response.getStatusCode());
+        )) {
+            assertEquals(2, httpClient.getCount());
+            assertEquals(308, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void redirectForProvidedHeader() throws Exception {
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Location1", "http://redirecthost/" + requestCount[0]);
-            HttpHeaders httpHeader = new HttpHeaders(headers);
+            HttpHeaders httpHeader = new HttpHeaders()
+                .set(HttpHeaderName.fromString("Location1"), "http://redirecthost/" + requestCount[0]);
             requestCount[0]++;
             return Mono.just(new MockHttpResponse(request, 308, httpHeader));
         });
@@ -239,38 +229,30 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, "Location1", null)))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(5, httpClient.getCount());
-        assertEquals(308, response.getStatusCode());
+        )) {
+            assertEquals(5, httpClient.getCount());
+            assertEquals(308, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void redirectForProvidedMethods() throws Exception {
-        Set<HttpMethod> allowedMethods = new HashSet<HttpMethod>() {
-                {
-                    add(HttpMethod.GET);
-                    add(HttpMethod.PUT);
-                    add(HttpMethod.POST);
-                }
-        };
+        Set<HttpMethod> allowedMethods = new HashSet<>(Arrays.asList(HttpMethod.GET, HttpMethod.PUT, HttpMethod.POST));
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/" + requestCount[0]++);
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders()
+                    .set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]++);
                 request.setHttpMethod(HttpMethod.PUT);
                 requestCount[0]++;
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else if (request.getUrl().toString().equals("http://redirecthost/" + requestCount[0])
                 && requestCount[0] == 2) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/" + requestCount[0]++);
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders()
+                    .set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]++);
                 request.setHttpMethod(HttpMethod.POST);
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else {
@@ -283,22 +265,20 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, null, allowedMethods)))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(2, httpClient.getCount());
-        assertEquals(200, response.getStatusCode());
+        )) {
+            assertEquals(2, httpClient.getCount());
+            assertEquals(200, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void nullRedirectUrlTest() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                HttpHeaders httpHeader = new HttpHeaders(headers);
-                return Mono.just(new MockHttpResponse(request, 308, httpHeader));
+                return Mono.just(new MockHttpResponse(request, 308, new HttpHeaders()));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
             }
@@ -309,22 +289,20 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(1, httpClient.getCount());
-        assertEquals(308, response.getStatusCode());
+        )) {
+            assertEquals(1, httpClient.getCount());
+            assertEquals(308, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void redirectForMultipleRequests() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -336,20 +314,19 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy())
             .build();
 
-        HttpResponse response1 = SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline, HttpMethod.GET),
-            () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        HttpResponse response2 = SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline, HttpMethod.GET),
-            () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(4, httpClient.getCount());
-        // Both requests successfully redirected for same request redirect location
-        assertEquals(200, response1.getStatusCode());
-        assertEquals(200, response2.getStatusCode());
+        try (HttpResponse response1 = SyncAsyncExtension.execute(
+                () -> sendRequestSync(pipeline, HttpMethod.GET),
+                () -> sendRequest(pipeline, HttpMethod.GET)
+            );
+             HttpResponse response2 = SyncAsyncExtension.execute(
+                 () -> sendRequestSync(pipeline, HttpMethod.GET),
+                 () -> sendRequest(pipeline, HttpMethod.GET)
+             )) {
+            assertEquals(4, httpClient.getCount());
+            // Both requests successfully redirected for same request redirect location
+            assertEquals(200, response1.getStatusCode());
+            assertEquals(200, response2.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
@@ -360,9 +337,7 @@ public class RedirectPolicyTest {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (request.getUrl().toString().equals("http://localhost/")) {
-                        Map<String, String> headers = new HashMap<>();
-                        HttpHeaders httpHeader = new HttpHeaders(headers);
-                        return Mono.just(new MockHttpResponse(request, 401, httpHeader));
+                        return Mono.just(new MockHttpResponse(request, 401, new HttpHeaders()));
                     } else {
                         return Mono.just(new MockHttpResponse(request, 200));
                     }
@@ -371,22 +346,21 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy())
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(401, response.getStatusCode());
+        )) {
+            assertEquals(401, response.getStatusCode());
+        }
     }
 
     @SyncAsyncTest
     public void defaultRedirectAuthorizationHeaderCleared() throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Location", "http://redirecthost/");
-                headers.put("Authorization", "12345");
-                HttpHeaders httpHeader = new HttpHeaders(headers);
+                HttpHeaders httpHeader = new HttpHeaders()
+                    .set(HttpHeaderName.LOCATION, "http://redirecthost/")
+                    .set(HttpHeaderName.AUTHORIZATION, "12345");
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
             } else {
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -398,21 +372,21 @@ public class RedirectPolicyTest {
             .policies(new RedirectPolicy())
             .build();
 
-        HttpResponse response = SyncAsyncExtension.execute(
+        try (HttpResponse response = SyncAsyncExtension.execute(
             () -> sendRequestSync(pipeline, HttpMethod.GET),
             () -> sendRequest(pipeline, HttpMethod.GET)
-        );
-
-        assertEquals(200, response.getStatusCode());
-        assertNull(response.getHeaders().getValue("Authorization"));
+        )) {
+            assertEquals(200, response.getStatusCode());
+            assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
     }
 
     private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(httpMethod, new URL("http://localhost/"))).block();
+        return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/"))).block();
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.sendSync(new HttpRequest(httpMethod, new URL("http://localhost/")), Context.NONE);
+        return pipeline.sendSync(new HttpRequest(httpMethod, createUrl("http://localhost/")), Context.NONE);
     }
 
     static class RecordingHttpClient implements HttpClient {
@@ -433,6 +407,7 @@ public class RedirectPolicyTest {
         int getCount() {
             return count.get();
         }
+
         void resetCount() {
             count.set(0);
         }

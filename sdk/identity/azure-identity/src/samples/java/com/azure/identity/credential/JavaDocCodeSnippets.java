@@ -9,6 +9,8 @@ import com.azure.core.http.ProxyOptions.Type;
 
 import com.azure.identity.AzureCliCredential;
 import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredential;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredential;
@@ -37,6 +39,8 @@ import com.azure.identity.OnBehalfOfCredential;
 import com.azure.identity.OnBehalfOfCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
+import com.azure.identity.WorkloadIdentityCredential;
+import com.azure.identity.WorkloadIdentityCredentialBuilder;
 
 import java.net.InetSocketAddress;
 
@@ -267,5 +271,28 @@ public final class JavaDocCodeSnippets {
             .userAssertion("<user-assertion>")
             .build();
         // END: com.azure.identity.credential.obocredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link WorkloadIdentityCredential}
+     */
+    public void workloadIdentityCredentialCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.workloadidentitycredential.construct
+        TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder()
+            .clientId("<clientID>")
+            .tenantId("<tenantID>")
+            .tokenFilePath("<token-file-path>")
+            .build();
+        // END: com.azure.identity.credential.workloadidentitycredential.construct
+    }
+
+    /**
+     * Method to insert code snippets for {@link AzureDeveloperCliCredential}
+     */
+    public void azureDeveloperCliCredentialCodeSnippets() {
+        // BEGIN: com.azure.identity.credential.azuredeveloperclicredential.construct
+        TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder()
+            .build();
+        // END: com.azure.identity.credential.azuredeveloperclicredential.construct
     }
 }
