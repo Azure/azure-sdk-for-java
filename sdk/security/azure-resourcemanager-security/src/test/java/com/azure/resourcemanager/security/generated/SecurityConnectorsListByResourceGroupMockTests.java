@@ -33,7 +33,7 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"wfqtyyqipr\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-04T16:01:19Z\",\"environmentName\":\"Github\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"olj\",\"tags\":{\"kuckgkdskswtiiq\":\"iigz\",\"lnssw\":\"cqikclsm\"},\"id\":\"ykdnonaaxwmg\",\"name\":\"ru\",\"type\":\"lqcwnynll\"}]}";
+            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ylblfsprr\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-27T02:59:42Z\",\"environmentName\":\"GitLab\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"vvfxrdytzfsl\",\"tags\":{\"mcdiiisk\":\"hqikmgobliq\",\"vtrkfkg\":\"bonxxupj\"},\"id\":\"njqnnpjwkosny\",\"name\":\"igfoujjcxgdqmr\",\"type\":\"hnzkwopswnyinxu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityConnector> response =
-            manager.securityConnectors().listByResourceGroup("xtokljmtz", com.azure.core.util.Context.NONE);
+            manager.securityConnectors().listByResourceGroup("qshixbc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("olj", response.iterator().next().location());
-        Assertions.assertEquals("iigz", response.iterator().next().tags().get("kuckgkdskswtiiq"));
-        Assertions.assertEquals("wfqtyyqipr", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
+        Assertions.assertEquals("vvfxrdytzfsl", response.iterator().next().location());
+        Assertions.assertEquals("hqikmgobliq", response.iterator().next().tags().get("mcdiiisk"));
+        Assertions.assertEquals("ylblfsprr", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GIT_LAB, response.iterator().next().environmentName());
     }
 }

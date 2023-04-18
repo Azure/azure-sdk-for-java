@@ -15,10 +15,10 @@ public final class ConnectionToIpNotAllowedTests {
         ConnectionToIpNotAllowed model =
             BinaryData
                 .fromString(
-                    "{\"ruleType\":\"ConnectionToIpNotAllowed\",\"allowlistValues\":[\"ixldzyyfy\",\"pqsixymmp\",\"jivyqlkjuv\",\"mbmslzoyov\"],\"valueType\":\"String\",\"displayName\":\"pqvyb\",\"description\":\"gvmxnok\",\"isEnabled\":true}")
+                    "{\"ruleType\":\"ConnectionToIpNotAllowed\",\"allowlistValues\":[\"qrkuor\",\"tssruqnmdvhazc\",\"jy\"],\"valueType\":\"String\",\"displayName\":\"wbqerzwxiytxtd\",\"description\":\"kvlbpktgdstyoua\",\"isEnabled\":true}")
                 .toObject(ConnectionToIpNotAllowed.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("ixldzyyfy", model.allowlistValues().get(0));
+        Assertions.assertEquals("qrkuor", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -26,9 +26,9 @@ public final class ConnectionToIpNotAllowedTests {
         ConnectionToIpNotAllowed model =
             new ConnectionToIpNotAllowed()
                 .withIsEnabled(true)
-                .withAllowlistValues(Arrays.asList("ixldzyyfy", "pqsixymmp", "jivyqlkjuv", "mbmslzoyov"));
+                .withAllowlistValues(Arrays.asList("qrkuor", "tssruqnmdvhazc", "jy"));
         model = BinaryData.fromObject(model).toObject(ConnectionToIpNotAllowed.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("ixldzyyfy", model.allowlistValues().get(0));
+        Assertions.assertEquals("qrkuor", model.allowlistValues().get(0));
     }
 }

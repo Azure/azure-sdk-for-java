@@ -22,6 +22,12 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioning {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
+    /*
+     * Configuration for servers Arc auto provisioning
+     */
+    @JsonProperty(value = "configuration")
+    private DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration configuration;
+
     /** Creates an instance of DefenderFoDatabasesAwsOfferingArcAutoProvisioning class. */
     public DefenderFoDatabasesAwsOfferingArcAutoProvisioning() {
     }
@@ -67,10 +73,34 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioning {
     }
 
     /**
+     * Get the configuration property: Configuration for servers Arc auto provisioning.
+     *
+     * @return the configuration value.
+     */
+    public DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration configuration() {
+        return this.configuration;
+    }
+
+    /**
+     * Set the configuration property: Configuration for servers Arc auto provisioning.
+     *
+     * @param configuration the configuration value to set.
+     * @return the DefenderFoDatabasesAwsOfferingArcAutoProvisioning object itself.
+     */
+    public DefenderFoDatabasesAwsOfferingArcAutoProvisioning withConfiguration(
+        DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (configuration() != null) {
+            configuration().validate();
+        }
     }
 }

@@ -34,7 +34,7 @@ public final class SecurityConnectorApplicationOperationsCreateOrUpdateWithRespo
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"mgqbgcxhnq\",\"description\":\"zxlermkmer\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datakirhn\",\"dataupkcbkfukdljqnvt\"]},\"id\":\"dydshk\",\"name\":\"afyalo\",\"type\":\"ww\"}";
+            "{\"properties\":{\"displayName\":\"do\",\"description\":\"fzdgjfcycrsvloy\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datagqkzjuqw\",\"dataajquzxpixhyoi\",\"datanfdbgsoscienezf\"]},\"id\":\"bennmfkbp\",\"name\":\"nrtekw\",\"type\":\"nthropmdudsyiu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,19 +66,19 @@ public final class SecurityConnectorApplicationOperationsCreateOrUpdateWithRespo
             manager
                 .securityConnectorApplicationOperations()
                 .createOrUpdateWithResponse(
-                    "i",
-                    "ntojovfnybydhuih",
-                    "ouwudhuaorh",
+                    "xplhpeva",
+                    "yntvzjyielbq",
+                    "vvbq",
                     new ApplicationInner()
-                        .withDisplayName("hwvumosqir")
-                        .withDescription("mqprlobru")
+                        .withDisplayName("mpe")
+                        .withDescription("xgiqasifubn")
                         .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-                        .withConditionSets(Arrays.asList("datacv", "datakjyczcmtagelajdy")),
+                        .withConditionSets(Arrays.asList("datatlpwqpjnxjkhtups", "datayo")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("mgqbgcxhnq", response.displayName());
-        Assertions.assertEquals("zxlermkmer", response.description());
+        Assertions.assertEquals("do", response.displayName());
+        Assertions.assertEquals("fzdgjfcycrsvloy", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }
