@@ -9,8 +9,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -25,7 +25,6 @@ import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
@@ -48,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link LogsQueryAsyncClient}.
  */
-public class LogsQueryAsyncClientTest extends TestBase {
+public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");
@@ -130,18 +129,12 @@ public class LogsQueryAsyncClientTest extends TestBase {
 
     @Test
     public void testLogsQueryAllowPartialSuccess() {
-        Assumptions.assumeTrue(getTestMode() == TestMode.PLAYBACK,
-                "This test only executes in playback because the partial success condition requires pre-populated data.");
-
         // Arrange
-        final String query = "AppTraces \n"
-                + "| where Properties !has \"PartitionPumpManager\"\n"
-                + "| where Properties has \"LoggerName\" and Properties has_cs \"com.azure\"\n"
-                + "| project TimeGenerated, Message, Properties\n"
-                + "| extend m = parse_json(Message)\n"
-                + "| extend p = parse_json(Properties)\n"
-                + " | project TimeGenerated, Thread=p.ThreadName, Logger=p.LoggerName, ConnectionId=m.connectionId, Message\n"
-                + "\n";
+        final String query =  "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
+            + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
+            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}})];"
+            + "range x from 1 to 400000 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
         final LogsQueryOptions options = new LogsQueryOptions().setAllowPartialErrors(true);
         final QueryTimeInterval interval = QueryTimeInterval.LAST_DAY;
@@ -314,20 +307,18 @@ public class LogsQueryAsyncClientTest extends TestBase {
             + " not readily reproducible and because the service caches query results, the queries that require extended time "
             + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
             + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
-    @Disabled
     public void testServerTimeout() {
         // The server does not always stop processing the request and return a 504 before the client times out
         // so, retry until a 504 response is returned
         Random random = new Random();
-        // add some random number to circumvent cached response from server
-        long count = 1000000000000L + random.nextInt(10000);
+        long count = 1000000006959L;
         // this query should take more than 5 seconds usually, but the server may have cached the
         // response and may return before 5 seconds. So, retry with another query (different count value)
         StepVerifier.create(client.queryWorkspaceWithResponse(WORKSPACE_ID, "range x from 1 to " + count + " "
                                         + "step 1 | count",
                                 null,
                                 new LogsQueryOptions()
-                                        .setServerTimeout(Duration.ofSeconds(5)),
+                                        .setServerTimeout(Duration.ofSeconds(10)),
                                 Context.NONE)
                         .repeat())
                 .verifyErrorSatisfies(throwable -> {
