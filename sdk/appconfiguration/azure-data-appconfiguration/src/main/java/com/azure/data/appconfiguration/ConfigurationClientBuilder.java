@@ -223,7 +223,7 @@ public final class ConfigurationClientBuilder implements
      * authentication per builder instance.
      */
     private ConfigurationClientImpl buildInnerClient(SyncTokenPolicy syncTokenPolicy) {
-        String endpointLocal = null;
+        String endpointLocal = endpoint;
         ConfigurationClientCredentials credentialsLocal = null;
         TokenCredential tokenCredentialLocal = null;
         // validate the authentication setup
@@ -253,7 +253,7 @@ public final class ConfigurationClientBuilder implements
             pipeline == null ? createDefaultHttpPipeline(
                 syncTokenPolicy, credentialsLocal, tokenCredentialLocal) : pipeline,
             SERIALIZER_ADAPTER,
-            endpoint,
+            endpointLocal,
             serviceVersion.getVersion());
     }
 
@@ -291,7 +291,7 @@ public final class ConfigurationClientBuilder implements
         if (tokenCredential != null) {
             // User token based policy
             policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+                new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", buildEndpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
