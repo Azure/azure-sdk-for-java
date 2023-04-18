@@ -9,7 +9,7 @@
         "Content-Length": "58",
         "Content-Type": "application/json",
         "Date": "Tue, 18 Apr 2023 18:45:05 GMT",
-        "Prefer": "wait=10",
+        "Prefer": "wait=5",
         "User-Agent": "azsdk-java-azure-monitor-query/1.2.0-beta.1 (17.0.2; Windows 11; 10.0)",
         "x-ms-client-request-id": "c2bf8543-7cec-425e-a980-c3d2a1febd20"
       },
