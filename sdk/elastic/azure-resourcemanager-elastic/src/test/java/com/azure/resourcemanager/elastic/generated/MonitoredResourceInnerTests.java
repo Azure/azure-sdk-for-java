@@ -8,30 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.MonitoredResourceInner;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoredResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoredResourceInner model =
             BinaryData
-                .fromString("{\"id\":\"hurzafblj\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"toqcjmklja\"}")
+                .fromString("{\"id\":\"qrolfpf\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"gbquxigj\"}")
                 .toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("hurzafblj", model.id());
+        Assertions.assertEquals("qrolfpf", model.id());
         Assertions.assertEquals(SendingLogs.FALSE, model.sendingLogs());
-        Assertions.assertEquals("toqcjmklja", model.reasonForLogsStatus());
+        Assertions.assertEquals("gbquxigj", model.reasonForLogsStatus());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoredResourceInner model =
             new MonitoredResourceInner()
-                .withId("hurzafblj")
+                .withId("qrolfpf")
                 .withSendingLogs(SendingLogs.FALSE)
-                .withReasonForLogsStatus("toqcjmklja");
+                .withReasonForLogsStatus("gbquxigj");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("hurzafblj", model.id());
+        Assertions.assertEquals("qrolfpf", model.id());
         Assertions.assertEquals(SendingLogs.FALSE, model.sendingLogs());
-        Assertions.assertEquals("toqcjmklja", model.reasonForLogsStatus());
+        Assertions.assertEquals("gbquxigj", model.reasonForLogsStatus());
     }
 }
