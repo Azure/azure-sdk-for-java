@@ -162,6 +162,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
+                                       .withAggressiveProactiveConnectionDuration(this.proactiveContainerInitConfig != null ? this.proactiveContainerInitConfig.getAggressiveProactiveConnectionEstablishmentDuration() : Duration.ZERO)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -611,7 +612,6 @@ public final class CosmosAsyncClient implements Closeable {
                 Flux.empty(),
                 aggressiveProactiveConnectionEstablishmentDuration,
                 CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .doOnComplete(() -> proactiveOpenConnectionsProcessor.reInstantiateOpenConnectionsPublisherAndSubscribe())
                 .blockLast();
     }
 

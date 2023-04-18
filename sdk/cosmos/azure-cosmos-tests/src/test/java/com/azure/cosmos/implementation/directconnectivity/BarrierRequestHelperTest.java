@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.EnumSet;
@@ -179,7 +180,8 @@ public class BarrierRequestHelperTest {
                 null,
                 null,
                 new CosmosClientTelemetryConfig().sendClientTelemetryToService(false),
-                null
+                null,
+                Duration.ZERO
                 );
 
         ResourceType resourceType = ResourceType.DocumentCollection;

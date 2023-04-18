@@ -132,7 +132,25 @@ public class RntbdTransportClient extends TransportClient {
             configs.getSslContext(),
             addressResolver,
             clientTelemetry,
-            globalEndpointManager);
+            globalEndpointManager,
+            Duration.ZERO);
+    }
+
+    public RntbdTransportClient(
+            final Configs configs,
+            final ConnectionPolicy connectionPolicy,
+            final UserAgentContainer userAgent,
+            final IAddressResolver addressResolver,
+            final ClientTelemetry clientTelemetry,
+            final GlobalEndpointManager globalEndpointManager,
+            final Duration aggressiveProactiveConnectionEstablishmentDuration) {
+        this(
+            new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
+            configs.getSslContext(),
+            addressResolver,
+            clientTelemetry,
+            globalEndpointManager,
+            aggressiveProactiveConnectionEstablishmentDuration);
     }
 
     //  TODO:(kuthapar) This constructor sets the globalEndpointmManager to null, which is not ideal.
@@ -152,7 +170,8 @@ public class RntbdTransportClient extends TransportClient {
         final SslContext sslContext,
         final IAddressResolver addressResolver,
         final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager) {
+        final GlobalEndpointManager globalEndpointManager,
+        final Duration aggressiveProactiveConnectionEstablishmentDuration) {
 
         this.serverErrorInjector = new RntbdServerErrorInjector();
         this.endpointProvider = new RntbdServiceEndpoint.Provider(
@@ -162,7 +181,7 @@ public class RntbdTransportClient extends TransportClient {
             addressResolver,
             clientTelemetry,
             this.serverErrorInjector);
-        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider, aggressiveProactiveConnectionEstablishmentDuration);
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;

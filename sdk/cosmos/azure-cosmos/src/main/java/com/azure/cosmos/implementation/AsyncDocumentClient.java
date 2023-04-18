@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +100,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
+        private Duration aggressiveConnectionEstablishmentDuration = Duration.ZERO;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -235,6 +237,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withAggressiveProactiveConnectionDuration(Duration aggressiveConnectionEstablishmentDuration) {
+            this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -267,7 +274,8 @@ public interface AsyncDocumentClient {
                     state,
                     apiType,
                     clientTelemetryConfig,
-                    clientCorrelationId
+                    clientCorrelationId,
+                    aggressiveConnectionEstablishmentDuration
             );
 
             client.init(state, null);

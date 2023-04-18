@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -46,7 +45,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsAggressiveConcurrency(), Configs.getOpenConnectionsAggressiveConcurrency()));
     }
 
-    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
+    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveConnectionEstablishmentDuration) {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
         this.aggressivenessHint = new AtomicReference<>(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
@@ -56,6 +55,20 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         // start as a background task
         openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
+        Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
+                .just(1)
+                .delayElements(aggressiveConnectionEstablishmentDuration);
+
+        if (aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
+            backgroundOpenConnectionsSinkReInstantiationTask
+                    .doOnComplete(() -> reInstantiateOpenConnectionsPublisherAndSubscribe())
+                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                    .subscribe();
+        }
+    }
+
+    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
+        this(endpointProvider, Duration.ZERO);
     }
 
     public synchronized OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -167,7 +180,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void removeEndpointFromMonitor(String addressUriString, OpenConnectionResponse openConnectionResponse) {
-        logger.info("URI : {}", addressUriString);
         List<OpenConnectionTask> openConnectionTasks = this.endpointsUnderMonitorMap.remove(addressUriString);
 
         if (openConnectionTasks != null && !openConnectionTasks.isEmpty()) {
@@ -177,7 +189,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public void reInstantiateOpenConnectionsPublisherAndSubscribe() {
+    private void reInstantiateOpenConnectionsPublisherAndSubscribe() {
         logger.debug("In open connections task sink and concurrency reduction flow");
         this.forceDefensiveOpenConnections();
         this.instantiateOpenConnectionsPublisher();

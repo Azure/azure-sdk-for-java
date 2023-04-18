@@ -85,6 +85,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -194,6 +195,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
+    private Duration aggressiveProactiveConnectionEstablishmentDuration = Duration.ZERO;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -244,7 +246,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId) {
+                                String clientCorrelationId,
+                                Duration aggressiveProactiveConnectionEstablishmentDuration) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -262,6 +265,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -589,7 +593,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled,
             this.clientTelemetry,
-            this.globalEndpointManager);
+            this.globalEndpointManager,
+            this.aggressiveProactiveConnectionEstablishmentDuration);
 
         this.createStoreModel(true);
     }

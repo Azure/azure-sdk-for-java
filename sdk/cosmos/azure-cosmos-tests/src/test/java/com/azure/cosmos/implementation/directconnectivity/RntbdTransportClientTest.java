@@ -640,7 +640,7 @@ public final class RntbdTransportClientTest {
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
-        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null)) {
+        try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext, null, null, null, Duration.ZERO)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
                 new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
