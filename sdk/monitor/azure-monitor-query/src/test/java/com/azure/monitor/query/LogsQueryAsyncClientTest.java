@@ -9,8 +9,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link LogsQueryAsyncClient}.
  */
-public class LogsQueryAsyncClientTest extends TestBase {
+public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     private static final String WORKSPACE_ID = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_LOGS_WORKSPACE_ID", "d2d0e126-fa1e-4b0a-b647-250cdd471e68");

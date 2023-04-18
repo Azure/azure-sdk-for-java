@@ -6,8 +6,8 @@ package com.azure.monitor.query;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link MetricsQueryAsyncClient}.
  */
-public class MetricsQueryAsyncClientTest extends TestBase {
+public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
     private static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_METRICS_RESOURCE_URI",
                     "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics");
