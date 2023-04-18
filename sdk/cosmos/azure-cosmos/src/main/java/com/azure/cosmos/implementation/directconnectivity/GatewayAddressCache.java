@@ -877,15 +877,13 @@ public class GatewayAddressCache implements IAddressCache {
                         addressesNeedToValidation.add(address.getPhysicalUri());
                         break;
                     default:
-                        // the status of the replica can be changed by other flows
-                        // if when we reach here, the replica status has already been healthy, then there is no need to validate it again
-                        logger.info("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
                         break;
                 }
             }
         }
 
         if (addressesNeedToValidation.size() > 0) {
+            logger.debug("Addresses to validate: [{}]", addressesNeedToValidation);
             this.openConnectionsHandler
                     .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation)
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
