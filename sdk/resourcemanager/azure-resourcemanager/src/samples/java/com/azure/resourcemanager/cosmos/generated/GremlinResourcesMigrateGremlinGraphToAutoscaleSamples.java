@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for GremlinResources MigrateGremlinGraphToAutoscale. */
 public final class GremlinResourcesMigrateGremlinGraphToAutoscaleSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBGremlinGraphMigrateToAutoscale.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphMigrateToAutoscale.

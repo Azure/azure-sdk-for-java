@@ -95,7 +95,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentAnalysisClient getDocumentAnalysisClient(HttpClient httpClient,
                                                              DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
-            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
             false)
             .buildClient();
@@ -104,7 +104,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentModelAdministrationClient getDocumentModelAdminClient(HttpClient httpClient,
                                                                           DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
-            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
             false)
             .buildClient();
@@ -558,7 +558,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             SyncPoller<OperationResult, AnalyzeResult> syncPoller
                 = client.beginAnalyzeDocumentFromUrl("prebuilt-layout",
                     sourceUrl,
-                    new AnalyzeDocumentOptions().setLocale(""),
+                    new AnalyzeDocumentOptions().setLocale("de"),
                     Context.NONE)
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();

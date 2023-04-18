@@ -23,6 +23,15 @@ public final class PrivateLinkServiceConnectionStatus extends ExpandableStringEn
     public static final PrivateLinkServiceConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of PrivateLinkServiceConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLinkServiceConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateLinkServiceConnectionStatus from its string representation.
      *
      * @param name a name to look for.

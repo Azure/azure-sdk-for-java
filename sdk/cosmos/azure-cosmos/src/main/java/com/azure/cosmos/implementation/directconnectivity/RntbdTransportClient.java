@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -340,7 +341,8 @@ public class RntbdTransportClient extends TransportClient {
                 error = new GoneException(
                     lenientFormat("an unexpected %s occurred: %s", unexpectedError),
                     address,
-                    error instanceof Exception ? (Exception) error : new RuntimeException(error));
+                    error instanceof Exception ? (Exception) error : new RuntimeException(error),
+                    HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
             }
 
             assert error instanceof CosmosException;

@@ -13,16 +13,16 @@ public final class DefenderForContainersAwsOfferingCloudWatchToKinesisTests {
     public void testDeserialize() throws Exception {
         DefenderForContainersAwsOfferingCloudWatchToKinesis model =
             BinaryData
-                .fromString("{\"cloudRoleArn\":\"kcrr\"}")
+                .fromString("{\"cloudRoleArn\":\"zuodacpun\"}")
                 .toObject(DefenderForContainersAwsOfferingCloudWatchToKinesis.class);
-        Assertions.assertEquals("kcrr", model.cloudRoleArn());
+        Assertions.assertEquals("zuodacpun", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersAwsOfferingCloudWatchToKinesis model =
-            new DefenderForContainersAwsOfferingCloudWatchToKinesis().withCloudRoleArn("kcrr");
+            new DefenderForContainersAwsOfferingCloudWatchToKinesis().withCloudRoleArn("zuodacpun");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersAwsOfferingCloudWatchToKinesis.class);
-        Assertions.assertEquals("kcrr", model.cloudRoleArn());
+        Assertions.assertEquals("zuodacpun", model.cloudRoleArn());
     }
 }

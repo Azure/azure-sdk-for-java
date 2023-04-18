@@ -31,7 +31,7 @@ public final class AllowedConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"calculatedDateTime\":\"2021-09-12T09:57:29Z\",\"connectableResources\":[]},\"location\":\"udoejtighsxjp\",\"id\":\"tnkqbala\",\"name\":\"ovu\",\"type\":\"wxhmehjnhjiot\"}";
+            "{\"properties\":{\"calculatedDateTime\":\"2021-09-15T08:15:42Z\",\"connectableResources\":[]},\"location\":\"ktyhhmvfxl\",\"id\":\"pjajodmkrrwe\",\"name\":\"gqvqokqluj\",\"type\":\"gira\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,8 @@ public final class AllowedConnectionsGetWithResponseMockTests {
         AllowedConnectionsResource response =
             manager
                 .allowedConnections()
-                .getWithResponse("laslgacizux", "r", ConnectionType.INTERNAL, com.azure.core.util.Context.NONE)
+                .getWithResponse(
+                    "rouigdmfivjqte", "dqqigdydkghpc", ConnectionType.EXTERNAL, com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

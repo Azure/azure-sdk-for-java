@@ -33,7 +33,7 @@ public final class SoftwareInventoriesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"deviceId\":\"wmejjqhd\",\"osPlatform\":\"vmqxi\",\"vendor\":\"okyfoz\",\"softwareName\":\"nzxbyp\",\"version\":\"pgaixwrgrkkderf\",\"endOfSupportStatus\":\"versionNoLongerSupported\",\"endOfSupportDate\":\"ikwepwogggicw\",\"numberOfKnownVulnerabilities\":1352786731,\"firstSeenAt\":\"fmcqb\"},\"id\":\"udzpgchz\",\"name\":\"gfqumjdjxhzghgo\",\"type\":\"kynrceqavf\"}]}";
+            "{\"value\":[{\"properties\":{\"deviceId\":\"pxmib\",\"osPlatform\":\"nupoyryefqmwovyz\",\"vendor\":\"lnomfpb\",\"softwareName\":\"eegvyieztkutnj\",\"version\":\"l\",\"endOfSupportStatus\":\"noLongerSupported\",\"endOfSupportDate\":\"ehyh\",\"numberOfKnownVulnerabilities\":1937548392,\"firstSeenAt\":\"dui\"},\"id\":\"vulxfar\",\"name\":\"rvjlgd\",\"type\":\"zvj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,15 @@ public final class SoftwareInventoriesListMockTests {
 
         PagedIterable<Software> response = manager.softwareInventories().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wmejjqhd", response.iterator().next().deviceId());
-        Assertions.assertEquals("vmqxi", response.iterator().next().osPlatform());
-        Assertions.assertEquals("okyfoz", response.iterator().next().vendor());
-        Assertions.assertEquals("nzxbyp", response.iterator().next().softwareName());
-        Assertions.assertEquals("pgaixwrgrkkderf", response.iterator().next().version());
+        Assertions.assertEquals("pxmib", response.iterator().next().deviceId());
+        Assertions.assertEquals("nupoyryefqmwovyz", response.iterator().next().osPlatform());
+        Assertions.assertEquals("lnomfpb", response.iterator().next().vendor());
+        Assertions.assertEquals("eegvyieztkutnj", response.iterator().next().softwareName());
+        Assertions.assertEquals("l", response.iterator().next().version());
         Assertions
-            .assertEquals(
-                EndOfSupportStatus.VERSION_NO_LONGER_SUPPORTED, response.iterator().next().endOfSupportStatus());
-        Assertions.assertEquals("ikwepwogggicw", response.iterator().next().endOfSupportDate());
-        Assertions.assertEquals(1352786731, response.iterator().next().numberOfKnownVulnerabilities());
-        Assertions.assertEquals("fmcqb", response.iterator().next().firstSeenAt());
+            .assertEquals(EndOfSupportStatus.NO_LONGER_SUPPORTED, response.iterator().next().endOfSupportStatus());
+        Assertions.assertEquals("ehyh", response.iterator().next().endOfSupportDate());
+        Assertions.assertEquals(1937548392, response.iterator().next().numberOfKnownVulnerabilities());
+        Assertions.assertEquals("dui", response.iterator().next().firstSeenAt());
     }
 }

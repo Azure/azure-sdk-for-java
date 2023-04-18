@@ -34,7 +34,7 @@ public final class AutomationsValidateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"isValid\":true,\"message\":\"dh\"}";
+        String responseStr = "{\"isValid\":false,\"message\":\"yrnskb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,21 +66,22 @@ public final class AutomationsValidateWithResponseMockTests {
             manager
                 .automations()
                 .validateWithResponse(
-                    "pg",
-                    "ttbas",
+                    "azrhxudd",
+                    "mdtff",
                     new AutomationInner()
-                        .withLocation("kixvvlwy")
-                        .withTags(mapOf("zfe", "bfqvzfjmspu"))
-                        .withDescription("ap")
-                        .withIsEnabled(false)
+                        .withLocation("kwtjawhva")
+                        .withTags(
+                            mapOf("vmyolcaym", "fqqdl", "z", "chtvsnvlaqd", "othymgobl", "zawatuwqkokbc", "gwi", "msn"))
+                        .withDescription("mrkkhmwd")
+                        .withIsEnabled(true)
                         .withScopes(Arrays.asList())
                         .withSources(Arrays.asList())
                         .withActions(Arrays.asList()),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(true, response.isValid());
-        Assertions.assertEquals("dh", response.message());
+        Assertions.assertEquals(false, response.isValid());
+        Assertions.assertEquals("yrnskb", response.message());
     }
 
     @SuppressWarnings("unchecked")

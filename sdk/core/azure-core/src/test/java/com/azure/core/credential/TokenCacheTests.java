@@ -13,8 +13,8 @@ import reactor.test.scheduler.VirtualTimeScheduler;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -23,14 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TokenCacheTests {
-    private static final Random RANDOM = new Random();
 
     @BeforeEach
     void beforeEach() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
     @Test
-    public void testOnlyOneThreadRefreshesToken() throws Exception {
+    public void testOnlyOneThreadRefreshesToken() {
         AtomicLong refreshes = new AtomicLong(0);
 
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
@@ -79,13 +78,14 @@ public class TokenCacheTests {
     }
 
     private Mono<AccessToken> remoteGetTokenThatExpiresSoonAsync() {
-        return Mono.delay(Duration.ofMillis(1000)).map(l -> new Token(Integer.toString(RANDOM.nextInt(100)), 0));
+        return Mono.delay(Duration.ofMillis(1000))
+            .map(l -> new Token(Integer.toString(ThreadLocalRandom.current().nextInt(100)), 0));
     }
 
     // First token takes latency seconds, and adds 1 sec every subsequent call
     private Mono<AccessToken> incrementalRemoteGetTokenAsync(AtomicInteger latency) {
         return Mono.delay(Duration.ofSeconds(latency.getAndIncrement()))
-            .map(l -> new Token(Integer.toString(RANDOM.nextInt(100))));
+            .map(l -> new Token(Integer.toString(ThreadLocalRandom.current().nextInt(100))));
     }
 
     private static class Token extends AccessToken {

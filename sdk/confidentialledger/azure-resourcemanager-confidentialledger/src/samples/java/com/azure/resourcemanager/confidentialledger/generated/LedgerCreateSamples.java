@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for Ledger Create. */
 public final class LedgerCreateSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/stable/2022-05-13/examples/ConfidentialLedger_Create.json
+     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Create.json
      */
     /**
      * Sample code: ConfidentialLedgerCreate.
@@ -28,8 +28,8 @@ public final class LedgerCreateSamples {
         manager
             .ledgers()
             .define("DummyLedgerName")
-            .withExistingResourceGroup("DummyResourceGroupName")
             .withRegion("EastUS")
+            .withExistingResourceGroup("DummyResourceGroupName")
             .withTags(mapOf("additionalProps1", "additional properties"))
             .withProperties(
                 new LedgerProperties()

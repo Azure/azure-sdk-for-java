@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static com.azure.core.management.implementation.polling.Util.AZURE_ASYNC_OPERATION;
 
@@ -19,7 +20,7 @@ public class UtilTests {
     private final ClientLogger logger = new ClientLogger(UtilTests.class);
 
     @Test
-    public void testGetURL() throws MalformedURLException {
+    public void testGetURL() throws MalformedURLException, URISyntaxException {
         String asyncOpUrl = "https://management.azure.com/subscriptions/000/providers/Microsoft.Network/locations/eastus/operations/123";
         String locationUrl = "https://management.azure.com/subscriptions/000/resourceGroups/rg86829b7a87d74/providers/Microsoft.Search/searchServices/ss3edfb54d";
 
@@ -27,8 +28,8 @@ public class UtilTests {
         headers.set(AZURE_ASYNC_OPERATION, asyncOpUrl);
         headers.set(HttpHeaderName.LOCATION, locationUrl);
 
-        Assertions.assertEquals(new URL(asyncOpUrl), Util.getAzureAsyncOperationUrl(headers, logger));
-        Assertions.assertEquals(new URL(locationUrl), Util.getLocationUrl(headers, logger, true));
+        Assertions.assertEquals(new URI(asyncOpUrl).toURL(), Util.getAzureAsyncOperationUrl(headers, logger));
+        Assertions.assertEquals(new URI(locationUrl).toURL(), Util.getLocationUrl(headers, logger, true));
     }
 
     @Test

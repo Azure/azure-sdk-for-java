@@ -12,7 +12,7 @@ public final class DefenderForDevOpsAzureDevOpsOfferingTests {
     public void testDeserialize() throws Exception {
         DefenderForDevOpsAzureDevOpsOffering model =
             BinaryData
-                .fromString("{\"offeringType\":\"DefenderForDevOpsAzureDevOps\",\"description\":\"lwe\"}")
+                .fromString("{\"offeringType\":\"DefenderForDevOpsAzureDevOps\",\"description\":\"rb\"}")
                 .toObject(DefenderForDevOpsAzureDevOpsOffering.class);
     }
 

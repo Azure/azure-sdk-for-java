@@ -23,6 +23,10 @@ public final class ContainerGroupSubnetId {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ContainerGroupSubnetId class. */
+    public ContainerGroupSubnetId() {
+    }
+
     /**
      * Get the id property: Resource ID of virtual network and subnet.
      *

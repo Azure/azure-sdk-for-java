@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,114 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2023-04-18)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.Extension` was added
+
+* `models.Code` was added
+
+* `models.ResourceIdentityType` was added
+
+* `models.DefenderFoDatabasesAwsOfferingDatabasesDspm` was added
+
+* `models.GitlabScopeEnvironmentData` was added
+
+* `models.DefenderForServersAwsOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.SecurityOperators` was added
+
+* `models.SecurityOperatorList` was added
+
+* `models.DefenderForDevOpsGitLabOffering` was added
+
+* `models.DefenderCspmAwsOfferingDatabasesDspm` was added
+
+* `models.DefenderForServersGcpOfferingVmScanners` was added
+
+* `models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.IsEnabled` was added
+
+* `models.Identity` was added
+
+* `models.DefenderForServersGcpOfferingVmScannersConfiguration` was added
+
+* `models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.SecurityOperator` was added
+
+* `models.DefenderCspmAwsOfferingDataSensitivityDiscovery` was added
+
+* `models.CspmMonitorGitLabOffering` was added
+
+* `models.OperationStatus` was added
+
+#### `models.GcpOrganizationalDataOrganization` was modified
+
+* `organizationName()` was added
+
+#### `models.DefenderForServersGcpOffering` was modified
+
+* `vmScanners()` was added
+* `withVmScanners(models.DefenderForServersGcpOfferingVmScanners)` was added
+
+#### `models.Pricing` was modified
+
+* `extensions()` was added
+* `enablementTime()` was added
+
+#### `models.DefenderForServersGcpOfferingArcAutoProvisioning` was modified
+
+* `configuration()` was added
+* `withConfiguration(models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration)` was added
+
+#### `models.AwsEnvironmentData` was modified
+
+* `withRegions(java.util.List)` was added
+* `regions()` was added
+* `accountName()` was added
+
+#### `SecurityManager` was modified
+
+* `securityOperators()` was added
+
+#### `models.DefenderForDatabasesGcpOfferingArcAutoProvisioning` was modified
+
+* `configuration()` was added
+* `withConfiguration(models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration)` was added
+
+#### `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioning` was modified
+
+* `withConfiguration(models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration)` was added
+* `configuration()` was added
+
+#### `models.DefenderFoDatabasesAwsOffering` was modified
+
+* `withDatabasesDspm(models.DefenderFoDatabasesAwsOfferingDatabasesDspm)` was added
+* `databasesDspm()` was added
+
+#### `models.GcpProjectDetails` was modified
+
+* `projectName()` was added
+
+#### `models.DefenderCspmAwsOffering` was modified
+
+* `dataSensitivityDiscovery()` was added
+* `withDataSensitivityDiscovery(models.DefenderCspmAwsOfferingDataSensitivityDiscovery)` was added
+* `withDatabasesDspm(models.DefenderCspmAwsOfferingDatabasesDspm)` was added
+* `databasesDspm()` was added
+
+#### `models.DefenderForServersAwsOfferingArcAutoProvisioning` was modified
+
+* `withConfiguration(models.DefenderForServersAwsOfferingArcAutoProvisioningConfiguration)` was added
+* `configuration()` was added
 
 ## 1.0.0-beta.4 (2023-03-21)
 

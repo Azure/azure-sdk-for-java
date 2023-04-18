@@ -22,24 +22,24 @@ public final class ScanResultInnerTests {
         ScanResultInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"ruleId\":\"ejjjkxybwfdb\",\"status\":\"NonFinding\",\"isTrimmed\":true,\"queryResults\":[[\"vkzykjtjknsxf\",\"us\"]],\"remediation\":{\"description\":\"pkupnq\",\"scripts\":[\"jfbp\",\"uwxeoiojfizf\",\"vkjzwfbcyaykm\"],\"automated\":false,\"portalLink\":\"bfw\"},\"baselineAdjustedResult\":{\"status\":\"InternalError\",\"resultsNotInBaseline\":[[],[],[],[]],\"resultsOnlyInBaseline\":[[]]},\"ruleMetadata\":{\"ruleId\":\"xkrplbjaz\",\"severity\":\"Medium\",\"category\":\"viyoypsuhbrnnhjx\",\"ruleType\":\"Binary\",\"title\":\"hqkb\",\"description\":\"etpozycyqiq\",\"rationale\":\"gfsetzlexbsfled\",\"benchmarkReferences\":[]}},\"id\":\"pziuwfbzkkdtnh\",\"name\":\"sycljsel\",\"type\":\"kpbafvafhl\"}")
+                    "{\"properties\":{\"ruleId\":\"drrslblxydk\",\"status\":\"InternalError\",\"isTrimmed\":true,\"queryResults\":[[\"wkgfbqljnqkh\",\"chocokulehur\",\"lrqff\"],[\"eyu\",\"kphyjdxrav\",\"uqd\"],[\"xmrgchbapxkiy\",\"jjk\",\"ajb\"]],\"remediation\":{\"description\":\"gd\",\"scripts\":[\"ioycbl\",\"vpmclujyxkyxlz\",\"sjgkzzltafh\",\"zffovwmbjl\"],\"automated\":true,\"portalLink\":\"zpgvdwnapfd\"},\"baselineAdjustedResult\":{\"status\":\"Finding\",\"resultsNotInBaseline\":[[],[],[],[]],\"resultsOnlyInBaseline\":[[]]},\"ruleMetadata\":{\"ruleId\":\"jtks\",\"severity\":\"Medium\",\"category\":\"gqy\",\"ruleType\":\"BaselineExpected\",\"title\":\"eyqrhv\",\"description\":\"ldotjvdkwisws\",\"rationale\":\"kjtasb\",\"benchmarkReferences\":[]}},\"id\":\"pkxkdtxfk\",\"name\":\"dlqvtwknvg\",\"type\":\"mb\"}")
                 .toObject(ScanResultInner.class);
-        Assertions.assertEquals("ejjjkxybwfdb", model.properties().ruleId());
-        Assertions.assertEquals(RuleStatus.NON_FINDING, model.properties().status());
+        Assertions.assertEquals("drrslblxydk", model.properties().ruleId());
+        Assertions.assertEquals(RuleStatus.INTERNAL_ERROR, model.properties().status());
         Assertions.assertEquals(true, model.properties().isTrimmed());
-        Assertions.assertEquals("vkzykjtjknsxf", model.properties().queryResults().get(0).get(0));
-        Assertions.assertEquals("pkupnq", model.properties().remediation().description());
-        Assertions.assertEquals("jfbp", model.properties().remediation().scripts().get(0));
-        Assertions.assertEquals(false, model.properties().remediation().automated());
-        Assertions.assertEquals("bfw", model.properties().remediation().portalLink());
-        Assertions.assertEquals(RuleStatus.INTERNAL_ERROR, model.properties().baselineAdjustedResult().status());
-        Assertions.assertEquals("xkrplbjaz", model.properties().ruleMetadata().ruleId());
+        Assertions.assertEquals("wkgfbqljnqkh", model.properties().queryResults().get(0).get(0));
+        Assertions.assertEquals("gd", model.properties().remediation().description());
+        Assertions.assertEquals("ioycbl", model.properties().remediation().scripts().get(0));
+        Assertions.assertEquals(true, model.properties().remediation().automated());
+        Assertions.assertEquals("zpgvdwnapfd", model.properties().remediation().portalLink());
+        Assertions.assertEquals(RuleStatus.FINDING, model.properties().baselineAdjustedResult().status());
+        Assertions.assertEquals("jtks", model.properties().ruleMetadata().ruleId());
         Assertions.assertEquals(RuleSeverity.MEDIUM, model.properties().ruleMetadata().severity());
-        Assertions.assertEquals("viyoypsuhbrnnhjx", model.properties().ruleMetadata().category());
-        Assertions.assertEquals(RuleType.BINARY, model.properties().ruleMetadata().ruleType());
-        Assertions.assertEquals("hqkb", model.properties().ruleMetadata().title());
-        Assertions.assertEquals("etpozycyqiq", model.properties().ruleMetadata().description());
-        Assertions.assertEquals("gfsetzlexbsfled", model.properties().ruleMetadata().rationale());
+        Assertions.assertEquals("gqy", model.properties().ruleMetadata().category());
+        Assertions.assertEquals(RuleType.BASELINE_EXPECTED, model.properties().ruleMetadata().ruleType());
+        Assertions.assertEquals("eyqrhv", model.properties().ruleMetadata().title());
+        Assertions.assertEquals("ldotjvdkwisws", model.properties().ruleMetadata().description());
+        Assertions.assertEquals("kjtasb", model.properties().ruleMetadata().rationale());
     }
 
     @org.junit.jupiter.api.Test
@@ -48,48 +48,53 @@ public final class ScanResultInnerTests {
             new ScanResultInner()
                 .withProperties(
                     new ScanResultProperties()
-                        .withRuleId("ejjjkxybwfdb")
-                        .withStatus(RuleStatus.NON_FINDING)
+                        .withRuleId("drrslblxydk")
+                        .withStatus(RuleStatus.INTERNAL_ERROR)
                         .withIsTrimmed(true)
-                        .withQueryResults(Arrays.asList(Arrays.asList("vkzykjtjknsxf", "us")))
+                        .withQueryResults(
+                            Arrays
+                                .asList(
+                                    Arrays.asList("wkgfbqljnqkh", "chocokulehur", "lrqff"),
+                                    Arrays.asList("eyu", "kphyjdxrav", "uqd"),
+                                    Arrays.asList("xmrgchbapxkiy", "jjk", "ajb")))
                         .withRemediation(
                             new Remediation()
-                                .withDescription("pkupnq")
-                                .withScripts(Arrays.asList("jfbp", "uwxeoiojfizf", "vkjzwfbcyaykm"))
-                                .withAutomated(false)
-                                .withPortalLink("bfw"))
+                                .withDescription("gd")
+                                .withScripts(Arrays.asList("ioycbl", "vpmclujyxkyxlz", "sjgkzzltafh", "zffovwmbjl"))
+                                .withAutomated(true)
+                                .withPortalLink("zpgvdwnapfd"))
                         .withBaselineAdjustedResult(
                             new BaselineAdjustedResult()
-                                .withStatus(RuleStatus.INTERNAL_ERROR)
+                                .withStatus(RuleStatus.FINDING)
                                 .withResultsNotInBaseline(
                                     Arrays.asList(Arrays.asList(), Arrays.asList(), Arrays.asList(), Arrays.asList()))
                                 .withResultsOnlyInBaseline(Arrays.asList(Arrays.asList())))
                         .withRuleMetadata(
                             new VaRule()
-                                .withRuleId("xkrplbjaz")
+                                .withRuleId("jtks")
                                 .withSeverity(RuleSeverity.MEDIUM)
-                                .withCategory("viyoypsuhbrnnhjx")
-                                .withRuleType(RuleType.BINARY)
-                                .withTitle("hqkb")
-                                .withDescription("etpozycyqiq")
-                                .withRationale("gfsetzlexbsfled")
+                                .withCategory("gqy")
+                                .withRuleType(RuleType.BASELINE_EXPECTED)
+                                .withTitle("eyqrhv")
+                                .withDescription("ldotjvdkwisws")
+                                .withRationale("kjtasb")
                                 .withBenchmarkReferences(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ScanResultInner.class);
-        Assertions.assertEquals("ejjjkxybwfdb", model.properties().ruleId());
-        Assertions.assertEquals(RuleStatus.NON_FINDING, model.properties().status());
+        Assertions.assertEquals("drrslblxydk", model.properties().ruleId());
+        Assertions.assertEquals(RuleStatus.INTERNAL_ERROR, model.properties().status());
         Assertions.assertEquals(true, model.properties().isTrimmed());
-        Assertions.assertEquals("vkzykjtjknsxf", model.properties().queryResults().get(0).get(0));
-        Assertions.assertEquals("pkupnq", model.properties().remediation().description());
-        Assertions.assertEquals("jfbp", model.properties().remediation().scripts().get(0));
-        Assertions.assertEquals(false, model.properties().remediation().automated());
-        Assertions.assertEquals("bfw", model.properties().remediation().portalLink());
-        Assertions.assertEquals(RuleStatus.INTERNAL_ERROR, model.properties().baselineAdjustedResult().status());
-        Assertions.assertEquals("xkrplbjaz", model.properties().ruleMetadata().ruleId());
+        Assertions.assertEquals("wkgfbqljnqkh", model.properties().queryResults().get(0).get(0));
+        Assertions.assertEquals("gd", model.properties().remediation().description());
+        Assertions.assertEquals("ioycbl", model.properties().remediation().scripts().get(0));
+        Assertions.assertEquals(true, model.properties().remediation().automated());
+        Assertions.assertEquals("zpgvdwnapfd", model.properties().remediation().portalLink());
+        Assertions.assertEquals(RuleStatus.FINDING, model.properties().baselineAdjustedResult().status());
+        Assertions.assertEquals("jtks", model.properties().ruleMetadata().ruleId());
         Assertions.assertEquals(RuleSeverity.MEDIUM, model.properties().ruleMetadata().severity());
-        Assertions.assertEquals("viyoypsuhbrnnhjx", model.properties().ruleMetadata().category());
-        Assertions.assertEquals(RuleType.BINARY, model.properties().ruleMetadata().ruleType());
-        Assertions.assertEquals("hqkb", model.properties().ruleMetadata().title());
-        Assertions.assertEquals("etpozycyqiq", model.properties().ruleMetadata().description());
-        Assertions.assertEquals("gfsetzlexbsfled", model.properties().ruleMetadata().rationale());
+        Assertions.assertEquals("gqy", model.properties().ruleMetadata().category());
+        Assertions.assertEquals(RuleType.BASELINE_EXPECTED, model.properties().ruleMetadata().ruleType());
+        Assertions.assertEquals("eyqrhv", model.properties().ruleMetadata().title());
+        Assertions.assertEquals("ldotjvdkwisws", model.properties().ruleMetadata().description());
+        Assertions.assertEquals("kjtasb", model.properties().ruleMetadata().rationale());
     }
 }

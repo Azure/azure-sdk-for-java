@@ -32,7 +32,7 @@ public final class SecurityConnectorApplicationOperationsGetWithResponseMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"eeprnejzl\",\"description\":\"aszfjs\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"databduxapgrcq\",\"databmvrdjomlnwsbv\",\"datadls\",\"datalxkqesdfeds\"]},\"id\":\"gzancoinmphy\",\"name\":\"cqidkltvdhqnufbx\",\"type\":\"e\"}";
+            "{\"properties\":{\"displayName\":\"gtqcumecsaaqgoq\",\"description\":\"iuycsbskowk\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datazhrbkhtmqo\",\"dataiuasfgq\",\"dataucyhfaimq\"]},\"id\":\"druozk\",\"name\":\"yfpeoehgfmqmsk\",\"type\":\"ixvlz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class SecurityConnectorApplicationOperationsGetWithResponseMockTest
         Application response =
             manager
                 .securityConnectorApplicationOperations()
-                .getWithResponse("wrqkza", "bun", "paklw", com.azure.core.util.Context.NONE)
+                .getWithResponse("hydt", "aczkf", "fatgawphnski", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("eeprnejzl", response.displayName());
-        Assertions.assertEquals("aszfjs", response.description());
+        Assertions.assertEquals("gtqcumecsaaqgoq", response.displayName());
+        Assertions.assertEquals("iuycsbskowk", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

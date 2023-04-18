@@ -6,12 +6,15 @@ package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerinstance.models.ConfidentialComputeProperties;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupPriority;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSku;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
+import com.azure.resourcemanager.containerinstance.models.DeploymentExtensionSpec;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
 import com.azure.resourcemanager.containerinstance.models.EncryptionProperties;
 import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
@@ -26,8 +29,7 @@ import java.util.List;
 @Fluent
 public final class ContainerGroupProperties {
     /*
-     * The provisioning state of the container group. This only appears in the
-     * response.
+     * The provisioning state of the container group. This only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -39,8 +41,7 @@ public final class ContainerGroupProperties {
     private List<Container> containers;
 
     /*
-     * The image registry credentials by which the container group is created
-     * from.
+     * The image registry credentials by which the container group is created from.
      */
     @JsonProperty(value = "imageRegistryCredentials")
     private List<ImageRegistryCredential> imageRegistryCredentials;
@@ -62,15 +63,13 @@ public final class ContainerGroupProperties {
     private IpAddress ipAddress;
 
     /*
-     * The operating system type required by the containers in the container
-     * group.
+     * The operating system type required by the containers in the container group.
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
-     * The list of volumes that can be mounted by containers in this container
-     * group.
+     * The list of volumes that can be mounted by containers in this container group.
      */
     @JsonProperty(value = "volumes")
     private List<Volume> volumes;
@@ -116,6 +115,28 @@ public final class ContainerGroupProperties {
      */
     @JsonProperty(value = "initContainers")
     private List<InitContainerDefinition> initContainers;
+
+    /*
+     * extensions used by virtual kubelet
+     */
+    @JsonProperty(value = "extensions")
+    private List<DeploymentExtensionSpec> extensions;
+
+    /*
+     * The properties for confidential container group
+     */
+    @JsonProperty(value = "confidentialComputeProperties")
+    private ConfidentialComputeProperties confidentialComputeProperties;
+
+    /*
+     * The priority of the container group.
+     */
+    @JsonProperty(value = "priority")
+    private ContainerGroupPriority priority;
+
+    /** Creates an instance of ContainerGroupProperties class. */
+    public ContainerGroupProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the container group. This only appears in the
@@ -382,6 +403,67 @@ public final class ContainerGroupProperties {
     }
 
     /**
+     * Get the extensions property: extensions used by virtual kubelet.
+     *
+     * @return the extensions value.
+     */
+    public List<DeploymentExtensionSpec> extensions() {
+        return this.extensions;
+    }
+
+    /**
+     * Set the extensions property: extensions used by virtual kubelet.
+     *
+     * @param extensions the extensions value to set.
+     * @return the ContainerGroupProperties object itself.
+     */
+    public ContainerGroupProperties withExtensions(List<DeploymentExtensionSpec> extensions) {
+        this.extensions = extensions;
+        return this;
+    }
+
+    /**
+     * Get the confidentialComputeProperties property: The properties for confidential container group.
+     *
+     * @return the confidentialComputeProperties value.
+     */
+    public ConfidentialComputeProperties confidentialComputeProperties() {
+        return this.confidentialComputeProperties;
+    }
+
+    /**
+     * Set the confidentialComputeProperties property: The properties for confidential container group.
+     *
+     * @param confidentialComputeProperties the confidentialComputeProperties value to set.
+     * @return the ContainerGroupProperties object itself.
+     */
+    public ContainerGroupProperties withConfidentialComputeProperties(
+        ConfidentialComputeProperties confidentialComputeProperties) {
+        this.confidentialComputeProperties = confidentialComputeProperties;
+        return this;
+    }
+
+    /**
+     * Get the priority property: The priority of the container group.
+     *
+     * @return the priority value.
+     */
+    public ContainerGroupPriority priority() {
+        return this.priority;
+    }
+
+    /**
+     * Set the priority property: The priority of the container group.
+     *
+     * @param priority the priority value to set.
+     * @return the ContainerGroupProperties object itself.
+     */
+    public ContainerGroupProperties withPriority(ContainerGroupPriority priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -426,6 +508,12 @@ public final class ContainerGroupProperties {
         }
         if (initContainers() != null) {
             initContainers().forEach(e -> e.validate());
+        }
+        if (extensions() != null) {
+            extensions().forEach(e -> e.validate());
+        }
+        if (confidentialComputeProperties() != null) {
+            confidentialComputeProperties().validate();
         }
     }
 
