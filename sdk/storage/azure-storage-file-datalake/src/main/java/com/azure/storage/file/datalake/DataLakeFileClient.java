@@ -1114,7 +1114,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
      * to the file.
-     * @throws {@link DataLakeStorageException} If a storage service error occurred.
+     * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileOutputStreamResult getOutputStream() {
         return getOutputStream(null);
@@ -1130,7 +1130,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param options {@link DataLakeFileOutputStreamOptions}
      * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
      * to the file.
-     * @throws {@link DataLakeStorageException} If a storage service error occurred.
+     * @throws DataLakeStorageException If a storage service error occurred.
      */
     public DataLakeFileOutputStreamResult getOutputStream(DataLakeFileOutputStreamOptions options) {
         BlockBlobOutputStreamOptions convertedOptions = Transforms.toBlockBlobOutputStreamOptions(options);
