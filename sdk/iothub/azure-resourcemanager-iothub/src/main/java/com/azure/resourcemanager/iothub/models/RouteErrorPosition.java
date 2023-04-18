@@ -22,6 +22,10 @@ public final class RouteErrorPosition {
     @JsonProperty(value = "column")
     private Integer column;
 
+    /** Creates an instance of RouteErrorPosition class. */
+    public RouteErrorPosition() {
+    }
+
     /**
      * Get the line property: Line where the route error happened.
      *

@@ -31,6 +31,10 @@ public final class CloudToDeviceProperties {
     @JsonProperty(value = "feedback")
     private FeedbackProperties feedback;
 
+    /** Creates an instance of CloudToDeviceProperties class. */
+    public CloudToDeviceProperties() {
+    }
+
     /**
      * Get the maxDeliveryCount property: The max delivery count for cloud-to-device messages in the device queue. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#cloud-to-device-messages.
