@@ -1,69 +1,4 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c7600811-014c-428c-84cd-cc30cd2ed6b9",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "67",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "fbd30e17-8eb7-47f6-a1f0-704a30c2261b",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/fbd30e17-8eb7-47f6-a1f0-704a30c2261b?api-version=2022-08-31",
-      "Date" : "Fri, 19 Aug 2022 22:35:00 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/fbd30e17-8eb7-47f6-a1f0-704a30c2261b?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5e86174f-4464-48eb-b160-bcd681c6256e"
-    },
-    "Response" : {
-      "content-length" : "400",
-      "x-envoy-upstream-service-time" : "34",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8f9afd48-0eb0-43ff-b92b-7afb5a0d1ca0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-19T22:35:00Z\",\"lastUpdatedDateTime\":\"2022-08-19T22:35:04Z\",\"analyzeResult\":{\"apiVersion\":\"2022-08-31\",\"modelId\":\"prebuilt-layout\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}],\"kind\":\"document\"}],\"tables\":[],\"styles\":[]}}",
-      "Date" : "Fri, 19 Aug 2022 22:35:06 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-layout/analyzeResults/fbd30e17-8eb7-47f6-a1f0-704a30c2261b?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "efbbe5fe-8157-479c-b8de-61d576a11bcd"
-    },
-    "Response" : {
-      "content-length" : "400",
-      "x-envoy-upstream-service-time" : "30",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dfc14055-8371-45a8-86ce-91396b34e9e4",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-19T22:35:00Z\",\"lastUpdatedDateTime\":\"2022-08-19T22:35:04Z\",\"analyzeResult\":{\"apiVersion\":\"2022-08-31\",\"modelId\":\"prebuilt-layout\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}],\"kind\":\"document\"}],\"tables\":[],\"styles\":[]}}",
-      "Date" : "Fri, 19 Aug 2022 22:35:06 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-}
-=======
   "Entries": [
     {
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-layout:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
@@ -233,4 +168,3 @@
   ],
   "Variables": {}
 }
->>>>>>> 0b34d9fee8d ( [Form Recognizer] Re-record with Test proxy (#34436))

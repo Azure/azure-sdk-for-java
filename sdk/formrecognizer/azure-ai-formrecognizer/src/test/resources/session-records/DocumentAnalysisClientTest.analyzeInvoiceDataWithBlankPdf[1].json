@@ -1,69 +1,4 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7a4023a9-6dc4-47a0-94fe-a66e067f73a3",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "66",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8b84db5b-22c1-44da-9de6-321be1d599b5",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice/analyzeResults/8b84db5b-22c1-44da-9de6-321be1d599b5?api-version=2022-08-31",
-      "Date" : "Fri, 19 Aug 2022 22:36:15 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice/analyzeResults/8b84db5b-22c1-44da-9de6-321be1d599b5?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "85afa640-34c2-4900-98ab-a1b631ccd31e"
-    },
-    "Response" : {
-      "content-length" : "435",
-      "x-envoy-upstream-service-time" : "59",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "73be2b07-6433-4647-afee-b96b03a309f9",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-19T22:36:15Z\",\"lastUpdatedDateTime\":\"2022-08-19T22:36:20Z\",\"analyzeResult\":{\"apiVersion\":\"2022-08-31\",\"modelId\":\"prebuilt-invoice\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}],\"kind\":\"document\"}],\"tables\":[],\"keyValuePairs\":[],\"styles\":[],\"documents\":[]}}",
-      "Date" : "Fri, 19 Aug 2022 22:36:20 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-invoice/analyzeResults/8b84db5b-22c1-44da-9de6-321be1d599b5?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e8d00feb-1894-4a30-876f-fed3eb212e6e"
-    },
-    "Response" : {
-      "content-length" : "435",
-      "x-envoy-upstream-service-time" : "35",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8752f4ac-fc9d-4a9d-9dfb-c10e55608961",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-19T22:36:15Z\",\"lastUpdatedDateTime\":\"2022-08-19T22:36:20Z\",\"analyzeResult\":{\"apiVersion\":\"2022-08-31\",\"modelId\":\"prebuilt-invoice\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}],\"kind\":\"document\"}],\"tables\":[],\"keyValuePairs\":[],\"styles\":[],\"documents\":[]}}",
-      "Date" : "Fri, 19 Aug 2022 22:36:20 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-}
-=======
   "Entries": [
     {
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-invoice:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
@@ -353,4 +288,3 @@
   ],
   "Variables": {}
 }
->>>>>>> 0b34d9fee8d ( [Form Recognizer] Re-record with Test proxy (#34436))

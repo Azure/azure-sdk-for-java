@@ -1,69 +1,4 @@
 {
-<<<<<<< HEAD
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-receipt:analyze?stringIndexType=utf16CodeUnit&api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6b74043a-ff3a-499c-8b52-a5d83aed8a99",
-      "Content-Type" : "application/octet-stream"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "56",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "511e9057-6893-474a-9749-556b949b372b",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Operation-Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/511e9057-6893-474a-9749-556b949b372b?api-version=2022-08-31",
-      "Date" : "Fri, 19 Aug 2022 22:36:21 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/511e9057-6893-474a-9749-556b949b372b?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6706c665-7833-46e8-aed1-fe1d62ad9c1e"
-    },
-    "Response" : {
-      "content-length" : "404",
-      "x-envoy-upstream-service-time" : "34",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0490b7c6-a9f1-430f-871a-7e4ff3481591",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-19T22:36:21Z\",\"lastUpdatedDateTime\":\"2022-08-19T22:36:25Z\",\"analyzeResult\":{\"apiVersion\":\"2022-08-31\",\"modelId\":\"prebuilt-receipt\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}],\"kind\":\"document\"}],\"styles\":[],\"documents\":[]}}",
-      "Date" : "Fri, 19 Aug 2022 22:36:26 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/511e9057-6893-474a-9749-556b949b372b?api-version=2022-08-31",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d988c77f-8452-4da6-8e26-6d97dd85f436"
-    },
-    "Response" : {
-      "content-length" : "404",
-      "x-envoy-upstream-service-time" : "40",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8d5e7bb3-ea07-4eae-8507-33c2340c0bbd",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"status\":\"succeeded\",\"createdDateTime\":\"2022-08-19T22:36:21Z\",\"lastUpdatedDateTime\":\"2022-08-19T22:36:25Z\",\"analyzeResult\":{\"apiVersion\":\"2022-08-31\",\"modelId\":\"prebuilt-receipt\",\"stringIndexType\":\"utf16CodeUnit\",\"content\":\"\",\"pages\":[{\"pageNumber\":1,\"angle\":0,\"width\":8.5,\"height\":11,\"unit\":\"inch\",\"words\":[],\"lines\":[],\"spans\":[{\"offset\":0,\"length\":0}],\"kind\":\"document\"}],\"styles\":[],\"documents\":[]}}",
-      "Date" : "Fri, 19 Aug 2022 22:36:26 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
-}
-=======
   "Entries": [
     {
       "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
@@ -233,4 +168,3 @@
   ],
   "Variables": {}
 }
->>>>>>> 0b34d9fee8d ( [Form Recognizer] Re-record with Test proxy (#34436))
