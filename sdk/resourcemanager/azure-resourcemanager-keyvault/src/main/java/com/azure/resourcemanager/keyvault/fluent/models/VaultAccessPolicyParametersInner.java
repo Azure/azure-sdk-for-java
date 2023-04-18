@@ -25,6 +25,10 @@ public final class VaultAccessPolicyParametersInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private VaultAccessPolicyProperties properties;
 
+    /** Creates an instance of VaultAccessPolicyParametersInner class. */
+    public VaultAccessPolicyParametersInner() {
+    }
+
     /**
      * Get the location property: The resource type of the access policy.
      *
