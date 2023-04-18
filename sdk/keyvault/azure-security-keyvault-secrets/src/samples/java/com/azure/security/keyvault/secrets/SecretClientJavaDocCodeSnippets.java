@@ -35,7 +35,6 @@ public final class SecretClientJavaDocCodeSnippets {
         SecretClient secretClient = new SecretClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .vaultUrl("<your-key-vault-url>")
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: com.azure.security.keyvault.SecretClient.instantiation
         return secretClient;
@@ -62,9 +61,9 @@ public final class SecretClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.SecretClient.getSecret#string-string
 
         // BEGIN: com.azure.security.keyvault.SecretClient.getSecret#string
-        KeyVaultSecret secretWithoutVersion = secretClient.getSecret("secretName", secretVersion);
+        KeyVaultSecret secret = secretClient.getSecret("secretName");
         System.out.printf("Secret is returned with name %s and value %s%n",
-            secretWithoutVersion.getName(), secretWithoutVersion.getValue());
+            secret.getName(), secret.getValue());
         // END: com.azure.security.keyvault.SecretClient.getSecret#string
     }
 

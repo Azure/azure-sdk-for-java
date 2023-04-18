@@ -30,7 +30,6 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.instantiation -->
@@ -155,9 +154,9 @@ public final class SecretClient {
      * <p>Gets the latest version of the secret in the key vault. Prints out the details of the returned secret.</p>
      * <!-- src_embed com.azure.security.keyvault.SecretClient.getSecret#string -->
      * <pre>
-     * KeyVaultSecret secretWithoutVersion = secretClient.getSecret&#40;&quot;secretName&quot;, secretVersion&#41;;
+     * KeyVaultSecret secret = secretClient.getSecret&#40;&quot;secretName&quot;&#41;;
      * System.out.printf&#40;&quot;Secret is returned with name %s and value %s%n&quot;,
-     *     secretWithoutVersion.getName&#40;&#41;, secretWithoutVersion.getValue&#40;&#41;&#41;;
+     *     secret.getName&#40;&#41;, secret.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
      *
