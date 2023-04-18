@@ -13,10 +13,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.Origin;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        OperationInner innerObject,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -45,7 +46,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

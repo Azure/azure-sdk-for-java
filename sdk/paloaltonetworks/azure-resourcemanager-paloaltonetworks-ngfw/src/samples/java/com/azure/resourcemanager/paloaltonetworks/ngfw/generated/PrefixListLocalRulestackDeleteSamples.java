@@ -12,10 +12,10 @@ public final class PrefixListLocalRulestackDeleteSamples {
     /**
      * Sample code: PrefixListLocalRulestack_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.prefixListLocalRulestacks().delete("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class PrefixListLocalRulestackDeleteSamples {
     /**
      * Sample code: PrefixListLocalRulestack_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.prefixListLocalRulestacks().delete("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 }

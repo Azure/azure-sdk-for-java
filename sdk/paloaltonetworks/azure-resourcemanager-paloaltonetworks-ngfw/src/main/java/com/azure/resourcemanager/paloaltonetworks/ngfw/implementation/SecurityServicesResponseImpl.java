@@ -11,11 +11,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTy
 public final class SecurityServicesResponseImpl implements SecurityServicesResponse {
     private SecurityServicesResponseInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     SecurityServicesResponseImpl(
         SecurityServicesResponseInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,7 +32,7 @@ public final class SecurityServicesResponseImpl implements SecurityServicesRespo
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

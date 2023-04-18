@@ -14,10 +14,10 @@ public final class PrefixListLocalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: PrefixListLocalRulestack_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .prefixListLocalRulestacks()
             .define("armid1")
@@ -32,10 +32,10 @@ public final class PrefixListLocalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: PrefixListLocalRulestack_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .prefixListLocalRulestacks()
             .define("armid1")

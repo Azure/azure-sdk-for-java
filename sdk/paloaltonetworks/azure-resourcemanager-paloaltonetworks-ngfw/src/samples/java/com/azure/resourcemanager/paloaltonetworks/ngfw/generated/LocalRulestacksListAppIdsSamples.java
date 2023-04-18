@@ -12,10 +12,10 @@ public final class LocalRulestacksListAppIdsSamples {
     /**
      * Sample code: LocalRulestacks_listAppIds_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListAppIdsMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .listAppIdsWithResponse(
@@ -28,10 +28,10 @@ public final class LocalRulestacksListAppIdsSamples {
     /**
      * Sample code: LocalRulestacks_listAppIds_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListAppIdsMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .listAppIdsWithResponse("rgopenapi", "lrs1", null, null, null, null, com.azure.core.util.Context.NONE);

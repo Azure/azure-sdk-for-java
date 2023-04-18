@@ -18,11 +18,11 @@ import java.util.List;
 public final class GlobalRulestackResourceImpl implements GlobalRulestackResource {
     private GlobalRulestackResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     GlobalRulestackResourceImpl(
         GlobalRulestackResourceInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -96,7 +96,7 @@ public final class GlobalRulestackResourceImpl implements GlobalRulestackResourc
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

@@ -14,10 +14,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogType;
 public final class LogSettingsImpl implements LogSettings {
     private LogSettingsInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     LogSettingsImpl(
-        LogSettingsInner innerObject, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        LogSettingsInner innerObject,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -54,7 +55,7 @@ public final class LogSettingsImpl implements LogSettings {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

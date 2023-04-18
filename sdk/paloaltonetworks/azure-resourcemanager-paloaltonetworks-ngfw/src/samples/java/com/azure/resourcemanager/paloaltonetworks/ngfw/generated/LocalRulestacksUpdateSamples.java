@@ -24,10 +24,10 @@ public final class LocalRulestacksUpdateSamples {
     /**
      * Sample code: LocalRulestacks_Update_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         LocalRulestackResource resource =
             manager
                 .localRulestacks()
@@ -73,10 +73,10 @@ public final class LocalRulestacksUpdateSamples {
     /**
      * Sample code: LocalRulestacks_Update_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         LocalRulestackResource resource =
             manager
                 .localRulestacks()

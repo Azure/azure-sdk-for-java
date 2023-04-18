@@ -12,10 +12,10 @@ public final class LocalRulesDeleteSamples {
     /**
      * Sample code: LocalRules_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRules().delete("firewall-rg", "lrs1", "1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class LocalRulesDeleteSamples {
     /**
      * Sample code: LocalRules_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRules().delete("firewall-rg", "lrs1", "1", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,10 +12,10 @@ public final class CertificateObjectGlobalRulestackGetSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_Get_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackGetMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .certificateObjectGlobalRulestacks()
             .getWithResponse("praval", "armid1", com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class CertificateObjectGlobalRulestackGetSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_Get_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackGetMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .certificateObjectGlobalRulestacks()
             .getWithResponse("praval", "armid1", com.azure.core.util.Context.NONE);

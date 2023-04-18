@@ -12,10 +12,10 @@ public final class GlobalRulestackListPredefinedUrlCategoriesSamples {
     /**
      * Sample code: GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackListPredefinedUrlCategoriesMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .globalRulestacks()
             .listPredefinedUrlCategoriesWithResponse("praval", "a6a321", 20, com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class GlobalRulestackListPredefinedUrlCategoriesSamples {
     /**
      * Sample code: GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackListPredefinedUrlCategoriesMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .globalRulestacks()
             .listPredefinedUrlCategoriesWithResponse("praval", null, null, com.azure.core.util.Context.NONE);

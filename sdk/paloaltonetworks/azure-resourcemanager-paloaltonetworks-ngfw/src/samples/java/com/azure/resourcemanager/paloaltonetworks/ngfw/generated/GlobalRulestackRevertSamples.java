@@ -12,10 +12,10 @@ public final class GlobalRulestackRevertSamples {
     /**
      * Sample code: GlobalRulestack_revert_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackRevertMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.globalRulestacks().revertWithResponse("praval", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class GlobalRulestackRevertSamples {
     /**
      * Sample code: GlobalRulestack_revert_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackRevertMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.globalRulestacks().revertWithResponse("praval", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,11 +12,11 @@ import java.util.List;
 public final class ListAppIdResponseImpl implements ListAppIdResponse {
     private ListAppIdResponseInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     ListAppIdResponseImpl(
         ListAppIdResponseInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -38,7 +38,7 @@ public final class ListAppIdResponseImpl implements ListAppIdResponse {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

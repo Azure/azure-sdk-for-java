@@ -40,10 +40,10 @@ public final class FirewallsCreateOrUpdateSamples {
     /**
      * Sample code: Firewalls_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .define("firewall1")
@@ -179,10 +179,10 @@ public final class FirewallsCreateOrUpdateSamples {
     /**
      * Sample code: Firewalls_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .define("firewall1")

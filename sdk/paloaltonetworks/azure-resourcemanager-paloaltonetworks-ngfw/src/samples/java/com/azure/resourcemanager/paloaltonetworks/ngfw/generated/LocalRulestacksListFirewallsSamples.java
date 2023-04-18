@@ -12,10 +12,10 @@ public final class LocalRulestacksListFirewallsSamples {
     /**
      * Sample code: LocalRulestacks_listFirewalls_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListFirewallsMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().listFirewallsWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class LocalRulestacksListFirewallsSamples {
     /**
      * Sample code: LocalRulestacks_listFirewalls_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListFirewallsMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().listFirewallsWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
     }
 }

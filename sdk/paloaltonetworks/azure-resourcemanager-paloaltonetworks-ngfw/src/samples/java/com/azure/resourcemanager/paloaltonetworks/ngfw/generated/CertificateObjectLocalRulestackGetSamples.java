@@ -12,10 +12,10 @@ public final class CertificateObjectLocalRulestackGetSamples {
     /**
      * Sample code: CertificateObjectLocalRulestack_Get_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectLocalRulestackGetMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .certificateObjectLocalRulestacks()
             .getWithResponse("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class CertificateObjectLocalRulestackGetSamples {
     /**
      * Sample code: CertificateObjectLocalRulestack_Get_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectLocalRulestackGetMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .certificateObjectLocalRulestacks()
             .getWithResponse("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);

@@ -15,10 +15,10 @@ public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListGlobalRulestackCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .prefixListGlobalRulestacks()
             .createOrUpdate(
@@ -38,10 +38,10 @@ public final class PrefixListGlobalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListGlobalRulestackCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .prefixListGlobalRulestacks()
             .createOrUpdate(

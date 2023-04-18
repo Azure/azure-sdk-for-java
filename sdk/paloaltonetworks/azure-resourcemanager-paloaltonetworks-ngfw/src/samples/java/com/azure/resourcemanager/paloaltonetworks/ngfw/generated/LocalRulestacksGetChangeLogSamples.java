@@ -12,10 +12,10 @@ public final class LocalRulestacksGetChangeLogSamples {
     /**
      * Sample code: LocalRulestacks_getChangeLog_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksGetChangeLogMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().getChangeLogWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class LocalRulestacksGetChangeLogSamples {
     /**
      * Sample code: LocalRulestacks_getChangeLog_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksGetChangeLogMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().getChangeLogWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
     }
 }

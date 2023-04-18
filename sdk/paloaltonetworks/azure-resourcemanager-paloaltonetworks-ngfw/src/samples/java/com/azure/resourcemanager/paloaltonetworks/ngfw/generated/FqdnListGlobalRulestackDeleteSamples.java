@@ -12,10 +12,10 @@ public final class FqdnListGlobalRulestackDeleteSamples {
     /**
      * Sample code: FqdnListGlobalRulestack_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void fqdnListGlobalRulestackDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.fqdnListGlobalRulestacks().delete("praval", "armid1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class FqdnListGlobalRulestackDeleteSamples {
     /**
      * Sample code: FqdnListGlobalRulestack_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void fqdnListGlobalRulestackDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.fqdnListGlobalRulestacks().delete("praval", "armid1", com.azure.core.util.Context.NONE);
     }
 }

@@ -60,8 +60,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to NgfwManager. */
-public final class NgfwManager {
+/** Entry point to PaloAltoNetworksNgfwManager. */
+public final class PaloAltoNetworksNgfwManager {
     private GlobalRulestacks globalRulestacks;
 
     private CertificateObjectGlobalRulestacks certificateObjectGlobalRulestacks;
@@ -92,7 +92,7 @@ public final class NgfwManager {
 
     private final PaloAltoNetworksCloudngfw clientObject;
 
-    private NgfwManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private PaloAltoNetworksNgfwManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
@@ -105,38 +105,38 @@ public final class NgfwManager {
     }
 
     /**
-     * Creates an instance of ngfw service API entry point.
+     * Creates an instance of PaloAlto Networks Ngfw service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the ngfw service API instance.
+     * @return the PaloAlto Networks Ngfw service API instance.
      */
-    public static NgfwManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static PaloAltoNetworksNgfwManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of ngfw service API entry point.
+     * Creates an instance of PaloAlto Networks Ngfw service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the ngfw service API instance.
+     * @return the PaloAlto Networks Ngfw service API instance.
      */
-    public static NgfwManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static PaloAltoNetworksNgfwManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new NgfwManager(httpPipeline, profile, null);
+        return new PaloAltoNetworksNgfwManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create NgfwManager with optional configuration.
+     * Gets a Configurable instance that can be used to create PaloAltoNetworksNgfwManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new NgfwManager.Configurable();
+        return new PaloAltoNetworksNgfwManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -239,13 +239,13 @@ public final class NgfwManager {
         }
 
         /**
-         * Creates an instance of ngfw service API entry point.
+         * Creates an instance of PaloAlto Networks Ngfw service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the ngfw service API instance.
+         * @return the PaloAlto Networks Ngfw service API instance.
          */
-        public NgfwManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public PaloAltoNetworksNgfwManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -308,7 +308,7 @@ public final class NgfwManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new NgfwManager(httpPipeline, profile, defaultPollInterval);
+            return new PaloAltoNetworksNgfwManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 

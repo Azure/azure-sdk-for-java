@@ -12,10 +12,10 @@ public final class LocalRulestacksListCountriesSamples {
     /**
      * Sample code: LocalRulestacks_listCountries_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListCountriesMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .listCountriesWithResponse("rgopenapi", "lrs1", "a6a321", 20, com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class LocalRulestacksListCountriesSamples {
     /**
      * Sample code: LocalRulestacks_listCountries_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListCountriesMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .listCountriesWithResponse("rgopenapi", "lrs1", null, null, com.azure.core.util.Context.NONE);

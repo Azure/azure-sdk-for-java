@@ -13,11 +13,11 @@ import java.util.List;
 public final class CountriesResponseImpl implements CountriesResponse {
     private CountriesResponseInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     CountriesResponseImpl(
         CountriesResponseInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class CountriesResponseImpl implements CountriesResponse {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

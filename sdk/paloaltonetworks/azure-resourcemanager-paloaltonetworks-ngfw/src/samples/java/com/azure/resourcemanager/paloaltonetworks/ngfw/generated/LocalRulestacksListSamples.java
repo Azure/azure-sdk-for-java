@@ -12,10 +12,10 @@ public final class LocalRulestacksListSamples {
     /**
      * Sample code: LocalRulestacks_ListBySubscription_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListBySubscriptionMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().list(com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class LocalRulestacksListSamples {
     /**
      * Sample code: LocalRulestacks_ListBySubscription_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListBySubscriptionMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().list(com.azure.core.util.Context.NONE);
     }
 }

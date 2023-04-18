@@ -23,10 +23,10 @@ public final class PreRulesCreateOrUpdateSamples {
     /**
      * Sample code: PreRules_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void preRulesCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .preRules()
             .createOrUpdate(
@@ -74,10 +74,10 @@ public final class PreRulesCreateOrUpdateSamples {
     /**
      * Sample code: PreRules_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void preRulesCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .preRules()
             .createOrUpdate(

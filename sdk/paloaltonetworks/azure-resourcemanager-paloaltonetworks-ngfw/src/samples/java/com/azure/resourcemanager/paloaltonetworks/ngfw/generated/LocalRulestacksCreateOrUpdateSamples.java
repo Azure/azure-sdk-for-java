@@ -22,10 +22,10 @@ public final class LocalRulestacksCreateOrUpdateSamples {
     /**
      * Sample code: LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().define("lrs1").withRegion("eastus").withExistingResourceGroup("rgopenapi").create();
     }
 
@@ -35,10 +35,10 @@ public final class LocalRulestacksCreateOrUpdateSamples {
     /**
      * Sample code: LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .define("lrs1")

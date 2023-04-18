@@ -14,10 +14,10 @@ public final class GlobalRulestackListSecurityServicesSamples {
     /**
      * Sample code: GlobalRulestack_listSecurityServices_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackListSecurityServicesMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .globalRulestacks()
             .listSecurityServicesWithResponse(
@@ -34,10 +34,10 @@ public final class GlobalRulestackListSecurityServicesSamples {
     /**
      * Sample code: GlobalRulestack_listSecurityServices_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackListSecurityServicesMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .globalRulestacks()
             .listSecurityServicesWithResponse(

@@ -12,10 +12,10 @@ public final class FqdnListGlobalRulestackListSamples {
     /**
      * Sample code: FqdnListGlobalRulestack_List_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void fqdnListGlobalRulestackListMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.fqdnListGlobalRulestacks().list("praval", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class FqdnListGlobalRulestackListSamples {
     /**
      * Sample code: FqdnListGlobalRulestack_List_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void fqdnListGlobalRulestackListMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.fqdnListGlobalRulestacks().list("praval", com.azure.core.util.Context.NONE);
     }
 }

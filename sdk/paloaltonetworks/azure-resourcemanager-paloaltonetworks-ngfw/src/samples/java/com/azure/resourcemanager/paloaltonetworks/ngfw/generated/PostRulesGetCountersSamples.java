@@ -12,10 +12,10 @@ public final class PostRulesGetCountersSamples {
     /**
      * Sample code: PostRules_getCounters_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void postRulesGetCountersMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.postRules().getCountersWithResponse("lrs1", "1", null, com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class PostRulesGetCountersSamples {
     /**
      * Sample code: PostRules_getCounters_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void postRulesGetCountersMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.postRules().getCountersWithResponse("lrs1", "1", "firewall1", com.azure.core.util.Context.NONE);
     }
 }

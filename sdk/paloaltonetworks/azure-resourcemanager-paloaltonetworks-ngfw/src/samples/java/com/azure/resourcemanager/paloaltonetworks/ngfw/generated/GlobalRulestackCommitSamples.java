@@ -12,10 +12,10 @@ public final class GlobalRulestackCommitSamples {
     /**
      * Sample code: GlobalRulestack_commit_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackCommitMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.globalRulestacks().commit("praval", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class GlobalRulestackCommitSamples {
     /**
      * Sample code: GlobalRulestack_commit_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackCommitMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.globalRulestacks().commit("praval", com.azure.core.util.Context.NONE);
     }
 }

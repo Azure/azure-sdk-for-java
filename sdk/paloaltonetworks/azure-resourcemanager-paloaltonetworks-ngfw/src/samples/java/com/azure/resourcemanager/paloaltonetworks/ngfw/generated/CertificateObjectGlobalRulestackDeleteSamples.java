@@ -12,10 +12,10 @@ public final class CertificateObjectGlobalRulestackDeleteSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.certificateObjectGlobalRulestacks().delete("praval", "armid1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class CertificateObjectGlobalRulestackDeleteSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.certificateObjectGlobalRulestacks().delete("praval", "armid1", com.azure.core.util.Context.NONE);
     }
 }

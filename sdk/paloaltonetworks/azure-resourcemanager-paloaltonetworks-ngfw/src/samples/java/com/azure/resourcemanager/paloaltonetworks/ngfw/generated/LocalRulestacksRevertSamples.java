@@ -12,10 +12,10 @@ public final class LocalRulestacksRevertSamples {
     /**
      * Sample code: LocalRulestacks_revert_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksRevertMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().revertWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class LocalRulestacksRevertSamples {
     /**
      * Sample code: LocalRulestacks_revert_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksRevertMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRulestacks().revertWithResponse("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
     }
 }

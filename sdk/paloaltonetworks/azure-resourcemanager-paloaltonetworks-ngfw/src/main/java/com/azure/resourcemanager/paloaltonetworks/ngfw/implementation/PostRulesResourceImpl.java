@@ -22,11 +22,11 @@ import java.util.List;
 public final class PostRulesResourceImpl implements PostRulesResource {
     private PostRulesResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     PostRulesResourceImpl(
         PostRulesResourceInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -146,7 +146,7 @@ public final class PostRulesResourceImpl implements PostRulesResource {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

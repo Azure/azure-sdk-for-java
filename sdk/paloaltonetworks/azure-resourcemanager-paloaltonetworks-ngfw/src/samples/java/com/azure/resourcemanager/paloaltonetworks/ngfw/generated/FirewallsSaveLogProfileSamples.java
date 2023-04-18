@@ -21,10 +21,10 @@ public final class FirewallsSaveLogProfileSamples {
     /**
      * Sample code: Firewalls_saveLogProfile_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsSaveLogProfileMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .saveLogProfileWithResponse(
@@ -128,10 +128,10 @@ public final class FirewallsSaveLogProfileSamples {
     /**
      * Sample code: Firewalls_saveLogProfile_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsSaveLogProfileMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .saveLogProfileWithResponse("firewall-rg", "firewall1", null, com.azure.core.util.Context.NONE);

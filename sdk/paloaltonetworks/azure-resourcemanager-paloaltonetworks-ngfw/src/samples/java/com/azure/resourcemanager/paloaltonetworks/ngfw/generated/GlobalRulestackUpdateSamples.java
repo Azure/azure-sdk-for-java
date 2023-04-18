@@ -24,10 +24,10 @@ public final class GlobalRulestackUpdateSamples {
     /**
      * Sample code: GlobalRulestack_Update_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .globalRulestacks()
             .updateWithResponse(
@@ -71,10 +71,10 @@ public final class GlobalRulestackUpdateSamples {
     /**
      * Sample code: GlobalRulestack_Update_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .globalRulestacks()
             .updateWithResponse("praval", new GlobalRulestackResourceUpdate(), com.azure.core.util.Context.NONE);

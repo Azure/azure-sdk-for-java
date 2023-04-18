@@ -12,10 +12,10 @@ public final class GlobalRulestackListFirewallsSamples {
     /**
      * Sample code: GlobalRulestack_listFirewalls_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackListFirewallsMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.globalRulestacks().listFirewallsWithResponse("praval", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class GlobalRulestackListFirewallsSamples {
     /**
      * Sample code: GlobalRulestack_listFirewalls_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void globalRulestackListFirewallsMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.globalRulestacks().listFirewallsWithResponse("praval", com.azure.core.util.Context.NONE);
     }
 }

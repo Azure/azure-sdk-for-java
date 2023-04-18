@@ -27,7 +27,7 @@ public final class LocalRulesResourceImpl
     implements LocalRulesResource, LocalRulesResource.Definition, LocalRulesResource.Update {
     private LocalRulesResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -148,7 +148,7 @@ public final class LocalRulesResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 
@@ -182,7 +182,8 @@ public final class LocalRulesResourceImpl
         return this;
     }
 
-    LocalRulesResourceImpl(String name, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+    LocalRulesResourceImpl(
+        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = new LocalRulesResourceInner();
         this.serviceManager = serviceManager;
         this.priority = name;
@@ -212,7 +213,7 @@ public final class LocalRulesResourceImpl
 
     LocalRulesResourceImpl(
         LocalRulesResourceInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

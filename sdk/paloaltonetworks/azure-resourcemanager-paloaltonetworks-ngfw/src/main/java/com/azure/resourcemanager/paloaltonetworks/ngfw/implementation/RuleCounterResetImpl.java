@@ -10,10 +10,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.RuleCounterReset;
 public final class RuleCounterResetImpl implements RuleCounterReset {
     private RuleCounterResetInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     RuleCounterResetImpl(
-        RuleCounterResetInner innerObject, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        RuleCounterResetInner innerObject,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +43,7 @@ public final class RuleCounterResetImpl implements RuleCounterReset {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

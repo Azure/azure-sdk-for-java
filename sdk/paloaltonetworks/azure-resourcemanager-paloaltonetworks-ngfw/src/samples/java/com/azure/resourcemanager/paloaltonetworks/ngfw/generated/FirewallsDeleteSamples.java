@@ -12,10 +12,10 @@ public final class FirewallsDeleteSamples {
     /**
      * Sample code: Firewalls_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.firewalls().delete("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class FirewallsDeleteSamples {
     /**
      * Sample code: Firewalls_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.firewalls().delete("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
     }
 }

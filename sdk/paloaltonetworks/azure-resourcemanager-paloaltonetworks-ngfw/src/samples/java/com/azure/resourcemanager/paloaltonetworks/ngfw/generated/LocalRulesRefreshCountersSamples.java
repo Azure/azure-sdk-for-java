@@ -12,10 +12,10 @@ public final class LocalRulesRefreshCountersSamples {
     /**
      * Sample code: LocalRules_refreshCounters_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesRefreshCountersMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRules()
             .refreshCountersWithResponse("firewall-rg", "lrs1", "1", null, com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class LocalRulesRefreshCountersSamples {
     /**
      * Sample code: LocalRules_refreshCounters_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesRefreshCountersMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRules()
             .refreshCountersWithResponse("firewall-rg", "lrs1", "1", "firewall1", com.azure.core.util.Context.NONE);

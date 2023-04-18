@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ActionEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.DecryptionRuleTypeEnum;
@@ -55,8 +55,8 @@ public final class PostRulesGetWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        NgfwManager manager =
-            NgfwManager
+        PaloAltoNetworksNgfwManager manager =
+            PaloAltoNetworksNgfwManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

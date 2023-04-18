@@ -15,10 +15,10 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .certificateObjectGlobalRulestacks()
             .createOrUpdate(
@@ -34,10 +34,10 @@ public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .certificateObjectGlobalRulestacks()
             .createOrUpdate(

@@ -17,10 +17,11 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        OperationsClient innerClient,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +40,7 @@ public final class OperationsImpl implements Operations {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

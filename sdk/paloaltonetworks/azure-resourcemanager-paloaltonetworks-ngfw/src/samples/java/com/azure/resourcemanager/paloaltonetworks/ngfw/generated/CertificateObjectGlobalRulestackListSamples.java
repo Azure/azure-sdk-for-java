@@ -12,10 +12,10 @@ public final class CertificateObjectGlobalRulestackListSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_List_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackListMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.certificateObjectGlobalRulestacks().list("praval", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class CertificateObjectGlobalRulestackListSamples {
     /**
      * Sample code: CertificateObjectGlobalRulestack_List_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackListMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.certificateObjectGlobalRulestacks().list("praval", com.azure.core.util.Context.NONE);
     }
 }

@@ -23,10 +23,11 @@ public final class PreRulesImpl implements PreRules {
 
     private final PreRulesClient innerClient;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public PreRulesImpl(
-        PreRulesClient innerClient, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        PreRulesClient innerClient,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -154,7 +155,7 @@ public final class PreRulesImpl implements PreRules {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

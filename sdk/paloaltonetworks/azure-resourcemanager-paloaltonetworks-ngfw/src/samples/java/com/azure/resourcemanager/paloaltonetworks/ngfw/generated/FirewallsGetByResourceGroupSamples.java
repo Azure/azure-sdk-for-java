@@ -12,9 +12,10 @@ public final class FirewallsGetByResourceGroupSamples {
     /**
      * Sample code: Firewalls_Get_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
-    public static void firewallsGetMaximumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+    public static void firewallsGetMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
@@ -26,9 +27,10 @@ public final class FirewallsGetByResourceGroupSamples {
     /**
      * Sample code: Firewalls_Get_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
-    public static void firewallsGetMinimumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+    public static void firewallsGetMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);

@@ -11,10 +11,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SupportInfo;
 public final class SupportInfoImpl implements SupportInfo {
     private SupportInfoInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     SupportInfoImpl(
-        SupportInfoInner innerObject, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        SupportInfoInner innerObject,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -71,7 +72,7 @@ public final class SupportInfoImpl implements SupportInfo {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

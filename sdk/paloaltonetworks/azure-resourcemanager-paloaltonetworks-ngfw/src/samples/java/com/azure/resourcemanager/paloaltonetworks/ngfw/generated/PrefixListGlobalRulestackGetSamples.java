@@ -12,10 +12,10 @@ public final class PrefixListGlobalRulestackGetSamples {
     /**
      * Sample code: PrefixListGlobalRulestack_Get_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListGlobalRulestackGetMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.prefixListGlobalRulestacks().getWithResponse("praval", "armid1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class PrefixListGlobalRulestackGetSamples {
     /**
      * Sample code: PrefixListGlobalRulestack_Get_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListGlobalRulestackGetMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.prefixListGlobalRulestacks().getWithResponse("praval", "armid1", com.azure.core.util.Context.NONE);
     }
 }

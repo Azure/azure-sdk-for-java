@@ -12,10 +12,10 @@ public final class PreRulesDeleteSamples {
     /**
      * Sample code: PreRules_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void preRulesDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.preRules().delete("lrs1", "1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class PreRulesDeleteSamples {
     /**
      * Sample code: PreRules_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void preRulesDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.preRules().delete("lrs1", "1", com.azure.core.util.Context.NONE);
     }
 }

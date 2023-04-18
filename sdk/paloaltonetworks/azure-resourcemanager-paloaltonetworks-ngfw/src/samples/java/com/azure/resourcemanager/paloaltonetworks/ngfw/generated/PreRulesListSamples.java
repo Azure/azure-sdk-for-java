@@ -12,9 +12,10 @@ public final class PreRulesListSamples {
     /**
      * Sample code: PreRules_List_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
-    public static void preRulesListMinimumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+    public static void preRulesListMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.preRules().list("lrs1", com.azure.core.util.Context.NONE);
     }
 
@@ -24,9 +25,10 @@ public final class PreRulesListSamples {
     /**
      * Sample code: PreRules_List_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
-    public static void preRulesListMaximumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+    public static void preRulesListMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.preRules().list("lrs1", com.azure.core.util.Context.NONE);
     }
 }

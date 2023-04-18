@@ -17,8 +17,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for ngfw Management</name>
-  <description>This package contains Microsoft Azure SDK for ngfw Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2022-08-29-preview.</description>
+  <name>Microsoft Azure SDK for PaloAlto Networks Ngfw Management</name>
+  <description>This package contains Microsoft Azure SDK for PaloAlto Networks Ngfw Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2022-08-29-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

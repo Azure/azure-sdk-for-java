@@ -10,11 +10,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.GlobalRulestackInf
 public final class GlobalRulestackInfoImpl implements GlobalRulestackInfo {
     private GlobalRulestackInfoInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     GlobalRulestackInfoImpl(
         GlobalRulestackInfoInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -27,7 +27,7 @@ public final class GlobalRulestackInfoImpl implements GlobalRulestackInfo {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

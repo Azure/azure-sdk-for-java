@@ -12,10 +12,10 @@ public final class FirewallStatusGetSamples {
     /**
      * Sample code: FirewallStatus_Get_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallStatusGetMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.firewallStatus().getWithResponse("rgopenapi", "firewall1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class FirewallStatusGetSamples {
     /**
      * Sample code: FirewallStatus_Get_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallStatusGetMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.firewallStatus().getWithResponse("rgopenapi", "firewall1", com.azure.core.util.Context.NONE);
     }
 }

@@ -19,11 +19,11 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
 
     private final PrefixListGlobalRulestacksClient innerClient;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public PrefixListGlobalRulestacksImpl(
         PrefixListGlobalRulestacksClient innerClient,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -97,7 +97,7 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

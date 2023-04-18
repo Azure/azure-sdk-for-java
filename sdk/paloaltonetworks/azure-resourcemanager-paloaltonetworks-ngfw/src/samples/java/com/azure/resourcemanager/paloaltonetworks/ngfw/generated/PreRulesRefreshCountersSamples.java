@@ -12,10 +12,10 @@ public final class PreRulesRefreshCountersSamples {
     /**
      * Sample code: PreRules_refreshCounters_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void preRulesRefreshCountersMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.preRules().refreshCountersWithResponse("lrs1", "1", "firewall1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class PreRulesRefreshCountersSamples {
     /**
      * Sample code: PreRules_refreshCounters_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void preRulesRefreshCountersMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.preRules().refreshCountersWithResponse("lrs1", "1", null, com.azure.core.util.Context.NONE);
     }
 }

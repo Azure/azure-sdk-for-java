@@ -13,11 +13,11 @@ import java.util.List;
 public final class PredefinedUrlCategoriesResponseImpl implements PredefinedUrlCategoriesResponse {
     private PredefinedUrlCategoriesResponseInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     PredefinedUrlCategoriesResponseImpl(
         PredefinedUrlCategoriesResponseInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -39,7 +39,7 @@ public final class PredefinedUrlCategoriesResponseImpl implements PredefinedUrlC
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -48,8 +48,8 @@ public final class PreRulesRefreshCountersWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        NgfwManager manager =
-            NgfwManager
+        PaloAltoNetworksNgfwManager manager =
+            PaloAltoNetworksNgfwManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

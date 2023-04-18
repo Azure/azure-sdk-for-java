@@ -18,7 +18,7 @@ public final class FqdnListLocalRulestackResourceImpl
         FqdnListLocalRulestackResource.Update {
     private FqdnListLocalRulestackResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -69,7 +69,7 @@ public final class FqdnListLocalRulestackResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 
@@ -105,7 +105,7 @@ public final class FqdnListLocalRulestackResourceImpl
     }
 
     FqdnListLocalRulestackResourceImpl(
-        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = new FqdnListLocalRulestackResourceInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -135,7 +135,7 @@ public final class FqdnListLocalRulestackResourceImpl
 
     FqdnListLocalRulestackResourceImpl(
         FqdnListLocalRulestackResourceInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

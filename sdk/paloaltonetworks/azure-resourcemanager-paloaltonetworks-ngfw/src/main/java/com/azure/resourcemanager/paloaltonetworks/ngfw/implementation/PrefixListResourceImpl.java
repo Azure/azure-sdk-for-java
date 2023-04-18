@@ -16,7 +16,7 @@ public final class PrefixListResourceImpl
     implements PrefixListResource, PrefixListResource.Definition, PrefixListResource.Update {
     private PrefixListResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -67,7 +67,7 @@ public final class PrefixListResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 
@@ -101,7 +101,8 @@ public final class PrefixListResourceImpl
         return this;
     }
 
-    PrefixListResourceImpl(String name, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+    PrefixListResourceImpl(
+        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = new PrefixListResourceInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -131,7 +132,7 @@ public final class PrefixListResourceImpl
 
     PrefixListResourceImpl(
         PrefixListResourceInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

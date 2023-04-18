@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager;
+import com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FqdnListGlobalRulestackResourceInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FqdnListGlobalRulestackResource;
 import java.nio.ByteBuffer;
@@ -53,8 +53,8 @@ public final class FqdnListGlobalRulestacksCreateOrUpdateMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        NgfwManager manager =
-            NgfwManager
+        PaloAltoNetworksNgfwManager manager =
+            PaloAltoNetworksNgfwManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

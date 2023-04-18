@@ -12,10 +12,10 @@ public final class LocalRulestacksGetSupportInfoSamples {
     /**
      * Sample code: LocalRulestacks_getSupportInfo_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksGetSupportInfoMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .getSupportInfoWithResponse("rgopenapi", "lrs1", null, com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class LocalRulestacksGetSupportInfoSamples {
     /**
      * Sample code: LocalRulestacks_getSupportInfo_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksGetSupportInfoMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .getSupportInfoWithResponse("rgopenapi", "lrs1", "user1@domain.com", com.azure.core.util.Context.NONE);

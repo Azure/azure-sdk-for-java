@@ -15,10 +15,10 @@ public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: FqdnListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void fqdnListGlobalRulestackCreateOrUpdateMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .fqdnListGlobalRulestacks()
             .createOrUpdate(
@@ -38,10 +38,10 @@ public final class FqdnListGlobalRulestackCreateOrUpdateSamples {
     /**
      * Sample code: FqdnListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void fqdnListGlobalRulestackCreateOrUpdateMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .fqdnListGlobalRulestacks()
             .createOrUpdate(

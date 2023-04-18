@@ -25,10 +25,11 @@ public final class FirewallsImpl implements Firewalls {
 
     private final FirewallsClient innerClient;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public FirewallsImpl(
-        FirewallsClient innerClient, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        FirewallsClient innerClient,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -247,7 +248,7 @@ public final class FirewallsImpl implements Firewalls {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 

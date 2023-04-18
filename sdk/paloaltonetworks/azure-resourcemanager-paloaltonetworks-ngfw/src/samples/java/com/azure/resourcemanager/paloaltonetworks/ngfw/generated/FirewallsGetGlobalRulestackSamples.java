@@ -12,10 +12,10 @@ public final class FirewallsGetGlobalRulestackSamples {
     /**
      * Sample code: Firewalls_getGlobalRulestack_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsGetGlobalRulestackMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .getGlobalRulestackWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class FirewallsGetGlobalRulestackSamples {
     /**
      * Sample code: Firewalls_getGlobalRulestack_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void firewallsGetGlobalRulestackMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .firewalls()
             .getGlobalRulestackWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE);

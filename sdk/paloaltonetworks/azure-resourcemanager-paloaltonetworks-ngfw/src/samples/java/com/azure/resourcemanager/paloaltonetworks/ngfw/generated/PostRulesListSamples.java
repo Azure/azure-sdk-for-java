@@ -12,9 +12,10 @@ public final class PostRulesListSamples {
     /**
      * Sample code: PostRules_List_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
-    public static void postRulesListMinimumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+    public static void postRulesListMinimumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.postRules().list("lrs1", com.azure.core.util.Context.NONE);
     }
 
@@ -24,9 +25,10 @@ public final class PostRulesListSamples {
     /**
      * Sample code: PostRules_List_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
-    public static void postRulesListMaximumSetGen(com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+    public static void postRulesListMaximumSetGen(
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.postRules().list("lrs1", com.azure.core.util.Context.NONE);
     }
 }

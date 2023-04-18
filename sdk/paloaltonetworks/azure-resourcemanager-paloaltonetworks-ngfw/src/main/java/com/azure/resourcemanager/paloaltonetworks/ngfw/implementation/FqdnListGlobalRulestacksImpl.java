@@ -19,11 +19,11 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
 
     private final FqdnListGlobalRulestacksClient innerClient;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public FqdnListGlobalRulestacksImpl(
         FqdnListGlobalRulestacksClient innerClient,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -97,7 +97,7 @@ public final class FqdnListGlobalRulestacksImpl implements FqdnListGlobalRulesta
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

@@ -34,7 +34,7 @@ public final class FirewallResourceImpl
     implements FirewallResource, FirewallResource.Definition, FirewallResource.Update {
     private FirewallResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -130,7 +130,7 @@ public final class FirewallResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 
@@ -163,7 +163,8 @@ public final class FirewallResourceImpl
         return this;
     }
 
-    FirewallResourceImpl(String name, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+    FirewallResourceImpl(
+        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = new FirewallResourceInner();
         this.serviceManager = serviceManager;
         this.firewallName = name;
@@ -195,7 +196,8 @@ public final class FirewallResourceImpl
     }
 
     FirewallResourceImpl(
-        FirewallResourceInner innerObject, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        FirewallResourceInner innerObject,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

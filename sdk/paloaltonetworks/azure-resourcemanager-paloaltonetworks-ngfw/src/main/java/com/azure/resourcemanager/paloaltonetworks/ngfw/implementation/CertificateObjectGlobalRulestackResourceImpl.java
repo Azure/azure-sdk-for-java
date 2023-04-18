@@ -13,11 +13,11 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 public final class CertificateObjectGlobalRulestackResourceImpl implements CertificateObjectGlobalRulestackResource {
     private CertificateObjectGlobalRulestackResourceInner innerObject;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     CertificateObjectGlobalRulestackResourceImpl(
         CertificateObjectGlobalRulestackResourceInner innerObject,
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -66,7 +66,7 @@ public final class CertificateObjectGlobalRulestackResourceImpl implements Certi
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }

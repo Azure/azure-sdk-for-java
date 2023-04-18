@@ -12,10 +12,10 @@ public final class PostRulesDeleteSamples {
     /**
      * Sample code: PostRules_Delete_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void postRulesDeleteMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.postRules().delete("lrs1", "1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class PostRulesDeleteSamples {
     /**
      * Sample code: PostRules_Delete_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void postRulesDeleteMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.postRules().delete("lrs1", "1", com.azure.core.util.Context.NONE);
     }
 }

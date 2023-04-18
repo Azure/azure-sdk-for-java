@@ -14,10 +14,10 @@ public final class LocalRulestacksListAdvancedSecurityObjectsSamples {
     /**
      * Sample code: LocalRulestacks_listAdvancedSecurityObjects_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListAdvancedSecurityObjectsMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .listAdvancedSecurityObjectsWithResponse(
@@ -35,10 +35,10 @@ public final class LocalRulestacksListAdvancedSecurityObjectsSamples {
     /**
      * Sample code: LocalRulestacks_listAdvancedSecurityObjects_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListAdvancedSecurityObjectsMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .localRulestacks()
             .listAdvancedSecurityObjectsWithResponse(

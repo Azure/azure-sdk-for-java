@@ -12,10 +12,10 @@ public final class LocalRulesListByLocalRulestacksSamples {
     /**
      * Sample code: LocalRules_ListByLocalRulestacks_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesListByLocalRulestacksMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRules().listByLocalRulestacks("firewall-rg", "lrs1", com.azure.core.util.Context.NONE);
     }
 
@@ -25,10 +25,10 @@ public final class LocalRulesListByLocalRulestacksSamples {
     /**
      * Sample code: LocalRules_ListByLocalRulestacks_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulesListByLocalRulestacksMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager.localRules().listByLocalRulestacks("firewall-rg", "lrs1", com.azure.core.util.Context.NONE);
     }
 }

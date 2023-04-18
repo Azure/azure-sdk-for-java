@@ -12,10 +12,10 @@ public final class PrefixListLocalRulestackListByLocalRulestacksSamples {
     /**
      * Sample code: PrefixListLocalRulestack_ListByLocalRulestacks_MaximumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackListByLocalRulestacksMaximumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .prefixListLocalRulestacks()
             .listByLocalRulestacks("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);
@@ -27,10 +27,10 @@ public final class PrefixListLocalRulestackListByLocalRulestacksSamples {
     /**
      * Sample code: PrefixListLocalRulestack_ListByLocalRulestacks_MinimumSet_Gen.
      *
-     * @param manager Entry point to NgfwManager.
+     * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackListByLocalRulestacksMinimumSetGen(
-        com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager) {
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         manager
             .prefixListLocalRulestacks()
             .listByLocalRulestacks("rgopenapi", "lrs1", com.azure.core.util.Context.NONE);

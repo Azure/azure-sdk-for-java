@@ -19,10 +19,11 @@ public final class FirewallStatusImpl implements FirewallStatus {
 
     private final FirewallStatusClient innerClient;
 
-    private final com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager;
+    private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
     public FirewallStatusImpl(
-        FirewallStatusClient innerClient, com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager serviceManager) {
+        FirewallStatusClient innerClient,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -68,7 +69,7 @@ public final class FirewallStatusImpl implements FirewallStatus {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.paloaltonetworks.ngfw.NgfwManager manager() {
+    private com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager() {
         return this.serviceManager;
     }
 }
