@@ -16,10 +16,10 @@ public final class GcpProjectEnvironmentDataTests {
         GcpProjectEnvironmentData model =
             BinaryData
                 .fromString(
-                    "{\"environmentType\":\"GcpProject\",\"organizationalData\":{\"organizationMembershipType\":\"GcpOrganizationalData\"},\"projectDetails\":{\"projectNumber\":\"sozjiihj\",\"projectId\":\"ybmrzoepnxwd\",\"workloadIdentityPoolId\":\"njkgvfnmx\"}}")
+                    "{\"environmentType\":\"GcpProject\",\"organizationalData\":{\"organizationMembershipType\":\"GcpOrganizationalData\"},\"projectDetails\":{\"projectNumber\":\"dfpdqwtygevg\",\"projectId\":\"sehar\",\"workloadIdentityPoolId\":\"fv\",\"projectName\":\"rxtmbpjptnvw\"}}")
                 .toObject(GcpProjectEnvironmentData.class);
-        Assertions.assertEquals("sozjiihj", model.projectDetails().projectNumber());
-        Assertions.assertEquals("ybmrzoepnxwd", model.projectDetails().projectId());
+        Assertions.assertEquals("dfpdqwtygevg", model.projectDetails().projectNumber());
+        Assertions.assertEquals("sehar", model.projectDetails().projectId());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,10 +27,9 @@ public final class GcpProjectEnvironmentDataTests {
         GcpProjectEnvironmentData model =
             new GcpProjectEnvironmentData()
                 .withOrganizationalData(new GcpOrganizationalData())
-                .withProjectDetails(
-                    new GcpProjectDetails().withProjectNumber("sozjiihj").withProjectId("ybmrzoepnxwd"));
+                .withProjectDetails(new GcpProjectDetails().withProjectNumber("dfpdqwtygevg").withProjectId("sehar"));
         model = BinaryData.fromObject(model).toObject(GcpProjectEnvironmentData.class);
-        Assertions.assertEquals("sozjiihj", model.projectDetails().projectNumber());
-        Assertions.assertEquals("ybmrzoepnxwd", model.projectDetails().projectId());
+        Assertions.assertEquals("dfpdqwtygevg", model.projectDetails().projectNumber());
+        Assertions.assertEquals("sehar", model.projectDetails().projectId());
     }
 }

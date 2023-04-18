@@ -1,25 +1,40 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/info?api-version=2023-02-28-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "561e1c94-2c73-4907-815e-8b30635fe60a"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "East US",
-      "x-envoy-upstream-service-time" : "663",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5fab0d1d-0def-4374-b051-0ec5932b9f91",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\n  \"customDocumentModels\": {\n    \"count\": 4899,\n    \"limit\": 20000\n  },\n  \"customNeuralDocumentModelBuilds\": {\n    \"used\": 0,\n    \"quota\": 20,\n    \"quotaResetDateTime\": \"2023-04-01T00:00:00Z\"\n  }\n}",
-      "Date" : "Tue, 14 Mar 2023 18:20:55 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/info?api-version=2023-02-28-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 18:16:55 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "314c5a12-abed-466f-9c03-d958fb0052af"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "e8eb2abb-6659-4065-861b-2caec59491f1",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 14 Apr 2023 18:16:54 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "428",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "customDocumentModels": {
+          "count": 5402,
+          "limit": 20000
+        },
+        "customNeuralDocumentModelBuilds": {
+          "used": 0,
+          "quota": 20,
+          "quotaResetDateTime": "2023-05-01T00:00:00Z"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

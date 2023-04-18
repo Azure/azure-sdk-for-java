@@ -19,6 +19,10 @@ public class Tags {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of Tags class. */
+    public Tags() {
+    }
+
     /**
      * Get the tags property: Additional tags for Confidential Ledger.
      *

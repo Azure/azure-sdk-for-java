@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.RouteProperties;
 import com.azure.resourcemanager.iothub.models.RoutingMessage;
 import com.azure.resourcemanager.iothub.models.RoutingSource;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for IotHubResource TestRoute. */
 public final class IotHubResourceTestRouteSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_testnewroute.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_testnewroute.json
      */
     /**
      * Sample code: IotHubResource_TestRoute.
@@ -41,7 +40,7 @@ public final class IotHubResourceTestRouteSamples {
                             .withSource(RoutingSource.DEVICE_MESSAGES)
                             .withEndpointNames(Arrays.asList("id1"))
                             .withIsEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

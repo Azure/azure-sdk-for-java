@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResourcesOperation Get. */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_getprivatelinkresources.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getprivatelinkresources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.
@@ -17,6 +15,8 @@ public final class PrivateLinkResourcesOperationGetSamples {
      * @param manager Entry point to IotHubManager.
      */
     public static void privateLinkResourcesList(com.azure.resourcemanager.iothub.IotHubManager manager) {
-        manager.privateLinkResourcesOperations().getWithResponse("myResourceGroup", "testHub", "iotHub", Context.NONE);
+        manager
+            .privateLinkResourcesOperations()
+            .getWithResponse("myResourceGroup", "testHub", "iotHub", com.azure.core.util.Context.NONE);
     }
 }

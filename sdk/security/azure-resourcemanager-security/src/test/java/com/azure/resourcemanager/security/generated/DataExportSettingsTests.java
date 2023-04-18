@@ -14,7 +14,7 @@ public final class DataExportSettingsTests {
         DataExportSettings model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"DataExportSettings\",\"properties\":{\"enabled\":true},\"id\":\"yqv\",\"name\":\"daswvpp\",\"type\":\"sqqzlgcndhz\"}")
+                    "{\"kind\":\"DataExportSettings\",\"properties\":{\"enabled\":true},\"id\":\"mptyrilkfbnrqqxv\",\"name\":\"tpbnfnqtxjtoma\",\"type\":\"swbnfddepldwqjns\"}")
                 .toObject(DataExportSettings.class);
         Assertions.assertEquals(true, model.enabled());
     }

@@ -17,24 +17,24 @@ public final class DefenderCspmAwsOfferingVmScannersConfigurationTests {
         DefenderCspmAwsOfferingVmScannersConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"cloudRoleArn\":\"djxyxgbkkqvjcteo\",\"scanningMode\":\"Default\",\"exclusionTags\":{\"zdpv\":\"lskkzpxvj\",\"fsnggytexvzilm\":\"cojhpcnabx\"}}")
+                    "{\"cloudRoleArn\":\"sqrggvrbnyruko\",\"scanningMode\":\"Default\",\"exclusionTags\":{\"p\":\"duwjleipjlhwy\"}}")
                 .toObject(DefenderCspmAwsOfferingVmScannersConfiguration.class);
-        Assertions.assertEquals("djxyxgbkkqvjcteo", model.cloudRoleArn());
+        Assertions.assertEquals("sqrggvrbnyruko", model.cloudRoleArn());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("lskkzpxvj", model.exclusionTags().get("zdpv"));
+        Assertions.assertEquals("duwjleipjlhwy", model.exclusionTags().get("p"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingVmScannersConfiguration model =
             new DefenderCspmAwsOfferingVmScannersConfiguration()
-                .withCloudRoleArn("djxyxgbkkqvjcteo")
+                .withCloudRoleArn("sqrggvrbnyruko")
                 .withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("zdpv", "lskkzpxvj", "fsnggytexvzilm", "cojhpcnabx"));
+                .withExclusionTags(mapOf("p", "duwjleipjlhwy"));
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingVmScannersConfiguration.class);
-        Assertions.assertEquals("djxyxgbkkqvjcteo", model.cloudRoleArn());
+        Assertions.assertEquals("sqrggvrbnyruko", model.cloudRoleArn());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("lskkzpxvj", model.exclusionTags().get("zdpv"));
+        Assertions.assertEquals("duwjleipjlhwy", model.exclusionTags().get("p"));
     }
 
     @SuppressWarnings("unchecked")

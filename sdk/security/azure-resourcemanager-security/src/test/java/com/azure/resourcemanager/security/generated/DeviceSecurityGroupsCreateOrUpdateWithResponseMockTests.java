@@ -31,7 +31,7 @@ public final class DeviceSecurityGroupsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"gglmvoka\",\"name\":\"uztjct\",\"type\":\"bpvbkaehxsmzygd\"}";
+            "{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"stewfop\",\"name\":\"z\",\"type\":\"azgbsqgpe\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class DeviceSecurityGroupsCreateOrUpdateWithResponseMockTests {
         DeviceSecurityGroup response =
             manager
                 .deviceSecurityGroups()
-                .define("pntghyks")
-                .withExistingResourceId("tuadxkxeqb")
+                .define("ylt")
+                .withExistingResourceId("nquktrfnslnlrxs")
                 .withThresholdRules(Arrays.asList())
                 .withTimeWindowRules(Arrays.asList())
                 .withAllowlistRules(Arrays.asList())

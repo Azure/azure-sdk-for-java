@@ -42,6 +42,10 @@ public final class OperationInner {
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
      *

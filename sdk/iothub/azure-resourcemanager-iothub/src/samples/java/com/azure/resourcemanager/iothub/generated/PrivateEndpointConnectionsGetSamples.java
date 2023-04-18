@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_getprivateendpointconnection.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Get.
@@ -19,6 +17,7 @@ public final class PrivateEndpointConnectionsGetSamples {
     public static void privateEndpointConnectionGet(com.azure.resourcemanager.iothub.IotHubManager manager) {
         manager
             .privateEndpointConnections()
-            .getWithResponse("myResourceGroup", "testHub", "myPrivateEndpointConnection", Context.NONE);
+            .getWithResponse(
+                "myResourceGroup", "testHub", "myPrivateEndpointConnection", com.azure.core.util.Context.NONE);
     }
 }

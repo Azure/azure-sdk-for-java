@@ -32,7 +32,7 @@ public final class JitNetworkAccessPoliciesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"onetbzdrdpue\"},\"kind\":\"kgtlzl\",\"location\":\"rlxcznnhz\",\"id\":\"bnbmxlxm\",\"name\":\"tygeqzus\",\"type\":\"toqcahfsgbjm\"}]}";
+            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"ghlww\"},\"kind\":\"gvgfklqiyndveqe\",\"location\":\"b\",\"id\":\"vd\",\"name\":\"trkzxsgtznsvlrds\",\"type\":\"o\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,10 @@ public final class JitNetworkAccessPoliciesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JitNetworkAccessPolicy> response =
-            manager.jitNetworkAccessPolicies().listByResourceGroup("ihezomucmq", com.azure.core.util.Context.NONE);
+            manager
+                .jitNetworkAccessPolicies()
+                .listByResourceGroup("lblfxlupibaqzizx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kgtlzl", response.iterator().next().kind());
+        Assertions.assertEquals("gvgfklqiyndveqe", response.iterator().next().kind());
     }
 }

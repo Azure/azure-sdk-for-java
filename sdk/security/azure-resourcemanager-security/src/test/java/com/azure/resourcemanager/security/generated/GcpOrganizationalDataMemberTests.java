@@ -14,20 +14,20 @@ public final class GcpOrganizationalDataMemberTests {
         GcpOrganizationalDataMember model =
             BinaryData
                 .fromString(
-                    "{\"organizationMembershipType\":\"Member\",\"parentHierarchyId\":\"fajs\",\"managementProjectNumber\":\"skmqozzkivyhj\"}")
+                    "{\"organizationMembershipType\":\"Member\",\"parentHierarchyId\":\"atxtjrrlkmdskjhh\",\"managementProjectNumber\":\"lajfoxcxscvslxlh\"}")
                 .toObject(GcpOrganizationalDataMember.class);
-        Assertions.assertEquals("fajs", model.parentHierarchyId());
-        Assertions.assertEquals("skmqozzkivyhj", model.managementProjectNumber());
+        Assertions.assertEquals("atxtjrrlkmdskjhh", model.parentHierarchyId());
+        Assertions.assertEquals("lajfoxcxscvslxlh", model.managementProjectNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GcpOrganizationalDataMember model =
             new GcpOrganizationalDataMember()
-                .withParentHierarchyId("fajs")
-                .withManagementProjectNumber("skmqozzkivyhj");
+                .withParentHierarchyId("atxtjrrlkmdskjhh")
+                .withManagementProjectNumber("lajfoxcxscvslxlh");
         model = BinaryData.fromObject(model).toObject(GcpOrganizationalDataMember.class);
-        Assertions.assertEquals("fajs", model.parentHierarchyId());
-        Assertions.assertEquals("skmqozzkivyhj", model.managementProjectNumber());
+        Assertions.assertEquals("atxtjrrlkmdskjhh", model.parentHierarchyId());
+        Assertions.assertEquals("lajfoxcxscvslxlh", model.managementProjectNumber());
     }
 }

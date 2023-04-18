@@ -13,7 +13,7 @@ public final class ApplicationsListTests {
         ApplicationsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"faymxbulpz\",\"description\":\"lbm\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"yojwyvfkmbtsu\",\"name\":\"hxsgxj\",\"type\":\"mmzrrscub\"},{\"properties\":{\"displayName\":\"drnpxqwodiff\",\"description\":\"cjrmmua\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"ibvjogjonmcy\",\"name\":\"foyzbamwineof\",\"type\":\"fkak\"},{\"properties\":{\"displayName\":\"dt\",\"description\":\"vboclzhzjk\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"uxgvttxpnr\",\"name\":\"pzaamrdixtreki\",\"type\":\"swyskbruffg\"},{\"properties\":{\"displayName\":\"k\",\"description\":\"tvlxhrpqh\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"blcouqehbhbcdszi\",\"name\":\"yr\",\"type\":\"ndo\"}],\"nextLink\":\"mbltoo\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"fbwqrooht\",\"description\":\"vmaonurjt\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"ghihpvecms\",\"name\":\"clbl\",\"type\":\"jxl\"},{\"properties\":{\"displayName\":\"juscvsfx\",\"description\":\"ctmgxuupbezqccy\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"tce\",\"name\":\"kdqkkyihzt\",\"type\":\"eq\"}],\"nextLink\":\"qzgwldoychil\"}")
                 .toObject(ApplicationsList.class);
     }
 

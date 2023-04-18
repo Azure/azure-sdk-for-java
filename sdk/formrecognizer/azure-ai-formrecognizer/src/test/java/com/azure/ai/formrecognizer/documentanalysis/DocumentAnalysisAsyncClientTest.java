@@ -89,7 +89,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     private DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient(HttpClient httpClient,
                                                                        DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentAnalysisBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
             false)
@@ -99,7 +99,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
     private DocumentModelAdministrationAsyncClient getDocumentAdminAsyncClient(HttpClient httpClient,
                                                                                DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
             false)

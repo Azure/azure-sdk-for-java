@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +58,6 @@ public final class DetachAndDeleteTrafficFiltersDeleteWithResponseMockTests {
 
         manager
             .detachAndDeleteTrafficFilters()
-            .deleteWithResponse("elnsmvbxw", "jsflhhcaalnjix", "sxyawjoyaqcs", Context.NONE);
+            .deleteWithResponse("fhvpesaps", "rdqmhjjdhtldwkyz", "uutkncw", com.azure.core.util.Context.NONE);
     }
 }
