@@ -29,6 +29,16 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>net.minidev</groupId>
+        <artifactId>json-smart</artifactId>
+        <version>2.4.10</version> <!-- {x-version-update;net.minidev:json-smart;external_dependency} -->
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

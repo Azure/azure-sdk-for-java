@@ -113,6 +113,7 @@ redis.clients:jedis;4.3.1
 io.lettuce:lettuce-core;6.2.0.RELEASE
 org.redisson:redisson;3.17.0
 net.bytebuddy:byte-buddy;1.12.23
+net.minidev:json-smart;2.4.10
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.7.9
