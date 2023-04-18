@@ -239,7 +239,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void recognizeWithResponseTextSpeechOptions() {
 
-        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(RecognizeInputType.SPEECH, new CommunicationUserIdentifier("id"), Long.valueOf(500));
+        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(RecognizeInputType.SPEECH, new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
         recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize choice with text source."));

@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.time.Duration;
+
 import com.azure.communication.common.CommunicationIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,7 +15,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * response.
      */
     @JsonProperty(value = "endSilenceTimeoutInMs")
-    private Long endSilenceTimeoutInMs;
+    private Duration endSilenceTimeoutInMs;
 
     /**
      * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
@@ -21,7 +23,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      *
      * @return the endSilenceTimeoutInMs value.
      */
-    public Long getEndSilenceTimeoutInMs() {
+    public Duration getEndSilenceTimeoutInMs() {
         return this.endSilenceTimeoutInMs;
     }
 
@@ -32,7 +34,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      */
-    public CallMediaRecognizeSpeechOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant, Long endSilenceTimeoutInMs) {
+    public CallMediaRecognizeSpeechOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
         super(recognizeInputType, targetParticipant);
         this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
     }
