@@ -628,9 +628,23 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             container.openConnectionsAndInitCaches().block();
 
             if (primaryAddressesOnly) {
-                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isGreaterThanOrEqualTo(partitionSize);
+
+                // warm up will establish one connection per primary
+                // and retry at most twice per primary (proactive connection management)
+                int primaryAddressCount = partitionSize;
+                int maxConnectionRetriesPerPrimary = primaryAddressCount * 2;
+
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isLessThanOrEqualTo(primaryAddressCount + maxConnectionRetriesPerPrimary);
             } else {
-                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
+
+                // warm up will establish one connection per replica
+                // and retry at most twice per replica (proactive connection management)
+                long secondaryReplicaCount = 3L * partitionSize;
+                long maxReplicaCount = 5L * partitionSize;
+                long minTotalConnectionEstablishmentAttempts = secondaryReplicaCount + 2 * secondaryReplicaCount;
+                long maxTotalConnectionEstablishmentAttempts = maxReplicaCount + 2 * maxReplicaCount;
+
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(minTotalConnectionEstablishmentAttempts, maxTotalConnectionEstablishmentAttempts);
             }
         } finally {
             serverConnectionDelayWarmupRule.disable();
