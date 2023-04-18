@@ -53,7 +53,19 @@ public RoomsClient createRoomsClientWithConnectionString() {
 
 ## Key concepts
 
-There are four operations (create, update, get, delete) to interact with the Azure Communication Rooms Service.
+### Rooms
+- Create room
+- Update room
+- Get room
+- Delete room
+- List all rooms
+
+### Participants
+- Upsert (Add/Update) Participants
+- Remove Participants
+- List all participants
+- 
+- 
 
 ## Examples
 
@@ -89,7 +101,7 @@ public void createRoomWithValidInput() {
 ```
 
 ### Update an existing room
-Use the `updateRoom`  function to update an existing Room on Azure Communication Service.
+Use the `updateRoom` function to update an existing Room on Azure Communication Service.
 
 ```java readme-sample-updateRoomWithRoomId
 public void updateRoomWithRoomId() {
@@ -113,7 +125,7 @@ public void updateRoomWithRoomId() {
 ```
 
 ### Get an existing room
-Use the `getRoom`  function to get an existing Room on Azure Communication Service.
+Use the `getRoom` function to get an existing Room on Azure Communication Service.
 
 ```java readme-sample-getRoomWithRoomId
 public void getRoomWithRoomId() {
@@ -129,14 +141,14 @@ public void getRoomWithRoomId() {
 ```
 
 ### Delete an existing room
-Use the `deleteRoomWithResponse` function to delete an existing Room on Azure Communication Service.
+Use the `deleteRoom` function to delete an existing Room on Azure Communication Service.
 
 ```java readme-sample-deleteRoomWithRoomId
 public void deleteRoomWithRoomId() {
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
     try {
-        roomsClient.deleteRoomWithResponse("<Room Id in String>", Context.NONE);
+        roomsClient.deleteRoom("<Room Id in String>");
     } catch (RuntimeException ex) {
         System.out.println(ex);
     }

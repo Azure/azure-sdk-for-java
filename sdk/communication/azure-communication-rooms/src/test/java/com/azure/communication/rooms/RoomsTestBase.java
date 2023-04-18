@@ -222,6 +222,9 @@ public class RoomsTestBase extends TestBase {
 
     protected void assertHappyPath(CommunicationRoom roomResult) {
         assertNotNull(roomResult.getRoomId());
+        assertNotNull(roomResult.getValidUntil());
+        assertNotNull(roomResult.getValidFrom());
+        assertNotNull(roomResult.getCreatedAt());
     }
 
     protected void assertHappyPath(Response<CommunicationRoom> roomResult, int httpStatusCode) {

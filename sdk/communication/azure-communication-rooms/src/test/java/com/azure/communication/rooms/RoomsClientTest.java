@@ -47,8 +47,6 @@ public class RoomsClientTest extends RoomsTestBase {
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createCommunicationRoom);
 
-        // assertEquals(createCommunicationRoom.getValidFrom(), VALID_FROM);
-
         String roomId = createCommunicationRoom.getRoomId();
 
         UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
@@ -237,7 +235,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
-        assertNotNull(createCommunicationRoom.getValue().getValidUntil());
+        assertHappyPath(createCommunicationRoom);
 
         String roomId = createCommunicationRoom.getValue().getRoomId();
 

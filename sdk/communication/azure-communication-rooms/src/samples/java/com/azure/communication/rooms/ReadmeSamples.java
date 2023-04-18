@@ -18,7 +18,6 @@ import com.azure.communication.rooms.models.UpdateRoomOptions;
 import com.azure.communication.rooms.models.UpsertParticipantsResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
@@ -149,7 +148,7 @@ public class ReadmeSamples {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
         try {
-            roomsClient.deleteRoomWithResponse("<Room Id in String>", Context.NONE);
+            roomsClient.deleteRoom("<Room Id in String>");
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }

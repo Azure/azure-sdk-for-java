@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (2023-03-31-preview)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -12,7 +12,7 @@
 - Removed `participants` from `CommunicationRoom` model.
 - Removed `roomJoinPolicy`, all rooms are invite-only by default.
 - `updateRoom` no longer accepts participant list as input.
-- Replaced `addParticipants` and `updateParticipants` with `UpsertParticipants`
+- Replaced `addParticipants` and `updateParticipants` with `upsertParticipants`
 - Renamed `RoleType` to `ParticipantRole`
 - Renamed `getParticipants` to `listParticipants`
 - Renamed `CreatedOn` to `CreatedAt` in `CommunicationRoom`
