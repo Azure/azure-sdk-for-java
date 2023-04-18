@@ -105,7 +105,7 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
     public static void setAzureProfile() {
         String testMode = getTestModeForStaticMethods();
         if ("PLAYBACK".equals(testMode)) {
-            azureProfile = new AzureProfile(null, "027da7f8-2fc6-46d4-9be9-560706b60fec", AzureEnvironment.AZURE);
+            azureProfile = new AzureProfile(null, "ec0aa5f7-9e78-40c9-85cd-535c6305b380", AzureEnvironment.AZURE);
         } else {
             azureProfile = new AzureProfile(AzureEnvironment.AZURE);
         }
