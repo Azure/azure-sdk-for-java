@@ -8,8 +8,10 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -28,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CreateTracerTests {
     private final SdkTracerProvider tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(InMemorySpanExporter.create()))
         .build();
+
+    private final OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
     @Test
     public void createTracerNoOptions() {
         Tracer tracer = TracerProvider.getDefaultProvider()
@@ -39,7 +43,7 @@ public class CreateTracerTests {
     @Test
     public void createTracerEnabled() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", null, null, options);
@@ -50,7 +54,7 @@ public class CreateTracerTests {
     @Test
     public void createTracerDisabled() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         options.setEnabled(false);
 
@@ -63,7 +67,7 @@ public class CreateTracerTests {
     @Test
     public void createTracerNoAzNamespace() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", null, null, options);
@@ -76,7 +80,7 @@ public class CreateTracerTests {
     @Test
     public void createTracerWithAzNamespace() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", null, "namespace", options);
@@ -90,7 +94,7 @@ public class CreateTracerTests {
     @Test
     public void createTracerWithAzNamespaceInContext() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", null, "namespace", options);
@@ -104,7 +108,7 @@ public class CreateTracerTests {
     @Test
     public void defaultSchemaVersion() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", null, null, options);
@@ -126,7 +130,7 @@ public class CreateTracerTests {
     @Test
     public void instrumentationScopeNameOnly() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", null, null, options);
@@ -141,7 +145,7 @@ public class CreateTracerTests {
     @Test
     public void instrumentationScopeVersion() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setProvider(tracerProvider);
+            .setOpenTelemetry(openTelemetry);
 
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer("test", "1.2.3-beta.45", null, options);
