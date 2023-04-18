@@ -868,12 +868,16 @@ public class GatewayAddressCache implements IAddressCache {
                         addressesNeedToValidation.add(address.getPhysicalUri());
                         break;
                     default:
-                        throw new IllegalStateException("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        // the status of the replica can be changed by other flows
+                        // ignore the validation if the status is not in the validation scope anymore
+                        logger.debug("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        break;
                 }
             }
         }
 
         if (addressesNeedToValidation.size() > 0) {
+            logger.debug("Addresses to validate: [{}]", addressesNeedToValidation);
             this.openConnectionsHandler
                     .openConnections(addressesNeedToValidation)
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)

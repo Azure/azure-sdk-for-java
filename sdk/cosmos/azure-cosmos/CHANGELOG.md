@@ -1,5 +1,10 @@
 ## Release History
 
+### 4.37.3-hotfix (2024-01-21)
+#### Bugs Fixed
+* Fixed an issue in replica validation where addresses may have not sorted properly when replica validation is enabled. - See [PR 32022](https://github.com/Azure/azure-sdk-for-java/pull/32022)
+* Fixed an issue where IllegalStateException being thrown during replica validation - See [PR 34538](https://github.com/Azure/azure-sdk-for-java/pull/34538)
+
 ### 4.37.2-hotfix (2023-07-17)
 #### Bugs Fixed
 * Fixed an issue with deserialization of `conflictResolutionTimestamp` for All versions and deletes change feed mode. - See [PR 35912](https://github.com/Azure/azure-sdk-for-java/pull/35912)
