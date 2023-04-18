@@ -10,6 +10,7 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -367,7 +368,7 @@ public class JacksonAdapterTests {
             Arguments.of("1".getBytes(StandardCharsets.UTF_8), byte[].class, "1".getBytes(StandardCharsets.UTF_8)),
             Arguments.of("true".getBytes(StandardCharsets.UTF_8), boolean.class, true),
             Arguments.of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true),
-            Arguments.of(urlUriBytes, URL.class, new URL(urlUri)),
+            Arguments.of(urlUriBytes, URL.class, UrlBuilder.parse(urlUri).toUrl()),
             Arguments.of(urlUriBytes, URI.class, URI.create(urlUri)),
             Arguments.of(getObjectBytes(offsetDateTime), OffsetDateTime.class, offsetDateTime),
             Arguments.of(getObjectBytes(dateTimeRfc1123), DateTimeRfc1123.class, dateTimeRfc1123),

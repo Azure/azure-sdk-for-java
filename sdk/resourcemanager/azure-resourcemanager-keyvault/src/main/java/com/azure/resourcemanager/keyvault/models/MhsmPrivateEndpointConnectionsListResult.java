@@ -24,6 +24,10 @@ public final class MhsmPrivateEndpointConnectionsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of MhsmPrivateEndpointConnectionsListResult class. */
+    public MhsmPrivateEndpointConnectionsListResult() {
+    }
+
     /**
      * Get the value property: The private endpoint connection associated with a managed HSM Pools.
      *

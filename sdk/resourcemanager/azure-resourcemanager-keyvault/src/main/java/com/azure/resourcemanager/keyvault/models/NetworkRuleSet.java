@@ -37,6 +37,10 @@ public final class NetworkRuleSet {
     @JsonProperty(value = "virtualNetworkRules")
     private List<VirtualNetworkRule> virtualNetworkRules;
 
+    /** Creates an instance of NetworkRuleSet class. */
+    public NetworkRuleSet() {
+    }
+
     /**
      * Get the bypass property: Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If
      * not specified the default is 'AzureServices'.

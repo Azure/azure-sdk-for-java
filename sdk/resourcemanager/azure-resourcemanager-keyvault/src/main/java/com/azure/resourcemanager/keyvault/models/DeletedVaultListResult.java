@@ -24,6 +24,10 @@ public final class DeletedVaultListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DeletedVaultListResult class. */
+    public DeletedVaultListResult() {
+    }
+
     /**
      * Get the value property: The list of deleted vaults.
      *

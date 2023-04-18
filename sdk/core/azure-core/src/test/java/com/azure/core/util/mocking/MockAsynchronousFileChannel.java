@@ -9,13 +9,34 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileLock;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of {@link AsynchronousFileChannel} used for mocking.
  */
 public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
+    private static final ScheduledExecutorService WRITER;
+
+    static {
+        WRITER = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
+        Thread hook = new Thread(() -> {
+            try {
+                WRITER.shutdown();
+                if (!WRITER.awaitTermination(2500, TimeUnit.MILLISECONDS)) {
+                    WRITER.shutdownNow();
+                    WRITER.awaitTermination(2500, TimeUnit.MILLISECONDS);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                WRITER.shutdown();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(hook);
+    }
+
     private final byte[] mockData;
     private final int dataLength;
     private final long fileLength;
@@ -132,7 +153,8 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     public <A> void write(ByteBuffer src, long position, A attachment,
         CompletionHandler<Integer, ? super A> handler) {
         if (mode == Mode.WRITE) {
-            ForkJoinPool.commonPool().execute(() -> handler.completed(writeInternal(src, position), attachment));
+            WRITER.schedule(() -> handler.completed(writeInternal(src, position), attachment), 1,
+                TimeUnit.MICROSECONDS);
         }
     }
 

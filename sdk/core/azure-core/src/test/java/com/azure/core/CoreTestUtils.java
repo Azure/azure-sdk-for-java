@@ -3,8 +3,13 @@
 
 package com.azure.core;
 
+
+import com.azure.core.util.UrlBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -139,6 +144,19 @@ public final class CoreTestUtils {
         }
 
         return outputStream.toByteArray();
+    }
+
+    /**
+     * Convenience method for creating {@link URL} now that as of Java 20+ all {@link URL} constructors are deprecated.
+     * <p>
+     * This uses the logic {@code URI.create(String).toURL()}, which is recommended instead of the URL constructors.
+     *
+     * @param urlString The URL string.
+     * @return The URL representing the URL string.
+     * @throws MalformedURLException If the URL string isn't a valid URL.
+     */
+    public static URL createUrl(String urlString) throws MalformedURLException {
+        return UrlBuilder.parse(urlString).toUrl();
     }
 
     private CoreTestUtils() {

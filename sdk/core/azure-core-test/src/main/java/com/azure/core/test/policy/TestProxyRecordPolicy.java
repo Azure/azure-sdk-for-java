@@ -24,11 +24,10 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
@@ -40,6 +39,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
@@ -95,8 +95,12 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         if (variables.isEmpty()) {
             return "{}";
         }
-        AtomicInteger count = new AtomicInteger(0);
-        Map<String, String> map = variables.stream().collect(Collectors.toMap(k -> String.format("%d", count.getAndIncrement()), k -> k));
+
+        int count = 0;
+        Map<String, String> map = new LinkedHashMap<>();
+        for (String variable : variables) {
+            map.put(String.valueOf(count++), variable);
+        }
         try {
             return SERIALIZER.serialize(map, SerializerEncoding.JSON);
         } catch (IOException e) {

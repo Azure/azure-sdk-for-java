@@ -14,17 +14,17 @@ public final class DefenderForServersGcpOfferingVaAutoProvisioningConfigurationT
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingVaAutoProvisioningConfiguration model =
             BinaryData
-                .fromString("{\"type\":\"TVM\"}")
+                .fromString("{\"type\":\"Qualys\"}")
                 .toObject(DefenderForServersGcpOfferingVaAutoProvisioningConfiguration.class);
-        Assertions.assertEquals(Type.TVM, model.type());
+        Assertions.assertEquals(Type.QUALYS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersGcpOfferingVaAutoProvisioningConfiguration model =
-            new DefenderForServersGcpOfferingVaAutoProvisioningConfiguration().withType(Type.TVM);
+            new DefenderForServersGcpOfferingVaAutoProvisioningConfiguration().withType(Type.QUALYS);
         model =
             BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingVaAutoProvisioningConfiguration.class);
-        Assertions.assertEquals(Type.TVM, model.type());
+        Assertions.assertEquals(Type.QUALYS, model.type());
     }
 }

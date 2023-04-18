@@ -17,21 +17,6 @@ public interface IotHubResources {
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the non-security related metadata of an IoT hub.
-     */
-    IotHubDescription getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Get the non-security related metadata of an IoT hub
-     *
-     * <p>Get the non-security related metadata of an IoT hub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -41,6 +26,21 @@ public interface IotHubResources {
      */
     Response<IotHubDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the non-security related metadata of an IoT hub
+     *
+     * <p>Get the non-security related metadata of an IoT hub.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the non-security related metadata of an IoT hub.
+     */
+    IotHubDescription getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Delete an IoT hub
@@ -135,21 +135,6 @@ public interface IotHubResources {
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the statistics from an IoT hub.
-     */
-    RegistryStatistics getStats(String resourceGroupName, String resourceName);
-
-    /**
-     * Get the statistics from an IoT hub
-     *
-     * <p>Get the statistics from an IoT hub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -158,6 +143,21 @@ public interface IotHubResources {
      * @return the statistics from an IoT hub along with {@link Response}.
      */
     Response<RegistryStatistics> getStatsWithResponse(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the statistics from an IoT hub
+     *
+     * <p>Get the statistics from an IoT hub.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the statistics from an IoT hub.
+     */
+    RegistryStatistics getStats(String resourceGroupName, String resourceName);
 
     /**
      * Get the list of valid SKUs for an IoT hub
@@ -236,24 +236,6 @@ public interface IotHubResources {
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
      * @param name The name of the consumer group to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     */
-    EventHubConsumerGroupInfo getEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
-
-    /**
-     * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
-     *
-     * <p>Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
-     * @param name The name of the consumer group to retrieve.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -266,20 +248,21 @@ public interface IotHubResources {
         String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
 
     /**
-     * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
+     * Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
      *
-     * <p>Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
+     * <p>Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
-     * @param name The name of the consumer group to delete.
+     * @param name The name of the consumer group to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
      */
-    void deleteEventHubConsumerGroup(
+    EventHubConsumerGroupInfo getEventHubConsumerGroup(
         String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
 
     /**
@@ -300,6 +283,23 @@ public interface IotHubResources {
      */
     Response<Void> deleteEventHubConsumerGroupWithResponse(
         String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context);
+
+    /**
+     * Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
+     *
+     * <p>Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub.
+     * @param name The name of the consumer group to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteEventHubConsumerGroup(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name);
 
     /**
      * Get a list of all the jobs in an IoT hub. For more information, see:
@@ -346,13 +346,15 @@ public interface IotHubResources {
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub.
+     * @return the details of a job from an IoT hub along with {@link Response}.
      */
-    JobResponse getJob(String resourceGroupName, String resourceName, String jobId);
+    Response<JobResponse> getJobWithResponse(
+        String resourceGroupName, String resourceName, String jobId, Context context);
 
     /**
      * Get the details of a job from an IoT hub. For more information, see:
@@ -364,15 +366,13 @@ public interface IotHubResources {
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param jobId The job identifier.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a job from an IoT hub along with {@link Response}.
+     * @return the details of a job from an IoT hub.
      */
-    Response<JobResponse> getJobWithResponse(
-        String resourceGroupName, String resourceName, String jobId, Context context);
+    JobResponse getJob(String resourceGroupName, String resourceName, String jobId);
 
     /**
      * Get the quota metrics for an IoT hub
@@ -444,21 +444,6 @@ public interface IotHubResources {
      *
      * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
      *     check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given IoT hub name is available.
-     */
-    IotHubNameAvailabilityInfo checkNameAvailability(OperationInputs operationInputs);
-
-    /**
-     * Check if an IoT hub name is available
-     *
-     * <p>Check if an IoT hub name is available.
-     *
-     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
-     *     check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -470,20 +455,19 @@ public interface IotHubResources {
         OperationInputs operationInputs, Context context);
 
     /**
-     * Test all routes
+     * Check if an IoT hub name is available
      *
-     * <p>Test all routes configured in this Iot Hub.
+     * <p>Check if an IoT hub name is available.
      *
-     * @param iotHubName IotHub to be tested.
-     * @param resourceGroupName resource group which Iot Hub belongs to.
-     * @param input Input for testing all routes.
+     * @param operationInputs Set the name parameter in the OperationInputs structure to the name of the IoT hub to
+     *     check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing all routes.
+     * @return the properties indicating whether a given IoT hub name is available.
      */
-    TestAllRoutesResult testAllRoutes(String iotHubName, String resourceGroupName, TestAllRoutesInput input);
+    IotHubNameAvailabilityInfo checkNameAvailability(OperationInputs operationInputs);
 
     /**
      * Test all routes
@@ -504,20 +488,20 @@ public interface IotHubResources {
         String iotHubName, String resourceGroupName, TestAllRoutesInput input, Context context);
 
     /**
-     * Test the new route
+     * Test all routes
      *
-     * <p>Test the new route for this Iot Hub.
+     * <p>Test all routes configured in this Iot Hub.
      *
      * @param iotHubName IotHub to be tested.
      * @param resourceGroupName resource group which Iot Hub belongs to.
-     * @param input Route that needs to be tested.
+     * @param input Input for testing all routes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of testing one route.
+     * @return result of testing all routes.
      */
-    TestRouteResult testRoute(String iotHubName, String resourceGroupName, TestRouteInput input);
+    TestAllRoutesResult testAllRoutes(String iotHubName, String resourceGroupName, TestAllRoutesInput input);
 
     /**
      * Test the new route
@@ -536,6 +520,22 @@ public interface IotHubResources {
      */
     Response<TestRouteResult> testRouteWithResponse(
         String iotHubName, String resourceGroupName, TestRouteInput input, Context context);
+
+    /**
+     * Test the new route
+     *
+     * <p>Test the new route for this Iot Hub.
+     *
+     * @param iotHubName IotHub to be tested.
+     * @param resourceGroupName resource group which Iot Hub belongs to.
+     * @param input Route that needs to be tested.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of testing one route.
+     */
+    TestRouteResult testRoute(String iotHubName, String resourceGroupName, TestRouteInput input);
 
     /**
      * Get the security metadata for an IoT hub. For more information, see:
@@ -583,25 +583,6 @@ public interface IotHubResources {
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param keyName The name of the shared access policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a shared access policy by name from an IoT hub.
-     */
-    SharedAccessSignatureAuthorizationRule getKeysForKeyName(
-        String resourceGroupName, String resourceName, String keyName);
-
-    /**
-     * Get a shared access policy by name from an IoT hub. For more information, see:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security
-     *
-     * <p>Get a shared access policy by name from an IoT hub. For more information, see:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param keyName The name of the shared access policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -613,25 +594,23 @@ public interface IotHubResources {
         String resourceGroupName, String resourceName, String keyName, Context context);
 
     /**
-     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
-     * information, see:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
+     * Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security
      *
-     * <p>Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For
-     * more information, see:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     * <p>Get a shared access policy by name from an IoT hub. For more information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @param exportDevicesParameters The parameters that specify the export devices operation.
+     * @param keyName The name of the shared access policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return a shared access policy by name from an IoT hub.
      */
-    JobResponse exportDevices(
-        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters);
+    SharedAccessSignatureAuthorizationRule getKeysForKeyName(
+        String resourceGroupName, String resourceName, String keyName);
 
     /**
      * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
@@ -656,25 +635,25 @@ public interface IotHubResources {
         String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters, Context context);
 
     /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
-     * see:
+     * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
+     * information, see:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
      *
-     * <p>Import, update, or delete device identities in the IoT hub identity registry from a blob. For more
-     * information, see:
+     * <p>Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For
+     * more information, see:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @param importDevicesParameters The parameters that specify the import devices operation.
+     * @param exportDevicesParameters The parameters that specify the export devices operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the Job Response object.
      */
-    JobResponse importDevices(
-        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters);
+    JobResponse exportDevices(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters);
 
     /**
      * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
@@ -697,6 +676,27 @@ public interface IotHubResources {
      */
     Response<JobResponse> importDevicesWithResponse(
         String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters, Context context);
+
+    /**
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
+     *
+     * <p>Import, update, or delete device identities in the IoT hub identity registry from a blob. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param importDevicesParameters The parameters that specify the import devices operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the Job Response object.
+     */
+    JobResponse importDevices(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters);
 
     /**
      * Get the non-security related metadata of an IoT hub

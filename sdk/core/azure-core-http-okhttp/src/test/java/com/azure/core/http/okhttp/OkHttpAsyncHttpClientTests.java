@@ -26,6 +26,8 @@ import reactor.test.StepVerifierOptions;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -252,8 +254,8 @@ public class OkHttpAsyncHttpClientTests {
 
     static URL url(WireMockServer server, String path) {
         try {
-            return new URL("http://localhost:" + server.port() + path);
-        } catch (MalformedURLException e) {
+            return new URI("http://localhost:" + server.port() + path).toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
