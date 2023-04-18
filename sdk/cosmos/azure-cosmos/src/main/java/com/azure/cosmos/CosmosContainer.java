@@ -787,7 +787,7 @@ public class CosmosContainer {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
 
-    /***
+    /**
      *  Initializes the container by warming up the caches and connections for the current read region.
      *
      *  <p>

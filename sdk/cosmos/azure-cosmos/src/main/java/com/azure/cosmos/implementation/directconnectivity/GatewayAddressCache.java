@@ -1008,11 +1008,7 @@ public class GatewayAddressCache implements IAddressCache {
                 address.getPhysicalUri(),
                 connectionsRequiredForEndpoint);
 
-        return Mono.fromFuture(openConnectionTask)
-            .flatMap(response -> {
-                logger.info("getting information back");
-                return Mono.just(response);
-            });
+        return Mono.fromFuture(openConnectionTask);
     }
 
     private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(
