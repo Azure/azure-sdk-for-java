@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.CoercionAction;
 import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
@@ -15,6 +16,8 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
  * Utility methods for Jackson Databind types when it's known that the version is 2.12+.
  */
 final class JacksonDatabind212 {
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonDatabind212.class);
+
     /**
      * Mutates the passed {@link ObjectMapper} to coerce empty strings as null.
      * <p>
@@ -24,18 +27,34 @@ final class JacksonDatabind212 {
      * @return The updated {@link ObjectMapper}.
      */
     static ObjectMapper mutateXmlCoercions(ObjectMapper mapper) {
-        mapper.coercionConfigDefaults().setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
-        return mapper;
+        try {
+            mapper.coercionConfigDefaults().setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
+            return mapper;
+        } catch (Exception ex) {
+            if (ex instanceof ReflectiveOperationException) {
+                throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
+            } else {
+                throw ex;
+            }
+        }
     }
 
     static String removePrefix(MapperConfig<?> config, AnnotatedClass annotatedClass,
         AnnotatedMethod method, String methodName) {
-        AccessorNamingStrategy namingStrategy = config.getAccessorNaming().forPOJO(config, annotatedClass);
-        String name = namingStrategy.findNameForIsGetter(method, methodName);
-        if (name == null) {
-            name = namingStrategy.findNameForRegularGetter(method, methodName);
-        }
+        try {
+            AccessorNamingStrategy namingStrategy = config.getAccessorNaming().forPOJO(config, annotatedClass);
+            String name = namingStrategy.findNameForIsGetter(method, methodName);
+            if (name == null) {
+                name = namingStrategy.findNameForRegularGetter(method, methodName);
+            }
 
-        return name;
+            return name;
+        } catch (Exception ex) {
+            if (ex instanceof ReflectiveOperationException) {
+                throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
+            } else {
+                throw ex;
+            }
+        }
     }
 }

@@ -28,16 +28,13 @@ import java.lang.reflect.Modifier;
  */
 final class MemberNameConverterImpl implements MemberNameConverter {
     private static final ClientLogger LOGGER = new ClientLogger(MemberNameConverterImpl.class);
-    static final boolean USE_JACKSON_212;
 
     private final ObjectMapper mapper;
-
-    static {
-        USE_JACKSON_212 = PackageVersion.VERSION.getMinorVersion() >= 12;
-    }
+    private final boolean useJackson212;
 
     MemberNameConverterImpl(ObjectMapper mapper) {
         this.mapper = mapper;
+        this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
     @Override
@@ -128,7 +125,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         String annotatedMethodName = annotatedMethod.getName();
 
         String name = null;
-        if (USE_JACKSON_212) {
+        if (useJackson212) {
             name = JacksonDatabind212.removePrefix(config, annotatedClass, annotatedMethod, annotatedMethodName);
         }
 

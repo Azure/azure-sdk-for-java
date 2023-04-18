@@ -73,11 +73,6 @@ public class JacksonTests {
         assertNull(simpleXml.nullableDecimal);
     }
 
-    @Test
-    public void simpleMemberNameConverter() {
-
-    }
-
     public static final class SimpleJson {
         @JsonProperty("int")
         private int anInt;
