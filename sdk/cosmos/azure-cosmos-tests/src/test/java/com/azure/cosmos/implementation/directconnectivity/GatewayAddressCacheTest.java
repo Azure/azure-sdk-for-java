@@ -241,8 +241,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         boolean forceRefreshPartitionAddresses = false;
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
-
         ArrayList<AddressInformation> addressInfosFromCache =
             Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
@@ -1059,8 +1057,6 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
-
-//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         ArrayList<AddressInformation> addressInfosFromCache =
                 Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);

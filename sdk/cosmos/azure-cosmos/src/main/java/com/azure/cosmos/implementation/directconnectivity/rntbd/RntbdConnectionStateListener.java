@@ -91,13 +91,11 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        // if an application developer has set the default min pool size to 0
-        // (a system config which applies to all endpoints) then it is best
-        // to avoid opening the min connections / channels required for the endpoint
-        // (to reduce CPU cycles to open connections) in the case of a connection
-        // close / reset
-        // connections will be opened proactively on this endpoint only in the
-        // openConnectionsAndInitCaches flow
+        // connection state listener submits an open connection task for an endpoint
+        // and only submits the task for that endpoint when the previous task has been
+        // completed
+        // it is okay to lose a task, since each task will attempt to attain a certain no. of
+        // connection as denoted by the min required no. of connections for that endpoint
         if (this.endpointValidationInProgress.compareAndSet(false, true)) {
             Mono.fromFuture(this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                 "",
