@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -603,12 +604,15 @@ public final class CosmosAsyncClient implements Closeable {
     void openConnectionsAndInitCaches(Duration aggressiveProactiveConnectionEstablishmentDuration) {
         final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
-        asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-            .timeout(aggressiveProactiveConnectionEstablishmentDuration)
-            .doOnCancel(() -> logger.info("Aggressive proactive connection establishment duration reached"))
-            .doOnTerminate(() -> proactiveOpenConnectionsProcessor.reInstantiateOpenConnectionsPublisherAndSubscribe())
-            .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-            .subscribe();
+        Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
+
+        wrapSourceFluxWithSoftTimeoutAndFallback(
+                submitOpenConnectionTasksFlux,
+                Flux.empty(),
+                aggressiveProactiveConnectionEstablishmentDuration,
+                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .doOnComplete(() -> proactiveOpenConnectionsProcessor.reInstantiateOpenConnectionsPublisherAndSubscribe())
+                .blockLast();
     }
 
     private <T> Flux<T> wrapSourceFluxWithSoftTimeoutAndFallback(Flux<T> source, Flux<T> fallback, Duration timeout, Scheduler executionContext) {
@@ -617,8 +621,7 @@ public final class CosmosAsyncClient implements Closeable {
                             .subscribeOn(executionContext)
                             .subscribe(t -> sink.next(t));
                 })
-                .timeout(timeout)
-                .onErrorResume(error -> fallback);
+                .take(timeout);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(

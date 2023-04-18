@@ -167,10 +167,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void removeEndpointFromMonitor(String addressUriString, OpenConnectionResponse openConnectionResponse) {
+        logger.info("URI : {}", addressUriString);
         List<OpenConnectionTask> openConnectionTasks = this.endpointsUnderMonitorMap.remove(addressUriString);
 
-        for (OpenConnectionTask connectionTask : openConnectionTasks) {
-            connectionTask.complete(openConnectionResponse);
+        if (openConnectionTasks != null && !openConnectionTasks.isEmpty()) {
+            for (OpenConnectionTask connectionTask : openConnectionTasks) {
+                connectionTask.complete(openConnectionResponse);
+            }
         }
     }
 
