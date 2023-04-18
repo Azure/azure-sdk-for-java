@@ -1,0 +1,15 @@
+[
+  {
+    "id": "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66",
+    "topic": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/testGroup/providers/microsoft.appconfiguration/configurationstores/testConfig",
+    "subject": "https://testconfig.azconfig.io/kv/%2Fapplication%2Fconfig.message?label=dev&api-version=1.0",
+    "data": {
+      "key": "sentinel",
+      "etag": "r05tB2hfMQs0vo6ITcXu7ScIOhR"
+    },
+    "eventType": "Microsoft.AppConfiguration.KeyValueModified",
+    "dataVersion": "1",
+    "metadataVersion": "1",
+    "eventTime": "2020-06-03T21:19:04.019421Z"
+  }
+]

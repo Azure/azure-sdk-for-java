@@ -60,6 +60,12 @@
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
         <module>spring-cloud-azure-integration-tests</module>
+        <module>spring-cloud-azure-integration-test-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-feature-management</module>
+        <module>spring-cloud-azure-feature-management-web</module>
+        <module>spring-cloud-azure-starter-appconfiguration-config</module>
       </modules>
     </profile>
 
@@ -112,6 +118,12 @@
         <module>spring-cloud-azure-starter-stream-servicebus</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-integration-test-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-feature-management</module>
+        <module>spring-cloud-azure-feature-management-web</module>
+        <module>spring-cloud-azure-starter-appconfiguration-config</module>
       </modules>
     </profile>
   </profiles>
