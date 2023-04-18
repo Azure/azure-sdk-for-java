@@ -38,7 +38,7 @@ import static com.azure.core.experimental.util.polling.implementation.PollingUti
  */
 public class OperationLocationPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
 
-    private static final ClientLogger LOGGER = new ClientLogger(OperationResourcePollingStrategy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationLocationPollingStrategy.class);
 
     private static final HttpHeaderName OPERATION_LOCATION_HEADER
         = HttpHeaderName.fromString("Operation-Location");
