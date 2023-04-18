@@ -10,8 +10,10 @@
  * <ol>
  *     <li>Secret management: It allows users to store, manage, and access secrets securely, and provides features such
  *     as versioning, backup, and restoration.</li>
- *     <li>Access control: It offers role-based access control (RBAC) and enables users to grant specific permissions
- *     to access secrets to other users, applications, or services.</li>
+ *     <li>Access control: It offers
+ *     <a href = "https://learn.microsoft.com/en-us/azure/key-vault/general/rbac-guide?tabs=azure-cli">
+ *         role-based access control (RBAC)</a> and enables users to grant specific permissions to access secrets to
+ *         other users, applications, or services.</li>
  *     <li>Integration with other Azure services: Azure KeyVault Secrets can be integrated with other Azure services,
  *     such as Azure App Service, Azure Functions, and Azure Virtual Machines, to simplify the process of securing
  *     sensitive information.</li>
@@ -19,9 +21,9 @@
  *     with the ability to handle large volumes of secrets and requests.</li>
  * </ol>
  *
- * <p>The Azure KeyVault Secrets client library allows developers to interact with the Azure KeyVault Secrets service
+ * <p>The Azure KeyVault Secrets client library allows developers to interact with the Azure KeyVault service
  * from their applications. The library provides a set of APIs that enable developers to securely store, manage, and
- * retrieve secrets in the Azure KeyVault The library provides a simple and secure way to manage secrets in the
+ * retrieve secrets in the Azure KeyVault. The library provides a simple and secure way to manage secrets in the
  * Azure KeyVault, and supports operations such as creating, updating, deleting, and retrieving secrets.</p>
  *
  * <p><strong>Key Concepts:</strong></p>
@@ -50,13 +52,17 @@
  * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
  * {@link com.azure.security.keyvault.secrets.SecretClient} class, a vault url and a credential object.</p>
  *
- * <p>The examples shown in this document use a credential object named DefaultAzureCredential, which is appropriate
- * for most scenarios, including local development and production environments. Additionally, we recommend using a
- * managed identity for authentication in production environments.
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
  * You can find more information on different ways of authenticating and their corresponding credential types in the
- * Azure Identity documentation.</p>
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ *     Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Sample: Construct a Secret Client</strong></p>
+ * <p><strong>Sample: Construct Synchronous Secret Client</strong></p>
+ *
  * <p>The following code sample demonstrates the creation of a {@link com.azure.security.keyvault.secrets.SecretClient},
  * using the {@link com.azure.security.keyvault.secrets.SecretClientBuilder} to configure it.</p>
  *
@@ -68,6 +74,8 @@
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.instantiation -->
+ *
+ * <p><strong>Sample: Construct Asynchronous Secret Client</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a
  * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}, using the
@@ -132,8 +140,8 @@
  * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
  *
  * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously create and store a secret in the key vault,
- * using the {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the Azure
+ * KeyVault, using the {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string -->
  * <pre>
