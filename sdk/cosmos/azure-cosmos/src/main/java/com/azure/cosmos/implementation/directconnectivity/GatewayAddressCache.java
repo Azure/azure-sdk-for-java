@@ -877,6 +877,9 @@ public class GatewayAddressCache implements IAddressCache {
                         addressesNeedToValidation.add(address.getPhysicalUri());
                         break;
                     default:
+                        // the status of the replica can be changed by other flows
+                        // ignore the validation if the status is not in the validation scope anymore
+                        logger.debug("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
                         break;
                 }
             }
