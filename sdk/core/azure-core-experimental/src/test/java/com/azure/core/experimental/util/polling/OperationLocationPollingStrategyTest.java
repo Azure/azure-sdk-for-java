@@ -56,10 +56,10 @@ public class OperationLocationPollingStrategyTest {
 
         HttpClient httpClient = request -> {
             if (pollUrl.equals(request.getUrl().toString())) {
-                ++pollCount[0];
+                boolean succeeded = ++pollCount[0] > 1;
                 Map<String, String> pollResponse = new HashMap<>();
                 pollResponse.put("id", operationId);
-                pollResponse.put("status", pollCount[0] > 1 ? "Succeeded" : "InProgress");
+                pollResponse.put("status", succeeded ? "Succeeded" : "InProgress");
                 return Mono.just(new MockHttpResponse(pollRequest, 200,
                     BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
             } else {
@@ -67,7 +67,7 @@ public class OperationLocationPollingStrategyTest {
             }
         };
 
-        PollerFlux<PollResult, TestResource> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<PollResult, TestResource> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(createPipeline(httpClient))),
             RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
@@ -90,6 +90,61 @@ public class OperationLocationPollingStrategyTest {
                 .last()
                 .flatMap(AsyncPollResponse::getFinalResult))
             .expectNextMatches(resource -> resourceName.equals(resource.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void operationLocationPollingStrategyPutFailsOnPoll() {
+        String putUrl = "http://localhost/resource";
+        String pollUrl = "http://localhost/operation";
+        int[] pollCount = new int[] {0};
+
+        String resourceName = "resource1";
+        String operationId = "operation1";
+
+        Supplier<Mono<Response<TestResource>>> activationOperation = () -> Mono.fromCallable(() -> {
+            return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
+                new HttpHeaders().set("operation-location", pollUrl), new TestResource(resourceName));
+        });
+
+        HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, pollUrl);
+
+        HttpClient httpClient = request -> {
+            if (pollUrl.equals(request.getUrl().toString())) {
+                boolean fails = ++pollCount[0] > 1;
+                Map<String, Object> pollResponse = new HashMap<>();
+                pollResponse.put("id", operationId);
+                pollResponse.put("status", fails ? "Failed" : "InProgress");
+                if (fails) {
+                    Map<String, String> responseError = new HashMap<>();
+                    responseError.put("code", "mock-error");
+                    responseError.put("message", "mock error message");
+                    pollResponse.put("error", responseError);
+                }
+                return Mono.just(new MockHttpResponse(pollRequest, 200,
+                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+            } else {
+                return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
+            }
+        };
+
+        PollerFlux<PollResult, TestResource> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
+            activationOperation::get, new OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(createPipeline(httpClient))),
+            RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
+
+        // verify poll result
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse ->
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+                    && operationId.equals(asyncPollResponse.getValue().getId())
+                    && asyncPollResponse.getValue().getError() == null)
+            .expectNextMatches(asyncPollResponse ->
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.FAILED
+                    && operationId.equals(asyncPollResponse.getValue().getId())
+                    && "mock-error".equals(asyncPollResponse.getValue().getError().getCode())
+                    && "mock error message".equals(asyncPollResponse.getValue().getError().getMessage()))
             .verifyComplete();
     }
 
