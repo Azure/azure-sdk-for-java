@@ -877,7 +877,8 @@ public class GatewayAddressCache implements IAddressCache {
                         addressesNeedToValidation.add(address.getPhysicalUri());
                         break;
                     default:
-                        throw new IllegalStateException("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        logger.info("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        break;
                 }
             }
         }
