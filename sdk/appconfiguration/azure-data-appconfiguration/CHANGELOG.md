@@ -1,10 +1,12 @@
 # Release History
 
-## 1.4.4 (2023-04-17)
+## 1.4.4 (2023-04-18)
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a race condition of invalid signature issue by not sharing `Mac` instance in class-level per request operation. 
+  `Mac` isn't thread-safe, multiple threads could use it at once. 
 - Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only 
   support single authentication per builder instance. 
 - Moved the validation of authentication to client builder's build method. 
