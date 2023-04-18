@@ -17,11 +17,19 @@ public class RecordFilePayload {
     private String recordingFile;
 
     /**
+     * The asset file path
+     */
+    @JsonProperty("x-recording-assets-file")
+    private String assetFile;
+
+    /**
      * Creates an instance of {@link RecordFilePayload}.
      * @param recordingFile The partial path to the recording file.
+     * @param assetFile The path to asset file.
      */
-    public RecordFilePayload(String recordingFile) {
+    public RecordFilePayload(String recordingFile, String assetFile) {
         this.recordingFile = recordingFile;
+        this.assetFile = assetFile;
     }
 
 }

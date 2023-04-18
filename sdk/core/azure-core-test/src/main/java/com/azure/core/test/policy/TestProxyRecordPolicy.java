@@ -25,6 +25,8 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -69,10 +71,11 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public void startRecording(File recordFile) {
+        String assetJsonPath = getAssetJsonPath();
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -89,6 +92,16 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         request.setBody("{\"HandleRedirects\": false}");
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         client.sendSync(request, Context.NONE);
+    }
+
+    private String getAssetJsonPath() {
+        Path rootPath;
+        try {
+            rootPath = Paths.get(System.getProperty("user.dir") + "/.." + "/.." + "/..").toRealPath();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return rootPath.relativize(Paths.get(System.getProperty("user.dir"))) + "assets.json";
     }
 
     /**
