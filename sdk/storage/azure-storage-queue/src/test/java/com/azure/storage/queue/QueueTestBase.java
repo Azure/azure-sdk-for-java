@@ -54,8 +54,11 @@ public class QueueTestBase extends TestProxyTestBase {
     public void beforeTest() {
         super.beforeTest();
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
-        interceptorManager.addSanitizers(
-            Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+
+        if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.addSanitizers(
+                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+        }
     }
 
     private static String getCrc32(String input) {
