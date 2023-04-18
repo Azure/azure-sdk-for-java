@@ -53,7 +53,7 @@ public final class UserAccount {
     @JsonCreator
     public UserAccount(
             @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "password", required = true) String password) {
+            @JsonProperty(value = "password", required = false) String password) {
         this.name = name;
         this.password = password;
     }

@@ -4,229 +4,223 @@
 
 package com.azure.compute.batch.generated;
 
-import com.azure.compute.batch.AccountClient;
-import com.azure.compute.batch.ApplicationsClient;
 import com.azure.compute.batch.BatchServiceClientBuilder;
-import com.azure.compute.batch.CertificatesClient;
-import com.azure.compute.batch.ComputeNodeExtensionsClient;
-import com.azure.compute.batch.ComputeNodesClient;
-import com.azure.compute.batch.FileClient;
-import com.azure.compute.batch.JobClient;
-import com.azure.compute.batch.JobScheduleClient;
 import com.azure.compute.batch.PoolClient;
-import com.azure.compute.batch.TaskClient;
+import com.azure.compute.batch.models.AllocationState;
+import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.ElevationLevel;
+import com.azure.compute.batch.models.ImageReference;
+import com.azure.compute.batch.models.LinuxUserConfiguration;
+import com.azure.compute.batch.models.NetworkConfiguration;
+import com.azure.compute.batch.models.VirtualMachineConfiguration;
+import com.azure.compute.batch.models.UserAccount;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.core.credential.TokenCredential;
+
+import org.junit.Assert;
+
 
 class BatchServiceClientTestBase extends TestBase {
-    protected ApplicationsClient applicationsClient;
+	static BatchServiceClientBuilder batchClientBulder;
+	static final int MAX_LEN_ID = 64;
 
-    protected PoolClient poolClient;
-
-    protected AccountClient accountClient;
-
-    protected JobClient jobClient;
-
-    protected CertificatesClient certificatesClient;
-
-    protected FileClient fileClient;
-
-    protected JobScheduleClient jobScheduleClient;
-
-    protected TaskClient taskClient;
-
-    protected ComputeNodesClient computeNodesClient;
-
-    protected ComputeNodeExtensionsClient computeNodeExtensionsClient;
-
+	 public enum AuthMode {
+	        AAD, SharedKey
+	    }
+	
     @Override
     protected void beforeTest() {
-        BatchServiceClientBuilder applicationsClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            applicationsClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            applicationsClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            applicationsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        applicationsClient = applicationsClientbuilder.buildApplicationsClient();
-
-        BatchServiceClientBuilder poolClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            poolClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            poolClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            poolClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        poolClient = poolClientbuilder.buildPoolClient();
-
-        BatchServiceClientBuilder accountClientbuilder =
+    	batchClientBulder =
                 new BatchServiceClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            accountClientbuilder
+        	batchClientBulder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            accountClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            accountClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        	batchClientBulder
+                    .addPolicy(interceptorManager.getRecordPolicy());
         }
-        accountClient = accountClientbuilder.buildAccountClient();
+        
+        //TODO LIVE Testing
+        
+        try {
+			authenticateClient(AuthMode.AAD);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void authenticateClient(AuthMode auth) throws Exception {
+    	if (auth == AuthMode.AAD) {
+    		batchClientBulder.credential(new DefaultAzureCredentialBuilder().build());
+    	}
+    	else if (auth == AuthMode.SharedKey) {
+    		//TODO Add support for Shared Key Auth
+    	}
+    	else {
+    		throw new Exception("Unsupported Auth " + auth);
+    	}
+    }
+    
+    protected static String getStringIdWithUserNamePrefix(String name) {
+        //'BatchUser' is the name used for Recording / Playing Back tests.
+        // For Local testing, use your username here, to create your unique Batch resources and avoiding conflict in shared batch account.
+        String userName = "BatchUser";
+        StringBuilder out = new StringBuilder();
+        int remainingSpace = MAX_LEN_ID - name.length();
+        if (remainingSpace > 0) {
+            if (userName.length() > remainingSpace) {
+                out.append(userName.substring(0, remainingSpace));
+            } else {
+                out.append(userName);
+            }
+            out.append(name);
+        } else {
+            out.append(name.substring(0, MAX_LEN_ID));
+        }
+        return out.toString();
+    }
+    
+    public BatchPool createIfNotExistIaaSPool(String poolId) throws Exception {
+        // Create a pool with 3 Small VMs
+        String poolVmSize = "STANDARD_D1_V2";
+        int poolVmCount = 1;
 
-        BatchServiceClientBuilder jobClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            jobClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            jobClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            jobClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        jobClient = jobClientbuilder.buildJobClient();
+        // 10 minutes
+        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
+        PoolClient poolClient = batchClientBulder.buildPoolClient();
+        
+        
+        	
+        
+        // Check if pool exists
+        if (!poolExists(poolId)) {
+            // Use IaaS VM with Ubuntu
+            ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
+                    .setSku("18.04-LTS").setVersion("latest");
 
-        BatchServiceClientBuilder certificatesClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            certificatesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            certificatesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            certificatesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        certificatesClient = certificatesClientbuilder.buildCertificatesClient();
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
-        BatchServiceClientBuilder fileClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            fileClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            fileClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            fileClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        fileClient = fileClientbuilder.buildFileClient();
+            List<UserAccount> userList = new ArrayList<>();
+            userList.add(new UserAccount("test-user", "kt#_gahr!@aGERDXA")
+                    .setLinuxUserConfiguration(new LinuxUserConfiguration().setUid(5).setGid(5))
+                    .setElevationLevel(ElevationLevel.ADMIN));
 
-        BatchServiceClientBuilder jobScheduleClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            jobScheduleClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            jobScheduleClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            jobScheduleClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        jobScheduleClient = jobScheduleClientbuilder.buildJobScheduleClient();
+         // Need VNet to allow security to inject NSGs
+            NetworkConfiguration networkConfiguration = createNetworkConfiguration();
+            
+            BatchPool poolToAdd = new BatchPool();
+            poolToAdd.setId(poolId).setTargetDedicatedNodes(poolVmCount).setVmSize(poolVmSize)
+            		 .setVirtualMachineConfiguration(configuration)
+            		 .setUserAccounts(userList)
+            		 .setNetworkConfiguration(networkConfiguration);
 
-        BatchServiceClientBuilder taskClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            taskClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            taskClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            taskClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            poolClient.add(poolToAdd);
+        } 
+        else {
+        	System.out.println(String.format("The %s already exists.", poolId));
+            //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
-        taskClient = taskClientbuilder.buildTaskClient();
+        
+        
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+        boolean steady = false;
+        BatchPool pool = null;
 
-        BatchServiceClientBuilder computeNodesClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            computeNodesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            computeNodesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            computeNodesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        // Wait for the VM to be allocated
+        while (elapsedTime < poolSteadyTimeoutInSeconds) {
+        	pool = poolClient.get(poolId);
+            if (pool.getAllocationState() == AllocationState.STEADY) {
+                steady = true;
+                break;
+            }
+            System.out.println("wait 30 seconds for pool steady...");
+            Thread.sleep(30 * 1000);
+            elapsedTime = (new Date()).getTime() - startTime;
         }
-        computeNodesClient = computeNodesClientbuilder.buildComputeNodesClient();
 
-        BatchServiceClientBuilder computeNodeExtensionsClientbuilder =
-                new BatchServiceClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            computeNodeExtensionsClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            computeNodeExtensionsClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            computeNodeExtensionsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+
+        return pool;
+    }
+    
+    public NetworkConfiguration createNetworkConfiguration(){
+    	Configuration localConfig = Configuration.getGlobalConfiguration();
+        String vnetName = localConfig.get("AZURE_VNET", "");
+        String subnetName = localConfig.get("AZURE_VNET_SUBNET");
+        String subId = localConfig.get("AZURE_SUBSCRIPTION_ID");
+        String vnetResourceGroup = localConfig.get("AZURE_VNET_RESOURCE_GROUP");
+
+        if(getTestMode() == TestMode.RECORD) {
+        	AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+        	TokenCredential credential = new DefaultAzureCredentialBuilder()
+        			.authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+        		    .build();
+
+        	NetworkManager manager = NetworkManager
+        		    .authenticate(credential, profile);
+
+        	PagedIterable<Network> networks = manager.networks().listByResourceGroup(vnetResourceGroup);
+        	boolean networksFound = false;
+        	
+        	for (Network network: networks) {
+        		networksFound = true;
+        		break;
+        	}
+        	
+        	if (!networksFound) {
+        		Network network = manager.networks().define(vnetName)
+        				.withRegion(localConfig.get("AZURE_BATCH_REGION"))
+        				.withExistingResourceGroup(vnetResourceGroup)
+        				.withAddressSpace(localConfig.get("AZURE_VNET_ADDRESS_SPACE"))
+        				.withSubnet(subnetName, localConfig.get("AZURE_VNET_SUBNET_ADDRESS_SPACE"))
+        				.create();
+        	}
         }
-        computeNodeExtensionsClient = computeNodeExtensionsClientbuilder.buildComputeNodeExtensionsClient();
+
+        String vNetResourceId = String.format(
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
+            subId,
+            vnetResourceGroup,
+            vnetName,
+            subnetName);
+
+        return new NetworkConfiguration().setSubnetId(vNetResourceId);
+    }
+    
+    public static boolean poolExists(String poolId) {
+    	try {
+    		PoolClient poolOps = batchClientBulder.buildPoolClient();
+        	poolOps.exists(poolId);
+        	return true;
+        }
+        catch (Exception e) {
+        	if (!e.getMessage().contains("Status code 404")) {
+    			throw e;
+    		}
+        	return false;
+        }
     }
 }
