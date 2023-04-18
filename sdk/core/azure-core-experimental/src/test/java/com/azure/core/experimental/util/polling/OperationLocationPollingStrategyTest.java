@@ -6,6 +6,8 @@ package com.azure.core.experimental.util.polling;
 import com.azure.core.exception.AzureException;
 import com.azure.core.experimental.http.MockHttpResponse;
 import com.azure.core.experimental.models.PollResult;
+import com.azure.core.experimental.util.polling.implementation.TestActionResult;
+import com.azure.core.experimental.util.polling.implementation.TestResource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
