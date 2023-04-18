@@ -22,10 +22,10 @@ import java.util.Stack;
  */
 public class AvroParserState {
 
-    private Stack<AvroSchema> stack;
-    private List<ByteBuffer> cache;
-    private long size;
-    private long sourceOffset; /* Keeps track of number of bytes read from the source. */
+    Stack<AvroSchema> stack;
+    List<ByteBuffer> cache;
+    long size;
+    long sourceOffset; /* Keeps track of number of bytes read from the source. */
 
     /**
      * Creates a new instance of an AvroParserState.
