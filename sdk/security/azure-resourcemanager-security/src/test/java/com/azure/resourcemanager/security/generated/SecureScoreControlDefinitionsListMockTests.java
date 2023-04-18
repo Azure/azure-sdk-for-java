@@ -31,7 +31,7 @@ public final class SecureScoreControlDefinitionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"wksdegyxsbfpzvo\",\"description\":\"vntw\",\"maxScore\":1376925211,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[]},\"id\":\"lc\",\"name\":\"pblalhhez\",\"type\":\"fkissaidqzsaa\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"faofd\",\"description\":\"htncwmhjobzrfp\",\"maxScore\":694063597,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[]},\"id\":\"f\",\"name\":\"cvbzwgwhgkgsoa\",\"type\":\"oorssatfy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

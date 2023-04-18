@@ -31,7 +31,7 @@ public final class DeviceSecurityGroupsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"ttzgixgyrihlg\",\"name\":\"gbehlqtxnr\",\"type\":\"lkndrndpgfjodh\"}]}";
+            "{\"value\":[{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"xqceazfpxgn\",\"name\":\"qvzvlu\",\"type\":\"q\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class DeviceSecurityGroupsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DeviceSecurityGroup> response =
-            manager.deviceSecurityGroups().list("xdncaqtt", com.azure.core.util.Context.NONE);
+            manager.deviceSecurityGroups().list("gfii", com.azure.core.util.Context.NONE);
     }
 }

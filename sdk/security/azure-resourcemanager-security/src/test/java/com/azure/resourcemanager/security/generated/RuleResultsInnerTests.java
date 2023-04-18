@@ -16,9 +16,9 @@ public final class RuleResultsInnerTests {
         RuleResultsInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"results\":[[\"afpwzyifrkgwl\",\"xeqipx\",\"zdyi\"],[\"fayorpravkjoges\",\"abnsmj\",\"wynqxaekqsykvwj\",\"qpkevmyltjc\"],[\"pxklurccl\",\"gxannnoytzposewx\"]]},\"id\":\"gpxvkqmaupxvpi\",\"name\":\"dfaifyzyzeyuube\",\"type\":\"ds\"}")
+                    "{\"properties\":{\"results\":[[\"exdnd\",\"bdweade\",\"zmwntopagt\"]]},\"id\":\"mvmmagoaqylkjz\",\"name\":\"jiuazjc\",\"type\":\"mxitpfinzcpd\"}")
                 .toObject(RuleResultsInner.class);
-        Assertions.assertEquals("afpwzyifrkgwl", model.properties().results().get(0).get(0));
+        Assertions.assertEquals("exdnd", model.properties().results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -27,13 +27,8 @@ public final class RuleResultsInnerTests {
             new RuleResultsInner()
                 .withProperties(
                     new RuleResultsProperties()
-                        .withResults(
-                            Arrays
-                                .asList(
-                                    Arrays.asList("afpwzyifrkgwl", "xeqipx", "zdyi"),
-                                    Arrays.asList("fayorpravkjoges", "abnsmj", "wynqxaekqsykvwj", "qpkevmyltjc"),
-                                    Arrays.asList("pxklurccl", "gxannnoytzposewx"))));
+                        .withResults(Arrays.asList(Arrays.asList("exdnd", "bdweade", "zmwntopagt"))));
         model = BinaryData.fromObject(model).toObject(RuleResultsInner.class);
-        Assertions.assertEquals("afpwzyifrkgwl", model.properties().results().get(0).get(0));
+        Assertions.assertEquals("exdnd", model.properties().results().get(0).get(0));
     }
 }

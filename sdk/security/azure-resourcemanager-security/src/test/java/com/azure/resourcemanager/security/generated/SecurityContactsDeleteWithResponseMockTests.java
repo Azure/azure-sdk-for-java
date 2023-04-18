@@ -56,6 +56,6 @@ public final class SecurityContactsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.securityContacts().deleteWithResponse("xjxjoe", com.azure.core.util.Context.NONE);
+        manager.securityContacts().deleteWithResponse("jsczivfqbqnasdsy", com.azure.core.util.Context.NONE);
     }
 }
