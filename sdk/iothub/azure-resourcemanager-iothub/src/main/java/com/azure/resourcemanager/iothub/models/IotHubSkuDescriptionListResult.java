@@ -24,6 +24,10 @@ public final class IotHubSkuDescriptionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IotHubSkuDescriptionListResult class. */
+    public IotHubSkuDescriptionListResult() {
+    }
+
     /**
      * Get the value property: The array of IotHubSkuDescription.
      *

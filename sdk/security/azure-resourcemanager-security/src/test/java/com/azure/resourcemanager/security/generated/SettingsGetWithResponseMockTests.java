@@ -30,8 +30,7 @@ public final class SettingsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"kind\":\"Setting\",\"id\":\"rwnhkgqggoxsst\",\"name\":\"ivrakfrryn\",\"type\":\"cwmhlymgnukxrk\"}";
+        String responseStr = "{\"kind\":\"Setting\",\"id\":\"oykdno\",\"name\":\"aaxwmgzr\",\"type\":\"jlqcwny\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +59,9 @@ public final class SettingsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Setting response =
-            manager.settings().getWithResponse(SettingName.MCAS, com.azure.core.util.Context.NONE).getValue();
+            manager
+                .settings()
+                .getWithResponse(SettingName.WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW, com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

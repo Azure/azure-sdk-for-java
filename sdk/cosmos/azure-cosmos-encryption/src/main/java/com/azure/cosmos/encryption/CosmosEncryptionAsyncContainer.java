@@ -10,7 +10,11 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.implementation.Constants;
 import com.azure.cosmos.encryption.implementation.CosmosResponseFactory;
 import com.azure.cosmos.encryption.implementation.EncryptionImplementationBridgeHelpers;
+import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
+import com.azure.cosmos.encryption.implementation.EncryptionSettings;
 import com.azure.cosmos.encryption.implementation.EncryptionUtils;
+import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.MicrosoftDataEncryptionException;
+import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -39,22 +43,26 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-import com.azure.cosmos.encryption.implementation.EncryptionProcessor;
-import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -131,7 +139,7 @@ public final class CosmosEncryptionAsyncContainer {
             requestOptions = new CosmosItemRequestOptions();
         }
         byte[] streamPayload = cosmosSerializerToStream(item);
-        return createItemHelper(streamPayload, null, requestOptions,(Class<T>) item.getClass(), false );
+        return createItemHelper(streamPayload, requestOptions,(Class<T>) item.getClass(), false );
 
     }
 
@@ -193,7 +201,93 @@ public final class CosmosEncryptionAsyncContainer {
                                                        PartitionKey partitionKey,
                                                        CosmosItemRequestOptions requestOptions) {
 
-        return container.deleteItem(itemId, partitionKey, requestOptions);
+        return deleteItemInternal(itemId, partitionKey, requestOptions);
+    }
+
+    private Mono<CosmosItemResponse<Object>> deleteItemInternal(String itemId, PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
+        this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync();
+        return Mono.just(this.encryptionProcessor.getEncryptionSettings())
+            .flatMap(settings -> {
+                try {
+                    return Mono.zip(
+                        checkAndGetEncryptedId(itemId, settings),
+                        checkAndGetEncryptedPartitionKey(partitionKey, settings)
+                    ).flatMap(encryptedIdPartitionTuple -> container.deleteItem(encryptedIdPartitionTuple.getT1(), encryptedIdPartitionTuple.getT2(), requestOptions));
+                } catch (Exception ex) {
+                    return Mono.error(ex);
+                }
+            });
+    }
+
+    private Mono<String> checkAndGetEncryptedId(String itemId, EncryptionSettings encryptionSettings)
+    {
+        if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().
+            anyMatch(includedPath -> includedPath.getPath().substring(1).equals(Constants.PROPERTY_NAME_ID))) {
+            return this.getEncryptedItem(encryptionSettings, Constants.PROPERTY_NAME_ID, itemId);
+        }
+        return Mono.just(itemId);
+    }
+
+    private Mono<PartitionKey> checkAndGetEncryptedPartitionKey(PartitionKey partitionKey, EncryptionSettings encryptionSettings) {
+        if (encryptionSettings.getPartitionKeyPaths().isEmpty()) {
+            return Mono.just(partitionKey);
+        }
+
+        JsonNode partitionKeyNode;
+        try {
+            partitionKeyNode = EncryptionUtils.getSimpleObjectMapper().readTree(partitionKey.toString());
+        } catch (JsonProcessingException ex) {
+            return Mono.error(ex);
+        }
+
+        if (partitionKeyNode.isArray() && partitionKeyNode.size() > 1) {
+            ArrayNode arrayNode = (ArrayNode) partitionKeyNode;
+
+            return Mono.just(new PartitionKeyBuilder())
+                .flatMap(partitionKeyBuilder -> Flux.fromIterable(encryptionSettings.getPartitionKeyPaths())
+                    .flatMap(path -> {
+                        // case: partition key path is /a/b/c and the client encryption policy has /a in path.
+                        // hence encrypt the partition key value with using its top level path /a since
+                        // /c would have been encrypted in the document using /a's policy.
+                        String partitionKeyPath = path.split("/")[1];
+
+                        String childPartitionKey = arrayNode.elements().next().textValue();
+                        if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().
+                            anyMatch(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath))) {
+                            partitionKeyBuilder.add(childPartitionKey);
+                            return Mono.empty();
+                        }
+                        return getEncryptedItem(encryptionSettings, partitionKeyPath, childPartitionKey);
+                    })
+                    .collectList()
+                    .flatMapMany(Flux::fromIterable)
+                    .doOnNext(partitionKeyBuilder::add)
+                    .then(Mono.just(partitionKeyBuilder.build())));
+        } else {
+            return Mono.just(encryptionSettings.getPartitionKeyPaths().get(0))
+                .flatMap(path -> {
+                    String partitionKeyPath = path.split("/")[1];
+                    if (this.encryptionProcessor.getClientEncryptionPolicy().getIncludedPaths().stream().
+                        noneMatch(includedPath -> includedPath.getPath().substring(1).equals(partitionKeyPath))) {
+                        return Mono.just(partitionKeyNode.elements().next().textValue());
+                    }
+                    return getEncryptedItem(encryptionSettings, partitionKeyPath, partitionKeyNode.elements().next().textValue());
+                })
+                .flatMap(encryptedPartitionKey -> Mono.just(new PartitionKey(encryptedPartitionKey)));
+        }
+    }
+
+    private Mono<String> getEncryptedItem(EncryptionSettings encryptionSettings, String propertyName, String propertyValue) {
+        return encryptionSettings
+            .getEncryptionSettingForPropertyAsync(propertyName, this.encryptionProcessor)
+            .flatMap(settings -> {
+                try {
+                    return Mono.just(
+                        this.encryptionProcessor.encryptAndSerializeValue(settings, propertyValue, propertyName));
+                } catch (MicrosoftDataEncryptionException ex) {
+                    return Mono.error(ex);
+                }
+            });
     }
 
     /**
@@ -225,10 +319,17 @@ public final class CosmosEncryptionAsyncContainer {
      */
     // TODO Make this api public once it is GA in cosmos core library
     Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
-        if (requestOptions == null) {
-            requestOptions = new CosmosItemRequestOptions();
-        }
-        return container.deleteAllItemsByPartitionKey(partitionKey, requestOptions);
+        final CosmosItemRequestOptions options = Optional.ofNullable(requestOptions)
+            .orElse(new CosmosItemRequestOptions());
+
+        return deleteAllItemsByPartitionKeyInternal(partitionKey, options);
+    }
+
+    private Mono<CosmosItemResponse<Object>> deleteAllItemsByPartitionKeyInternal(PartitionKey partitionKey, CosmosItemRequestOptions requestOptions) {
+        return this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+            .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+            .flatMap(encryptedSettings -> checkAndGetEncryptedPartitionKey(partitionKey, encryptedSettings))
+            .flatMap(encryptedPartitionKey -> container.deleteAllItemsByPartitionKey(encryptedPartitionKey, requestOptions));
     }
 
     /**
@@ -267,7 +368,7 @@ public final class CosmosEncryptionAsyncContainer {
         }
 
         byte[] streamPayload = cosmosSerializerToStream(item);
-        return upsertItemHelper(streamPayload, null, requestOptions, (Class<T>) item.getClass(), false);
+        return upsertItemHelper(streamPayload, requestOptions, (Class<T>) item.getClass(), false);
     }
 
     /**
@@ -380,11 +481,10 @@ public final class CosmosEncryptionAsyncContainer {
                                                     PartitionKey partitionKey,
                                                     CosmosItemRequestOptions requestOptions,
                                                     Class<T> classType) {
-        if (requestOptions == null) {
-            requestOptions = new CosmosItemRequestOptions();
-        }
+        final CosmosItemRequestOptions options = Optional.ofNullable(requestOptions)
+            .orElse(new CosmosItemRequestOptions());
 
-        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(id, partitionKey, requestOptions, false);
+        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.readItemHelper(id, partitionKey, options, false);
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
             this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
@@ -554,11 +654,10 @@ public final class CosmosEncryptionAsyncContainer {
         checkNotNull(partitionKey, "expected non-null partitionKey for patchItem");
         checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
-        if (options == null) {
-            options = new CosmosPatchItemRequestOptions();
-        }
+        final CosmosPatchItemRequestOptions patchOptions = Optional.ofNullable(options)
+            .orElse(new CosmosPatchItemRequestOptions());
 
-        return patchItemHelper(itemId, partitionKey, cosmosPatchOperations, options, itemType);
+        return patchItemHelper(itemId, partitionKey, cosmosPatchOperations, patchOptions, itemType);
     }
 
     private <T> Mono<CosmosItemResponse<T>> patchItemHelper(String itemId,
@@ -623,11 +722,17 @@ public final class CosmosEncryptionAsyncContainer {
                                                                     boolean isRetry) {
 
         setRequestHeaders(requestOptions);
-        return this.container.patchItem(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
-            flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
-                this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
-                .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
-                    itemType))).onErrorResume(exception -> {
+        return this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+            .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+            .flatMap(encryptionSettings -> Mono.zip(
+                checkAndGetEncryptedId(itemId, encryptionSettings),
+                checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
+            .flatMap(encryptedIdPartitionKeyTuple ->
+                this.container.patchItem(encryptedIdPartitionKeyTuple.getT1(), encryptedIdPartitionKeyTuple.getT2(), encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
+                flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
+                    .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
+                        itemType))).onErrorResume(exception -> {
                 if (!isRetry && exception instanceof CosmosException) {
                     final CosmosException cosmosException = (CosmosException) exception;
                     if (isIncorrectContainerRid(cosmosException)) {
@@ -637,7 +742,7 @@ public final class CosmosEncryptionAsyncContainer {
                     }
                 }
                 return Mono.error(exception);
-            });
+            })));
     }
 
     /**
@@ -720,10 +825,16 @@ public final class CosmosEncryptionAsyncContainer {
                                                             CosmosItemRequestOptions requestOptions,
                                                             boolean isRetry) {
         this.setRequestHeaders(requestOptions);
-        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.container.readItem(
-            id,
-            partitionKey,
-            requestOptions, byte[].class);
+        Mono<CosmosItemResponse<byte[]>> responseMessageMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+        .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+        .flatMap(encryptionSettings -> Mono.zip(
+            checkAndGetEncryptedId(id, encryptionSettings),
+            checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
+        .flatMap(encryptedIdPartitionKeyTuple ->
+            this.container.readItem(
+                encryptedIdPartitionKeyTuple.getT1(),
+                encryptedIdPartitionKeyTuple.getT2(),
+                requestOptions, byte[].class)));
         return responseMessageMono.onErrorResume(exception -> {
             if (!isRetry && exception instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) exception;
@@ -738,15 +849,52 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemHelper(byte[] streamPayload,
-                                                             PartitionKey partitionKey,
                                                              CosmosItemRequestOptions requestOptions,
                                                              Class<T> itemClass,
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
         return this.encryptionProcessor.encrypt(streamPayload)
-            .flatMap(encryptedPayload -> createItemHelper(
+            .flatMap(encryptedPayload -> this.container.createItem(
                 encryptedPayload,
-                partitionKey,
+                requestOptions)
+                .publishOn(encryptionScheduler)
+                .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
+                        itemClass))).onErrorResume(exception -> {
+                    if (!isRetry && exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
+                        if (isIncorrectContainerRid(cosmosException)) {
+                            this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                            return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                                (Mono.defer(() -> createItemHelper(streamPayload, requestOptions,
+                                    itemClass, true)));
+                        }
+                    }
+                    return Mono.error(exception);
+                }));
+    }
+
+    private <T> Mono<CosmosItemResponse<T>> createItemHelper(byte[] streamPayload,
+                                                             PartitionKey partitionKey,
+                                                             CosmosItemRequestOptions requestOptions,
+                                                             Class<T> itemClass,
+                                                             boolean isRetry) {
+        this.setRequestHeaders(requestOptions);
+        AtomicReference<PartitionKey> encryptedPK = new AtomicReference<>();
+        Mono<byte[]> encryptedPayloadMono =
+            this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+            .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+            .flatMap(encryptionSettings -> checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
+            .flatMap(encryptedPartitionKey -> {
+                encryptedPK.set(encryptedPartitionKey);
+                return this.encryptionProcessor.encrypt(streamPayload);
+            });
+
+        return encryptedPayloadMono
+        .flatMap(encryptedPayload -> this.container.createItem(
+                encryptedPayload,
+                encryptedPK.get(),
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
@@ -766,12 +914,31 @@ public final class CosmosEncryptionAsyncContainer {
                 }));
     }
 
-    private <T> Mono<CosmosItemResponse<byte[]>> createItemHelper(byte[] encryptedPayload,
-                                                                  PartitionKey partitionKey,
-                                                                  CosmosItemRequestOptions requestOptions) {
-        return partitionKey != null
-            ? this.container.createItem(encryptedPayload, partitionKey, requestOptions)
-            : this.container.createItem(encryptedPayload, requestOptions);
+    private <T> Mono<CosmosItemResponse<T>> upsertItemHelper(byte[] streamPayload,
+                                                             CosmosItemRequestOptions requestOptions,
+                                                             Class<T> itemClass,
+                                                             boolean isRetry) {
+        this.setRequestHeaders(requestOptions);
+        return this.encryptionProcessor.encrypt(streamPayload)
+            .flatMap(encryptedPayload -> this.container.upsertItem(
+                encryptedPayload,
+                requestOptions)
+                .publishOn(encryptionScheduler)
+                .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, itemClass)))
+                .onErrorResume(exception -> {
+                    if (!isRetry && exception instanceof CosmosException) {
+                        final CosmosException cosmosException = (CosmosException) exception;
+                        if (isIncorrectContainerRid(cosmosException)) {
+                            this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                            return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                                (Mono.defer(() -> upsertItemHelper(streamPayload, requestOptions,
+                                    itemClass, true)));
+                        }
+                    }
+                    return Mono.error(exception);
+                }));
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemHelper(byte[] streamPayload,
@@ -780,10 +947,19 @@ public final class CosmosEncryptionAsyncContainer {
                                                              Class<T> itemClass,
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
-        return this.encryptionProcessor.encrypt(streamPayload)
-            .flatMap(encryptedPayload -> upsertItemHelper(
+        AtomicReference<PartitionKey> encryptedPK = new AtomicReference<>();
+        Mono<byte[]> encryptedPayloadMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+            .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+            .flatMap(encryptionSettings -> checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
+            .flatMap(encryptedPartitionKey -> {
+                encryptedPK.set(encryptedPartitionKey);
+                return this.encryptionProcessor.encrypt(streamPayload);
+            });
+
+        return encryptedPayloadMono
+            .flatMap(encryptedPayload -> this.container.upsertItem(
                 encryptedPayload,
-                partitionKey,
+                encryptedPK.get(),
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
@@ -803,14 +979,6 @@ public final class CosmosEncryptionAsyncContainer {
                 }));
     }
 
-    private <T> Mono<CosmosItemResponse<byte[]>> upsertItemHelper(byte[] encryptedPayload,
-                                                             PartitionKey partitionKey,
-                                                             CosmosItemRequestOptions requestOptions) {
-        return partitionKey != null
-            ? this.container.upsertItem(encryptedPayload, partitionKey, requestOptions)
-            : this.container.upsertItem(encryptedPayload, requestOptions);
-    }
-
     private <T> Mono<CosmosItemResponse<T>> replaceItemHelper(byte[] streamPayload,
                                                               String itemId,
                                                              PartitionKey partitionKey,
@@ -818,11 +986,24 @@ public final class CosmosEncryptionAsyncContainer {
                                                              Class<T> itemClass,
                                                              boolean isRetry) {
         this.setRequestHeaders(requestOptions);
-        return this.encryptionProcessor.encrypt(streamPayload)
+        AtomicReference<PartitionKey> encryptedPK = new AtomicReference<>();
+        AtomicReference<String> encryptedId = new AtomicReference<>();
+        Mono<byte[]> encryptedPayloadMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+            .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+            .flatMap(encryptionSettings -> Mono.zip(
+                checkAndGetEncryptedId(itemId, encryptionSettings),
+                checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings)))
+            .flatMap(encryptedIdPartitionKeyTuple -> {
+                encryptedId.set(encryptedIdPartitionKeyTuple.getT1());
+                encryptedPK.set(encryptedIdPartitionKeyTuple.getT2());
+                return this.encryptionProcessor.encrypt(streamPayload);
+            });
+
+        return encryptedPayloadMono
             .flatMap(encryptedPayload -> this.container.replaceItem(
                 encryptedPayload,
-                itemId,
-                partitionKey,
+                encryptedId.get(),
+                encryptedPK.get(),
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
@@ -999,49 +1180,66 @@ public final class CosmosEncryptionAsyncContainer {
      * transactional batch succeeded.
      */
     public Mono<CosmosBatchResponse> executeCosmosBatch(CosmosBatch cosmosBatch, CosmosBatchRequestOptions requestOptions) {
-        if (requestOptions == null) {
-            requestOptions = new CosmosBatchRequestOptions();
-        }
+        final CosmosBatchRequestOptions cosmosBatchRequestOptions = Optional.ofNullable(requestOptions)
+            .orElse(new CosmosBatchRequestOptions());
 
         List<Mono<ItemBatchOperation<?>>> monoList = new ArrayList<>();
         for (ItemBatchOperation<?> itemBatchOperation : cosmosBatchAccessor.getOperationsInternal(cosmosBatch)) {
             Mono<ItemBatchOperation<?>> itemBatchOperationMono = null;
             if (itemBatchOperation.getItem() != null) {
-                ObjectNode objectNode =
-                    EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
-                itemBatchOperationMono =
-                    encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
-                        return new ItemBatchOperation<>(
+                itemBatchOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap(encryptionSettings -> {
+                        try {
+                            Field id = itemBatchOperation.getItem().getClass().getDeclaredField(Constants.PROPERTY_NAME_ID);
+                            id.setAccessible(true);
+                            return Mono.zip(
+                                checkAndGetEncryptedId((String) id.get(itemBatchOperation.getItem()), encryptionSettings),
+                                checkAndGetEncryptedPartitionKey(itemBatchOperation.getPartitionKeyValue(), encryptionSettings));
+                        } catch (IllegalAccessException | NoSuchFieldException e) {
+                            return Mono.error(e);
+                        }
+                    })
+                    .flatMap(encryptedIdPartitionKeyTuple -> {
+                        ObjectNode objectNode =
+                            EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
+                        return encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
-                            itemBatchOperation.getId(),
-                            itemBatchOperation.getPartitionKeyValue(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
                             itemBatchOperation.getRequestOptions(),
                             encryptedItem
-                        );
+                        ));
                     });
+
             } else {
-                itemBatchOperationMono =
-                    Mono.just(
+                itemBatchOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap(encryptionSettings -> {
+                        return Mono.zip(
+                            checkAndGetEncryptedId(itemBatchOperation.getId(), encryptionSettings),
+                            checkAndGetEncryptedPartitionKey(itemBatchOperation.getPartitionKeyValue(), encryptionSettings));
+                    })
+                    .flatMap(encryptedIdPartitionKeyTuple -> Mono.just(
                         new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
-                            itemBatchOperation.getId(),
-                            itemBatchOperation.getPartitionKeyValue(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
                             itemBatchOperation.getRequestOptions(),
                             null
-                        )
-                    );
+                        )));
             }
             monoList.add(itemBatchOperationMono);
+
         }
         Mono<List<ItemBatchOperation<?>>> encryptedOperationListMono =
             Flux.mergeSequential(monoList).collectList();
-        CosmosBatchRequestOptions finalRequestOptions = requestOptions;
 
         CosmosBatch encryptedCosmosBatch = CosmosBatch.createCosmosBatch(cosmosBatch.getPartitionKeyValue());
 
         return encryptedOperationListMono.flatMap(itemBatchOperations -> {
             cosmosBatchAccessor.getOperationsInternal(encryptedCosmosBatch).addAll(itemBatchOperations);
-            return executeCosmosBatchHelper(encryptedCosmosBatch, finalRequestOptions, false);
+            return executeCosmosBatchHelper(encryptedCosmosBatch, cosmosBatchRequestOptions, false);
         });
     }
 
@@ -1140,37 +1338,53 @@ public final class CosmosEncryptionAsyncContainer {
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
         Flux<CosmosItemOperation> operations,
         CosmosBulkExecutionOptions bulkOptions) {
-        if (bulkOptions == null) {
-            bulkOptions = new CosmosBulkExecutionOptions();
-        }
+        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = Optional.ofNullable(bulkOptions)
+            .orElse(new CosmosBulkExecutionOptions());
 
-        final CosmosBulkExecutionOptions cosmosBulkExecutionOptions = bulkOptions;
         Flux<CosmosItemOperation> operationFlux = operations.flatMap(cosmosItemOperation -> {
-            Mono<CosmosItemOperation> cosmosItemOperationMono;
+            Mono<CosmosItemOperation> cosmosItemOperationMono = null;
             if (cosmosItemOperation.getItem() != null) {
-                ObjectNode objectNode =
-                    EncryptionUtils.getSimpleObjectMapper().valueToTree(cosmosItemOperation.getItem());
-                assert cosmosItemOperation instanceof ItemBulkOperation;
-                cosmosItemOperationMono =
-                    this.encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> new ItemBulkOperation<>(
-                        cosmosItemOperation.getOperationType(),
-                        cosmosItemOperation.getId(),
-                        cosmosItemOperation.getPartitionKeyValue(),
-                        ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
-                        encryptedItem,
-                        cosmosItemOperation.getContext()
-                    ));
+                cosmosItemOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap( encryptionSettings -> {
+                        try {
+                            Field id = cosmosItemOperation.getItem().getClass().getDeclaredField(Constants.PROPERTY_NAME_ID);
+                            id.setAccessible(true);
+                            return Mono.zip(
+                                checkAndGetEncryptedId((String) id.get(cosmosItemOperation.getItem()), encryptionSettings),
+                                checkAndGetEncryptedPartitionKey(cosmosItemOperation.getPartitionKeyValue(), encryptionSettings));
+                        } catch (IllegalAccessException | NoSuchFieldException e) {
+                            return Mono.error(e);
+                        }
+                    })
+                    .flatMap(encryptedIdPartitionKeyTuple -> {
+                        ObjectNode objectNode =
+                            EncryptionUtils.getSimpleObjectMapper().valueToTree(cosmosItemOperation.getItem());
+                        assert cosmosItemOperation instanceof ItemBulkOperation;
+                        return this.encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> new ItemBulkOperation<>(
+                            cosmosItemOperation.getOperationType(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
+                            ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
+                            encryptedItem,
+                            cosmosItemOperation.getContext()
+                        ));
+                    });
             } else {
-                cosmosItemOperationMono = Mono.just(
-                    new ItemBulkOperation<>(
-                        cosmosItemOperation.getOperationType(),
-                        cosmosItemOperation.getId(),
-                        cosmosItemOperation.getPartitionKeyValue(),
-                        ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
-                        null,
-                        cosmosItemOperation.getContext()
-                    )
-                );
+                cosmosItemOperationMono = this.encryptionProcessor.initEncryptionSettingsIfNotInitializedAsync()
+                    .thenReturn(this.encryptionProcessor.getEncryptionSettings())
+                    .flatMap( encryptionSettings -> Mono.zip(
+                        checkAndGetEncryptedId(cosmosItemOperation.getId() , encryptionSettings),
+                        checkAndGetEncryptedPartitionKey(cosmosItemOperation.getPartitionKeyValue(), encryptionSettings)))
+                    .flatMap(encryptedIdPartitionKeyTuple -> Mono.just(
+                        new ItemBulkOperation<>(
+                            cosmosItemOperation.getOperationType(),
+                            encryptedIdPartitionKeyTuple.getT1(),
+                            encryptedIdPartitionKeyTuple.getT2(),
+                            ((ItemBulkOperation<JsonNode, TContext>) cosmosItemOperation).getRequestOptions(),
+                            null,
+                            cosmosItemOperation.getContext()
+                        )));
             }
             return cosmosItemOperationMono;
         });

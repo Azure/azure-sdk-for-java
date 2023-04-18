@@ -12,7 +12,7 @@ public final class CspmMonitorGithubOfferingTests {
     public void testDeserialize() throws Exception {
         CspmMonitorGithubOffering model =
             BinaryData
-                .fromString("{\"offeringType\":\"CspmMonitorGithub\",\"description\":\"bzsx\"}")
+                .fromString("{\"offeringType\":\"CspmMonitorGithub\",\"description\":\"bdbfgrlp\"}")
                 .toObject(CspmMonitorGithubOffering.class);
     }
 

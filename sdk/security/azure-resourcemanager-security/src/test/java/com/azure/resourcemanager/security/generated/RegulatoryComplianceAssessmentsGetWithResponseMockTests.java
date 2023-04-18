@@ -32,7 +32,7 @@ public final class RegulatoryComplianceAssessmentsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"tedzu\",\"assessmentType\":\"jtvgjsx\",\"assessmentDetailsLink\":\"yj\",\"state\":\"Unsupported\",\"passedResources\":678222315,\"failedResources\":775931422,\"skippedResources\":619716025,\"unsupportedResources\":575571934},\"id\":\"d\",\"name\":\"htitsffofwan\",\"type\":\"hks\"}";
+            "{\"properties\":{\"description\":\"oshjgcze\",\"assessmentType\":\"bnxgzt\",\"assessmentDetailsLink\":\"gctjch\",\"state\":\"Unsupported\",\"passedResources\":1976746044,\"failedResources\":11816420,\"skippedResources\":549834402,\"unsupportedResources\":630846895},\"id\":\"cu\",\"name\":\"lbefvwc\",\"type\":\"jkxpylrwoxzgwpsy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +63,7 @@ public final class RegulatoryComplianceAssessmentsGetWithResponseMockTests {
         RegulatoryComplianceAssessment response =
             manager
                 .regulatoryComplianceAssessments()
-                .getWithResponse("yzlwhbwzjnufzrf", "m", "qgnnbz", com.azure.core.util.Context.NONE)
+                .getWithResponse("ldahlfxlmu", "fmuad", "nfsncs", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(State.UNSUPPORTED, response.state());

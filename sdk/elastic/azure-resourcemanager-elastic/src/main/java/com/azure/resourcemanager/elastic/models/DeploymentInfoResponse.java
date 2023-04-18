@@ -37,6 +37,20 @@ public interface DeploymentInfoResponse {
     String diskCapacity();
 
     /**
+     * Gets the deploymentUrl property: Deployment URL of the elasticsearch in Elastic cloud deployment.
+     *
+     * @return the deploymentUrl value.
+     */
+    String deploymentUrl();
+
+    /**
+     * Gets the marketplaceSaasInfo property: Marketplace SaaS Info of the resource.
+     *
+     * @return the marketplaceSaasInfo value.
+     */
+    MarketplaceSaaSInfo marketplaceSaasInfo();
+
+    /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner object.
      *
      * @return the inner object.

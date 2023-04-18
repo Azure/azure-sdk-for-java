@@ -3,6 +3,7 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -36,7 +37,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PagedIterableTest {
     private static final int DEFAULT_PAGE_COUNT = 4;
 
-    private final HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1").set("header2", "value2");
+    private final HttpHeaders httpHeaders = new HttpHeaders()
+        .set(HttpHeaderName.fromString("header1"), "value1")
+        .set(HttpHeaderName.fromString("header2"), "value2");
     private final HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
     private final String deserializedHeaders = "header1,value1,header2,value2";
 
@@ -186,7 +189,7 @@ public class PagedIterableTest {
 
     @Test
     public void streamFirstPage() {
-        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux(5);
+        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux();
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
         assertEquals(pagedResponses.get(0), pagedIterable.streamByPage().limit(1).collect(Collectors.toList()).get(0));
@@ -197,7 +200,7 @@ public class PagedIterableTest {
 
     @Test
     public void streamFirstPagePagedIterable() {
-        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable();
 
         assertEquals(pagedResponses.get(0), pagedIterable.streamByPage().limit(1).collect(Collectors.toList()).get(0));
 
@@ -207,7 +210,7 @@ public class PagedIterableTest {
 
     @Test
     public void iterateFirstPage() {
-        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux(5);
+        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux();
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
         assertEquals(pagedResponses.get(0), pagedIterable.iterableByPage().iterator().next());
@@ -218,7 +221,7 @@ public class PagedIterableTest {
 
     @Test
     public void iterateFirstPageIterable() {
-        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable();
 
         assertEquals(pagedResponses.get(0), pagedIterable.iterableByPage().iterator().next());
 
@@ -228,7 +231,7 @@ public class PagedIterableTest {
 
     @Test
     public void streamFirstValue() {
-        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux(5);
+        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux();
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
@@ -237,7 +240,7 @@ public class PagedIterableTest {
 
     @Test
     public void streamFirstValuePagedIterable() {
-        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable();
 
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
         assertEquals(firstValue, pagedIterable.stream().limit(1).collect(Collectors.toList()).get(0));
@@ -245,7 +248,7 @@ public class PagedIterableTest {
 
     @Test
     public void iterateFirstValue() {
-        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux(5);
+        TestPagedFlux<Integer> pagedFlux = getTestPagedFlux();
         PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
 
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
@@ -255,7 +258,7 @@ public class PagedIterableTest {
 
     @Test
     public void iterateFirstValuePagedIterable() {
-        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable(5);
+        TestPagedIterable<Integer> pagedIterable = getTestPagedIterable();
 
         Integer firstValue = pagedResponses.get(0).getValue().get(0);
         assertEquals(firstValue, pagedIterable.iterator().next());
@@ -360,15 +363,15 @@ public class PagedIterableTest {
     }
 
 
-    private TestPagedFlux<Integer> getTestPagedFlux(int numberOfPages) {
-        createPagedResponse(numberOfPages);
+    private TestPagedFlux<Integer> getTestPagedFlux() {
+        createPagedResponse(5);
 
         return new TestPagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
             continuationToken -> getNextPage(continuationToken, pagedResponses));
     }
 
-    private TestPagedIterable<Integer> getTestPagedIterable(int numberOfPages) {
-        createPagedResponse(numberOfPages);
+    private TestPagedIterable<Integer> getTestPagedIterable() {
+        createPagedResponse(5);
 
         return new TestPagedIterable<>(() -> pagedResponses.isEmpty() ? null : pagedResponses.get(0),
             continuationToken -> getNextPageSync(continuationToken, pagedResponses));

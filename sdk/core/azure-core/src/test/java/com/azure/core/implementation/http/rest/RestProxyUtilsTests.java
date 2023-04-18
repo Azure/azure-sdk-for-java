@@ -4,6 +4,7 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
@@ -26,7 +27,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyUtilsTests {
 
@@ -39,7 +45,7 @@ public class RestProxyUtilsTests {
         StepVerifier.create(
                 RestProxyUtils.validateLengthAsync(httpRequest)
                     .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody())))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
     }
 
@@ -93,17 +99,17 @@ public class RestProxyUtilsTests {
     public void multipleSubscriptionsToCheckBodyLength() {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
             .setBody(EXPECTED)
-            .setHeader("Content-Length", String.valueOf(EXPECTED.length));
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
         Flux<ByteBuffer> verifierFlux = RestProxyUtils.validateLengthAsync(httpRequest)
             .flatMapMany(HttpRequest::getBody);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(verifierFlux))
-            .assertNext(bytes -> assertArrayEquals(EXPECTED, bytes))
+            .assertNext(bytes -> assertArraysEqual(EXPECTED, bytes))
             .verifyComplete();
     }
 
@@ -115,27 +121,27 @@ public class RestProxyUtilsTests {
             Arguments.of(
                 Named.of("bytes", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(EXPECTED)
-                    .setHeader("Content-Length", String.valueOf(contentLength)))
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("string", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(SAMPLE)
-                    .setHeader("Content-Length", String.valueOf(contentLength)))
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("flux", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(Flux.just(ByteBuffer.wrap(EXPECTED)))
-                    .setHeader("Content-Length", String.valueOf(contentLength)))
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("stream", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(BinaryData.fromStream(new ByteArrayInputStream(EXPECTED)))
-                    .setHeader("Content-Length", String.valueOf(contentLength)))
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("file", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(BinaryData.fromFile(file))
-                    .setHeader("Content-Length", String.valueOf(contentLength)))
+                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             )
         );
     }
@@ -146,7 +152,7 @@ public class RestProxyUtilsTests {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
             .setBody(BinaryData.fromFlux(
                 Flux.just(ByteBuffer.wrap(EXPECTED)), EXPECTED.length + 1L, false).block())
-            .setHeader("Content-Length", String.valueOf(EXPECTED.length + 1L));
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
         StepVerifier.create(validateAndCollectRequestAsync(httpRequest))
             .verifyErrorSatisfies(throwable -> {
@@ -163,7 +169,7 @@ public class RestProxyUtilsTests {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
             .setBody(BinaryData.fromFlux(
                 Flux.just(ByteBuffer.wrap(EXPECTED)), EXPECTED.length - 1L, false).block())
-            .setHeader("Content-Length", String.valueOf(EXPECTED.length - 1L));
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
         StepVerifier.create(validateAndCollectRequestAsync(httpRequest))
             .verifyErrorSatisfies(throwable -> {
@@ -179,13 +185,14 @@ public class RestProxyUtilsTests {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L))
-                .setHeader("Content-Length", String.valueOf(EXPECTED.length - 1L));
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
             UnexpectedLengthException thrown = assertThrows(
                 UnexpectedLengthException.class,
                 () -> validateAndCollectRequestSync(httpRequest),
                 "Expected validateLengthSync() to throw, but it didn't");
-            assertTrue(thrown.getMessage().equals("Request body emitted " + EXPECTED.length + " bytes, more than the expected " + (EXPECTED.length - 1) + " bytes."));
+            assertEquals("Request body emitted " + EXPECTED.length + " bytes, more than the expected "
+                + (EXPECTED.length - 1) + " bytes.", thrown.getMessage());
         }
     }
 
@@ -194,13 +201,14 @@ public class RestProxyUtilsTests {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L))
-                .setHeader("Content-Length", String.valueOf(EXPECTED.length + 1L));
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
             UnexpectedLengthException thrown = assertThrows(
                 UnexpectedLengthException.class,
                 () -> validateAndCollectRequestSync(httpRequest),
                 "Expected validateLengthSync() to throw, but it didn't");
-            assertTrue(thrown.getMessage().equals("Request body emitted " + EXPECTED.length + " bytes, less than the expected " + (EXPECTED.length + 1) + " bytes."));
+            assertEquals("Request body emitted " + EXPECTED.length + " bytes, less than the expected "
+                + (EXPECTED.length + 1) + " bytes.", thrown.getMessage());
         }
     }
 
@@ -220,8 +228,8 @@ public class RestProxyUtilsTests {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream))
-                .setHeader("Content-Length", String.valueOf(EXPECTED.length));
-            assertArrayEquals(EXPECTED, validateAndCollectRequestSync(httpRequest));
+                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
+            assertArraysEqual(EXPECTED, validateAndCollectRequestSync(httpRequest));
         }
     }
 

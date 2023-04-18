@@ -3,6 +3,7 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
@@ -45,7 +46,7 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
 
     @Override
     public Mono<String> getBodyAsString() {
-        return Mono.fromSupplier(() -> CoreUtils.bomAwareToString(body, getHeaderValue("Content-Type")));
+        return Mono.fromSupplier(() -> CoreUtils.bomAwareToString(body, getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

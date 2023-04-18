@@ -5,8 +5,8 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
@@ -55,7 +55,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create caller and receiver
             CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
-            
+
             CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
                     .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
                     .sourceIdentity(caller)

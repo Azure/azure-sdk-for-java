@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.iothub.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionState;
@@ -13,7 +12,7 @@ import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionStatu
 /** Samples for PrivateEndpointConnections Update. */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_updateprivateendpointconnection.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_updateprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Update.
@@ -34,6 +33,6 @@ public final class PrivateEndpointConnectionsUpdateSamples {
                                 new PrivateLinkServiceConnectionState()
                                     .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
                                     .withDescription("Approved by johndoe@contoso.com"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

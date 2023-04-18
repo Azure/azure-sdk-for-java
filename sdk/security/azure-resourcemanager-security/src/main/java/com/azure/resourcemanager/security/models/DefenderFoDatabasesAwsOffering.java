@@ -26,6 +26,12 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
     @JsonProperty(value = "rds")
     private DefenderFoDatabasesAwsOfferingRds rds;
 
+    /*
+     * The databases data security posture management (DSPM) configuration
+     */
+    @JsonProperty(value = "databasesDspm")
+    private DefenderFoDatabasesAwsOfferingDatabasesDspm databasesDspm;
+
     /** Creates an instance of DefenderFoDatabasesAwsOffering class. */
     public DefenderFoDatabasesAwsOffering() {
     }
@@ -72,6 +78,26 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
     }
 
     /**
+     * Get the databasesDspm property: The databases data security posture management (DSPM) configuration.
+     *
+     * @return the databasesDspm value.
+     */
+    public DefenderFoDatabasesAwsOfferingDatabasesDspm databasesDspm() {
+        return this.databasesDspm;
+    }
+
+    /**
+     * Set the databasesDspm property: The databases data security posture management (DSPM) configuration.
+     *
+     * @param databasesDspm the databasesDspm value to set.
+     * @return the DefenderFoDatabasesAwsOffering object itself.
+     */
+    public DefenderFoDatabasesAwsOffering withDatabasesDspm(DefenderFoDatabasesAwsOfferingDatabasesDspm databasesDspm) {
+        this.databasesDspm = databasesDspm;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -84,6 +110,9 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
         }
         if (rds() != null) {
             rds().validate();
+        }
+        if (databasesDspm() != null) {
+            databasesDspm().validate();
         }
     }
 }

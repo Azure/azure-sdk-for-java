@@ -13,16 +13,16 @@ public final class CspmMonitorAwsOfferingNativeCloudConnectionTests {
     public void testDeserialize() throws Exception {
         CspmMonitorAwsOfferingNativeCloudConnection model =
             BinaryData
-                .fromString("{\"cloudRoleArn\":\"absol\"}")
+                .fromString("{\"cloudRoleArn\":\"jhqxc\"}")
                 .toObject(CspmMonitorAwsOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("absol", model.cloudRoleArn());
+        Assertions.assertEquals("jhqxc", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CspmMonitorAwsOfferingNativeCloudConnection model =
-            new CspmMonitorAwsOfferingNativeCloudConnection().withCloudRoleArn("absol");
+            new CspmMonitorAwsOfferingNativeCloudConnection().withCloudRoleArn("jhqxc");
         model = BinaryData.fromObject(model).toObject(CspmMonitorAwsOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("absol", model.cloudRoleArn());
+        Assertions.assertEquals("jhqxc", model.cloudRoleArn());
     }
 }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.parallel.Isolated;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -41,7 +41,7 @@ public class ReferenceManagerTests {
 
         ReferenceManager.INSTANCE.register(wrapperClass, cleanupAction);
 
-        assertArrayEquals(expectedInitialBytes, wrappedBytes);
+        assertArraysEqual(expectedInitialBytes, wrappedBytes);
 
         wrapperClass = null;
 
@@ -51,7 +51,7 @@ public class ReferenceManagerTests {
         // Give the cleanup action a moment to run.
         Thread.sleep(500);
 
-        assertArrayEquals(expectedFinalBytes, wrappedBytes);
+        assertArraysEqual(expectedFinalBytes, wrappedBytes);
 
         assertEquals(1, cleanupCalls.get());
     }

@@ -17,6 +17,15 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
     public static final AuthenticationType IDENTITY_BASED = fromString("identityBased");
 
     /**
+     * Creates a new instance of AuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationType() {
+    }
+
+    /**
      * Creates or finds a AuthenticationType from its string representation.
      *
      * @param name a name to look for.

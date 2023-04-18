@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LimitValue")
 @Fluent
 public final class LimitObject extends LimitJsonObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LimitObject.class);
-
     /*
      * The quota/limit value
      */
@@ -29,6 +25,10 @@ public final class LimitObject extends LimitJsonObject {
      */
     @JsonProperty(value = "limitType")
     private QuotaLimitTypes limitType;
+
+    /** Creates an instance of LimitObject class. */
+    public LimitObject() {
+    }
 
     /**
      * Get the value property: The quota/limit value.

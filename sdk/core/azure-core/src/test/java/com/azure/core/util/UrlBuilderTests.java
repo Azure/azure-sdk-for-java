@@ -11,6 +11,7 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
@@ -777,7 +778,7 @@ public class UrlBuilderTests {
 
     @Test
     public void parseURLSchemeAndHost() throws MalformedURLException {
-        final UrlBuilder builder = UrlBuilder.parse(new URL("http://www.bing.com"));
+        final UrlBuilder builder = UrlBuilder.parse(URI.create("http://www.bing.com").toURL());
         assertEquals("http://www.bing.com", builder.toString());
     }
 

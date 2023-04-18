@@ -32,7 +32,7 @@ public final class AlertsSuppressionRulesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"alertType\":\"vsk\",\"lastModifiedUtc\":\"2020-12-26T02:18:32Z\",\"expirationDateUtc\":\"2021-04-29T21:58:55Z\",\"reason\":\"geumexm\",\"state\":\"Enabled\",\"comment\":\"cbccwkqmt\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"p\",\"name\":\"qis\",\"type\":\"rpilgftrqrejdaah\"}";
+            "{\"properties\":{\"alertType\":\"jqqwmtqsmoxsazu\",\"lastModifiedUtc\":\"2021-10-28T14:39:50Z\",\"expirationDateUtc\":\"2021-11-13T00:25:40Z\",\"reason\":\"ecywn\",\"state\":\"Disabled\",\"comment\":\"zzaczsinqbdn\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"bbozsyvr\",\"name\":\"kjmyitrchwudlx\",\"type\":\"eihtpmnoejh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,12 @@ public final class AlertsSuppressionRulesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AlertsSuppressionRule response =
-            manager.alertsSuppressionRules().getWithResponse("by", com.azure.core.util.Context.NONE).getValue();
+            manager.alertsSuppressionRules().getWithResponse("bpnjodf", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("vsk", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-29T21:58:55Z"), response.expirationDateUtc());
-        Assertions.assertEquals("geumexm", response.reason());
-        Assertions.assertEquals(RuleState.ENABLED, response.state());
-        Assertions.assertEquals("cbccwkqmt", response.comment());
+        Assertions.assertEquals("jqqwmtqsmoxsazu", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T00:25:40Z"), response.expirationDateUtc());
+        Assertions.assertEquals("ecywn", response.reason());
+        Assertions.assertEquals(RuleState.DISABLED, response.state());
+        Assertions.assertEquals("zzaczsinqbdn", response.comment());
     }
 }
