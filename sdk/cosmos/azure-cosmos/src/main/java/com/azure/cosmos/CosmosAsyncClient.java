@@ -47,19 +47,21 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -74,6 +76,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
     builder = CosmosClientBuilder.class,
     isAsync = true)
 public final class CosmosAsyncClient implements Closeable {
+    private static final Logger logger = LoggerFactory.getLogger(CosmosAsyncClient.class);
+
     private static final CosmosClientTelemetryConfig DEFAULT_TELEMETRY_CONFIG = new CosmosClientTelemetryConfig();
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
@@ -590,33 +594,24 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        final Duration lastSuccessResponseTimeout = Duration.ofSeconds(1);
-        final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
-
         asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
-
-        wrapSourceFluxWithSoftTimeoutAndFallback(
-                proactiveOpenConnectionsProcessor.getOpenConnectionsPublisher().sequential(),
-                Flux.empty(),
-                lastSuccessResponseTimeout,
-                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC
-        ).blockLast();
+            .doOnComplete(() -> {
+                logger.info("Getting complete signal");
+            })
+            .blockLast();
     }
-
 
     void openConnectionsAndInitCaches(Duration aggressiveProactiveConnectionEstablishmentDuration) {
         final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = asyncDocumentClient.getProactiveOpenConnectionsProcessor();
 
-        asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-                .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .subscribe();
+        Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
 
-        Flux
-                .just(1)
-                .delayElements(aggressiveProactiveConnectionEstablishmentDuration)
-                .doOnComplete(proactiveOpenConnectionsProcessor::reinstantiateOpenConnectionsPublisherAndSubscribe)
+        wrapSourceFluxWithSoftTimeoutAndFallback(
+                submitOpenConnectionTasksFlux,
+                Flux.empty(),
+                aggressiveProactiveConnectionEstablishmentDuration,
+                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .doOnComplete(() -> proactiveOpenConnectionsProcessor.reInstantiateOpenConnectionsPublisherAndSubscribe())
                 .blockLast();
     }
 
@@ -626,8 +621,7 @@ public final class CosmosAsyncClient implements Closeable {
                             .subscribeOn(executionContext)
                             .subscribe(t -> sink.next(t));
                 })
-                .timeout(timeout)
-                .onErrorResume(error -> fallback);
+                .take(timeout);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(

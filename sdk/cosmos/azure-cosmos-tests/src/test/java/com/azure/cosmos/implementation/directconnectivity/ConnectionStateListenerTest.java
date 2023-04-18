@@ -147,9 +147,6 @@ public class ConnectionStateListenerTest {
         testRequestUri.setConnected();
         RntbdConnectionStateListener connectionStateListener = new RntbdConnectionStateListener(endpointMock, proactiveOpenConnectionsProcessorMock);
 
-        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher())
-                .thenReturn(ParallelFlux.from(Flux.empty()));
-
         connectionStateListener.onBeforeSendRequest(testRequestUri);
         connectionStateListener.onException(exception);
         RntbdConnectionStateListenerMetrics metrics = connectionStateListener.getMetrics();

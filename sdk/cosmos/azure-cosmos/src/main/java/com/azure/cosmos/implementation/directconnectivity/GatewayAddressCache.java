@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
@@ -21,6 +22,7 @@ import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -38,6 +40,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -883,12 +886,14 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (addressesNeedToValidation.size() > 0 && this.proactiveOpenConnectionsProcessor != null) {
             for (Uri addressToBeValidated : addressesNeedToValidation) {
-                this.proactiveOpenConnectionsProcessor
-                        .submitOpenConnectionTask(
+                Mono.fromFuture(this.proactiveOpenConnectionsProcessor
+                        .submitOpenConnectionTaskOutsideLoop(
                                 collectionRid,
                                 this.serviceEndpoint,
                                 addressToBeValidated,
-                                Configs.getMinConnectionPoolSizePerEndpoint());
+                                Configs.getMinConnectionPoolSizePerEndpoint()))
+                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                    .subscribe();
             }
         }
     }
@@ -981,7 +986,7 @@ public class GatewayAddressCache implements IAddressCache {
 
     }
 
-    public Flux<Void> submitOpenConnectionTask(
+    public Mono<OpenConnectionResponse> submitOpenConnectionTask(
             AddressInformation address,
             DocumentCollection documentCollection,
             int connectionsPerEndpointCount) {
@@ -991,19 +996,23 @@ public class GatewayAddressCache implements IAddressCache {
         // best effort
         if (this.proactiveOpenConnectionsProcessor == null) {
             logger.warn("proactiveOpenConnectionsProcessor is null");
-            return Flux.empty();
+            return Mono.empty();
         }
 
         int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
                 Configs.getMinConnectionPoolSizePerEndpoint());
 
-        this.proactiveOpenConnectionsProcessor.submitOpenConnectionTask(
+        OpenConnectionTask openConnectionTask = this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                 documentCollection.getResourceId(),
                 this.serviceEndpoint,
                 address.getPhysicalUri(),
                 connectionsRequiredForEndpoint);
 
-        return Flux.empty();
+        return Mono.fromFuture(openConnectionTask)
+            .flatMap(response -> {
+                logger.info("getting information back");
+                return Mono.just(response);
+            });
     }
 
     private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(

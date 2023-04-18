@@ -208,7 +208,7 @@ public class GlobalAddressResolverTest {
 
         Mockito
                 .when(gatewayAddressCache.submitOpenConnectionTask(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint()))
-                .thenReturn(Flux.empty());
+                .thenReturn(Mono.empty());
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
                 .setProactiveConnectionRegionsCount(1)
