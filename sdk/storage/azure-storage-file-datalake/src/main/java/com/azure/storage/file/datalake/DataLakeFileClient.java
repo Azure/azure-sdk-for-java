@@ -17,13 +17,10 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
-import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
-import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -1128,7 +1125,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
-     * <p>
+     * </p>
      *
      * @param options {@link DataLakeFileOutputStreamOptions}
      * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
