@@ -83,7 +83,7 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
             final Mono<PollResponse<T>> pollResponseMono;
             if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
                 || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
-                // PUT has initial response as resultType
+                // PUT has initial response body as resultType
                 // we expect Response<?> be either Response<BinaryData> or Response<U>
                 // if it is Response<T>, PollingUtils.serializeResponse would miss read-only properties
                 pollResponseMono = PollingUtils.serializeResponse(response.getValue(), serializer)
@@ -117,10 +117,12 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
         String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
             || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
+            // take the initial response body from PollingContext, and de-serialize as final result
             BinaryData initialResponseBody =
                 BinaryData.fromString(pollingContext.getData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(initialResponseBody, serializer, resultType);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
+            // take the last poll response body from PollingContext, and de-serialize the "result" property as final result
             BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(latestResponseBody, serializer, POST_POLL_RESULT_TYPE_REFERENCE)
                 .flatMap(value -> PollingUtils.deserializeResponse(value.getResult(), serializer, resultType));
