@@ -35,6 +35,8 @@ public class OperationLocationPollingStrategyTest {
         = TypeReference.createInstance(TestResource.class);
     private static final TypeReference<PollResult> RESOURCE_POLL_RESULT_TYPE_REFERENCE
         = TypeReference.createInstance(PollResult.class);
+    private static final TypeReference<TestActionResult> ACTION_RESULT_TYPE_REFERENCE
+        = TypeReference.createInstance(TestActionResult.class);
 
     @Test
     public void operationLocationPollingStrategyPutSucceedsOnPoll() {
@@ -145,6 +147,71 @@ public class OperationLocationPollingStrategyTest {
                     && operationId.equals(asyncPollResponse.getValue().getId())
                     && "mock-error".equals(asyncPollResponse.getValue().getError().getCode())
                     && "mock error message".equals(asyncPollResponse.getValue().getError().getMessage()))
+            .verifyComplete();
+    }
+
+
+    @Test
+    public void operationLocationPollingStrategyPostSucceedsOnPoll() {
+        // https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#long-running-action-operations
+
+        String putUrl = "http://localhost/resource";
+        String pollUrl = "http://localhost/operation";
+        int[] pollCount = new int[] {0};
+
+        String actionResultName = "result1";
+        String operationId = "operation1";
+
+        Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+            Map<String, String> pollResponse = new HashMap<>();
+            pollResponse.put("id", operationId);
+            pollResponse.put("status", "InProgress");
+            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, putUrl), 200,
+                new HttpHeaders().set("operation-location", pollUrl),
+                BinaryData.fromObject(pollResponse).toObject(PollResult.class));
+        });
+
+        HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, pollUrl);
+
+        HttpClient httpClient = request -> {
+            if (pollUrl.equals(request.getUrl().toString())) {
+                boolean succeeded = ++pollCount[0] > 1;
+                Map<String, Object> pollResponse = new HashMap<>();
+                pollResponse.put("id", operationId);
+                pollResponse.put("status", succeeded ? "Succeeded" : "InProgress");
+                if (succeeded) {
+                    pollResponse.put("result", new TestActionResult(actionResultName));
+                }
+                return Mono.just(new MockHttpResponse(pollRequest, 200,
+                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+            } else {
+                return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
+            }
+        };
+
+        PollerFlux<PollResult, TestActionResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
+            activationOperation::get, new OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(createPipeline(httpClient))),
+            RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
+
+        // verify poll result
+        StepVerifier.create(pollerFlux)
+            .expectSubscription()
+            .expectNextMatches(asyncPollResponse ->
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+                    && operationId.equals(asyncPollResponse.getValue().getId()))
+            .expectNextMatches(asyncPollResponse ->
+                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                    && operationId.equals(asyncPollResponse.getValue().getId()))
+            .verifyComplete();
+
+        pollCount[0] = 0;
+
+        // verify final result
+        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult))
+            .expectNextMatches(actionResult -> actionResultName.equals(actionResult.getName()))
             .verifyComplete();
     }
 

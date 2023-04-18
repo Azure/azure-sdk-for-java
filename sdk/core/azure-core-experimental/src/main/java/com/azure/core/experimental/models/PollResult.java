@@ -11,32 +11,42 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Provides status details for long running operations. */
 @Immutable
 public final class PollResult {
-    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    @JsonProperty(value = "id", required = true)
+    private final String id;
 
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "error")
     private ResponseError error;
 
     /**
      * Creates an instance of ResourceOperationStatusUserError class.
      */
     @JsonCreator
-    private PollResult() {
+    public PollResult(@JsonProperty(value = "id", required = true) String id) {
+        this.id = id;
     }
 
     /**
      * Get the id property: The unique ID of the operation.
      *
-     * @return the id value.
+     * @return the id.
      */
     public String getId() {
         return this.id;
     }
 
     /**
+     * Sets the error property: Error object that describes the error when status is "Failed".
+     *
+     * @param error the error property.
+     */
+    public void setError(ResponseError error) {
+        this.error = error;
+    }
+
+    /**
      * Get the error property: Error object that describes the error when status is "Failed".
      *
-     * @return the error value.
+     * @return the error property.
      */
     public ResponseError getError() {
         return this.error;

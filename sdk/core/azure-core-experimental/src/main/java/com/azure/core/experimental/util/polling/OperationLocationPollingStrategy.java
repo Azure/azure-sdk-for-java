@@ -121,7 +121,7 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                 BinaryData.fromString(pollingContext.getData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(initialResponseBody, serializer, resultType);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
-            BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
+            BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(latestResponseBody, serializer, POST_POLL_RESULT_TYPE_REFERENCE)
                 .flatMap(value -> PollingUtils.deserializeResponse(value.getResult(), serializer, resultType));
         } else {
