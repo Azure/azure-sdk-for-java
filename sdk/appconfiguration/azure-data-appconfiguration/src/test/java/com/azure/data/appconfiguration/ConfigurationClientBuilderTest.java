@@ -3,10 +3,11 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -30,6 +31,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
@@ -60,6 +62,17 @@ public class ConfigurationClientBuilderTest extends TestBase {
 
     @Test
     @DoNotRecord
+    public void clientMissingEndpointButTokenCredentialProvided() {
+        assertThrows(NullPointerException.class, () -> {
+            final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            TokenCredential credentials = request -> Mono.just(
+                new AccessToken("this_is_a_token", OffsetDateTime.MAX));
+            builder.credential(credentials).buildClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord
     public void malformedURLExceptionForEndpoint() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -82,6 +95,26 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertThrows(IllegalArgumentException.class, () -> {
             final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
             builder.connectionString("").buildAsyncClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord
+    public void nullCredentials() {
+        assertThrows(NullPointerException.class, () -> {
+            final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            builder.buildClient();
+        });
+    }
+
+    @Test
+    @DoNotRecord
+    public void multipleCredentialsExist() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            final ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
+            TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
+            builder.connectionString(FAKE_CONNECTION_STRING)
+                .credential(credentials).buildClient();
         });
     }
 
@@ -190,7 +223,7 @@ public class ConfigurationClientBuilderTest extends TestBase {
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
         HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
-            : new NettyAsyncHttpClientBuilder().wiretap(true).build();
+            : HttpClient.createDefault();
 
         clientBuilder.pipeline(null).httpClient(defaultHttpClient);
 
