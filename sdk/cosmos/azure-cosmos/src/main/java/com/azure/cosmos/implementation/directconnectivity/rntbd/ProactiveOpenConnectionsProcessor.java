@@ -111,7 +111,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         completeSink(openConnectionsTaskSinkBackUp);
     }
 
-    public Disposable getOpenConnectionsPublisher() {
+    public synchronized Disposable getOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 

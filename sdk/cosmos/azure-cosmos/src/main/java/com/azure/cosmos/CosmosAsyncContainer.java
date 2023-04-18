@@ -820,44 +820,6 @@ public class CosmosAsyncContainer {
         return this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
-    private Mono<String> wrapOpenConnectionResponseFluxAndAggregateResults(
-            Flux<OpenConnectionResponse> openConnectionResponseFlux,
-            Duration idleSinkTimeout,
-            Scheduler scheduler
-    ) {
-        return Flux.<OpenConnectionResponse>create(sink -> {
-                    openConnectionResponseFlux.subscribeOn(scheduler).subscribe(sink::next);
-                })
-                .timeout(idleSinkTimeout)
-                .onErrorComplete(throwable -> throwable instanceof TimeoutException)
-                .collectList()
-                .flatMap(openConnectionResponses -> {
-                    // Generate a simple statistics string for open connections
-                    int total = openConnectionResponses.size();
-
-                    ConcurrentHashMap<String, Boolean> endPointOpenConnectionsStatistics = new ConcurrentHashMap<>();
-                    for (OpenConnectionResponse openConnectionResponse : openConnectionResponses) {
-                        endPointOpenConnectionsStatistics.compute(openConnectionResponse.getUri().getURI().getAuthority(), (key, value) -> {
-                            if (value == null) {
-                                return openConnectionResponse.isConnected();
-                            }
-
-                            // Sometimes different replicas can landed on the same server, that is why we could reach here
-                            // We will only create max one connection for each endpoint in openConnectionsAndInitCaches
-                            // if one failed, one succeeded, then it is still good
-                            return openConnectionResponse.isConnected() || value;
-                        });
-                    }
-
-                    long endpointConnected = endPointOpenConnectionsStatistics.values().stream().filter(isConnected -> isConnected).count();
-                    return Mono.just(
-                            String.format(
-                                    "EndpointsConnected: %s, Failed: %s",
-                                    endpointConnected,
-                                    endPointOpenConnectionsStatistics.size() - endpointConnected));
-                });
-    }
-
     /**
      * Query for items in the current container using a string.
      * <p>
