@@ -32,7 +32,7 @@ public final class JitNetworkAccessPoliciesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"ajodmkrrwepgqvqo\"},\"kind\":\"lujqgi\",\"location\":\"bwlyvxc\",\"id\":\"pqvctsfaeuhwwsk\",\"name\":\"stvzuzhasupml\",\"type\":\"pdpg\"}";
+            "{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"npv\"},\"kind\":\"szrbwtdrcwg\",\"location\":\"ll\",\"id\":\"zlhhfix\",\"name\":\"cfculzj\",\"type\":\"mhpfywvy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class JitNetworkAccessPoliciesCreateOrUpdateWithResponseMockTests {
         JitNetworkAccessPolicy response =
             manager
                 .jitNetworkAccessPolicies()
-                .define("wh")
-                .withExistingLocation("xdede", "f")
+                .define("hkfktlt")
+                .withExistingLocation("qhfnkvycqqqds", "ipnquwzxhrptyod")
                 .withVirtualMachines(Arrays.asList())
-                .withKind("cxiqq")
+                .withKind("saluzyi")
                 .withRequests(Arrays.asList())
                 .create();
 
-        Assertions.assertEquals("lujqgi", response.kind());
+        Assertions.assertEquals("szrbwtdrcwg", response.kind());
     }
 }

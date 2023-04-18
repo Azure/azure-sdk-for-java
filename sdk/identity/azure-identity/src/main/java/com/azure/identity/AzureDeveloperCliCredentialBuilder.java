@@ -57,12 +57,13 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
     }
 
     /**
-     * Specifies a {@link Duration} timeout for calling the Azure Developer CLI.
-     * @param duration The {@link Duration} to wait.
+     * Specifies a {@link Duration} timeout for calling the Azure Developer CLI. The timeout period is applied on
+     * the Azure Developer CLI command execution process invoked by the credential.
+     * @param processTimeout The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public AzureDeveloperCliCredentialBuilder processTimeout(Duration duration) {
-        this.identityClientOptions.setProcessTimeout(duration);
+    public AzureDeveloperCliCredentialBuilder processTimeout(Duration processTimeout) {
+        this.identityClientOptions.setProcessTimeout(processTimeout);
         return this;
     }
 

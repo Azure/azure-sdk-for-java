@@ -17,12 +17,12 @@ public final class AadExternalSecuritySolutionTests {
         AadExternalSecuritySolution model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"AAD\",\"properties\":{\"connectivityState\":\"Connected\",\"deviceVendor\":\"bbxbhmed\",\"deviceType\":\"lbjywfcfxzirzzih\",\"workspace\":{\"id\":\"pusuv\"},\"\":{\"vxadqacfrgnawbab\":\"dataczwciidjsllfryvd\",\"yq\":\"datafbktyjmfczlf\"}},\"location\":\"rbzg\",\"id\":\"woxqm\",\"name\":\"ea\",\"type\":\"cxn\"}")
+                    "{\"kind\":\"AAD\",\"properties\":{\"connectivityState\":\"NotLicensed\",\"deviceVendor\":\"pezkis\",\"deviceType\":\"jm\",\"workspace\":{\"id\":\"syparybjufp\"},\"\":{\"uiyqvldaswvppi\":\"dataczjnc\",\"rr\":\"dataqqzlgcndhz\",\"uww\":\"datacfsrhkhgsn\"}},\"location\":\"phefsbzxlbz\",\"id\":\"omeikjcl\",\"name\":\"zacn\",\"type\":\"wpfsuqtaaz\"}")
                 .toObject(AadExternalSecuritySolution.class);
-        Assertions.assertEquals("bbxbhmed", model.properties().deviceVendor());
-        Assertions.assertEquals("lbjywfcfxzirzzih", model.properties().deviceType());
-        Assertions.assertEquals("pusuv", model.properties().workspace().id());
-        Assertions.assertEquals(AadConnectivityState.CONNECTED, model.properties().connectivityState());
+        Assertions.assertEquals("pezkis", model.properties().deviceVendor());
+        Assertions.assertEquals("jm", model.properties().deviceType());
+        Assertions.assertEquals("syparybjufp", model.properties().workspace().id());
+        Assertions.assertEquals(AadConnectivityState.NOT_LICENSED, model.properties().connectivityState());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,14 +31,14 @@ public final class AadExternalSecuritySolutionTests {
             new AadExternalSecuritySolution()
                 .withProperties(
                     new AadSolutionProperties()
-                        .withDeviceVendor("bbxbhmed")
-                        .withDeviceType("lbjywfcfxzirzzih")
-                        .withWorkspace(new ConnectedWorkspace().withId("pusuv"))
-                        .withConnectivityState(AadConnectivityState.CONNECTED));
+                        .withDeviceVendor("pezkis")
+                        .withDeviceType("jm")
+                        .withWorkspace(new ConnectedWorkspace().withId("syparybjufp"))
+                        .withConnectivityState(AadConnectivityState.NOT_LICENSED));
         model = BinaryData.fromObject(model).toObject(AadExternalSecuritySolution.class);
-        Assertions.assertEquals("bbxbhmed", model.properties().deviceVendor());
-        Assertions.assertEquals("lbjywfcfxzirzzih", model.properties().deviceType());
-        Assertions.assertEquals("pusuv", model.properties().workspace().id());
-        Assertions.assertEquals(AadConnectivityState.CONNECTED, model.properties().connectivityState());
+        Assertions.assertEquals("pezkis", model.properties().deviceVendor());
+        Assertions.assertEquals("jm", model.properties().deviceType());
+        Assertions.assertEquals("syparybjufp", model.properties().workspace().id());
+        Assertions.assertEquals(AadConnectivityState.NOT_LICENSED, model.properties().connectivityState());
     }
 }

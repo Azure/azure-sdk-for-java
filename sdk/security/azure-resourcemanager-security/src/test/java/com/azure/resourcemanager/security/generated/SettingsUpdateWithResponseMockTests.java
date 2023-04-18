@@ -31,8 +31,7 @@ public final class SettingsUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"kind\":\"Setting\",\"id\":\"dwnhczbutoucgjti\",\"name\":\"jwayhi\",\"type\":\"qqwwvgwks\"}";
+        String responseStr = "{\"kind\":\"Setting\",\"id\":\"hxuvjhxm\",\"name\":\"rqstjcme\",\"type\":\"wmlgicvnpv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,7 +62,10 @@ public final class SettingsUpdateWithResponseMockTests {
         Setting response =
             manager
                 .settings()
-                .updateWithResponse(SettingName.WDATP, new SettingInner(), com.azure.core.util.Context.NONE)
+                .updateWithResponse(
+                    SettingName.WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW,
+                    new SettingInner(),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

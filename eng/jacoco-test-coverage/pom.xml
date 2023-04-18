@@ -208,7 +208,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.3.10</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -394,7 +394,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appplatform</artifactId>
-      <version>2.26.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
+      <version>2.26.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appplatform;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
