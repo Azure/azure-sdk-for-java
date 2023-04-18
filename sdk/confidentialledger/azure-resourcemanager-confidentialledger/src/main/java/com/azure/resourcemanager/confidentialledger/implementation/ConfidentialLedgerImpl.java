@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
 import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
+import com.azure.resourcemanager.confidentialledger.models.RunningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -31,16 +32,20 @@ public final class ConfidentialLedgerImpl
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public RunningState runningState() {
+        return this.innerModel().runningState();
+    }
+
     public LedgerProperties properties() {
         return this.innerModel().properties();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public Map<String, String> tags() {
@@ -169,6 +174,11 @@ public final class ConfidentialLedgerImpl
 
     public ConfidentialLedgerImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
+        return this;
+    }
+
+    public ConfidentialLedgerImpl withRunningState(RunningState runningState) {
+        this.innerModel().withRunningState(runningState);
         return this;
     }
 
