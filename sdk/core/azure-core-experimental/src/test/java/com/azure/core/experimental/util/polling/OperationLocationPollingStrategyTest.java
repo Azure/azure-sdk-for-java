@@ -6,6 +6,7 @@ package com.azure.core.experimental.util.polling;
 import com.azure.core.experimental.http.MockHttpResponse;
 import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -51,7 +52,8 @@ public class OperationLocationPollingStrategyTest {
 
         Supplier<Mono<Response<TestResource>>> activationOperation = () -> Mono.fromCallable(() -> {
             return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
-                new HttpHeaders().set("operation-location", pollUrl), new TestResource(resourceName));
+                new HttpHeaders().set(HttpHeaderName.fromString("operation-location"), pollUrl),
+                new TestResource(resourceName));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, pollUrl);
@@ -106,7 +108,8 @@ public class OperationLocationPollingStrategyTest {
 
         Supplier<Mono<Response<TestResource>>> activationOperation = () -> Mono.fromCallable(() -> {
             return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
-                new HttpHeaders().set("operation-location", pollUrl), new TestResource(resourceName));
+                new HttpHeaders().set(HttpHeaderName.fromString("operation-location"), pollUrl),
+                new TestResource(resourceName));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, pollUrl);
@@ -167,7 +170,7 @@ public class OperationLocationPollingStrategyTest {
             pollResponse.put("id", operationId);
             pollResponse.put("status", "InProgress");
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, putUrl), 200,
-                new HttpHeaders().set("operation-location", pollUrl),
+                new HttpHeaders().set(HttpHeaderName.fromString("operation-location"), pollUrl),
                 BinaryData.fromObject(pollResponse).toObject(PollResult.class));
         });
 
