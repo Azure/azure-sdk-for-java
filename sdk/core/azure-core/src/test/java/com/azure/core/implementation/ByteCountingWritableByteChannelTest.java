@@ -3,29 +3,28 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.TestByteArrayOutputStream;
 import com.azure.core.util.PartialWriteChannel;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.mocking.MockWritableByteChannel;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
-import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ByteCountingWritableByteChannelTest {
-
-    private static final Random RANDOM = new Random();
 
     @Test
     public void testCtor() {
@@ -70,13 +69,13 @@ public class ByteCountingWritableByteChannelTest {
     @Test
     public void canWriteAndCountBytes() throws IOException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        fillArray(data);
+        TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
         ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(Channels.newChannel(bos), null);
 
         int position = 0;
         while (position < data.length) {
-            int size = 1 + RANDOM.nextInt(128);
+            int size = 1 + ThreadLocalRandom.current().nextInt(128);
             size = Math.min(size, data.length - position);
             ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
             int written = channel.write(buffer);
@@ -84,20 +83,20 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        assertArraysEqual(data, bos.toByteArrayUnsafe());
     }
 
     @Test
     public void canWriteAndCountBytesWithPartialWrites() throws IOException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        fillArray(data);
+        TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
         ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(
             new PartialWriteChannel(Channels.newChannel(bos)), null);
 
         int position = 0;
         while (position < data.length) {
-            int size = 1 + RANDOM.nextInt(128);
+            int size = 1 + ThreadLocalRandom.current().nextInt(128);
             size = Math.min(size, data.length - position);
             ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
             int written = channel.write(buffer);
@@ -105,21 +104,21 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        assertArraysEqual(data, bos.toByteArrayUnsafe());
     }
 
     @Test
     public void canWriteAndCountBytesWithProgressReporting() throws IOException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        fillArray(data);
+        TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
         ConcurrentLinkedQueue<Long> progresses = new ConcurrentLinkedQueue<>();
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(progresses::add);
         ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(Channels.newChannel(bos), progressReporter);
 
         int position = 0;
         while (position < data.length) {
-            int size = 1 + RANDOM.nextInt(128);
+            int size = 1 + ThreadLocalRandom.current().nextInt(128);
             size = Math.min(size, data.length - position);
             ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
             int written = channel.write(buffer);
@@ -128,14 +127,14 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        assertArraysEqual(data, bos.toByteArrayUnsafe());
     }
 
     @Test
     public void canWriteAndCountBytesWithProgressReportingWithPartialWrites() throws IOException {
         byte[] data = new byte[10 * 1204 + 127];
-        RANDOM.nextBytes(data);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        fillArray(data);
+        TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
         ConcurrentLinkedQueue<Long> progresses = new ConcurrentLinkedQueue<>();
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(progresses::add);
         ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(
@@ -143,7 +142,7 @@ public class ByteCountingWritableByteChannelTest {
 
         int position = 0;
         while (position < data.length) {
-            int size = 1 + RANDOM.nextInt(128);
+            int size = 1 + ThreadLocalRandom.current().nextInt(128);
             size = Math.min(size, data.length - position);
             ByteBuffer buffer = ByteBuffer.wrap(data, position, size);
             int written = channel.write(buffer);
@@ -152,6 +151,6 @@ public class ByteCountingWritableByteChannelTest {
             assertEquals(position, channel.getBytesWritten());
         }
 
-        assertArrayEquals(data, bos.toByteArray());
+        assertArraysEqual(data, bos.toByteArrayUnsafe());
     }
 }

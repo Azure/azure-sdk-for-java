@@ -24,8 +24,10 @@ import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.convertToMetricsQueryResult;
@@ -81,6 +83,7 @@ public final class MetricsQueryClient {
      * @param resourceUri The resource URI for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @return A time-series metrics result for the requested metric names.
+     * @throws NullPointerException if {@code resourceUri} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsQueryResult queryResource(String resourceUri, List<String> metricsNames) {
@@ -96,25 +99,32 @@ public final class MetricsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return A time-series metrics result for the requested metric names.
+     * @throws NullPointerException if {@code resourceUri} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsQueryResult> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
                                                                   MetricsQueryOptions options, Context context) {
+        Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
 
         String aggregation = null;
-        if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
+        if (options != null && !CoreUtils.isNullOrEmpty(options.getAggregations())) {
             aggregation = options.getAggregations()
                 .stream()
                 .map(type -> type.toString())
                 .collect(Collectors.joining(","));
         }
-        String timespan = options.getTimeInterval() == null ? null
+        String timespan = options == null || options.getTimeInterval() == null ? null
             : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+        Duration granularity = options == null ? null : options.getGranularity();
+        Integer top = options == null ? null : options.getTop();
+        String orderBy = options == null ? null : options.getOrderBy();
+        String filter = options == null ? null : options.getFilter();
+        String metricNamespace = options == null ? null : options.getMetricNamespace();
+
         Response<MetricsResponse> metricsResponseResponse = metricsClient
             .getMetrics()
-            .listWithResponse(resourceUri, timespan, options.getGranularity(),
-                String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
-                options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context);
+            .listWithResponse(resourceUri, timespan, granularity, String.join(",", metricsNames),
+                aggregation, top, orderBy, filter, ResultType.DATA, metricNamespace, context);
         return convertToMetricsQueryResult(metricsResponseResponse);
     }
 
@@ -124,6 +134,7 @@ public final class MetricsQueryClient {
      * @param resourceUri The resource URI for which the metrics namespaces are listed.
      * @param startTime The returned list of metrics namespaces are created after the specified start time.
      * @return A {@link PagedIterable paged collection} of metrics namespaces.
+     * @throws NullPointerException if {@code resourceUri} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
@@ -138,11 +149,12 @@ public final class MetricsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return A {@link PagedIterable paged collection} of metrics namespaces.
+     * @throws NullPointerException if {@code resourceUri} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime,
                                                                Context context) {
-
+        Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
         PagedResponse<com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace> response = metricsNamespaceClient.getMetricNamespaces().listSinglePage(resourceUri,
             startTime == null ? null : startTime.toString(), context);
         List<MetricNamespace> metricNamespaces = response.getValue()
@@ -160,6 +172,7 @@ public final class MetricsQueryClient {
      *
      * @param resourceUri The resource URI for which the metrics definitions are listed.
      * @return A {@link PagedIterable paged collection} of metrics definitions.
+     * @throws NullPointerException if {@code resourceUri} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri) {
@@ -174,10 +187,12 @@ public final class MetricsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return A {@link PagedIterable paged collection} of metrics definitions.
+     * @throws NullPointerException if {@code resourceUri} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace,
                                                                  Context context) {
+        Objects.requireNonNull(resourceUri, "'resourceUri' cannot be null");
         PagedResponse<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition> response = metricsDefinitionsClient.getMetricDefinitions().listSinglePage(resourceUri, metricsNamespace, context);
         List<MetricDefinition> metricDefinitions = response.getValue()
             .stream()

@@ -105,6 +105,7 @@ com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"mes
 
 1. Check that the application or user that is making the request has sufficient permissions:
     * You can refer to this document to [manage access to workspaces](https://docs.microsoft.com/azure/azure-monitor/logs/manage-access#manage-access-using-workspace-permissions)
+    * If you're querying for logs of a specific resource, then ensure the service principal is assigned the "Log Analytics Reader" role on the resource.
 2. If the user or application is granted sufficient privileges to query the workspace, make sure you are
    authenticating as that user/application. If you are authenticating using the
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)

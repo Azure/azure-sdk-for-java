@@ -782,9 +782,9 @@ public class Transforms {
     public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
         CopyAuthorization copyRequest
             = new CopyAuthorization(target.getTargetResourceId(),
-            target.getTargetModelLocation(),
-            target.getTargetModelId(),
             target.getTargetResourceRegion(),
+            target.getTargetModelId(),
+            target.getTargetModelLocation(),
             target.getAccessToken(),
             target.getExpiresOn());
         return copyRequest;

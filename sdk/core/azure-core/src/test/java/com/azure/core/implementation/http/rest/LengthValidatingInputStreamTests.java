@@ -8,12 +8,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
+import static com.azure.core.CoreTestUtils.readStream;
+import static com.azure.core.CoreTestUtils.readStreamByteByByte;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
@@ -93,20 +93,20 @@ public class LengthValidatingInputStreamTests {
     @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStream(int bufferSize) throws Exception {
         byte[] bytes = new byte[4096];
-        new Random().nextBytes(bytes);
+        fillArray(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
         byte[] afterRead = readStream(validatorStream, 4096);
 
-        assertArrayEquals(bytes, afterRead);
+        assertArraysEqual(bytes, afterRead);
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStreamWithReset(int bufferSize) throws Exception {
         byte[] bytes = new byte[4096];
-        new Random().nextBytes(bytes);
+        fillArray(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
@@ -115,39 +115,39 @@ public class LengthValidatingInputStreamTests {
         validatorStream.reset();
         byte[] afterRead = readStream(validatorStream, 4096);
 
-        assertArrayEquals(bytes, afterRead);
+        assertArraysEqual(bytes, afterRead);
     }
 
     @ParameterizedTest
     @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStreamWithSkip(int bufferSize) throws Exception {
         byte[] bytes = new byte[4096];
-        new Random().nextBytes(bytes);
+        fillArray(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
         validatorStream.skip(10);
         byte[] afterRead = readStream(validatorStream, 4096);
 
-        assertArrayEquals(Arrays.copyOfRange(bytes, 10, bytes.length), afterRead);
+        assertArraysEqual(bytes, 10, bytes.length - 10, afterRead);
     }
 
     @Test
     public void canReadStreamByteByByte() throws Exception {
         byte[] bytes = new byte[4096];
-        new Random().nextBytes(bytes);
+        fillArray(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
         byte[] afterRead = readStreamByteByByte(validatorStream);
 
-        assertArrayEquals(bytes, afterRead);
+        assertArraysEqual(bytes, afterRead);
     }
 
     @Test
     public void canReadStreamByteByByteWithReset() throws Exception {
         byte[] bytes = new byte[4096];
-        new Random().nextBytes(bytes);
+        fillArray(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
@@ -156,42 +156,19 @@ public class LengthValidatingInputStreamTests {
         validatorStream.reset();
         byte[] afterRead = readStreamByteByByte(validatorStream);
 
-        assertArrayEquals(bytes, afterRead);
+        assertArraysEqual(bytes, afterRead);
     }
 
     @Test
     public void canReadStreamByteByByteWithSkip() throws Exception {
         byte[] bytes = new byte[4096];
-        new Random().nextBytes(bytes);
+        fillArray(bytes);
         InputStream inner = new ByteArrayInputStream(bytes);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
         validatorStream.skip(10);
         byte[] afterRead = readStreamByteByByte(validatorStream);
 
-        assertArrayEquals(Arrays.copyOfRange(bytes, 10, bytes.length), afterRead);
-    }
-
-    private byte[] readStream(InputStream stream) throws Exception {
-        return readStream(stream, 8 * 1024);
-    }
-
-    private byte[] readStream(InputStream stream, int bufferSize) throws Exception {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[bufferSize];
-        int length;
-        while ((length = stream.read(buffer)) != -1) {
-            outputStream.write(buffer, 0, length);
-        }
-        return outputStream.toByteArray();
-    }
-
-    private byte[] readStreamByteByByte(InputStream stream) throws Exception {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        int tmp;
-        while ((tmp = stream.read()) != -1) {
-            outputStream.write(tmp);
-        }
-        return outputStream.toByteArray();
+        assertArraysEqual(bytes, 10, bytes.length - 10, afterRead);
     }
 }

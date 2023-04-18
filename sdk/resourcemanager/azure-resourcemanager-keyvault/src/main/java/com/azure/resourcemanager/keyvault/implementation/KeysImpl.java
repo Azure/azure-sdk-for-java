@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.resourcemanager.keyvault.models.Key;
 import com.azure.resourcemanager.keyvault.models.Keys;
-import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.models.KeyProperties;
@@ -23,11 +23,13 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /** The implementation of Vaults and its parent interfaces. */
 class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implements Keys {
     private final KeyAsyncClient inner;
-    private final Vault vault;
+    private final HttpPipeline httpPipeline;
+    private final KeyAsyncClient keyClient;
 
-    KeysImpl(KeyAsyncClient client, Vault vault) {
+    KeysImpl(KeyAsyncClient client, HttpPipeline httpPipeline) {
         this.inner = client;
-        this.vault = vault;
+        this.httpPipeline = httpPipeline;
+        this.keyClient = client;
     }
 
     @Override
@@ -37,9 +39,8 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
 
     @Override
     protected KeyImpl wrapModel(String name) {
-        return new KeyImpl(name, new KeyProperties(), vault);
+        return new KeyImpl(name, new KeyProperties(), httpPipeline, keyClient);
     }
-
     @Override
     public Key getById(String id) {
         return getByIdAsync(id).block();
@@ -57,14 +58,14 @@ class KeysImpl extends CreatableWrappersImpl<Key, KeyImpl, KeyProperties> implem
         if (keyProperties == null) {
             return null;
         }
-        return new KeyImpl(keyProperties.getName(), keyProperties, vault);
+        return new KeyImpl(keyProperties.getName(), keyProperties, httpPipeline, keyClient);
     }
 
     protected KeyImpl wrapModel(KeyVaultKey keyVaultKey) {
         if (keyVaultKey == null) {
             return null;
         }
-        return new KeyImpl(keyVaultKey.getName(), keyVaultKey, vault);
+        return new KeyImpl(keyVaultKey.getName(), keyVaultKey, httpPipeline, keyClient);
     }
 
     @Override

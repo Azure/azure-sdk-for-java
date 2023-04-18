@@ -13,4 +13,11 @@ public abstract class TestProxyTestBase extends TestBase {
     static {
         setTestProxyEnabled();
     }
+
+    /**
+     * Creates an instance of {@link TestProxyTestBase}.
+     */
+    public TestProxyTestBase() {
+        super();
+    }
 }

@@ -1,54 +1,133 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "545",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:34 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6a551c3c-9bee-46c1-929c-3e1c4491fd70"
+      },
+      "RequestBody": {
+        "name": "custom-skillset1541766ad0293addf46",
+        "description": "Skillset for testing custom skillsets",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/mytext"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "textItems",
+                "targetName": "myTextItems"
+              }
+            ],
+            "name": "webapi-skill",
+            "description": "Calls an Azure function, which in turn calls Bing Entity Search",
+            "uri": "https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo",
+            "httpHeaders": {
+              "Ocp-Apim-Subscription-Key": "foobar"
+            },
+            "httpMethod": "POST"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "6a551c3c-9bee-46c1-929c-3e1c4491fd70",
+        "Content-Length": "859",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:33 GMT",
+        "elapsed-time": "50",
+        "ETag": "W/\u00220x8DB20DB74E88B27\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027custom-skillset1541766ad0293addf46\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "6a551c3c-9bee-46c1-929c-3e1c4491fd70",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "6a551c3c-9bee-46c1-929c-3e1c4491fd70"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB74E88B27\u0022",
+        "name": "custom-skillset1541766ad0293addf46",
+        "description": "Skillset for testing custom skillsets",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Custom.WebApiSkill",
+            "name": "webapi-skill",
+            "description": "Calls an Azure function, which in turn calls Bing Entity Search",
+            "context": null,
+            "uri": "https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo",
+            "httpMethod": "POST",
+            "timeout": null,
+            "batchSize": null,
+            "degreeOfParallelism": null,
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/mytext",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "textItems",
+                "targetName": "myTextItems"
+              }
+            ],
+            "httpHeaders": {
+              "Ocp-Apim-Subscription-Key": "foobar"
+            }
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:45:59 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
-      "ETag" : "W/\"0x8DAF8CBD7BEAF31\"",
-      "elapsed-time" : "44",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "847",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBD7BEAF31\\\"\",\"name\":\"custom-skillset92575c8cfd6bad98a47\",\"description\":\"Skillset for testing custom skillsets\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Custom.WebApiSkill\",\"name\":\"webapi-skill\",\"description\":\"Calls an Azure function, which in turn calls Bing Entity Search\",\"context\":null,\"uri\":\"https://indexer-e2e-webskill.azurewebsites.net/api/InvokeTextAnalyticsV3?code=foo\",\"httpMethod\":\"POST\",\"timeout\":null,\"batchSize\":null,\"degreeOfParallelism\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}],\"httpHeaders\":{\"Ocp-Apim-Subscription-Key\":\"foobar\"}}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e7ff9759-163b-4c4d-a9c1-0a44fb74cf99",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('custom-skillset92575c8cfd6bad98a47')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('custom-skillset92575c8cfd6bad98a47')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67",
-      "elapsed-time" : "27",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:45:59 GMT",
-      "x-ms-client-request-id" : "cf06adc1-0c0e-49ed-8765-c40f10aedd67"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "custom-skillset92575c8cfd6bad98a47" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027custom-skillset1541766ad0293addf46\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:34 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9b4f33a8-6f59-4dd0-97fd-9964d9f70925"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "9b4f33a8-6f59-4dd0-97fd-9964d9f70925",
+        "Date": "Thu, 09 Mar 2023 20:18:33 GMT",
+        "elapsed-time": "32",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "9b4f33a8-6f59-4dd0-97fd-9964d9f70925",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "9b4f33a8-6f59-4dd0-97fd-9964d9f70925"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "custom-skillset1541766ad0293addf46"
+  }
 }

@@ -1,31 +1,52 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "2a987b1a-7de9-4c2d-922b-fbdca3b3923e",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "2a987b1a-7de9-4c2d-922b-fbdca3b3923e",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:21:14 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "2a987b1a-7de9-4c2d-922b-fbdca3b3923e",
-      "elapsed-time" : "24",
-      "Expires" : "-1",
-      "Content-Length" : "317",
-      "Body" : "{\"error\":{\"code\":\"MissingRequiredParameter\",\"message\":\"The specified suggester name 'Invalid suggester' does not exist in this index definition.\\r\\nParameter name: name\",\"details\":[{\"code\":\"MissingSuggesterName\",\"message\":\"The specified suggester name 'Invalid suggester' does not exist in this index definition.\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "2a987b1a-7de9-4c2d-922b-fbdca3b3923e",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-autocomplete-shared-instance\u0027)/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "85",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:23 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f11bb661-a481-4625-8e7c-9572c39d87ad"
+      },
+      "RequestBody": {
+        "search": "very po",
+        "suggesterName": "Invalid suggester",
+        "autocompleteMode": "oneTerm"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "f11bb661-a481-4625-8e7c-9572c39d87ad",
+        "Content-Language": "en",
+        "Content-Length": "317",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:53:21 GMT",
+        "elapsed-time": "13",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "f11bb661-a481-4625-8e7c-9572c39d87ad",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "f11bb661-a481-4625-8e7c-9572c39d87ad"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "MissingRequiredParameter",
+          "message": "The specified suggester name \u0027Invalid suggester\u0027 does not exist in this index definition.\r\nParameter name: name",
+          "details": [
+            {
+              "code": "MissingSuggesterName",
+              "message": "The specified suggester name \u0027Invalid suggester\u0027 does not exist in this index definition."
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

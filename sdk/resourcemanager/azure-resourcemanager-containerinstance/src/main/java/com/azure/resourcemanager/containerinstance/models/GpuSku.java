@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GpuSku. */
+/** The SKU of the GPU resource. */
 public final class GpuSku extends ExpandableStringEnum<GpuSku> {
     /** Static value K80 for GpuSku. */
     public static final GpuSku K80 = fromString("K80");
@@ -18,6 +18,15 @@ public final class GpuSku extends ExpandableStringEnum<GpuSku> {
 
     /** Static value V100 for GpuSku. */
     public static final GpuSku V100 = fromString("V100");
+
+    /**
+     * Creates a new instance of GpuSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GpuSku() {
+    }
 
     /**
      * Creates or finds a GpuSku from its string representation.
@@ -30,7 +39,11 @@ public final class GpuSku extends ExpandableStringEnum<GpuSku> {
         return fromString(name, GpuSku.class);
     }
 
-    /** @return known GpuSku values. */
+    /**
+     * Gets known GpuSku values.
+     *
+     * @return known GpuSku values.
+     */
     public static Collection<GpuSku> values() {
         return values(GpuSku.class);
     }

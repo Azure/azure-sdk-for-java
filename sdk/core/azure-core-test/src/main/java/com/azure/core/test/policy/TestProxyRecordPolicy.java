@@ -4,6 +4,7 @@
 package com.azure.core.test.policy;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -23,12 +24,12 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
+import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
@@ -38,6 +39,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
     private String xRecordingId;
@@ -67,7 +69,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
         HttpResponse response = client.sendSync(request, Context.NONE);
 
-        this.xRecordingId = response.getHeaderValue("x-recording-id");
+        this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
     }
@@ -78,8 +80,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void stopRecording(Queue<String> variables) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", proxyUrl.toString()))
-            .setHeader("content-type", "application/json")
-            .setHeader("x-recording-id", xRecordingId)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
         client.sendSync(request, Context.NONE);
     }
@@ -93,8 +95,12 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         if (variables.isEmpty()) {
             return "{}";
         }
-        AtomicInteger count = new AtomicInteger(0);
-        Map<String, String> map = variables.stream().collect(Collectors.toMap(k -> String.format("%d", count.getAndIncrement()), k -> k));
+
+        int count = 0;
+        Map<String, String> map = new LinkedHashMap<>();
+        for (String variable : variables) {
+            map.put(String.valueOf(count++), variable);
+        }
         try {
             return SERIALIZER.serialize(map, SerializerEncoding.JSON);
         } catch (IOException e) {
@@ -128,7 +134,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         if (isRecording()) {
             getSanitizerRequests(sanitizers, proxyUrl)
                 .forEach(request -> {
-                    request.setHeader("x-recording-id", xRecordingId);
+                    request.setHeader(X_RECORDING_ID, xRecordingId);
                     client.sendSync(request, Context.NONE);
                 });
         } else {

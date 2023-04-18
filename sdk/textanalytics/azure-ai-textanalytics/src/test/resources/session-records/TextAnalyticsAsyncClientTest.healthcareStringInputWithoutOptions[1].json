@@ -1,64 +1,1451 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b62175d7-8164-4f21-a815-073cac109239",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "438",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:52:07 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "00aac15a-da31-4000-917c-30172327328d"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months."
+            },
+            {
+              "id": "1",
+              "text": "The patient went for six minutes with minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "Healthcare",
+            "parameters": {
+              "loggingOptOut": true,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "17f7de69-a133-409c-89f2-45cb8b1ebdf9",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:52:07 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/e3a33d60-f914-4920-a161-2b11814785df?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "231",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "165",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://language-dogfood.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/8c9a66c8-cae1-4db5-9b2b-710a87395d8b?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "065311e2-baf4-4e99-9799-f20bbd077b2e",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Tue, 11 Oct 2022 19:00:39 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/e3a33d60-f914-4920-a161-2b11814785df?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:52:37 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8f3bf620-493e-4b4f-b878-b3ae58bd2d28"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "d9842bf4-298b-41d3-8d92-7af4a0c79984",
+        "Content-Length": "7174",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:52:37 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "93",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "e3a33d60-f914-4920-a161-2b11814785df",
+        "lastUpdatedDateTime": "2023-04-05T18:52:08Z",
+        "createdDateTime": "2023-04-05T18:52:06Z",
+        "expirationDateTime": "2023-04-06T18:52:06Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "HealthcareLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:52:08.8405006Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "offset": 17,
+                        "length": 11,
+                        "text": "54-year-old",
+                        "category": "Age",
+                        "confidenceScore": 1.0
+                      },
+                      {
+                        "offset": 29,
+                        "length": 9,
+                        "text": "gentleman",
+                        "category": "Gender",
+                        "confidenceScore": 1.0,
+                        "name": "Male population group",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0025266"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000026918"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000007919"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U002897"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85083510"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "24"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D008571"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C14366"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "30625"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "339947000"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 57,
+                        "length": 11,
+                        "text": "progressive",
+                        "category": "Course",
+                        "confidenceScore": 0.9
+                      },
+                      {
+                        "offset": 69,
+                        "length": 6,
+                        "text": "angina",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.83,
+                        "name": "Angina Pectoris",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0002962"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000005330"
+                          },
+                          {
+                            "dataSource": "BI",
+                            "id": "BI00047"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1017852"
+                          },
+                          {
+                            "dataSource": "CCS",
+                            "id": "7.2.4.1"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000001165"
+                          },
+                          {
+                            "dataSource": "COSTAR",
+                            "id": "054"
+                          },
+                          {
+                            "dataSource": "CSP",
+                            "id": "1393-3407"
+                          },
+                          {
+                            "dataSource": "CST",
+                            "id": "ANGINA PECTORIS"
+                          },
+                          {
+                            "dataSource": "DXP",
+                            "id": "U000113"
+                          },
+                          {
+                            "dataSource": "HPO",
+                            "id": "HP:0001681"
+                          },
+                          {
+                            "dataSource": "ICD10",
+                            "id": "I20.9"
+                          },
+                          {
+                            "dataSource": "ICD10AM",
+                            "id": "I20.9"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "I20.9"
+                          },
+                          {
+                            "dataSource": "ICD9CM",
+                            "id": "413"
+                          },
+                          {
+                            "dataSource": "ICPC",
+                            "id": "K74"
+                          },
+                          {
+                            "dataSource": "ICPC2EENG",
+                            "id": "K74"
+                          },
+                          {
+                            "dataSource": "ICPC2ICD10ENG",
+                            "id": "MTHU006338"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "K74001"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U000244"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85005022"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LA14275-4"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10002383"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "33215"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "142"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D000787"
+                          },
+                          {
+                            "dataSource": "MTH",
+                            "id": "053"
+                          },
+                          {
+                            "dataSource": "MTHICD9",
+                            "id": "413.9"
+                          },
+                          {
+                            "dataSource": "MTHICPC2EAE",
+                            "id": "K74"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C51221"
+                          },
+                          {
+                            "dataSource": "NCI_CTCAE",
+                            "id": "E10110"
+                          },
+                          {
+                            "dataSource": "NCI_FDA",
+                            "id": "1710"
+                          },
+                          {
+                            "dataSource": "NCI_NICHD",
+                            "id": "C51221"
+                          },
+                          {
+                            "dataSource": "NOC",
+                            "id": "040504"
+                          },
+                          {
+                            "dataSource": "OMIM",
+                            "id": "MTHU009903"
+                          },
+                          {
+                            "dataSource": "OMS",
+                            "id": "29.13"
+                          },
+                          {
+                            "dataSource": "PCDS",
+                            "id": "PRB_02040.07"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "02530"
+                          },
+                          {
+                            "dataSource": "QMR",
+                            "id": "Q0300326"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "G33.."
+                          },
+                          {
+                            "dataSource": "RCDAE",
+                            "id": "Ua1eH"
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "F-71500"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "D3-12000"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "194828000"
+                          },
+                          {
+                            "dataSource": "WHO",
+                            "id": "0422"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 85,
+                        "length": 19,
+                        "text": "past several months",
+                        "category": "Time",
+                        "confidenceScore": 0.99
+                      }
+                    ],
+                    "relations": [
+                      {
+                        "confidenceScore": 0.84,
+                        "relationType": "CourseOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/0/entities/2",
+                            "role": "Course"
+                          },
+                          {
+                            "ref": "#/results/documents/0/entities/3",
+                            "role": "Condition"
+                          }
+                        ]
+                      },
+                      {
+                        "confidenceScore": 0.89,
+                        "relationType": "TimeOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/0/entities/3",
+                            "role": "Condition"
+                          },
+                          {
+                            "ref": "#/results/documents/0/entities/4",
+                            "role": "Time"
+                          }
+                        ]
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "offset": 21,
+                        "length": 11,
+                        "text": "six minutes",
+                        "category": "Time",
+                        "confidenceScore": 0.94
+                      },
+                      {
+                        "offset": 38,
+                        "length": 7,
+                        "text": "minimal",
+                        "category": "ConditionQualifier",
+                        "confidenceScore": 0.99
+                      },
+                      {
+                        "offset": 46,
+                        "length": 44,
+                        "text": "ST depressions in the anterior lateral leads",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.97
+                      },
+                      {
+                        "offset": 108,
+                        "length": 7,
+                        "text": "fatigue",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 1.0,
+                        "name": "Fatigue",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0015672"
+                          },
+                          {
+                            "dataSource": "AIR",
+                            "id": "FATIG"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000001768"
+                          },
+                          {
+                            "dataSource": "BI",
+                            "id": "BI00028"
+                          },
+                          {
+                            "dataSource": "CCC",
+                            "id": "A01.4"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1014729"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000004914"
+                          },
+                          {
+                            "dataSource": "COSTAR",
+                            "id": "298"
+                          },
+                          {
+                            "dataSource": "CPM",
+                            "id": "65221"
+                          },
+                          {
+                            "dataSource": "CSP",
+                            "id": "1385-2059"
+                          },
+                          {
+                            "dataSource": "CST",
+                            "id": "ASTHENIA"
+                          },
+                          {
+                            "dataSource": "DXP",
+                            "id": "U001451"
+                          },
+                          {
+                            "dataSource": "HPO",
+                            "id": "HP:0012378"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "R53.83"
+                          },
+                          {
+                            "dataSource": "ICNP",
+                            "id": "10000695"
+                          },
+                          {
+                            "dataSource": "ICPC2ICD10ENG",
+                            "id": "MTHU080142"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "A04004"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U001739"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85047465"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "MTHU013358"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10016256"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "273174"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "5324"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D005221"
+                          },
+                          {
+                            "dataSource": "MTHICD9",
+                            "id": "780.79"
+                          },
+                          {
+                            "dataSource": "NANDA-I",
+                            "id": "00742"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_CDISC",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_CTCAE",
+                            "id": "E11098"
+                          },
+                          {
+                            "dataSource": "NCI_CTRP",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_FDA",
+                            "id": "1849"
+                          },
+                          {
+                            "dataSource": "NCI_NCI-GLOSS",
+                            "id": "CDR0000321374"
+                          },
+                          {
+                            "dataSource": "NCI_NICHD",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_caDSR",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NOC",
+                            "id": "121028"
+                          },
+                          {
+                            "dataSource": "OMIM",
+                            "id": "MTHU010062"
+                          },
+                          {
+                            "dataSource": "PCDS",
+                            "id": "PRB_00010.03"
+                          },
+                          {
+                            "dataSource": "PDQ",
+                            "id": "CDR0000041390"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "19400"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "1682."
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "F-01610"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "F-01360"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "84229001"
+                          },
+                          {
+                            "dataSource": "WHO",
+                            "id": "0724"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 120,
+                        "length": 10,
+                        "text": "wrist pain",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.98,
+                        "name": "Pain in wrist",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0221785"
+                          },
+                          {
+                            "dataSource": "BI",
+                            "id": "BI00504"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1016217"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000021489"
+                          },
+                          {
+                            "dataSource": "COSTAR",
+                            "id": "U000624"
+                          },
+                          {
+                            "dataSource": "DXP",
+                            "id": "U004491"
+                          },
+                          {
+                            "dataSource": "HPO",
+                            "id": "HP:0030836"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "M25.53"
+                          },
+                          {
+                            "dataSource": "ICPC2ICD10ENG",
+                            "id": "MTHU060847"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "L11002"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10048692"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "939"
+                          },
+                          {
+                            "dataSource": "OMIM",
+                            "id": "MTHU016462"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "N094F"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "F-176A0"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "56608008"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 137,
+                        "length": 18,
+                        "text": "anginal equivalent",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.98,
+                        "name": "Anginal equivalent",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0741034"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1017783"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000047213"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "I20.8"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10076419"
+                          },
+                          {
+                            "dataSource": "MTHICD9",
+                            "id": "413.9"
+                          }
+                        ]
+                      }
+                    ],
+                    "relations": [
+                      {
+                        "confidenceScore": 0.83,
+                        "relationType": "TimeOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/1/entities/0",
+                            "role": "Time"
+                          },
+                          {
+                            "ref": "#/results/documents/1/entities/2",
+                            "role": "Condition"
+                          }
+                        ]
+                      },
+                      {
+                        "confidenceScore": 1.0,
+                        "relationType": "QualifierOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/1/entities/1",
+                            "role": "Qualifier"
+                          },
+                          {
+                            "ref": "#/results/documents/1/entities/2",
+                            "role": "Condition"
+                          }
+                        ]
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-03-01"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/8c9a66c8-cae1-4db5-9b2b-710a87395d8b?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "18c3aaea-5f6a-4c3c-83db-b081aaf0d701"
-    },
-    "Response" : {
-      "content-length" : "7173",
-      "x-envoy-upstream-service-time" : "87",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "869f3551-524b-4e48-806d-7315ec348a1a",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"8c9a66c8-cae1-4db5-9b2b-710a87395d8b\",\"lastUpdateDateTime\":\"2022-10-11T19:00:41Z\",\"createdDateTime\":\"2022-10-11T19:00:39Z\",\"expirationDateTime\":\"2022-10-12T19:00:39Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:00:41.4773167Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":17,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0},{\"offset\":29,\"length\":9,\"text\":\"gentleman\",\"category\":\"Gender\",\"confidenceScore\":1.0,\"name\":\"Male population group\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0025266\"},{\"dataSource\":\"AOD\",\"id\":\"0000026918\"},{\"dataSource\":\"CHV\",\"id\":\"0000007919\"},{\"dataSource\":\"LCH\",\"id\":\"U002897\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85083510\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"24\"},{\"dataSource\":\"MSH\",\"id\":\"D008571\"},{\"dataSource\":\"NCI\",\"id\":\"C14366\"},{\"dataSource\":\"PSY\",\"id\":\"30625\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"339947000\"}]},{\"offset\":57,\"length\":11,\"text\":\"progressive\",\"category\":\"Course\",\"confidenceScore\":0.9},{\"offset\":69,\"length\":6,\"text\":\"angina\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.83,\"name\":\"Angina Pectoris\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0002962\"},{\"dataSource\":\"AOD\",\"id\":\"0000005330\"},{\"dataSource\":\"BI\",\"id\":\"BI00047\"},{\"dataSource\":\"CCPSS\",\"id\":\"1017852\"},{\"dataSource\":\"CCS\",\"id\":\"7.2.4.1\"},{\"dataSource\":\"CHV\",\"id\":\"0000001165\"},{\"dataSource\":\"COSTAR\",\"id\":\"054\"},{\"dataSource\":\"CSP\",\"id\":\"1393-3407\"},{\"dataSource\":\"CST\",\"id\":\"ANGINA PECTORIS\"},{\"dataSource\":\"DXP\",\"id\":\"U000113\"},{\"dataSource\":\"HPO\",\"id\":\"HP:0001681\"},{\"dataSource\":\"ICD10\",\"id\":\"I20.9\"},{\"dataSource\":\"ICD10AM\",\"id\":\"I20.9\"},{\"dataSource\":\"ICD10CM\",\"id\":\"I20.9\"},{\"dataSource\":\"ICD9CM\",\"id\":\"413\"},{\"dataSource\":\"ICPC\",\"id\":\"K74\"},{\"dataSource\":\"ICPC2EENG\",\"id\":\"K74\"},{\"dataSource\":\"ICPC2ICD10ENG\",\"id\":\"MTHU006338\"},{\"dataSource\":\"ICPC2P\",\"id\":\"K74001\"},{\"dataSource\":\"LCH\",\"id\":\"U000244\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85005022\"},{\"dataSource\":\"LNC\",\"id\":\"LA14275-4\"},{\"dataSource\":\"MDR\",\"id\":\"10002383\"},{\"dataSource\":\"MEDCIN\",\"id\":\"33215\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"142\"},{\"dataSource\":\"MSH\",\"id\":\"D000787\"},{\"dataSource\":\"MTH\",\"id\":\"053\"},{\"dataSource\":\"MTHICD9\",\"id\":\"413.9\"},{\"dataSource\":\"MTHICPC2EAE\",\"id\":\"K74\"},{\"dataSource\":\"NCI\",\"id\":\"C51221\"},{\"dataSource\":\"NCI_CTCAE\",\"id\":\"E10110\"},{\"dataSource\":\"NCI_FDA\",\"id\":\"1710\"},{\"dataSource\":\"NCI_NICHD\",\"id\":\"C51221\"},{\"dataSource\":\"NOC\",\"id\":\"040504\"},{\"dataSource\":\"OMIM\",\"id\":\"MTHU009903\"},{\"dataSource\":\"OMS\",\"id\":\"29.13\"},{\"dataSource\":\"PCDS\",\"id\":\"PRB_02040.07\"},{\"dataSource\":\"PSY\",\"id\":\"02530\"},{\"dataSource\":\"QMR\",\"id\":\"Q0300326\"},{\"dataSource\":\"RCD\",\"id\":\"G33..\"},{\"dataSource\":\"RCDAE\",\"id\":\"Ua1eH\"},{\"dataSource\":\"SNM\",\"id\":\"F-71500\"},{\"dataSource\":\"SNMI\",\"id\":\"D3-12000\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"194828000\"},{\"dataSource\":\"WHO\",\"id\":\"0422\"}]},{\"offset\":85,\"length\":19,\"text\":\"past several months\",\"category\":\"Time\",\"confidenceScore\":0.99}],\"relations\":[{\"confidenceScore\":0.84,\"relationType\":\"CourseOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/0/entities/2\",\"role\":\"Course\"},{\"ref\":\"#/results/documents/0/entities/3\",\"role\":\"Condition\"}]},{\"confidenceScore\":0.89,\"relationType\":\"TimeOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/0/entities/3\",\"role\":\"Condition\"},{\"ref\":\"#/results/documents/0/entities/4\",\"role\":\"Time\"}]}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"offset\":21,\"length\":11,\"text\":\"six minutes\",\"category\":\"Time\",\"confidenceScore\":0.94},{\"offset\":38,\"length\":7,\"text\":\"minimal\",\"category\":\"ConditionQualifier\",\"confidenceScore\":0.99},{\"offset\":46,\"length\":44,\"text\":\"ST depressions in the anterior lateral leads\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.97},{\"offset\":108,\"length\":7,\"text\":\"fatigue\",\"category\":\"SymptomOrSign\",\"confidenceScore\":1.0,\"name\":\"Fatigue\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0015672\"},{\"dataSource\":\"AIR\",\"id\":\"FATIG\"},{\"dataSource\":\"AOD\",\"id\":\"0000001768\"},{\"dataSource\":\"BI\",\"id\":\"BI00028\"},{\"dataSource\":\"CCC\",\"id\":\"A01.4\"},{\"dataSource\":\"CCPSS\",\"id\":\"1014729\"},{\"dataSource\":\"CHV\",\"id\":\"0000004914\"},{\"dataSource\":\"COSTAR\",\"id\":\"298\"},{\"dataSource\":\"CPM\",\"id\":\"65221\"},{\"dataSource\":\"CSP\",\"id\":\"1385-2059\"},{\"dataSource\":\"CST\",\"id\":\"ASTHENIA\"},{\"dataSource\":\"DXP\",\"id\":\"U001451\"},{\"dataSource\":\"HPO\",\"id\":\"HP:0012378\"},{\"dataSource\":\"ICD10CM\",\"id\":\"R53.83\"},{\"dataSource\":\"ICNP\",\"id\":\"10000695\"},{\"dataSource\":\"ICPC2ICD10ENG\",\"id\":\"MTHU080142\"},{\"dataSource\":\"ICPC2P\",\"id\":\"A04004\"},{\"dataSource\":\"LCH\",\"id\":\"U001739\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85047465\"},{\"dataSource\":\"LNC\",\"id\":\"MTHU013358\"},{\"dataSource\":\"MDR\",\"id\":\"10016256\"},{\"dataSource\":\"MEDCIN\",\"id\":\"273174\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"5324\"},{\"dataSource\":\"MSH\",\"id\":\"D005221\"},{\"dataSource\":\"MTHICD9\",\"id\":\"780.79\"},{\"dataSource\":\"NANDA-I\",\"id\":\"00742\"},{\"dataSource\":\"NCI\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_CDISC\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_CTCAE\",\"id\":\"E11098\"},{\"dataSource\":\"NCI_CTRP\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_FDA\",\"id\":\"1849\"},{\"dataSource\":\"NCI_NCI-GLOSS\",\"id\":\"CDR0000321374\"},{\"dataSource\":\"NCI_NICHD\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_caDSR\",\"id\":\"C3036\"},{\"dataSource\":\"NOC\",\"id\":\"121028\"},{\"dataSource\":\"OMIM\",\"id\":\"MTHU010062\"},{\"dataSource\":\"PCDS\",\"id\":\"PRB_00010.03\"},{\"dataSource\":\"PDQ\",\"id\":\"CDR0000041390\"},{\"dataSource\":\"PSY\",\"id\":\"19400\"},{\"dataSource\":\"RCD\",\"id\":\"1682.\"},{\"dataSource\":\"SNM\",\"id\":\"F-01610\"},{\"dataSource\":\"SNMI\",\"id\":\"F-01360\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"84229001\"},{\"dataSource\":\"WHO\",\"id\":\"0724\"}]},{\"offset\":120,\"length\":10,\"text\":\"wrist pain\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.98,\"name\":\"Pain in wrist\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0221785\"},{\"dataSource\":\"BI\",\"id\":\"BI00504\"},{\"dataSource\":\"CCPSS\",\"id\":\"1016217\"},{\"dataSource\":\"CHV\",\"id\":\"0000021489\"},{\"dataSource\":\"COSTAR\",\"id\":\"U000624\"},{\"dataSource\":\"DXP\",\"id\":\"U004491\"},{\"dataSource\":\"HPO\",\"id\":\"HP:0030836\"},{\"dataSource\":\"ICD10CM\",\"id\":\"M25.53\"},{\"dataSource\":\"ICPC2ICD10ENG\",\"id\":\"MTHU060847\"},{\"dataSource\":\"ICPC2P\",\"id\":\"L11002\"},{\"dataSource\":\"MDR\",\"id\":\"10048692\"},{\"dataSource\":\"MEDCIN\",\"id\":\"939\"},{\"dataSource\":\"OMIM\",\"id\":\"MTHU016462\"},{\"dataSource\":\"RCD\",\"id\":\"N094F\"},{\"dataSource\":\"SNMI\",\"id\":\"F-176A0\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"56608008\"}]},{\"offset\":137,\"length\":18,\"text\":\"anginal equivalent\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.98,\"name\":\"Anginal equivalent\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0741034\"},{\"dataSource\":\"CCPSS\",\"id\":\"1017783\"},{\"dataSource\":\"CHV\",\"id\":\"0000047213\"},{\"dataSource\":\"ICD10CM\",\"id\":\"I20.8\"},{\"dataSource\":\"MDR\",\"id\":\"10076419\"},{\"dataSource\":\"MTHICD9\",\"id\":\"413.9\"}]}],\"relations\":[{\"confidenceScore\":0.83,\"relationType\":\"TimeOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/1/entities/0\",\"role\":\"Time\"},{\"ref\":\"#/results/documents/1/entities/2\",\"role\":\"Condition\"}]},{\"confidenceScore\":1.0,\"relationType\":\"QualifierOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/1/entities/1\",\"role\":\"Qualifier\"},{\"ref\":\"#/results/documents/1/entities/2\",\"role\":\"Condition\"}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 19:01:09 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/8c9a66c8-cae1-4db5-9b2b-710a87395d8b?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "35f95e7d-545d-406f-a14d-badb23e72c1c"
-    },
-    "Response" : {
-      "content-length" : "7173",
-      "x-envoy-upstream-service-time" : "75",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5ee03eaf-b88c-4812-9451-bd1ccf04615d",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"8c9a66c8-cae1-4db5-9b2b-710a87395d8b\",\"lastUpdateDateTime\":\"2022-10-11T19:00:41Z\",\"createdDateTime\":\"2022-10-11T19:00:39Z\",\"expirationDateTime\":\"2022-10-12T19:00:39Z\",\"status\":\"succeeded\",\"errors\":[],\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"HealthcareLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:00:41.4773167Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"offset\":17,\"length\":11,\"text\":\"54-year-old\",\"category\":\"Age\",\"confidenceScore\":1.0},{\"offset\":29,\"length\":9,\"text\":\"gentleman\",\"category\":\"Gender\",\"confidenceScore\":1.0,\"name\":\"Male population group\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0025266\"},{\"dataSource\":\"AOD\",\"id\":\"0000026918\"},{\"dataSource\":\"CHV\",\"id\":\"0000007919\"},{\"dataSource\":\"LCH\",\"id\":\"U002897\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85083510\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"24\"},{\"dataSource\":\"MSH\",\"id\":\"D008571\"},{\"dataSource\":\"NCI\",\"id\":\"C14366\"},{\"dataSource\":\"PSY\",\"id\":\"30625\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"339947000\"}]},{\"offset\":57,\"length\":11,\"text\":\"progressive\",\"category\":\"Course\",\"confidenceScore\":0.9},{\"offset\":69,\"length\":6,\"text\":\"angina\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.83,\"name\":\"Angina Pectoris\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0002962\"},{\"dataSource\":\"AOD\",\"id\":\"0000005330\"},{\"dataSource\":\"BI\",\"id\":\"BI00047\"},{\"dataSource\":\"CCPSS\",\"id\":\"1017852\"},{\"dataSource\":\"CCS\",\"id\":\"7.2.4.1\"},{\"dataSource\":\"CHV\",\"id\":\"0000001165\"},{\"dataSource\":\"COSTAR\",\"id\":\"054\"},{\"dataSource\":\"CSP\",\"id\":\"1393-3407\"},{\"dataSource\":\"CST\",\"id\":\"ANGINA PECTORIS\"},{\"dataSource\":\"DXP\",\"id\":\"U000113\"},{\"dataSource\":\"HPO\",\"id\":\"HP:0001681\"},{\"dataSource\":\"ICD10\",\"id\":\"I20.9\"},{\"dataSource\":\"ICD10AM\",\"id\":\"I20.9\"},{\"dataSource\":\"ICD10CM\",\"id\":\"I20.9\"},{\"dataSource\":\"ICD9CM\",\"id\":\"413\"},{\"dataSource\":\"ICPC\",\"id\":\"K74\"},{\"dataSource\":\"ICPC2EENG\",\"id\":\"K74\"},{\"dataSource\":\"ICPC2ICD10ENG\",\"id\":\"MTHU006338\"},{\"dataSource\":\"ICPC2P\",\"id\":\"K74001\"},{\"dataSource\":\"LCH\",\"id\":\"U000244\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85005022\"},{\"dataSource\":\"LNC\",\"id\":\"LA14275-4\"},{\"dataSource\":\"MDR\",\"id\":\"10002383\"},{\"dataSource\":\"MEDCIN\",\"id\":\"33215\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"142\"},{\"dataSource\":\"MSH\",\"id\":\"D000787\"},{\"dataSource\":\"MTH\",\"id\":\"053\"},{\"dataSource\":\"MTHICD9\",\"id\":\"413.9\"},{\"dataSource\":\"MTHICPC2EAE\",\"id\":\"K74\"},{\"dataSource\":\"NCI\",\"id\":\"C51221\"},{\"dataSource\":\"NCI_CTCAE\",\"id\":\"E10110\"},{\"dataSource\":\"NCI_FDA\",\"id\":\"1710\"},{\"dataSource\":\"NCI_NICHD\",\"id\":\"C51221\"},{\"dataSource\":\"NOC\",\"id\":\"040504\"},{\"dataSource\":\"OMIM\",\"id\":\"MTHU009903\"},{\"dataSource\":\"OMS\",\"id\":\"29.13\"},{\"dataSource\":\"PCDS\",\"id\":\"PRB_02040.07\"},{\"dataSource\":\"PSY\",\"id\":\"02530\"},{\"dataSource\":\"QMR\",\"id\":\"Q0300326\"},{\"dataSource\":\"RCD\",\"id\":\"G33..\"},{\"dataSource\":\"RCDAE\",\"id\":\"Ua1eH\"},{\"dataSource\":\"SNM\",\"id\":\"F-71500\"},{\"dataSource\":\"SNMI\",\"id\":\"D3-12000\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"194828000\"},{\"dataSource\":\"WHO\",\"id\":\"0422\"}]},{\"offset\":85,\"length\":19,\"text\":\"past several months\",\"category\":\"Time\",\"confidenceScore\":0.99}],\"relations\":[{\"confidenceScore\":0.84,\"relationType\":\"CourseOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/0/entities/2\",\"role\":\"Course\"},{\"ref\":\"#/results/documents/0/entities/3\",\"role\":\"Condition\"}]},{\"confidenceScore\":0.89,\"relationType\":\"TimeOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/0/entities/3\",\"role\":\"Condition\"},{\"ref\":\"#/results/documents/0/entities/4\",\"role\":\"Time\"}]}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"offset\":21,\"length\":11,\"text\":\"six minutes\",\"category\":\"Time\",\"confidenceScore\":0.94},{\"offset\":38,\"length\":7,\"text\":\"minimal\",\"category\":\"ConditionQualifier\",\"confidenceScore\":0.99},{\"offset\":46,\"length\":44,\"text\":\"ST depressions in the anterior lateral leads\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.97},{\"offset\":108,\"length\":7,\"text\":\"fatigue\",\"category\":\"SymptomOrSign\",\"confidenceScore\":1.0,\"name\":\"Fatigue\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0015672\"},{\"dataSource\":\"AIR\",\"id\":\"FATIG\"},{\"dataSource\":\"AOD\",\"id\":\"0000001768\"},{\"dataSource\":\"BI\",\"id\":\"BI00028\"},{\"dataSource\":\"CCC\",\"id\":\"A01.4\"},{\"dataSource\":\"CCPSS\",\"id\":\"1014729\"},{\"dataSource\":\"CHV\",\"id\":\"0000004914\"},{\"dataSource\":\"COSTAR\",\"id\":\"298\"},{\"dataSource\":\"CPM\",\"id\":\"65221\"},{\"dataSource\":\"CSP\",\"id\":\"1385-2059\"},{\"dataSource\":\"CST\",\"id\":\"ASTHENIA\"},{\"dataSource\":\"DXP\",\"id\":\"U001451\"},{\"dataSource\":\"HPO\",\"id\":\"HP:0012378\"},{\"dataSource\":\"ICD10CM\",\"id\":\"R53.83\"},{\"dataSource\":\"ICNP\",\"id\":\"10000695\"},{\"dataSource\":\"ICPC2ICD10ENG\",\"id\":\"MTHU080142\"},{\"dataSource\":\"ICPC2P\",\"id\":\"A04004\"},{\"dataSource\":\"LCH\",\"id\":\"U001739\"},{\"dataSource\":\"LCH_NW\",\"id\":\"sh85047465\"},{\"dataSource\":\"LNC\",\"id\":\"MTHU013358\"},{\"dataSource\":\"MDR\",\"id\":\"10016256\"},{\"dataSource\":\"MEDCIN\",\"id\":\"273174\"},{\"dataSource\":\"MEDLINEPLUS\",\"id\":\"5324\"},{\"dataSource\":\"MSH\",\"id\":\"D005221\"},{\"dataSource\":\"MTHICD9\",\"id\":\"780.79\"},{\"dataSource\":\"NANDA-I\",\"id\":\"00742\"},{\"dataSource\":\"NCI\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_CDISC\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_CTCAE\",\"id\":\"E11098\"},{\"dataSource\":\"NCI_CTRP\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_FDA\",\"id\":\"1849\"},{\"dataSource\":\"NCI_NCI-GLOSS\",\"id\":\"CDR0000321374\"},{\"dataSource\":\"NCI_NICHD\",\"id\":\"C3036\"},{\"dataSource\":\"NCI_caDSR\",\"id\":\"C3036\"},{\"dataSource\":\"NOC\",\"id\":\"121028\"},{\"dataSource\":\"OMIM\",\"id\":\"MTHU010062\"},{\"dataSource\":\"PCDS\",\"id\":\"PRB_00010.03\"},{\"dataSource\":\"PDQ\",\"id\":\"CDR0000041390\"},{\"dataSource\":\"PSY\",\"id\":\"19400\"},{\"dataSource\":\"RCD\",\"id\":\"1682.\"},{\"dataSource\":\"SNM\",\"id\":\"F-01610\"},{\"dataSource\":\"SNMI\",\"id\":\"F-01360\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"84229001\"},{\"dataSource\":\"WHO\",\"id\":\"0724\"}]},{\"offset\":120,\"length\":10,\"text\":\"wrist pain\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.98,\"name\":\"Pain in wrist\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0221785\"},{\"dataSource\":\"BI\",\"id\":\"BI00504\"},{\"dataSource\":\"CCPSS\",\"id\":\"1016217\"},{\"dataSource\":\"CHV\",\"id\":\"0000021489\"},{\"dataSource\":\"COSTAR\",\"id\":\"U000624\"},{\"dataSource\":\"DXP\",\"id\":\"U004491\"},{\"dataSource\":\"HPO\",\"id\":\"HP:0030836\"},{\"dataSource\":\"ICD10CM\",\"id\":\"M25.53\"},{\"dataSource\":\"ICPC2ICD10ENG\",\"id\":\"MTHU060847\"},{\"dataSource\":\"ICPC2P\",\"id\":\"L11002\"},{\"dataSource\":\"MDR\",\"id\":\"10048692\"},{\"dataSource\":\"MEDCIN\",\"id\":\"939\"},{\"dataSource\":\"OMIM\",\"id\":\"MTHU016462\"},{\"dataSource\":\"RCD\",\"id\":\"N094F\"},{\"dataSource\":\"SNMI\",\"id\":\"F-176A0\"},{\"dataSource\":\"SNOMEDCT_US\",\"id\":\"56608008\"}]},{\"offset\":137,\"length\":18,\"text\":\"anginal equivalent\",\"category\":\"SymptomOrSign\",\"confidenceScore\":0.98,\"name\":\"Anginal equivalent\",\"links\":[{\"dataSource\":\"UMLS\",\"id\":\"C0741034\"},{\"dataSource\":\"CCPSS\",\"id\":\"1017783\"},{\"dataSource\":\"CHV\",\"id\":\"0000047213\"},{\"dataSource\":\"ICD10CM\",\"id\":\"I20.8\"},{\"dataSource\":\"MDR\",\"id\":\"10076419\"},{\"dataSource\":\"MTHICD9\",\"id\":\"413.9\"}]}],\"relations\":[{\"confidenceScore\":0.83,\"relationType\":\"TimeOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/1/entities/0\",\"role\":\"Time\"},{\"ref\":\"#/results/documents/1/entities/2\",\"role\":\"Condition\"}]},{\"confidenceScore\":1.0,\"relationType\":\"QualifierOfCondition\",\"entities\":[{\"ref\":\"#/results/documents/1/entities/1\",\"role\":\"Qualifier\"},{\"ref\":\"#/results/documents/1/entities/2\",\"role\":\"Condition\"}]}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-03-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 19:01:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/e3a33d60-f914-4920-a161-2b11814785df?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:52:37 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0f795620-a9a3-40e6-8ac3-f6f22bee36fe"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "231c7161-1fa3-4b3b-b820-9122d48e3f0d",
+        "Content-Length": "7174",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:52:37 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "99",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "e3a33d60-f914-4920-a161-2b11814785df",
+        "lastUpdatedDateTime": "2023-04-05T18:52:08Z",
+        "createdDateTime": "2023-04-05T18:52:06Z",
+        "expirationDateTime": "2023-04-06T18:52:06Z",
+        "status": "succeeded",
+        "errors": [],
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "HealthcareLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:52:08.8405006Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "offset": 17,
+                        "length": 11,
+                        "text": "54-year-old",
+                        "category": "Age",
+                        "confidenceScore": 1.0
+                      },
+                      {
+                        "offset": 29,
+                        "length": 9,
+                        "text": "gentleman",
+                        "category": "Gender",
+                        "confidenceScore": 1.0,
+                        "name": "Male population group",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0025266"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000026918"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000007919"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U002897"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85083510"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "24"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D008571"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C14366"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "30625"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "339947000"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 57,
+                        "length": 11,
+                        "text": "progressive",
+                        "category": "Course",
+                        "confidenceScore": 0.9
+                      },
+                      {
+                        "offset": 69,
+                        "length": 6,
+                        "text": "angina",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.83,
+                        "name": "Angina Pectoris",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0002962"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000005330"
+                          },
+                          {
+                            "dataSource": "BI",
+                            "id": "BI00047"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1017852"
+                          },
+                          {
+                            "dataSource": "CCS",
+                            "id": "7.2.4.1"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000001165"
+                          },
+                          {
+                            "dataSource": "COSTAR",
+                            "id": "054"
+                          },
+                          {
+                            "dataSource": "CSP",
+                            "id": "1393-3407"
+                          },
+                          {
+                            "dataSource": "CST",
+                            "id": "ANGINA PECTORIS"
+                          },
+                          {
+                            "dataSource": "DXP",
+                            "id": "U000113"
+                          },
+                          {
+                            "dataSource": "HPO",
+                            "id": "HP:0001681"
+                          },
+                          {
+                            "dataSource": "ICD10",
+                            "id": "I20.9"
+                          },
+                          {
+                            "dataSource": "ICD10AM",
+                            "id": "I20.9"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "I20.9"
+                          },
+                          {
+                            "dataSource": "ICD9CM",
+                            "id": "413"
+                          },
+                          {
+                            "dataSource": "ICPC",
+                            "id": "K74"
+                          },
+                          {
+                            "dataSource": "ICPC2EENG",
+                            "id": "K74"
+                          },
+                          {
+                            "dataSource": "ICPC2ICD10ENG",
+                            "id": "MTHU006338"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "K74001"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U000244"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85005022"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "LA14275-4"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10002383"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "33215"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "142"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D000787"
+                          },
+                          {
+                            "dataSource": "MTH",
+                            "id": "053"
+                          },
+                          {
+                            "dataSource": "MTHICD9",
+                            "id": "413.9"
+                          },
+                          {
+                            "dataSource": "MTHICPC2EAE",
+                            "id": "K74"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C51221"
+                          },
+                          {
+                            "dataSource": "NCI_CTCAE",
+                            "id": "E10110"
+                          },
+                          {
+                            "dataSource": "NCI_FDA",
+                            "id": "1710"
+                          },
+                          {
+                            "dataSource": "NCI_NICHD",
+                            "id": "C51221"
+                          },
+                          {
+                            "dataSource": "NOC",
+                            "id": "040504"
+                          },
+                          {
+                            "dataSource": "OMIM",
+                            "id": "MTHU009903"
+                          },
+                          {
+                            "dataSource": "OMS",
+                            "id": "29.13"
+                          },
+                          {
+                            "dataSource": "PCDS",
+                            "id": "PRB_02040.07"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "02530"
+                          },
+                          {
+                            "dataSource": "QMR",
+                            "id": "Q0300326"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "G33.."
+                          },
+                          {
+                            "dataSource": "RCDAE",
+                            "id": "Ua1eH"
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "F-71500"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "D3-12000"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "194828000"
+                          },
+                          {
+                            "dataSource": "WHO",
+                            "id": "0422"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 85,
+                        "length": 19,
+                        "text": "past several months",
+                        "category": "Time",
+                        "confidenceScore": 0.99
+                      }
+                    ],
+                    "relations": [
+                      {
+                        "confidenceScore": 0.84,
+                        "relationType": "CourseOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/0/entities/2",
+                            "role": "Course"
+                          },
+                          {
+                            "ref": "#/results/documents/0/entities/3",
+                            "role": "Condition"
+                          }
+                        ]
+                      },
+                      {
+                        "confidenceScore": 0.89,
+                        "relationType": "TimeOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/0/entities/3",
+                            "role": "Condition"
+                          },
+                          {
+                            "ref": "#/results/documents/0/entities/4",
+                            "role": "Time"
+                          }
+                        ]
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "offset": 21,
+                        "length": 11,
+                        "text": "six minutes",
+                        "category": "Time",
+                        "confidenceScore": 0.94
+                      },
+                      {
+                        "offset": 38,
+                        "length": 7,
+                        "text": "minimal",
+                        "category": "ConditionQualifier",
+                        "confidenceScore": 0.99
+                      },
+                      {
+                        "offset": 46,
+                        "length": 44,
+                        "text": "ST depressions in the anterior lateral leads",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.97
+                      },
+                      {
+                        "offset": 108,
+                        "length": 7,
+                        "text": "fatigue",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 1.0,
+                        "name": "Fatigue",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0015672"
+                          },
+                          {
+                            "dataSource": "AIR",
+                            "id": "FATIG"
+                          },
+                          {
+                            "dataSource": "AOD",
+                            "id": "0000001768"
+                          },
+                          {
+                            "dataSource": "BI",
+                            "id": "BI00028"
+                          },
+                          {
+                            "dataSource": "CCC",
+                            "id": "A01.4"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1014729"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000004914"
+                          },
+                          {
+                            "dataSource": "COSTAR",
+                            "id": "298"
+                          },
+                          {
+                            "dataSource": "CPM",
+                            "id": "65221"
+                          },
+                          {
+                            "dataSource": "CSP",
+                            "id": "1385-2059"
+                          },
+                          {
+                            "dataSource": "CST",
+                            "id": "ASTHENIA"
+                          },
+                          {
+                            "dataSource": "DXP",
+                            "id": "U001451"
+                          },
+                          {
+                            "dataSource": "HPO",
+                            "id": "HP:0012378"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "R53.83"
+                          },
+                          {
+                            "dataSource": "ICNP",
+                            "id": "10000695"
+                          },
+                          {
+                            "dataSource": "ICPC2ICD10ENG",
+                            "id": "MTHU080142"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "A04004"
+                          },
+                          {
+                            "dataSource": "LCH",
+                            "id": "U001739"
+                          },
+                          {
+                            "dataSource": "LCH_NW",
+                            "id": "sh85047465"
+                          },
+                          {
+                            "dataSource": "LNC",
+                            "id": "MTHU013358"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10016256"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "273174"
+                          },
+                          {
+                            "dataSource": "MEDLINEPLUS",
+                            "id": "5324"
+                          },
+                          {
+                            "dataSource": "MSH",
+                            "id": "D005221"
+                          },
+                          {
+                            "dataSource": "MTHICD9",
+                            "id": "780.79"
+                          },
+                          {
+                            "dataSource": "NANDA-I",
+                            "id": "00742"
+                          },
+                          {
+                            "dataSource": "NCI",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_CDISC",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_CTCAE",
+                            "id": "E11098"
+                          },
+                          {
+                            "dataSource": "NCI_CTRP",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_FDA",
+                            "id": "1849"
+                          },
+                          {
+                            "dataSource": "NCI_NCI-GLOSS",
+                            "id": "CDR0000321374"
+                          },
+                          {
+                            "dataSource": "NCI_NICHD",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NCI_caDSR",
+                            "id": "C3036"
+                          },
+                          {
+                            "dataSource": "NOC",
+                            "id": "121028"
+                          },
+                          {
+                            "dataSource": "OMIM",
+                            "id": "MTHU010062"
+                          },
+                          {
+                            "dataSource": "PCDS",
+                            "id": "PRB_00010.03"
+                          },
+                          {
+                            "dataSource": "PDQ",
+                            "id": "CDR0000041390"
+                          },
+                          {
+                            "dataSource": "PSY",
+                            "id": "19400"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "1682."
+                          },
+                          {
+                            "dataSource": "SNM",
+                            "id": "F-01610"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "F-01360"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "84229001"
+                          },
+                          {
+                            "dataSource": "WHO",
+                            "id": "0724"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 120,
+                        "length": 10,
+                        "text": "wrist pain",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.98,
+                        "name": "Pain in wrist",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0221785"
+                          },
+                          {
+                            "dataSource": "BI",
+                            "id": "BI00504"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1016217"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000021489"
+                          },
+                          {
+                            "dataSource": "COSTAR",
+                            "id": "U000624"
+                          },
+                          {
+                            "dataSource": "DXP",
+                            "id": "U004491"
+                          },
+                          {
+                            "dataSource": "HPO",
+                            "id": "HP:0030836"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "M25.53"
+                          },
+                          {
+                            "dataSource": "ICPC2ICD10ENG",
+                            "id": "MTHU060847"
+                          },
+                          {
+                            "dataSource": "ICPC2P",
+                            "id": "L11002"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10048692"
+                          },
+                          {
+                            "dataSource": "MEDCIN",
+                            "id": "939"
+                          },
+                          {
+                            "dataSource": "OMIM",
+                            "id": "MTHU016462"
+                          },
+                          {
+                            "dataSource": "RCD",
+                            "id": "N094F"
+                          },
+                          {
+                            "dataSource": "SNMI",
+                            "id": "F-176A0"
+                          },
+                          {
+                            "dataSource": "SNOMEDCT_US",
+                            "id": "56608008"
+                          }
+                        ]
+                      },
+                      {
+                        "offset": 137,
+                        "length": 18,
+                        "text": "anginal equivalent",
+                        "category": "SymptomOrSign",
+                        "confidenceScore": 0.98,
+                        "name": "Anginal equivalent",
+                        "links": [
+                          {
+                            "dataSource": "UMLS",
+                            "id": "C0741034"
+                          },
+                          {
+                            "dataSource": "CCPSS",
+                            "id": "1017783"
+                          },
+                          {
+                            "dataSource": "CHV",
+                            "id": "0000047213"
+                          },
+                          {
+                            "dataSource": "ICD10CM",
+                            "id": "I20.8"
+                          },
+                          {
+                            "dataSource": "MDR",
+                            "id": "10076419"
+                          },
+                          {
+                            "dataSource": "MTHICD9",
+                            "id": "413.9"
+                          }
+                        ]
+                      }
+                    ],
+                    "relations": [
+                      {
+                        "confidenceScore": 0.83,
+                        "relationType": "TimeOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/1/entities/0",
+                            "role": "Time"
+                          },
+                          {
+                            "ref": "#/results/documents/1/entities/2",
+                            "role": "Condition"
+                          }
+                        ]
+                      },
+                      {
+                        "confidenceScore": 1.0,
+                        "relationType": "QualifierOfCondition",
+                        "entities": [
+                          {
+                            "ref": "#/results/documents/1/entities/1",
+                            "role": "Qualifier"
+                          },
+                          {
+                            "ref": "#/results/documents/1/entities/2",
+                            "role": "Condition"
+                          }
+                        ]
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2022-03-01"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
