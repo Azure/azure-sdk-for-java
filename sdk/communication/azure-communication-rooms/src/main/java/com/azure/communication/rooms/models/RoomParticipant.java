@@ -20,7 +20,7 @@ public final class RoomParticipant {
     /*
      * The Role of a room participant.
      */
-    private final ParticipantRole role;
+    private ParticipantRole role;
 
     /**
      * Default constructor for Room Participant. Default role is Attendee
@@ -32,15 +32,15 @@ public final class RoomParticipant {
         this.role = ParticipantRole.ATTENDEE;
     }
 
-    /**
-     * Constructor for Room Participant
+       /**
+     * Set the role property: The role of a room participant. The default value is Attendee.
      *
-     * @param communicationIdentifier The communication identifier.
-     * @param role The participant role.
+     * @param role the role value to set.
+     * @return the RoomParticipant object itself.
      */
-    public RoomParticipant(CommunicationIdentifier communicationIdentifier, ParticipantRole role) {
-        this.communicationIdentifier = communicationIdentifier;
+    public RoomParticipant setRole(ParticipantRole role) {
         this.role = role;
+        return this;
     }
 
     /**

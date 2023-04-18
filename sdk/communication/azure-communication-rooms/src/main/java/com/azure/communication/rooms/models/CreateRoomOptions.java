@@ -11,18 +11,20 @@ import java.util.List;
  */
 public final class CreateRoomOptions {
 
-    /**
-     * The starting time point of the room.
+    /*
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      */
     private OffsetDateTime validFrom;
 
-    /**
-     * The ending time point of the room.
+    /*
+     * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      */
     private OffsetDateTime validUntil;
 
-    /**
-     * A list of participants
+    /*
+     * (Optional) Participants to be invited to the room.
      */
     private Iterable<RoomParticipant> participants;
 
@@ -33,7 +35,8 @@ public final class CreateRoomOptions {
     }
 
     /**
-     * Set the valid starting time point of a room.
+     * Set the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
      * @param validFrom The starting time of the room.
      * @return The CreateRoomOptions object itself.
@@ -44,7 +47,8 @@ public final class CreateRoomOptions {
     }
 
      /**
-     * Set the ending time point of a room.
+     * Set the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      *
      * @param validUntil The end time of the room.
      * @return The CreateRoomOptions object itself.
@@ -55,7 +59,7 @@ public final class CreateRoomOptions {
     }
 
     /**
-     * Set the list of invited participants
+     * Set the participants property: (Optional) Participants to be invited to the room.
      *
      * @param participants The invited participants.
      * @return The CreateRoomOptions object itself.
@@ -66,7 +70,8 @@ public final class CreateRoomOptions {
     }
 
     /**
-     * Get the valid starting time point of a room.
+     * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
      * @return The starting time of the room.
      */
@@ -75,7 +80,8 @@ public final class CreateRoomOptions {
     }
 
      /**
-     * Get the ending time point of a room.
+     * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      *
      * @return The end time of the room.
      */
@@ -84,7 +90,7 @@ public final class CreateRoomOptions {
     }
 
     /**
-     * Get the list of invited participants
+     * Get the participants property: (Optional) Participants to be invited to the room.
      *
      * @return The invited participants.
      */

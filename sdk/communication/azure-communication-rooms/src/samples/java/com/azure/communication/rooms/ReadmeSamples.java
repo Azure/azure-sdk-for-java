@@ -22,8 +22,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
 
-    RoomParticipant participant2;
     RoomParticipant participant1;
+    RoomParticipant participant2;
 
     public RoomsClient createRoomsClientUsingAzureKeyCredential() {
         // You can find your endpoint and access key from your resource in the Azure
@@ -88,10 +88,8 @@ public class ReadmeSamples {
         List<RoomParticipant> participants = new ArrayList<>();
 
         // Add two participants
-        participant1 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 1>"),
-                ParticipantRole.ATTENDEE);
-        participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>"),
-                ParticipantRole.CONSUMER);
+        participant1 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 1>")).setRole(ParticipantRole.ATTENDEE);
+        participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.CONSUMER);
 
         participants.add(participant1);
         participants.add(participant2);
@@ -155,16 +153,16 @@ public class ReadmeSamples {
     }
     // END: readme-sample-deleteRoomWithRoomId
 
-    // BEGIN: readme-sample-addRoomParticipantsWithRoomId
-    public void addRoomParticipantsWithRoomId() {
+    // BEGIN: readme-sample-upsertRoomParticipantsWithRoomId
+    public void upsertRoomParticipantsWithRoomId() {
         List<RoomParticipant> participantsToUpsert = new ArrayList<>();
 
         // New participant to add
-        RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>"), ParticipantRole.ATTENDEE);
+        RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
 
         // Existing participant to update, assume participant2 is part of the room as a
         // consumer
-        participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>"), ParticipantRole.ATTENDEE);
+        participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.ATTENDEE);
 
         participantsToUpsert.add(participantToAdd); // Adding new participant to room
         participantsToUpsert.add(participant2); // Update participant from Consumer -> Attendee
@@ -177,7 +175,7 @@ public class ReadmeSamples {
             System.out.println(ex);
         }
     }
-    // END: readme-sample-addRoomParticipantsWithRoomId
+    // END: readme-sample-upsertRoomParticipantsWithRoomId
 
     // BEGIN: readme-sample-removeRoomParticipantsWithRoomId
     public void removeRoomParticipantsWithRoomId() {

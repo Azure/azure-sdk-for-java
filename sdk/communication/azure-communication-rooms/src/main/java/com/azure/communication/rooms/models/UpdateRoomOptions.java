@@ -10,13 +10,15 @@ import java.time.OffsetDateTime;
  */
 public final class UpdateRoomOptions {
 
-    /**
-     * The starting time point of the room.
+    /*
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      */
     private OffsetDateTime validFrom;
 
-    /**
-     * The ending time point of the room.
+    /*
+     * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      */
     private OffsetDateTime validUntil;
 
@@ -27,7 +29,8 @@ public final class UpdateRoomOptions {
     }
 
     /**
-     * Set the valid starting time point of a room.
+     * Set the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
      * @param validFrom The starting time of the room.
      * @return The CreateRoomOptions object itself.
@@ -38,7 +41,8 @@ public final class UpdateRoomOptions {
     }
 
      /**
-     * Set the ending time point of a room.
+     * Set the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      *
      * @param validUntil The end time of the room.
      * @return The CreateRoomOptions object itself.
@@ -49,7 +53,8 @@ public final class UpdateRoomOptions {
     }
 
     /**
-     * Get the valid starting time point of a room.
+     * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
      *
      * @return The starting time of the room.
      */
@@ -58,7 +63,8 @@ public final class UpdateRoomOptions {
     }
 
      /**
-     * Get the ending time point of a room.
+     * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      *
      * @return The end time of the room.
      */

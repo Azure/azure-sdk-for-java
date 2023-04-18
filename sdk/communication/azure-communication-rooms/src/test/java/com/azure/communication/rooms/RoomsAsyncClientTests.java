@@ -11,6 +11,7 @@ import com.azure.communication.rooms.models.*;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.PagedFlux;
+import java.util.Arrays;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,7 +43,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants1);
+                .setParticipants(participant1);
 
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
 
@@ -91,7 +92,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants1);
+                .setParticipants(participant1);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
@@ -164,7 +165,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         // Add 3 participants.
         Mono<UpsertParticipantsResult> addPartcipantResponse = roomsAsyncClient.upsertParticipants(roomId,
-                participants5);
+                participants3);
 
         StepVerifier.create(addPartcipantResponse)
                 .assertNext(result -> {
@@ -247,14 +248,14 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants1);
+                .setParticipants(participant1);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
         String roomId = response1.block().getRoomId();
 
         Mono<RemoveParticipantsResult> response4 = roomsAsyncClient.removeParticipants(roomId,
-                communicationIdentifiersForParticipants5);
+                Arrays.asList(firstParticipantId));
 
         Mono<Response<Void>> response5 = roomsAsyncClient.deleteRoomWithResponse(roomId);
         StepVerifier.create(response5)
@@ -304,7 +305,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants8);
+                .setParticipants(participant1);
 
         Mono<Response<CommunicationRoom>> response1 = roomsAsyncClient.createRoomWithResponse(roomOptions);
 
@@ -317,7 +318,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         String roomId = response1.block().getValue().getRoomId();
 
         Mono<Response<UpsertParticipantsResult>> response2 = roomsAsyncClient.upsertParticipantsWithResponse(roomId,
-                participants9);
+                participant1);
 
         StepVerifier.create(response2)
                 .assertNext(result2 -> {
@@ -343,7 +344,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         CreateRoomOptions roomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants5);
+                .setParticipants(participants3);
 
         Mono<CommunicationRoom> response1 = roomsAsyncClient.createRoom(roomOptions);
 
@@ -351,9 +352,8 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         PagedFlux<RoomParticipant> response2 = roomsAsyncClient.listParticipants(roomId);
 
-
-        StepVerifier.create(listParticipantsResponse4.count())
-                .expectNext(participants5.getSize())
+        StepVerifier.create(response2.count())
+                .expectNext(3L)
                 .verifyComplete();
     }
 

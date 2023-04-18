@@ -17,10 +17,10 @@ public final class CommunicationRoom {
     /**
      * The default constructor of CommunicationRoom.
      *
-     * @param roomId The Room Id.
-     * @param validFrom The starting time point of the room.
-     * @param validUntil The ending time point of the room.
-     * @param createdAt The created time point of the room.
+     * @param roomId Unique identifier of a room. This id is server generated.
+     * @param validFrom The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param validUntil The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param createdAt The timestamp when the room was created at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     public CommunicationRoom(String roomId, OffsetDateTime validFrom, OffsetDateTime validUntil, OffsetDateTime createdAt) {
         this.roomId = roomId;
@@ -29,37 +29,40 @@ public final class CommunicationRoom {
         this.createdAt = createdAt;
     }
 
-    /**
-     * Get the Room Id.
+     /**
+     * Get the id property: Unique identifier of a room. This id is server generated.
      *
-     * @return Room Id.
+     * @return the id value.
      */
     public String getRoomId() {
         return this.roomId;
     }
 
     /**
-     * Get the valid starting time point of a room.
+     * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return The starting time of the room.
+     * @return the validFrom value.
      */
     public OffsetDateTime getValidFrom() {
         return this.validFrom;
     }
 
     /**
-     * Get the ending time point of a room.
+     * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return The end time of the room.
+     * @return the validUntil value.
      */
     public OffsetDateTime getValidUntil() {
         return this.validUntil;
     }
 
     /**
-     * Get the created time of the room.
+     * Get the createdAt property: The timestamp when the room was created at the server. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return The created time of the room.
+     * @return the createdAt value.
      */
     public OffsetDateTime getCreatedAt() {
         return this.createdAt;

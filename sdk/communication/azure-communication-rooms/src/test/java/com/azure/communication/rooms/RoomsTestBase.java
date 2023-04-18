@@ -45,20 +45,13 @@ public class RoomsTestBase extends TestBase {
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
 
-    protected List<RoomParticipant> participants1;
+    protected List<RoomParticipant> participant1;
     protected List<RoomParticipant> participants2;
     protected List<RoomParticipant> participants3;
-    protected List<RoomParticipant> participants4;
-    protected List<RoomParticipant> participants5;
-    protected List<RoomParticipant> participants6;
-    protected List<RoomParticipant> participants7;
-    protected List<RoomParticipant> participants8;
-    protected List<RoomParticipant> participants9;
     protected List<RoomParticipant> badParticipant;
     protected List<RoomParticipant> participantsWithRoleUpdates;
 
     protected List<CommunicationIdentifier> communicationIdentifiersForParticipants2;
-    protected List<CommunicationIdentifier> communicationIdentifiersForParticipants5;
 
     private CommunicationIdentityClient communicationClient;
 
@@ -68,15 +61,9 @@ public class RoomsTestBase extends TestBase {
 
     protected RoomParticipant firstParticipant;
     protected RoomParticipant secondParticipant;
-    protected RoomParticipant firstParticipant2;
-    protected RoomParticipant secondParticipant2;
     protected RoomParticipant thirdParticipant;
-    protected RoomParticipant thirdParticipantWithDefaultRole;
     protected RoomParticipant firstChangeParticipant;
     protected RoomParticipant secondChangeParticipant;
-    protected RoomParticipant validateParticipant1;
-    protected RoomParticipant validateParticipant2;
-    protected RoomParticipant validateParticipant3;
 
     protected static final String NONEXIST_ROOM_ID = "NotExistingRoomID";
 
@@ -177,37 +164,19 @@ public class RoomsTestBase extends TestBase {
 
         firstParticipant = new RoomParticipant(firstParticipantId);
         secondParticipant = new RoomParticipant(secondParticipantId);
-        thirdParticipant = new RoomParticipant(thirdParticipantId, ParticipantRole.CONSUMER);
+        thirdParticipant = new RoomParticipant(thirdParticipantId).setRole(ParticipantRole.CONSUMER);
 
+        firstChangeParticipant = new RoomParticipant(firstParticipantId).setRole(ParticipantRole.CONSUMER);
+        secondChangeParticipant = new RoomParticipant(secondParticipantId).setRole(ParticipantRole.CONSUMER);
 
-        firstParticipant2 = new RoomParticipant(firstParticipantId, null);
-
-        secondParticipant2 = new RoomParticipant(secondParticipantId, null);
-
-        thirdParticipantWithDefaultRole = new RoomParticipant(thirdParticipantId, ParticipantRole.ATTENDEE);
-
-        firstChangeParticipant = new RoomParticipant(firstParticipantId, ParticipantRole.CONSUMER);
-        secondChangeParticipant = new RoomParticipant(secondParticipantId, ParticipantRole.CONSUMER);
-
-        validateParticipant1 = new RoomParticipant(firstParticipantId, ParticipantRole.ATTENDEE);
-        validateParticipant2 = new RoomParticipant(secondParticipantId, ParticipantRole.ATTENDEE);
-        validateParticipant3 = new RoomParticipant(thirdParticipantId, ParticipantRole.ATTENDEE);
-
-        participants1 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
+        participant1 = Arrays.asList(firstParticipant);
         participants2 = Arrays.asList(firstParticipant, secondParticipant);
-        participants3 = Arrays.asList(secondParticipant);
-        participants4 = Arrays.asList(firstParticipant, secondParticipant);
-        participants5 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
-        participants6 = Arrays.asList(firstParticipant2, secondParticipant2);
-        communicationIdentifiersForParticipants2 = getCommunicationIdentifiers(participants2);
-        communicationIdentifiersForParticipants5 = getCommunicationIdentifiers(participants5);
+        participants3 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
 
-        participants6 = Arrays.asList(secondParticipant, thirdParticipant);
-        participants7 = Arrays.asList();
-        participants8 = Arrays.asList(thirdParticipant);
-        participants9 = Arrays.asList(thirdParticipantWithDefaultRole);
-        badParticipant = Arrays.asList(new RoomParticipant(new CommunicationUserIdentifier("Dummy_Mri"), ParticipantRole.CONSUMER));
+        communicationIdentifiersForParticipants2 = getCommunicationIdentifiers(participants2);
         participantsWithRoleUpdates = Arrays.asList(firstChangeParticipant, secondChangeParticipant);
+
+        badParticipant = Arrays.asList(new RoomParticipant(new CommunicationUserIdentifier("Dummy_Mri")));
     }
 
     protected void cleanUpUsers() {
@@ -230,6 +199,9 @@ public class RoomsTestBase extends TestBase {
     protected void assertHappyPath(Response<CommunicationRoom> roomResult, int httpStatusCode) {
         assertEquals(roomResult.getStatusCode(), httpStatusCode);
         assertNotNull(roomResult.getValue().getRoomId());
+        assertNotNull(roomResult.getValue().getValidUntil());
+        assertNotNull(roomResult.getValue().getValidFrom());
+        assertNotNull(roomResult.getValue().getCreatedAt());
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {

@@ -42,7 +42,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createCommunicationRoom);
@@ -57,7 +57,7 @@ public class RoomsClientTest extends RoomsTestBase {
         assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
         assertHappyPath(updateCommunicationRoom);
 
-        UpsertParticipantsResult roomParticipants = roomsClient.upsertParticipants(roomId, participants6);
+        UpsertParticipantsResult roomParticipants = roomsClient.upsertParticipants(roomId, participants2);
 
         CommunicationRoom getCommunicationRoom = roomsClient.getRoom(roomId);
         assertHappyPath(getCommunicationRoom);
@@ -75,7 +75,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createCommunicationRoom);
@@ -95,7 +95,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
@@ -112,7 +112,7 @@ public class RoomsClientTest extends RoomsTestBase {
         assertHappyPath(updateRoomResponse, 200);
 
         Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
-                participants6, Context.NONE);
+                participants2, Context.NONE);
         assertEquals(addPartcipantResponse.getStatusCode(), 200);
 
         Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, Context.NONE);
@@ -144,7 +144,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         // Add 3 participants.
         UpsertParticipantsResult addPartcipantResponse = roomsClient.upsertParticipants(roomId,
-                participants1);
+                participants3);
         assertEquals(true, addPartcipantResponse instanceof UpsertParticipantsResult);
 
         // Check participant count, expected 3
@@ -191,7 +191,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getRoomId();
 
         // Add 3 participants
-        UpsertParticipantsResult addPartcipantResponse = roomsClient.upsertParticipants(roomId, participants5);
+        UpsertParticipantsResult addPartcipantResponse = roomsClient.upsertParticipants(roomId, participants3);
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -215,7 +215,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         // Add 3 participants.
         Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
-                participants5, Context.NONE);
+                participants3, Context.NONE);
         assertEquals(addPartcipantResponse.getStatusCode(), 200);
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
@@ -231,17 +231,17 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants8);
+                .setParticipants(participant1);
 
         Response<CommunicationRoom> createCommunicationRoom = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
-        assertHappyPath(createCommunicationRoom);
+        assertHappyPath(createCommunicationRoom, 201);
 
         String roomId = createCommunicationRoom.getValue().getRoomId();
 
         // Update participant to default role with null role.
         Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
-                participants9, Context.NONE);
+                participant1, Context.NONE);
         assertEquals(200, addPartcipantResponse.getStatusCode());
 
         PagedIterable<RoomParticipant> listReponse = roomsClient.listParticipants(roomId);
@@ -312,7 +312,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
                 Context.NONE);
@@ -327,30 +327,6 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> updateRoomResponse = roomsClient.updateRoomWithResponse(roomId, updateRoomOptions,
                 Context.NONE);
         assertHappyPath(updateRoomResponse, 200);
-
-        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
-        assertEquals(deleteResponse.getStatusCode(), 204);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void removeParticipantsWithResponse(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "patchMeetingValidTimeWithResponse");
-        assertNotNull(roomsClient);
-
-        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
-                .setValidFrom(VALID_FROM)
-                .setParticipants(participants5);
-
-        Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions,
-                Context.NONE);
-
-        assertHappyPath(createdRoomResponse, 201);
-
-        String roomId = createdRoomResponse.getValue().getRoomId();
-
-        Response<RemoveParticipantsResult> removeParticipantResponse = roomsClient
-                .removeParticipantsWithResponse(roomId, communicationIdentifiersForParticipants5, Context.NONE);
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -427,7 +403,7 @@ public class RoomsClientTest extends RoomsTestBase {
         roomsClient = setupSyncClient(httpClient, "createRoomSyncOnlyParticipants");
         assertNotNull(roomsClient);
         CommunicationRoom createCommunicationRoom = roomsClient
-                .createRoom(new CreateRoomOptions().setParticipants(participants4));
+                .createRoom(new CreateRoomOptions().setParticipants(participants2));
         assertHappyPath(createCommunicationRoom);
 
         String roomId = createCommunicationRoom.getRoomId();
@@ -486,7 +462,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -513,7 +489,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
 
@@ -541,7 +517,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -566,7 +542,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -591,7 +567,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -729,7 +705,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -756,7 +732,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -784,7 +760,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -811,7 +787,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
@@ -836,7 +812,7 @@ public class RoomsClientTest extends RoomsTestBase {
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
                 .setValidFrom(VALID_FROM)
                 .setValidUntil(VALID_UNTIL)
-                .setParticipants(participants4);
+                .setParticipants(participants2);
 
         CommunicationRoom createdRoom = roomsClient.createRoom(createRoomOptions);
         assertHappyPath(createdRoom);
