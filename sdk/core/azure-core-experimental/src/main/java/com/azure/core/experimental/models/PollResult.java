@@ -3,13 +3,13 @@
 
 package com.azure.core.experimental.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Provides status details for long running operations. */
-@Fluent
+@Immutable
 public final class PollResult {
     @JsonProperty(value = "id", required = true)
     private final String id;
@@ -23,7 +23,7 @@ public final class PollResult {
      * @param id the unique ID of the operation.
      */
     @JsonCreator
-    public PollResult(@JsonProperty(value = "id", required = true) String id) {
+    private PollResult(@JsonProperty(value = "id", required = true) String id) {
         this.id = id;
     }
 
@@ -34,15 +34,6 @@ public final class PollResult {
      */
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Sets the error property: Error object that describes the error when status is "Failed".
-     *
-     * @param error the error object that describes the error when status is "Failed".
-     */
-    public void setError(ResponseError error) {
-        this.error = error;
     }
 
     /**

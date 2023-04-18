@@ -125,7 +125,13 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
             // take the last poll response body from PollingContext, and de-serialize the "result" property as final result
             BinaryData latestResponseBody = BinaryData.fromString(pollingContext.getData(PollingConstants.POLL_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(latestResponseBody, serializer, POST_POLL_RESULT_TYPE_REFERENCE)
-                .flatMap(value -> PollingUtils.deserializeResponse(value.getResult(), serializer, resultType));
+                .flatMap(value -> {
+                    if (value.getResult() != null) {
+                        return PollingUtils.deserializeResponse(value.getResult(), serializer, resultType);
+                    } else {
+                        return Mono.error(new AzureException("Cannot get final result"));
+                    }
+                });
         } else {
             return Mono.error(new AzureException("Cannot get final result"));
         }
