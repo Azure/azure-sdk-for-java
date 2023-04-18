@@ -310,7 +310,9 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     public void testServerTimeout() {
         // The server does not always stop processing the request and return a 504 before the client times out
         // so, retry until a 504 response is returned
-        Random random = new Random();
+        // With test proxy migration, the request body is also recorded and the request has to match exactly for the
+        // recording to work. So, updating the exact count used to record the server timeout exception. When re-recording,
+        // add a random number to this to bypass the server from returning cached results.
         long count = 1000000006959L;
         // this query should take more than 5 seconds usually, but the server may have cached the
         // response and may return before 5 seconds. So, retry with another query (different count value)
@@ -318,7 +320,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
                                         + "step 1 | count",
                                 null,
                                 new LogsQueryOptions()
-                                        .setServerTimeout(Duration.ofSeconds(10)),
+                                        .setServerTimeout(Duration.ofSeconds(5)),
                                 Context.NONE)
                         .repeat())
                 .verifyErrorSatisfies(throwable -> {
