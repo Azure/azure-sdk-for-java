@@ -18,9 +18,12 @@ import java.time.Duration;
  * Pipeline policy that sets the timeout URI query parameter to cancel requests on the service side if the
  * server timeout interval elapses before the service has finished processing the request.
  *
+ * For more information on timeouts for different services, see here:
  * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting timeouts for blob service operations</a>
+ * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-file-service-operations">Setting timeouts for file service operations</a>
+ * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations">Setting timeouts for queue service operations</a>
  */
-public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
+public final class ServiceTimeoutPolicy implements HttpPipelinePolicy {
     private final boolean applyTimeout;
     private final String timeoutInSeconds;
 
@@ -29,9 +32,13 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
      * <p>
      * The maximum timeout interval for Blob service operations is 30 seconds, with exceptions for certain operations.
      * The default value is also 30 seconds, although some read and write operations may use a larger default. Apart
-     * from these exceptions, the Blob service automatically reduces any timeouts larger than 30 seconds to the
+     * from these exceptions, the service automatically reduces any timeouts larger than 30 seconds to the
      * 30-second maximum. For more information, see here:
      * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting timeouts for blob service operations</a>
+     * For more information on setting timeouts for file shares, see here:
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-file-service-operations">Setting timeouts for file service operations</a>
+     * For more information on setting timeouts on queues, see here:
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations">Setting timeouts for queue service operations</a>
      *
      * @param timeout The timeout duration.
      */
@@ -53,10 +60,8 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (applyTimeout) {
-            // Add 'timeout' URI query parameter to request URL.
-            UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            urlBuilder.setQueryParameter("timeout", timeoutInSeconds);
-            context.getHttpRequest().setUrl(urlBuilder.toString());
+            String httpRequest = setTimeoutParameter(context, timeoutInSeconds);
+            context.getHttpRequest().setUrl(httpRequest);
         }
 
         return next.process();
@@ -65,13 +70,18 @@ public class ServiceTimeoutPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if (applyTimeout) {
-            // Add 'timeout' URI query parameter to request URL.
-            UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-            urlBuilder.setQueryParameter("timeout", timeoutInSeconds);
-            context.getHttpRequest().setUrl(urlBuilder.toString());
+            String httpRequest = setTimeoutParameter(context, timeoutInSeconds);
+            context.getHttpRequest().setUrl(httpRequest);
         }
 
         return next.processSync();
+    }
+
+    static String setTimeoutParameter(HttpPipelineCallContext context, String timeoutInSeconds) {
+        // Add 'timeout' URI query parameter to request URL.
+        UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        urlBuilder.setQueryParameter("timeout", timeoutInSeconds);
+        return urlBuilder.toString();
     }
 
     /**
