@@ -510,7 +510,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 itemResponse.getDiagnostics(),
                 OperationType.Read,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410,
                 timeoutRuleId,
                 true
             );
@@ -569,7 +569,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 itemResponse.getDiagnostics(),
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410,
                 ruleId,
                 true
             );
