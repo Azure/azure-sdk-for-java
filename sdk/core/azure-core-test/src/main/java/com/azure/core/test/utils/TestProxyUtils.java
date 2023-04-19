@@ -77,6 +77,8 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER =
         HttpHeaderName.fromString("x-abstraction-identifier");
 
+    private static URL proxyUrl;
+
     /**
      * Adds headers required for communication with the test proxy.
      *
@@ -207,6 +209,21 @@ public class TestProxyUtils {
         }
     }
 
+    public static URL getProxyUrl() {
+        if (proxyUrl != null) {
+            return proxyUrl;
+        }
+        UrlBuilder builder = new UrlBuilder();
+        builder.setHost("localhost");
+        builder.setScheme("http");
+        builder.setPort(5000);
+        try {
+            proxyUrl = builder.toUrl();
+            return proxyUrl;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Registers the default set of sanitizers for sanitizing request and responses
