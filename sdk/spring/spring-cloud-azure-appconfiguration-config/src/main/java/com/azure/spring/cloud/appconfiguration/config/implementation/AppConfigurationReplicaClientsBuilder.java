@@ -206,8 +206,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     protected ConfigurationClientBuilder createBuilderInstance() {
         RetryStrategy retryStatagy = null;
 
-        String mode = env.getProperty(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
-        String modeService = env.getProperty(AzureAppConfigurationProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
+        String mode = null;
+        String modeService = null;
 
         if ("exponential".equals(mode) || "exponential".equals(modeService) || (mode == null && modeService == null)) {
             Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));

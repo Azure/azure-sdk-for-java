@@ -14,25 +14,22 @@ public class AppConfigurationKeyVaultClientFactory {
 
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
-    private final SecretClientCustomizer keyVaultClientProvider;
+    private SecretClientCustomizer keyVaultClientProvider;
 
-    private final KeyVaultSecretProvider keyVaultSecretProvider;
+    private KeyVaultSecretProvider keyVaultSecretProvider;
 
     private final SecretClientBuilderFactory secretClientFactory;
-    
+
     private final boolean credentialsConfigured;
 
     private final boolean isConfigured;
 
-    public AppConfigurationKeyVaultClientFactory(SecretClientCustomizer keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
+    public AppConfigurationKeyVaultClientFactory(SecretClientBuilderFactory secretClientFactory,
         boolean credentialsConfigured) {
-        this.keyVaultClientProvider = keyVaultClientProvider;
-        this.keyVaultSecretProvider = keyVaultSecretProvider;
         this.secretClientFactory = secretClientFactory;
         keyVaultClients = new HashMap<>();
         this.credentialsConfigured = credentialsConfigured;
-        isConfigured = keyVaultClientProvider != null || credentialsConfigured;
+        isConfigured = credentialsConfigured;
     }
 
     public AppConfigurationSecretClientManager getClient(String host) {

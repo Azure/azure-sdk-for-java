@@ -37,8 +37,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
 
     private final Long defaultMinBackoff;
 
-    private final AppConfigurationReplicaClientFactory clientFactory;
-
     private final Duration refreshInterval;
 
     private List<String> profiles;
@@ -46,15 +44,12 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     /**
      * Component used for checking for and triggering configuration refreshes.
      *
-     * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
      * @param refreshInterval time between refresh intervals
      * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
-    public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
-        Long defaultMinBackoff) {
+    public AppConfigurationPullRefresh(Duration refreshInterval, Long defaultMinBackoff) {
         this.defaultMinBackoff = defaultMinBackoff;
         this.refreshInterval = refreshInterval;
-        this.clientFactory = clientFactory;
 
     }
 
@@ -68,7 +63,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * trigger has been updated configuration are reloaded.
      *
      * @return Future with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
-     * elsewhere this method will return right away as <b>false</b>.
+     *         elsewhere this method will return right away as <b>false</b>.
      */
     public Mono<Boolean> refreshConfigurations() {
         return Mono.just(refreshStores());
@@ -83,11 +78,11 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     public void expireRefreshInterval(String endpoint, String syncToken) {
         LOGGER.debug("Expiring refresh interval for " + endpoint);
 
-        String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
+        //String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
 
-        clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
+        //clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
 
-        StateHolder.getCurrentState().expireState(originEndpoint);
+        //StateHolder.getCurrentState().expireState(originEndpoint);
     }
 
     /**
@@ -99,7 +94,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
-            try {
+           /* try {
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
                     refreshInterval, profiles, defaultMinBackoff);
                 if (eventData.getDoRefresh()) {
@@ -112,14 +107,14 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
                 throw e;
             } finally {
                 running.set(false);
-            }
+            }*/
         }
         return false;
     }
 
     @Override
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
-        return clientFactory.getHealth();
+        return null; //clientFactory.getHealth();
     }
 
     @Override
