@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BuildHelperTests {
-    private static final ClientLogger LOGGER = new ClientLogger(BuilderHelper.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BuildHelperTests.class);
     private static final StorageSharedKeyCredential CREDENTIALS =
         new StorageSharedKeyCredential("accountName", "accountKey");
     private static final String ENDPOINT = "https://account.queue.core.windows.net/";
