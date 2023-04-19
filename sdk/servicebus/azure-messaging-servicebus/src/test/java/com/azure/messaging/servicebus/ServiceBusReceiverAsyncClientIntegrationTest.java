@@ -49,6 +49,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
@@ -1182,21 +1183,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             // close dead letter receiver.
             deadLetterReceiver.close();
         }
-
     }
+
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    void renewMessageLock(MessagingEntityType entityType) throws InterruptedException {
-        // Arrange
-        final boolean isSessionEnabled = false;
-        setSender(entityType, TestUtils.USE_CASE_RENEW_LOCK, isSessionEnabled);
+    void manualRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
+        testRenewLock(entityType, Duration.ZERO, (m) -> {
+            toClose(receiver.renewMessageLock(m, Duration.ofSeconds(10)).subscribe());
+            return Mono.empty();
+        });
+    }
 
-        // TODO (limolkova) should test auto along with manual renewal?
-        setReceiver(entityType, TestUtils.USE_CASE_RENEW_LOCK, isSessionEnabled, new ClientCreationOptions().setMaxAutoLockRenewDuration(Duration.ZERO));
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void autoRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
+        testRenewLock(entityType, Duration.ofSeconds(10), (m) -> Mono.empty());
+    }
 
-        final Duration maximumDuration = Duration.ofSeconds(35);
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void autoAndManualRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
+        testRenewLock(entityType, Duration.ofSeconds(10), (m) -> Mono.empty());
+    }
+
+
+    private void testRenewLock(MessagingEntityType entityType, Duration lockRenewalDuration, Function<ServiceBusReceivedMessage, Mono<Void>> renewMono) throws InterruptedException {
+        setSender(entityType, TestUtils.USE_CASE_RENEW_LOCK, false);
+        setReceiver(entityType, TestUtils.USE_CASE_RENEW_LOCK, false, new ClientCreationOptions()
+            .setMaxAutoLockRenewDuration(lockRenewalDuration));
+
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final ServiceBusMessage message = getMessage(messageId, false);
 
         StepVerifier.create(sendMessage(message)).verifyComplete();
 
@@ -1219,48 +1236,52 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(receivedMessage.getLockedUntil());
                 // expect to receive the same message but only after lock renewal completes
                 if (lockedUntil.compareAndSet(null, receivedMessage.getLockedUntil())) {
-                    return receiver.renewMessageLock(receivedMessage, maximumDuration);
+                    return renewMono.apply(receivedMessage);
                 } else {
-                    logger.atInfo()
-                        .addKeyValue("lockedUntil", lockedUntil.get())
-                        .log("expecting before now"); // but I'm wrong
-                    // TODO: why not not always bigger than lockeduntil? timeskew with service?
+                    // TODO: why not not always bigger than lockeduntil? time skew with service?
                     assertEquals(OffsetDateTime.now().toEpochSecond(), lockedUntil.get().toEpochSecond(), 10);
                     return receiver.complete(receivedMessage);
                 }
             })
-            .subscribe(i -> { }, ex -> fail(ex), () -> fail("cancelled"));
+            .subscribe(i -> { }, ex -> fail(ex));
 
         assertTrue(latch.await(2, TimeUnit.MINUTES));
     }
 
-
     @Test
-    void receiveSubscribeReceive() throws InterruptedException {
-        // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_RENEW_LOCK, false);
+    void receiveTwice() {
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_DEFAULT, false);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
 
         StepVerifier.create(sendMessage(message)).verifyComplete();
+        StepVerifier.create(receiver.receiveMessages().take(1))
+            .expectNextCount(1)
+            .expectComplete()
+            .verify(OPERATION_TIMEOUT);
 
-        CountDownLatch receivedFirst = new CountDownLatch(1);
-        Disposable subscription = toClose(receiver.receiveMessages()
-            .subscribe(m -> {
-                receivedFirst.countDown();
-            }));
-        assertTrue(receivedFirst.await(30, TimeUnit.SECONDS));
-        subscription.dispose();
-
-        CountDownLatch receivedSecond = new CountDownLatch(1);
         StepVerifier.create(sendMessage(message)).verifyComplete();
-        toClose(receiver.receiveMessages()
-             .subscribe(m -> {
-                receivedSecond.countDown();
-            }));
-        assertTrue(receivedSecond.await(30, TimeUnit.SECONDS));
+
+        // cannot subscribe to the same receiver - there was a subscription that is disposed now
+        StepVerifier.create(receiver.receiveMessages().take(1))
+            .expectComplete()
+            .verify(OPERATION_TIMEOUT);
     }
 
+    @Test
+    void receiveActiveSubscription() {
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_DEFAULT, false);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, false);
+
+        StepVerifier.create(sendMessage(message)).verifyComplete();
+        toClose(receiver.receiveMessages().subscribe(m -> { }));
+
+        // cannot subscribe to the same receiver - there is active subscription
+        StepVerifier.create(receiver.receiveMessages().take(1))
+            .expectError()
+            .verify(OPERATION_TIMEOUT);
+    }
 
     /**
      * Verifies that we can receive a message which have different section set (i.e header, footer, annotations,

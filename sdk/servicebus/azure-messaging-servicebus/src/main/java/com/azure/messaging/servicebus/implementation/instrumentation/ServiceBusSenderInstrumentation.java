@@ -38,8 +38,7 @@ class ServiceBusSenderInstrumentation {
 
         if (tracer.isEnabled()) {
             return Mono.defer(() -> {
-                Context span = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch,
-                    ServiceBusMessage::getContext, Context.NONE);
+                Context span = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch, Context.NONE);
                 return publisher
                     .doOnEach(signal -> {
                         meter.reportBatchSend(batch.size(), signal.getThrowable(), false, span);
