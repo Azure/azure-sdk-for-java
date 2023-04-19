@@ -45,10 +45,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
          * 6. hang up the call.
          * 7. once call is hung up, verify disconnected event
          */
-        CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("recordingOperations", next))
-            .buildClient();
-
         CommunicationIdentityClient communicationIdentityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .buildClient();
 
@@ -57,6 +53,12 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             // Create caller and receiver
             CommunicationUserIdentifier source = communicationIdentityClient.createUser();
             CommunicationUserIdentifier target = communicationIdentityClient.createUser();
+
+            // Create call automation client and use source as the caller.
+            CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .sourceIdentity(source)
+                .buildClient();
 
             // setup service bus
             String uniqueId = serviceBusWithNewCall(source, target);
@@ -122,10 +124,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
          * 6. hang up the call.
          * 7. once call is hung up, verify disconnected event
          */
-        CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("recordingOperations", next))
-            .buildClient();
-
         CommunicationIdentityClient communicationIdentityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .buildClient();
 
@@ -134,6 +132,12 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             // Create caller and receiver
             CommunicationUserIdentifier source = communicationIdentityClient.createUser();
             CommunicationUserIdentifier target = communicationIdentityClient.createUser();
+
+            // Create call automation client and use source as the caller.
+            CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .sourceIdentity(source)
+                .buildClient();
 
             // setup service bus
             String uniqueId = serviceBusWithNewCall(source, target);
