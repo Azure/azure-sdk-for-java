@@ -52,11 +52,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
-     * @param proxyUrl The {@link URL} for the test proxy instance.
      */
-    public TestProxyPlaybackClient(HttpClient httpClient, URL proxyUrl) {
+    public TestProxyPlaybackClient(HttpClient httpClient) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
-        this.proxyUrl = proxyUrl;
+        this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 

@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
@@ -50,11 +49,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
-     * @param proxyUrl The {@link URL} for the test proxy instance.
      */
-    public TestProxyRecordPolicy(HttpClient httpClient, URL proxyUrl) {
+    public TestProxyRecordPolicy(HttpClient httpClient) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
-        this.proxyUrl = proxyUrl;
+        this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 
