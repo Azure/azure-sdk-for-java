@@ -24,22 +24,22 @@ public class AppConfigurationProviderProperties {
     private static final Instant START_DATE = Instant.now();
 
     @Value("${version:1.0}")
-    private String version;
+    private String version = "1.0";
 
     @Value("${maxRetries:2}")
-    private int maxRetries;
+    private int maxRetries = 2;
 
     @Value("${maxRetryTime:60}")
-    private int maxRetryTime;
+    private int maxRetryTime = 60;
 
     @Value("${prekillTime:5}")
-    private int prekillTime;
+    private int prekillTime = 5;
 
     @Value("${defaultMinBackoff:30}")
-    private Long defaultMinBackoff;
+    private Long defaultMinBackoff = (long) 30;
 
     @Value("${defaultMaxBackoff:600}")
-    private Long defaultMaxBackoff;
+    private Long defaultMaxBackoff = (long) 600;
 
     /**
      * @return the apiVersion

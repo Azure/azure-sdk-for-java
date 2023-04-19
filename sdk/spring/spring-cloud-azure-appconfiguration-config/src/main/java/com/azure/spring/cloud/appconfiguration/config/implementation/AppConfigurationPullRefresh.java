@@ -37,6 +37,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
 
     private final Long defaultMinBackoff;
 
+    private final AppConfigurationReplicaClientFactory clientFactory;
+
     private final Duration refreshInterval;
 
     private List<String> profiles;
@@ -47,10 +49,11 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @param refreshInterval time between refresh intervals
      * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
-    public AppConfigurationPullRefresh(Duration refreshInterval, Long defaultMinBackoff) {
+    public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
+        Long defaultMinBackoff) {
         this.defaultMinBackoff = defaultMinBackoff;
         this.refreshInterval = refreshInterval;
-
+        this.clientFactory = clientFactory;
     }
 
     @Override
@@ -78,11 +81,11 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     public void expireRefreshInterval(String endpoint, String syncToken) {
         LOGGER.debug("Expiring refresh interval for " + endpoint);
 
-        //String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
+        String originEndpoint = clientFactory.findOriginForEndpoint(endpoint);
 
-        //clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
+        clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
 
-        //StateHolder.getCurrentState().expireState(originEndpoint);
+        StateHolder.getCurrentState().expireState(originEndpoint);
     }
 
     /**
@@ -94,7 +97,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
             BaseAppConfigurationPolicy.setWatchRequests(true);
-           /* try {
+
+            try {
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
                     refreshInterval, profiles, defaultMinBackoff);
                 if (eventData.getDoRefresh()) {
@@ -107,14 +111,15 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
                 throw e;
             } finally {
                 running.set(false);
-            }*/
+            }
+
         }
         return false;
     }
 
     @Override
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
-        return null; //clientFactory.getHealth();
+        return clientFactory.getHealth();
     }
 
     @Override

@@ -54,7 +54,7 @@ public class AppConfigurationPullRefreshTest {
                     Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
                 .thenReturn(eventData);
 
-            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(refreshInterval,
+            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock,refreshInterval,
                 (long) 0);
             assertFalse(refresh.refreshConfigurations().block());
         }
@@ -70,7 +70,7 @@ public class AppConfigurationPullRefreshTest {
                     Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
                 .thenReturn(eventData);
 
-            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(refreshInterval,
+            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
                 (long) 0);
             refresh.setApplicationEventPublisher(publisher);
             assertTrue(refresh.refreshConfigurations().block());

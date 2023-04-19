@@ -77,7 +77,7 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
                     sourceList.addAll(sources);
 
                     LOGGER.debug("PropertySource context.");
-                    // setupMonitoring(configStore, client, sources, newState);
+                    setupMonitoring(configStore, client, sources, newState);
 
                     generatedPropertySources = true;
                 } catch (AppConfigurationStatusException e) {

@@ -70,6 +70,8 @@ public class AppConfigurationDataLocationResolver
                 .orElseGet(AppConfigurationProviderProperties::new);
         }
         
+        properties.validateAndInit();
+        
         AppConfigurationBootstrapRegistrar.register(context, binder, properties, appProperties);
 
         holder.properties = properties;
