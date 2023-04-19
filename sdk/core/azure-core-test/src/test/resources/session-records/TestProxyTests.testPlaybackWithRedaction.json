@@ -4,7 +4,7 @@
       "RequestUri": "http://REDACTED/fr/models",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Type": "application/json",
         "User-Agent": "Java/11.0.9"
@@ -12,7 +12,7 @@
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Accept": "*/*",
         "Connection": "keep-alive",
         "Content-Length": "117",
         "Host": "localhost:3000",

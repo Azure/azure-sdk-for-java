@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections ListByResource. */
 public final class PrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listPrivateEndpointConnection.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/listPrivateEndpointConnection.json
      */
     /**
      * Sample code: KeyVaultListPrivateEndpointConnection.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsListByResourceSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .listByResource("sample-group", "sample-vault", Context.NONE);
+            .listByResource("sample-group", "sample-vault", com.azure.core.util.Context.NONE);
     }
 }

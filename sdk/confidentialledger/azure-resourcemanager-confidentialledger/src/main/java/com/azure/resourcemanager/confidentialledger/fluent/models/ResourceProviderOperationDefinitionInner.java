@@ -29,6 +29,10 @@ public final class ResourceProviderOperationDefinitionInner {
     @JsonProperty(value = "display")
     private ResourceProviderOperationDisplay display;
 
+    /** Creates an instance of ResourceProviderOperationDefinitionInner class. */
+    public ResourceProviderOperationDefinitionInner() {
+    }
+
     /**
      * Get the name property: Resource provider operation name.
      *

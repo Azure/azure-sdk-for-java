@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.OperationInputs;
 
 /** Samples for IotHubResource CheckNameAvailability. */
 public final class IotHubResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/checkNameAvailability.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/checkNameAvailability.json
      */
     /**
      * Sample code: IotHubResource_CheckNameAvailability.
@@ -20,6 +19,7 @@ public final class IotHubResourceCheckNameAvailabilitySamples {
     public static void iotHubResourceCheckNameAvailability(com.azure.resourcemanager.iothub.IotHubManager manager) {
         manager
             .iotHubResources()
-            .checkNameAvailabilityWithResponse(new OperationInputs().withName("test-request"), Context.NONE);
+            .checkNameAvailabilityWithResponse(
+                new OperationInputs().withName("test-request"), com.azure.core.util.Context.NONE);
     }
 }

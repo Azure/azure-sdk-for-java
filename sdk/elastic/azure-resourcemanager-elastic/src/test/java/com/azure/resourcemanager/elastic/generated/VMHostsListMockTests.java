@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.VMResources;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class VMHostsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"vmResourceId\":\"ni\"}]}";
+        String responseStr = "{\"value\":[{\"vmResourceId\":\"ncghkje\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +59,9 @@ public final class VMHostsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VMResources> response = manager.vMHosts().list("iotwmcdytdxwit", "nrjawgqwg", Context.NONE);
+        PagedIterable<VMResources> response =
+            manager.vMHosts().list("xjvuujqgidokg", "ljyoxgvcltb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ni", response.iterator().next().vmResourceId());
+        Assertions.assertEquals("ncghkje", response.iterator().next().vmResourceId());
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for RestorableDatabaseAccounts ListByLocation. */
 public final class RestorableDatabaseAccountsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBRestorableDatabaseAccountList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBRestorableDatabaseAccountList.json
      */
     /**
      * Sample code: CosmosDBRestorableDatabaseAccountList.

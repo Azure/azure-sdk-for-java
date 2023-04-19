@@ -14,15 +14,15 @@ public final class CustomAlertRuleTests {
         CustomAlertRule model =
             BinaryData
                 .fromString(
-                    "{\"ruleType\":\"CustomAlertRule\",\"displayName\":\"usue\",\"description\":\"zwdejbavor\",\"isEnabled\":true}")
+                    "{\"ruleType\":\"CustomAlertRule\",\"displayName\":\"gqywgndrv\",\"description\":\"hzgpphrcgyncocpe\",\"isEnabled\":false}")
                 .toObject(CustomAlertRule.class);
-        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals(false, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomAlertRule model = new CustomAlertRule().withIsEnabled(true);
+        CustomAlertRule model = new CustomAlertRule().withIsEnabled(false);
         model = BinaryData.fromObject(model).toObject(CustomAlertRule.class);
-        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals(false, model.isEnabled());
     }
 }

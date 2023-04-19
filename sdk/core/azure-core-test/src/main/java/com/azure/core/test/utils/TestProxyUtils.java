@@ -50,6 +50,7 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
+            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -59,7 +60,7 @@ public class TestProxyUtils {
 
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     private static final List<String>
-        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key"));
+        HEADER_KEYS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
     private static final String DELEGATION_KEY_CLIENTID_REGEX = "(?:<SignedOid>)(?<secret>.*)(?:</SignedOid>)";
@@ -75,6 +76,8 @@ public class TestProxyUtils {
         HttpHeaderName.fromString("x-request-exception-exception-error");
     private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER =
         HttpHeaderName.fromString("x-abstraction-identifier");
+
+    private static volatile URL proxyUrl;
 
     /**
      * Adds headers required for communication with the test proxy.
@@ -185,27 +188,36 @@ public class TestProxyUtils {
      * @throws UncheckedIOException The version file could not be read properly.
      */
     public static String getTestProxyVersion() {
-        Path path = TestUtils.getRecordFolder().toPath();
-        Path candidate = null;
-        while (path != null) {
-            candidate = path.resolve("eng");
-            if (Files.exists(candidate)) {
-                break;
-            }
-            path = path.getParent();
-        }
-        if (path == null) {
-            throw new RuntimeException("Could not locate eng folder");
-        }
-        Path versionFile =  Paths.get("common", "testproxy", "target_version.txt");
-        candidate = candidate.resolve(versionFile);
+        Path rootPath = TestUtils.getRepoRoot();
+        Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
+        rootPath = rootPath.resolve(versionFile);
         try {
-            return Files.readAllLines(candidate).get(0).replace(System.getProperty("line.separator"), "");
+            return Files.readAllLines(rootPath).get(0).replace(System.getProperty("line.separator"), "");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
+    /**
+     * Gets the current URL for the test proxy.
+     * @return The {@link URL} location of the test proxy.
+     * @throws RuntimeException The URL could not be constructed.
+     */
+    public static URL getProxyUrl() {
+        if (proxyUrl != null) {
+            return proxyUrl;
+        }
+        UrlBuilder builder = new UrlBuilder();
+        builder.setHost("localhost");
+        builder.setScheme("http");
+        builder.setPort(5000);
+        try {
+            proxyUrl = builder.toUrl();
+            return proxyUrl;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Registers the default set of sanitizers for sanitizing request and responses

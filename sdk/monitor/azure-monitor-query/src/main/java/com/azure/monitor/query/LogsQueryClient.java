@@ -24,9 +24,11 @@ import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.AZURE_RESPONSE_TIMEOUT;
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.CLIENT_TIMEOUT_BUFFER;
+import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.buildPreferHeaderString;
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.convertToLogQueryBatchResult;
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.convertToLogQueryResult;
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.getAllWorkspaces;
@@ -79,6 +81,7 @@ public final class LogsQueryClient {
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @return The logs matching the query.
+     * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryResult queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval) {
@@ -94,6 +97,7 @@ public final class LogsQueryClient {
      * @param type The type the result of this query should be mapped to.
      * @param <T> The type the result of this query should be mapped to.
      * @return The logs matching the query as a list of objects of type T.
+     * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
@@ -115,6 +119,7 @@ public final class LogsQueryClient {
      * statistics and rendering information in response.
      * @param <T> The type the result of this query should be mapped to.
      * @return The logs matching the query as a list of objects of type T.
+     * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval,
@@ -156,6 +161,7 @@ public final class LogsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return The logs matching the query including the HTTP response.
+     * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsQueryResult> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
@@ -176,6 +182,7 @@ public final class LogsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return The logs matching the query including the HTTP response.
+     * @throws NullPointerException if {@code workspaceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<List<T>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
@@ -187,7 +194,10 @@ public final class LogsQueryClient {
     }
 
     Response<LogsQueryResult> queryWorkspaceWithResponseInternal(String workspaceId, String query, QueryTimeInterval timeInterval, LogsQueryOptions options, Context context) {
-        String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
+
+        Objects.requireNonNull(workspaceId, "'workspaceId' cannot be null.");
+        Objects.requireNonNull(query, "'query' cannot be null.");
+        String preferHeader = buildPreferHeaderString(options);
         context = updateContext(options.getServerTimeout(), context);
 
         QueryBody queryBody = new QueryBody(query);
@@ -227,6 +237,7 @@ public final class LogsQueryClient {
      * <!-- end com.azure.monitor.query.LogsQueryClient.queryBatch#LogsBatchQuery -->
      * @param logsBatchQuery {@link LogsBatchQuery} containing a batch of queries.
      * @return A collection of query results corresponding to the input batch of queries.@return
+     * @throws NullPointerException if {@code logsBatchQuery} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsBatchQueryResultCollection queryBatch(LogsBatchQuery logsBatchQuery) {
@@ -241,6 +252,7 @@ public final class LogsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return A collection of query results corresponding to the input batch of queries.@return
+     * @throws NullPointerException if {@code logsBatchQuery} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsBatchQueryResultCollection> queryBatchWithResponse(LogsBatchQuery logsBatchQuery, Context context) {
@@ -248,6 +260,7 @@ public final class LogsQueryClient {
     }
 
     private Response<LogsBatchQueryResultCollection> queryBatchWithResponseInternal(LogsBatchQuery logsBatchQuery, Context context) {
+        Objects.requireNonNull(logsBatchQuery, "'logsBatchQuery' cannot be null.");
         List<BatchQueryRequest> requests = LogsQueryHelper.getBatchQueries(logsBatchQuery);
         Duration maxServerTimeout = LogsQueryHelper.getMaxServerTimeout(logsBatchQuery);
         if (maxServerTimeout != null) {
@@ -281,6 +294,7 @@ public final class LogsQueryClient {
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @return The logs matching the query.
+     * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogsQueryResult queryResource(String resourceId, String query, QueryTimeInterval timeInterval) {
@@ -295,6 +309,7 @@ public final class LogsQueryClient {
      * @param type The type the result of this query should be mapped to.
      * @param <T> The type the result of this query should be mapped to.
      * @return The logs matching the query as a list of objects of type T.
+     * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
@@ -315,6 +330,7 @@ public final class LogsQueryClient {
      * statistics and rendering information in response.
      * @param <T> The type the result of this query should be mapped to.
      * @return The logs matching the query as a list of objects of type T.
+     * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> List<T> queryResource(String resourceId, String query, QueryTimeInterval timeInterval,
@@ -356,6 +372,7 @@ public final class LogsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return The logs matching the query including the HTTP response.
+     * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LogsQueryResult> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
@@ -376,6 +393,7 @@ public final class LogsQueryClient {
      * @param context Additional context that is passed through the Http pipeline during the service call. If no
      * additional context is required, pass {@link Context#NONE} instead.
      * @return The logs matching the query including the HTTP response.
+     * @throws NullPointerException if {@code resourceId} or {@code query} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<List<T>> queryResourceWithResponse(String resourceId, String query, QueryTimeInterval timeInterval,
@@ -388,7 +406,10 @@ public final class LogsQueryClient {
 
     private Response<LogsQueryResult> queryResourceWithResponseInternal(String resourceId, String query, QueryTimeInterval timeInterval,
                                                                         LogsQueryOptions options, Context context) {
-        String preferHeader = LogsQueryHelper.buildPreferHeaderString(options);
+        Objects.requireNonNull(resourceId, "'resourceId' cannot be null.");
+        Objects.requireNonNull(query, "'query' cannot be null.");
+
+        String preferHeader = buildPreferHeaderString(options);
         context = updateContext(options.getServerTimeout(), context);
 
         QueryBody queryBody = new QueryBody(query);

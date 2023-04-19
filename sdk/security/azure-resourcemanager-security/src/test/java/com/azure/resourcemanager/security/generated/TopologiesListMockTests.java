@@ -31,7 +31,7 @@ public final class TopologiesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-06-26T17:01:39Z\",\"topologyResources\":[]},\"location\":\"gkegxcypxbbfetw\",\"id\":\"lyr\",\"name\":\"oxpdxq\",\"type\":\"frolq\"}]}";
+            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-05-08T00:20:23Z\",\"topologyResources\":[]},\"location\":\"hpqvcts\",\"id\":\"aeuhwwsknstvz\",\"name\":\"zhasupmlppdpgzvz\",\"type\":\"azvbkar\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
