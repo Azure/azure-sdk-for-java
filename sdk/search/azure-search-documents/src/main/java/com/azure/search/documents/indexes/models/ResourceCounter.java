@@ -7,22 +7,25 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Represents a resource's usage and quota. */
 @Fluent
-public final class ResourceCounter {
+public final class ResourceCounter implements JsonSerializable<ResourceCounter> {
     /*
      * The resource usage amount.
      */
-    @JsonProperty(value = "usage", required = true)
-    private long usage;
+    private final long usage;
 
     /*
      * The resource amount quota.
      */
-    @JsonProperty(value = "quota")
     private Long quota;
 
     /**
@@ -30,8 +33,7 @@ public final class ResourceCounter {
      *
      * @param usage the usage value to set.
      */
-    @JsonCreator
-    public ResourceCounter(@JsonProperty(value = "usage", required = true) long usage) {
+    public ResourceCounter(long usage) {
         this.usage = usage;
     }
 
@@ -62,5 +64,57 @@ public final class ResourceCounter {
     public ResourceCounter setQuota(Long quota) {
         this.quota = quota;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("usage", this.usage);
+        jsonWriter.writeNumberField("quota", this.quota);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceCounter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceCounter if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceCounter.
+     */
+    public static ResourceCounter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean usageFound = false;
+                    long usage = 0L;
+                    Long quota = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("usage".equals(fieldName)) {
+                            usage = reader.getLong();
+                            usageFound = true;
+                        } else if ("quota".equals(fieldName)) {
+                            quota = reader.getNullable(JsonReader::getLong);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (usageFound) {
+                        ResourceCounter deserializedResourceCounter = new ResourceCounter(usage);
+                        deserializedResourceCounter.quota = quota;
+
+                        return deserializedResourceCounter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!usageFound) {
+                        missingProperties.add("usage");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -78,6 +78,10 @@ public final class IotHubConnectionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of IotHubConnectionProperties class. */
+    public IotHubConnectionProperties() {
+    }
+
     /**
      * Get the iotHubResourceId property: The resource ID of the Iot hub to be used to create a data connection.
      *

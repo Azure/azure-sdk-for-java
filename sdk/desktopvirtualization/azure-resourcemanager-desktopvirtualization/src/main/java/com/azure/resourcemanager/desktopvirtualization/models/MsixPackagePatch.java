@@ -18,6 +18,10 @@ public final class MsixPackagePatch extends ProxyResource {
     @JsonProperty(value = "properties")
     private MsixPackagePatchProperties innerProperties;
 
+    /** Creates an instance of MsixPackagePatch class. */
+    public MsixPackagePatch() {
+    }
+
     /**
      * Get the innerProperties property: Detailed properties for MSIX Package.
      *

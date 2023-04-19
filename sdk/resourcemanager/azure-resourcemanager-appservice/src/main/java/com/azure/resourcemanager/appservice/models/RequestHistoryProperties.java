@@ -35,6 +35,10 @@ public final class RequestHistoryProperties {
     @JsonProperty(value = "response")
     private Response response;
 
+    /** Creates an instance of RequestHistoryProperties class. */
+    public RequestHistoryProperties() {
+    }
+
     /**
      * Get the startTime property: The time the request started.
      *

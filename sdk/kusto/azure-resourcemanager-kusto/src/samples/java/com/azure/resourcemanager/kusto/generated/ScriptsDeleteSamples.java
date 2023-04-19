@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Scripts Delete. */
 public final class ScriptsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoScriptsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoScriptsDelete.json
      */
     /**
      * Sample code: KustoScriptsDelete.
@@ -17,6 +15,8 @@ public final class ScriptsDeleteSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoScriptsDelete(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.scripts().delete("kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", Context.NONE);
+        manager
+            .scripts()
+            .delete("kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", com.azure.core.util.Context.NONE);
     }
 }

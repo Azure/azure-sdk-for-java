@@ -29,6 +29,10 @@ public final class ServerEditionCapability {
     @JsonProperty(value = "supportedServerVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerVersionCapability> supportedServerVersions;
 
+    /** Creates an instance of ServerEditionCapability class. */
+    public ServerEditionCapability() {
+    }
+
     /**
      * Get the name property: Server edition name.
      *

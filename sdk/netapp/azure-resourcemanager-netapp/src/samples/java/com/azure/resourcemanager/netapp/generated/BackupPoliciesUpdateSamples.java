@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.models.BackupPolicy;
 
 /** Samples for BackupPolicies Update. */
 public final class BackupPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/BackupPolicies_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/BackupPolicies_Update.json
      */
     /**
      * Sample code: BackupPolicies_Update.
@@ -19,7 +18,10 @@ public final class BackupPoliciesUpdateSamples {
      */
     public static void backupPoliciesUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         BackupPolicy resource =
-            manager.backupPolicies().getWithResponse("myRG", "account1", "backupPolicyName", Context.NONE).getValue();
+            manager
+                .backupPolicies()
+                .getWithResponse("myRG", "account1", "backupPolicyName", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withDailyBackupsToKeep(5)

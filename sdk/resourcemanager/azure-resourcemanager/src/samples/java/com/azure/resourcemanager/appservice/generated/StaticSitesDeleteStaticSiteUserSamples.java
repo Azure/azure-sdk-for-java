@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites DeleteStaticSiteUser. */
 public final class StaticSitesDeleteStaticSiteUserSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteStaticSiteUser.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteStaticSiteUser.json
      */
     /**
      * Sample code: Delete a user for a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesDeleteStaticSiteUserSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .deleteStaticSiteUserWithResponse("rg", "testStaticSite0", "aad", "1234", Context.NONE);
+            .deleteStaticSiteUserWithResponse("rg", "testStaticSite0", "aad", "1234", com.azure.core.util.Context.NONE);
     }
 }

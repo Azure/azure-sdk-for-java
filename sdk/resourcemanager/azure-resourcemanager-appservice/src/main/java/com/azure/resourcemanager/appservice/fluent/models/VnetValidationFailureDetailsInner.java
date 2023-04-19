@@ -19,6 +19,10 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetValidationFailureDetailsProperties innerProperties;
 
+    /** Creates an instance of VnetValidationFailureDetailsInner class. */
+    public VnetValidationFailureDetailsInner() {
+    }
+
     /**
      * Get the innerProperties property: VnetValidationFailureDetails resource specific properties.
      *

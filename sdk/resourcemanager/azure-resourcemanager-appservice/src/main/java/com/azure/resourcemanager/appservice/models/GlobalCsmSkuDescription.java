@@ -54,6 +54,10 @@ public final class GlobalCsmSkuDescription {
     @JsonProperty(value = "capabilities")
     private List<CapabilityInner> capabilities;
 
+    /** Creates an instance of GlobalCsmSkuDescription class. */
+    public GlobalCsmSkuDescription() {
+    }
+
     /**
      * Get the name property: Name of the resource SKU.
      *

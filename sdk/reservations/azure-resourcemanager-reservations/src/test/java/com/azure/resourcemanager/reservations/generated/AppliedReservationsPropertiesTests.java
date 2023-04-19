@@ -16,10 +16,10 @@ public final class AppliedReservationsPropertiesTests {
         AppliedReservationsProperties model =
             BinaryData
                 .fromString(
-                    "{\"reservationOrderIds\":{\"value\":[\"gxg\",\"spemvtzfk\",\"fublj\"],\"nextLink\":\"xqeofjaeqjhqjba\"}}")
+                    "{\"reservationOrderIds\":{\"value\":[\"luwfzitonpeqfpjk\",\"lxofpdvhpfxxypin\",\"nmayhuybb\",\"podepoo\"],\"nextLink\":\"nuvamiheogna\"}}")
                 .toObject(AppliedReservationsProperties.class);
-        Assertions.assertEquals("gxg", model.reservationOrderIds().value().get(0));
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.reservationOrderIds().nextLink());
+        Assertions.assertEquals("luwfzitonpeqfpjk", model.reservationOrderIds().value().get(0));
+        Assertions.assertEquals("nuvamiheogna", model.reservationOrderIds().nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,10 +28,10 @@ public final class AppliedReservationsPropertiesTests {
             new AppliedReservationsProperties()
                 .withReservationOrderIds(
                     new AppliedReservationList()
-                        .withValue(Arrays.asList("gxg", "spemvtzfk", "fublj"))
-                        .withNextLink("xqeofjaeqjhqjba"));
+                        .withValue(Arrays.asList("luwfzitonpeqfpjk", "lxofpdvhpfxxypin", "nmayhuybb", "podepoo"))
+                        .withNextLink("nuvamiheogna"));
         model = BinaryData.fromObject(model).toObject(AppliedReservationsProperties.class);
-        Assertions.assertEquals("gxg", model.reservationOrderIds().value().get(0));
-        Assertions.assertEquals("xqeofjaeqjhqjba", model.reservationOrderIds().nextLink());
+        Assertions.assertEquals("luwfzitonpeqfpjk", model.reservationOrderIds().value().get(0));
+        Assertions.assertEquals("nuvamiheogna", model.reservationOrderIds().nextLink());
     }
 }

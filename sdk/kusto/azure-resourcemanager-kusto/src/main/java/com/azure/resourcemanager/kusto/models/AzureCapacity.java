@@ -35,6 +35,10 @@ public final class AzureCapacity {
     @JsonProperty(value = "default", required = true)
     private int defaultProperty;
 
+    /** Creates an instance of AzureCapacity class. */
+    public AzureCapacity() {
+    }
+
     /**
      * Get the scaleType property: Scale type.
      *

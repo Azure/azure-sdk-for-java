@@ -34,7 +34,7 @@
       "name": "[parameters('baseName')]",
       "location": "[parameters('location')]",
       "properties": {
-        "endpoint": "[variables('endpointValue')]",
+        "endpoint": "[variables('endpointValue')]"
       },
       "sku": {
         "name": "Basic",
@@ -72,6 +72,6 @@
     "CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT": {
       "type": "string",
       "value": "[variables('anonEndpointValue')]"
-    },
+    }
   }
 }

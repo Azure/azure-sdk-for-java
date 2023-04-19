@@ -35,6 +35,15 @@ public final class ScriptExecutionProvisioningState extends ExpandableStringEnum
     public static final ScriptExecutionProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ScriptExecutionProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptExecutionProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ScriptExecutionProvisioningState from its string representation.
      *
      * @param name a name to look for.

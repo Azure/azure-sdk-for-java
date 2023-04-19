@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CacheDirectorySettings {
     /*
-     * Specifies settings for joining the HPC Cache to an Active Directory
-     * domain.
+     * Specifies settings for joining the HPC Cache to an Active Directory domain.
      */
     @JsonProperty(value = "activeDirectory")
     private CacheActiveDirectorySettings activeDirectory;
 
     /*
-     * Specifies settings for Extended Groups. Extended Groups allows users to
-     * be members of more than 16 groups.
+     * Specifies settings for Extended Groups. Extended Groups allows users to be members of more than 16 groups.
      */
     @JsonProperty(value = "usernameDownload")
     private CacheUsernameDownloadSettings usernameDownload;
+
+    /** Creates an instance of CacheDirectorySettings class. */
+    public CacheDirectorySettings() {
+    }
 
     /**
      * Get the activeDirectory property: Specifies settings for joining the HPC Cache to an Active Directory domain.

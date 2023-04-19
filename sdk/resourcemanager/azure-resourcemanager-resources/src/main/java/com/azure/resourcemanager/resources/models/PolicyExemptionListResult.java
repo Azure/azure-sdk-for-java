@@ -24,6 +24,10 @@ public final class PolicyExemptionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PolicyExemptionListResult class. */
+    public PolicyExemptionListResult() {
+    }
+
     /**
      * Get the value property: An array of policy exemptions.
      *

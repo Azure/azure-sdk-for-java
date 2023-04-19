@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments GetPrivateEndpointConnection. */
 public final class AppServiceEnvironmentsGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Gets a private endpoint connection.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsGetPrivateEndpointConnectionSamples {
             .serviceClient()
             .getAppServiceEnvironments()
             .getPrivateEndpointConnectionWithResponse(
-                "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", Context.NONE);
+                "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", com.azure.core.util.Context.NONE);
     }
 }

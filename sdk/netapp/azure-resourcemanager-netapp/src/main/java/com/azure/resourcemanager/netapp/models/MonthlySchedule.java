@@ -40,6 +40,10 @@ public final class MonthlySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
+    /** Creates an instance of MonthlySchedule class. */
+    public MonthlySchedule() {
+    }
+
     /**
      * Get the snapshotsToKeep property: Monthly snapshot count to keep.
      *

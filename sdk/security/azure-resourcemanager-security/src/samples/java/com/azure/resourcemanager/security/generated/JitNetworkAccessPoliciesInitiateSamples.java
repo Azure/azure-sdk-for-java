@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiatePort;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiateRequest;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiateVirtualMachine;
@@ -42,6 +41,6 @@ public final class JitNetworkAccessPoliciesInitiateSamples {
                                                     .withNumber(3389)
                                                     .withAllowedSourceAddressPrefix("192.127.0.2")))))
                     .withJustification("testing a new version of the product"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

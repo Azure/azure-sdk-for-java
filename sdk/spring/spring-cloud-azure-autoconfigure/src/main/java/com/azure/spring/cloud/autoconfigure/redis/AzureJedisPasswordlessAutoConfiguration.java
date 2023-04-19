@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.redis;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureJedisConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.data.jedis.AzureRedisCredentialSupplier;
+import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -24,11 +25,8 @@ import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnection;
 import redis.clients.jedis.Jedis;
 
-import java.util.Properties;
-
 import static com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessUtil.getJedisClientConfiguration;
 import static com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessUtil.getStandaloneConfig;
-import static com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessUtil.mergeAzureProperties;
 
 /**
  * Azure Redis passwordless connection configuration using Jedis.
@@ -51,9 +49,8 @@ public class AzureJedisPasswordlessAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AzureRedisCredentialSupplier azureRedisCredentialSupplier(AzureGlobalProperties azureGlobalProperties, AzureRedisPasswordlessProperties azureRedisPasswordlessProperties) {
-        Properties properties = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties).toProperties();
-        return new AzureRedisCredentialSupplier(properties);
+    AzureRedisCredentialSupplier azureRedisCredentialSupplier(AzureRedisPasswordlessProperties azureRedisPasswordlessProperties, AzureGlobalProperties azureGlobalProperties) {
+        return new AzureRedisCredentialSupplier(mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties).toPasswordlessProperties());
     }
 
     @Bean
@@ -61,8 +58,13 @@ public class AzureJedisPasswordlessAutoConfiguration {
     AzureJedisConnectionFactory azureRedisConnectionFactory(RedisProperties redisProperties, AzureRedisCredentialSupplier azureRedisCredentialSupplier) {
         RedisStandaloneConfiguration standaloneConfig = getStandaloneConfig(redisProperties);
         JedisClientConfiguration clientConfiguration = getJedisClientConfiguration(redisProperties);
-
         return new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, azureRedisCredentialSupplier);
+    }
+
+    private AzureRedisPasswordlessProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureRedisPasswordlessProperties azurePasswordlessProperties) {
+        AzureRedisPasswordlessProperties mergedProperties = new AzureRedisPasswordlessProperties();
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        return mergedProperties;
     }
 
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryptionType;
@@ -22,7 +21,7 @@ import java.util.Map;
 /** Samples for Servers Update. */
 public final class ServersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerUpdateWithCustomerMaintenanceWindow.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerUpdateWithCustomerMaintenanceWindow.json
      */
     /**
      * Sample code: Update server customer maintenance window.
@@ -32,7 +31,10 @@ public final class ServersUpdateSamples {
     public static void updateServerCustomerMaintenanceWindow(
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         Server resource =
-            manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", Context.NONE).getValue();
+            manager
+                .servers()
+                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withMaintenanceWindow(
@@ -45,7 +47,7 @@ public final class ServersUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerUpdateWithBYOK.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerUpdateWithBYOK.json
      */
     /**
      * Sample code: Update server with byok.
@@ -55,7 +57,10 @@ public final class ServersUpdateSamples {
     public static void updateServerWithByok(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager)
         throws IOException {
         Server resource =
-            manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", Context.NONE).getValue();
+            manager
+                .servers()
+                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withIdentity(
@@ -71,16 +76,16 @@ public final class ServersUpdateSamples {
                 new DataEncryption()
                     .withPrimaryUserAssignedIdentityId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity")
-                    .withPrimaryKeyUri("https://test.vault.azure.net/keys/key/c8a92236622244c0a4fdb892666f671a")
+                    .withPrimaryKeyUri("fakeTokenPlaceholder")
                     .withGeoBackupUserAssignedIdentityId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-identity")
-                    .withGeoBackupKeyUri("https://test-geo.vault.azure.net/keys/key/c8a92236622244c0a4fdb892666f671a")
+                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
                     .withType(DataEncryptionType.AZURE_KEY_VAULT))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerUpdate.json
      */
     /**
      * Sample code: Update a server.
@@ -89,10 +94,18 @@ public final class ServersUpdateSamples {
      */
     public static void updateAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
         Server resource =
-            manager.servers().getByResourceGroupWithResponse("testrg", "mysqltestserver", Context.NONE).getValue();
+            manager
+                .servers()
+                .getByResourceGroupWithResponse("testrg", "mysqltestserver", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
-            .withStorage(new Storage().withStorageSizeGB(30).withIops(200).withAutoGrow(EnableStatusEnum.DISABLED))
+            .withStorage(
+                new Storage()
+                    .withStorageSizeGB(30)
+                    .withIops(200)
+                    .withAutoGrow(EnableStatusEnum.DISABLED)
+                    .withAutoIoScaling(EnableStatusEnum.DISABLED))
             .apply();
     }
 

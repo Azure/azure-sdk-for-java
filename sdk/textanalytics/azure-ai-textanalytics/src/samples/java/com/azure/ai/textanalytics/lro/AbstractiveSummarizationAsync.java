@@ -56,7 +56,7 @@ public class AbstractiveSummarizationAsync {
 
         client.beginAbstractSummary(documents,
             "en",
-            new AbstractSummaryOptions().setMaxSentenceCount(4))
+            new AbstractSummaryOptions().setSentenceCount(4))
             .flatMap(result -> {
                 AbstractSummaryOperationDetail operationDetail = result.getValue();
                 System.out.printf("Operation created time: %s, expiration time: %s.%n",

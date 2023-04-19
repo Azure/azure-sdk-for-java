@@ -30,6 +30,6 @@ public class LoadConfigsTest {
     public void sampleTest() {
         assertEquals("Test", properties.getMessage());
         assertEquals("From Key Vault", properties.getSecret());
-        assertTrue(env.getProperty("feature-management.featureManagement.Alpha", Boolean.class));
+        assertTrue(env.getProperty("feature-management.Alpha", Boolean.class));
     }
 }

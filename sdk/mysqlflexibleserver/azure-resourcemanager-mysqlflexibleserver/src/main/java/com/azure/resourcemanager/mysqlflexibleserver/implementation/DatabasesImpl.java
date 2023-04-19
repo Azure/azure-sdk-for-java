@@ -35,15 +35,6 @@ public final class DatabasesImpl implements Databases {
         this.serviceClient().delete(resourceGroupName, serverName, databaseName, context);
     }
 
-    public Database get(String resourceGroupName, String serverName, String databaseName) {
-        DatabaseInner inner = this.serviceClient().get(resourceGroupName, serverName, databaseName);
-        if (inner != null) {
-            return new DatabaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Database> getWithResponse(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         Response<DatabaseInner> inner =
@@ -54,6 +45,15 @@ public final class DatabasesImpl implements Databases {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DatabaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Database get(String resourceGroupName, String serverName, String databaseName) {
+        DatabaseInner inner = this.serviceClient().get(resourceGroupName, serverName, databaseName);
+        if (inner != null) {
+            return new DatabaseImpl(inner, this.manager());
         } else {
             return null;
         }

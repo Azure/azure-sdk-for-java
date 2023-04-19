@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataConnections Get. */
 public final class DataConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionsEventGridGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDataConnectionsEventGridGet.json
      */
     /**
      * Sample code: KustoDataConnectionsEventGridGet.
@@ -19,11 +17,35 @@ public final class DataConnectionsGetSamples {
     public static void kustoDataConnectionsEventGridGet(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .dataConnections()
-            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", Context.NONE);
+            .getWithResponse(
+                "kustorptest",
+                "kustoCluster",
+                "KustoDatabase8",
+                "dataConnectionTest",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionsGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDataConnectionsCosmosDbGet.json
+     */
+    /**
+     * Sample code: KustoDataConnectionsCosmosDbGet.
+     *
+     * @param manager Entry point to KustoManager.
+     */
+    public static void kustoDataConnectionsCosmosDbGet(com.azure.resourcemanager.kusto.KustoManager manager) {
+        manager
+            .dataConnections()
+            .getWithResponse(
+                "kustorptest",
+                "kustoCluster",
+                "KustoDatabase1",
+                "dataConnectionTest",
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDataConnectionsGet.json
      */
     /**
      * Sample code: KustoDataConnectionsGet.
@@ -33,6 +55,11 @@ public final class DataConnectionsGetSamples {
     public static void kustoDataConnectionsGet(com.azure.resourcemanager.kusto.KustoManager manager) {
         manager
             .dataConnections()
-            .getWithResponse("kustorptest", "kustoCluster", "KustoDatabase8", "dataConnectionTest", Context.NONE);
+            .getWithResponse(
+                "kustorptest",
+                "kustoCluster",
+                "KustoDatabase8",
+                "dataConnectionTest",
+                com.azure.core.util.Context.NONE);
     }
 }

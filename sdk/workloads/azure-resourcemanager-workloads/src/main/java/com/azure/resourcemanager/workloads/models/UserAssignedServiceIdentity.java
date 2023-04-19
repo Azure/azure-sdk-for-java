@@ -10,9 +10,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed service identity (user assigned identities). */
+/**
+ * A pre-created user assigned identity with appropriate roles assigned. To learn more on identity and roles required,
+ * visit the ACSS how-to-guide.
+ */
 @Fluent
-public class UserAssignedServiceIdentity {
+public final class UserAssignedServiceIdentity {
     /*
      * Type of manage identity
      */

@@ -18,6 +18,10 @@ public final class CustomHostnameSitesInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private CustomHostnameSitesProperties innerProperties;
 
+    /** Creates an instance of CustomHostnameSitesInner class. */
+    public CustomHostnameSitesInner() {
+    }
+
     /**
      * Get the innerProperties property: CustomHostnameSites resource specific properties.
      *

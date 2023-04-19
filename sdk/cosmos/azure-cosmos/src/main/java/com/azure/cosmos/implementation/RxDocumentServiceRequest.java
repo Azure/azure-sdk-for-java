@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -53,6 +54,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private boolean isForcedAddressRefresh;
 
     public DocumentServiceRequestContext requestContext;
+    public FaultInjectionRequestContext faultInjectionRequestContext;
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
@@ -77,6 +79,8 @@ public class RxDocumentServiceRequest implements Cloneable {
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
 
+    private volatile boolean nonIdempotentWriteRetriesEnabled = false;
+
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
                 || this.operationType == OperationType.ReadFeed
@@ -98,6 +102,16 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
         }
+    }
+
+    public RxDocumentServiceRequest setNonIdempotentWriteRetriesEnabled(boolean enabled) {
+        this.nonIdempotentWriteRetriesEnabled = enabled;
+
+        return this;
+    }
+
+    public boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     public boolean isReadOnly() {
@@ -156,6 +170,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceAddress = resourceIdOrFullName;
         this.authorizationTokenType = authorizationTokenType;
         this.requestContext = new DocumentServiceRequestContext();
+        this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         if (StringUtils.isNotEmpty(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID)))
             this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity.fromHeader(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID));
     }
@@ -175,6 +190,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      Map<String, String> headers) {
         this.clientContext = clientContext;
         this.requestContext = new DocumentServiceRequestContext();
+        this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
@@ -411,6 +427,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
+
         return request;
     }
 
@@ -1029,6 +1046,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
+        rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
+        rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         return rxDocumentServiceRequest;
     }
 

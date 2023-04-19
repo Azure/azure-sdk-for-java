@@ -19,7 +19,7 @@ public final class UpdateMonitorRequestTests {
         UpdateMonitorRequest model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"3521d407-d54a-42ec-9e8c-fb16405b26c7\",\"clientId\":\"9e888b0b-a720-480b-8b2d-a013a2da9fcd\"},\"wiwubm\":{\"principalId\":\"64fafe0a-8831-43d5-9ad8-b3da2b7edf38\",\"clientId\":\"12778276-16c9-47c6-a0c8-50d81e07f320\"},\"esl\":{\"principalId\":\"91a9f724-8f74-4037-996e-4e8ab340d42a\",\"clientId\":\"52747258-c3c1-4376-8a58-6362e8980250\"}}}}")
+                    "{\"tags\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"ba4e8e39-4d8c-4df0-b474-6268ebc19ff0\",\"clientId\":\"50d09aa1-837a-439d-add4-f29214d450e6\"},\"wiwubm\":{\"principalId\":\"09559181-9d20-4838-9e28-54d4d59aee1e\",\"clientId\":\"01af568c-3304-49cf-85c1-074a846dc298\"},\"esl\":{\"principalId\":\"0c3d2754-8972-4cc2-89ba-d0e7e6ea1587\",\"clientId\":\"195f9248-d5fe-44c5-8b71-e48a9c776924\"}}}}")
                 .toObject(UpdateMonitorRequest.class);
         Assertions.assertEquals("lylpstdb", model.tags().get("hxsrzdzucersc"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());

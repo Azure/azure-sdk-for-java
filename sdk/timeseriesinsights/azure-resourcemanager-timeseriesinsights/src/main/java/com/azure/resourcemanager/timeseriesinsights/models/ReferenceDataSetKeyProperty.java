@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A key property for the reference data set. A reference data set can have multiple key properties. */
 @Fluent
 public final class ReferenceDataSetKeyProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceDataSetKeyProperty.class);
-
     /*
      * The name of the key property.
      */
@@ -25,6 +21,10 @@ public final class ReferenceDataSetKeyProperty {
      */
     @JsonProperty(value = "type")
     private ReferenceDataKeyPropertyType type;
+
+    /** Creates an instance of ReferenceDataSetKeyProperty class. */
+    public ReferenceDataSetKeyProperty() {
+    }
 
     /**
      * Get the name property: The name of the key property.

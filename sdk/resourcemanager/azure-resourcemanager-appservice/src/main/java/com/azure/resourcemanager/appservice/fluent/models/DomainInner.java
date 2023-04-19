@@ -33,6 +33,10 @@ public final class DomainInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of DomainInner class. */
+    public DomainInner() {
+    }
+
     /**
      * Get the innerProperties property: Domain resource specific properties.
      *

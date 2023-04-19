@@ -11,6 +11,7 @@ import com.azure.resourcemanager.appservice.models.AutoHealRules;
 import com.azure.resourcemanager.appservice.models.AzureStorageInfoValue;
 import com.azure.resourcemanager.appservice.models.ConnStringInfo;
 import com.azure.resourcemanager.appservice.models.CorsSettings;
+import com.azure.resourcemanager.appservice.models.DefaultAction;
 import com.azure.resourcemanager.appservice.models.Experiments;
 import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.HandlerMapping;
@@ -87,8 +88,7 @@ public final class SiteConfigInner {
     private String windowsFxVersion;
 
     /*
-     * <code>true</code> if request tracing is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if request tracing is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "requestTracingEnabled")
     private Boolean requestTracingEnabled;
@@ -100,8 +100,7 @@ public final class SiteConfigInner {
     private OffsetDateTime requestTracingExpirationTime;
 
     /*
-     * <code>true</code> if remote debugging is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if remote debugging is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "remoteDebuggingEnabled")
     private Boolean remoteDebuggingEnabled;
@@ -113,8 +112,7 @@ public final class SiteConfigInner {
     private String remoteDebuggingVersion;
 
     /*
-     * <code>true</code> if HTTP logging is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if HTTP logging is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "httpLoggingEnabled")
     private Boolean httpLoggingEnabled;
@@ -138,8 +136,7 @@ public final class SiteConfigInner {
     private Integer logsDirectorySizeLimit;
 
     /*
-     * <code>true</code> if detailed error logging is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if detailed error logging is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "detailedErrorLoggingEnabled")
     private Boolean detailedErrorLoggingEnabled;
@@ -155,6 +152,12 @@ public final class SiteConfigInner {
      */
     @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
+
+    /*
+     * Application metadata. This property cannot be retrieved, since it may contain secrets.
+     */
+    @JsonProperty(value = "metadata")
+    private List<NameValuePair> metadata;
 
     /*
      * Connection strings.
@@ -187,22 +190,19 @@ public final class SiteConfigInner {
     private ScmType scmType;
 
     /*
-     * <code>true</code> to use 32-bit worker process; otherwise,
-     * <code>false</code>.
+     * <code>true</code> to use 32-bit worker process; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "use32BitWorkerProcess")
     private Boolean use32BitWorkerProcess;
 
     /*
-     * <code>true</code> if WebSocket is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if WebSocket is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "webSocketsEnabled")
     private Boolean webSocketsEnabled;
 
     /*
-     * <code>true</code> if Always On is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if Always On is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "alwaysOn")
     private Boolean alwaysOn;
@@ -262,8 +262,7 @@ public final class SiteConfigInner {
     private SiteLimits limits;
 
     /*
-     * <code>true</code> if Auto Heal is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if Auto Heal is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "autoHealEnabled")
     private Boolean autoHealEnabled;
@@ -287,15 +286,14 @@ public final class SiteConfigInner {
     private String vnetName;
 
     /*
-     * Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and
+     * User Defined Routes applied.
      */
     @JsonProperty(value = "vnetRouteAllEnabled")
     private Boolean vnetRouteAllEnabled;
 
     /*
-     * The number of private ports assigned to this app. These will be assigned
-     * dynamically on runtime.
+     * The number of private ports assigned to this app. These will be assigned dynamically on runtime.
      */
     @JsonProperty(value = "vnetPrivatePortsCount")
     private Integer vnetPrivatePortsCount;
@@ -361,10 +359,22 @@ public final class SiteConfigInner {
     private List<IpSecurityRestriction> ipSecurityRestrictions;
 
     /*
+     * Default action for main access restriction if no rules are matched.
+     */
+    @JsonProperty(value = "ipSecurityRestrictionsDefaultAction")
+    private DefaultAction ipSecurityRestrictionsDefaultAction;
+
+    /*
      * IP security restrictions for scm.
      */
     @JsonProperty(value = "scmIpSecurityRestrictions")
     private List<IpSecurityRestriction> scmIpSecurityRestrictions;
+
+    /*
+     * Default action for scm access restriction if no rules are matched.
+     */
+    @JsonProperty(value = "scmIpSecurityRestrictionsDefaultAction")
+    private DefaultAction scmIpSecurityRestrictionsDefaultAction;
 
     /*
      * IP security restrictions for scm to use main.
@@ -373,22 +383,19 @@ public final class SiteConfigInner {
     private Boolean scmIpSecurityRestrictionsUseMain;
 
     /*
-     * Http20Enabled: configures a web site to allow clients to connect over
-     * http2.0
+     * Http20Enabled: configures a web site to allow clients to connect over http2.0
      */
     @JsonProperty(value = "http20Enabled")
     private Boolean http20Enabled;
 
     /*
-     * MinTlsVersion: configures the minimum version of TLS required for SSL
-     * requests
+     * MinTlsVersion: configures the minimum version of TLS required for SSL requests
      */
     @JsonProperty(value = "minTlsVersion")
     private SupportedTlsVersions minTlsVersion;
 
     /*
-     * ScmMinTlsVersion: configures the minimum version of TLS required for SSL
-     * requests for SCM site
+     * ScmMinTlsVersion: configures the minimum version of TLS required for SSL requests for SCM site
      */
     @JsonProperty(value = "scmMinTlsVersion")
     private SupportedTlsVersions scmMinTlsVersion;
@@ -414,30 +421,32 @@ public final class SiteConfigInner {
     private Integer functionAppScaleLimit;
 
     /*
+     * Maximum number of workers that a site can scale out to.
+     * This setting only applies to apps in plans where ElasticScaleEnabled is <code>true</code>
+     */
+    @JsonProperty(value = "elasticWebAppScaleLimit")
+    private Integer elasticWebAppScaleLimit;
+
+    /*
      * Health check path
      */
     @JsonProperty(value = "healthCheckPath")
     private String healthCheckPath;
 
     /*
-     * Gets or sets a value indicating whether functions runtime scale
-     * monitoring is enabled. When enabled,
-     * the ScaleController will not monitor event sources directly, but will
-     * instead call to the
+     * Gets or sets a value indicating whether functions runtime scale monitoring is enabled. When enabled,
+     * the ScaleController will not monitor event sources directly, but will instead call to the
      * runtime to get scale status.
      */
     @JsonProperty(value = "functionsRuntimeScaleMonitoringEnabled")
     private Boolean functionsRuntimeScaleMonitoringEnabled;
 
     /*
-     * Sets the time zone a site uses for generating timestamps. Compatible
-     * with Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app
-     * setting takes precedence over this config. For Linux, expects tz
-     * database values https://www.iana.org/time-zones (for a quick reference
-     * see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For
-     * Windows, expects one of the time zones listed under
-     * HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-     * Zones
+     * Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting
+     * the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux, expects tz database values
+     * https://www.iana.org/time-zones (for a quick reference see
+     * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
+     * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
      */
     @JsonProperty(value = "websiteTimeZone")
     private String websiteTimeZone;
@@ -461,6 +470,10 @@ public final class SiteConfigInner {
      */
     @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
+
+    /** Creates an instance of SiteConfigInner class. */
+    public SiteConfigInner() {
+    }
 
     /**
      * Get the numberOfWorkers property: Number of workers.
@@ -867,6 +880,26 @@ public final class SiteConfigInner {
      */
     public SiteConfigInner withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
+     *
+     * @return the metadata value.
+     */
+    public List<NameValuePair> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
+     *
+     * @param metadata the metadata value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withMetadata(List<NameValuePair> metadata) {
+        this.metadata = metadata;
         return this;
     }
 
@@ -1534,6 +1567,28 @@ public final class SiteConfigInner {
     }
 
     /**
+     * Get the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
+     * matched.
+     *
+     * @return the ipSecurityRestrictionsDefaultAction value.
+     */
+    public DefaultAction ipSecurityRestrictionsDefaultAction() {
+        return this.ipSecurityRestrictionsDefaultAction;
+    }
+
+    /**
+     * Set the ipSecurityRestrictionsDefaultAction property: Default action for main access restriction if no rules are
+     * matched.
+     *
+     * @param ipSecurityRestrictionsDefaultAction the ipSecurityRestrictionsDefaultAction value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withIpSecurityRestrictionsDefaultAction(DefaultAction ipSecurityRestrictionsDefaultAction) {
+        this.ipSecurityRestrictionsDefaultAction = ipSecurityRestrictionsDefaultAction;
+        return this;
+    }
+
+    /**
      * Get the scmIpSecurityRestrictions property: IP security restrictions for scm.
      *
      * @return the scmIpSecurityRestrictions value.
@@ -1550,6 +1605,29 @@ public final class SiteConfigInner {
      */
     public SiteConfigInner withScmIpSecurityRestrictions(List<IpSecurityRestriction> scmIpSecurityRestrictions) {
         this.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
+     * are matched.
+     *
+     * @return the scmIpSecurityRestrictionsDefaultAction value.
+     */
+    public DefaultAction scmIpSecurityRestrictionsDefaultAction() {
+        return this.scmIpSecurityRestrictionsDefaultAction;
+    }
+
+    /**
+     * Set the scmIpSecurityRestrictionsDefaultAction property: Default action for scm access restriction if no rules
+     * are matched.
+     *
+     * @param scmIpSecurityRestrictionsDefaultAction the scmIpSecurityRestrictionsDefaultAction value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withScmIpSecurityRestrictionsDefaultAction(
+        DefaultAction scmIpSecurityRestrictionsDefaultAction) {
+        this.scmIpSecurityRestrictionsDefaultAction = scmIpSecurityRestrictionsDefaultAction;
         return this;
     }
 
@@ -1700,6 +1778,28 @@ public final class SiteConfigInner {
     }
 
     /**
+     * Get the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting
+     * only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @return the elasticWebAppScaleLimit value.
+     */
+    public Integer elasticWebAppScaleLimit() {
+        return this.elasticWebAppScaleLimit;
+    }
+
+    /**
+     * Set the elasticWebAppScaleLimit property: Maximum number of workers that a site can scale out to. This setting
+     * only applies to apps in plans where ElasticScaleEnabled is &lt;code&gt;true&lt;/code&gt;.
+     *
+     * @param elasticWebAppScaleLimit the elasticWebAppScaleLimit value to set.
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withElasticWebAppScaleLimit(Integer elasticWebAppScaleLimit) {
+        this.elasticWebAppScaleLimit = elasticWebAppScaleLimit;
+        return this;
+    }
+
+    /**
      * Get the healthCheckPath property: Health check path.
      *
      * @return the healthCheckPath value.
@@ -1841,6 +1941,9 @@ public final class SiteConfigInner {
     public void validate() {
         if (appSettings() != null) {
             appSettings().forEach(e -> e.validate());
+        }
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
         }
         if (connectionStrings() != null) {
             connectionStrings().forEach(e -> e.validate());

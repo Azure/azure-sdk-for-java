@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The response for a single table. */
+@JacksonXmlRootElement(localName = "TableResponse")
 @Fluent
 public final class TableResponse extends TableResponseProperties {
     /*
@@ -15,6 +17,9 @@ public final class TableResponse extends TableResponseProperties {
      */
     @JsonProperty(value = "odata.metadata")
     private String odataMetadata;
+
+    /** Creates an instance of TableResponse class. */
+    public TableResponse() {}
 
     /**
      * Get the odataMetadata property: The metadata response of the table.

@@ -30,17 +30,6 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
@@ -61,6 +50,17 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<AttachedDatabaseConfigurationInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName);
@@ -72,17 +72,6 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         PagedIterable<AttachedDatabaseConfigurationInner> inner =
             this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
-    }
-
-    public AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        AttachedDatabaseConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
-        if (inner != null) {
-            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<AttachedDatabaseConfiguration> getWithResponse(
@@ -97,6 +86,17 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AttachedDatabaseConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AttachedDatabaseConfiguration get(
+        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
+        AttachedDatabaseConfigurationInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+        if (inner != null) {
+            return new AttachedDatabaseConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

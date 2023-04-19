@@ -7,26 +7,25 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.OperationResultProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResultPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationResultProperties model =
             BinaryData
                 .fromString(
-                    "{\"operationKind\":\"minrfdw\",\"provisioningState\":\"Deleting\",\"operationState\":\"hziuiefozbhdms\"}")
+                    "{\"operationKind\":\"xwabmqoe\",\"provisioningState\":\"Running\",\"operationState\":\"rvtp\"}")
                 .toObject(OperationResultProperties.class);
-        Assertions.assertEquals("minrfdw", model.operationKind());
-        Assertions.assertEquals("hziuiefozbhdms", model.operationState());
+        Assertions.assertEquals("xwabmqoe", model.operationKind());
+        Assertions.assertEquals("rvtp", model.operationState());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationResultProperties model =
-            new OperationResultProperties().withOperationKind("minrfdw").withOperationState("hziuiefozbhdms");
+            new OperationResultProperties().withOperationKind("xwabmqoe").withOperationState("rvtp");
         model = BinaryData.fromObject(model).toObject(OperationResultProperties.class);
-        Assertions.assertEquals("minrfdw", model.operationKind());
-        Assertions.assertEquals("hziuiefozbhdms", model.operationState());
+        Assertions.assertEquals("xwabmqoe", model.operationKind());
+        Assertions.assertEquals("rvtp", model.operationState());
     }
 }

@@ -36,6 +36,7 @@ import com.azure.resourcemanager.kusto.fluent.OperationsResultsLocationsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.kusto.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.kusto.fluent.ScriptsClient;
+import com.azure.resourcemanager.kusto.fluent.SkusClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -146,6 +147,18 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
      */
     public ClusterPrincipalAssignmentsClient getClusterPrincipalAssignments() {
         return this.clusterPrincipalAssignments;
+    }
+
+    /** The SkusClient object to access its operations. */
+    private final SkusClient skus;
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    public SkusClient getSkus() {
+        return this.skus;
     }
 
     /** The DatabasesClient object to access its operations. */
@@ -303,9 +316,10 @@ public final class KustoManagementClientImpl implements KustoManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-07-07";
+        this.apiVersion = "2022-12-29";
         this.clusters = new ClustersClientImpl(this);
         this.clusterPrincipalAssignments = new ClusterPrincipalAssignmentsClientImpl(this);
+        this.skus = new SkusClientImpl(this);
         this.databases = new DatabasesClientImpl(this);
         this.attachedDatabaseConfigurations = new AttachedDatabaseConfigurationsClientImpl(this);
         this.managedPrivateEndpoints = new ManagedPrivateEndpointsClientImpl(this);

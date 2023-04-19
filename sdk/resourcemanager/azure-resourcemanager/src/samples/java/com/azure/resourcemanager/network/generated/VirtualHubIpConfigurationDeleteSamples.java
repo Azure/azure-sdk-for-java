@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualHubIpConfiguration Delete. */
 public final class VirtualHubIpConfigurationDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualHubIpConfigurationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubIpConfigurationDelete.json
      */
     /**
      * Sample code: VirtualHubIpConfigurationDelete.
@@ -22,6 +20,6 @@ public final class VirtualHubIpConfigurationDeleteSamples {
             .manager()
             .serviceClient()
             .getVirtualHubIpConfigurations()
-            .delete("rg1", "hub1", "ipconfig1", Context.NONE);
+            .delete("rg1", "hub1", "ipconfig1", com.azure.core.util.Context.NONE);
     }
 }

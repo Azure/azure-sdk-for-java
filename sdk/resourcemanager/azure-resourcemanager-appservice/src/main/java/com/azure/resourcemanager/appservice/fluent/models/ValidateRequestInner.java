@@ -36,6 +36,10 @@ public final class ValidateRequestInner {
     @JsonProperty(value = "properties", required = true)
     private ValidatePropertiesInner innerProperties = new ValidatePropertiesInner();
 
+    /** Creates an instance of ValidateRequestInner class. */
+    public ValidateRequestInner() {
+    }
+
     /**
      * Get the name property: Resource name to verify.
      *

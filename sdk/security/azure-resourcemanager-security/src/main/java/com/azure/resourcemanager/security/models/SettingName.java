@@ -27,6 +27,15 @@ public final class SettingName extends ExpandableStringEnum<SettingName> {
     public static final SettingName SENTINEL = fromString("Sentinel");
 
     /**
+     * Creates a new instance of SettingName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SettingName() {
+    }
+
+    /**
      * Creates or finds a SettingName from its string representation.
      *
      * @param name a name to look for.

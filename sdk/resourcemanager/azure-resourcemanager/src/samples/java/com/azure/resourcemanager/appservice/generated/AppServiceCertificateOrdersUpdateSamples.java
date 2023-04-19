@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for AppServiceCertificateOrders Update. */
 public final class AppServiceCertificateOrdersUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/UpdateAppServiceCertificateOrder.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/UpdateAppServiceCertificateOrder.json
      */
     /**
      * Sample code: Update Certificate order.
@@ -35,20 +34,18 @@ public final class AppServiceCertificateOrdersUpdateSamples {
                         mapOf(
                             "SampleCertName1",
                             new AppServiceCertificateInner()
-                                .withKeyVaultId(
-                                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName")
-                                .withKeyVaultSecretName("SampleSecretName1"),
+                                .withKeyVaultId("fakeTokenPlaceholder")
+                                .withKeyVaultSecretName("fakeTokenPlaceholder"),
                             "SampleCertName2",
                             new AppServiceCertificateInner()
-                                .withKeyVaultId(
-                                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName")
-                                .withKeyVaultSecretName("SampleSecretName2")))
+                                .withKeyVaultId("fakeTokenPlaceholder")
+                                .withKeyVaultSecretName("fakeTokenPlaceholder")))
                     .withDistinguishedName("CN=SampleCustomDomain.com")
                     .withValidityInYears(2)
                     .withKeySize(2048)
                     .withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
                     .withAutoRenew(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

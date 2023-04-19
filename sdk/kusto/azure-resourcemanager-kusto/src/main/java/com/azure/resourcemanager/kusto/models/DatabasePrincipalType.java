@@ -20,6 +20,15 @@ public final class DatabasePrincipalType extends ExpandableStringEnum<DatabasePr
     public static final DatabasePrincipalType USER = fromString("User");
 
     /**
+     * Creates a new instance of DatabasePrincipalType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabasePrincipalType() {
+    }
+
+    /**
      * Creates or finds a DatabasePrincipalType from its string representation.
      *
      * @param name a name to look for.

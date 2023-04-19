@@ -30,17 +30,6 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
@@ -61,6 +50,17 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
     }
 
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<ManagedPrivateEndpoint> list(String resourceGroupName, String clusterName) {
         PagedIterable<ManagedPrivateEndpointInner> inner = this.serviceClient().list(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
@@ -70,16 +70,6 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         PagedIterable<ManagedPrivateEndpointInner> inner =
             this.serviceClient().list(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new ManagedPrivateEndpointImpl(inner1, this.manager()));
-    }
-
-    public ManagedPrivateEndpoint get(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
-        ManagedPrivateEndpointInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, managedPrivateEndpointName);
-        if (inner != null) {
-            return new ManagedPrivateEndpointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ManagedPrivateEndpoint> getWithResponse(
@@ -92,6 +82,16 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ManagedPrivateEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ManagedPrivateEndpoint get(String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
+        ManagedPrivateEndpointInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, managedPrivateEndpointName);
+        if (inner != null) {
+            return new ManagedPrivateEndpointImpl(inner, this.manager());
         } else {
             return null;
         }

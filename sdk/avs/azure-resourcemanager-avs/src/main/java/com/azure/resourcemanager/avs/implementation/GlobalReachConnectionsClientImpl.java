@@ -64,7 +64,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientGlobalReach")
-    private interface GlobalReachConnectionsService {
+    public interface GlobalReachConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -709,7 +709,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         String privateCloudName,
         String globalReachConnectionName,
         GlobalReachConnectionInner globalReachConnection) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection)
             .getSyncPoller();
     }
@@ -734,7 +735,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         String globalReachConnectionName,
         GlobalReachConnectionInner globalReachConnection,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, privateCloudName, globalReachConnectionName, globalReachConnection, context)
             .getSyncPoller();
     }
@@ -1008,7 +1010,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName).getSyncPoller();
     }
 
     /**
@@ -1026,7 +1028,8 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context)
             .getSyncPoller();
     }
 

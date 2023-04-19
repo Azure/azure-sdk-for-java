@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListCapacities. */
 public final class AppServiceEnvironmentsListCapacitiesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListCapacities.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListCapacities.json
      */
     /**
      * Sample code: Get the used, available, and total worker capacity an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListCapacitiesSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listCapacities("test-rg", "test-ase", Context.NONE);
+            .listCapacities("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

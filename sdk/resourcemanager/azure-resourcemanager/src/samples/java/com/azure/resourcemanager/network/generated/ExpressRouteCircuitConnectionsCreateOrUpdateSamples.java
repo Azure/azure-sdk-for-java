@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitConnectionInner;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 
 /** Samples for ExpressRouteCircuitConnections CreateOrUpdate. */
 public final class ExpressRouteCircuitConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCircuitConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitConnectionCreate.json
      */
     /**
      * Sample code: ExpressRouteCircuitConnectionCreate.
@@ -43,6 +42,6 @@ public final class ExpressRouteCircuitConnectionsCreateOrUpdateSamples {
                     .withAuthorizationKey("fakeTokenPlaceholder")
                     .withIpv6CircuitConnectionConfig(
                         new Ipv6CircuitConnectionConfig().withAddressPrefix("aa:bb::/125")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

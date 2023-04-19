@@ -12,6 +12,7 @@
     <module>azure-analytics-purview-administration</module>
     <module>azure-analytics-purview-catalog</module>
     <module>azure-analytics-purview-scanning</module>
+    <module>azure-analytics-purview-sharing</module>
     <module>azure-analytics-purview-workflow</module>
     <module>azure-resourcemanager-purview</module>
   </modules>

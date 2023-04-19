@@ -46,6 +46,7 @@ import java.util.function.BiFunction;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.spy;
@@ -476,7 +477,15 @@ public class CertificateClientTest extends CertificateClientTestBase {
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
                 certificateClient.beginCreateCertificate(certName, CertificatePolicy.getDefault());
 
-            certPoller.poll();
+            LongRunningOperationStatus firstStatus = certPoller.poll().getStatus();
+
+            assertNotSame(LongRunningOperationStatus.FAILED, firstStatus);
+            assertNotSame(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, firstStatus);
+
+            if (firstStatus == LongRunningOperationStatus.NOT_STARTED || firstStatus != LongRunningOperationStatus.IN_PROGRESS) {
+                certPoller.waitUntil(LongRunningOperationStatus.IN_PROGRESS);
+            }
+
             certPoller.cancelOperation();
             certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
 
@@ -883,7 +892,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
                 certificateClient.importCertificate(importCertificateOptions);
 
             assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
-                .equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
+                .equalsIgnoreCase("db1497bc2c82b365c5c7c73f611513ee117790a9"));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
             // Load the CER part into X509Certificate object
@@ -897,7 +906,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
 
             assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
-            assertEquals("CN=Root Agency", x509Certificate.getIssuerX500Principal().getName());
+            assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
         });
     }
 

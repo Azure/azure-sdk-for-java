@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VpnGateways Reset. */
 public final class VpnGatewaysResetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VpnGatewayReset.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnGatewayReset.json
      */
     /**
      * Sample code: ResetVpnGateway.
@@ -17,6 +15,11 @@ public final class VpnGatewaysResetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetVpnGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnGateways().reset("rg1", "vpngw", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getVpnGateways()
+            .reset("rg1", "vpngw", null, com.azure.core.util.Context.NONE);
     }
 }

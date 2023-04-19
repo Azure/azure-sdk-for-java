@@ -17,6 +17,15 @@ public final class ExpressRoutePeeringState extends ExpandableStringEnum<Express
     public static final ExpressRoutePeeringState ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of ExpressRoutePeeringState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRoutePeeringState() {
+    }
+
+    /**
      * Creates or finds a ExpressRoutePeeringState from its string representation.
      *
      * @param name a name to look for.

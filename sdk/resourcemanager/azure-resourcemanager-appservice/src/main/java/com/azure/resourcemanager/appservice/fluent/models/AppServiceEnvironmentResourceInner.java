@@ -32,6 +32,10 @@ public final class AppServiceEnvironmentResourceInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of AppServiceEnvironmentResourceInner class. */
+    public AppServiceEnvironmentResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

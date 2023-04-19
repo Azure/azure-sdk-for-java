@@ -68,6 +68,12 @@
       <groupId>org.revapi</groupId>
       <artifactId>revapi-java</artifactId>
       <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>

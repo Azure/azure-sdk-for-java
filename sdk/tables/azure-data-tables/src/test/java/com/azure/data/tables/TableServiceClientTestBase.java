@@ -8,16 +8,19 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 
-public abstract class TableServiceClientTestBase extends TestBase {
+public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
 
     protected HttpPipelinePolicy recordPolicy;
     protected HttpClient playbackClient;
+
+    protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
     protected TableServiceClientBuilder getClientBuilder(String connectionString) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
@@ -46,9 +49,9 @@ public abstract class TableServiceClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
 
-            tableServiceClientBuilder.httpClient(playbackClient);
+            tableServiceClientBuilder.httpClient(buildAssertingClient(playbackClient));
         } else {
-            tableServiceClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
+            tableServiceClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
 
             if (!interceptorManager.isLiveMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
@@ -56,7 +59,7 @@ public abstract class TableServiceClientTestBase extends TestBase {
                 tableServiceClientBuilder.addPolicy(recordPolicy);
             }
         }
-
+        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return tableServiceClientBuilder;
     }
 

@@ -17,6 +17,15 @@ public final class ExpressRouteLinkAdminState extends ExpandableStringEnum<Expre
     public static final ExpressRouteLinkAdminState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ExpressRouteLinkAdminState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteLinkAdminState() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteLinkAdminState from its string representation.
      *
      * @param name a name to look for.

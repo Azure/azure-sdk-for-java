@@ -19,27 +19,28 @@ import java.util.List;
 @Fluent
 public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCustomizer {
     /*
-     * Criteria to search updates. Omit or specify empty string to use the
-     * default (search all). Refer to above link for examples and detailed
-     * description of this field.
+     * Criteria to search updates. Omit or specify empty string to use the default (search all). Refer to above link
+     * for examples and detailed description of this field.
      */
     @JsonProperty(value = "searchCriteria")
     private String searchCriteria;
 
     /*
-     * Array of filters to select updates to apply. Omit or specify empty array
-     * to use the default (no filter). Refer to above link for examples and
-     * detailed description of this field.
+     * Array of filters to select updates to apply. Omit or specify empty array to use the default (no filter). Refer
+     * to above link for examples and detailed description of this field.
      */
     @JsonProperty(value = "filters")
     private List<String> filters;
 
     /*
-     * Maximum number of updates to apply at a time. Omit or specify 0 to use
-     * the default (1000)
+     * Maximum number of updates to apply at a time. Omit or specify 0 to use the default (1000)
      */
     @JsonProperty(value = "updateLimit")
     private Integer updateLimit;
+
+    /** Creates an instance of ImageTemplateWindowsUpdateCustomizer class. */
+    public ImageTemplateWindowsUpdateCustomizer() {
+    }
 
     /**
      * Get the searchCriteria property: Criteria to search updates. Omit or specify empty string to use the default

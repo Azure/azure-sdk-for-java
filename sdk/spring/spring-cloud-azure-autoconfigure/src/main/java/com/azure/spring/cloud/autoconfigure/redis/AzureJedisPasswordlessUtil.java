@@ -3,9 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.redis;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
-import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.data.redis.connection.RedisPassword;
@@ -28,13 +25,6 @@ final class AzureJedisPasswordlessUtil {
         AzureJedisPasswordlessAutoConfiguration.class.getClassLoader());
 
     private AzureJedisPasswordlessUtil() {
-    }
-
-    static AzureRedisPasswordlessProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureRedisPasswordlessProperties redisPasswordlessProperties) {
-        AzureRedisPasswordlessProperties mergedProperties = new AzureRedisPasswordlessProperties();
-        AzurePropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, redisPasswordlessProperties, mergedProperties);
-        mergedProperties.setScopes(redisPasswordlessProperties.getScopes());
-        return mergedProperties;
     }
 
     static JedisClientConfiguration getJedisClientConfiguration(RedisProperties redisProperties) {

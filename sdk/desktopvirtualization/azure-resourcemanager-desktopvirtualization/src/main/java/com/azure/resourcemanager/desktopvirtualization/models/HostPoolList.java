@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** HostPoolList List of HostPool definitions. */
+/**
+ * HostPoolList
+ *
+ * <p>List of HostPool definitions.
+ */
 @Fluent
 public final class HostPoolList {
     /*
@@ -23,6 +27,10 @@ public final class HostPoolList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of HostPoolList class. */
+    public HostPoolList() {
+    }
 
     /**
      * Get the value property: List of HostPool definitions.

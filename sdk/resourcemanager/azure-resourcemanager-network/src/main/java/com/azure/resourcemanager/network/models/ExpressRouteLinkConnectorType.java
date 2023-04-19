@@ -17,6 +17,15 @@ public final class ExpressRouteLinkConnectorType extends ExpandableStringEnum<Ex
     public static final ExpressRouteLinkConnectorType SC = fromString("SC");
 
     /**
+     * Creates a new instance of ExpressRouteLinkConnectorType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteLinkConnectorType() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteLinkConnectorType from its string representation.
      *
      * @param name a name to look for.

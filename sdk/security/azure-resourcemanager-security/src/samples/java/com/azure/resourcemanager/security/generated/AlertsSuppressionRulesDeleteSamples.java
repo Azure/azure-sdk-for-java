@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AlertsSuppressionRules Delete. */
 public final class AlertsSuppressionRulesDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class AlertsSuppressionRulesDeleteSamples {
      */
     public static void deleteSuppressionRuleDataForASubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.alertsSuppressionRules().deleteWithResponse("dismissIpAnomalyAlerts", Context.NONE);
+        manager.alertsSuppressionRules().deleteWithResponse("dismissIpAnomalyAlerts", com.azure.core.util.Context.NONE);
     }
 }

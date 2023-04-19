@@ -17,6 +17,15 @@ public final class IpFlowProtocol extends ExpandableStringEnum<IpFlowProtocol> {
     public static final IpFlowProtocol UDP = fromString("UDP");
 
     /**
+     * Creates a new instance of IpFlowProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpFlowProtocol() {
+    }
+
+    /**
      * Creates or finds a IpFlowProtocol from its string representation.
      *
      * @param name a name to look for.

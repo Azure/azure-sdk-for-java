@@ -29,15 +29,6 @@ public final class SessionHostsImpl implements SessionHosts {
         this.serviceManager = serviceManager;
     }
 
-    public SessionHost get(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        SessionHostInner inner = this.serviceClient().get(resourceGroupName, hostPoolName, sessionHostname);
-        if (inner != null) {
-            return new SessionHostImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SessionHost> getWithResponse(
         String resourceGroupName, String hostPoolName, String sessionHostname, Context context) {
         Response<SessionHostInner> inner =
@@ -53,8 +44,13 @@ public final class SessionHostsImpl implements SessionHosts {
         }
     }
 
-    public void delete(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        this.serviceClient().delete(resourceGroupName, hostPoolName, sessionHostname);
+    public SessionHost get(String resourceGroupName, String hostPoolName, String sessionHostname) {
+        SessionHostInner inner = this.serviceClient().get(resourceGroupName, hostPoolName, sessionHostname);
+        if (inner != null) {
+            return new SessionHostImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -64,13 +60,8 @@ public final class SessionHostsImpl implements SessionHosts {
             .deleteWithResponse(resourceGroupName, hostPoolName, sessionHostname, force, context);
     }
 
-    public SessionHost update(String resourceGroupName, String hostPoolName, String sessionHostname) {
-        SessionHostInner inner = this.serviceClient().update(resourceGroupName, hostPoolName, sessionHostname);
-        if (inner != null) {
-            return new SessionHostImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String hostPoolName, String sessionHostname) {
+        this.serviceClient().delete(resourceGroupName, hostPoolName, sessionHostname);
     }
 
     public Response<SessionHost> updateWithResponse(
@@ -95,13 +86,29 @@ public final class SessionHostsImpl implements SessionHosts {
         }
     }
 
+    public SessionHost update(String resourceGroupName, String hostPoolName, String sessionHostname) {
+        SessionHostInner inner = this.serviceClient().update(resourceGroupName, hostPoolName, sessionHostname);
+        if (inner != null) {
+            return new SessionHostImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName) {
         PagedIterable<SessionHostInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName);
         return Utils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName, Context context) {
-        PagedIterable<SessionHostInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName, context);
+    public PagedIterable<SessionHost> list(
+        String resourceGroupName,
+        String hostPoolName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
+        PagedIterable<SessionHostInner> inner =
+            this.serviceClient().list(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
     }
 

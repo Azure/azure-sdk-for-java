@@ -47,10 +47,14 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+graphservicesprod:
+  service: graphservices
 hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrqumulo:
+  service: qumulo
 loadtestservice:
   service: loadtesting
 machinelearningservices:
@@ -63,8 +67,12 @@ mysql:
   service: mysqlflexibleserver
 network:
   suffix: generated
+newrelic:
+  service: newrelicobservability
 operationalinsights:
   service: loganalytics
+paloaltonetworks:
+  suffix: ngfw
 postgresql:
   service: postgresqlflexibleserver
 privatedns:

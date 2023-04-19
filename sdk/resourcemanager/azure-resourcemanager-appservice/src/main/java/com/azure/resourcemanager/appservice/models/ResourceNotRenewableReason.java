@@ -22,6 +22,15 @@ public final class ResourceNotRenewableReason extends ExpandableStringEnum<Resou
     public static final ResourceNotRenewableReason SUBSCRIPTION_NOT_ACTIVE = fromString("SubscriptionNotActive");
 
     /**
+     * Creates a new instance of ResourceNotRenewableReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceNotRenewableReason() {
+    }
+
+    /**
      * Creates or finds a ResourceNotRenewableReason from its string representation.
      *
      * @param name a name to look for.

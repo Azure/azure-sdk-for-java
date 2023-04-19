@@ -9,29 +9,30 @@ import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.models.DataConnectionListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataConnectionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"fn\",\"id\":\"ckw\",\"name\":\"fz\",\"type\":\"whxxbuyqax\"},{\"kind\":\"DataConnection\",\"location\":\"eqz\",\"id\":\"ppriol\",\"name\":\"or\",\"type\":\"altol\"}]}")
+                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"hyoulpjr\",\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"},{\"kind\":\"DataConnection\",\"location\":\"cskfcktqumiekk\",\"id\":\"zzikhlyfjhdg\",\"name\":\"gge\",\"type\":\"dunyg\"},{\"kind\":\"DataConnection\",\"location\":\"qidbqfatpxllrxcy\",\"id\":\"moadsuvarmy\",\"name\":\"dmjsjqb\",\"type\":\"hhyxxrw\"},{\"kind\":\"DataConnection\",\"location\":\"co\",\"id\":\"uhpkxkgymar\",\"name\":\"qnajxqugj\",\"type\":\"ky\"}]}")
                 .toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("fn", model.value().get(0).location());
+        Assertions.assertEquals("hyoulpjr", model.value().get(0).location());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataConnectionListResult model =
             new DataConnectionListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new DataConnectionInner().withLocation("fn"),
-                            new DataConnectionInner().withLocation("eqz")));
+                            new DataConnectionInner().withLocation("hyoulpjr"),
+                            new DataConnectionInner().withLocation("cskfcktqumiekk"),
+                            new DataConnectionInner().withLocation("qidbqfatpxllrxcy"),
+                            new DataConnectionInner().withLocation("co")));
         model = BinaryData.fromObject(model).toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("fn", model.value().get(0).location());
+        Assertions.assertEquals("hyoulpjr", model.value().get(0).location());
     }
 }

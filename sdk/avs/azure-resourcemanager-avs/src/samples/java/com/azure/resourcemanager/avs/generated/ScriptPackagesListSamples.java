@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ScriptPackages List. */
 public final class ScriptPackagesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class ScriptPackagesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptPackagesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptPackages().list("group1", "{privateCloudName}", Context.NONE);
+        manager.scriptPackages().list("group1", "{privateCloudName}", com.azure.core.util.Context.NONE);
     }
 }

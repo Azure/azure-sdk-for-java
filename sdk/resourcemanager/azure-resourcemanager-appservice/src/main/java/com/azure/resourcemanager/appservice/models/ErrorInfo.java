@@ -17,6 +17,10 @@ public class ErrorInfo {
     @JsonProperty(value = "code", required = true)
     private String code;
 
+    /** Creates an instance of ErrorInfo class. */
+    public ErrorInfo() {
+    }
+
     /**
      * Get the code property: The error code.
      *

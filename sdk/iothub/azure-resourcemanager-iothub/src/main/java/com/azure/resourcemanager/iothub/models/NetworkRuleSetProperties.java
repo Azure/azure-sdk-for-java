@@ -30,6 +30,10 @@ public final class NetworkRuleSetProperties {
     @JsonProperty(value = "ipRules", required = true)
     private List<NetworkRuleSetIpRule> ipRules;
 
+    /** Creates an instance of NetworkRuleSetProperties class. */
+    public NetworkRuleSetProperties() {
+    }
+
     /**
      * Get the defaultAction property: Default Action for Network Rule Set.
      *

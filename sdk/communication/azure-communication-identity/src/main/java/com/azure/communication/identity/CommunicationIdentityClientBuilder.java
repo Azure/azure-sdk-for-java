@@ -6,7 +6,6 @@ package com.azure.communication.identity;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -377,12 +376,7 @@ public final class CommunicationIdentityClientBuilder implements
 
         CommunicationIdentityServiceVersion apiVersion = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
 
-        CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
-        clientBuilder.endpoint(endpoint)
-            .apiVersion(apiVersion.getVersion())
-            .pipeline(builderPipeline);
-
-        return clientBuilder.buildClient();
+        return new CommunicationIdentityClientImpl(builderPipeline, endpoint, apiVersion.getVersion());
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {

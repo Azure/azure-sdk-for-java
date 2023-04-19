@@ -27,6 +27,15 @@ public final class LoadBalancerBackendAddressAdminState
     public static final LoadBalancerBackendAddressAdminState DRAIN = fromString("Drain");
 
     /**
+     * Creates a new instance of LoadBalancerBackendAddressAdminState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerBackendAddressAdminState() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerBackendAddressAdminState from its string representation.
      *
      * @param name a name to look for.

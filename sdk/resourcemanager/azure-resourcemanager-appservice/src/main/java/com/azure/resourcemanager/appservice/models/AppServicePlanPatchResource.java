@@ -18,6 +18,10 @@ public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AppServicePlanPatchResourceProperties innerProperties;
 
+    /** Creates an instance of AppServicePlanPatchResource class. */
+    public AppServicePlanPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: AppServicePlanPatchResource resource specific properties.
      *

@@ -45,13 +45,12 @@ class ServiceBusSenderInstrumentation {
                     meter.reportBatchSend(batch.size(), signal.getThrowable(), span);
                     tracer.endSpan(signal.getThrowable(), span, null);
                 })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLinks(spanName, batch,
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLinks(spanName,
+                    ServiceBusTracer.OperationName.PUBLISH, batch,
                     ServiceBusMessage::getContext, Context.NONE)));
         } else {
             return publisher
-                .doOnEach(signal -> {
-                    meter.reportBatchSend(batch.size(), signal.getThrowable(), Context.NONE);
-                });
+                .doOnEach(signal -> meter.reportBatchSend(batch.size(), signal.getThrowable(), Context.NONE));
         }
     }
 }

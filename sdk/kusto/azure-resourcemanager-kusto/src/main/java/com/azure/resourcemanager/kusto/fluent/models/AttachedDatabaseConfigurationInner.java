@@ -27,6 +27,10 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AttachedDatabaseConfigurationProperties innerProperties;
 
+    /** Creates an instance of AttachedDatabaseConfigurationInner class. */
+    public AttachedDatabaseConfigurationInner() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

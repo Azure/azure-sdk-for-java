@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.models.SuggestResult;
 
@@ -13,7 +14,8 @@ public final class SuggestResultConverter {
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.SuggestResult} to {@link SuggestResult}.
      */
-    public static SuggestResult map(com.azure.search.documents.implementation.models.SuggestResult obj) {
+    public static SuggestResult map(com.azure.search.documents.implementation.models.SuggestResult obj,
+        JsonSerializer jsonSerializer) {
         if (obj == null) {
             return null;
         }
@@ -21,6 +23,7 @@ public final class SuggestResultConverter {
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
         SuggestResultHelper.setAdditionalProperties(suggestResult, additionalProperties);
+        SuggestResultHelper.setJsonSerializer(suggestResult, jsonSerializer);
 
         return suggestResult;
     }

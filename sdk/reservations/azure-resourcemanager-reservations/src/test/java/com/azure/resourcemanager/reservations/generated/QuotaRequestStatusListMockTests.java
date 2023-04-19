@@ -33,7 +33,7 @@ public final class QuotaRequestStatusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"message\":\"xitmmqtgqqq\",\"requestSubmitTime\":\"2021-09-05T22:16:51Z\",\"value\":[]},\"id\":\"rxcpjuisavo\",\"name\":\"qdzfvazivjlfrqtt\",\"type\":\"ajlkatnw\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"InProgress\",\"message\":\"nzeyqxtjj\",\"requestSubmitTime\":\"2021-06-30T23:12:31Z\",\"value\":[]},\"id\":\"hycav\",\"name\":\"dggxdbeesmi\",\"type\":\"knlrariaawiuagy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,8 +64,15 @@ public final class QuotaRequestStatusListMockTests {
         PagedIterable<QuotaRequestDetails> response =
             manager
                 .quotaRequestStatus()
-                .list("jub", "yhgk", "minsgowzf", "tsttktlahbq", 520028629, "tx", com.azure.core.util.Context.NONE);
+                .list(
+                    "cdyuibhmfdnbzyd",
+                    "f",
+                    "fcjnaeoisrvhmgor",
+                    "fukiscvwmzhw",
+                    1363348487,
+                    "efaxvxilc",
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(QuotaRequestState.ACCEPTED, response.iterator().next().provisioningState());
+        Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, response.iterator().next().provisioningState());
     }
 }

@@ -23,6 +23,10 @@ public final class CheckNameRequest {
     @JsonProperty(value = "type", required = true)
     private Type type;
 
+    /** Creates an instance of CheckNameRequest class. */
+    public CheckNameRequest() {
+    }
+
     /**
      * Get the name property: Resource name.
      *

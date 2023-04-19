@@ -17,11 +17,11 @@ public final class CurrentQuotaLimitBaseInnerTests {
         CurrentQuotaLimitBaseInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"limit\":398738394,\"currentValue\":693357808,\"unit\":\"xwczelpcire\",\"name\":{\"value\":\"eae\",\"localizedValue\":\"abfatkl\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"jhwuaanozjos\",\"properties\":\"datayoulp\"},\"id\":\"rvxaglrvimjwosy\",\"name\":\"xitc\",\"type\":\"kfcktqum\"}")
+                    "{\"properties\":{\"limit\":2001921074,\"currentValue\":1823399080,\"unit\":\"e\",\"name\":{\"value\":\"pfpubjibww\",\"localizedValue\":\"tohqkvpuvksgp\"},\"resourceType\":\"dedicated\",\"quotaPeriod\":\"nynfsynljphuo\",\"properties\":\"dataodlqiyntor\"},\"id\":\"ihleos\",\"name\":\"swsrms\",\"type\":\"yzrpzbchckqqzq\"}")
                 .toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals(398738394, model.properties().limit());
-        Assertions.assertEquals("xwczelpcire", model.properties().unit());
-        Assertions.assertEquals("eae", model.properties().name().value());
+        Assertions.assertEquals(2001921074, model.properties().limit());
+        Assertions.assertEquals("e", model.properties().unit());
+        Assertions.assertEquals("pfpubjibww", model.properties().name().value());
         Assertions.assertEquals(ResourceType.DEDICATED, model.properties().resourceType());
     }
 
@@ -31,15 +31,15 @@ public final class CurrentQuotaLimitBaseInnerTests {
             new CurrentQuotaLimitBaseInner()
                 .withProperties(
                     new QuotaProperties()
-                        .withLimit(398738394)
-                        .withUnit("xwczelpcire")
-                        .withName(new ResourceName().withValue("eae"))
+                        .withLimit(2001921074)
+                        .withUnit("e")
+                        .withName(new ResourceName().withValue("pfpubjibww"))
                         .withResourceType(ResourceType.DEDICATED)
-                        .withProperties("datayoulp"));
+                        .withProperties("dataodlqiyntor"));
         model = BinaryData.fromObject(model).toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals(398738394, model.properties().limit());
-        Assertions.assertEquals("xwczelpcire", model.properties().unit());
-        Assertions.assertEquals("eae", model.properties().name().value());
+        Assertions.assertEquals(2001921074, model.properties().limit());
+        Assertions.assertEquals("e", model.properties().unit());
+        Assertions.assertEquals("pfpubjibww", model.properties().name().value());
         Assertions.assertEquals(ResourceType.DEDICATED, model.properties().resourceType());
     }
 }

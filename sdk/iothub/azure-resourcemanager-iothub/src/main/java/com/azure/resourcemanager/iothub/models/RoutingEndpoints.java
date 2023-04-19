@@ -46,6 +46,10 @@ public final class RoutingEndpoints {
     @JsonProperty(value = "cosmosDBSqlCollections")
     private List<RoutingCosmosDBSqlApiProperties> cosmosDBSqlCollections;
 
+    /** Creates an instance of RoutingEndpoints class. */
+    public RoutingEndpoints() {
+    }
+
     /**
      * Get the serviceBusQueues property: The list of Service Bus queue endpoints that IoT hub routes the messages to,
      * based on the routing rules.

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object that contains the details about an environment's state. */
 @Fluent
 public final class EnvironmentStateDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentStateDetails.class);
-
     /*
-     * Contains the code that represents the reason of an environment being in
-     * a particular state. Can be used to programmatically handle specific
-     * cases.
+     * Contains the code that represents the reason of an environment being in a particular state. Can be used to
+     * programmatically handle specific cases.
      */
     @JsonProperty(value = "code")
     private String code;
@@ -27,6 +22,10 @@ public final class EnvironmentStateDetails {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of EnvironmentStateDetails class. */
+    public EnvironmentStateDetails() {
+    }
 
     /**
      * Get the code property: Contains the code that represents the reason of an environment being in a particular

@@ -9,6 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
  * Tests metadata operations with synchronous {@link EventHubClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubClientIntegrationTest extends IntegrationTestBase {
     private EventHubClient client;
 

@@ -35,6 +35,10 @@ public final class DeletedVaultInner {
     @JsonProperty(value = "properties")
     private DeletedVaultProperties properties;
 
+    /** Creates an instance of DeletedVaultInner class. */
+    public DeletedVaultInner() {
+    }
+
     /**
      * Get the id property: The resource ID for the deleted key vault.
      *

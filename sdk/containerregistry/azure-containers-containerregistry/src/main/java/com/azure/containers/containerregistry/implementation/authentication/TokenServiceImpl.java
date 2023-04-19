@@ -10,8 +10,6 @@ import com.azure.containers.containerregistry.implementation.models.PostContentS
 import com.azure.containers.containerregistry.implementation.models.TokenGrantType;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -31,18 +29,13 @@ public class TokenServiceImpl {
      * @param url               the service endpoint.
      * @param apiVersion        the api-version of the service being targeted.
      * @param pipeline          the pipeline to use to make the call.
-     * @param serializerAdapter the serializer adapter for the rest client.
      */
-    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
-        if (serializerAdapter == null) {
-            serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-
+    public TokenServiceImpl(String url, ContainerRegistryServiceVersion apiVersion, HttpPipeline pipeline) {
         if (apiVersion == null) {
             apiVersion = ContainerRegistryServiceVersion.getLatest();
         }
 
-        this.authenticationsImpl = new AuthenticationsImpl(url, apiVersion.getVersion(), pipeline, serializerAdapter);
+        this.authenticationsImpl = new AuthenticationsImpl(url, apiVersion.getVersion(), pipeline);
     }
 
     /**
@@ -54,15 +47,15 @@ public class TokenServiceImpl {
      */
     public Mono<AccessToken> getAcrAccessTokenAsync(String acrRefreshToken, String scope, String serviceName, TokenGrantType grantType) {
         return withContext(context -> this.authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(serviceName, scope, acrRefreshToken, grantType, context)
-            .flatMap(response -> {
+            .map(response -> {
                 AcrAccessToken token = response.getValue();
                 if (token != null) {
                     String accessToken = token.getAccessToken();
                     OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(accessToken);
-                    return Mono.just(new AccessToken(accessToken, expirationTime));
+                    return new AccessToken(accessToken, expirationTime);
                 }
 
-                return Mono.empty();
+                return null;
             }));
     }
 
@@ -73,15 +66,16 @@ public class TokenServiceImpl {
      * @param serviceName    Given the ACR service.
      */
     public Mono<AccessToken> getAcrRefreshTokenAsync(String aadAccessToken, String serviceName) {
-        return withContext(context -> this.authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(PostContentSchemaGrantType.ACCESS_TOKEN, serviceName, null, null, aadAccessToken, context).flatMap(response -> {
-            AcrRefreshToken token = response.getValue();
-            if (token != null) {
-                String refreshToken = token.getRefreshToken();
-                OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(refreshToken);
-                return Mono.just(new AccessToken(refreshToken, expirationTime));
-            }
+        return withContext(context -> this.authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(PostContentSchemaGrantType.ACCESS_TOKEN, serviceName, null, null, aadAccessToken, context)
+            .map(response -> {
+                AcrRefreshToken token = response.getValue();
+                if (token != null) {
+                    String refreshToken = token.getRefreshToken();
+                    OffsetDateTime expirationTime = JsonWebToken.retrieveExpiration(refreshToken);
+                    return new AccessToken(refreshToken, expirationTime);
+                }
 
-            return Mono.empty();
-        }));
+                return null;
+            }));
     }
 }

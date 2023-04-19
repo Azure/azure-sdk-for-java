@@ -30,19 +30,6 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, principalAssignmentName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName,
         String clusterName,
@@ -63,12 +50,14 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
         }
     }
 
-    public ClusterPrincipalAssignment get(
-        String resourceGroupName, String clusterName, String principalAssignmentName) {
-        ClusterPrincipalAssignmentInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, principalAssignmentName);
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName,
+        String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, principalAssignmentName);
         if (inner != null) {
-            return new ClusterPrincipalAssignmentImpl(inner, this.manager());
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -84,6 +73,17 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ClusterPrincipalAssignmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterPrincipalAssignment get(
+        String resourceGroupName, String clusterName, String principalAssignmentName) {
+        ClusterPrincipalAssignmentInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, principalAssignmentName);
+        if (inner != null) {
+            return new ClusterPrincipalAssignmentImpl(inner, this.manager());
         } else {
             return null;
         }

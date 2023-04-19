@@ -11,30 +11,32 @@ import com.azure.core.util.Context;
 /** Resource collection API of GovernanceAssignments. */
 public interface GovernanceAssignments {
     /**
-     * Get security governanceAssignments on all your resources inside a scope.
+     * Get governance assignments on all of your resources inside a scope.
      *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
+     *     'subscriptions/{subscriptionId}'), or security connector (format:
+     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * @param assessmentName The Assessment Key - A unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security governanceAssignments on all your resources inside a scope as paginated response with {@link
+     * @return governance assignments on all of your resources inside a scope as paginated response with {@link
      *     PagedIterable}.
      */
     PagedIterable<GovernanceAssignment> list(String scope, String assessmentName);
 
     /**
-     * Get security governanceAssignments on all your resources inside a scope.
+     * Get governance assignments on all of your resources inside a scope.
      *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
+     * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
+     *     'subscriptions/{subscriptionId}'), or security connector (format:
+     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * @param assessmentName The Assessment Key - A unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security governanceAssignments on all your resources inside a scope as paginated response with {@link
+     * @return governance assignments on all of your resources inside a scope as paginated response with {@link
      *     PagedIterable}.
      */
     PagedIterable<GovernanceAssignment> list(String scope, String assessmentName, Context context);
@@ -42,11 +44,11 @@ public interface GovernanceAssignments {
     /**
      * Get a specific governanceAssignment for the requested scope by AssignmentKey.
      *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
+     * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
+     *     'subscriptions/{subscriptionId}'), or security connector (format:
+     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * @param assessmentName The Assessment Key - A unique key for the assessment type.
+     * @param assignmentKey The governance assignment key - the assessment key of the required governance assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,11 +61,11 @@ public interface GovernanceAssignments {
     /**
      * Get a specific governanceAssignment for the requested scope by AssignmentKey.
      *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
+     * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
+     *     'subscriptions/{subscriptionId}'), or security connector (format:
+     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * @param assessmentName The Assessment Key - A unique key for the assessment type.
+     * @param assignmentKey The governance assignment key - the assessment key of the required governance assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -74,11 +76,11 @@ public interface GovernanceAssignments {
     /**
      * Delete a GovernanceAssignment over a given scope.
      *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
+     * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
+     *     'subscriptions/{subscriptionId}'), or security connector (format:
+     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * @param assessmentName The Assessment Key - A unique key for the assessment type.
+     * @param assignmentKey The governance assignment key - the assessment key of the required governance assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,11 +92,11 @@ public interface GovernanceAssignments {
     /**
      * Delete a GovernanceAssignment over a given scope.
      *
-     * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
-     * @param assessmentName The Assessment Key - Unique key for the assessment type.
-     * @param assignmentKey The security governance assignment key - the assessment key of the required governance
-     *     assignment.
+     * @param scope The scope of the Governance assignments. Valid scopes are: subscription (format:
+     *     'subscriptions/{subscriptionId}'), or security connector (format:
+     *     'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
+     * @param assessmentName The Assessment Key - A unique key for the assessment type.
+     * @param assignmentKey The governance assignment key - the assessment key of the required governance assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

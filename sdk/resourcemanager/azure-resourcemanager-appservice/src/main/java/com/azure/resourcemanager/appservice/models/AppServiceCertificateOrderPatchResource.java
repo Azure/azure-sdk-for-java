@@ -21,6 +21,10 @@ public final class AppServiceCertificateOrderPatchResource extends ProxyOnlyReso
     @JsonProperty(value = "properties")
     private AppServiceCertificateOrderPatchResourceProperties innerProperties;
 
+    /** Creates an instance of AppServiceCertificateOrderPatchResource class. */
+    public AppServiceCertificateOrderPatchResource() {
+    }
+
     /**
      * Get the innerProperties property: AppServiceCertificateOrderPatchResource resource specific properties.
      *

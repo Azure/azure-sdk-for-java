@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the List Reference Data Sets operation. */
 @Fluent
 public final class ReferenceDataSetListResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceDataSetListResponseInner.class);
-
     /*
      * Result of the List Reference Data Sets operation.
      */
     @JsonProperty(value = "value")
     private List<ReferenceDataSetResourceInner> value;
+
+    /** Creates an instance of ReferenceDataSetListResponseInner class. */
+    public ReferenceDataSetListResponseInner() {
+    }
 
     /**
      * Get the value property: Result of the List Reference Data Sets operation.

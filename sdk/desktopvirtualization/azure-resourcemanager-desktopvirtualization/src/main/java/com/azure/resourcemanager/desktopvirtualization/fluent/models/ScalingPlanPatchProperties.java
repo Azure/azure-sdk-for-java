@@ -49,6 +49,10 @@ public final class ScalingPlanPatchProperties {
     @JsonProperty(value = "hostPoolReferences")
     private List<ScalingHostPoolReference> hostPoolReferences;
 
+    /** Creates an instance of ScalingPlanPatchProperties class. */
+    public ScalingPlanPatchProperties() {
+    }
+
     /**
      * Get the description property: Description of scaling plan.
      *

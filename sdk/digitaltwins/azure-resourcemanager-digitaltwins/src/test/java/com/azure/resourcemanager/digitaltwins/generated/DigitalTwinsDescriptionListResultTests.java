@@ -14,11 +14,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DigitalTwinsDescriptionListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DigitalTwinsDescriptionListResult model =
             BinaryData
                 .fromString(
@@ -31,8 +30,8 @@ public final class DigitalTwinsDescriptionListResultTests {
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DigitalTwinsDescriptionListResult model =
             new DigitalTwinsDescriptionListResult()
                 .withNextLink("c")

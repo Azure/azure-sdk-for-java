@@ -55,6 +55,7 @@ public final class AzureSpringIdentifier {
      * Azure Spring ServiceBus
      */
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
+    public static final String AZURE_SPRING_PASSWORDLESS_SERVICE_BUS = "az-sp-pl-sb/" + VERSION;
 
     /**
      * Azure Spring Storage Blob

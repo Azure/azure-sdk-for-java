@@ -38,6 +38,10 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerModel().collation();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatabaseInner innerModel() {
         return this.innerObject;
     }

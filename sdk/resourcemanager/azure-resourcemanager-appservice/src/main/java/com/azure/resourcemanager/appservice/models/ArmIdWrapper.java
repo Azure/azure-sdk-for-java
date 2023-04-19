@@ -16,6 +16,10 @@ public final class ArmIdWrapper {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of ArmIdWrapper class. */
+    public ArmIdWrapper() {
+    }
+
     /**
      * Get the id property: The id property.
      *

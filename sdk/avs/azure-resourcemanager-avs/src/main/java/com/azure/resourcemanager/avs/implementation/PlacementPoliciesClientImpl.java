@@ -65,7 +65,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientPlacementPo")
-    private interface PlacementPoliciesService {
+    public interface PlacementPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -779,7 +779,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         String clusterName,
         String placementPolicyName,
         PlacementPolicyInner placementPolicy) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicy)
             .getSyncPoller();
     }
@@ -806,7 +807,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         String placementPolicyName,
         PlacementPolicyInner placementPolicy,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicy, context)
             .getSyncPoller();
     }
@@ -1147,7 +1149,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         String clusterName,
         String placementPolicyName,
         PlacementPolicyUpdate placementPolicyUpdate) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicyUpdate)
             .getSyncPoller();
     }
@@ -1174,7 +1177,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         String placementPolicyName,
         PlacementPolicyUpdate placementPolicyUpdate,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, privateCloudName, clusterName, placementPolicyName, placementPolicyUpdate, context)
             .getSyncPoller();
     }
@@ -1472,7 +1476,9 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName)
+            .getSyncPoller();
     }
 
     /**
@@ -1495,7 +1501,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         String clusterName,
         String placementPolicyName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context)
+        return this
+            .beginDeleteAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context)
             .getSyncPoller();
     }
 

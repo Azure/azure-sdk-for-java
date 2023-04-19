@@ -21,6 +21,15 @@ public final class AzureFirewallApplicationRuleProtocolType
     public static final AzureFirewallApplicationRuleProtocolType MSSQL = fromString("Mssql");
 
     /**
+     * Creates a new instance of AzureFirewallApplicationRuleProtocolType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallApplicationRuleProtocolType() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallApplicationRuleProtocolType from its string representation.
      *
      * @param name a name to look for.

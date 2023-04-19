@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyExemptions Delete. */
 public final class PolicyExemptionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2020-07-01-preview/examples/deletePolicyExemption.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/deletePolicyExemption.json
      */
     /**
      * Sample code: Delete a policy exemption.
@@ -25,6 +23,6 @@ public final class PolicyExemptionsDeleteSamples {
             .deleteWithResponse(
                 "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster",
                 "DemoExpensiveVM",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

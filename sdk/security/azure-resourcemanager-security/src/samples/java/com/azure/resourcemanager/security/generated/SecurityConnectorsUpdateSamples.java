@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.AwsEnvironmentData;
 import com.azure.resourcemanager.security.models.CloudName;
 import com.azure.resourcemanager.security.models.CspmMonitorAwsOffering;
@@ -17,7 +16,7 @@ import java.util.Map;
 /** Samples for SecurityConnectors Update. */
 public final class SecurityConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/PatchSecurityConnector_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/PatchSecurityConnector_example.json
      */
     /**
      * Sample code: Update a security connector.
@@ -28,7 +27,8 @@ public final class SecurityConnectorsUpdateSamples {
         SecurityConnector resource =
             manager
                 .securityConnectors()
-                .getByResourceGroupWithResponse("exampleResourceGroup", "exampleSecurityConnectorName", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "exampleResourceGroup", "exampleSecurityConnectorName", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

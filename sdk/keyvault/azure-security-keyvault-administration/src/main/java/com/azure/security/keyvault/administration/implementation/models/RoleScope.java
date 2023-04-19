@@ -17,6 +17,14 @@ public final class RoleScope extends ExpandableStringEnum<RoleScope> {
     public static final RoleScope KEYS = fromString("/keys");
 
     /**
+     * Creates a new instance of RoleScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoleScope() {}
+
+    /**
      * Creates or finds a RoleScope from its string representation.
      *
      * @param name a name to look for.

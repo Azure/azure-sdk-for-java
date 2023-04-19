@@ -23,6 +23,15 @@ public final class ApplicationGatewayTierTypes extends ExpandableStringEnum<Appl
     public static final ApplicationGatewayTierTypes WAF_V2 = fromString("WAF_v2");
 
     /**
+     * Creates a new instance of ApplicationGatewayTierTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayTierTypes() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayTierTypes from its string representation.
      *
      * @param name a name to look for.

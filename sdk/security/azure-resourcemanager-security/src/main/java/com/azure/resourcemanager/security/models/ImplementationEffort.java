@@ -20,6 +20,15 @@ public final class ImplementationEffort extends ExpandableStringEnum<Implementat
     public static final ImplementationEffort HIGH = fromString("High");
 
     /**
+     * Creates a new instance of ImplementationEffort value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ImplementationEffort() {
+    }
+
+    /**
      * Creates or finds a ImplementationEffort from its string representation.
      *
      * @param name a name to look for.

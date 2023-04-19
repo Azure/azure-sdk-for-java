@@ -22,10 +22,18 @@ public final class ClusterUpdate {
     private Sku sku;
 
     /*
-     * RedisEnterprise cluster properties Other properties of the cluster.
+     * RedisEnterprise cluster properties
+     *
+     * Other properties of the cluster.
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
+
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
@@ -33,6 +41,10 @@ public final class ClusterUpdate {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of ClusterUpdate class. */
+    public ClusterUpdate() {
+    }
 
     /**
      * Get the sku property: The SKU to create, which affects price, performance, and features.
@@ -55,12 +67,34 @@ public final class ClusterUpdate {
     }
 
     /**
-     * Get the innerProperties property: RedisEnterprise cluster properties Other properties of the cluster.
+     * Get the innerProperties property: RedisEnterprise cluster properties
+     *
+     * <p>Other properties of the cluster.
      *
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -103,6 +137,29 @@ public final class ClusterUpdate {
             this.innerProperties = new ClusterProperties();
         }
         this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Encryption-at-rest configuration for the cluster.
+     *
+     * @return the encryption value.
+     */
+    public ClusterPropertiesEncryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Encryption-at-rest configuration for the cluster.
+     *
+     * @param encryption the encryption value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withEncryption(ClusterPropertiesEncryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -163,6 +220,9 @@ public final class ClusterUpdate {
         }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

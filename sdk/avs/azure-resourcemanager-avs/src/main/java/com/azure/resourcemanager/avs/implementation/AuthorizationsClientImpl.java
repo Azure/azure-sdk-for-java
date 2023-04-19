@@ -63,7 +63,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientAuthorizati")
-    private interface AuthorizationsService {
+    public interface AuthorizationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -700,7 +700,8 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
         String privateCloudName,
         String authorizationName,
         ExpressRouteAuthorizationInner authorization) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, authorizationName, authorization)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, authorizationName, authorization)
             .getSyncPoller();
     }
 
@@ -724,7 +725,8 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
         String authorizationName,
         ExpressRouteAuthorizationInner authorization,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, authorizationName, authorization, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, authorizationName, authorization, context)
             .getSyncPoller();
     }
 
@@ -988,7 +990,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String authorizationName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, authorizationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, authorizationName).getSyncPoller();
     }
 
     /**
@@ -1006,7 +1008,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String authorizationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, authorizationName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, authorizationName, context).getSyncPoller();
     }
 
     /**

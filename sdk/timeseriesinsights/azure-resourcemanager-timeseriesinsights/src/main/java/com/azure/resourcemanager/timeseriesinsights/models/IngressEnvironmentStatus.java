@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object that represents the status of ingress on an environment. */
 @Fluent
 public final class IngressEnvironmentStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IngressEnvironmentStatus.class);
-
     /*
-     * This string represents the state of ingress operations on an
-     * environment. It can be "Disabled", "Ready", "Running", "Paused" or
-     * "Unknown"
+     * This string represents the state of ingress operations on an environment. It can be "Disabled", "Ready",
+     * "Running", "Paused" or "Unknown"
      */
     @JsonProperty(value = "state")
     private IngressState state;
@@ -27,6 +22,10 @@ public final class IngressEnvironmentStatus {
      */
     @JsonProperty(value = "stateDetails", access = JsonProperty.Access.WRITE_ONLY)
     private EnvironmentStateDetails stateDetails;
+
+    /** Creates an instance of IngressEnvironmentStatus class. */
+    public IngressEnvironmentStatus() {
+    }
 
     /**
      * Get the state property: This string represents the state of ingress operations on an environment. It can be

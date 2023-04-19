@@ -15,21 +15,19 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.converters.IndexActionConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.implementation.models.SearchErrorException;
-import com.azure.search.documents.implementation.models.SearchRequest;
-import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
-import com.azure.search.documents.implementation.models.SuggestRequest;
+import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.implementation.util.DocumentResponseConversions;
-import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
+import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.AutocompleteResult;
-import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.SearchOptions;
@@ -43,23 +41,18 @@ import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedIterable;
 import com.azure.search.documents.util.SuggestPagedResponse;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.serializer.TypeReference.createInstance;
 import static com.azure.search.documents.SearchAsyncClient.buildIndexBatch;
-import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
-import static com.azure.search.documents.SearchAsyncClient.createContinuationToken;
-import static com.azure.search.documents.SearchAsyncClient.getSearchResults;
-import static com.azure.search.documents.SearchAsyncClient.getFacets;
-import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
-import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
 import static com.azure.search.documents.SearchAsyncClient.createAutoCompleteRequest;
+import static com.azure.search.documents.SearchAsyncClient.createContinuationToken;
+import static com.azure.search.documents.SearchAsyncClient.createSearchRequest;
+import static com.azure.search.documents.SearchAsyncClient.createSuggestRequest;
+import static com.azure.search.documents.SearchAsyncClient.getSearchResults;
+import static com.azure.search.documents.SearchAsyncClient.getSuggestResults;
 
 /**
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
@@ -627,18 +620,11 @@ public final class SearchClient {
         try {
             Response<Object> response = restClient.getDocuments()
                 .getWithResponse(key, selectedFields, null, Utility.enableSyncRestProxy(context));
-            if (serializer == null) {
-                return new SimpleResponse<>(response, Utility.convertValue(response.getValue(), modelClass));
-            }
-            ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
-            serializer.serialize(sourceStream, response.getValue());
-            T doc = serializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
-                createInstance(modelClass));
-            return new SimpleResponse<>(response, doc);
+
+            return new SimpleResponse<>(response, serializer.deserializeFromBytes(
+                serializer.serializeToBytes(response.getValue()), createInstance(modelClass)));
         } catch (SearchErrorException ex) {
-            throw LOGGER.logExceptionAsError(DocumentResponseConversions.mapSearchErrorException(ex));
-        } catch (IOException ex) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException("Failed to deserialize document.", ex));
+            throw LOGGER.logExceptionAsError(Utility.mapSearchErrorException(ex));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -791,7 +777,7 @@ public final class SearchClient {
             SearchDocumentsResult result = response.getValue();
             SearchPagedResponse page = new SearchPagedResponse(
                 new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
+                createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
                 result.getCoverage(), result.getAnswers());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
@@ -864,7 +850,7 @@ public final class SearchClient {
     public SuggestPagedIterable suggest(String searchText, String suggesterName, SuggestOptions suggestOptions,
         Context context) {
         SuggestRequest suggestRequest = createSuggestRequest(searchText,
-            suggesterName, SuggestOptionsHandler.ensureSuggestOptions(suggestOptions));
+            suggesterName, Utility.ensureSuggestOptions(suggestOptions));
         return new SuggestPagedIterable(() -> suggest(suggestRequest, context));
     }
 
@@ -872,7 +858,8 @@ public final class SearchClient {
         return Utility.executeRestCallWithExceptionHandling(() -> {
             Response<SuggestDocumentsResult> response = restClient.getDocuments().suggestPostWithResponse(suggestRequest, null, Utility.enableSyncRestProxy(context));
             SuggestDocumentsResult result = response.getValue();
-            return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result)), result.getCoverage());
+            return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result, serializer)),
+                result.getCoverage());
         });
     }
 

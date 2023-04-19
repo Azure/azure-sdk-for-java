@@ -21,6 +21,15 @@ public final class AssessedResourceType extends ExpandableStringEnum<AssessedRes
     public static final AssessedResourceType SERVER_VULNERABILITY = fromString("ServerVulnerability");
 
     /**
+     * Creates a new instance of AssessedResourceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssessedResourceType() {
+    }
+
+    /**
      * Creates or finds a AssessedResourceType from its string representation.
      *
      * @param name a name to look for.

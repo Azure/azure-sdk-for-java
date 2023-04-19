@@ -42,15 +42,6 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         return Utils.mapPage(inner, inner1 -> new VolumeGroupImpl(inner1, this.manager()));
     }
 
-    public VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName) {
-        VolumeGroupDetailsInner inner = this.serviceClient().get(resourceGroupName, accountName, volumeGroupName);
-        if (inner != null) {
-            return new VolumeGroupDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VolumeGroupDetails> getWithResponse(
         String resourceGroupName, String accountName, String volumeGroupName, Context context) {
         Response<VolumeGroupDetailsInner> inner =
@@ -61,6 +52,15 @@ public final class VolumeGroupsImpl implements VolumeGroups {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new VolumeGroupDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName) {
+        VolumeGroupDetailsInner inner = this.serviceClient().get(resourceGroupName, accountName, volumeGroupName);
+        if (inner != null) {
+            return new VolumeGroupDetailsImpl(inner, this.manager());
         } else {
             return null;
         }

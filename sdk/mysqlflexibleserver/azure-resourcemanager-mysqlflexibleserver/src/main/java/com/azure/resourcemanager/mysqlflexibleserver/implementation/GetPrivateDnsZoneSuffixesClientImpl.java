@@ -51,7 +51,7 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
      */
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
-    private interface GetPrivateDnsZoneSuffixesService {
+    public interface GetPrivateDnsZoneSuffixesService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.DBforMySQL/getPrivateDnsZoneSuffix")
         @ExpectedResponses({200})
@@ -118,27 +118,7 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GetPrivateDnsZoneSuffixResponseInner> executeAsync() {
-        return executeWithResponseAsync()
-            .flatMap(
-                (Response<GetPrivateDnsZoneSuffixResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get private DNS zone suffix in the cloud.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private DNS zone suffix in the cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetPrivateDnsZoneSuffixResponseInner execute() {
-        return executeAsync().block();
+        return executeWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -153,5 +133,17 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GetPrivateDnsZoneSuffixResponseInner> executeWithResponse(Context context) {
         return executeWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get private DNS zone suffix in the cloud.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private DNS zone suffix in the cloud.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetPrivateDnsZoneSuffixResponseInner execute() {
+        return executeWithResponse(Context.NONE).getValue();
     }
 }

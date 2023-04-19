@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.FailoverInput;
 
 /** Samples for IotHub ManualFailover. */
 public final class IotHubManualFailoverSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/IotHub_ManualFailover.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/IotHub_ManualFailover.json
      */
     /**
      * Sample code: IotHub_ManualFailover.
@@ -21,6 +20,9 @@ public final class IotHubManualFailoverSamples {
         manager
             .iotHubs()
             .manualFailover(
-                "testHub", "myResourceGroup", new FailoverInput().withFailoverRegion("testHub"), Context.NONE);
+                "testHub",
+                "myResourceGroup",
+                new FailoverInput().withFailoverRegion("testHub"),
+                com.azure.core.util.Context.NONE);
     }
 }

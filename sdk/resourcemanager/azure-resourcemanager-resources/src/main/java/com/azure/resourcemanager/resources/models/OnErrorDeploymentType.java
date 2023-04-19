@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OnErrorDeploymentType. */
+/** The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment. */
 public enum OnErrorDeploymentType {
     /** Enum value LastSuccessful. */
     LAST_SUCCESSFUL("LastSuccessful"),
@@ -30,6 +30,9 @@ public enum OnErrorDeploymentType {
      */
     @JsonCreator
     public static OnErrorDeploymentType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OnErrorDeploymentType[] items = OnErrorDeploymentType.values();
         for (OnErrorDeploymentType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum OnErrorDeploymentType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IpGroups Delete. */
 public final class IpGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/IpGroupsDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/IpGroupsDelete.json
      */
     /**
      * Sample code: Delete_IpGroups.
@@ -17,6 +15,11 @@ public final class IpGroupsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpGroups().delete("myResourceGroup", "ipGroups1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getIpGroups()
+            .delete("myResourceGroup", "ipGroups1", com.azure.core.util.Context.NONE);
     }
 }

@@ -30,6 +30,10 @@ public final class IotHubSkuInfo {
     @JsonProperty(value = "capacity")
     private Long capacity;
 
+    /** Creates an instance of IotHubSkuInfo class. */
+    public IotHubSkuInfo() {
+    }
+
     /**
      * Get the name property: The name of the SKU.
      *

@@ -44,7 +44,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
@@ -53,7 +52,8 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -186,7 +186,7 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -207,7 +207,7 @@ public class FluxUtilTest {
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
             FluxUtil.writeFile(body, channel, 6).block();
             byte[] outputStream = Files.readAllBytes(file.toPath());
-            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+            assertArraysEqual(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
     }
 
@@ -222,7 +222,7 @@ public class FluxUtilTest {
         WritableByteChannel channel = Channels.newChannel(byteArrayOutputStream);
 
         FluxUtil.writeToWritableByteChannel(body, channel).block();
-        assertArrayEquals(byteArrayOutputStream.toByteArray(), bytes);
+        assertArraysEqual(byteArrayOutputStream.toByteArray(), bytes);
     }
 
     @ParameterizedTest
@@ -274,7 +274,7 @@ public class FluxUtilTest {
 
         // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
         final byte[] data = new byte[4096];
-        new SecureRandom().nextBytes(data);
+        fillArray(data);
         Flux<ByteBuffer> ignoresRequestFlux = new Flux<ByteBuffer>() {
             @Override
             public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
@@ -323,7 +323,7 @@ public class FluxUtilTest {
     @Test
     public void writingRetriableStreamThatFails() throws IOException {
         byte[] data = new byte[1024 * 1024];
-        new SecureRandom().nextBytes(data);
+        fillArray(data);
 
         AtomicInteger errorCount = new AtomicInteger();
         Flux<ByteBuffer> retriableStream = FluxUtil.createRetriableDownloadFlux(
@@ -347,7 +347,7 @@ public class FluxUtilTest {
             .verify(Duration.ofSeconds(30));
 
         byte[] writtenData = Files.readAllBytes(file);
-        assertArrayEquals(data, writtenData);
+        assertArraysEqual(data, writtenData);
     }
 
     private Flux<ByteBuffer> generateStream(byte[] data, long offset, AtomicInteger errorCount) {
@@ -374,22 +374,17 @@ public class FluxUtilTest {
     @Test
     public void readFile() throws IOException {
         final byte[] expectedFileBytes = new byte[10 * 1024 * 1024];
-        final SecureRandom random = new SecureRandom();
-        random.nextBytes(expectedFileBytes);
+        fillArray(expectedFileBytes);
 
-        File file = createFileIfNotExist();
-        try (FileOutputStream stream = new FileOutputStream(file)) {
-            stream.write(expectedFileBytes);
-        }
+        MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(expectedFileBytes,
+            expectedFileBytes.length);
 
-        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+        try (AsynchronousFileChannel channel = mockAsynchronousFileChannel) {
             StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(FluxUtil.readFile(channel),
                     expectedFileBytes.length))
-                .assertNext(bytes -> assertArrayEquals(expectedFileBytes, bytes))
+                .assertNext(bytes -> assertArraysEqual(expectedFileBytes, bytes))
                 .verifyComplete();
         }
-
-        Files.deleteIfExists(file.toPath());
     }
 
     @ParameterizedTest
@@ -416,7 +411,7 @@ public class FluxUtilTest {
 
                 // Check if this is the last emission expected.
                 if (requestCount.decrementAndGet() == -1) {
-                    assertArrayEquals(expected, collectionBuffer.array());
+                    assertArraysEqual(expected, collectionBuffer.array());
                     return false;
                 } else {
                     return true;
@@ -429,9 +424,8 @@ public class FluxUtilTest {
         byte[] singleRead = new byte[4096];
         byte[] multipleReads = new byte[8193];
 
-        SecureRandom random = new SecureRandom();
-        random.nextBytes(singleRead);
-        random.nextBytes(multipleReads);
+        fillArray(singleRead);
+        fillArray(multipleReads);
 
         return Stream.of(
             Arguments.arguments(null, null, emptyBuffer),
@@ -447,18 +441,18 @@ public class FluxUtilTest {
     @Test
     public void toFluxByteBufferMultipleSubscriptions() {
         byte[] singleRead = new byte[4096];
-        new SecureRandom().nextBytes(singleRead);
+        fillArray(singleRead);
 
         InputStream inputStream = new ByteArrayInputStream(singleRead);
 
         Flux<ByteBuffer> conversionFlux = FluxUtil.toFluxByteBuffer(inputStream);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArrayEquals(singleRead, actual))
+            .assertNext(actual -> assertArraysEqual(singleRead, actual))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(conversionFlux))
-            .assertNext(actual -> assertArrayEquals(new byte[0], actual))
+            .assertNext(actual -> assertArraysEqual(new byte[0], actual))
             .verifyComplete();
     }
 

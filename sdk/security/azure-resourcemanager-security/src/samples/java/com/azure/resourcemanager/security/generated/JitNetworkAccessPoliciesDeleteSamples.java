@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for JitNetworkAccessPolicies Delete. */
 public final class JitNetworkAccessPoliciesDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class JitNetworkAccessPoliciesDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteAJITNetworkAccessPolicy(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.jitNetworkAccessPolicies().deleteWithResponse("myRg1", "westeurope", "default", Context.NONE);
+        manager
+            .jitNetworkAccessPolicies()
+            .deleteWithResponse("myRg1", "westeurope", "default", com.azure.core.util.Context.NONE);
     }
 }

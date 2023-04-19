@@ -36,6 +36,10 @@ public final class CapabilityPropertiesInner {
     @JsonProperty(value = "supportedFlexibleServerEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerEditionCapability> supportedFlexibleServerEditions;
 
+    /** Creates an instance of CapabilityPropertiesInner class. */
+    public CapabilityPropertiesInner() {
+    }
+
     /**
      * Get the zone property: zone name.
      *

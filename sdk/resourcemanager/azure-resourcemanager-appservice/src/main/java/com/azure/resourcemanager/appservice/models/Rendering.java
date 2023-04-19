@@ -28,6 +28,10 @@ public final class Rendering {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of Rendering class. */
+    public Rendering() {
+    }
+
     /**
      * Get the type property: Rendering Type.
      *

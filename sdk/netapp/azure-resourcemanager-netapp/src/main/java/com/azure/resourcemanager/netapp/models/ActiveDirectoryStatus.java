@@ -26,6 +26,15 @@ public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDire
     public static final ActiveDirectoryStatus UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of ActiveDirectoryStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActiveDirectoryStatus() {
+    }
+
+    /**
      * Creates or finds a ActiveDirectoryStatus from its string representation.
      *
      * @param name a name to look for.

@@ -423,7 +423,7 @@ public class IndexingTests extends SearchTestBase {
 
         for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
             SearchDocument actual = client.getDocument(hotel.get("HotelId").toString(), SearchDocument.class);
-            assertMapEquals(hotel, actual, false);
+            assertMapEquals(hotel, actual, true);
         }
     }
 
@@ -462,7 +462,7 @@ public class IndexingTests extends SearchTestBase {
 
         for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
             getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), SearchDocument.class, hotel,
-                (expected, actual) -> assertMapEquals(expected, actual, false));
+                (expected, actual) -> assertMapEquals(expected, actual, true));
         }
     }
 
@@ -498,7 +498,7 @@ public class IndexingTests extends SearchTestBase {
 
         for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
             SearchDocument actual = client.getDocument(hotel.get("HotelId").toString(), SearchDocument.class);
-            assertMapEquals(hotel, actual, false);
+            assertMapEquals(hotel, actual, true);
         }
     }
 
@@ -538,7 +538,7 @@ public class IndexingTests extends SearchTestBase {
 
         for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
             getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), SearchDocument.class, hotel,
-                (expected, actual) -> assertMapEquals(expected, actual, false));
+                (expected, actual) -> assertMapEquals(expected, actual, true));
         }
     }
 

@@ -89,8 +89,9 @@ final class MemberNameConverterImpl implements MemberNameConverter {
 
             if (f.isAnnotationPresent(JsonIgnore.class) || !visibilityChecker.isFieldVisible(f)) {
                 if (f.isAnnotationPresent(JsonProperty.class)) {
-                    LOGGER.info("Field {} is annotated with JsonProperty but isn't accessible to "
-                        + "JacksonJsonSerializer.", f.getName());
+                    LOGGER.atInfo()
+                        .addKeyValue("field", f.getName())
+                        .log("Field is annotated with JsonProperty but isn't accessible to JacksonJsonSerializer.");
                 }
                 return null;
             }
@@ -114,8 +115,9 @@ final class MemberNameConverterImpl implements MemberNameConverter {
                 || m.isAnnotationPresent(JsonIgnore.class)
                 || !visibilityChecker.isGetterVisible(m)) {
                 if (m.isAnnotationPresent(JsonGetter.class) || m.isAnnotationPresent(JsonProperty.class)) {
-                    LOGGER.info("Method {} is annotated with either JsonGetter or JsonProperty but isn't accessible "
-                        + "to JacksonJsonSerializer.", m.getName());
+                    LOGGER.atInfo()
+                        .addKeyValue("method", m.getName())
+                        .log("Method is annotated with either JsonGetter or JsonProperty but isn't accessible  to JacksonJsonSerializer.");
                 }
                 return null;
             }

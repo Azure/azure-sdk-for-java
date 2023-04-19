@@ -27,6 +27,10 @@ public final class VaultInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private VaultProperties properties;
 
+    /** Creates an instance of VaultInner class. */
+    public VaultInner() {
+    }
+
     /**
      * Get the systemData property: System metadata for the key vault.
      *

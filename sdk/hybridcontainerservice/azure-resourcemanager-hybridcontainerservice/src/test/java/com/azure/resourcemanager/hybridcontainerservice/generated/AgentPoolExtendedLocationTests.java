@@ -7,25 +7,21 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolExtendedLocation;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolExtendedLocationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolExtendedLocation model =
-            BinaryData
-                .fromString("{\"type\":\"dnbbglzps\",\"name\":\"ydmcwyhzdxssa\"}")
-                .toObject(AgentPoolExtendedLocation.class);
-        Assertions.assertEquals("dnbbglzps", model.type());
-        Assertions.assertEquals("ydmcwyhzdxssa", model.name());
+            BinaryData.fromString("{\"type\":\"qgitxmed\",\"name\":\"c\"}").toObject(AgentPoolExtendedLocation.class);
+        Assertions.assertEquals("qgitxmed", model.type());
+        Assertions.assertEquals("c", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        AgentPoolExtendedLocation model =
-            new AgentPoolExtendedLocation().withType("dnbbglzps").withName("ydmcwyhzdxssa");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AgentPoolExtendedLocation model = new AgentPoolExtendedLocation().withType("qgitxmed").withName("c");
         model = BinaryData.fromObject(model).toObject(AgentPoolExtendedLocation.class);
-        Assertions.assertEquals("dnbbglzps", model.type());
-        Assertions.assertEquals("ydmcwyhzdxssa", model.name());
+        Assertions.assertEquals("qgitxmed", model.type());
+        Assertions.assertEquals("c", model.name());
     }
 }

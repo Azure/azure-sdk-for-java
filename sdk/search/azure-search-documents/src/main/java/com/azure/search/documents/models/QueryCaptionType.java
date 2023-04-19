@@ -7,7 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -17,11 +16,19 @@ import java.util.Collection;
  * as 'extractive|highlight-true'. Defaults to 'None'.
  */
 public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionType> {
-    /** Static value none for QueryCaptionType. */
+    /** Do not return captions for the query. */
     public static final QueryCaptionType NONE = fromString("none");
 
-    /** Static value extractive for QueryCaptionType. */
+    /** Extracts captions from the matching documents that contain passages relevant to the search query. */
     public static final QueryCaptionType EXTRACTIVE = fromString("extractive");
+
+    /**
+     * Creates a new instance of QueryCaptionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryCaptionType() {}
 
     /**
      * Creates or finds a QueryCaptionType from its string representation.
@@ -29,7 +36,6 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * @param name a name to look for.
      * @return the corresponding QueryCaptionType.
      */
-    @JsonCreator
     public static QueryCaptionType fromString(String name) {
         return fromString(name, QueryCaptionType.class);
     }

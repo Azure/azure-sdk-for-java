@@ -17,6 +17,15 @@ public final class DhcpTypeEnum extends ExpandableStringEnum<DhcpTypeEnum> {
     public static final DhcpTypeEnum RELAY = fromString("RELAY");
 
     /**
+     * Creates a new instance of DhcpTypeEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DhcpTypeEnum() {
+    }
+
+    /**
      * Creates or finds a DhcpTypeEnum from its string representation.
      *
      * @param name a name to look for.

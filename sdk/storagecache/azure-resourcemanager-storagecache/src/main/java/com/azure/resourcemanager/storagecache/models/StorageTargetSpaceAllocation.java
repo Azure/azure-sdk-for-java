@@ -22,6 +22,10 @@ public final class StorageTargetSpaceAllocation {
     @JsonProperty(value = "allocationPercentage")
     private Integer allocationPercentage;
 
+    /** Creates an instance of StorageTargetSpaceAllocation class. */
+    public StorageTargetSpaceAllocation() {
+    }
+
     /**
      * Get the name property: Name of the storage target.
      *

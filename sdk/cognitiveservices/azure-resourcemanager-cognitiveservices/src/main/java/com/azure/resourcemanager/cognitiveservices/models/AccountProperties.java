@@ -166,6 +166,18 @@ public final class AccountProperties {
     @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private String scheduledPurgeDate;
 
+    /*
+     * The multiregion settings of Cognitive Services account.
+     */
+    @JsonProperty(value = "locations")
+    private MultiRegionSettings locations;
+
+    /*
+     * The commitment plan associations of Cognitive Services account.
+     */
+    @JsonProperty(value = "commitmentPlanAssociations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CommitmentPlanAssociation> commitmentPlanAssociations;
+
     /** Creates an instance of AccountProperties class. */
     public AccountProperties() {
     }
@@ -531,6 +543,35 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the locations property: The multiregion settings of Cognitive Services account.
+     *
+     * @return the locations value.
+     */
+    public MultiRegionSettings locations() {
+        return this.locations;
+    }
+
+    /**
+     * Set the locations property: The multiregion settings of Cognitive Services account.
+     *
+     * @param locations the locations value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withLocations(MultiRegionSettings locations) {
+        this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the commitmentPlanAssociations property: The commitment plan associations of Cognitive Services account.
+     *
+     * @return the commitmentPlanAssociations value.
+     */
+    public List<CommitmentPlanAssociation> commitmentPlanAssociations() {
+        return this.commitmentPlanAssociations;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -562,6 +603,12 @@ public final class AccountProperties {
         }
         if (quotaLimit() != null) {
             quotaLimit().validate();
+        }
+        if (locations() != null) {
+            locations().validate();
+        }
+        if (commitmentPlanAssociations() != null) {
+            commitmentPlanAssociations().forEach(e -> e.validate());
         }
     }
 }

@@ -14,21 +14,24 @@ public final class DataFeedDimension {
      * dimension name
      */
     @JsonProperty(value = "dimensionName", required = true)
-    private String name;
+    private String dimensionName;
 
     /*
      * dimension display name
      */
     @JsonProperty(value = "dimensionDisplayName")
-    private String displayName;
+    private String dimensionDisplayName;
+
+    /** Creates an instance of DataFeedDimension class. */
+    public DataFeedDimension() {}
 
     /**
      * Get the dimensionName property: dimension name.
      *
      * @return the dimensionName value.
      */
-    public String getName() {
-        return this.name;
+    public String getDimensionName() {
+        return this.dimensionName;
     }
 
     /**
@@ -37,8 +40,8 @@ public final class DataFeedDimension {
      * @param dimensionName the dimensionName value to set.
      * @return the DataFeedDimension object itself.
      */
-    public DataFeedDimension setName(String dimensionName) {
-        this.name = dimensionName;
+    public DataFeedDimension setDimensionName(String dimensionName) {
+        this.dimensionName = dimensionName;
         return this;
     }
 
@@ -47,8 +50,8 @@ public final class DataFeedDimension {
      *
      * @return the dimensionDisplayName value.
      */
-    public String getDisplayName() {
-        return this.displayName;
+    public String getDimensionDisplayName() {
+        return this.dimensionDisplayName;
     }
 
     /**
@@ -57,8 +60,8 @@ public final class DataFeedDimension {
      * @param dimensionDisplayName the dimensionDisplayName value to set.
      * @return the DataFeedDimension object itself.
      */
-    public DataFeedDimension setDisplayName(String dimensionDisplayName) {
-        this.displayName = dimensionDisplayName;
+    public DataFeedDimension setDimensionDisplayName(String dimensionDisplayName) {
+        this.dimensionDisplayName = dimensionDisplayName;
         return this;
     }
 }

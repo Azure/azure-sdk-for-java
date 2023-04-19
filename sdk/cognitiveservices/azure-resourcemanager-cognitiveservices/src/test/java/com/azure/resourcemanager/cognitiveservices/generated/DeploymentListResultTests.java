@@ -7,23 +7,22 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentListResult;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"tpnapnyiropuhpig\",\"value\":[{\"etag\":\"gqgitxmedjvcsl\",\"properties\":{\"provisioningState\":\"Accepted\",\"capabilities\":{},\"raiPolicyName\":\"zzhxgktrm\"},\"id\":\"cnapkteoell\",\"name\":\"pt\",\"type\":\"d\"},{\"etag\":\"fqbuaceopzf\",\"properties\":{\"provisioningState\":\"Moving\",\"capabilities\":{},\"raiPolicyName\":\"ppcqeqxolz\"},\"id\":\"hzxct\",\"name\":\"bgbkdmoizpost\",\"type\":\"grcfb\"},{\"etag\":\"mfqjhhkxbp\",\"properties\":{\"provisioningState\":\"Failed\",\"capabilities\":{},\"raiPolicyName\":\"j\"},\"id\":\"gudivkrtswbxqz\",\"name\":\"szjfauvjfdxxivet\",\"type\":\"t\"},{\"etag\":\"qtdo\",\"properties\":{\"provisioningState\":\"Failed\",\"capabilities\":{},\"raiPolicyName\":\"xyslqbh\"},\"id\":\"xoblytkbl\",\"name\":\"pe\",\"type\":\"wwfbkrvrnsvshq\"}]}")
+                    "{\"nextLink\":\"qxn\",\"value\":[{\"etag\":\"xhuri\",\"properties\":{\"provisioningState\":\"Moving\",\"capabilities\":{},\"raiPolicyName\":\"nkbebxmuby\"},\"id\":\"twlrbqt\",\"name\":\"oievseotgqrlltm\",\"type\":\"wlauwzizxbmpg\"},{\"etag\":\"fuzmuvpbtt\",\"properties\":{\"provisioningState\":\"Accepted\",\"capabilities\":{},\"raiPolicyName\":\"ebmnzbtbhjpglk\"},\"id\":\"ohdneuel\",\"name\":\"phsdyhto\",\"type\":\"fikdowwqu\"},{\"etag\":\"zx\",\"properties\":{\"provisioningState\":\"Succeeded\",\"capabilities\":{},\"raiPolicyName\":\"zonosgg\"},\"id\":\"c\",\"name\":\"hfwdsjnkaljutiis\",\"type\":\"acffgdkzzewkfvhq\"}]}")
                 .toObject(DeploymentListResult.class);
-        Assertions.assertEquals("tpnapnyiropuhpig", model.nextLink());
+        Assertions.assertEquals("qxn", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        DeploymentListResult model = new DeploymentListResult().withNextLink("tpnapnyiropuhpig");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DeploymentListResult model = new DeploymentListResult().withNextLink("qxn");
         model = BinaryData.fromObject(model).toObject(DeploymentListResult.class);
-        Assertions.assertEquals("tpnapnyiropuhpig", model.nextLink());
+        Assertions.assertEquals("qxn", model.nextLink());
     }
 }

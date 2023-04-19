@@ -19,6 +19,10 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
     @JsonProperty(value = "properties")
     private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties;
 
+    /** Creates an instance of StaticSiteCustomDomainOverviewArmResourceInner class. */
+    public StaticSiteCustomDomainOverviewArmResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: StaticSiteCustomDomainOverviewARMResource resource specific properties.
      *

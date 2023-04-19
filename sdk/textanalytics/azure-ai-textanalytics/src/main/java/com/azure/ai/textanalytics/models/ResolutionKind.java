@@ -7,9 +7,6 @@ import com.azure.core.util.ExpandableStringEnum;
 
 /** Defines values for ResolutionKind. */
 public final class ResolutionKind extends ExpandableStringEnum<ResolutionKind> {
-    /** Static value BooleanResolution for ResolutionKind. */
-    public static final ResolutionKind BOOLEAN_RESOLUTION = fromString("BooleanResolution");
-
     /** Static value DateTimeResolution for ResolutionKind. */
     public static final ResolutionKind DATE_TIME_RESOLUTION = fromString("DateTimeResolution");
 

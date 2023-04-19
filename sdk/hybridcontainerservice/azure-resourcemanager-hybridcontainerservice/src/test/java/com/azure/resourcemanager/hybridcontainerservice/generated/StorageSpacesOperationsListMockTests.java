@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager;
 import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpaces;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class StorageSpacesOperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"hciStorageProfile\":{\"mocGroup\":\"nhl\",\"mocLocation\":\"rqnkkzjcjbtr\",\"mocStorageContainer\":\"ehvvib\"},\"vmwareStorageProfile\":{\"datacenter\":\"jsto\",\"datastore\":\"eitpkxztmo\",\"folder\":\"klf\",\"resourcePool\":\"dgfcwqmp\"},\"provisioningState\":\"Updating\",\"status\":{}},\"extendedLocation\":{\"type\":\"mjyhohujswtwko\",\"name\":\"wculkbaw\"},\"location\":\"fajnjwltlwtjjguk\",\"tags\":{\"aimlnwiaaom\":\"hsnvkcdmxzrp\",\"eazulcs\":\"l\",\"jhlfzswpchwahf\":\"thwwn\"},\"id\":\"ousnfepgfewe\",\"name\":\"wlyxgncxyk\",\"type\":\"hdjhlimmbcx\"}]}";
+            "{\"value\":[{\"properties\":{\"hciStorageProfile\":{\"mocGroup\":\"hocxvdfffwafqrou\",\"mocLocation\":\"spave\",\"mocStorageContainer\":\"r\"},\"vmwareStorageProfile\":{\"datacenter\":\"unzo\",\"datastore\":\"dhcxgkmoy\",\"folder\":\"dyuib\",\"resourcePool\":\"fdn\"},\"provisioningState\":\"Updating\",\"status\":{}},\"extendedLocation\":{\"type\":\"cjnaeoisrvhmgor\",\"name\":\"ukiscvwmzhw\"},\"location\":\"lefaxvxilcbtgn\",\"tags\":{\"hycav\":\"eyqxtjjfzql\",\"knlrariaawiuagy\":\"dggxdbeesmi\",\"ojocqwogf\":\"wqfbylyrfgiagt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\"},\"id\":\"own\",\"name\":\"tgkbugrjqctojc\",\"type\":\"isofieypefojyqd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,22 +60,21 @@ public final class StorageSpacesOperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<StorageSpaces> response = manager.storageSpacesOperations().list(Context.NONE);
+        PagedIterable<StorageSpaces> response =
+            manager.storageSpacesOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fajnjwltlwtjjguk", response.iterator().next().location());
-        Assertions.assertEquals("hsnvkcdmxzrp", response.iterator().next().tags().get("aimlnwiaaom"));
-        Assertions.assertEquals("nhl", response.iterator().next().properties().hciStorageProfile().mocGroup());
+        Assertions.assertEquals("lefaxvxilcbtgn", response.iterator().next().location());
+        Assertions.assertEquals("eyqxtjjfzql", response.iterator().next().tags().get("hycav"));
         Assertions
-            .assertEquals("rqnkkzjcjbtr", response.iterator().next().properties().hciStorageProfile().mocLocation());
+            .assertEquals("hocxvdfffwafqrou", response.iterator().next().properties().hciStorageProfile().mocGroup());
+        Assertions.assertEquals("spave", response.iterator().next().properties().hciStorageProfile().mocLocation());
+        Assertions.assertEquals("r", response.iterator().next().properties().hciStorageProfile().mocStorageContainer());
+        Assertions.assertEquals("unzo", response.iterator().next().properties().vmwareStorageProfile().datacenter());
         Assertions
-            .assertEquals("ehvvib", response.iterator().next().properties().hciStorageProfile().mocStorageContainer());
-        Assertions.assertEquals("jsto", response.iterator().next().properties().vmwareStorageProfile().datacenter());
-        Assertions
-            .assertEquals("eitpkxztmo", response.iterator().next().properties().vmwareStorageProfile().datastore());
-        Assertions.assertEquals("klf", response.iterator().next().properties().vmwareStorageProfile().folder());
-        Assertions
-            .assertEquals("dgfcwqmp", response.iterator().next().properties().vmwareStorageProfile().resourcePool());
-        Assertions.assertEquals("mjyhohujswtwko", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("wculkbaw", response.iterator().next().extendedLocation().name());
+            .assertEquals("dhcxgkmoy", response.iterator().next().properties().vmwareStorageProfile().datastore());
+        Assertions.assertEquals("dyuib", response.iterator().next().properties().vmwareStorageProfile().folder());
+        Assertions.assertEquals("fdn", response.iterator().next().properties().vmwareStorageProfile().resourcePool());
+        Assertions.assertEquals("cjnaeoisrvhmgor", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("ukiscvwmzhw", response.iterator().next().extendedLocation().name());
     }
 }

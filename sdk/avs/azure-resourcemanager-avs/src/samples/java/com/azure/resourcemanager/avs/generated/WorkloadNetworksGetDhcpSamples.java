@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetDhcp. */
 public final class WorkloadNetworksGetDhcpSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkloadNetworksGetDhcpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", Context.NONE);
+        manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

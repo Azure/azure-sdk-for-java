@@ -17,6 +17,15 @@ public final class AutoProvision extends ExpandableStringEnum<AutoProvision> {
     public static final AutoProvision OFF = fromString("Off");
 
     /**
+     * Creates a new instance of AutoProvision value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoProvision() {
+    }
+
+    /**
      * Creates or finds a AutoProvision from its string representation.
      *
      * @param name a name to look for.

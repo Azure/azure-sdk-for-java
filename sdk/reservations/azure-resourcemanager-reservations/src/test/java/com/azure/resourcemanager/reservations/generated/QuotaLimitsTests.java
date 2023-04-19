@@ -18,12 +18,12 @@ public final class QuotaLimitsTests {
         QuotaLimits model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"limit\":988494266,\"currentValue\":1400063393,\"unit\":\"qudf\",\"resourceType\":\"serviceSpecific\",\"quotaPeriod\":\"aaabjyvayff\",\"properties\":\"datarzrtuzqogsex\"},\"id\":\"evfdnwnwm\",\"name\":\"wzsyyceuzs\",\"type\":\"i\"}],\"nextLink\":\"ud\"}")
+                    "{\"value\":[{\"properties\":{\"limit\":1927044883,\"currentValue\":825727567,\"unit\":\"lwuip\",\"resourceType\":\"standard\",\"quotaPeriod\":\"kzivgvvcnayrh\",\"properties\":\"datanxxmueedndrdv\"},\"id\":\"tkwqqtchealm\",\"name\":\"mtdaa\",\"type\":\"gdv\"},{\"properties\":{\"limit\":627110889,\"currentValue\":1695810733,\"unit\":\"g\",\"resourceType\":\"shared\",\"quotaPeriod\":\"udxepxgyqagv\",\"properties\":\"datamnpkukghimdblxg\"},\"id\":\"imfnjhfjx\",\"name\":\"mszkkfo\",\"type\":\"rey\"},{\"properties\":{\"limit\":648968318,\"currentValue\":1648570452,\"unit\":\"aw\",\"resourceType\":\"serviceSpecific\",\"quotaPeriod\":\"xwczelpcire\",\"properties\":\"datafeaenwab\"},\"id\":\"atklddxbjhwuaa\",\"name\":\"oz\",\"type\":\"osphyoul\"},{\"properties\":{\"limit\":106141655,\"currentValue\":326673667,\"unit\":\"l\",\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"wosytxitcskf\",\"properties\":\"datatq\"},\"id\":\"miekkezzikhlyfjh\",\"name\":\"gqggebdunygae\",\"type\":\"idb\"}],\"nextLink\":\"atpxl\"}")
                 .toObject(QuotaLimits.class);
-        Assertions.assertEquals(988494266, model.value().get(0).properties().limit());
-        Assertions.assertEquals("qudf", model.value().get(0).properties().unit());
-        Assertions.assertEquals(ResourceType.SERVICE_SPECIFIC, model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("ud", model.nextLink());
+        Assertions.assertEquals(1927044883, model.value().get(0).properties().limit());
+        Assertions.assertEquals("lwuip", model.value().get(0).properties().unit());
+        Assertions.assertEquals(ResourceType.STANDARD, model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("atpxl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,15 +36,36 @@ public final class QuotaLimitsTests {
                             new CurrentQuotaLimitBaseInner()
                                 .withProperties(
                                     new QuotaProperties()
-                                        .withLimit(988494266)
-                                        .withUnit("qudf")
+                                        .withLimit(1927044883)
+                                        .withUnit("lwuip")
+                                        .withResourceType(ResourceType.STANDARD)
+                                        .withProperties("datanxxmueedndrdv")),
+                            new CurrentQuotaLimitBaseInner()
+                                .withProperties(
+                                    new QuotaProperties()
+                                        .withLimit(627110889)
+                                        .withUnit("g")
+                                        .withResourceType(ResourceType.SHARED)
+                                        .withProperties("datamnpkukghimdblxg")),
+                            new CurrentQuotaLimitBaseInner()
+                                .withProperties(
+                                    new QuotaProperties()
+                                        .withLimit(648968318)
+                                        .withUnit("aw")
                                         .withResourceType(ResourceType.SERVICE_SPECIFIC)
-                                        .withProperties("datarzrtuzqogsex"))))
-                .withNextLink("ud");
+                                        .withProperties("datafeaenwab")),
+                            new CurrentQuotaLimitBaseInner()
+                                .withProperties(
+                                    new QuotaProperties()
+                                        .withLimit(106141655)
+                                        .withUnit("l")
+                                        .withResourceType(ResourceType.LOW_PRIORITY)
+                                        .withProperties("datatq"))))
+                .withNextLink("atpxl");
         model = BinaryData.fromObject(model).toObject(QuotaLimits.class);
-        Assertions.assertEquals(988494266, model.value().get(0).properties().limit());
-        Assertions.assertEquals("qudf", model.value().get(0).properties().unit());
-        Assertions.assertEquals(ResourceType.SERVICE_SPECIFIC, model.value().get(0).properties().resourceType());
-        Assertions.assertEquals("ud", model.nextLink());
+        Assertions.assertEquals(1927044883, model.value().get(0).properties().limit());
+        Assertions.assertEquals("lwuip", model.value().get(0).properties().unit());
+        Assertions.assertEquals(ResourceType.STANDARD, model.value().get(0).properties().resourceType());
+        Assertions.assertEquals("atpxl", model.nextLink());
     }
 }

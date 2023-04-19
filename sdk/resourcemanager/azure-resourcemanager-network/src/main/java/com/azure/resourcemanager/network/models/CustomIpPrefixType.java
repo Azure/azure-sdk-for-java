@@ -20,6 +20,15 @@ public final class CustomIpPrefixType extends ExpandableStringEnum<CustomIpPrefi
     public static final CustomIpPrefixType CHILD = fromString("Child");
 
     /**
+     * Creates a new instance of CustomIpPrefixType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomIpPrefixType() {
+    }
+
+    /**
      * Creates or finds a CustomIpPrefixType from its string representation.
      *
      * @param name a name to look for.

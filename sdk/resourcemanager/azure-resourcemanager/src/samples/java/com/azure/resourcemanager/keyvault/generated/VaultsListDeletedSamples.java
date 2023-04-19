@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults ListDeleted. */
 public final class VaultsListDeletedSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/listDeletedVaults.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/listDeletedVaults.json
      */
     /**
      * Sample code: List deleted vaults in the specified subscription.
@@ -18,6 +16,6 @@ public final class VaultsListDeletedSamples {
      */
     public static void listDeletedVaultsInTheSpecifiedSubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.vaults().manager().serviceClient().getVaults().listDeleted(Context.NONE);
+        azure.vaults().manager().serviceClient().getVaults().listDeleted(com.azure.core.util.Context.NONE);
     }
 }

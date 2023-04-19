@@ -34,6 +34,10 @@ public final class FlowAccessControlConfiguration {
     @JsonProperty(value = "workflowManagement")
     private FlowAccessControlConfigurationPolicy workflowManagement;
 
+    /** Creates an instance of FlowAccessControlConfiguration class. */
+    public FlowAccessControlConfiguration() {
+    }
+
     /**
      * Get the triggers property: The access control configuration for invoking workflow triggers.
      *

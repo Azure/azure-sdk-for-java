@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -163,7 +164,27 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 "Received {} after backoff/retry. Will fail the request. {}",
                 exceptionType,
                 exception);
-            return BridgeInternal.createServiceUnavailableException(exception);
+            int subStatusCode = getExceptionSubStatusCodeForGoneRetryPolicy(exception);
+            return BridgeInternal.createServiceUnavailableException(exception, subStatusCode);
+        }
+
+        private int getExceptionSubStatusCodeForGoneRetryPolicy(Exception exception) {
+            int exceptionSubStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
+
+            if (exception instanceof CosmosException) {
+                if (exception instanceof PartitionKeyRangeIsSplittingException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT;
+                } else if (exception instanceof PartitionIsMigratingException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT;
+                } else if (exception instanceof InvalidPartitionException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT;
+                } else if (exception instanceof PartitionKeyRangeGoneException) {
+                    exceptionSubStatusCode = HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT;
+                } else {
+                    exceptionSubStatusCode = ((CosmosException) exception).getSubStatusCode();
+                }
+            }
+            return exceptionSubStatusCode;
         }
 
         @Override
@@ -179,7 +200,8 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
                 BridgeInternal.hasSendingRequestStarted((CosmosException)exception) &&
-                !((GoneException)exception).isBasedOn410ResponseFromService()) {
+                !((GoneException)exception).isBasedOn410ResponseFromService() &&
+                !this.request.getNonIdempotentWriteRetriesEnabled()) {
 
                 logger.warn(
                     "Operation will NOT be retried. Write operations which failed due to transient transport errors " +
@@ -279,7 +301,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 logger.warn("Received second InvalidPartitionException after backoff/retry. Will fail the request. {}",
                     exception.toString());
                 return Pair.of(
-                    Mono.just(ShouldRetryResult.error(BridgeInternal.createServiceUnavailableException(exception))),
+                    Mono.just(ShouldRetryResult.error(BridgeInternal.createServiceUnavailableException(exception, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT))),
                     false);
             }
 

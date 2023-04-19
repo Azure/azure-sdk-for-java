@@ -240,7 +240,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             SHARED_ENCRYPTION_DATABASE.createClientEncryptionKey("key2",
                 CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName(), metadata2).block();
 
-            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
+            ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths(1), 1);
             String containerId = UUID.randomUUID().toString();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
             properties.setClientEncryptionPolicy(clientEncryptionPolicy);
@@ -272,80 +272,80 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
         cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(doc -> {
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(doc -> {
 
-                PartitionKey partitionKey = null;
+                           PartitionKey partitionKey = null;
 
-                Object propertyValue = null;
-                if (paths != null && !paths.isEmpty()) {
-                    List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
-                    if (propertyValue == null) {
-                        partitionKey = PartitionKey.NONE;
-                    } else {
-                        partitionKey = new PartitionKey(propertyValue);
-                    }
-                } else {
-                    partitionKey = new PartitionKey(null);
-                }
+                           Object propertyValue = null;
+                           if (paths != null && !paths.isEmpty()) {
+                               List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                               propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                               if (propertyValue == null) {
+                                   partitionKey = PartitionKey.NONE;
+                               } else {
+                                   partitionKey = new PartitionKey(propertyValue);
+                               }
+                           } else {
+                               partitionKey = new PartitionKey(null);
+                           }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
-            }).then().block();
+                           return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                       }).then().block();
         logger.info("Truncating collection {} triggers ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryTriggers("SELECT * FROM root", options)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(trigger -> {
-//                    if (paths != null && !paths.isEmpty()) {
-//                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-//                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-//                        Object propertyValue = getTrigger.getObjectByPath(PathParser.getPathParts(getPaths.get(0)));
-//                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
-//                    }
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(trigger -> {
+                           //                    if (paths != null && !paths.isEmpty()) {
+                           //                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                           //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                           //                        Object propertyValue = getTrigger.getObjectByPath(PathParser.getPathParts(getPaths.get(0)));
+                           //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
+                           //                    }
 
-                return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
-            }).then().block();
+                           return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
+                       }).then().block();
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryStoredProcedures("SELECT * FROM root", options)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(storedProcedure -> {
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(storedProcedure -> {
 
-//                    if (getPaths != null && !getPaths.isEmpty()) {
-//                    if (paths != null && !paths.isEmpty()) {
-//                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-//                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-//                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
-//                    }
+                           //                    if (getPaths != null && !getPaths.isEmpty()) {
+                           //                    if (paths != null && !paths.isEmpty()) {
+                           //                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                           //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                           //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
+                           //                    }
 
-                return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
-            }).then().block();
+                           return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
+                       }).then().block();
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
 
         cosmosContainer.getScripts().queryUserDefinedFunctions("SELECT * FROM root", options)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(udf -> {
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(udf -> {
 
-//                    if (getPaths != null && !getPaths.isEmpty()) {
-//                    if (paths != null && !paths.isEmpty()) {
-//                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-//                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-//                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
-//                    }
+                           //                    if (getPaths != null && !getPaths.isEmpty()) {
+                           //                    if (paths != null && !paths.isEmpty()) {
+                           //                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
+                           //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
+                           //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
+                           //                    }
 
-                return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
-            }).then().block();
+                           return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                       }).then().block();
 
         logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
@@ -565,6 +565,10 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
 
         return collectionDefinition;
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
+        return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
     }
 
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
@@ -1213,7 +1217,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
-        protected static List<ClientEncryptionIncludedPath> getPaths() {
+        protected static List<ClientEncryptionIncludedPath> getPaths(int policyFormatVersion) {
             ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
             includedPath1.setClientEncryptionKeyId("key1");
             includedPath1.setPath("/sensitiveString");
@@ -1292,6 +1296,18 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
             includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
 
+            ClientEncryptionIncludedPath includedPath14 = new ClientEncryptionIncludedPath();
+            includedPath14.setClientEncryptionKeyId("key1");
+            includedPath14.setPath("/id");
+            includedPath14.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath14.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
+            ClientEncryptionIncludedPath includedPath15 = new ClientEncryptionIncludedPath();
+            includedPath15.setClientEncryptionKeyId("key1");
+            includedPath15.setPath("/pk");
+            includedPath15.setEncryptionType(CosmosEncryptionType.DETERMINISTIC.getName());
+            includedPath15.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256.getName());
+
             List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
             paths.add(includedPath1);
             paths.add(includedPath2);
@@ -1306,6 +1322,10 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
             paths.add(includedPath11);
             paths.add(includedPath12);
             paths.add(includedPath13);
+            if (policyFormatVersion == 2) {
+                paths.add(includedPath14);
+                paths.add(includedPath15);
+            }
 
             return paths;
         }

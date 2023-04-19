@@ -53,6 +53,10 @@ public final class Solution {
     @JsonProperty(value = "metadata")
     private List<List<NameValuePair>> metadata;
 
+    /** Creates an instance of Solution class. */
+    public Solution() {
+    }
+
     /**
      * Get the id property: Solution Id.
      *

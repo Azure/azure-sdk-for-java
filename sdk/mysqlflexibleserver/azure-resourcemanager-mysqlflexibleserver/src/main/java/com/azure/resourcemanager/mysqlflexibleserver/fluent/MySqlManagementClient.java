@@ -45,6 +45,34 @@ public interface MySqlManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the BackupsClient object to access its operations.
+     *
+     * @return the BackupsClient object.
+     */
+    BackupsClient getBackups();
+
+    /**
+     * Gets the ConfigurationsClient object to access its operations.
+     *
+     * @return the ConfigurationsClient object.
+     */
+    ConfigurationsClient getConfigurations();
+
+    /**
+     * Gets the DatabasesClient object to access its operations.
+     *
+     * @return the DatabasesClient object.
+     */
+    DatabasesClient getDatabases();
+
+    /**
+     * Gets the FirewallRulesClient object to access its operations.
+     *
+     * @return the FirewallRulesClient object.
+     */
+    FirewallRulesClient getFirewallRules();
+
+    /**
      * Gets the ServersClient object to access its operations.
      *
      * @return the ServersClient object.
@@ -59,32 +87,11 @@ public interface MySqlManagementClient {
     ReplicasClient getReplicas();
 
     /**
-     * Gets the BackupsClient object to access its operations.
+     * Gets the LogFilesClient object to access its operations.
      *
-     * @return the BackupsClient object.
+     * @return the LogFilesClient object.
      */
-    BackupsClient getBackups();
-
-    /**
-     * Gets the FirewallRulesClient object to access its operations.
-     *
-     * @return the FirewallRulesClient object.
-     */
-    FirewallRulesClient getFirewallRules();
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     *
-     * @return the DatabasesClient object.
-     */
-    DatabasesClient getDatabases();
-
-    /**
-     * Gets the ConfigurationsClient object to access its operations.
-     *
-     * @return the ConfigurationsClient object.
-     */
-    ConfigurationsClient getConfigurations();
+    LogFilesClient getLogFiles();
 
     /**
      * Gets the LocationBasedCapabilitiesClient object to access its operations.
@@ -108,6 +115,13 @@ public interface MySqlManagementClient {
     CheckNameAvailabilitiesClient getCheckNameAvailabilities();
 
     /**
+     * Gets the CheckNameAvailabilityWithoutLocationsClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilityWithoutLocationsClient object.
+     */
+    CheckNameAvailabilityWithoutLocationsClient getCheckNameAvailabilityWithoutLocations();
+
+    /**
      * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
      *
      * @return the GetPrivateDnsZoneSuffixesClient object.
@@ -120,4 +134,11 @@ public interface MySqlManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the AzureADAdministratorsClient object to access its operations.
+     *
+     * @return the AzureADAdministratorsClient object.
+     */
+    AzureADAdministratorsClient getAzureADAdministrators();
 }

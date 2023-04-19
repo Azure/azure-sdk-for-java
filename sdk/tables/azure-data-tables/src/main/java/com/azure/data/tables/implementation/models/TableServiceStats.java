@@ -6,8 +6,10 @@ package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Stats for the service. */
+@JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
 public final class TableServiceStats {
     /*
@@ -15,6 +17,9 @@ public final class TableServiceStats {
      */
     @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
+
+    /** Creates an instance of TableServiceStats class. */
+    public TableServiceStats() {}
 
     /**
      * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.

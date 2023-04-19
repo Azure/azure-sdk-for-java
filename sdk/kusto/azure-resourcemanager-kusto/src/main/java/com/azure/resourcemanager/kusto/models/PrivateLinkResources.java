@@ -41,19 +41,6 @@ public interface PrivateLinkResources {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param privateLinkResourceName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource.
-     */
-    PrivateLinkResource get(String resourceGroupName, String clusterName, String privateLinkResourceName);
-
-    /**
-     * Gets a private link resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param privateLinkResourceName The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,4 +49,17 @@ public interface PrivateLinkResources {
      */
     Response<PrivateLinkResource> getWithResponse(
         String resourceGroupName, String clusterName, String privateLinkResourceName, Context context);
+
+    /**
+     * Gets a private link resource.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param privateLinkResourceName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource.
+     */
+    PrivateLinkResource get(String resourceGroupName, String clusterName, String privateLinkResourceName);
 }

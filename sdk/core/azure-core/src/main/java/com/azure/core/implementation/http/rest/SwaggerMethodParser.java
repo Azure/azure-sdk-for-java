@@ -22,7 +22,6 @@ import com.azure.core.annotation.ReturnValueWireType;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.Page;
@@ -39,6 +38,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.reactivestreams.Publisher;
@@ -50,6 +50,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
@@ -117,6 +119,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this(SwaggerInterfaceParser.getInstance(swaggerMethod.getDeclaringClass()), swaggerMethod);
     }
 
+    @SuppressWarnings("deprecation")
     SwaggerMethodParser(SwaggerInterfaceParser interfaceParser, Method swaggerMethod) {
         this.rawHost = interfaceParser.getHost();
 
@@ -382,10 +385,9 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @param httpHeaders The {@link HttpHeaders} where the header values will be set.
      * @param serializer {@link SerializerAdapter} that is used to serialize the header values.
      */
+    @SuppressWarnings("deprecation")
     public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders, SerializerAdapter serializer) {
-        for (HttpHeader header : headers) {
-            httpHeaders.set(header.getName(), header.getValuesList());
-        }
+        httpHeaders.setAllHttpHeaders(headers);
 
         if (swaggerMethodArguments == null) {
             return;
@@ -444,7 +446,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      * Whether the provided response status code is one of the expected status codes for this Swagger method.
-     *
+     * <p>
      * 1. If the returned int[] is null, then all 2XX status codes are considered as success code. 2. If the returned
      * int[] is not-null, only the codes in the array are considered as success code.
      *
@@ -461,7 +463,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     /**
      * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response
      * status code is not one of the expected status codes.
-     *
+     * <p>
      * If an UnexpectedExceptionInformation is not found for the status code the default UnexpectedExceptionInformation
      * will be returned.
      *
@@ -567,7 +569,24 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
-        return (value instanceof String) ? (String) value : serializer.serializeRaw(value);
+        if (value instanceof String) {
+            return (String) value;
+        } else if (value.getClass().isPrimitive()
+            || value instanceof Number
+            || value instanceof Boolean
+            || value instanceof Character
+            || value instanceof DateTimeRfc1123) {
+            return String.valueOf(value);
+        } else if (value instanceof OffsetDateTime) {
+            return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
+        } else if (value instanceof ExpandableStringEnum<?> || value.getClass().isEnum()) {
+            // Enum and ExpandableStringEnum need special handling as these could be wrapping a null String which would
+            // be "null" is serialized with JacksonAdapter.
+            String stringValue = String.valueOf(value);
+            return (stringValue == null) ? "null" : stringValue;
+        } else {
+            return serializer.serializeRaw(value);
+        }
     }
 
     private static String serializeFormData(SerializerAdapter serializer, String key, Object value,
@@ -589,13 +608,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     private static String serializeAndEncodeFormValue(SerializerAdapter serializer, Object value,
-                                                      boolean shouldEncode) {
+        boolean shouldEncode) {
         if (value == null) {
             return null;
         }
 
-        String serializedValue = serializer.serializeRaw(value);
-
+        String serializedValue = serialize(serializer, value);
         return shouldEncode ? UrlEscapers.FORM_ESCAPER.escape(serializedValue) : serializedValue;
     }
 

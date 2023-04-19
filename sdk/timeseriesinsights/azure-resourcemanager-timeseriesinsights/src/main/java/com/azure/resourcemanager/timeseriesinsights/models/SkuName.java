@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/** The name of this SKU. */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value S1 for SkuName. */
     public static final SkuName S1 = fromString("S1");
@@ -23,6 +23,15 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName L1 = fromString("L1");
 
     /**
+     * Creates a new instance of SkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuName() {
+    }
+
+    /**
      * Creates or finds a SkuName from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
         return fromString(name, SkuName.class);
     }
 
-    /** @return known SkuName values. */
+    /**
+     * Gets known SkuName values.
+     *
+     * @return known SkuName values.
+     */
     public static Collection<SkuName> values() {
         return values(SkuName.class);
     }

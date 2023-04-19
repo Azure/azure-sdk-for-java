@@ -21,6 +21,15 @@ public final class ApplicationGatewayLoadDistributionAlgorithm
     public static final ApplicationGatewayLoadDistributionAlgorithm IP_HASH = fromString("IpHash");
 
     /**
+     * Creates a new instance of ApplicationGatewayLoadDistributionAlgorithm value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayLoadDistributionAlgorithm() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayLoadDistributionAlgorithm from its string representation.
      *
      * @param name a name to look for.

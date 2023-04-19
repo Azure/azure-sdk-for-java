@@ -4,7 +4,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,38 +17,32 @@ public final class AnalyzeTextOptions {
     /*
      * The text to break into tokens.
      */
-    @JsonProperty(value = "text", required = true)
     private final String text;
 
     /*
      * The name of the analyzer to use to break the given text.
      */
-    @JsonProperty(value = "analyzer")
-    private LexicalAnalyzerName analyzerName;
+    private final LexicalAnalyzerName analyzerName;
 
     /*
      * The name of the tokenizer to use to break the given text.
      */
-    @JsonProperty(value = "tokenizer")
-    private LexicalTokenizerName tokenizerName;
+    private final LexicalTokenizerName tokenizerName;
 
     /*
      * The name of the normalizer to use to normalize the given text.
      */
-    @JsonProperty(value = "normalizer")
-    private LexicalNormalizerName normalizerName;
+    private final LexicalNormalizerName normalizerName;
 
     /*
      * An optional list of token filters to use when breaking the given text.
      */
-    @JsonProperty(value = "tokenFilters")
     private List<TokenFilterName> tokenFilters;
 
     /*
      * An optional list of character filters to use when breaking the given
      * text.
      */
-    @JsonProperty(value = "charFilters")
     private List<CharFilterName> charFilters;
 
     /**

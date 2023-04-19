@@ -59,6 +59,15 @@ public final class EventHubDataFormat extends ExpandableStringEnum<EventHubDataF
     public static final EventHubDataFormat W3CLOGFILE = fromString("W3CLOGFILE");
 
     /**
+     * Creates a new instance of EventHubDataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventHubDataFormat() {
+    }
+
+    /**
      * Creates or finds a EventHubDataFormat from its string representation.
      *
      * @param name a name to look for.

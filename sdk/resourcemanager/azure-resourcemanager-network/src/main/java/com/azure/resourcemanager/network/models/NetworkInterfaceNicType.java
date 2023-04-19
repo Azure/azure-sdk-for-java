@@ -17,6 +17,15 @@ public final class NetworkInterfaceNicType extends ExpandableStringEnum<NetworkI
     public static final NetworkInterfaceNicType ELASTIC = fromString("Elastic");
 
     /**
+     * Creates a new instance of NetworkInterfaceNicType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkInterfaceNicType() {
+    }
+
+    /**
      * Creates or finds a NetworkInterfaceNicType from its string representation.
      *
      * @param name a name to look for.

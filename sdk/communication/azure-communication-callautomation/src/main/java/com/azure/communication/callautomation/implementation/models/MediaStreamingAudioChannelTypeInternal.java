@@ -28,7 +28,11 @@ public final class MediaStreamingAudioChannelTypeInternal
         return fromString(name, MediaStreamingAudioChannelTypeInternal.class);
     }
 
-    /** @return known MediaStreamingAudioChannelTypeInternal values. */
+    /**
+     * Gets known MediaStreamingAudioChannelTypeInternal values.
+     *
+     * @return known MediaStreamingAudioChannelTypeInternal values.
+     */
     public static Collection<MediaStreamingAudioChannelTypeInternal> values() {
         return values(MediaStreamingAudioChannelTypeInternal.class);
     }

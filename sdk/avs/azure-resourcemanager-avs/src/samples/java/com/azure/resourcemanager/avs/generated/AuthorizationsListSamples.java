@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Authorizations List. */
 public final class AuthorizationsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class AuthorizationsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void authorizationsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.authorizations().list("group1", "cloud1", Context.NONE);
+        manager.authorizations().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

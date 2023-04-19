@@ -6,19 +6,18 @@ package com.azure.resourcemanager.digitaltwins.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.models.ExternalResource;
-import org.junit.jupiter.api.Test;
 
 public final class ExternalResourceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ExternalResource model =
             BinaryData
                 .fromString("{\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
                 .toObject(ExternalResource.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ExternalResource model = new ExternalResource();
         model = BinaryData.fromObject(model).toObject(ExternalResource.class);
     }

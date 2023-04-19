@@ -18,6 +18,15 @@ public final class ApplicationGatewayClientRevocationOptions
     public static final ApplicationGatewayClientRevocationOptions OCSP = fromString("OCSP");
 
     /**
+     * Creates a new instance of ApplicationGatewayClientRevocationOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayClientRevocationOptions() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayClientRevocationOptions from its string representation.
      *
      * @param name a name to look for.

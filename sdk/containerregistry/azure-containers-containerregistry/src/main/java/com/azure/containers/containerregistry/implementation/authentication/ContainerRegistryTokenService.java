@@ -11,7 +11,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -32,12 +31,11 @@ public class ContainerRegistryTokenService implements TokenCredential {
      * @param url the container registry endpoint.
      * @param serviceVersion the service api version being targeted by the client.
      * @param pipeline the pipeline to be used for the rest calls to the service.
-     * @param serializerAdapter the serializer adapter to be used for the rest calls to the service.
      */
     public ContainerRegistryTokenService(TokenCredential aadTokenCredential, ContainerRegistryAudience audience,
                                          String url, ContainerRegistryServiceVersion serviceVersion,
-                                         HttpPipeline pipeline, SerializerAdapter serializerAdapter) {
-        this.tokenService = new TokenServiceImpl(url, serviceVersion, pipeline, serializerAdapter);
+                                         HttpPipeline pipeline) {
+        this.tokenService = new TokenServiceImpl(url, serviceVersion, pipeline);
 
         if (aadTokenCredential != null) {
             this.refreshTokenCache = new AccessTokenCacheImpl(

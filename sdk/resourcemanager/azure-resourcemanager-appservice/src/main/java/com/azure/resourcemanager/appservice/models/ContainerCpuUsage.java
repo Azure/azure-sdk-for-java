@@ -35,6 +35,10 @@ public final class ContainerCpuUsage {
     @JsonProperty(value = "userModeUsage")
     private Long userModeUsage;
 
+    /** Creates an instance of ContainerCpuUsage class. */
+    public ContainerCpuUsage() {
+    }
+
     /**
      * Get the totalUsage property: The totalUsage property.
      *

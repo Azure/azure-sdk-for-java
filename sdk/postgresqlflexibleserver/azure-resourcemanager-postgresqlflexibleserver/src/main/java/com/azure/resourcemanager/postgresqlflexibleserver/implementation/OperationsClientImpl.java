@@ -70,7 +70,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationListResultInner>> listWithResponseAsync() {
+    public Mono<Response<OperationListResultInner>> listWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -115,7 +115,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return a list of resource provider operations on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationListResultInner> listAsync() {
+    public Mono<OperationListResultInner> listAsync() {
         return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 

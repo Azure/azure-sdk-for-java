@@ -22,6 +22,10 @@ public final class ApplicationGroupPatchProperties {
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
+    /** Creates an instance of ApplicationGroupPatchProperties class. */
+    public ApplicationGroupPatchProperties() {
+    }
+
     /**
      * Get the description property: Description of ApplicationGroup.
      *

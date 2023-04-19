@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.models.Account;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/UpdateAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/UpdateAccount.json
      */
     /**
      * Sample code: Update Account.
@@ -20,7 +19,10 @@ public final class AccountsUpdateSamples {
      */
     public static void updateAccount(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
         Account resource =
-            manager.accounts().getByResourceGroupWithResponse("bvttest", "bingSearch", Context.NONE).getValue();
+            manager
+                .accounts()
+                .getByResourceGroupWithResponse("bvttest", "bingSearch", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withSku(new Sku().withName("S2")).apply();
     }
 }

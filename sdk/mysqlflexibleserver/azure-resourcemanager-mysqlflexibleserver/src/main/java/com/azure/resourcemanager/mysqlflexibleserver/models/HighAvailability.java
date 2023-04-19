@@ -28,6 +28,10 @@ public final class HighAvailability {
     @JsonProperty(value = "standbyAvailabilityZone")
     private String standbyAvailabilityZone;
 
+    /** Creates an instance of HighAvailability class. */
+    public HighAvailability() {
+    }
+
     /**
      * Get the mode property: High availability mode for a server.
      *

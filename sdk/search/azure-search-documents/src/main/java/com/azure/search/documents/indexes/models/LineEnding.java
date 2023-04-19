@@ -7,7 +7,6 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -15,17 +14,25 @@ import java.util.Collection;
  * "space".
  */
 public final class LineEnding extends ExpandableStringEnum<LineEnding> {
-    /** Static value space for LineEnding. */
+    /** Lines are separated by a single space character. */
     public static final LineEnding SPACE = fromString("space");
 
-    /** Static value carriageReturn for LineEnding. */
+    /** Lines are separated by a carriage return ('\r') character. */
     public static final LineEnding CARRIAGE_RETURN = fromString("carriageReturn");
 
-    /** Static value lineFeed for LineEnding. */
+    /** Lines are separated by a single line feed ('\n') character. */
     public static final LineEnding LINE_FEED = fromString("lineFeed");
 
-    /** Static value carriageReturnLineFeed for LineEnding. */
+    /** Lines are separated by a carriage return and a line feed ('\r\n') character. */
     public static final LineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
+
+    /**
+     * Creates a new instance of LineEnding value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LineEnding() {}
 
     /**
      * Creates or finds a LineEnding from its string representation.
@@ -33,7 +40,6 @@ public final class LineEnding extends ExpandableStringEnum<LineEnding> {
      * @param name a name to look for.
      * @return the corresponding LineEnding.
      */
-    @JsonCreator
     public static LineEnding fromString(String name) {
         return fromString(name, LineEnding.class);
     }

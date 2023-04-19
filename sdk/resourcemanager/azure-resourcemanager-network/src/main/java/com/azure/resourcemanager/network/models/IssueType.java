@@ -38,6 +38,15 @@ public final class IssueType extends ExpandableStringEnum<IssueType> {
     public static final IssueType PLATFORM = fromString("Platform");
 
     /**
+     * Creates a new instance of IssueType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IssueType() {
+    }
+
+    /**
      * Creates or finds a IssueType from its string representation.
      *
      * @param name a name to look for.

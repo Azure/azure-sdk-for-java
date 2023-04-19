@@ -23,6 +23,10 @@ public final class ConfigurationForBatchUpdate {
     @JsonProperty(value = "properties")
     private ConfigurationForBatchUpdateProperties innerProperties;
 
+    /** Creates an instance of ConfigurationForBatchUpdate class. */
+    public ConfigurationForBatchUpdate() {
+    }
+
     /**
      * Get the name property: Name of the configuration.
      *

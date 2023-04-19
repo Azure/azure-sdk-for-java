@@ -20,6 +20,15 @@ public final class DefaultPrincipalsModificationKind extends ExpandableStringEnu
     public static final DefaultPrincipalsModificationKind NONE = fromString("None");
 
     /**
+     * Creates a new instance of DefaultPrincipalsModificationKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DefaultPrincipalsModificationKind() {
+    }
+
+    /**
      * Creates or finds a DefaultPrincipalsModificationKind from its string representation.
      *
      * @param name a name to look for.

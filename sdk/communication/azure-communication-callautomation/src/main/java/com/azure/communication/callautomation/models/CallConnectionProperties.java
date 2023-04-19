@@ -4,10 +4,11 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
-import com.azure.communication.callautomation.implementation.converters.CallSourceConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Immutable;
 
 import java.net.URI;
@@ -22,7 +23,9 @@ import java.util.stream.Collectors;
 public final class CallConnectionProperties {
     private final String callConnectionId;
     private final String serverCallId;
-    private final CallSource source;
+    private final CommunicationIdentifier sourceIdentity;
+    private final PhoneNumberIdentifier sourceCallerIdNumber;
+    private final String sourceDisplayName;
     private final List<CommunicationIdentifier> targets;
     private final CallConnectionState callConnectionState;
     private final URI callbackUri;
@@ -44,7 +47,9 @@ public final class CallConnectionProperties {
      */
     public CallConnectionProperties() {
         this.callConnectionId = null;
-        this.source = null;
+        this.sourceIdentity = null;
+        this.sourceCallerIdNumber = null;
+        this.sourceDisplayName = null;
         this.serverCallId = null;
         this.targets = null;
         this.callConnectionState = null;
@@ -60,21 +65,14 @@ public final class CallConnectionProperties {
      */
     CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) throws URISyntaxException {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
-        this.source = CallSourceConverter.convert(callConnectionPropertiesInternal.getSource());
+        this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
+        this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
+        this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
         this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
         this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
-    }
-
-    /**
-     * Get the source property.
-     *
-     * @return source value.
-     */
-    public CallSource getSource() {
-        return source;
     }
 
     /**
@@ -84,6 +82,33 @@ public final class CallConnectionProperties {
      */
     public List<CommunicationIdentifier> getTargets() {
         return targets;
+    }
+
+    /**
+     * Get the source identity.
+     *
+     * @return sourceIdentity value.
+     */
+    public CommunicationIdentifier getSourceIdentity() {
+        return sourceIdentity;
+    }
+
+    /**
+     * Get the source caller id number for PSTN.
+     *
+     * @return sourceCallerIdNumber value.
+     */
+    public PhoneNumberIdentifier getSourceCallerIdNumber() {
+        return sourceCallerIdNumber;
+    }
+
+    /**
+     * Get the display name.
+     *
+     * @return sourceDisplayName value.
+     */
+    public String getSourceDisplayName() {
+        return sourceDisplayName;
     }
 
     /**

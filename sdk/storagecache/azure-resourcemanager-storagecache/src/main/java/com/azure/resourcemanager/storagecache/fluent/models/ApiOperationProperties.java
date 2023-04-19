@@ -17,6 +17,10 @@ public final class ApiOperationProperties {
     @JsonProperty(value = "serviceSpecification")
     private ApiOperationPropertiesServiceSpecification serviceSpecification;
 
+    /** Creates an instance of ApiOperationProperties class. */
+    public ApiOperationProperties() {
+    }
+
     /**
      * Get the serviceSpecification property: Specification of the all the metrics provided for a resource type.
      *

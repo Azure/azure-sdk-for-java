@@ -26,6 +26,10 @@ public final class VolumePatchPropertiesDataProtection {
     @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
 
+    /** Creates an instance of VolumePatchPropertiesDataProtection class. */
+    public VolumePatchPropertiesDataProtection() {
+    }
+
     /**
      * Get the backup property: Backup Properties.
      *

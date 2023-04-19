@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UpdateState. */
+/** Update state of a SessionHost. */
 public final class UpdateState extends ExpandableStringEnum<UpdateState> {
     /** Static value Initial for UpdateState. */
     public static final UpdateState INITIAL = fromString("Initial");
@@ -24,6 +24,15 @@ public final class UpdateState extends ExpandableStringEnum<UpdateState> {
 
     /** Static value Failed for UpdateState. */
     public static final UpdateState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of UpdateState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UpdateState() {
+    }
 
     /**
      * Creates or finds a UpdateState from its string representation.

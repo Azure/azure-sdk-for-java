@@ -145,13 +145,6 @@ public interface HostPoolProperties {
     Boolean startVMOnConnect();
 
     /**
-     * Gets the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    MigrationRequestProperties migrationRequest();
-
-    /**
      * Gets the cloudPcResource property: Is cloud pc resource.
      *
      * @return the cloudPcResource value.
@@ -159,12 +152,12 @@ public interface HostPoolProperties {
     Boolean cloudPcResource();
 
     /**
-     * Gets the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     * Gets the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @return the publicNetworkAccess value.
+     * @return the agentUpdate value.
      */
-    PublicNetworkAccess publicNetworkAccess();
+    AgentUpdateProperties agentUpdate();
 
     /**
      * Gets the inner com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPropertiesInner object.

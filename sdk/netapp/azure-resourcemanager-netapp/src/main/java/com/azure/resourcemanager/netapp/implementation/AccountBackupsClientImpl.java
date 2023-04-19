@@ -61,11 +61,10 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface AccountBackupsService {
+    public interface AccountBackupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/accountBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupsList>> list(
@@ -79,8 +78,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/accountBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupInner>> get(
@@ -95,8 +93,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/accountBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/accountBackups/{backupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -114,7 +111,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -167,7 +164,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +216,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -236,7 +233,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,7 +251,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -271,7 +268,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>List all Backups for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +286,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Gets the specified backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +342,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Gets the specified backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -399,7 +396,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Gets the specified backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,25 +415,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Gets the specified backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup for a Netapp Account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInner get(String resourceGroupName, String accountName, String backupName) {
-        return getAsync(resourceGroupName, accountName, backupName).block();
-    }
-
-    /**
-     * Get Backup for a Netapp Account
-     *
-     * <p>Gets the specified backup for a Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -452,11 +431,29 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     }
 
     /**
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified backup for a Netapp Account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner get(String resourceGroupName, String accountName, String backupName) {
+        return getWithResponse(resourceGroupName, accountName, backupName, Context.NONE).getValue();
+    }
+
+    /**
      * Delete Backup for a Netapp Account
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -509,7 +506,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -560,7 +557,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -583,7 +580,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -608,7 +605,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,7 +616,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupName) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, backupName).getSyncPoller();
     }
 
     /**
@@ -627,7 +624,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -639,7 +636,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, backupName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, backupName, context).getSyncPoller();
     }
 
     /**
@@ -647,7 +644,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -667,7 +664,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
@@ -688,7 +685,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -705,7 +702,7 @@ public final class AccountBackupsClientImpl implements AccountBackupsClient {
      *
      * <p>Delete the specified Backup for a Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.

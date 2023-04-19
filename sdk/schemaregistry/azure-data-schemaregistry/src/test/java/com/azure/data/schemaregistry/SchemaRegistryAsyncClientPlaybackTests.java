@@ -6,9 +6,11 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import org.junit.jupiter.api.AfterEach;
@@ -86,6 +88,13 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         Mockito.framework().clearInlineMock(this);
     }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .skipRequest((httpRequest, context) -> false)
+            .build();
+    }
+
     /**
      * This is run in playback mode because the GUID is unique for each schema. This is a schema that was previously
      * registered in Azure Portal.
@@ -98,7 +107,7 @@ public class SchemaRegistryAsyncClientPlaybackTests {
         final SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace(endpoint)
             .credential(tokenCredential)
-            .httpClient(interceptorManager.getPlaybackClient())
+            .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()))
             .serviceVersion(SchemaRegistryVersion.V2021_10)
             .buildAsyncClient();
         final String schemaId = "f45b841fcb88401e961ca45477906be9";

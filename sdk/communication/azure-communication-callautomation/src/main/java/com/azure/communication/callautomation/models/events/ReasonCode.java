@@ -29,6 +29,10 @@ public class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode SPEECH_OPTION_NOT_MATCHED = fromReasonCode(8547);
         /** Recognize with choice incorrect tone detected. */
         public static final ReasonCode INCORRECT_TONE_DETECTED = fromReasonCode(8534);
+        /** Recognize with choice speech not recognized. */
+        public static final ReasonCode SPEECH_NOT_RECOGNIZED = fromReasonCode(8563);
+        /** Recognize with choice cognitive service connection error. */
+        public static final ReasonCode SPEECH_COGNITIVE_SERVICE_CONNECTION_ERROR = fromReasonCode(8564);
     }
 
     /** Reason code names for the Play operation */
@@ -37,6 +41,8 @@ public class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode DOWNLOAD_FAILED = fromReasonCode(8536);
         /** Action failed, file could not be downloaded. */
         public static final ReasonCode INVALID_FILE_FORMAT = fromReasonCode(8535);
+        /** Action failed, cognitive service play error. */
+        public static final ReasonCode COGNITEIVE_SERVICE_PLAY_ERROR = fromReasonCode(8565);
     }
 
     /** Action completed successfully. */

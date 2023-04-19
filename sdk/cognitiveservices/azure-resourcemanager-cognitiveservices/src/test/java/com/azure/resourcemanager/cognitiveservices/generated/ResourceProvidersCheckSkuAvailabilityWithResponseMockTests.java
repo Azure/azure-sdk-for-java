@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import com.azure.resourcemanager.cognitiveservices.models.SkuAvailabilityListResult;
@@ -34,7 +33,7 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"kind\":\"ikayuhqlbjbsybb\",\"type\":\"r\",\"skuName\":\"ldgmfpgvmpip\",\"skuAvailable\":false,\"reason\":\"haq\",\"message\":\"ss\"},{\"kind\":\"u\",\"type\":\"bdsrez\",\"skuName\":\"rhneuyowq\",\"skuAvailable\":false,\"reason\":\"t\",\"message\":\"ib\"},{\"kind\":\"cgpik\",\"type\":\"imejzanl\",\"skuName\":\"xi\",\"skuAvailable\":false,\"reason\":\"bzonok\",\"message\":\"rjqc\"}]}";
+            "{\"value\":[{\"kind\":\"pjbi\",\"type\":\"jmfxumvf\",\"skuName\":\"uyovw\",\"skuAvailable\":true,\"reason\":\"fezzxscyhwzdg\",\"message\":\"ujb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,19 +65,19 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
             manager
                 .resourceProviders()
                 .checkSkuAvailabilityWithResponse(
-                    "xzsjabib",
+                    "qg",
                     new CheckSkuAvailabilityParameter()
-                        .withSkus(Arrays.asList("stawfsdjpvkv", "bjxbkzbzk", "vncjabudurgk", "kmokz"))
-                        .withKind("jjklff")
-                        .withType("mouwqlgzrfzeey"),
-                    Context.NONE)
+                        .withSkus(Arrays.asList("yzirtxdyuxzejn", "psew", "ioilqukrydxtq"))
+                        .withKind("ieoxorggufhyaomt")
+                        .withType("ghhavgrvkffo"),
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ikayuhqlbjbsybb", response.value().get(0).kind());
-        Assertions.assertEquals("r", response.value().get(0).type());
-        Assertions.assertEquals("ldgmfpgvmpip", response.value().get(0).skuName());
-        Assertions.assertEquals(false, response.value().get(0).skuAvailable());
-        Assertions.assertEquals("haq", response.value().get(0).reason());
-        Assertions.assertEquals("ss", response.value().get(0).message());
+        Assertions.assertEquals("pjbi", response.value().get(0).kind());
+        Assertions.assertEquals("jmfxumvf", response.value().get(0).type());
+        Assertions.assertEquals("uyovw", response.value().get(0).skuName());
+        Assertions.assertEquals(true, response.value().get(0).skuAvailable());
+        Assertions.assertEquals("fezzxscyhwzdg", response.value().get(0).reason());
+        Assertions.assertEquals("ujb", response.value().get(0).message());
     }
 }

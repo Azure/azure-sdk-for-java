@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.18.0-beta.1 (Unreleased)
+### 4.19.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,26 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.18.1 (2023-04-10)
+
+#### Bugs Fixed
+* Fixed an issue where throughput control is not triggered properly when `spark.cosmos.throughputControl.targetThroughput` is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
+
+### 4.18.0 (2023-04-06)
+
+#### Features Added
+* Added throughput control support without using dedicated throughput control container - See [PR 34301](https://github.com/Azure/azure-sdk-for-java/pull/34301)
+
+### 4.17.2 (2023-02-28)
+
+#### Bugs Fixed
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33795](https://github.com/Azure/azure-sdk-for-java/pull/33795)
+
+### 4.17.1 (2023-02-27)
+
+#### Bugs Fixed
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33757](https://github.com/Azure/azure-sdk-for-java/pull/33757)
 
 ### 4.17.0 (2023-02-17)
 

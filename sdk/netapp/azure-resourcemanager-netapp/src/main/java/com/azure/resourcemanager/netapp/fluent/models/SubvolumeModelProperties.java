@@ -89,6 +89,10 @@ public final class SubvolumeModelProperties {
     @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
+    /** Creates an instance of SubvolumeModelProperties class. */
+    public SubvolumeModelProperties() {
+    }
+
     /**
      * Get the path property: path
      *

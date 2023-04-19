@@ -9,34 +9,33 @@ import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDependencyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EndpointDependency model =
             BinaryData
                 .fromString(
-                    "{\"domainName\":\"ggxkallatmelwuip\",\"endpointDetails\":[{\"port\":834190026},{\"port\":120709025},{\"port\":154268521},{\"port\":1783583685}]}")
+                    "{\"domainName\":\"mquxvypo\",\"endpointDetails\":[{\"port\":11863753},{\"port\":1364703724},{\"port\":1321769346},{\"port\":10985850}]}")
                 .toObject(EndpointDependency.class);
-        Assertions.assertEquals("ggxkallatmelwuip", model.domainName());
-        Assertions.assertEquals(834190026, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("mquxvypo", model.domainName());
+        Assertions.assertEquals(11863753, model.endpointDetails().get(0).port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EndpointDependency model =
             new EndpointDependency()
-                .withDomainName("ggxkallatmelwuip")
+                .withDomainName("mquxvypo")
                 .withEndpointDetails(
                     Arrays
                         .asList(
-                            new EndpointDetail().withPort(834190026),
-                            new EndpointDetail().withPort(120709025),
-                            new EndpointDetail().withPort(154268521),
-                            new EndpointDetail().withPort(1783583685)));
+                            new EndpointDetail().withPort(11863753),
+                            new EndpointDetail().withPort(1364703724),
+                            new EndpointDetail().withPort(1321769346),
+                            new EndpointDetail().withPort(10985850)));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("ggxkallatmelwuip", model.domainName());
-        Assertions.assertEquals(834190026, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("mquxvypo", model.domainName());
+        Assertions.assertEquals(11863753, model.endpointDetails().get(0).port());
     }
 }

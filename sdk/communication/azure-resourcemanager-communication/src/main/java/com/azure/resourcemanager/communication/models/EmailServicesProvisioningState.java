@@ -38,6 +38,15 @@ public final class EmailServicesProvisioningState extends ExpandableStringEnum<E
     public static final EmailServicesProvisioningState MOVING = fromString("Moving");
 
     /**
+     * Creates a new instance of EmailServicesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EmailServicesProvisioningState() {
+    }
+
+    /**
      * Creates or finds a EmailServicesProvisioningState from its string representation.
      *
      * @param name a name to look for.

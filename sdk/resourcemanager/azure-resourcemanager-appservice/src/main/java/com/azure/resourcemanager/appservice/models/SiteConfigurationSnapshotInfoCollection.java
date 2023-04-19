@@ -25,6 +25,10 @@ public final class SiteConfigurationSnapshotInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SiteConfigurationSnapshotInfoCollection class. */
+    public SiteConfigurationSnapshotInfoCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storagecache.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CacheIdentityType. */
+/** The type of identity used for the cache. */
 public enum CacheIdentityType {
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
@@ -36,6 +36,9 @@ public enum CacheIdentityType {
      */
     @JsonCreator
     public static CacheIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CacheIdentityType[] items = CacheIdentityType.values();
         for (CacheIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum CacheIdentityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

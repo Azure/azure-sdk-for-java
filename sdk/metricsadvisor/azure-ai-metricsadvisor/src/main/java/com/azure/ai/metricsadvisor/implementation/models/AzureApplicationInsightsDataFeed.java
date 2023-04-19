@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The AzureApplicationInsightsDataFeed model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -19,6 +21,9 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
      */
     @JsonProperty(value = "dataSourceParameter", required = true)
     private AzureApplicationInsightsParameter dataSourceParameter;
+
+    /** Creates an instance of AzureApplicationInsightsDataFeed class. */
+    public AzureApplicationInsightsDataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -38,6 +43,174 @@ public final class AzureApplicationInsightsDataFeed extends DataFeedDetail {
     public AzureApplicationInsightsDataFeed setDataSourceParameter(
             AzureApplicationInsightsParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setGranularityName(Granularity granularityName) {
+        super.setGranularityName(granularityName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setGranularityAmount(Integer granularityAmount) {
+        super.setGranularityAmount(granularityAmount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setMetrics(List<DataFeedMetric> metrics) {
+        super.setMetrics(metrics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setDimension(List<DataFeedDimension> dimension) {
+        super.setDimension(dimension);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureApplicationInsightsDataFeed setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
         return this;
     }
 }

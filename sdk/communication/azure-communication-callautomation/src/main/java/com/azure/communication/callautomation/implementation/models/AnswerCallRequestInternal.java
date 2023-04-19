@@ -34,6 +34,12 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
     private String azureCognitiveServicesEndpointUrl;
 
+    /*
+     * The identifier of the contoso app which answers the call
+     */
+    @JsonProperty(value = "answeredByIdentifier")
+    private CommunicationIdentifierModel answeredByIdentifier;
+
     /**
      * Get the incomingCallContext property: The context associated with the call.
      *
@@ -114,6 +120,26 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
         this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
+    }
+
+    /**
+     * Get the answeredByIdentifier property: The identifier of the contoso app which answers the call.
+     *
+     * @return the answeredByIdentifier value.
+     */
+    public CommunicationIdentifierModel getAnsweredByIdentifier() {
+        return this.answeredByIdentifier;
+    }
+
+    /**
+     * Set the answeredByIdentifier property: The identifier of the contoso app which answers the call.
+     *
+     * @param answeredByIdentifier the answeredByIdentifier value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setAnsweredByIdentifier(CommunicationIdentifierModel answeredByIdentifier) {
+        this.answeredByIdentifier = answeredByIdentifier;
         return this;
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters GetByResourceGroup. */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClustersGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoClustersGet.json
      */
     /**
      * Sample code: KustoClustersGet.
@@ -17,6 +15,8 @@ public final class ClustersGetByResourceGroupSamples {
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClustersGet(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("kustorptest", "kustoCluster", Context.NONE);
+        manager
+            .clusters()
+            .getByResourceGroupWithResponse("kustorptest", "kustoCluster", com.azure.core.util.Context.NONE);
     }
 }

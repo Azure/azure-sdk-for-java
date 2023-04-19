@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.models.ElasticMonitorResource;
 
 /** Samples for Monitors Update. */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/Monitors_Update.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/Monitors_Update.json
      */
     /**
      * Sample code: Monitors_Update.
@@ -19,7 +18,10 @@ public final class MonitorsUpdateSamples {
      */
     public static void monitorsUpdate(com.azure.resourcemanager.elastic.ElasticManager manager) {
         ElasticMonitorResource resource =
-            manager.monitors().getByResourceGroupWithResponse("myResourceGroup", "myMonitor", Context.NONE).getValue();
+            manager
+                .monitors()
+                .getByResourceGroupWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().apply();
     }
 }

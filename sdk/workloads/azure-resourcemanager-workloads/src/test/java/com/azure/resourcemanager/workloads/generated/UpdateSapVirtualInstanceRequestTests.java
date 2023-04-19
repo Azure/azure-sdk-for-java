@@ -19,7 +19,7 @@ public final class UpdateSapVirtualInstanceRequestTests {
         UpdateSapVirtualInstanceRequest model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"jakhmsbzjh\":{\"principalId\":\"52506ccd-84c4-4e1b-80bc-47a27d9ae16a\",\"clientId\":\"d8ed1b67-cbf2-4804-be78-974c8d5bf131\"},\"evdphlxaol\":{\"principalId\":\"f0272895-243d-418e-a416-1b5f3e6ea6dc\",\"clientId\":\"e73695fd-d145-4311-a056-2e39d4d8e82b\"},\"trg\":{\"principalId\":\"5a8990cb-c477-457b-b617-1fb7b157e549\",\"clientId\":\"e43ff491-de1e-4f86-9272-b49849beb49b\"},\"pfzfsinzgvfc\":{\"principalId\":\"bf9c7613-7e8f-4ed7-984b-3af871bdbfb2\",\"clientId\":\"4d79e6d4-e4b5-4dcf-ad14-1f2d34178437\"}}}}")
+                    "{\"tags\":{\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"jakhmsbzjh\":{\"principalId\":\"9d604921-29ee-4ba8-be56-842b27d69af8\",\"clientId\":\"6e418b5f-eb54-41b3-9a83-9141b36ce003\"},\"evdphlxaol\":{\"principalId\":\"5f0b6d05-6f12-44c1-96a2-42b470fadbef\",\"clientId\":\"bd163123-e6d1-44cb-939d-44e990e51e71\"},\"trg\":{\"principalId\":\"5c599304-e05a-43d8-8a50-992a7e395cd7\",\"clientId\":\"895a0f27-8b2d-4117-86ef-445a4b08d29c\"},\"pfzfsinzgvfc\":{\"principalId\":\"538284bc-d318-4f26-ac3c-38862d9526a5\",\"clientId\":\"418dbaf5-7408-4964-a8a1-2e6b1de71ea8\"}}}}")
                 .toObject(UpdateSapVirtualInstanceRequest.class);
         Assertions.assertEquals("odjpslwejd", model.tags().get("vwryoqpso"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());

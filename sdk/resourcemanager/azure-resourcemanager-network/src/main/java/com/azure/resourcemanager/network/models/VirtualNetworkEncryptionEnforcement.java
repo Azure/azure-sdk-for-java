@@ -18,6 +18,15 @@ public final class VirtualNetworkEncryptionEnforcement
     public static final VirtualNetworkEncryptionEnforcement ALLOW_UNENCRYPTED = fromString("AllowUnencrypted");
 
     /**
+     * Creates a new instance of VirtualNetworkEncryptionEnforcement value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkEncryptionEnforcement() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkEncryptionEnforcement from its string representation.
      *
      * @param name a name to look for.

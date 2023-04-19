@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanProperties;
+import com.azure.resourcemanager.cognitiveservices.models.Sku;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Cognitive Services account commitment plan. */
 @Fluent
@@ -24,6 +27,31 @@ public final class CommitmentPlanInner extends ProxyResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * The Kind of the resource.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
+
+    /*
+     * The resource model definition representing SKU
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
+
+    /*
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
+     * The geo-location where the resource lives
+     */
+    @JsonProperty(value = "location")
+    private String location;
 
     /*
      * Properties of Cognitive Services account commitment plan.
@@ -54,6 +82,86 @@ public final class CommitmentPlanInner extends ProxyResource {
     }
 
     /**
+     * Get the kind property: The Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The Kind of the resource.
+     *
+     * @param kind the kind value to set.
+     * @return the CommitmentPlanInner object itself.
+     */
+    public CommitmentPlanInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The resource model definition representing SKU.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The resource model definition representing SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the CommitmentPlanInner object itself.
+     */
+    public CommitmentPlanInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the CommitmentPlanInner object itself.
+     */
+    public CommitmentPlanInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The geo-location where the resource lives.
+     *
+     * @param location the location value to set.
+     * @return the CommitmentPlanInner object itself.
+     */
+    public CommitmentPlanInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
      * Get the properties property: Properties of Cognitive Services account commitment plan.
      *
      * @return the properties value.
@@ -79,6 +187,9 @@ public final class CommitmentPlanInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (properties() != null) {
             properties().validate();
         }

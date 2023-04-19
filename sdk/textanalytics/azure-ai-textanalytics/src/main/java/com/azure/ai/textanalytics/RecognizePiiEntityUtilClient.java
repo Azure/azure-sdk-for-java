@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
@@ -43,7 +42,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEn
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing recognize Personally Identifiable Information entity endpoint.
@@ -145,8 +143,7 @@ class RecognizePiiEntityUtilClient {
                 TextAnalyticsServiceVersion.V3_1));
         inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
-        final Context finalContext = getNotNullContext(context)
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final Context finalContext = getNotNullContext(context);
         final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
         final String finalModelVersion = options.getModelVersion();
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
@@ -218,8 +215,7 @@ class RecognizePiiEntityUtilClient {
                 TextAnalyticsServiceVersion.V3_1));
         inputDocumentsValidation(documents);
         options = options == null ? new RecognizePiiEntitiesOptions() : options;
-        final Context finalContext = enableSyncRestProxy(getNotNullContext(context))
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final Context finalContext = enableSyncRestProxy(getNotNullContext(context));
         final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
         final String finalModelVersion = options.getModelVersion();
         final boolean finalLoggingOptOut = options.isServiceLogsDisabled();

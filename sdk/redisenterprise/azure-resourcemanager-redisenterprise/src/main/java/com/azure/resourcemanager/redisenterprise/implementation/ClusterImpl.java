@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.redisenterprise.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ClusterUpdate;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
@@ -63,8 +66,20 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public TlsVersion minimumTlsVersion() {
         return this.innerModel().minimumTlsVersion();
+    }
+
+    public ClusterPropertiesEncryption encryption() {
+        return this.innerModel().encryption();
     }
 
     public String hostname() {
@@ -103,6 +118,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ClusterInner innerModel() {
@@ -234,12 +253,32 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this;
     }
 
+    public ClusterImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ClusterImpl withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         if (isInCreateMode()) {
             this.innerModel().withMinimumTlsVersion(minimumTlsVersion);
             return this;
         } else {
             this.updateParameters.withMinimumTlsVersion(minimumTlsVersion);
+            return this;
+        }
+    }
+
+    public ClusterImpl withEncryption(ClusterPropertiesEncryption encryption) {
+        if (isInCreateMode()) {
+            this.innerModel().withEncryption(encryption);
+            return this;
+        } else {
+            this.updateParameters.withEncryption(encryption);
             return this;
         }
     }

@@ -11,53 +11,52 @@ import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabasePrincipalAssignmentListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DatabasePrincipalAssignmentListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"principalId\":\"wndnhj\",\"role\":\"Viewer\",\"tenantId\":\"whvylw\",\"principalType\":\"Group\",\"tenantName\":\"dhxujznbmpo\",\"principalName\":\"wpr\",\"provisioningState\":\"Failed\",\"aadObjectId\":\"eualupjmkhf\"},\"id\":\"obbc\",\"name\":\"wsrtjriplrbpbe\",\"type\":\"tghfgblcgwxzvl\"},{\"properties\":{\"principalId\":\"hjkbegibtnmxieb\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"loayqcgw\",\"principalType\":\"Group\",\"tenantName\":\"j\",\"principalName\":\"gwyzm\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"ngmtsavjcb\"},\"id\":\"wxqpsrknftguvri\",\"name\":\"hprwmdyv\",\"type\":\"qtayri\"},{\"properties\":{\"principalId\":\"ro\",\"role\":\"Admin\",\"tenantId\":\"exrmcqibycnojvk\",\"principalType\":\"App\",\"tenantName\":\"fqsgzvahapjy\",\"principalName\":\"pvgqzcjrvxdjzlm\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"vu\"},\"id\":\"fhzovawjvzunluth\",\"name\":\"n\",\"type\":\"rnxipei\"},{\"properties\":{\"principalId\":\"jzuaejxdultskzbb\",\"role\":\"User\",\"tenantId\":\"umveekgpwozuhkf\",\"principalType\":\"App\",\"tenantName\":\"jyofdxluusdtto\",\"principalName\":\"aboekqv\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"smv\"},\"id\":\"xwyjsflhhc\",\"name\":\"aln\",\"type\":\"ixisxyawjoy\"}]}")
+                    "{\"value\":[{\"properties\":{\"principalId\":\"cykvceo\",\"role\":\"User\",\"tenantId\":\"lo\",\"principalType\":\"Group\",\"tenantName\":\"tyfjfcnjbkcnxdhb\",\"principalName\":\"kphywpnvjto\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"mclfplphoxuscr\"},\"id\":\"abgy\",\"name\":\"psbjta\",\"type\":\"qugxywpmueefjzwf\"},{\"properties\":{\"principalId\":\"q\",\"role\":\"Monitor\",\"tenantId\":\"dsuyonobgla\",\"principalType\":\"User\",\"tenantName\":\"xtccmg\",\"principalName\":\"dxyt\",\"provisioningState\":\"Canceled\",\"aadObjectId\":\"rxv\"},\"id\":\"fudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"},{\"properties\":{\"principalId\":\"kyv\",\"role\":\"User\",\"tenantId\":\"anuzbpzkafkuw\",\"principalType\":\"Group\",\"tenantName\":\"nwbmeh\",\"principalName\":\"eyvjusrtslhspkde\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"fm\"},\"id\":\"ag\",\"name\":\"vt\",\"type\":\"elmqk\"},{\"properties\":{\"principalId\":\"ahvljuaha\",\"role\":\"UnrestrictedViewer\",\"tenantId\":\"c\",\"principalType\":\"Group\",\"tenantName\":\"duala\",\"principalName\":\"qpv\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"ws\"},\"id\":\"crgvxpvgom\",\"name\":\"lf\",\"type\":\"isgwbnbbeldawkz\"}]}")
                 .toObject(DatabasePrincipalAssignmentListResult.class);
-        Assertions.assertEquals("wndnhj", model.value().get(0).principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.value().get(0).role());
-        Assertions.assertEquals("whvylw", model.value().get(0).tenantId());
+        Assertions.assertEquals("cykvceo", model.value().get(0).principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.USER, model.value().get(0).role());
+        Assertions.assertEquals("lo", model.value().get(0).tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DatabasePrincipalAssignmentListResult model =
             new DatabasePrincipalAssignmentListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("wndnhj")
-                                .withRole(DatabasePrincipalRole.VIEWER)
-                                .withTenantId("whvylw")
-                                .withPrincipalType(PrincipalType.GROUP),
-                            new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("hjkbegibtnmxieb")
-                                .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                                .withTenantId("loayqcgw")
-                                .withPrincipalType(PrincipalType.GROUP),
-                            new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("ro")
-                                .withRole(DatabasePrincipalRole.ADMIN)
-                                .withTenantId("exrmcqibycnojvk")
-                                .withPrincipalType(PrincipalType.APP),
-                            new DatabasePrincipalAssignmentInner()
-                                .withPrincipalId("jzuaejxdultskzbb")
+                                .withPrincipalId("cykvceo")
                                 .withRole(DatabasePrincipalRole.USER)
-                                .withTenantId("umveekgpwozuhkf")
-                                .withPrincipalType(PrincipalType.APP)));
+                                .withTenantId("lo")
+                                .withPrincipalType(PrincipalType.GROUP),
+                            new DatabasePrincipalAssignmentInner()
+                                .withPrincipalId("q")
+                                .withRole(DatabasePrincipalRole.MONITOR)
+                                .withTenantId("dsuyonobgla")
+                                .withPrincipalType(PrincipalType.USER),
+                            new DatabasePrincipalAssignmentInner()
+                                .withPrincipalId("kyv")
+                                .withRole(DatabasePrincipalRole.USER)
+                                .withTenantId("anuzbpzkafkuw")
+                                .withPrincipalType(PrincipalType.GROUP),
+                            new DatabasePrincipalAssignmentInner()
+                                .withPrincipalId("ahvljuaha")
+                                .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
+                                .withTenantId("c")
+                                .withPrincipalType(PrincipalType.GROUP)));
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentListResult.class);
-        Assertions.assertEquals("wndnhj", model.value().get(0).principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.value().get(0).role());
-        Assertions.assertEquals("whvylw", model.value().get(0).tenantId());
+        Assertions.assertEquals("cykvceo", model.value().get(0).principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.USER, model.value().get(0).role());
+        Assertions.assertEquals("lo", model.value().get(0).tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.value().get(0).principalType());
     }
 }

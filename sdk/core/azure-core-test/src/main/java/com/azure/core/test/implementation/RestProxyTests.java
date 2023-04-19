@@ -89,6 +89,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@SuppressWarnings("deprecation")
 public abstract class RestProxyTests {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
@@ -1724,7 +1725,8 @@ public abstract class RestProxyTests {
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
-            assertEquals(streamResponse.getHeaders().getValue("ETag"), MessageDigestUtils.md5(bos.toByteArray()));
+            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
+                MessageDigestUtils.md5(bos.toByteArray()));
         }
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
@@ -1740,7 +1742,7 @@ public abstract class RestProxyTests {
                             throw Exceptions.propagate(e);
                         }
                     }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
-                .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue("ETag"), hash))
+                .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), hash))
                 .verifyComplete();
         }
     }
@@ -1757,7 +1759,8 @@ public abstract class RestProxyTests {
                     } finally {
                         streamResponse.close();
                     }
-                    return Tuples.of(streamResponse.getHeaders().getValue("Etag"), MessageDigestUtils.md5(bos.toByteArray()));
+                    return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
+                        MessageDigestUtils.md5(bos.toByteArray()));
                 }))
             .assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2()))
             .verifyComplete();
@@ -1775,7 +1778,7 @@ public abstract class RestProxyTests {
                                 throw Exceptions.propagate(e);
                             }
                         }).doFinally(ignored -> streamResponse.close())
-                    .then(Mono.just(streamResponse.getHeaders().getValue("ETag")))))
+                    .then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
             .assertNext(hash -> {
                 try {
                     assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
@@ -2003,7 +2006,7 @@ public abstract class RestProxyTests {
         Service27 service = createService(Service27.class);
 
         HttpBinJSON response = service.put(42, new RequestOptions().setBody(BinaryData.fromString("4242"))
-            .setHeader("Content-Length", "4"));
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
         assertNotNull(response);
         assertNotNull(response.data());
         assertTrue(response.data() instanceof String);

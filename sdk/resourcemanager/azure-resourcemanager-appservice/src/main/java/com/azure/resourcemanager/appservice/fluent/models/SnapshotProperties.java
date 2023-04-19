@@ -16,6 +16,10 @@ public final class SnapshotProperties {
     @JsonProperty(value = "time", access = JsonProperty.Access.WRITE_ONLY)
     private String time;
 
+    /** Creates an instance of SnapshotProperties class. */
+    public SnapshotProperties() {
+    }
+
     /**
      * Get the time property: The time the snapshot was taken.
      *

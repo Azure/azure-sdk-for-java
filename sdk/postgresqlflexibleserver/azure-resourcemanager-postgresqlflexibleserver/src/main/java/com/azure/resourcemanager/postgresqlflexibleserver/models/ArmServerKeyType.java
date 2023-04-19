@@ -8,10 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Data encryption type to depict if it is System assigned vs Azure Key vault. */
+/** Data encryption type to depict if it is System Managed vs Azure Key vault. */
 public final class ArmServerKeyType extends ExpandableStringEnum<ArmServerKeyType> {
-    /** Static value SystemAssigned for ArmServerKeyType. */
-    public static final ArmServerKeyType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+    /** Static value SystemManaged for ArmServerKeyType. */
+    public static final ArmServerKeyType SYSTEM_MANAGED = fromString("SystemManaged");
 
     /** Static value AzureKeyVault for ArmServerKeyType. */
     public static final ArmServerKeyType AZURE_KEY_VAULT = fromString("AzureKeyVault");

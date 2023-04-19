@@ -27,6 +27,15 @@ public final class ApplicationGatewayBackendHealthServerHealth
     public static final ApplicationGatewayBackendHealthServerHealth DRAINING = fromString("Draining");
 
     /**
+     * Creates a new instance of ApplicationGatewayBackendHealthServerHealth value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayBackendHealthServerHealth() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayBackendHealthServerHealth from its string representation.
      *
      * @param name a name to look for.

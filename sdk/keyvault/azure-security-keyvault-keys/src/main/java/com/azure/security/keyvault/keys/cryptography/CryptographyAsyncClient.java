@@ -42,8 +42,6 @@ import static com.azure.security.keyvault.keys.models.KeyType.EC;
 import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 import static com.azure.security.keyvault.keys.models.KeyType.OCT_HSM;
-import static com.azure.security.keyvault.keys.models.KeyType.OKP;
-import static com.azure.security.keyvault.keys.models.KeyType.OKP_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 
@@ -75,9 +73,6 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
-    // for more information on Azure resource provider namespaces.
-    static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
     static final String SECRETS_COLLECTION = "secrets";
 
     JsonWebKey key;
@@ -149,9 +144,6 @@ public class CryptographyAsyncClient {
             this.localKeyCryptographyClient = new EcKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else if (key.getKeyType().equals(OCT) || key.getKeyType().equals(OCT_HSM)) {
             this.localKeyCryptographyClient = new AesKeyCryptographyClient(this.key, this.cryptographyServiceClient);
-        } else if (key.getKeyType().equals(OKP) || key.getKeyType().equals(OKP_HSM)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The JSON Web Key type: OKP is not supported for local operations."));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", this.key.getKeyType().toString())));
@@ -555,8 +547,7 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -626,8 +617,7 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -833,8 +823,7 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -901,8 +890,7 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384},{@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
@@ -996,9 +984,8 @@ public class CryptographyAsyncClient {
     private Mono<Boolean> ensureValidKeyAvailable() {
         boolean keyNotAvailable = (key == null && keyCollection != null);
         boolean keyNotValid = (key != null && !key.isValid());
-        boolean keyNotSupportedLocally = key != null && (key.getKeyType() == OKP || key.getKeyType() == OKP_HSM);
 
-        if (keyNotAvailable || keyNotValid || keyNotSupportedLocally) {
+        if (keyNotAvailable || keyNotValid) {
             if (keyCollection.equals(SECRETS_COLLECTION)) {
                 return getSecretKey().map(jsonWebKey -> {
                     key = (jsonWebKey);
@@ -1014,8 +1001,7 @@ public class CryptographyAsyncClient {
                 return getKey().map(keyVaultKey -> {
                     key = (keyVaultKey.getKey());
 
-                    // OKP is not supported for local cryptographic operations.
-                    if (key.isValid() && key.getKeyType() != OKP && key.getKeyType() != OKP_HSM) {
+                    if (key.isValid()) {
                         initializeCryptoClients();
                         return true;
                     } else {

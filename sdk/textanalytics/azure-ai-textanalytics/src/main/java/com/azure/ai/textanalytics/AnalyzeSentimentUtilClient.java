@@ -24,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.enableSyncRestProxy;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getHttpResponseException;
@@ -37,7 +36,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentime
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing sentiment analysis endpoint.
@@ -113,7 +111,7 @@ class AnalyzeSentimentUtilClient {
                     .setAnalysisInput(
                         new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
                 options.isIncludeStatistics(),
-                getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                getNotNullContext(context))
                 .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                     getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
@@ -130,7 +128,7 @@ class AnalyzeSentimentUtilClient {
             options.isServiceLogsDisabled(),
             options.isIncludeOpinionMining(),
             StringIndexType.UTF16CODE_UNIT,
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context))
             .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}", response))
@@ -155,8 +153,7 @@ class AnalyzeSentimentUtilClient {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
-        context = enableSyncRestProxy(getNotNullContext(context))
-            .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        context = enableSyncRestProxy(getNotNullContext(context));
 
         try {
             return (service != null)

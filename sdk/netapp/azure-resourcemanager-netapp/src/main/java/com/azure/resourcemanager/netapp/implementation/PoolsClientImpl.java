@@ -64,11 +64,10 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface PoolsService {
+    public interface PoolsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CapacityPoolList>> list(
@@ -82,8 +81,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CapacityPoolInner>> get(
@@ -98,8 +96,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -115,8 +112,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -132,8 +128,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/capacityPools/{poolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -161,7 +156,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -220,7 +215,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +273,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -296,7 +291,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +311,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -333,7 +328,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>List all capacity pools in the NetApp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,7 +346,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Get details of the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -407,7 +402,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Get details of the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -461,7 +456,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Get details of the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,25 +475,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Get details of the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified capacity pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityPoolInner get(String resourceGroupName, String accountName, String poolName) {
-        return getAsync(resourceGroupName, accountName, poolName).block();
-    }
-
-    /**
-     * Describe a Capacity Pool
-     *
-     * <p>Get details of the specified capacity pool.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -514,11 +491,29 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Describe a Capacity Pool
+     *
+     * <p>Get details of the specified capacity pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified capacity pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CapacityPoolInner get(String resourceGroupName, String accountName, String poolName) {
+        return getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or Update the specified capacity pool within the resource group
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -580,7 +575,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -640,7 +635,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -669,7 +664,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -696,7 +691,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -708,7 +703,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
     }
 
     /**
@@ -716,7 +711,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -729,7 +724,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
     }
 
     /**
@@ -737,7 +732,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -759,7 +754,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -782,7 +777,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -802,7 +797,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Create or Update a capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -823,7 +818,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -885,7 +880,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -945,7 +940,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -973,7 +968,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1000,7 +995,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1012,7 +1007,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, body).getSyncPoller();
     }
 
     /**
@@ -1020,7 +1015,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1033,7 +1028,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityPoolInner>, CapacityPoolInner> beginUpdate(
         String resourceGroupName, String accountName, String poolName, CapacityPoolPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, poolName, body, context).getSyncPoller();
     }
 
     /**
@@ -1041,7 +1036,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1063,7 +1058,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1086,7 +1081,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1106,7 +1101,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Patch the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param body Capacity pool object supplied in the body of the operation.
@@ -1127,7 +1122,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1180,7 +1175,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -1231,7 +1226,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1254,7 +1249,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -1279,7 +1274,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1290,7 +1285,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName).getSyncPoller();
     }
 
     /**
@@ -1298,7 +1293,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -1310,7 +1305,7 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, poolName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, poolName, context).getSyncPoller();
     }
 
     /**
@@ -1318,7 +1313,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1338,7 +1333,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -1359,7 +1354,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1376,7 +1371,7 @@ public final class PoolsClientImpl implements PoolsClient {
      *
      * <p>Delete the specified capacity pool.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.

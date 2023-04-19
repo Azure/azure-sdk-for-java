@@ -34,25 +34,34 @@ public interface ConfidentialLedger {
     String type();
 
     /**
-     * Gets the properties property: LedgerProperties Properties of Confidential Ledger Resource.
+     * Gets the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the runningState property: Object representing RunningState for Ledger.
+     *
+     * @return the runningState value.
+     */
+    RunningState runningState();
+
+    /**
+     * Gets the properties property: LedgerProperties
+     *
+     * <p>Properties of Confidential Ledger Resource.
      *
      * @return the properties value.
      */
     LedgerProperties properties();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the location property: The Azure location where the Confidential Ledger is running.
-     *
-     * @return the location value.
-     */
-    String location();
 
     /**
      * Gets the tags property: Additional tags for Confidential Ledger.
@@ -91,19 +100,40 @@ public interface ConfidentialLedger {
 
     /** The entirety of the ConfidentialLedger definition. */
     interface Definition
-        extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithLocation,
+            DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithCreate {
     }
     /** The ConfidentialLedger definition stages. */
     interface DefinitionStages {
         /** The first stage of the ConfidentialLedger definition. */
-        interface Blank extends WithResourceGroup {
+        interface Blank extends WithLocation {
+        }
+        /** The stage of the ConfidentialLedger definition allowing to specify location. */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithResourceGroup withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             *
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithResourceGroup withRegion(String location);
         }
         /** The stage of the ConfidentialLedger definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -113,7 +143,7 @@ public interface ConfidentialLedger {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
+            extends DefinitionStages.WithTags, DefinitionStages.WithRunningState, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              *
@@ -129,24 +159,6 @@ public interface ConfidentialLedger {
              */
             ConfidentialLedger create(Context context);
         }
-        /** The stage of the ConfidentialLedger definition allowing to specify location. */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The Azure location where the Confidential Ledger is running.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The Azure location where the Confidential Ledger is running.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String location);
-        }
         /** The stage of the ConfidentialLedger definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -157,12 +169,25 @@ public interface ConfidentialLedger {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the ConfidentialLedger definition allowing to specify runningState. */
+        interface WithRunningState {
+            /**
+             * Specifies the runningState property: Object representing RunningState for Ledger..
+             *
+             * @param runningState Object representing RunningState for Ledger.
+             * @return the next definition stage.
+             */
+            WithCreate withRunningState(RunningState runningState);
+        }
         /** The stage of the ConfidentialLedger definition allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: LedgerProperties Properties of Confidential Ledger Resource..
+             * Specifies the properties property: LedgerProperties
              *
-             * @param properties LedgerProperties Properties of Confidential Ledger Resource.
+             * <p>Properties of Confidential Ledger Resource..
+             *
+             * @param properties LedgerProperties
+             *     <p>Properties of Confidential Ledger Resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(LedgerProperties properties);
@@ -176,7 +201,7 @@ public interface ConfidentialLedger {
     ConfidentialLedger.Update update();
 
     /** The template for ConfidentialLedger update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithRunningState, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          *
@@ -204,12 +229,25 @@ public interface ConfidentialLedger {
              */
             Update withTags(Map<String, String> tags);
         }
+        /** The stage of the ConfidentialLedger update allowing to specify runningState. */
+        interface WithRunningState {
+            /**
+             * Specifies the runningState property: Object representing RunningState for Ledger..
+             *
+             * @param runningState Object representing RunningState for Ledger.
+             * @return the next definition stage.
+             */
+            Update withRunningState(RunningState runningState);
+        }
         /** The stage of the ConfidentialLedger update allowing to specify properties. */
         interface WithProperties {
             /**
-             * Specifies the properties property: LedgerProperties Properties of Confidential Ledger Resource..
+             * Specifies the properties property: LedgerProperties
              *
-             * @param properties LedgerProperties Properties of Confidential Ledger Resource.
+             * <p>Properties of Confidential Ledger Resource..
+             *
+             * @param properties LedgerProperties
+             *     <p>Properties of Confidential Ledger Resource.
              * @return the next definition stage.
              */
             Update withProperties(LedgerProperties properties);

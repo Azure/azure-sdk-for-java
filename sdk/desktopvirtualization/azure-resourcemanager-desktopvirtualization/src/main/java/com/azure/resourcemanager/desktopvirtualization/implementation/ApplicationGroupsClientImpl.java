@@ -60,11 +60,10 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "DesktopVirtualizatio")
-    private interface ApplicationGroupsService {
+    public interface ApplicationGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGroupInner>> getByResourceGroup(
@@ -78,8 +77,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGroupInner>> createOrUpdate(
@@ -94,8 +92,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -109,8 +106,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups/{applicationGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGroupInner>> update(
@@ -125,8 +121,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DesktopVirtualization/applicationGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/applicationGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationGroupList>> listByResourceGroup(
@@ -135,6 +130,9 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$filter") String filter,
+            @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("isDescending") Boolean isDescending,
+            @QueryParam("initialSkip") Integer initialSkip,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -288,21 +286,6 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationGroupInner getByResourceGroup(String resourceGroupName, String applicationGroupName) {
-        return getByResourceGroupAsync(resourceGroupName, applicationGroupName).block();
-    }
-
-    /**
-     * Get an application group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,6 +296,21 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     public Response<ApplicationGroupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String applicationGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationGroupName, context).block();
+    }
+
+    /**
+     * Get an application group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationGroupInner getByResourceGroup(String resourceGroupName, String applicationGroupName) {
+        return getByResourceGroupWithResponse(resourceGroupName, applicationGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -456,23 +454,6 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationGroup Object containing ApplicationGroup definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationGroupInner createOrUpdate(
-        String resourceGroupName, String applicationGroupName, ApplicationGroupInner applicationGroup) {
-        return createOrUpdateAsync(resourceGroupName, applicationGroupName, applicationGroup).block();
-    }
-
-    /**
-     * Create or update an applicationGroup.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationGroup Object containing ApplicationGroup definitions.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -487,6 +468,24 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, applicationGroupName, applicationGroup, context)
             .block();
+    }
+
+    /**
+     * Create or update an applicationGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param applicationGroup Object containing ApplicationGroup definitions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a ApplicationGroup definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationGroupInner createOrUpdate(
+        String resourceGroupName, String applicationGroupName, ApplicationGroupInner applicationGroup) {
+        return createOrUpdateWithResponse(resourceGroupName, applicationGroupName, applicationGroup, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -604,20 +603,6 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String applicationGroupName) {
-        deleteAsync(resourceGroupName, applicationGroupName).block();
-    }
-
-    /**
-     * Remove an applicationGroup.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -627,6 +612,20 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String applicationGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, applicationGroupName, context).block();
+    }
+
+    /**
+     * Remove an applicationGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String applicationGroupName) {
+        deleteWithResponse(resourceGroupName, applicationGroupName, Context.NONE);
     }
 
     /**
@@ -745,24 +744,6 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
-     * @param applicationGroup Object containing ApplicationGroup definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationGroupInner> updateAsync(
-        String resourceGroupName, String applicationGroupName, ApplicationGroupPatch applicationGroup) {
-        return updateWithResponseAsync(resourceGroupName, applicationGroupName, applicationGroup)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update an applicationGroup.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -773,22 +754,6 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
         final ApplicationGroupPatch applicationGroup = null;
         return updateWithResponseAsync(resourceGroupName, applicationGroupName, applicationGroup)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update an applicationGroup.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a ApplicationGroup definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationGroupInner update(String resourceGroupName, String applicationGroupName) {
-        final ApplicationGroupPatch applicationGroup = null;
-        return updateAsync(resourceGroupName, applicationGroupName, applicationGroup).block();
     }
 
     /**
@@ -813,10 +778,29 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     }
 
     /**
+     * Update an applicationGroup.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a ApplicationGroup definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationGroupInner update(String resourceGroupName, String applicationGroupName) {
+        final ApplicationGroupPatch applicationGroup = null;
+        return updateWithResponse(resourceGroupName, applicationGroupName, applicationGroup, Context.NONE).getValue();
+    }
+
+    /**
      * List applicationGroups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter OData filter expression. Valid properties for filtering are applicationGroupType.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -824,7 +808,7 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter) {
+        String resourceGroupName, String filter, Integer pageSize, Boolean isDescending, Integer initialSkip) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -852,6 +836,9 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             filter,
+                            pageSize,
+                            isDescending,
+                            initialSkip,
                             accept,
                             context))
             .<PagedResponse<ApplicationGroupInner>>map(
@@ -871,6 +858,9 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter OData filter expression. Valid properties for filtering are applicationGroupType.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -879,7 +869,12 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Context context) {
+        String resourceGroupName,
+        String filter,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -905,6 +900,9 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 filter,
+                pageSize,
+                isDescending,
+                initialSkip,
                 accept,
                 context)
             .map(
@@ -923,15 +921,19 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter OData filter expression. Valid properties for filtering are applicationGroupType.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicationGroupList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
+    public PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(
+        String resourceGroupName, String filter, Integer pageSize, Boolean isDescending, Integer initialSkip) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, pageSize, isDescending, initialSkip),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -947,8 +949,11 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
+        final Integer pageSize = null;
+        final Boolean isDescending = null;
+        final Integer initialSkip = null;
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter),
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, pageSize, isDescending, initialSkip),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -957,6 +962,9 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter OData filter expression. Valid properties for filtering are applicationGroupType.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -965,9 +973,16 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationGroupInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Context context) {
+        String resourceGroupName,
+        String filter,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, context),
+            () ->
+                listByResourceGroupSinglePageAsync(
+                    resourceGroupName, filter, pageSize, isDescending, initialSkip, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -983,7 +998,11 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
+        final Integer pageSize = null;
+        final Boolean isDescending = null;
+        final Integer initialSkip = null;
+        return new PagedIterable<>(
+            listByResourceGroupAsync(resourceGroupName, filter, pageSize, isDescending, initialSkip));
     }
 
     /**
@@ -991,6 +1010,9 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter OData filter expression. Valid properties for filtering are applicationGroupType.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -999,8 +1021,14 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationGroupInner> listByResourceGroup(
-        String resourceGroupName, String filter, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
+        String resourceGroupName,
+        String filter,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
+        return new PagedIterable<>(
+            listByResourceGroupAsync(resourceGroupName, filter, pageSize, isDescending, initialSkip, context));
     }
 
     /**
@@ -1172,7 +1200,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1208,7 +1237,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1245,7 +1275,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1281,7 +1312,8 @@ public final class ApplicationGroupsClientImpl implements ApplicationGroupsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

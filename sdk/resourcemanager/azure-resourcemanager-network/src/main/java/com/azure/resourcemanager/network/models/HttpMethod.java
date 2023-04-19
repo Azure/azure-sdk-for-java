@@ -14,6 +14,15 @@ public final class HttpMethod extends ExpandableStringEnum<HttpMethod> {
     public static final HttpMethod GET = fromString("Get");
 
     /**
+     * Creates a new instance of HttpMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpMethod() {
+    }
+
+    /**
      * Creates or finds a HttpMethod from its string representation.
      *
      * @param name a name to look for.

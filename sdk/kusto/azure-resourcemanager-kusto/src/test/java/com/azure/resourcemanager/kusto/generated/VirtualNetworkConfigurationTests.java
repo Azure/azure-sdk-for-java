@@ -7,31 +7,30 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworkConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"subnetId\":\"algbquxigjyjg\",\"enginePublicIpId\":\"jaoyfhrtx\",\"dataManagementPublicIpId\":\"lnerkujysvleju\"}")
+                    "{\"subnetId\":\"cr\",\"enginePublicIpId\":\"ffdfdosygexpa\",\"dataManagementPublicIpId\":\"jakhmsbzjh\"}")
                 .toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("algbquxigjyjg", model.subnetId());
-        Assertions.assertEquals("jaoyfhrtx", model.enginePublicIpId());
-        Assertions.assertEquals("lnerkujysvleju", model.dataManagementPublicIpId());
+        Assertions.assertEquals("cr", model.subnetId());
+        Assertions.assertEquals("ffdfdosygexpa", model.enginePublicIpId());
+        Assertions.assertEquals("jakhmsbzjh", model.dataManagementPublicIpId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworkConfiguration model =
             new VirtualNetworkConfiguration()
-                .withSubnetId("algbquxigjyjg")
-                .withEnginePublicIpId("jaoyfhrtx")
-                .withDataManagementPublicIpId("lnerkujysvleju");
+                .withSubnetId("cr")
+                .withEnginePublicIpId("ffdfdosygexpa")
+                .withDataManagementPublicIpId("jakhmsbzjh");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("algbquxigjyjg", model.subnetId());
-        Assertions.assertEquals("jaoyfhrtx", model.enginePublicIpId());
-        Assertions.assertEquals("lnerkujysvleju", model.dataManagementPublicIpId());
+        Assertions.assertEquals("cr", model.subnetId());
+        Assertions.assertEquals("ffdfdosygexpa", model.enginePublicIpId());
+        Assertions.assertEquals("jakhmsbzjh", model.dataManagementPublicIpId());
     }
 }

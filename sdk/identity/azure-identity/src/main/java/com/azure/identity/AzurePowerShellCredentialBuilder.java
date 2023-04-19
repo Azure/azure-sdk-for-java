@@ -13,6 +13,30 @@ import java.util.List;
 /**
  * Fluent credential builder for instantiating a {@link AzurePowerShellCredential}.
  *
+ * <p>The Azure Powershell is a command-line tool that allows users to manage Azure resources from their local machine
+ * or terminal. It allows users to
+ * <a href="https://learn.microsoft.com/en-us/powershell/azure/authenticate-azureps">authenticate interactively</a>
+ * as a user and/or a service principal against
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a>. The {@link AzurePowerShellCredential} authenticates in a development environment and acquires a token on
+ * behalf of the logged-in user or service principal in Azure Powershell. It acts as the Azure Powershell logged in
+ * user or service principal and executes an Azure Powershell command underneath to authenticate the application
+ * against Azure Active Directory.</p>
+ *
+ * <p><strong>Sample: Construct AzurePowershellCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AzurePowerShellCredential},
+ * using the {@link com.azure.identity.AzurePowerShellCredentialBuilder} to configure it. Once this credential is
+ * created, it may be passed into the builder of many of the Azure SDK for Java client builders as the 'credential'
+ * parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.azurepowershellcredential.construct -->
+ * <pre>
+ * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.azurepowershellcredential.construct -->
+ *
  * @see AzurePowerShellCredential
  */
 public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<AzurePowerShellCredentialBuilder> {

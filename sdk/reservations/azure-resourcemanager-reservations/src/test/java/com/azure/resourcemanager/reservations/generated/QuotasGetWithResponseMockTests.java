@@ -32,7 +32,7 @@ public final class QuotasGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"limit\":724220741,\"currentValue\":859061140,\"unit\":\"kkqfqjbvle\",\"name\":{\"value\":\"ml\",\"localizedValue\":\"qtqzfavyv\"},\"resourceType\":\"standard\",\"quotaPeriod\":\"bar\",\"properties\":\"datauayjkqa\"},\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}";
+            "{\"properties\":{\"limit\":21548435,\"currentValue\":1326013393,\"unit\":\"zhvfcibyfmowuxr\",\"name\":{\"value\":\"vdwxfzwi\",\"localizedValue\":\"wzjbh\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"jrkambtrnegvmnv\",\"properties\":\"dataeqvldspast\"},\"id\":\"bkkd\",\"name\":\"flvestmjlxrrilo\",\"type\":\"apeewchpxlkt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,13 @@ public final class QuotasGetWithResponseMockTests {
         CurrentQuotaLimitBase response =
             manager
                 .quotas()
-                .getWithResponse("rqjfsmlm", "txhwgfws", "tawc", "ezbrhubskh", com.azure.core.util.Context.NONE)
+                .getWithResponse(
+                    "zkdnc", "dxonbzoggculap", "wyrpgogtqxepnyl", "fuajly", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(724220741, response.properties().limit());
-        Assertions.assertEquals("kkqfqjbvle", response.properties().unit());
-        Assertions.assertEquals("ml", response.properties().name().value());
-        Assertions.assertEquals(ResourceType.STANDARD, response.properties().resourceType());
+        Assertions.assertEquals(21548435, response.properties().limit());
+        Assertions.assertEquals("zhvfcibyfmowuxr", response.properties().unit());
+        Assertions.assertEquals("vdwxfzwi", response.properties().name().value());
+        Assertions.assertEquals(ResourceType.LOW_PRIORITY, response.properties().resourceType());
     }
 }

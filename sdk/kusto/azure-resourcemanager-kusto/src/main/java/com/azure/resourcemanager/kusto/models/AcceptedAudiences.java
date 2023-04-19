@@ -16,6 +16,10 @@ public final class AcceptedAudiences {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of AcceptedAudiences class. */
+    public AcceptedAudiences() {
+    }
+
     /**
      * Get the value property: GUID or valid URL representing an accepted audience.
      *

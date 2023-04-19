@@ -26,6 +26,15 @@ public final class PcError extends ExpandableStringEnum<PcError> {
     public static final PcError STORAGE_FAILED = fromString("StorageFailed");
 
     /**
+     * Creates a new instance of PcError value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PcError() {
+    }
+
+    /**
      * Creates or finds a PcError from its string representation.
      *
      * @param name a name to look for.

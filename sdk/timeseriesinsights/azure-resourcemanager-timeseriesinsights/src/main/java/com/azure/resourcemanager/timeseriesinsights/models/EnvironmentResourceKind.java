@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnvironmentResourceKind. */
+/** The kind of the environment. */
 public final class EnvironmentResourceKind extends ExpandableStringEnum<EnvironmentResourceKind> {
     /** Static value Gen1 for EnvironmentResourceKind. */
     public static final EnvironmentResourceKind GEN1 = fromString("Gen1");
 
     /** Static value Gen2 for EnvironmentResourceKind. */
     public static final EnvironmentResourceKind GEN2 = fromString("Gen2");
+
+    /**
+     * Creates a new instance of EnvironmentResourceKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnvironmentResourceKind() {
+    }
 
     /**
      * Creates or finds a EnvironmentResourceKind from its string representation.
@@ -27,7 +36,11 @@ public final class EnvironmentResourceKind extends ExpandableStringEnum<Environm
         return fromString(name, EnvironmentResourceKind.class);
     }
 
-    /** @return known EnvironmentResourceKind values. */
+    /**
+     * Gets known EnvironmentResourceKind values.
+     *
+     * @return known EnvironmentResourceKind values.
+     */
     public static Collection<EnvironmentResourceKind> values() {
         return values(EnvironmentResourceKind.class);
     }

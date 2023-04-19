@@ -74,8 +74,7 @@ public final class RegulatoryComplianceStandardsClientImpl implements Regulatory
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards"
-                + "/{regulatoryComplianceStandardName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegulatoryComplianceStandardInner>> get(

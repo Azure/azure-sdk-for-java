@@ -17,7 +17,7 @@ public class AzureStorageProperties extends AbstractAzureServiceConfigurationPro
     public static final String PREFIX = "spring.cloud.azure.storage";
 
     /**
-     * Endpoint for Azure Storage service.
+     * Endpoint for Azure Storage service. For instance, 'https://{storage-account-name}.blob.storage.azure.net' for blob or 'https://{storage-account-name}.file.storage.azure.net' for file share or 'https://{storage-account-name}.queue.storage.azure.net' for queue.
      */
     protected String endpoint;
     /**

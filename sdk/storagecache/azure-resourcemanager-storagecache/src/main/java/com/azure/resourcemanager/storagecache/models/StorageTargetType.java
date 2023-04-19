@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageTargetType. */
+/** Type of the Storage Target. */
 public final class StorageTargetType extends ExpandableStringEnum<StorageTargetType> {
     /** Static value nfs3 for StorageTargetType. */
     public static final StorageTargetType NFS3 = fromString("nfs3");
@@ -21,6 +21,15 @@ public final class StorageTargetType extends ExpandableStringEnum<StorageTargetT
 
     /** Static value blobNfs for StorageTargetType. */
     public static final StorageTargetType BLOB_NFS = fromString("blobNfs");
+
+    /**
+     * Creates a new instance of StorageTargetType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageTargetType() {
+    }
 
     /**
      * Creates or finds a StorageTargetType from its string representation.

@@ -4,7 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.implementation.handler.ReactorHandler;
-import com.azure.core.amqp.implementation.handler.TransportHandler;
+import com.azure.core.amqp.implementation.handler.GlobalIOHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -39,7 +39,7 @@ public class ReactorProvider {
      * @throws IOException If the service could not create a Reactor instance.
      */
     public Reactor createReactor(String connectionId, int maxFrameSize) throws IOException {
-        final TransportHandler transportHandler = new TransportHandler(connectionId);
+        final GlobalIOHandler globalIOHandler = new GlobalIOHandler(connectionId);
         final ReactorHandler reactorHandler = new ReactorHandler(connectionId);
 
         synchronized (lock) {
@@ -56,7 +56,7 @@ public class ReactorProvider {
             reactorOptions.setEnableSaslByDefault(true);
 
             final Reactor reactor = Proton.reactor(reactorOptions, reactorHandler);
-            reactor.getGlobalHandler().add(transportHandler);
+            reactor.setGlobalHandler(globalIOHandler);
 
             final Pipe ioSignal = Pipe.open();
             final ReactorDispatcher dispatcher = new ReactorDispatcher(connectionId, reactor, ioSignal);

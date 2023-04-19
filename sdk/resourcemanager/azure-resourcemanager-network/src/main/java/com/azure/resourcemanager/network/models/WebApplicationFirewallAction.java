@@ -20,6 +20,15 @@ public final class WebApplicationFirewallAction extends ExpandableStringEnum<Web
     public static final WebApplicationFirewallAction LOG = fromString("Log");
 
     /**
+     * Creates a new instance of WebApplicationFirewallAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebApplicationFirewallAction() {
+    }
+
+    /**
      * Creates or finds a WebApplicationFirewallAction from its string representation.
      *
      * @param name a name to look for.
