@@ -183,13 +183,14 @@ public class GlobalAddressResolver implements IAddressResolver {
                                             }
 
                                             return Flux.empty();
-                                        });
+                                            // Resolve metadata GET address requests 1 region at a time
+                                        }, 1);
                                 }
 
                                 return Flux.empty();
                             });
                     });
-            });
+            }, Configs.getCPUCnt(), Configs.getCPUCnt());
     }
 
     private Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> resolveAddressesPerCollection(
