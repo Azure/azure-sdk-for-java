@@ -45,7 +45,7 @@ public class SharedTransportClient extends TransportClient {
         IAddressResolver addressResolver,
         ClientTelemetry clientTelemetry,
         GlobalEndpointManager globalEndpointManager) {
-        return getOrCreateInstance(protocol, configs, connectionPolicy, userAgent, diagnosticsClientConfig, addressResolver, clientTelemetry, globalEndpointManager, Duration.ZERO);
+        return getOrCreateInstance(protocol, configs, connectionPolicy, userAgent, diagnosticsClientConfig, addressResolver, clientTelemetry, globalEndpointManager, null);
     }
 
     public static TransportClient getOrCreateInstance(

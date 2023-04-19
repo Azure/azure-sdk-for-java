@@ -22,7 +22,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private int numProactiveConnectionRegions;
-    private Duration aggressiveProactiveConnectionEstablishmentDuration = Duration.ZERO;
+    private Duration aggressiveProactiveConnectionEstablishmentDuration;
 
     /**
      * Instantiates {@link CosmosContainerProactiveInitConfigBuilder}
@@ -71,8 +71,10 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      * @return current {@link CosmosContainerProactiveInitConfigBuilder}
      */
     public CosmosContainerProactiveInitConfigBuilder setAggressiveProactiveConnectionEstablishmentDuration(Duration aggressiveProactiveConnectionEstablishmentDuration) {
-        checkArgument(aggressiveProactiveConnectionEstablishmentDuration != Duration.ZERO,
-                "aggressiveProactiveConnectionEstablishmentDuration cannot be set to Duration.ZERO");
+        checkArgument(aggressiveProactiveConnectionEstablishmentDuration != null,
+                "aggressiveProactiveConnectionEstablishmentDuration cannot be a null value");
+        checkArgument(aggressiveProactiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0,
+                "aggressiveProactiveConnectionEstablishmentDuration should be greater than Duration.ZERO");
         this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
         return this;
     }

@@ -942,7 +942,7 @@ public class CosmosClientBuilder implements
         if (proactiveContainerInitConfig != null) {
             Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
                     .getAggressiveProactiveConnectionEstablishmentDuration();
-            if (aggressiveProactiveConnectionEstablishmentTimeWindow != Duration.ZERO) {
+            if (aggressiveProactiveConnectionEstablishmentTimeWindow != null) {
                 cosmosAsyncClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
             } else {
                 cosmosAsyncClient.openConnectionsAndInitCaches();

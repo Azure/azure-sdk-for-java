@@ -59,7 +59,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 .just(1)
                 .delayElements(aggressiveConnectionEstablishmentDuration);
 
-        if (aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
+        if (aggressiveConnectionEstablishmentDuration != null && aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
             backgroundOpenConnectionsSinkReInstantiationTask
                     .doOnComplete(() -> reInstantiateOpenConnectionsPublisherAndSubscribe())
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
@@ -68,7 +68,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
-        this(endpointProvider, Duration.ZERO);
+        this(endpointProvider, null);
     }
 
     public synchronized OpenConnectionTask submitOpenConnectionTaskOutsideLoop(

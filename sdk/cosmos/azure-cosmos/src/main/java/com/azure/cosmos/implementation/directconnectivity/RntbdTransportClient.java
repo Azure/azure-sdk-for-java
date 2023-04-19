@@ -134,7 +134,7 @@ public class RntbdTransportClient extends TransportClient {
             addressResolver,
             clientTelemetry,
             globalEndpointManager,
-            Duration.ZERO);
+            null);
     }
 
     public RntbdTransportClient(
