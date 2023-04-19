@@ -10,25 +10,18 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ConfigurableBootstrapContext;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 
-import com.azure.data.appconfiguration.ConfigurationClient;
-import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
-import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResource> {
 
@@ -39,27 +32,6 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
     private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
 
     private Duration refreshInterval;
-
-    private ConfigurableBootstrapContext bootstrapContext;
-
-    /**
-     * Loads all Azure App Configuration Property Sources configured.
-     * 
-     * @param properties Configurations for stores to be loaded.
-     * @param appProperties Configurations for the library.
-     * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
-     * @param keyVaultClientFactory factory for creating clients for connecting to Azure Key Vault
-     */
-    public AppConfigDataLoader(ConfigurableBootstrapContext bootstrapContext) {
-        this.bootstrapContext = bootstrapContext;
-        // this.refreshInterval = refreshInterval;
-        // this.appProperties = appProperties;
-        // this.clientFactory = clientFactory;
-        // this.keyVaultClientFactory = keyVaultClientFactory;
-
-        // BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(),
-        // appProperties.getDefaultMinBackoff());
-    }
 
     @Override
     public ConfigData load(ConfigDataLoaderContext context, AppConfigDataResource resource)
@@ -73,10 +45,15 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
 
         List<AppConfigurationPropertySource> sources = new ArrayList<>();
 
+        AppConfigurationReplicaClientFactory replicaClientFactory = context.getBootstrapContext()
+            .get(AppConfigurationReplicaClientFactory.class);
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory = context.getBootstrapContext()
+            .get(AppConfigurationKeyVaultClientFactory.class);
+
         if (configStore.isEnabled()) {
             // There is only one Feature Set for all AppConfigurationPropertySources
 
-            List<AppConfigurationReplicaClient> clients = resource.getRcf()
+            List<AppConfigurationReplicaClient> clients = replicaClientFactory
                 .getAvailableClients(configStore.getEndpoint(), true);
 
             boolean generatedPropertySources = false;
@@ -88,7 +65,7 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
                 sourceList = new ArrayList<>();
 
                 if (reloadFailed
-                    && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, resource.getRcf(),
+                    && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, replicaClientFactory,
                         configStore.getFeatureFlags(), profiles)) {
                     // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                     continue;
@@ -96,16 +73,16 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
 
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
-                    sources.addAll(create(client, configStore, profiles, resource));
+                    sources.addAll(create(client, configStore, profiles, keyVaultClientFactory, resource.getAppProperties()));
                     sourceList.addAll(sources);
 
                     LOGGER.debug("PropertySource context.");
-                    //setupMonitoring(configStore, client, sources, newState);
+                    // setupMonitoring(configStore, client, sources, newState);
 
                     generatedPropertySources = true;
                 } catch (AppConfigurationStatusException e) {
                     reloadFailed = true;
-                    resource.getRcf().backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
+                    replicaClientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
                 } catch (Exception e) {
                     newState = failedToGeneratePropertySource(configStore, newState, e, resource);
 
@@ -187,7 +164,8 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
         return watchKeysFeatures;
     }
 
-    private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e, AppConfigDataResource resource) {
+    private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e,
+        AppConfigDataResource resource) {
         String message = "Failed to generate property sources for " + configStore.getEndpoint();
         if (configStore.isFailFast()) {
             LOGGER.error("Fail fast is set and there was an error reading configuration from Azure App "
@@ -213,7 +191,7 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
      * @throws Exception creating a property source failed
      */
     private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,
-        List<String> profiles, AppConfigDataResource resource) throws Exception {
+        List<String> profiles, AppConfigurationKeyVaultClientFactory keyVaultClientFactory, AppConfigurationProviderProperties appProperties) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
         List<AppConfigurationKeyValueSelector> selects = store.getSelects();
 
@@ -230,8 +208,8 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
             AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
-                store.getEndpoint(), client, resource.getKvcf(), selectedKeys.getKeyFilter(),
-                selectedKeys.getLabelFilter(profiles), resource.getAppProperties().getMaxRetryTime());
+                store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
+                selectedKeys.getLabelFilter(profiles), appProperties.getMaxRetryTime());
             propertySource.initProperties();
             sourceList.add(propertySource);
         }
@@ -241,7 +219,8 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
 
     private void delayException(AppConfigDataResource resource) {
         Instant currentDate = Instant.now();
-        Instant preKillTIme = resource.getAppProperties().getStartDate().plusSeconds(resource.getAppProperties().getPrekillTime());
+        Instant preKillTIme = resource.getAppProperties().getStartDate()
+            .plusSeconds(resource.getAppProperties().getPrekillTime());
         if (currentDate.isBefore(preKillTIme)) {
             long diffInMillies = Math.abs(preKillTIme.toEpochMilli() - currentDate.toEpochMilli());
             try {

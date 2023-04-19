@@ -16,20 +16,10 @@ public class AppConfigDataResource extends ConfigDataResource {
 
     private final AppConfigurationProviderProperties appProperties;
 
-    private final AppConfigurationKeyVaultClientFactory kvcf;
-
-    private final AppConfigurationReplicaClientFactory rcf;
-
-    private final AppConfigurationReplicaClientsBuilder rcb;
-
-    public AppConfigDataResource(ConfigStore configStore, Profiles profiles, AppConfigurationKeyVaultClientFactory kvcf,
-        AppConfigurationReplicaClientFactory rcf, AppConfigurationReplicaClientsBuilder rcb,
+    public AppConfigDataResource(ConfigStore configStore, Profiles profiles,
         AppConfigurationProviderProperties appProperties) {
         this.configStore = configStore;
         this.profiles = profiles;
-        this.kvcf = kvcf;
-        this.rcf = rcf;
-        this.rcb = rcb;
         this.appProperties = appProperties;
     }
 
@@ -45,27 +35,6 @@ public class AppConfigDataResource extends ConfigDataResource {
      */
     public ConfigStore getConfigStore() {
         return configStore;
-    }
-
-    /**
-     * @return the kvcf
-     */
-    public AppConfigurationKeyVaultClientFactory getKvcf() {
-        return kvcf;
-    }
-
-    /**
-     * @return the rcf
-     */
-    public AppConfigurationReplicaClientFactory getRcf() {
-        return rcf;
-    }
-
-    /**
-     * @return the rcb
-     */
-    public AppConfigurationReplicaClientsBuilder getRcb() {
-        return rcb;
     }
 
     /**
