@@ -2,16 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.test.faultinjection.*;
+import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import io.reactivex.subscribers.TestSubscriber;
-import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -20,10 +32,11 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 1000;
@@ -160,6 +173,27 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             // Should timeout after injected delay
             StepVerifier.create(queryPagedFlux)
                 .expectErrorMatches(throwable -> throwable instanceof RequestCancelledException)
+                .verify();
+
+            // Enabling at client level and disabling at the read item operation level should not fail the request even
+            // with injected delay
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig.DISABLED);
+            cosmosItemResponseMono =
+                container.readItem(obj.id, new PartitionKey(obj.mypk), options, TestObject.class);
+            StepVerifier.create(cosmosItemResponseMono)
+                .expectNextCount(1)
+                .expectComplete()
+                .verify();
+
+            // Enabling at client level and disabling at the query item operation level should not fail the request even
+            // with injected delay
+            CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
+                .setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig.DISABLED);
+            queryPagedFlux = container.queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class);
+            StepVerifier.create(queryPagedFlux)
+                .expectNextCount(1)
+                .expectComplete()
                 .verify();
 
             // delete the database
