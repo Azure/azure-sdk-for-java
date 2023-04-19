@@ -27,7 +27,7 @@ import java.util.List;
  */
 @ServiceClient(builder = BlobBatchClientBuilder.class)
 public final class BlobBatchClient {
-    private final BlobBatchAsyncClient client;
+    final BlobBatchAsyncClient client;
 
     BlobBatchClient(BlobBatchAsyncClient client) {
         this.client = client;

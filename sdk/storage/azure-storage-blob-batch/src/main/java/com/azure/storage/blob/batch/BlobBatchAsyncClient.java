@@ -48,7 +48,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class BlobBatchAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(BlobBatchAsyncClient.class);
 
-    private final AzureBlobStorageImpl client;
+    final AzureBlobStorageImpl client;
     private final boolean containerScoped;
     private final BlobServiceVersion serviceVersion;
 
