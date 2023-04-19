@@ -22,9 +22,14 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 
 public class AppConfigurationDataLocationResolver
     implements ConfigDataLocationResolver<AppConfigDataResource>, Ordered {
+    
+    public static final String PREFIX = "azureAppConfiguration";
 
     @Override
     public boolean isResolvable(ConfigDataLocationResolverContext context, ConfigDataLocation location) {
+        if (!location.hasPrefix(PREFIX)) {
+            return false;
+        }
         Boolean properties = context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class)
             .orElse(false);

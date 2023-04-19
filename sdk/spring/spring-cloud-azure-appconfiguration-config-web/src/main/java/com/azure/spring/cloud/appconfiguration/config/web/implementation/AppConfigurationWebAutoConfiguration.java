@@ -4,6 +4,7 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.bus.BusProperties;
 import org.springframework.cloud.bus.event.Destination;
 import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
@@ -25,7 +26,7 @@ import com.azure.spring.cloud.appconfiguration.config.web.implementation.pushref
  * Sets up refresh methods based on dependencies.
  */
 @Configuration
-//@EnableConfigurationProperties(AppConfigurationProperties.class)
+@EnableConfigurationProperties(AppConfigurationProperties.class)
 @RemoteApplicationEventScan
 @ConditionalOnBean(AppConfigurationRefresh.class)
 class AppConfigurationWebAutoConfiguration {
