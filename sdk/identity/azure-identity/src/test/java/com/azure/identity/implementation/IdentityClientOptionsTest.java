@@ -39,7 +39,7 @@ public class IdentityClientOptionsTest {
     @Test
     public void testDisableInstanceDiscovery() {
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        identityClientOptions.disableInstanceDisovery();
-        Assert.assertFalse(identityClientOptions.getInstanceDiscovery());
+        identityClientOptions.disableAuthorityValidationAndInstanceDiscovery();
+        Assert.assertFalse(identityClientOptions.getDisableAuthorityValidationAndInstanceDiscovery());
     }
 }

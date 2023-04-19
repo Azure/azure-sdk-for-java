@@ -111,14 +111,15 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     }
 
     /**
-     * Disables instance discovery.
+     * Disables instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
+     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */
     @SuppressWarnings("unchecked")
 
-    public T disableInstanceDiscovery() {
-        this.identityClientOptions.disableInstanceDisovery();
+    public T disableAuthorityValidationAndInstanceDiscovery() {
+        this.identityClientOptions.disableAuthorityValidationAndInstanceDiscovery();
         return (T) this;
     }
 }
