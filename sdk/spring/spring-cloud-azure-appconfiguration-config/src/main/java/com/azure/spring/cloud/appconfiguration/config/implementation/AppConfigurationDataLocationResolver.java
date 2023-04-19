@@ -22,7 +22,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 
 public class AppConfigurationDataLocationResolver
     implements ConfigDataLocationResolver<AppConfigDataResource>, Ordered {
-    
+
     public static final String PREFIX = "azureAppConfiguration";
 
     @Override
@@ -33,6 +33,7 @@ public class AppConfigurationDataLocationResolver
         Boolean properties = context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class)
             .orElse(false);
+        // TODO (mametcal)
         // Boolean appProperties = context.getBinder().bind(AppConfigurationProviderProperties.CONFIG_PREFIX +
         // ".version", Boolean.class)
         // .orElse(false);
@@ -74,9 +75,9 @@ public class AppConfigurationDataLocationResolver
                 Bindable.of(AppConfigurationProviderProperties.class), bindHandler)
                 .orElseGet(AppConfigurationProviderProperties::new);
         }
-        
+
         properties.validateAndInit();
-        
+
         AppConfigurationBootstrapRegistrar.register(context, binder, properties, appProperties);
 
         holder.properties = properties;
@@ -108,6 +109,7 @@ public class AppConfigurationDataLocationResolver
 
     private class Holder {
         AppConfigurationProperties properties;
+
         AppConfigurationProviderProperties appProperties;
     }
 

@@ -46,6 +46,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     /**
      * Component used for checking for and triggering configuration refreshes.
      *
+     * @param clientFactory Clients stores used to connect to App Configuration. * @param defaultMinBackoff default
      * @param refreshInterval time between refresh intervals
      * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
@@ -112,7 +113,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
             } finally {
                 running.set(false);
             }
-
         }
         return false;
     }

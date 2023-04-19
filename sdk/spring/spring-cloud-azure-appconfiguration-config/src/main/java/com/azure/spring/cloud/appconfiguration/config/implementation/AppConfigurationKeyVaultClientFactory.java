@@ -14,12 +14,15 @@ public class AppConfigurationKeyVaultClientFactory {
 
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
+    // TODO (mametcal)
     private SecretClientCustomizer keyVaultClientProvider;
 
+    // TODO (mametcal)
     private KeyVaultSecretProvider keyVaultSecretProvider;
 
     private final SecretClientBuilderFactory secretClientFactory;
 
+    // TODO (mametcal) This no longer takes KeyVaultSecretProvider/SecretClientCustimizer into account
     private final boolean credentialsConfigured;
 
     private final boolean isConfigured;

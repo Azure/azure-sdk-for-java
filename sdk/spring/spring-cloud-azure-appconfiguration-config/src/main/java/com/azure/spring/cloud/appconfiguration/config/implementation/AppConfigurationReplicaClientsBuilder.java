@@ -206,6 +206,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     protected ConfigurationClientBuilder createBuilderInstance() {
         RetryStrategy retryStatagy = null;
 
+        // TODO (mametcal)
         String mode = null;
         String modeService = null;
 

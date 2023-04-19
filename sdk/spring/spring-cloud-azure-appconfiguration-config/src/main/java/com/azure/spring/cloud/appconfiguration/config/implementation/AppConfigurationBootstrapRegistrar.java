@@ -76,6 +76,7 @@ class AppConfigurationBootstrapRegistrar {
         ConfigurationClientBuilderFactory clientFactory = new ConfigurationClientBuilderFactory(clientProperties);
 
         clientFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+        // TODO (mametcal)
         // customizers.orderedStream().forEach(clientFactory::addBuilderCustomizer);
 
         boolean credentialConfigured = isCredentialConfigured(clientProperties);
