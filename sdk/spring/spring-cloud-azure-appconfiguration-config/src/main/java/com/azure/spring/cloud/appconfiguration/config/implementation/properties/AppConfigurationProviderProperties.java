@@ -23,7 +23,7 @@ public class AppConfigurationProviderProperties {
 
     private static final Instant START_DATE = Instant.now();
 
-    // TODO (mametcal)
+    // TODO (mametcal) Need to figure out how to get library configuration loaded.
     @Value("${version:1.0}")
     private String version = "1.0";
 

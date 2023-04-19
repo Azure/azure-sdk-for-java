@@ -20,6 +20,8 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
 
 class AppConfigurationBootstrapRegistrar {
     
+    private static final String RETRY_MODE_PROPERTY_NAME = "retry.mode";
+    
     static void register(ConfigDataLocationResolverContext context, Binder binder, AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(context, binder);
         AppConfigurationReplicaClientsBuilder replicaClientsBuilder = replicaClientBuilder(context, binder, appProperties, keyVaultClientFactory);
@@ -76,13 +78,13 @@ class AppConfigurationBootstrapRegistrar {
         ConfigurationClientBuilderFactory clientFactory = new ConfigurationClientBuilderFactory(clientProperties);
 
         clientFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
-        // TODO (mametcal)
+        // TODO (mametcal) Something with custimizers in setup
         // customizers.orderedStream().forEach(clientFactory::addBuilderCustomizer);
 
         boolean credentialConfigured = isCredentialConfigured(clientProperties);
 
         AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
-            appProperties.getMaxRetries(), clientFactory, credentialConfigured);
+            appProperties.getMaxRetries(), clientFactory, credentialConfigured, context);
 
         clientBuilder.setIsKeyVaultConfigured(keyVaultClientFactory.isConfigured());
 

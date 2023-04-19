@@ -27,10 +27,6 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigDataLoader.class);
 
-    private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
-
-    private static final String REFRESH_ARGS_PROPERTY_SOURCE = "refreshArgs";
-
     private Duration refreshInterval;
 
     @Override

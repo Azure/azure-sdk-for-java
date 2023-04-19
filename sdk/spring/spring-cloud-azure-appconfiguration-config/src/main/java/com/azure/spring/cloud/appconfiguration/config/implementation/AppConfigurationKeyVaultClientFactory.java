@@ -14,10 +14,10 @@ public class AppConfigurationKeyVaultClientFactory {
 
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
-    // TODO (mametcal)
+    // TODO (mametcal) How do I get customer beans
     private SecretClientCustomizer keyVaultClientProvider;
 
-    // TODO (mametcal)
+    // TODO (mametcal) How do I get customer beans
     private KeyVaultSecretProvider keyVaultSecretProvider;
 
     private final SecretClientBuilderFactory secretClientFactory;

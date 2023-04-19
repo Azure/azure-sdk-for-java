@@ -33,7 +33,7 @@ public class AppConfigurationDataLocationResolver
         Boolean properties = context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class)
             .orElse(false);
-        // TODO (mametcal)
+        // TODO (mametcal) Need to figure out how to get library configuration loaded.
         // Boolean appProperties = context.getBinder().bind(AppConfigurationProviderProperties.CONFIG_PREFIX +
         // ".version", Boolean.class)
         // .orElse(false);
