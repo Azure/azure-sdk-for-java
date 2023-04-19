@@ -323,6 +323,10 @@ public class CosmosQueryRequestOptions {
         return responseContinuationTokenLimitInKb;
     }
 
+    /**
+     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the CosmosEndToEndOperationLatencyPolicyConfig
+     */
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
         return cosmosEndToEndOperationLatencyPolicyConfig;
     }

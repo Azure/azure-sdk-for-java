@@ -24,9 +24,15 @@ public class CosmosEndToEndOperationLatencyPolicyConfig {
     public static CosmosEndToEndOperationLatencyPolicyConfig DISABLED =
         new CosmosEndToEndOperationLatencyPolicyConfigBuilder(false).build();
 
-    private final boolean isEnabled;  // Can be inferred from endToEndOperationTimeout not being null?
+    private final boolean isEnabled;  // Can be inferred from endToEndOperationTimeout not being null?30
     private final Duration endToEndOperationTimeout; // No lowerbound?
 
+    /**
+     * Constructor
+     * @param isEnabled toggle if the policy should be enabled or disabled
+     * @param endToEndOperationTimeout the timeout for request cancellation in {@link Duration}. Setting very low timeouts
+     *                                 can cause the request to never succeed.
+     */
     public CosmosEndToEndOperationLatencyPolicyConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout) {

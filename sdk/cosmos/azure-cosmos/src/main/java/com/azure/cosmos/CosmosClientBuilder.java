@@ -788,11 +788,20 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} on the client
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return current CosmosClientBuilder
+     */
     public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
     }
 
+    /**
+     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     */
     public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
         return this.cosmosEndToEndOperationLatencyPolicyConfig;
     }

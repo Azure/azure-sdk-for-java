@@ -21,6 +21,10 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
         this(true);
     }
 
+    /**
+     * Enable or disable the end to end timeout policy
+     * @param isEnabled Flag to toggle the end to end timeout policy
+     */
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
@@ -38,8 +42,9 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * Specifies the endToEndOperationTimeout after which the request will be cancelled with
      * {@link com.azure.cosmos.implementation.RequestCancelledException}
      *
-     * @param endToEndOperationTimeout
-     * @return
+     * @param endToEndOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
+     *                                can cause the request to never succeed.
+     * @return current CosmosEndToEndOperationLatencyPolicyConfigBuilder
      */
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder endToEndOperationTimeout(
         Duration endToEndOperationTimeout) {
