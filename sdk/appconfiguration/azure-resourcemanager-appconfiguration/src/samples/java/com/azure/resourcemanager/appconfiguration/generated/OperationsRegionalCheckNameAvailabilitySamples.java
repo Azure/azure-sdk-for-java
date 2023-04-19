@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appconfiguration.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationResourceType;
 
 /** Samples for Operations RegionalCheckNameAvailability. */
 public final class OperationsRegionalCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/RegionalCheckNameAvailable.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/RegionalCheckNameAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameAvailable.
@@ -27,11 +26,11 @@ public final class OperationsRegionalCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityParameters()
                     .withName("contoso")
                     .withType(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/RegionalCheckNameNotAvailable.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/RegionalCheckNameNotAvailable.json
      */
     /**
      * Sample code: ConfigurationStores_CheckNameNotAvailable.
@@ -47,6 +46,6 @@ public final class OperationsRegionalCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityParameters()
                     .withName("contoso")
                     .withType(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
