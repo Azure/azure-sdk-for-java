@@ -17,6 +17,7 @@ import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -54,39 +55,26 @@ public class TestProxyManager {
     public void startProxy() {
 
         try {
-            String commandLine = "test-proxy";
-            // if we're not running in CI, construct the local path. TF_BUILD indicates Azure DevOps. CI indicates Github Actions.
-            if (runningLocally()) {
-                commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-                    TestProxyUtils.getProxyProcessName()).toString();
+            // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
+            if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1))) {
+                    String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
+                        TestProxyUtils.getProxyProcessName()).toString();
+
+                    ProcessBuilder builder = new ProcessBuilder(commandLine,
+                        "--storage-location",
+                        recordingPath.getPath(),
+                        "--",
+                        "--urls",
+                        getProxyUrl().toString());
+                    Map<String, String> environment = builder.environment();
+                    environment.put("LOGGING__LOGLEVEL", "Information");
+                    environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+                    environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
+                    proxy = builder.start();
             }
-
-            ProcessBuilder builder = new ProcessBuilder(commandLine,
-                "--storage-location",
-                recordingPath.getPath(),
-                "--",
-                "--urls",
-                getProxyUrl().toString());
-            Map<String, String> environment = builder.environment();
-            environment.put("LOGGING__LOGLEVEL", "Information");
-            environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
-            environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
-            proxy = builder.start();
-
-            HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-            HttpRequest request = new HttpRequest(HttpMethod.GET,
-                String.format("%s/admin/isalive", getProxyUrl()));
-            for (int i = 0; i < 10; i++) {
-                HttpResponse response = null;
-                try {
-                    response = client.sendSync(request, Context.NONE);
-                    if (response != null && response.getStatusCode() == 200) {
-                        return;
-                    }
-                    TestProxyUtils.checkForTestProxyErrors(response);
-                } catch (Exception ignored) {
-                }
-                Thread.sleep(6000);
+            // in either case the proxy should now be started, so let's wait to make sure.
+            if (checkAlive(10, Duration.ofSeconds(6))) {
+                return;
             }
             throw new RuntimeException("Test proxy did not initialize.");
 
@@ -97,11 +85,30 @@ public class TestProxyManager {
         }
     }
 
+    private boolean checkAlive(int loops, Duration waitTime) throws InterruptedException {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpRequest request = new HttpRequest(HttpMethod.GET,
+            String.format("%s/admin/isalive", getProxyUrl()));
+        for (int i = 0; i < loops; i++) {
+            HttpResponse response = null;
+            try {
+                response = client.sendSync(request, Context.NONE);
+                if (response != null && response.getStatusCode() == 200) {
+                    return true;
+                }
+                TestProxyUtils.checkForTestProxyErrors(response);
+            } catch (Exception ignored) {
+            }
+            Thread.sleep(waitTime.toMillis());
+        }
+        return false;
+    }
+
     /**
      * Stop the running instance of the test proxy.
      */
     public void stopProxy() {
-        if (proxy.isAlive()) {
+        if (proxy != null && proxy.isAlive()) {
             proxy.destroy();
         }
     }
