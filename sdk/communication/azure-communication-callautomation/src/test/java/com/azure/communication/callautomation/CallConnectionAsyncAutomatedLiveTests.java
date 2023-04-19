@@ -19,7 +19,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
-    @Disabled("Disabling this test for this release - fix after recording update")
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",
@@ -50,10 +48,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
          * 4. add one more ACS target to the call.
          * 5. remove the newly added target from the call.
          */
-        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
-            .buildAsyncClient();
-
         CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
             .buildAsyncClient();
@@ -62,12 +56,18 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
         try {
             // create caller and receiver
-            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationUserIdentifier receiver = identityAsyncClient.createUser().block();
-            CommunicationIdentifier anotherReceiver = identityAsyncClient.createUser().block();
+            CommunicationUserIdentifier anotherReceiver = identityAsyncClient.createUser().block();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
             String anotherUniqueId = serviceBusWithNewCall(caller, anotherReceiver);
+
+            // Create call automation client and use caller as the sourceIdentity.
+            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
+                .sourceIdentity(caller)
+                .buildAsyncClient();
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));

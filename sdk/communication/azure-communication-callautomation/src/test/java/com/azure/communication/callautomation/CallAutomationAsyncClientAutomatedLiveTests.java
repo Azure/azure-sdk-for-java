@@ -58,6 +58,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier target = identityAsyncClient.createUser().block();
 
+            // Create call automation client and use source as the caller.
             CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
                     .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
                     .sourceIdentity(caller)
@@ -149,6 +150,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier target = identityAsyncClient.createUser().block();
 
+            // Create call automation client and use source as the caller.
             CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
                     .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
                     .sourceIdentity(caller)
