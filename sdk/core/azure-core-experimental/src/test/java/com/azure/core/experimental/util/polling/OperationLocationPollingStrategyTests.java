@@ -156,7 +156,6 @@ public class OperationLocationPollingStrategyTests {
             .verifyComplete();
     }
 
-
     @Test
     public void operationLocationPollingStrategyPostSucceedsOnPoll() {
         // https://github.com/microsoft/api-guidelines/blob/vNext/azure/ConsiderationsForServiceDesign.md#long-running-action-operations
