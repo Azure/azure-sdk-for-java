@@ -147,7 +147,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             String queryText = "select top 1 * from c";
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-            CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, TestObject.class);
+            CosmosPagedFlux<TestObject> queryPagedFlux = container.queryItems(sqlQuerySpec, TestObject.class);
 
             // Should query item properly before injecting failure
             StepVerifier.create(queryPagedFlux)
@@ -155,7 +155,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
-            injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+            injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
 
             // Should timeout after injected delay
             StepVerifier.create(queryPagedFlux)

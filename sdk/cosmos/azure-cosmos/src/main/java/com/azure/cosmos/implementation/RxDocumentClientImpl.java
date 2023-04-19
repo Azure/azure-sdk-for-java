@@ -1160,7 +1160,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // If endToEndOperationLatencyPolicy is set in the query request options,
         // then it should have been populated into request context already
         // otherwise set them here with the client level policy
-        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() == null){
+        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() == null) {
             request.requestContext.setEndToEndOperationLantencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
         }
 
