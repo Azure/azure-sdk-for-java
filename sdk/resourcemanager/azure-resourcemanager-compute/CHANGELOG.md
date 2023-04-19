@@ -2,6 +2,12 @@
 
 ## 2.26.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Changed type from `ApiEntityReference` to `DiskRestorePointAttributes` of `diskRestorePoint` property in `RestorePointSourceVMDataDisk` and `RestorePointSourceVmosDisk` class.
+- Removed some setters in `RestorePointSourceMetadata`, `RestorePointSourceVmosDisk`, `RestorePointSourceVmosDisk` class. It should not affect customer, as these properties are read-only.
+- Removed `id` property from classes. It should not affect customer, as these properties does not exist in runtime.
+
 ### Other Changes
 
 #### Dependency Updates
