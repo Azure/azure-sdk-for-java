@@ -63,7 +63,7 @@ public class OpenConnectionTask extends CompletableFuture<OpenConnectionResponse
         private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsRetryPolicy.class);
         private static final int MaxRetryAttempts = 2;
         private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(1_000);
-        private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(10_000);
+        private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(15_000);
         private static final int BackoffMultiplier = 4;
         private Duration currentBackoff;
         private final TimeoutHelper waitTimeTimeoutHelper;

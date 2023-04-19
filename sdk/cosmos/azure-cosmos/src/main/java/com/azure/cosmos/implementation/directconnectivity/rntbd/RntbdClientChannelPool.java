@@ -52,7 +52,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -192,6 +191,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
     private final ClientTelemetry clientTelemetry;
     private final RntbdServerErrorInjector serverErrorInjector;
+    private final RntbdServiceEndpoint endpoint;
+    private final RntbdConnectionStateListener connectionStateListener;
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
@@ -243,6 +244,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.healthChecker = healthChecker;
         this.serverErrorInjector = serverErrorInjector;
         this.durableEndpointMetrics = durableEndpointMetrics;
+        this.endpoint = endpoint;
+        this.connectionStateListener = connectionStateListener;
 
         this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
@@ -675,8 +678,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
             Channel candidate = null;
 
             // in the open channel flow, force a new channel
-            // to be opened
-            if ((!(promise instanceof OpenChannelPromise))) {
+            // to be opened if min channels required for the endpoint
+            // has not been attained
+            if ((!(promise instanceof OpenChannelPromise)) || this.endpoint.getMinChannelsRequired() <= this.channels(false)) {
                 candidate = this.pollChannel(channelAcquisitionTimeline);
 
                 if (candidate != null) {
@@ -687,11 +691,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     doAcquireChannel(promise, candidate);
                     return;
                 }
-            }
-
-            if (promise instanceof OpenChannelPromise && this.durableEndpointMetrics.getEndpoint().getMinChannelsRequired()
-                    == this.channels(false)) {
-                candidate = this.pollChannel(channelAcquisitionTimeline);
             }
 
             if (this.allowedToOpenNewChannel(this.maxChannels)) {
@@ -1191,6 +1190,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     }
 
                     this.safeCloseChannel(channel);
+                    this.connectionStateListener.openConnectionIfNeeded();
                 });
 
                 try {
