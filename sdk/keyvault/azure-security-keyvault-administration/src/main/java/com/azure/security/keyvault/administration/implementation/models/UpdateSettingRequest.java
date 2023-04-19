@@ -4,20 +4,31 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** The update settings request object. */
-@Fluent
-public final class UpdateSettingRequest {
+@Immutable
+public final class UpdateSettingRequest implements JsonSerializable<UpdateSettingRequest> {
     /*
      * The value of the pool setting.
      */
-    @JsonProperty(value = "value", required = true)
-    private String value;
+    private final String value;
 
-    /** Creates an instance of UpdateSettingRequest class. */
-    public UpdateSettingRequest() {}
+    /**
+     * Creates an instance of UpdateSettingRequest class.
+     *
+     * @param value the value value to set.
+     */
+    public UpdateSettingRequest(String value) {
+        this.value = value;
+    }
 
     /**
      * Get the value property: The value of the pool setting.
@@ -28,14 +39,50 @@ public final class UpdateSettingRequest {
         return this.value;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Set the value property: The value of the pool setting.
+     * Reads an instance of UpdateSettingRequest from the JsonReader.
      *
-     * @param value the value value to set.
-     * @return the UpdateSettingRequest object itself.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateSettingRequest if the JsonReader was pointing to an instance of it, or null if it
+     *     was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateSettingRequest.
      */
-    public UpdateSettingRequest setValue(String value) {
-        this.value = value;
-        return this;
+    public static UpdateSettingRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean valueFound = false;
+                    String value = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("value".equals(fieldName)) {
+                            value = reader.getString();
+                            valueFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (valueFound) {
+                        UpdateSettingRequest deserializedUpdateSettingRequest = new UpdateSettingRequest(value);
+
+                        return deserializedUpdateSettingRequest;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!valueFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

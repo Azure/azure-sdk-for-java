@@ -3,6 +3,7 @@
 
 module com.azure.security.keyvault.administration {
     requires transitive com.azure.core;
+    requires transitive com.azure.json;
 
     exports com.azure.security.keyvault.administration;
     exports com.azure.security.keyvault.administration.models;

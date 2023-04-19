@@ -5,7 +5,6 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The role definition type. */
@@ -28,7 +27,6 @@ public final class RoleDefinitionType extends ExpandableStringEnum<RoleDefinitio
      * @param name a name to look for.
      * @return the corresponding RoleDefinitionType.
      */
-    @JsonCreator
     public static RoleDefinitionType fromString(String name) {
         return fromString(name, RoleDefinitionType.class);
     }
