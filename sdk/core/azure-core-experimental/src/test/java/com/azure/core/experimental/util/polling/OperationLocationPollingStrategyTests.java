@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class OperationLocationPollingStrategyTest {
+public class OperationLocationPollingStrategyTests {
 
     private static final TypeReference<TestResource> RESOURCE_TYPE_REFERENCE
         = TypeReference.createInstance(TestResource.class);

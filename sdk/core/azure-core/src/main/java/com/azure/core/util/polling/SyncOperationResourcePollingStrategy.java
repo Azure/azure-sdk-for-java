@@ -36,7 +36,7 @@ import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolut
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- * kept
+ *           kept
  */
 public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(SyncOperationResourcePollingStrategy.class);
