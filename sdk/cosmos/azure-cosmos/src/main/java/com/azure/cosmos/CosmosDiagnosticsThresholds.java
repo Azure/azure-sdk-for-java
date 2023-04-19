@@ -178,7 +178,7 @@ public final class CosmosDiagnosticsThresholds {
      * @return current CosmosDiagnosticsThresholds instance
      */
     public CosmosDiagnosticsThresholds setFailureHandler(BiPredicate<Integer, Integer> failureHandler) {
-        checkNotNull(nonPointOperationLatencyThreshold,
+        checkNotNull(failureHandler,
             "Argument 'failureHandler' must not be null.");
         this.failureHandler = failureHandler;
         return this;
