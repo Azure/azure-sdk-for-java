@@ -4,6 +4,7 @@
 package com.azure.core.util.io;
 
 
+import com.azure.core.TestByteArrayOutputStream;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.MockFluxHttpResponse;
@@ -11,110 +12,103 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FaultyAsynchronousByteChannel;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.PartialWriteChannel;
+import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IOUtilsTest {
-    private static final Random RANDOM = new Random();
     private static final HttpRequest MOCK_REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
 
     @Test
     public void canTransferFromReadableByteChannelToWriteableByteChannel() throws IOException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
+        fillArray(data);
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        TestByteArrayOutputStream byteArrayOutputStream = new TestByteArrayOutputStream(data.length);
         ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
         WritableByteChannel destination = Channels.newChannel(byteArrayOutputStream);
 
         IOUtils.transfer(source, destination);
 
-        assertArrayEquals(data, byteArrayOutputStream.toByteArray());
+        assertArraysEqual(data, byteArrayOutputStream.toByteArrayUnsafe());
     }
 
     @Test
     public void canTransferFromReadableByteChannelToWriteableByteChannelWithPartialWrites() throws IOException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
+        fillArray(data);
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        TestByteArrayOutputStream byteArrayOutputStream = new TestByteArrayOutputStream(data.length);
         ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
         WritableByteChannel destination = new PartialWriteChannel(Channels.newChannel(byteArrayOutputStream));
 
         IOUtils.transfer(source, destination);
 
-        assertArrayEquals(data, byteArrayOutputStream.toByteArray());
+        assertArraysEqual(data, byteArrayOutputStream.toByteArrayUnsafe());
     }
 
     @Test
     public void canTransferFromReadableByteChannelToAsynchronousByteChannel() throws IOException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
+        fillArray(data);
 
-        Path tempFile = Files.createTempFile("ioutilstest", null);
-        tempFile.toFile().deleteOnExit();
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
-        try (AsynchronousByteChannel destination = IOUtils.toAsynchronousByteChannel(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+        try (AsynchronousByteChannel destination = IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0)) {
             IOUtils.transferAsync(source, destination).block();
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canTransferFromReadableByteChannelToAsynchronousByteChannelWithPartialWrites() throws IOException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
+        fillArray(data);
 
-        Path tempFile = Files.createTempFile("ioutilstest", null);
-        tempFile.toFile().deleteOnExit();
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
-        try (AsynchronousByteChannel destination = IOUtils.toAsynchronousByteChannel(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+        try (AsynchronousByteChannel destination = IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0)) {
             AsynchronousByteChannel paritialWriteDestination = new PartialWriteAsynchronousChannel(destination);
             IOUtils.transferAsync(source, paritialWriteDestination).block();
         }
 
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
     }
 
     @Test
     public void canResumeStreamResponseTransfer() throws IOException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("ioutilstest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[data.length];
+        MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(64, data.length - currentOffset);
+            int size = Math.min(128, data.length - currentOffset);
             if (size > 0) {
                 sink.next(ByteBuffer.wrap(data, currentOffset, size));
             } else {
@@ -140,7 +134,7 @@ public class IOUtilsTest {
         };
 
         try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
             () -> new IOException("KABOOM"), 3, 1024)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
@@ -153,7 +147,7 @@ public class IOUtilsTest {
         offsets.forEach(e -> assertEquals(1024L, e));
         assertEquals(3, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(data, Files.readAllBytes(tempFile));
+        assertArraysEqual(data, written);
         // check that all responses are closed
         assertEquals(4, responses.size());
         responses.forEach(r -> assertTrue(r.isClosed()));
@@ -162,9 +156,10 @@ public class IOUtilsTest {
     @Test
     public void throwsIfRetriesAreExhausted() throws IOException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
-        RANDOM.nextBytes(data);
-        Path tempFile = Files.createTempFile("ioutilstest", null);
-        tempFile.toFile().deleteOnExit();
+        fillArray(data);
+
+        byte[] written = new byte[1024];
+        MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
             int size = Math.min(64, data.length - currentOffset);
@@ -193,7 +188,7 @@ public class IOUtilsTest {
         };
 
         try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+            IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
             () -> new IOException("KABOOM"), 3, 1024)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
@@ -207,7 +202,7 @@ public class IOUtilsTest {
         offsets.forEach(e -> assertEquals(1024L, e));
         assertEquals(2, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(Arrays.copyOfRange(data, 0, 1024), Files.readAllBytes(tempFile));
+        assertArraysEqual(data, 0, 1024, written);
         // check that all responses are closed
         assertEquals(3, responses.size());
         responses.forEach(r -> assertTrue(r.isClosed()));

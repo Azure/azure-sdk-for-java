@@ -8,13 +8,18 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.*;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -252,7 +257,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     private static URL createUrl() {
         try {
-            return new URL("http://localhost");
+            return UrlBuilder.parse("http://localhost").toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

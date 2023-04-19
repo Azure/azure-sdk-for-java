@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for GremlinResources UpdateGremlinGraphThroughput. */
 public final class GremlinResourcesUpdateGremlinGraphThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinGraphThroughputUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBGremlinGraphThroughputUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputUpdate.

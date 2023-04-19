@@ -13,7 +13,7 @@ public final class HealthReportsListTests {
         HealthReportsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"affectedDefendersPlans\":[],\"issues\":[]},\"id\":\"vzoqgyipemchgavs\",\"name\":\"zuejd\",\"type\":\"xptlghwzho\"}],\"nextLink\":\"wjjstliuhqa\"}")
+                    "{\"value\":[{\"properties\":{\"affectedDefendersPlans\":[],\"issues\":[]},\"id\":\"rpq\",\"name\":\"vmblcouqe\",\"type\":\"bhbcdszir\"}],\"nextLink\":\"an\"}")
                 .toObject(HealthReportsList.class);
     }
 

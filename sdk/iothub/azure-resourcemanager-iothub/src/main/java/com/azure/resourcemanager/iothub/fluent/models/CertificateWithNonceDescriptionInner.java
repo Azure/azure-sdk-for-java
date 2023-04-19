@@ -24,6 +24,10 @@ public final class CertificateWithNonceDescriptionInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of CertificateWithNonceDescriptionInner class. */
+    public CertificateWithNonceDescriptionInner() {
+    }
+
     /**
      * Get the properties property: The description of an X509 CA Certificate including the challenge nonce issued for
      * the Proof-Of-Possession flow.

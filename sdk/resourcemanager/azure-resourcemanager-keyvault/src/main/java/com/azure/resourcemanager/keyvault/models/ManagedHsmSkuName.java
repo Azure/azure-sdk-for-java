@@ -13,7 +13,10 @@ public enum ManagedHsmSkuName {
     STANDARD_B1("Standard_B1"),
 
     /** Enum value Custom_B32. */
-    CUSTOM_B32("Custom_B32");
+    CUSTOM_B32("Custom_B32"),
+
+    /** Enum value Custom_B6. */
+    CUSTOM_B6("Custom_B6");
 
     /** The actual serialized value for a ManagedHsmSkuName instance. */
     private final String value;

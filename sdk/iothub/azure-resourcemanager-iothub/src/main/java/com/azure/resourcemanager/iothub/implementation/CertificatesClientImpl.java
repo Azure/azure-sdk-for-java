@@ -57,11 +57,10 @@ public final class CertificatesClientImpl implements CertificatesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientCertific")
-    private interface CertificatesService {
+    public interface CertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{resourceName}/certificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<CertificateListDescriptionInner>> listByIotHub(
@@ -75,8 +74,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{resourceName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<CertificateDescriptionInner>> get(
@@ -91,8 +89,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{resourceName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<CertificateDescriptionInner>> createOrUpdate(
@@ -109,8 +106,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{resourceName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<Void>> delete(
@@ -126,8 +122,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{resourceName}/certificates/{certificateName}/generateVerificationCode")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}/generateVerificationCode")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<CertificateWithNonceDescriptionInner>> generateVerificationCode(
@@ -143,8 +138,7 @@ public final class CertificatesClientImpl implements CertificatesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-                + "/{resourceName}/certificates/{certificateName}/verify")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/certificates/{certificateName}/verify")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorDetailsException.class)
         Mono<Response<CertificateDescriptionInner>> verify(
@@ -285,23 +279,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      *
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the JSON-serialized array of Certificate objects.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateListDescriptionInner listByIotHub(String resourceGroupName, String resourceName) {
-        return listByIotHubAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Get the certificate list.
-     *
-     * <p>Returns the list of certificates.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -312,6 +289,23 @@ public final class CertificatesClientImpl implements CertificatesClient {
     public Response<CertificateListDescriptionInner> listByIotHubWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return listByIotHubWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Get the certificate list.
+     *
+     * <p>Returns the list of certificates.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the JSON-serialized array of Certificate objects.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateListDescriptionInner listByIotHub(String resourceGroupName, String resourceName) {
+        return listByIotHubWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -452,24 +446,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceGroupName The name of the resource group that contains the IoT hub.
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateDescriptionInner get(String resourceGroupName, String resourceName, String certificateName) {
-        return getAsync(resourceGroupName, resourceName, certificateName).block();
-    }
-
-    /**
-     * Get the certificate.
-     *
-     * <p>Returns the certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -480,6 +456,24 @@ public final class CertificatesClientImpl implements CertificatesClient {
     public Response<CertificateDescriptionInner> getWithResponse(
         String resourceGroupName, String resourceName, String certificateName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, certificateName, context).block();
+    }
+
+    /**
+     * Get the certificate.
+     *
+     * <p>Returns the certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateDescriptionInner get(String resourceGroupName, String resourceName, String certificateName) {
+        return getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE).getValue();
     }
 
     /**
@@ -634,34 +628,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param certificateDescription The certificate body.
-     * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update
-     *     an existing certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateDescriptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CertificateDescriptionInner certificateDescription,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload the certificate to the IoT hub.
-     *
-     * <p>Adds new or replaces existing certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate.
-     * @param certificateDescription The certificate body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -677,31 +643,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Upload the certificate to the IoT hub.
-     *
-     * <p>Adds new or replaces existing certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate.
-     * @param certificateDescription The certificate body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateDescriptionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CertificateDescriptionInner certificateDescription) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch)
-            .block();
     }
 
     /**
@@ -732,6 +673,32 @@ public final class CertificatesClientImpl implements CertificatesClient {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Upload the certificate to the IoT hub.
+     *
+     * <p>Adds new or replaces existing certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate.
+     * @param certificateDescription The certificate body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateDescriptionInner createOrUpdate(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        CertificateDescriptionInner certificateDescription) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(
+                resourceGroupName, resourceName, certificateName, certificateDescription, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -884,13 +851,16 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param ifMatch ETag of the Certificate.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        deleteAsync(resourceGroupName, resourceName, certificateName, ifMatch).block();
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch, context).block();
     }
 
     /**
@@ -902,16 +872,13 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param ifMatch ETag of the Certificate.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, certificateName, ifMatch, context).block();
+    public void delete(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+        deleteWithResponse(resourceGroupName, resourceName, certificateName, ifMatch, Context.NONE);
     }
 
     /**
@@ -1068,27 +1035,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param resourceName The name of the IoT hub.
      * @param certificateName The name of the certificate.
      * @param ifMatch ETag of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateWithNonceDescriptionInner generateVerificationCode(
-        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
-        return generateVerificationCodeAsync(resourceGroupName, resourceName, certificateName, ifMatch).block();
-    }
-
-    /**
-     * Generate verification code for proof of possession flow.
-     *
-     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
-     * leaf certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate.
-     * @param ifMatch ETag of the Certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1101,6 +1047,29 @@ public final class CertificatesClientImpl implements CertificatesClient {
         return generateVerificationCodeWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Generate verification code for proof of possession flow.
+     *
+     * <p>Generates verification code for proof of possession flow. The verification code will be used to generate a
+     * leaf certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate.
+     * @param ifMatch ETag of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateWithNonceDescriptionInner generateVerificationCode(
+        String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+        return generateVerificationCodeWithResponse(
+                resourceGroupName, resourceName, certificateName, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1293,33 +1262,6 @@ public final class CertificatesClientImpl implements CertificatesClient {
      * @param certificateName The name of the certificate.
      * @param ifMatch ETag of the Certificate.
      * @param certificateVerificationBody The name of the certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the X509 Certificate.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateDescriptionInner verify(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        String ifMatch,
-        CertificateVerificationDescription certificateVerificationBody) {
-        return verifyAsync(resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody)
-            .block();
-    }
-
-    /**
-     * Verify certificate's private key possession.
-     *
-     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
-     * uploaded certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate.
-     * @param ifMatch ETag of the Certificate.
-     * @param certificateVerificationBody The name of the certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -1337,5 +1279,33 @@ public final class CertificatesClientImpl implements CertificatesClient {
         return verifyWithResponseAsync(
                 resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, context)
             .block();
+    }
+
+    /**
+     * Verify certificate's private key possession.
+     *
+     * <p>Verifies the certificate's private key possession by providing the leaf cert issued by the verifying pre
+     * uploaded certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate.
+     * @param ifMatch ETag of the Certificate.
+     * @param certificateVerificationBody The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the X509 Certificate.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CertificateDescriptionInner verify(
+        String resourceGroupName,
+        String resourceName,
+        String certificateName,
+        String ifMatch,
+        CertificateVerificationDescription certificateVerificationBody) {
+        return verifyWithResponse(
+                resourceGroupName, resourceName, certificateName, ifMatch, certificateVerificationBody, Context.NONE)
+            .getValue();
     }
 }

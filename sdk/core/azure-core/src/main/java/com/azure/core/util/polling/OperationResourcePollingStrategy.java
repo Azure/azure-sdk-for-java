@@ -26,12 +26,11 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
+import static com.azure.core.util.polling.PollingUtil.operationResourceCanPoll;
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 
 /**
@@ -127,16 +126,8 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
     @Override
     public Mono<Boolean> canPoll(Response<?> initialResponse) {
-        HttpHeader operationLocationHeader = initialResponse.getHeaders().get(operationLocationHeaderName);
-        if (operationLocationHeader != null) {
-            try {
-                new URL(getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
-                return Mono.just(true);
-            } catch (MalformedURLException e) {
-                return Mono.just(false);
-            }
-        }
-        return Mono.just(false);
+        return Mono.fromSupplier(() ->
+            operationResourceCanPoll(initialResponse, operationLocationHeaderName, endpoint, LOGGER));
     }
 
     @Override

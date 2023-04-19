@@ -232,7 +232,7 @@ org.junit.platform:junit-platform-testkit;1.9.1
 org.junit.vintage:junit-vintage-engine;5.9.1
 org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
-org.spockframework:spock-core;2.3-groovy-4.0
+org.spockframework:spock-core;2.4-M1-groovy-4.0
 org.testng:testng;7.5
 org.awaitility:awaitility;4.2.0
 uk.org.lidalia:slf4j-test;1.2.0
@@ -266,7 +266,7 @@ org.apache.maven.plugin-tools:maven-plugin-annotations;3.6.4
 org.apache.maven.plugins:maven-antrun-plugin;1.8
 org.apache.maven.plugins:maven-assembly-plugin;3.2.0
 org.apache.maven.plugins:maven-checkstyle-plugin;3.1.2
-org.apache.maven.plugins:maven-clean-plugin;3.0.0
+org.apache.maven.plugins:maven-clean-plugin;3.2.0
 org.apache.maven.plugins:maven-compiler-plugin;3.10.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
@@ -284,7 +284,7 @@ org.apache.maven.plugins:maven-shade-plugin;3.3.0
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M7
-org.codehaus.mojo:build-helper-maven-plugin;3.0.0
+org.codehaus.mojo:build-helper-maven-plugin;3.3.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;3.1.0
 org.codehaus.mojo:findbugs-maven-plugin;3.0.5
@@ -293,12 +293,12 @@ org.codehaus.mojo:xml-maven-plugin;1.0.2
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12
-org.jacoco:jacoco-maven-plugin;0.8.8
-org.jacoco:org.jacoco.agent;0.8.8
-org.mockito:mockito-core;4.5.1
-org.mockito:mockito-inline;4.5.1
+org.jacoco:jacoco-maven-plugin;0.8.9
+org.jacoco:org.jacoco.agent;0.8.9
+org.mockito:mockito-core;4.11.0
+org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
-org.ow2.asm:asm;9.3
+org.ow2.asm:asm;9.5
 org.revapi:revapi;0.14.4
 org.revapi:revapi-java;0.26.1
 org.revapi:revapi-java-spi;0.23.6
@@ -358,6 +358,7 @@ cosmos_org.scalatest:scalatest-flatspec_2.12;3.2.3
 cosmos_org.scalactic:scalactic_2.12;3.2.3
 cosmos_org.scalamock:scalamock_2.12;5.0.0
 cosmos_com.globalmentor:hadoop-bare-naked-local-fs;0.1.0
+cosmos_org.mockito:mockito-core;4.8.1
 
 # Maven Tools for Cosmos Spark connector only
 cosmos_org.scalatest:scalatest-maven-plugin;2.0.2

@@ -168,9 +168,9 @@ public class ShareFileClient {
     public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        if (options.getChannelMode() == ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
-            Objects.requireNonNull(options.getFileSize(), "'options.getFileSize()' cannot return null.");
-            create(options.getFileSize());
+        if (options.isOverwriteMode()) {
+            Objects.requireNonNull(options.getFileSizeInBytes(), "'options.getFileSize()' cannot return null.");
+            create(options.getFileSizeInBytes());
         }
 
         int chunkSize = options.getChunkSizeInBytes() != null

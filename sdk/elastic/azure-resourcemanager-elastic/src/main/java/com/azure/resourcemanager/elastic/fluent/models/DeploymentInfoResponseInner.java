@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.elastic.models.ElasticDeploymentStatus;
+import com.azure.resourcemanager.elastic.models.MarketplaceSaaSInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of deployment in Elastic cloud corresponding to the Elastic monitor resource. */
@@ -34,6 +35,18 @@ public final class DeploymentInfoResponseInner {
      */
     @JsonProperty(value = "diskCapacity", access = JsonProperty.Access.WRITE_ONLY)
     private String diskCapacity;
+
+    /*
+     * Deployment URL of the elasticsearch in Elastic cloud deployment.
+     */
+    @JsonProperty(value = "deploymentUrl", access = JsonProperty.Access.WRITE_ONLY)
+    private String deploymentUrl;
+
+    /*
+     * Marketplace SaaS Info of the resource.
+     */
+    @JsonProperty(value = "marketplaceSaasInfo", access = JsonProperty.Access.WRITE_ONLY)
+    private MarketplaceSaaSInfo marketplaceSaasInfo;
 
     /** Creates an instance of DeploymentInfoResponseInner class. */
     public DeploymentInfoResponseInner() {
@@ -76,10 +89,31 @@ public final class DeploymentInfoResponseInner {
     }
 
     /**
+     * Get the deploymentUrl property: Deployment URL of the elasticsearch in Elastic cloud deployment.
+     *
+     * @return the deploymentUrl value.
+     */
+    public String deploymentUrl() {
+        return this.deploymentUrl;
+    }
+
+    /**
+     * Get the marketplaceSaasInfo property: Marketplace SaaS Info of the resource.
+     *
+     * @return the marketplaceSaasInfo value.
+     */
+    public MarketplaceSaaSInfo marketplaceSaasInfo() {
+        return this.marketplaceSaasInfo;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (marketplaceSaasInfo() != null) {
+            marketplaceSaasInfo().validate();
+        }
     }
 }

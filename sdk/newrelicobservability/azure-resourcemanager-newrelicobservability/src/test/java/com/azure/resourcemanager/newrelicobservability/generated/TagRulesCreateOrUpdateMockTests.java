@@ -38,7 +38,7 @@ public final class TagRulesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[],\"userEmail\":\"qrhzoymibmrqyib\"}},\"id\":\"wfluszdt\",\"name\":\"hrkwo\",\"type\":\"yyv\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Enabled\",\"filteringTags\":[],\"userEmail\":\"ynl\"}},\"id\":\"huopxodlqiynto\",\"name\":\"zihleosjswsr\",\"type\":\"slyzrpzbchckqq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,25 +69,25 @@ public final class TagRulesCreateOrUpdateMockTests {
         TagRule response =
             manager
                 .tagRules()
-                .define("ksmond")
-                .withExistingMonitor("ouyftaakc", "wiyzvqtmnubexkp")
+                .define("jxywsuws")
+                .withExistingMonitor("pkkpw", "reqnovvqfov")
                 .withLogRules(
                     new LogRules()
                         .withSendAadLogs(SendAadLogsStatus.DISABLED)
                         .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
-                        .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                        .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
                         .withFilteringTags(Arrays.asList()))
                 .withMetricRules(
                     new MetricRulesInner()
-                        .withSendMetrics(SendMetricsStatus.DISABLED)
+                        .withSendMetrics(SendMetricsStatus.ENABLED)
                         .withFilteringTags(Arrays.asList())
-                        .withUserEmail("hojvpajqgxysmocm"))
+                        .withUserEmail("aeneqnzarrwl"))
                 .create();
 
-        Assertions.assertEquals(SendAadLogsStatus.ENABLED, response.logRules().sendAadLogs());
-        Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED, response.logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(SendActivityLogsStatus.ENABLED, response.logRules().sendActivityLogs());
-        Assertions.assertEquals(SendMetricsStatus.DISABLED, response.metricRules().sendMetrics());
-        Assertions.assertEquals("qrhzoymibmrqyib", response.metricRules().userEmail());
+        Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.logRules().sendAadLogs());
+        Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, response.logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(SendActivityLogsStatus.DISABLED, response.logRules().sendActivityLogs());
+        Assertions.assertEquals(SendMetricsStatus.ENABLED, response.metricRules().sendMetrics());
+        Assertions.assertEquals("ynl", response.metricRules().userEmail());
     }
 }

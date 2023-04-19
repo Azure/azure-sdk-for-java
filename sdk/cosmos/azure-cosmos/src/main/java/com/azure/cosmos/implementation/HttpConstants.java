@@ -414,6 +414,23 @@ public class HttpConstants {
         public static final int THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE = 10005;
 
         public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
+
+        //SDK Codes(Client)
+        public static final int TRANSPORT_GENERATED_410 = 20001;
+        public static final int TIMEOUT_GENERATED_410 = 20002;
+
+        //SDK Codes (Server)
+        public static final int NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT = 21001;
+        public static final int PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT = 21002;
+        public static final int COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT = 21003;
+        public static final int COMPLETING_PARTITION_MIGRATION_EXCEEDED_RETRY_LIMIT = 21004;
+        public static final int SERVER_GENERATED_410 = 21005;
+        public static final int GLOBAL_STRONG_WRITE_BARRIER_NOT_MET = 21006;
+        public static final int READ_QUORUM_NOT_MET = 21007;
+        public static final int SERVER_GENERATED_503 = 21008;
+        public static final int NO_VALID_STORE_RESPONSE = 21009;
+        public static final int SERVER_GENERATED_408 = 21010;
+
     }
 
     public static class HeaderValues {

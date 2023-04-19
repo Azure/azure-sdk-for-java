@@ -90,8 +90,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticMonitorResourceInner>> getByResourceGroup(
@@ -105,8 +104,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -121,8 +119,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ElasticMonitorResourceInner>> update(
@@ -137,8 +134,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -814,7 +810,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner> beginCreate(
         String resourceGroupName, String monitorName) {
         final ElasticMonitorResourceInner body = null;
-        return beginCreateAsync(resourceGroupName, monitorName, body).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, monitorName, body).getSyncPoller();
     }
 
     /**
@@ -832,7 +828,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ElasticMonitorResourceInner>, ElasticMonitorResourceInner> beginCreate(
         String resourceGroupName, String monitorName, ElasticMonitorResourceInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, monitorName, body, context).getSyncPoller();
     }
 
     /**
@@ -1226,7 +1222,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName) {
-        return beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName).getSyncPoller();
     }
 
     /**
@@ -1243,7 +1239,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String monitorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, context).getSyncPoller();
     }
 
     /**
