@@ -1199,8 +1199,6 @@ public class IdentityClient extends IdentityClientBase {
         }
     }
 
-
-
     void openUrl(String url) throws IOException {
         Runtime rt = Runtime.getRuntime();
 
