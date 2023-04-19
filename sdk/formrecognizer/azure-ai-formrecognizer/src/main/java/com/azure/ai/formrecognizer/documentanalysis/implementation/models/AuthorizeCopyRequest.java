@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -30,15 +29,8 @@ public final class AuthorizeCopyRequest {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /**
-     * Creates an instance of AuthorizeCopyRequest class.
-     *
-     * @param modelId the modelId value to set.
-     */
-    @JsonCreator
-    public AuthorizeCopyRequest(@JsonProperty(value = "modelId", required = true) String modelId) {
-        this.modelId = modelId;
-    }
+    /** Creates an instance of AuthorizeCopyRequest class. */
+    public AuthorizeCopyRequest() {}
 
     /**
      * Get the modelId property: Unique document model name.
@@ -47,6 +39,17 @@ public final class AuthorizeCopyRequest {
      */
     public String getModelId() {
         return this.modelId;
+    }
+
+    /**
+     * Set the modelId property: Unique document model name.
+     *
+     * @param modelId the modelId value to set.
+     * @return the AuthorizeCopyRequest object itself.
+     */
+    public AuthorizeCopyRequest setModelId(String modelId) {
+        this.modelId = modelId;
+        return this;
     }
 
     /**

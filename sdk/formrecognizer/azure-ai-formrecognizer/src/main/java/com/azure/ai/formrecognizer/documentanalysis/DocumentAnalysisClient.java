@@ -4,14 +4,10 @@
 package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentClassifiersImpl;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AnalyzeResultOperation;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifyDocumentRequest;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentClassifiersClassifyDocumentHeaders;
-import com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentModelsAnalyzeDocumentHeaders;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms;
@@ -41,7 +37,6 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocAnalysisFeatures;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
@@ -67,18 +62,16 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {
     private static final ClientLogger LOGGER = new ClientLogger(DocumentAnalysisClient.class);
-    private final DocumentModelsImpl documentModelsImpl;
-    private final DocumentClassifiersImpl documentClassifiersImpl;
+    private final FormRecognizerClientImpl service;
 
     /**
      * Create a {@link DocumentAnalysisClient client} that sends requests to the Document Analysis service's endpoint.
      * Each service call goes through the {@link DocumentAnalysisClientBuilder#pipeline http pipeline}.
      *
-     * @param formRecognizerClientImpl The proxy service used to perform REST calls.
+     * @param service The proxy service used to perform REST calls.
      */
-    DocumentAnalysisClient(FormRecognizerClientImpl formRecognizerClientImpl) {
-        this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
-        this.documentClassifiersImpl = formRecognizerClientImpl.getDocumentClassifiers();
+    DocumentAnalysisClient(FormRecognizerClientImpl service) {
+        this.service = service;
     }
     /**
      * Analyzes data from documents with optical character recognition (OCR) and semantic values from a given document
@@ -165,7 +158,7 @@ public final class DocumentAnalysisClient {
             analyzeDocumentOptions, context);
     }
 
-    private SyncPoller<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrlSync(String documentUrl, String modelId,
+    SyncPoller<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrlSync(String documentUrl, String modelId,
         AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(documentUrl)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
@@ -183,8 +176,6 @@ public final class DocumentAnalysisClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
-                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
-                finalAnalyzeDocumentOptions.getQueryFields(),
                 null,
                 documentUrl,
                 finalContext).apply(cxt)),
@@ -297,8 +288,6 @@ public final class DocumentAnalysisClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(),
                 finalAnalyzeDocumentOptions.getLocale(),
-                toInnerDocAnalysisFeatures(finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures()),
-                finalAnalyzeDocumentOptions.getQueryFields(),
                 document,
                 null,
                 finalContext).apply(cxt)),
@@ -307,180 +296,35 @@ public final class DocumentAnalysisClient {
             fetchingOperation(modelId, finalContext));
     }
 
-    /**
-     * Classify a given document using a document classifier.
-     * For more information on how to build a custom classifier model,
-     * see <a href="https://aka.ms/azsdk/formrecognizer/buildclassifiermodel"></a>
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p> Analyze a document using the URL of the document with configurable options. </p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context -->
-     * <pre>
-     * String documentUrl = &quot;&#123;file_source_url&#125;&quot;;
-     * String classifierId = &quot;&#123;custom_trained_classifier_id&#125;&quot;;
-     *
-     * documentAnalysisClient.beginClassifyDocumentFromUrl&#40;classifierId, documentUrl, Context.NONE&#41;
-     *     .getFinalResult&#40;&#41;
-     *     .getDocuments&#40;&#41;
-     *     .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocumentFromUrl#string-string-Context -->
-     *
-     * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
-     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
-     * @param documentUrl The source URL to the input document.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
-     * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
-     * @throws IllegalArgumentException If {@code documentUrl} or {@code classifierId} is null.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, AnalyzeResult>
-        beginClassifyDocumentFromUrl(String classifierId, String documentUrl, Context context) {
-        return beginClassifyDocumentFromUrlSync(documentUrl, classifierId, context);
-    }
-    private SyncPoller<OperationResult, AnalyzeResult> beginClassifyDocumentFromUrlSync(String documentUrl, String classifierId, Context context) {
-        if (CoreUtils.isNullOrEmpty(documentUrl)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
-                + " be null or empty"));
-        }
-        if (CoreUtils.isNullOrEmpty(classifierId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
-                + " be null or empty"));
-        }
-        context = enableSyncRestProxy(getTracingContext(context));
-        Context finalContext = context;
-        return SyncPoller.createPoller(
-            DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, classifyActivationOperation(classifierId,
-                null,
-                documentUrl,
-                finalContext).apply(cxt)),
-            pollingClassifierOperation(classifierId, finalContext),
-            getCancellationIsNotSupported(),
-            fetchingClassifierOperation(classifierId, finalContext));
-    }
-
-    /**
-     * Classify a given document using a document classifier.
-     * For more information on how to build a custom classifier model,
-     * see <a href="https://aka.ms/azsdk/formrecognizer/buildclassifiermodel"></a>
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData -->
-     * <pre>
-     * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
-     * String classifierId = &quot;&#123;custom_trained_classifier_id&#125;&quot;;
-     * byte[] fileContent = Files.readAllBytes&#40;document.toPath&#40;&#41;&#41;;
-     *
-     * documentAnalysisClient.beginClassifyDocument&#40;classifierId, BinaryData.fromBytes&#40;fileContent&#41;, Context.NONE&#41;
-     *     .getFinalResult&#40;&#41;
-     *     .getDocuments&#40;&#41;
-     *     .forEach&#40;analyzedDocument -&gt; System.out.printf&#40;&quot;Doc Type: %s%n&quot;, analyzedDocument.getDocType&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData -->
-     *
-     * @param classifierId The unique classifier ID to be used. Use this to specify the custom classifier ID.
-     * @param document The data of the document to analyze information from.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws HttpResponseException If analyze operation fails and returns with an {@link OperationStatus#FAILED}.
-     * @throws IllegalArgumentException If {@code document} or {@code classifierId} is null.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationResult, AnalyzeResult>
-        beginClassifyDocument(String classifierId, BinaryData document, Context context) {
-        Objects.requireNonNull(document, "'document' is required and cannot be null.");
-        if (CoreUtils.isNullOrEmpty(classifierId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
-                + " be null or empty"));
-        }
-
-        if (document.getLength() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'document length' is required and cannot"
-                + " be null"));
-        }
-
-        context = enableSyncRestProxy(getTracingContext(context));
-        Context finalContext = context;
-        return SyncPoller.createPoller(
-            DEFAULT_POLL_INTERVAL,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, classifyActivationOperation(classifierId,
-                document,
-                null,
-                finalContext).apply(cxt)),
-            pollingOperation(classifierId, finalContext),
-            getCancellationIsNotSupported(),
-            fetchingOperation(classifierId, finalContext));
-    }
-
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
-        String modelId, List<String> pages, String locale, List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> features, List<String> queryFields,
-        BinaryData document, String documentUrl, Context context) {
+        String modelId, List<String> pages, String locale, BinaryData document, String documentUrl, Context context) {
         return (pollingContext) ->
             Transforms.toDocumentOperationResult(analyzeDocument(modelId,
                 CoreUtils.isNullOrEmpty(pages) ? null : String.join(",", pages),
                 locale,
-                features,
-                queryFields,
                 document,
                 documentUrl,
                 context)
                 .getDeserializedHeaders().getOperationLocation());
     }
 
-    private Function<PollingContext<OperationResult>, OperationResult> classifyActivationOperation(String classifierId, BinaryData document, String documentUrl, Context context) {
-        ResponseBase<DocumentClassifiersClassifyDocumentHeaders, Void> response;
-        try {
-            if (documentUrl != null) {
-                response = documentClassifiersImpl.classifyDocumentWithResponse(classifierId,
-                    StringIndexType.UTF16CODE_UNIT,
-                    new ClassifyDocumentRequest().setUrlSource(documentUrl),
-                    context);
-            } else {
-                response = documentClassifiersImpl.classifyDocumentWithResponse(classifierId,
-                    null,
-                    StringIndexType.UTF16CODE_UNIT,
-                    document,
-                    document.getLength(),
-                    context);
-            }
-            return (pollingContext) ->
-                Transforms.toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation());
-        } catch (ErrorResponseException ex) {
-            throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
-        }
-    }
-
-    private ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
-                                                                                     List<com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentAnalysisFeature> features, List<String> queryFields,
-                                                                                     BinaryData document, String documentUrl, Context context) {
+    private ResponseBase<AnalyzeDocumentHeaders, Void> analyzeDocument(String modelId, String pages, String locale,
+        BinaryData document, String documentUrl, Context context) {
         try {
             if (documentUrl == null) {
-                return documentModelsImpl.analyzeDocumentWithResponse(modelId,
+                return service.analyzeDocumentWithResponse(modelId,
                     null,
                     pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
-                    features,
-                    queryFields,
                     document,
                     document.getLength(),
                     context);
             } else {
-                return documentModelsImpl.analyzeDocumentWithResponse(modelId,
+                return service.analyzeDocumentWithResponse(modelId,
                     pages,
                     locale,
                     StringIndexType.UTF16CODE_UNIT,
-                    features,
-                    queryFields,
                     new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                     context);
             }
@@ -504,7 +348,7 @@ public final class DocumentAnalysisClient {
             final String resultId = operationResultPollResponse.getValue().getOperationId();
             Response<AnalyzeResultOperation> modelResponse;
             try {
-                modelResponse = documentModelsImpl.getAnalyzeResultWithResponse(modelId, resultId, finalContext);
+                modelResponse = service.getAnalyzeDocumentResultWithResponse(modelId, resultId, finalContext);
             } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
             }
@@ -541,42 +385,8 @@ public final class DocumentAnalysisClient {
         return pollingContext -> {
             final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
             try {
-                return Transforms.toAnalyzeResultOperation(documentModelsImpl.getAnalyzeResultWithResponse(
+                return Transforms.toAnalyzeResultOperation(service.getAnalyzeDocumentResultWithResponse(
                         modelId,
-                        resultId,
-                        finalContext)
-                    .getValue().getAnalyzeResult());
-            } catch (ErrorResponseException ex) {
-                throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, PollResponse<OperationResult>>
-        pollingClassifierOperation(String classifierId, Context finalContext) {
-        return pollingContext -> {
-            final PollResponse<OperationResult> operationResultPollResponse
-                = pollingContext.getLatestResponse();
-            final String resultId = operationResultPollResponse.getValue().getOperationId();
-            Response<AnalyzeResultOperation> analyzeResultOperationResponse;
-            try {
-                analyzeResultOperationResponse
-                    = documentClassifiersImpl.getClassifyResultWithResponse(classifierId, resultId, finalContext);
-            } catch (ErrorResponseException ex) {
-                throw LOGGER.logExceptionAsError(Transforms.getHttpResponseException(ex));
-            }
-            return processAnalyzeModelResponse(analyzeResultOperationResponse, operationResultPollResponse);
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, AnalyzeResult>
-        fetchingClassifierOperation(
-        String classifierId, Context finalContext) {
-        return pollingContext -> {
-            final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
-            try {
-                return Transforms.toAnalyzeResultOperation(documentClassifiersImpl.getClassifyResultWithResponse(
-                        classifierId,
                         resultId,
                         finalContext)
                     .getValue().getAnalyzeResult());

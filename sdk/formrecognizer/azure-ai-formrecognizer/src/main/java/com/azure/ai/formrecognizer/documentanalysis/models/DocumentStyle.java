@@ -29,32 +29,6 @@ public final class DocumentStyle {
      */
     private float confidence;
 
-    /*
-     * Visually most similar font from among the set of supported font families, with fallback fonts following CSS
-     * convention (ex. 'Arial, sans-serif').
-     */
-    private String similarFontFamily;
-
-    /*
-     * Font style.
-     */
-    private FontStyle fontStyle;
-
-    /*
-     * Font weight.
-     */
-    private FontWeight fontWeight;
-
-    /*
-     * Foreground color in #rrggbb hexadecimal format.
-     */
-    private String color;
-
-    /*
-     * Background color in #rrggbb hexadecimal format..
-     */
-    private String backgroundColor;
-
     /**
      * Get the isHandwritten property: Is content handwritten?.
      *
@@ -64,7 +38,17 @@ public final class DocumentStyle {
         return this.isHandwritten;
     }
 
-      /**
+    /**
+     * Set the isHandwritten property: Is content handwritten?.
+     *
+     * @param isHandwritten the isHandwritten value to set.
+     * @return the DocumentStyle object itself.
+     */
+    private void setIsHandwritten(Boolean isHandwritten) {
+        this.isHandwritten = isHandwritten;
+    }
+
+    /**
      * Get the spans property: Location of the text elements in the concatenated content the style applies to.
      *
      * @return the spans value.
@@ -102,75 +86,6 @@ public final class DocumentStyle {
         this.confidence = confidence;
     }
 
-    private void setIsHandwritten(Boolean handwritten) {
-        isHandwritten = handwritten;
-    }
-
-    private void setSimilarFontFamily(String similarFontFamily) {
-        this.similarFontFamily = similarFontFamily;
-    }
-
-    private void setFontStyle(FontStyle fontStyle) {
-        this.fontStyle = fontStyle;
-    }
-
-    private void setFontWeight(FontWeight fontWeight) {
-        this.fontWeight = fontWeight;
-    }
-
-    private void setColor(String color) {
-        this.color = color;
-    }
-    private void setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    /**
-     * Get the similarFontFamily property: Visually most similar font from among the set of supported font families,
-     * with fallback fonts following CSS convention (ex. 'Arial, sans-serif').
-     *
-     * @return the similarFontFamily value.
-     */
-    public String getSimilarFontFamily() {
-        return this.similarFontFamily;
-    }
-
-    /**
-     * Get the fontStyle property: Font style.
-     *
-     * @return the fontStyle value.
-     */
-    public FontStyle getFontStyle() {
-        return this.fontStyle;
-    }
-
-    /**
-     * Get the fontWeight property: Font weight.
-     *
-     * @return the fontWeight value.
-     */
-    public FontWeight getFontWeight() {
-        return this.fontWeight;
-    }
-
-    /**
-     * Get the color property: Foreground color in #rrggbb hexadecimal format.
-     *
-     * @return the color value.
-     */
-    public String getColor() {
-        return this.color;
-    }
-
-    /**
-     * Get the backgroundColor property: Background color in #rrggbb hexadecimal format..
-     *
-     * @return the backgroundColor value.
-     */
-    public String getBackgroundColor() {
-        return this.backgroundColor;
-    }
-
     static {
         DocumentStyleHelper.setAccessor(new DocumentStyleHelper.DocumentStyleAccessor() {
             @Override
@@ -186,31 +101,6 @@ public final class DocumentStyle {
             @Override
             public void setConfidence(DocumentStyle documentStyle, Float confidence) {
                 documentStyle.setConfidence(confidence);
-            }
-
-            @Override
-            public void setSimilarFontFamily(DocumentStyle documentStyle, String similarFontFamily) {
-                documentStyle.setSimilarFontFamily(similarFontFamily);
-            }
-
-            @Override
-            public void setFontStyle(DocumentStyle documentStyle, FontStyle fontStyle) {
-                documentStyle.setFontStyle(fontStyle);
-            }
-
-            @Override
-            public void setFontWeight(DocumentStyle documentStyle, FontWeight fontWeight) {
-                documentStyle.setFontWeight(fontWeight);
-            }
-
-            @Override
-            public void setColor(DocumentStyle documentStyle, String color) {
-                documentStyle.setColor(color);
-            }
-
-            @Override
-            public void setBackgroundColor(DocumentStyle documentStyle, String backgroundColor) {
-                documentStyle.setBackgroundColor(backgroundColor);
             }
         });
     }

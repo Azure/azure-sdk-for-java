@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.documentanalysis.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.TestUtils;
-import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
@@ -17,19 +16,19 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -37,10 +36,9 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_CLIEN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_FORM_RECOGNIZER_CLIENT_SECRET;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENANT_ID;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
+public abstract class DocumentModelAdministrationClientTestBase extends TestBase {
     Duration durationTestMode;
 
     /**
@@ -59,35 +57,24 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
         DocumentAnalysisAudience audience = TestUtils.getAudience(endpoint);
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-
-        if (useKeyCredential) {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MockTokenCredential());
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
                 builder.credential(getCredentialByAuthority(endpoint));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
-    private void setMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-    }
+
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
         if (authority == AzureAuthorityHosts.AZURE_PUBLIC_CLOUD) {
@@ -124,21 +111,19 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
         actualCustomModel.getDocumentTypes().forEach((s, docTypeInfo) -> assertNotNull(docTypeInfo.getFieldSchema()));
     }
 
-    void validateClassifierModelData(DocumentClassifierDetails documentClassifierDetails) {
-        assertNotNull(documentClassifierDetails.getCreatedOn());
-        assertNotNull(documentClassifierDetails.getClassifierId());
-        assertNotNull(documentClassifierDetails.getApiVersion());
-    }
-
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
         final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
 
-        try {
-            testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Local file not found.", e);
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream(TestUtils.TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)),
+                fileLength);
+        } else {
+            try {
+                testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
         }
-
     }
 
     void buildModelRunner(Consumer<String> testRunner) {
@@ -151,14 +136,6 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
 
     void multipageTrainingRunner(Consumer<String> testRunner) {
         TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void beginClassifierRunner(Consumer<String> testRunner) {
-        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
-
-    void selectionMarkTrainingRunner(Consumer<String> testRunner) {
-        TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
     private String getEndpoint() {

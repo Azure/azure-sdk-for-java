@@ -1,64 +1,43 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels:authorizeCopy?api-version=2023-02-28-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "34",
-        "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:19:22 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "6e47da6b-33b1-4d99-b8c1-4f23d942ae44"
-      },
-      "RequestBody": {
-        "modelId": "java_copy_model_test"
-      },
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "6f6aff25-6fee-4601-b836-8fa84e31f7d1",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:21 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "482",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "targetResourceId": "REDACTED",
-        "targetResourceRegion": "eastus",
-        "targetModelId": "java_copy_model_test",
-        "targetModelLocation": "REDACTED",
-        "accessToken": "REDACTED",
-        "expirationDateTime": "2023-04-14T19:19:22Z"
-      }
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels:authorizeCopy?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f3ab2050-49f7-4b5c-885e-ae0481614654",
+      "Content-Type" : "application/json"
     },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/java_copy_model_test?api-version=2023-02-28-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:23 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e2eaae85-c694-4f39-9be9-a4a716dcc77e"
-      },
-      "RequestBody": null,
-      "StatusCode": 204,
-      "ResponseHeaders": {
-        "apim-request-id": "91c61e53-fec4-4e61-a92a-0835852791bd",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:22 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "34",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": null
-    }
-  ],
-  "Variables": {}
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "453",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "5bd6dd2d-58f1-40e1-ac29-beede146efb3",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\n  \"targetResourceId\": \"/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/shafang/providers/Microsoft.CognitiveServices/accounts/shafangFR\",\n  \"targetResourceRegion\": \"eastus\",\n  \"targetModelId\": \"java_copy_model_test\",\n  \"targetModelLocation\": \"https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2022-08-31\",\n  \"accessToken\": \"d12f86a5-2cc2-4a0a-acfd-b8b9fafdf062\",\n  \"expirationDateTime\": \"2022-08-19T23:35:42Z\"\n}",
+      "Date" : "Fri, 19 Aug 2022 22:35:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels/java_copy_model_test?api-version=2022-08-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d5f5ea3f-c6f8-44e8-aa0a-d92e9024d36f"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "38",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "57bb8d4a-db86-44eb-968a-fe109c3ba7cc",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Fri, 19 Aug 2022 22:35:42 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

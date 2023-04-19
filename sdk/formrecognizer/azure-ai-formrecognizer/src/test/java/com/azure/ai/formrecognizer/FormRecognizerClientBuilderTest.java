@@ -10,7 +10,7 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for Form Recognizer client builder
  */
-public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
+public class FormRecognizerClientBuilderTest extends TestBase {
     /**
      * Test client builder with invalid API key
      */
@@ -247,10 +247,10 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (interceptorManager.isRecordMode()) {
+        if (!interceptorManager.isPlaybackMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

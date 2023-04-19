@@ -15,23 +15,19 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.InputStream;
@@ -39,8 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,13 +48,12 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.AZURE_TENAN
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
+public abstract class DocumentAnalysisClientTestBase extends TestBase {
     static final String ENCODED_EMPTY_SPACE =
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
 
@@ -85,32 +78,22 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (useKeyCredential) {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new MockTokenCredential());
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
                 builder.credential(getCredentialByAuthority(endpoint));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
-    private void setMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-    }
+
     public DocumentModelAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                 DocumentAnalysisServiceVersion serviceVersion,
                                                                                 boolean useKeyCredential) {
@@ -122,33 +105,21 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (useKeyCredential) {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new TokenCredential() {
-                    @Override
-                    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                        return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
-                    }
-                });
-                setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
+            if (useKeyCredential) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+            } else {
                 builder.credential(getCredentialByAuthority(endpoint));
-                builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
+
     static TokenCredential getCredentialByAuthority(String endpoint) {
         String authority = TestUtils.getAuthority(endpoint);
         if (Objects.equals(authority, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD)) {
@@ -173,7 +144,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     }
 
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
-        TestUtils.getDataRunnerHelper(testRunner, fileName);
+        TestUtils.getDataRunnerHelper(testRunner, fileName, interceptorManager.isPlaybackMode());
     }
 
     void testingContainerUrlRunner(Consumer<String> testRunner, String fileName) {
@@ -192,9 +163,6 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         TestUtils.getSelectionMarkTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    void beginClassifierRunner(Consumer<String> testRunner) {
-        TestUtils.getClassifierTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
-    }
     void validatePngReceiptData(AnalyzeResult actualAnalyzeResult) {
         validateReceipt(actualAnalyzeResult);
 
@@ -343,7 +311,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         // assert contact name page number
         DocumentField contactNameField = businessCard1Fields.get("ContactNames").getValueAsList().get(0);
-        assertEquals("JOHN\nSINGER", contactNameField.getContent());
+        assertEquals("JOHN SINGER", contactNameField.getContent());
         assertNotNull(contactNameField.getConfidence());
 
         assertEquals(2, businessCard2.getPageNumber());
@@ -599,7 +567,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] {{5, 4, 20}, {3, 3, 6}};
+        int[][] table = new int[][] {{5, 4, 20}, {3, 2, 6}};
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;
@@ -781,8 +749,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         AddressValue employeeAddrFields = employeeFields.get("Address")
             .getValueAsAddress();
         assertEquals("WA", employeeAddrFields.getState());
-        // service regression
-        // assertEquals("12345", employeeAddrFields.getPostalCode());
+        assertEquals("12345", employeeAddrFields.getPostalCode());
         assertEquals("BUFFALO", employeeAddrFields.getCity());
         assertEquals("4567 MAIN STREET", employeeAddrFields.getStreetAddress());
         assertEquals("4567", employeeAddrFields.getHouseNumber());
@@ -795,8 +762,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         Map<String, DocumentField> employerFields = w2Fields.get("Employer").getValueAsMap();
         AddressValue employerAddress = employerFields.get("Address").getValueAsAddress();
         assertEquals("WA", employerAddress.getState());
-        // service regression
-        // assertEquals("98765", employerAddress.getPostalCode());
+        assertEquals("98765", employerAddress.getPostalCode());
         assertEquals("REDMOND", employerAddress.getCity());
         assertEquals("CONTOSO LTD", employerFields.get("Name")
             .getValueAsString());

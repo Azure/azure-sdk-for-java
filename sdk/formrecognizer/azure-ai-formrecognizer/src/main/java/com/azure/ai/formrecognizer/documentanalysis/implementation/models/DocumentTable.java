@@ -5,7 +5,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -42,25 +41,8 @@ public final class DocumentTable {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
-    /**
-     * Creates an instance of DocumentTable class.
-     *
-     * @param rowCount the rowCount value to set.
-     * @param columnCount the columnCount value to set.
-     * @param cells the cells value to set.
-     * @param spans the spans value to set.
-     */
-    @JsonCreator
-    public DocumentTable(
-            @JsonProperty(value = "rowCount", required = true) int rowCount,
-            @JsonProperty(value = "columnCount", required = true) int columnCount,
-            @JsonProperty(value = "cells", required = true) List<DocumentTableCell> cells,
-            @JsonProperty(value = "spans", required = true) List<DocumentSpan> spans) {
-        this.rowCount = rowCount;
-        this.columnCount = columnCount;
-        this.cells = cells;
-        this.spans = spans;
-    }
+    /** Creates an instance of DocumentTable class. */
+    public DocumentTable() {}
 
     /**
      * Get the rowCount property: Number of rows in the table.
@@ -69,6 +51,17 @@ public final class DocumentTable {
      */
     public int getRowCount() {
         return this.rowCount;
+    }
+
+    /**
+     * Set the rowCount property: Number of rows in the table.
+     *
+     * @param rowCount the rowCount value to set.
+     * @return the DocumentTable object itself.
+     */
+    public DocumentTable setRowCount(int rowCount) {
+        this.rowCount = rowCount;
+        return this;
     }
 
     /**
@@ -81,12 +74,34 @@ public final class DocumentTable {
     }
 
     /**
+     * Set the columnCount property: Number of columns in the table.
+     *
+     * @param columnCount the columnCount value to set.
+     * @return the DocumentTable object itself.
+     */
+    public DocumentTable setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
+        return this;
+    }
+
+    /**
      * Get the cells property: Cells contained within the table.
      *
      * @return the cells value.
      */
     public List<DocumentTableCell> getCells() {
         return this.cells;
+    }
+
+    /**
+     * Set the cells property: Cells contained within the table.
+     *
+     * @param cells the cells value to set.
+     * @return the DocumentTable object itself.
+     */
+    public DocumentTable setCells(List<DocumentTableCell> cells) {
+        this.cells = cells;
+        return this;
     }
 
     /**
@@ -116,5 +131,16 @@ public final class DocumentTable {
      */
     public List<DocumentSpan> getSpans() {
         return this.spans;
+    }
+
+    /**
+     * Set the spans property: Location of the table in the reading order concatenated content.
+     *
+     * @param spans the spans value to set.
+     * @return the DocumentTable object itself.
+     */
+    public DocumentTable setSpans(List<DocumentSpan> spans) {
+        this.spans = spans;
+        return this;
     }
 }

@@ -26,8 +26,6 @@ public final class DocumentKeyValuePair {
      */
     private float confidence;
 
-    private String commonName;
-
     /**
      * Get the key property: Field label of the key-value pair.
      *
@@ -85,19 +83,6 @@ public final class DocumentKeyValuePair {
         this.confidence = confidence;
     }
 
-    /**
-     * Get the common name of the key-value pair.
-     *
-     * @return the commonName value.
-     */
-    public String getCommonName() {
-        return commonName;
-    }
-
-    private void setCommonName(String commonName) {
-        this.commonName = commonName;
-    }
-
     static {
         DocumentKeyValuePairHelper.setAccessor(new DocumentKeyValuePairHelper.DocumentKeyValuePairAccessor() {
             @Override
@@ -113,11 +98,6 @@ public final class DocumentKeyValuePair {
             @Override
             public void setConfidence(DocumentKeyValuePair documentKeyValuePair, float confidence) {
                 documentKeyValuePair.setConfidence(confidence);
-            }
-
-            @Override
-            public void setCommonName(DocumentKeyValuePair documentKeyValuePair, String commonName) {
-                documentKeyValuePair.setCommonName(commonName);
             }
         });
     }
