@@ -33,7 +33,7 @@ public abstract class TestProxyTestBase extends TestBase {
     public static void setup() {
         testMode = initializeTestMode();
         if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            testProxyManager = new TestProxyManager(TestUtils.getRecordFolder());
+            testProxyManager = new TestProxyManager(TestUtils.getRepoRoot());
             testProxyManager.startProxy();
         }
     }

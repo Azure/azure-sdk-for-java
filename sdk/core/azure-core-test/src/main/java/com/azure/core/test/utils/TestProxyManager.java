@@ -10,9 +10,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
@@ -22,14 +22,14 @@ import java.util.Map;
  */
 public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private final File recordingPath;
+    private final Path recordingPath;
     private Process proxy;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
      * @param recordingPath The local path in the file system where recordings are saved.
      */
-    public TestProxyManager(File recordingPath) {
+    public TestProxyManager(Path recordingPath) {
         this.recordingPath = recordingPath;
 
         // This is necessary to stop the proxy when the debugger is stopped.
@@ -45,24 +45,23 @@ public class TestProxyManager {
      * @throws RuntimeException There was an issue starting the proxy process.
      */
     public void startProxy() {
-
         try {
             // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
             if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1))) {
-                    String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-                        TestProxyUtils.getProxyProcessName()).toString();
+                String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
+                    TestProxyUtils.getProxyProcessName()).toString();
 
-                    ProcessBuilder builder = new ProcessBuilder(commandLine,
-                        "--storage-location",
-                        recordingPath.getPath(),
-                        "--",
-                        "--urls",
-                        TestProxyUtils.getProxyUrl().toString());
-                    Map<String, String> environment = builder.environment();
-                    environment.put("LOGGING__LOGLEVEL", "Information");
-                    environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
-                    environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
-                    proxy = builder.start();
+                ProcessBuilder builder = new ProcessBuilder(commandLine,
+                    "--storage-location",
+                    recordingPath.toString(),
+                    "--",
+                    "--urls",
+                    TestProxyUtils.getProxyUrl().toString());
+                Map<String, String> environment = builder.environment();
+                environment.put("LOGGING__LOGLEVEL", "Information");
+                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
+                proxy = builder.start();
             }
             // in either case the proxy should now be started, so let's wait to make sure.
             if (checkAlive(10, Duration.ofSeconds(6))) {

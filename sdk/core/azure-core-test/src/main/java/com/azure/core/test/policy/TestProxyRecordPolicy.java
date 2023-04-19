@@ -12,6 +12,7 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
@@ -21,6 +22,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -60,11 +62,16 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * Starts a recording of test traffic.
      *
      * @param recordFile The name of the file to save the recording to.
+     * @throws RuntimeException Failed to serialize body payload.
      */
-    public void startRecording(String recordFile) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-            .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
-
+    public void startRecording(File recordFile) {
+        HttpRequest request = null;
+        try {
+            request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         HttpResponse response = client.sendSync(request, Context.NONE);
 
         this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
