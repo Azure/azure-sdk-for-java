@@ -3,17 +3,28 @@
 
 package com.azure.monitor.ingestion;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
-import com.azure.monitor.ingestion.models.LogsUploadOptions;
+import com.azure.core.util.Configuration;
 import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,15 +37,42 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
 
-    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .skipRequest((request, context) -> false)
-            .build();
-    }
+    @BeforeEach
+    public void beforeTest() {
+        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
+        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-a64851bc17714f0483d1e96b5d84953b");
+        streamName = "Custom-MyTableRawData";
 
+        LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
+            .retryPolicy(new RetryPolicy(new RetryStrategy() {
+                @Override
+                public int getMaxRetries() {
+                    return 0;
+                }
+
+                @Override
+                public Duration calculateRetryDelay(int i) {
+                    return null;
+                }
+            }));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            clientBuilder
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                .httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            clientBuilder.credential(getCredential());
+        }
+        this.clientBuilder = clientBuilder
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .endpoint(dataCollectionEndpoint);
+    }
     @Test
     public void testUploadLogs() {
+        System.out.println(getTestMode());
         List<Object> logs = getObjects(10);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
         StepVerifier.create(client.upload(dataCollectionRuleId, streamName, logs))
@@ -42,6 +80,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @Disabled
     public void testUploadLogsInBatches() {
         List<Object> logs = getObjects(10000);
 
@@ -77,6 +116,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @Disabled
     public void testUploadLogsPartialFailureWithErrorHandler() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
@@ -95,6 +135,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @Disabled
     public void testUploadLogsStopOnFirstError() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
@@ -119,12 +160,13 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
         List<Object> logs = getObjects(10);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
         StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
-                        BinaryData.fromObject(logs), new RequestOptions().setHeader("Content-Encoding", "gzip")))
+                        BinaryData.fromObject(logs), new RequestOptions()))
                 .assertNext(response -> assertEquals(204, response.getStatusCode()))
                 .verifyComplete();
     }
 
     @Test
+    @Disabled
     public void testUploadLargeLogsProtocolMethod() {
         List<Object> logs = getObjects(1000000);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();

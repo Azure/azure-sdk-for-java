@@ -15,12 +15,10 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -39,41 +37,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
     protected String dataCollectionRuleId;
     protected String streamName;
 
-    @BeforeEach
-    public void setupTest() {
-        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
-        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-a64851bc17714f0483d1e96b5d84953b");
-        streamName = "Custom-MyTableRawData";
-
-        LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
-                .retryPolicy(new RetryPolicy(new RetryStrategy() {
-                    @Override
-                    public int getMaxRetries() {
-                        return 0;
-                    }
-
-                    @Override
-                    public Duration calculateRetryDelay(int i) {
-                        return null;
-                    }
-                }));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder
-                    .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                    .httpClient(interceptorManager.getPlaybackClient());
-        } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getCredential());
-        } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
-        }
-        this.clientBuilder = clientBuilder
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .endpoint(dataCollectionEndpoint);
-    }
-
-    private TokenCredential getCredential() {
+    protected TokenCredential getCredential() {
         return new ClientSecretCredentialBuilder()
                 .clientId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID))
                 .clientSecret(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))
