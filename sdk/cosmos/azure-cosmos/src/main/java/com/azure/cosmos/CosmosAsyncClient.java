@@ -31,17 +31,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosMetricName;
-import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -97,6 +87,7 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -113,6 +104,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
+        this.endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationLatencyPolicyConfig();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -154,6 +146,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
+                                       .withEndToEndOperationLatencyPolicyConfig(this.endToEndOperationLatencyPolicyConfig)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -755,6 +748,10 @@ public final class CosmosAsyncClient implements Closeable {
             telemetryConfigAccessor.getDiagnosticsThresholds(this.clientTelemetryConfig);
 
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
+    }
+
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return endToEndOperationLatencyPolicyConfig;
     }
 
     boolean isTransportLevelTracingEnabled() {

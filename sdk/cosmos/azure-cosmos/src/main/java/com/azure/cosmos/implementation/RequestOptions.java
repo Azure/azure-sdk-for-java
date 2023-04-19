@@ -6,10 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.IndexingDirective;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +41,8 @@ public class RequestOptions {
 
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
+
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -440,5 +439,13 @@ public class RequestOptions {
 
     public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
+    }
+
+    public void setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
+        return this.endToEndOperationLatencyConfig;
     }
 }

@@ -39,6 +39,7 @@ public class CosmosItemRequestOptions {
     private CosmosDiagnosticsThresholds thresholds;
     private Boolean nonIdempotentWriteRetriesEnabled;
     private boolean useTrackingIds;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig ;
 
     /**
      * copy constructor
@@ -59,6 +60,7 @@ public class CosmosItemRequestOptions {
         operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         nonIdempotentWriteRetriesEnabled = options.nonIdempotentWriteRetriesEnabled;
         useTrackingIds = options.useTrackingIds;
+        endToEndOperationLatencyPolicyConfig = options.endToEndOperationLatencyPolicyConfig;
         if (options.customOptions != null) {
             this.customOptions = new HashMap<>(options.customOptions);
         }
@@ -286,6 +288,15 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig} defined
+     *
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     */
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+        return endToEndOperationLatencyPolicyConfig;
+    }
+
+    /**
      * Enables automatic retries for write operations even when the SDK can't
      * guarantee that they are idempotent. This is an override of the
      * {@link CosmosClientBuilder#setNonIdempotentWriteRetryPolicy(boolean, boolean)} behavior for a specific request/operation.
@@ -351,6 +362,17 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request
+     *
+     * @param endToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return {@link CosmosItemRequestOptions}
+     */
+    public CosmosItemRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+        return this;
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -388,6 +410,7 @@ public class CosmosItemRequestOptions {
         if (this.nonIdempotentWriteRetriesEnabled != null) {
             requestOptions.setNonIdempotentWriteRetriesEnabled(this.nonIdempotentWriteRetriesEnabled);
         }
+        requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());

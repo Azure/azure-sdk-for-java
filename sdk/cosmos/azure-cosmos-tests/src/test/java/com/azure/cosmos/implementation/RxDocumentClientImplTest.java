@@ -22,14 +22,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.*;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -75,6 +68,7 @@ public class RxDocumentClientImplTest {
     private RxClientCollectionCache collectionCacheMock;
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -94,6 +88,7 @@ public class RxDocumentClientImplTest {
         this.collectionCacheMock = Mockito.mock(RxClientCollectionCache.class);
         this.partitionKeyRangeCacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
+        this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosEndToEndOperationLatencyPolicyConfig.class);
     }
 
     @Test(groups = {"unit"})
@@ -211,7 +206,8 @@ public class RxDocumentClientImplTest {
             this.metadataCachesSnapshotMock,
             this.apiTypeMock,
             this.cosmosClientTelemetryConfigMock,
-            this.clientCorrelationIdMock
+            this.clientCorrelationIdMock,
+            this.endToEndOperationLatencyPolicyConfig
         );
 
         ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);

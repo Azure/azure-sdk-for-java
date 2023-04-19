@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,6 +131,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -784,6 +786,15 @@ public class CosmosClientBuilder implements
     public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         return this;
+    }
+
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+        return this;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     /**

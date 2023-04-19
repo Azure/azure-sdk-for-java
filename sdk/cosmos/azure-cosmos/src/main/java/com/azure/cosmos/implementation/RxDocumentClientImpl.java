@@ -54,22 +54,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
-import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.models.CosmosBatchResponse;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosPatchOperations;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.PartitionKind;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -164,6 +149,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final int clientId;
     private ClientTelemetry clientTelemetry;
     private final ApiType apiType;
+    private final CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -209,7 +195,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId) {
+                                String clientCorrelationId,
+                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -225,7 +212,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId);
+                clientCorrelationId,
+                cosmosEndToEndOperationLatencyPolicyConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -244,7 +232,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId) {
+                                String clientCorrelationId,
+                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -260,7 +249,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId);
+                clientCorrelationId,
+                cosmosEndToEndOperationLatencyPolicyConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -278,7 +268,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId) {
+                                String clientCorrelationId,
+                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -293,7 +284,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 metadataCachesSnapshot,
                 apiType,
                 clientTelemetryConfig,
-                clientCorrelationId);
+                clientCorrelationId,
+                cosmosEndToEndOperationLatencyPolicyConfig);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -350,7 +342,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                          ApiType apiType,
                          CosmosClientTelemetryConfig clientTelemetryConfig,
-                         String clientCorrelationId) {
+                         String clientCorrelationId,
+                         CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -371,6 +364,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
         this.throughputControlEnabled = new AtomicBoolean(false);
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -1147,6 +1141,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
+        // If endToEndOperationLatencyPolicy is set in the query request options,
+        // then it should have been populated into request context already
+        // otherwise set them here with the client level policy
+        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() == null){
+            request.requestContext.setEndToEndOperationLantencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
+        }
+
         return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated ->
                 this.getStoreProxy(requestPopulated).processMessage(requestPopulated)
@@ -2187,6 +2188,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
+            if (options.getCosmosEndToEndLatencyPolicyConfig() != null) {
+                request.requestContext.setEndToEndOperationLantencyPolicyConfig(options.getCosmosEndToEndLatencyPolicyConfig());
+            } else {
+                request.requestContext.setEndToEndOperationLantencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);

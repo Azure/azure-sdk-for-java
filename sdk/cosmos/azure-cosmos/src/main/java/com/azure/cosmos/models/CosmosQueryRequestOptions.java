@@ -53,6 +53,8 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+
     /**
      * Instantiates a new query request options.
      */
@@ -94,6 +96,7 @@ public class CosmosQueryRequestOptions {
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
+        this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -320,6 +323,18 @@ public class CosmosQueryRequestOptions {
         return responseContinuationTokenLimitInKb;
     }
 
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+        return cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+
+    /**
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request
+     *
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     */
+    public void setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+    }
 
     /**
      * Gets the maximum number of items to be returned in the enumeration
@@ -773,6 +788,7 @@ public class CosmosQueryRequestOptions {
                     if (queryRequestOptions.thresholds != null) {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
+                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
