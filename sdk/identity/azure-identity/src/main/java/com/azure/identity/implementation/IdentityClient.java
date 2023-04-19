@@ -36,7 +36,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -902,41 +901,7 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<AccessToken> authenticateWithExchangeToken(TokenRequestContext request) {
 
         return clientAssertionAccessor.getValue()
-            .flatMap(assertionToken -> Mono.fromCallable(() -> {
-                String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
-                    + "/" + tenantId + "/oauth2/v2.0/token";
-
-                String urlParams = "client_assertion=" + assertionToken
-                    + "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_id="
-                    + clientId + "&grant_type=client_credentials&scope=" + urlEncode(request.getScopes().get(0));
-
-                byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
-                int postDataLength = postData.length;
-
-                HttpURLConnection connection = null;
-
-                URL url = getUrl(authorityUrl);
-
-                try {
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("POST");
-                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                    connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-                    connection.setRequestProperty("User-Agent", userAgent);
-                    connection.setDoOutput(true);
-                    try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
-                        outputStream.write(postData);
-                    }
-                    connection.connect();
-
-                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                        SerializerEncoding.JSON);
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                }
-            }));
+            .flatMap(assertionToken -> Mono.fromCallable(() -> authenticateWithExchangeTokenHelper(request, assertionToken)));
     }
 
     /**
@@ -1088,9 +1053,6 @@ public class IdentityClient extends IdentityClientBase {
         });
     }
 
-    static URL getUrl(String uri) throws MalformedURLException {
-        return new URL(uri);
-    }
     /**
      * Asynchronously acquire a token from the Virtual Machine IMDS endpoint.
      *
@@ -1271,9 +1233,5 @@ public class IdentityClient extends IdentityClientBase {
 
     private boolean isADFSTenant() {
         return ADFS_TENANT.equals(this.tenantId);
-    }
-
-    private static String urlEncode(String value) throws IOException {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
     }
 }

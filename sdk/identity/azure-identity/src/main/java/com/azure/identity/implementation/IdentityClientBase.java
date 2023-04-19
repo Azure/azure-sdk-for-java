@@ -48,14 +48,18 @@ import reactor.core.publisher.Mono;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -613,6 +617,42 @@ public abstract class IdentityClientBase {
         return token;
     }
 
+    AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken) throws IOException {
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
+            + "/" + tenantId + "/oauth2/v2.0/token";
+
+        String urlParams = "client_assertion=" + assertionToken
+            + "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_id="
+            + clientId + "&grant_type=client_credentials&scope=" + urlEncode(request.getScopes().get(0));
+
+        byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
+        int postDataLength = postData.length;
+
+        HttpURLConnection connection = null;
+
+        URL url = getUrl(authorityUrl);
+
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+            connection.setRequestProperty("User-Agent", userAgent);
+            connection.setDoOutput(true);
+            try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                outputStream.write(postData);
+            }
+            connection.connect();
+
+            return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                SerializerEncoding.JSON);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
             String windowsSystemRoot = System.getenv("SystemRoot");
@@ -722,6 +762,14 @@ public abstract class IdentityClientBase {
             default:
                 return new Proxy(Proxy.Type.HTTP, options.getAddress());
         }
+    }
+
+    static String urlEncode(String value) throws IOException {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
+    }
+
+    static URL getUrl(String uri) throws MalformedURLException {
+        return new URL(uri);
     }
 
     /**

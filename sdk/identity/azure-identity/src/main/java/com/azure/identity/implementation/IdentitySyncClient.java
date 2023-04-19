@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -373,7 +374,7 @@ public class IdentitySyncClient extends IdentityClientBase {
                 ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
                 : LOGGER.logExceptionAsError(e));
         }
-    }    
+    }
 
     /**
      * Asynchronously acquire a token from Active Directory with Azure PowerShell.
@@ -387,6 +388,16 @@ public class IdentitySyncClient extends IdentityClientBase {
             return new MsalToken(cc.acquireToken(buildOBOFlowParameters(request)).get());
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to acquire token with On Behalf Of Authentication.", null, e));
+        }
+    }
+
+    public AccessToken authenticateWithExchangeTokenSync(TokenRequestContext request) {
+
+        try {
+            String assertionToken = clientAssertionAccessor.getValue();
+            return authenticateWithExchangeTokenHelper(request, assertionToken);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
