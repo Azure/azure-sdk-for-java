@@ -56,6 +56,6 @@ public final class IngestionSettingsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.ingestionSettings().deleteWithResponse("dzciggb", com.azure.core.util.Context.NONE);
+        manager.ingestionSettings().deleteWithResponse("ezp", com.azure.core.util.Context.NONE);
     }
 }

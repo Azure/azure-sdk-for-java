@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
 import com.azure.resourcemanager.keyvault.models.IpRule;
@@ -26,7 +25,7 @@ import java.util.UUID;
 /** Samples for Vaults CreateOrUpdate. */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/createVaultWithNetworkAcls.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/createVaultWithNetworkAcls.json
      */
     /**
      * Sample code: Create or update a vault with network acls.
@@ -66,11 +65,11 @@ public final class VaultsCreateOrUpdateSamples {
                                                 new VirtualNetworkRule()
                                                     .withId(
                                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1"))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/createVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/createVault.json
      */
     /**
      * Sample code: Create a new vault or update an existing vault.
@@ -151,6 +150,6 @@ public final class VaultsCreateOrUpdateSamples {
                             .withEnabledForDiskEncryption(true)
                             .withEnabledForTemplateDeployment(true)
                             .withPublicNetworkAccess("Enabled")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

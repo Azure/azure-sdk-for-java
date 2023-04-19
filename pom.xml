@@ -138,6 +138,7 @@
     <module>sdk/providerhub</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
+    <module>sdk/qumulo</module>
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>

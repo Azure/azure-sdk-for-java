@@ -53,6 +53,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrqumulo:
+  service: qumulo
 loadtestservice:
   service: loadtesting
 machinelearningservices:

@@ -31,7 +31,7 @@ public final class AllowedConnectionsListByHomeRegionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-04T20:58:12Z\",\"connectableResources\":[]},\"location\":\"balkjnbkbdhl\",\"id\":\"tqstqkqsygxiyne\",\"name\":\"ovagzkheuban\",\"type\":\"xunpqcckqiawzlz\"}]}";
+            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-09-16T09:02:02Z\",\"connectableResources\":[]},\"location\":\"xsure\",\"id\":\"qrshzzbgullcxiq\",\"name\":\"zjk\",\"type\":\"xdupnamg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class AllowedConnectionsListByHomeRegionMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AllowedConnectionsResource> response =
-            manager.allowedConnections().listByHomeRegion("itxnmxgnmgu", com.azure.core.util.Context.NONE);
+            manager.allowedConnections().listByHomeRegion("xdede", com.azure.core.util.Context.NONE);
     }
 }

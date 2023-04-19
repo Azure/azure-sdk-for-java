@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +34,29 @@ public final class ClientEncryptionPolicy {
      * Constructor.
      *
      * @param paths list of path of the item that need encryption along with path-specific settings.
+     *              the PolicyFormatVersion will be set to 1 which is the default value.
+     *              Note: If you need to include partition key or id field paths as part of the ClientEncryptionPolicy, please set PolicyFormatVersion to 2.
      */
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
-        this.validateIncludedPaths(paths);
-        this.includedPaths = paths;
         this.policyFormatVersion = 1;
+        validateIncludedPaths(paths, policyFormatVersion);
+        this.includedPaths = paths;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param paths list of path of the item that need encryption along with path-specific settings.
+     * @param policyFormatVersion version of the client encryption policy definition. Current supported versions are 1 and 2. Default version is 1.
+     *                            Note: If you need to include partition key or id field paths as part of the ClientEncryptionPolicy, please set PolicyFormatVersion to 2.
+     */
+    public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths, int policyFormatVersion) {
+        if (policyFormatVersion > 2 || policyFormatVersion < 1) {
+            throw new IllegalArgumentException("Supported versions of client encryption policy are 1 and 2.");
+        }
+        this.policyFormatVersion = policyFormatVersion;
+        validateIncludedPaths(paths, policyFormatVersion);
+        this.includedPaths = paths;
     }
 
     /**
@@ -50,25 +67,7 @@ public final class ClientEncryptionPolicy {
     }
 
     /**
-     * Constructor.
-     *
-     * @param jsonString the json string that represents the client encryption policy.
-     */
-    ClientEncryptionPolicy(String jsonString) {
-        this.jsonSerializable = new JsonSerializable(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param objectNode the object node that represents the client encryption policy.
-     */
-    ClientEncryptionPolicy(ObjectNode objectNode) {
-        this.jsonSerializable = new JsonSerializable(objectNode);
-    }
-
-    /**
-     * Gets the list of path of the item that need encryption along with path-specific settings.
+     * Gets the list of paths of the item that need encryption along with path-specific settings.
      * @return includedPaths
      */
     public List<ClientEncryptionIncludedPath> getIncludedPaths() {
@@ -83,28 +82,46 @@ public final class ClientEncryptionPolicy {
         return policyFormatVersion;
     }
 
-    void validatePartitionKeyPathsAreNotEncrypted(List<List<String>> partitionKeyPathTokens) {
+    /**
+     * Ensures that partition key paths specified in the client encryption policy for encryption are encrypted using Deterministic encryption algorithm.
+     * @param partitionKeyPathTokens Tokens corresponding to validated partition key.
+     */
+    void validatePartitionKeyPathsIfEncrypted(List<List<String>> partitionKeyPathTokens) {
         checkNotNull(partitionKeyPathTokens, "partitionKeyPathTokens cannot be null");
-        List<String> propertiesToEncrypt =
-            this.includedPaths.stream().map(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.getPath().substring(1)).collect(Collectors.toList());
+
 
         for (List<String> tokensInPath : partitionKeyPathTokens) {
             checkNotNull(tokensInPath);
             if (tokensInPath.size() > 0) {
                 String topLevelToken = tokensInPath.get(0);
-                if (propertiesToEncrypt.contains(topLevelToken)) {
-                    throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
-                        "cannot be included" +
-                        " in the ClientEncryptionPolicy.", topLevelToken));
+
+                // paths in included paths start with "/". Get the ClientEncryptionIncludedPath and validate.
+                List<ClientEncryptionIncludedPath> encrypterPartitionKeyPath =
+                    this.includedPaths.stream().filter(clientEncryptionIncludedPath -> clientEncryptionIncludedPath.getPath().substring(1).equals(topLevelToken)).collect(Collectors.toList());
+
+                if (encrypterPartitionKeyPath.size() >0) {
+                    if (this.policyFormatVersion < 2) {
+                        throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
+                            "cannot be encrypted" +
+                            " with PolicyFormatVersion %s. Please use PolicyFormatVersion 2.", topLevelToken, policyFormatVersion));
+                    }
+
+                    // for the ClientEncryptionIncludedPath found check the encryption type.
+                    if (!encrypterPartitionKeyPath.stream().map(encrypter -> encrypter.getEncryptionType()).findFirst().orElse(null).equals(Constants.Properties.DETERMINISTIC)) {
+                        throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
+                            "has to be encrypted" +
+                            " with Deterministic type Encryption.", topLevelToken));
+                    }
+
                 }
             }
         }
     }
 
-    private void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath) {
+    private static void validateIncludedPaths(List<ClientEncryptionIncludedPath> clientEncryptionIncludedPath, int policyFormatVersion) {
         List<String> includedPathsList = new ArrayList<>();
         for (ClientEncryptionIncludedPath path : clientEncryptionIncludedPath) {
-            this.validateClientEncryptionIncludedPath(path);
+            validateClientEncryptionIncludedPath(path, policyFormatVersion);
             if (includedPathsList.contains(path.getPath())) {
                 throw new IllegalArgumentException("Duplicate Path found in clientEncryptionIncludedPath.");
             }
@@ -113,7 +130,7 @@ public final class ClientEncryptionPolicy {
         }
     }
 
-    private void validateClientEncryptionIncludedPath(ClientEncryptionIncludedPath clientEncryptionIncludedPath) {
+    private static void validateClientEncryptionIncludedPath(ClientEncryptionIncludedPath clientEncryptionIncludedPath, int policyFormatVersion) {
         if (clientEncryptionIncludedPath == null) {
             throw new IllegalArgumentException("clientEncryptionIncludedPath is null");
         }
@@ -123,9 +140,18 @@ public final class ClientEncryptionPolicy {
         }
 
         if (clientEncryptionIncludedPath.getPath().charAt(0) != '/'
-            || clientEncryptionIncludedPath.getPath().lastIndexOf('/') != 0
-            || clientEncryptionIncludedPath.getPath().substring(1).equals("id")) {
+            || clientEncryptionIncludedPath.getPath().lastIndexOf('/') != 0) {
             throw new IllegalArgumentException("Invalid path " + clientEncryptionIncludedPath.getPath());
+        }
+
+        if (clientEncryptionIncludedPath.getPath().substring(1).equals(Constants.Properties.ID)) {
+            if (policyFormatVersion < 2) {
+                throw new IllegalArgumentException(String.format("Path %s cannot be encrypted with policyFormatVersion %s.", clientEncryptionIncludedPath.getPath(), policyFormatVersion));
+            }
+
+            if (!clientEncryptionIncludedPath.getEncryptionType().equals(Constants.Properties.DETERMINISTIC)) {
+                throw new IllegalArgumentException(String.format("Only deterministic encryption type is supported for path %s.", clientEncryptionIncludedPath.getPath()));
+            }
         }
 
         if (StringUtils.isEmpty(clientEncryptionIncludedPath.getClientEncryptionKeyId())) {

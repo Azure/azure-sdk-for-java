@@ -58,6 +58,6 @@ public final class SecurityConnectorApplicationOperationsDeleteWithResponseMockT
 
         manager
             .securityConnectorApplicationOperations()
-            .deleteWithResponse("izzn", "uf", "qz", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ztvktjhffecqko", "youergaghp", "zxkpyehhfdyld", com.azure.core.util.Context.NONE);
     }
 }

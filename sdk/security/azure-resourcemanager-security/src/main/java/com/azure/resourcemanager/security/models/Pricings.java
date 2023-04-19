@@ -63,8 +63,8 @@ public interface Pricings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period along with {@link Response}.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard along with {@link
+     *     Response}.
      */
     Response<Pricing> updateWithResponse(String pricingName, PricingInner pricing, Context context);
 
@@ -76,8 +76,7 @@ public interface Pricings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard.
      */
     Pricing update(String pricingName, PricingInner pricing);
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 /** Samples for Organizations List. */
 public final class OrganizationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MinimumSet_Gen.
@@ -20,7 +20,7 @@ public final class OrganizationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MaximumSet_Gen.

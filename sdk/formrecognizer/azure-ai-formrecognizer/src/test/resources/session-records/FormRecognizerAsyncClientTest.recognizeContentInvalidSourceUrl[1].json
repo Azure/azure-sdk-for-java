@@ -1,25 +1,39 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/layout/analyze",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "089aeb94-c1d2-432f-b8f8-20161a12071d",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "95",
-      "x-envoy-upstream-service-time" : "118",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "6d146e62-28d9-4b26-8708-7ac378a93f0b",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"FailedToDownloadImage\",\"message\":\"Failed to download image from input URL.\"}}",
-      "Date" : "Thu, 25 Aug 2022 18:17:37 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/layout/analyze",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Fri, 14 Apr 2023 18:17:34 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+        "x-ms-client-request-id": "a3443531-323e-45ae-bc21-15e4b45eaa63"
+      },
+      "RequestBody": {
+        "source": "REDACTED"
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "0a3fa068-0367-4b01-9e44-c78a94595457",
+        "Content-Length": "270",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 14 Apr 2023 18:17:32 GMT",
+        "ms-azure-ai-errorcode": "InvalidImage",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "35",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidImage",
+          "message": "The file submitted couldn\u0027t be parsed. This can be due to one of the following reasons: the file format is not supported ( Supported formats include JPEG, PNG, BMP, PDF and TIFF), the file is corrupted or password protected."
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

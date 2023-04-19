@@ -30,7 +30,7 @@ public final class TasksGetSubscriptionLevelTaskWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"state\":\"tjoxztfw\",\"creationTimeUtc\":\"2021-05-29T00:58:12Z\",\"securityTaskParameters\":{\"name\":\"czevjnn\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-07-28T08:00:42Z\",\"subState\":\"yvrtp\"},\"id\":\"pemhzcgkrepdqhqy\",\"name\":\"wqwemvxqabckmze\",\"type\":\"xin\"}";
+            "{\"properties\":{\"state\":\"uxweyslandkd\",\"creationTimeUtc\":\"2021-04-27T10:17:51Z\",\"securityTaskParameters\":{\"name\":\"nhghcga\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-10-31T20:43:11Z\",\"subState\":\"quox\"},\"id\":\"otire\",\"name\":\"mseobfsxstcyilbv\",\"type\":\"m\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class TasksGetSubscriptionLevelTaskWithResponseMockTests {
         SecurityTask response =
             manager
                 .tasks()
-                .getSubscriptionLevelTaskWithResponse("dtelvhyibdrqrs", "hbuubpy", com.azure.core.util.Context.NONE)
+                .getSubscriptionLevelTaskWithResponse("fm", "fgvqcpdw", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

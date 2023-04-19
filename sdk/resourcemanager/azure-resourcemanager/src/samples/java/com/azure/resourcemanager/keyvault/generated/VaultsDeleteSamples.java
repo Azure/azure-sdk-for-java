@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults Delete. */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/deleteVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/deleteVault.json
      */
     /**
      * Sample code: Delete a vault.
@@ -22,6 +20,6 @@ public final class VaultsDeleteSamples {
             .manager()
             .serviceClient()
             .getVaults()
-            .deleteWithResponse("sample-resource-group", "sample-vault", Context.NONE);
+            .deleteWithResponse("sample-resource-group", "sample-vault", com.azure.core.util.Context.NONE);
     }
 }

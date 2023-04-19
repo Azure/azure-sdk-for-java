@@ -12,10 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GitRepoVolume {
     /*
-     * Target directory name. Must not contain or start with '..'.  If '.' is
-     * supplied, the volume directory will be the git repository.  Otherwise,
-     * if specified, the volume will contain the git repository in the
-     * subdirectory with the given name.
+     * Target directory name. Must not contain or start with '..'.  If '.' is supplied, the volume directory will be
+     * the git repository.  Otherwise, if specified, the volume will contain the git repository in the subdirectory
+     * with the given name.
      */
     @JsonProperty(value = "directory")
     private String directory;
@@ -31,6 +30,10 @@ public final class GitRepoVolume {
      */
     @JsonProperty(value = "revision")
     private String revision;
+
+    /** Creates an instance of GitRepoVolume class. */
+    public GitRepoVolume() {
+    }
 
     /**
      * Get the directory property: Target directory name. Must not contain or start with '..'. If '.' is supplied, the
