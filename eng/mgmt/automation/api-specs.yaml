@@ -53,6 +53,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrqumulo:
+  service: qumulo
 loadtestservice:
   service: loadtesting
 machinelearningservices:
@@ -69,6 +71,8 @@ newrelic:
   service: newrelicobservability
 operationalinsights:
   service: loganalytics
+paloaltonetworks:
+  suffix: ngfw
 postgresql:
   service: postgresqlflexibleserver
 privatedns:

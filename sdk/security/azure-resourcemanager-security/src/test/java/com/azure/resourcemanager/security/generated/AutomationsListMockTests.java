@@ -32,7 +32,7 @@ public final class AutomationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"vftwaiv\",\"isEnabled\":false,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"ypanhxmpdxxzet\",\"tags\":{\"x\":\"jwotnxlkfhglhrf\",\"nhpcselqx\":\"wecr\",\"ukklvzrlr\":\"vppqi\",\"cme\":\"l\"},\"id\":\"jsczivfqbqnasdsy\",\"name\":\"nzsieuscplh\",\"type\":\"vdgxly\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"ssaekewnaze\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"izyddcvxodk\",\"tags\":{\"desqlvg\":\"sxxb\",\"bygoo\":\"cpwgoljtzxnmxsd\"},\"id\":\"xqapjxvazyjfucsa\",\"name\":\"djnosdkvibf\",\"type\":\"sgm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class AutomationsListMockTests {
 
         PagedIterable<Automation> response = manager.automations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ypanhxmpdxxzet", response.iterator().next().location());
-        Assertions.assertEquals("jwotnxlkfhglhrf", response.iterator().next().tags().get("x"));
-        Assertions.assertEquals("vftwaiv", response.iterator().next().description());
-        Assertions.assertEquals(false, response.iterator().next().isEnabled());
+        Assertions.assertEquals("izyddcvxodk", response.iterator().next().location());
+        Assertions.assertEquals("sxxb", response.iterator().next().tags().get("desqlvg"));
+        Assertions.assertEquals("ssaekewnaze", response.iterator().next().description());
+        Assertions.assertEquals(true, response.iterator().next().isEnabled());
     }
 }

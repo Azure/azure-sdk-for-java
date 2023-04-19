@@ -1,24 +1,36 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionProgress/reset",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8b4dc99e-bc46-498e-98d2-22c5304b55bf",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "9fcdd371-5e11-4f71-a3cc-8b0058d64c15",
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "297",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "9fcdd371-5e11-4f71-a3cc-8b0058d64c15",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "Date" : "Fri, 08 Apr 2022 23:50:23 GMT"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionProgress/reset",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "69",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:20 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "089ec4c0-ba70-495c-9074-71be68a7cf66",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "startTime": "2022-03-01T00:00:00Z",
+        "endTime": "2022-03-22T00:00:00Z"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "apim-request-id": "74ebecc4-27f5-4531-9386-691dd063ca99",
+        "Content-Length": "0",
+        "Date": "Mon, 17 Apr 2023 23:00:19 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "317",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "74ebecc4-27f5-4531-9386-691dd063ca99"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
 }

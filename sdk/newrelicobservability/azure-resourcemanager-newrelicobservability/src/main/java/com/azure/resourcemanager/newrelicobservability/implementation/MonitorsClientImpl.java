@@ -47,6 +47,7 @@ import com.azure.resourcemanager.newrelicobservability.models.HostsGetRequest;
 import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
 import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusRequest;
 import com.azure.resourcemanager.newrelicobservability.models.MonitoredResourceListResponse;
+import com.azure.resourcemanager.newrelicobservability.models.MonitorsSwitchBillingResponse;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorResourceListResult;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorResourceUpdate;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
@@ -211,9 +212,9 @@ public final class MonitorsClientImpl implements MonitorsClient {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/switchBilling")
-        @ExpectedResponses({204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> switchBilling(
+        Mono<MonitorsSwitchBillingResponse> switchBilling(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -1988,10 +1989,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a Monitor Resource by NewRelic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> switchBillingWithResponseAsync(
+    private Mono<MonitorsSwitchBillingResponse> switchBillingWithResponseAsync(
         String resourceGroupName, String monitorName, SwitchBillingRequest request) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2044,10 +2045,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a Monitor Resource by NewRelic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> switchBillingWithResponseAsync(
+    private Mono<MonitorsSwitchBillingResponse> switchBillingWithResponseAsync(
         String resourceGroupName, String monitorName, SwitchBillingRequest request, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2096,11 +2097,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return a Monitor Resource by NewRelic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> switchBillingAsync(String resourceGroupName, String monitorName, SwitchBillingRequest request) {
-        return switchBillingWithResponseAsync(resourceGroupName, monitorName, request).flatMap(ignored -> Mono.empty());
+    private Mono<NewRelicMonitorResourceInner> switchBillingAsync(
+        String resourceGroupName, String monitorName, SwitchBillingRequest request) {
+        return switchBillingWithResponseAsync(resourceGroupName, monitorName, request)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2113,10 +2116,10 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return a Monitor Resource by NewRelic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> switchBillingWithResponse(
+    public MonitorsSwitchBillingResponse switchBillingWithResponse(
         String resourceGroupName, String monitorName, SwitchBillingRequest request, Context context) {
         return switchBillingWithResponseAsync(resourceGroupName, monitorName, request, context).block();
     }
@@ -2130,10 +2133,12 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Monitor Resource by NewRelic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void switchBilling(String resourceGroupName, String monitorName, SwitchBillingRequest request) {
-        switchBillingWithResponse(resourceGroupName, monitorName, request, Context.NONE);
+    public NewRelicMonitorResourceInner switchBilling(
+        String resourceGroupName, String monitorName, SwitchBillingRequest request) {
+        return switchBillingWithResponse(resourceGroupName, monitorName, request, Context.NONE).getValue();
     }
 
     /**

@@ -31,6 +31,7 @@ import com.azure.resourcemanager.elastic.implementation.CreateAndAssociatePLFilt
 import com.azure.resourcemanager.elastic.implementation.DeploymentInfoesImpl;
 import com.azure.resourcemanager.elastic.implementation.DetachAndDeleteTrafficFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.DetachTrafficFiltersImpl;
+import com.azure.resourcemanager.elastic.implementation.ElasticVersionsImpl;
 import com.azure.resourcemanager.elastic.implementation.ExternalUsersImpl;
 import com.azure.resourcemanager.elastic.implementation.ListAssociatedTrafficFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.MicrosoftElasticBuilder;
@@ -38,6 +39,7 @@ import com.azure.resourcemanager.elastic.implementation.MonitorOperationsImpl;
 import com.azure.resourcemanager.elastic.implementation.MonitoredResourcesImpl;
 import com.azure.resourcemanager.elastic.implementation.MonitorsImpl;
 import com.azure.resourcemanager.elastic.implementation.OperationsImpl;
+import com.azure.resourcemanager.elastic.implementation.OrganizationsImpl;
 import com.azure.resourcemanager.elastic.implementation.TagRulesImpl;
 import com.azure.resourcemanager.elastic.implementation.TrafficFiltersImpl;
 import com.azure.resourcemanager.elastic.implementation.UpgradableVersionsImpl;
@@ -51,12 +53,14 @@ import com.azure.resourcemanager.elastic.models.CreateAndAssociatePLFilters;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoes;
 import com.azure.resourcemanager.elastic.models.DetachAndDeleteTrafficFilters;
 import com.azure.resourcemanager.elastic.models.DetachTrafficFilters;
+import com.azure.resourcemanager.elastic.models.ElasticVersions;
 import com.azure.resourcemanager.elastic.models.ExternalUsers;
 import com.azure.resourcemanager.elastic.models.ListAssociatedTrafficFilters;
 import com.azure.resourcemanager.elastic.models.MonitorOperations;
 import com.azure.resourcemanager.elastic.models.MonitoredResources;
 import com.azure.resourcemanager.elastic.models.Monitors;
 import com.azure.resourcemanager.elastic.models.Operations;
+import com.azure.resourcemanager.elastic.models.Organizations;
 import com.azure.resourcemanager.elastic.models.TagRules;
 import com.azure.resourcemanager.elastic.models.TrafficFilters;
 import com.azure.resourcemanager.elastic.models.UpgradableVersions;
@@ -75,6 +79,8 @@ public final class ElasticManager {
     private Operations operations;
 
     private Monitors monitors;
+
+    private ElasticVersions elasticVersions;
 
     private MonitoredResources monitoredResources;
 
@@ -109,6 +115,8 @@ public final class ElasticManager {
     private DetachTrafficFilters detachTrafficFilters;
 
     private TrafficFilters trafficFilters;
+
+    private Organizations organizations;
 
     private final MicrosoftElastic clientObject;
 
@@ -275,7 +283,7 @@ public final class ElasticManager {
                 .append("-")
                 .append("com.azure.resourcemanager.elastic")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -354,6 +362,18 @@ public final class ElasticManager {
             this.monitors = new MonitorsImpl(clientObject.getMonitors(), this);
         }
         return monitors;
+    }
+
+    /**
+     * Gets the resource collection API of ElasticVersions.
+     *
+     * @return Resource collection API of ElasticVersions.
+     */
+    public ElasticVersions elasticVersions() {
+        if (this.elasticVersions == null) {
+            this.elasticVersions = new ElasticVersionsImpl(clientObject.getElasticVersions(), this);
+        }
+        return elasticVersions;
     }
 
     /**
@@ -563,6 +583,18 @@ public final class ElasticManager {
             this.trafficFilters = new TrafficFiltersImpl(clientObject.getTrafficFilters(), this);
         }
         return trafficFilters;
+    }
+
+    /**
+     * Gets the resource collection API of Organizations.
+     *
+     * @return Resource collection API of Organizations.
+     */
+    public Organizations organizations() {
+        if (this.organizations == null) {
+            this.organizations = new OrganizationsImpl(clientObject.getOrganizations(), this);
+        }
+        return organizations;
     }
 
     /**

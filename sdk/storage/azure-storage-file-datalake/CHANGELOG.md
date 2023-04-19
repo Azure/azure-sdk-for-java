@@ -3,6 +3,8 @@
 ## 12.16.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data 
+to it using `ParallelTransferOptions`.
 
 ### Breaking Changes
 
