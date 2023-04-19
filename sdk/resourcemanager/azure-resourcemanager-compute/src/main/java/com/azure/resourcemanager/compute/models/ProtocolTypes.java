@@ -7,10 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Specifies the protocol of WinRM listener. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;**http**
- * &lt;br&gt;&lt;br&gt; **https**.
- */
+/** Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**. */
 public enum ProtocolTypes {
     /** Enum value Http. */
     HTTP("Http"),
