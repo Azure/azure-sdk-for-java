@@ -71,13 +71,13 @@ public final class AppendBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = 4 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      * For versions 2022-11-02 and above.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = 100 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
