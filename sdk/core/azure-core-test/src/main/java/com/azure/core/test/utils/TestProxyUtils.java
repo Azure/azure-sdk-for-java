@@ -70,6 +70,8 @@ public class TestProxyUtils {
      * @return A string containing the proxy URL.
      */
 
+    private static volatile URL proxyUrl;
+
     /**
      * Adds headers required for communication with the test proxy.
      *
@@ -176,27 +178,36 @@ public class TestProxyUtils {
      * @throws UncheckedIOException The version file could not be read properly.
      */
     public static String getTestProxyVersion() {
-        Path path = TestUtils.getRecordFolder().toPath();
-        Path candidate = null;
-        while (path != null) {
-            candidate = path.resolve("eng");
-            if (Files.exists(candidate)) {
-                break;
-            }
-            path = path.getParent();
-        }
-        if (path == null) {
-            throw new RuntimeException("Could not locate eng folder");
-        }
-        Path versionFile =  Paths.get("common", "testproxy", "target_version.txt");
-        candidate = candidate.resolve(versionFile);
+        Path rootPath = TestUtils.getRepoRoot();
+        Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
+        rootPath = rootPath.resolve(versionFile);
         try {
-            return Files.readAllLines(candidate).get(0).replace(System.getProperty("line.separator"), "");
+            return Files.readAllLines(rootPath).get(0).replace(System.getProperty("line.separator"), "");
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
+    /**
+     * Gets the current URL for the test proxy.
+     * @return The {@link URL} location of the test proxy.
+     * @throws RuntimeException The URL could not be constructed.
+     */
+    public static URL getProxyUrl() {
+        if (proxyUrl != null) {
+            return proxyUrl;
+        }
+        UrlBuilder builder = new UrlBuilder();
+        builder.setHost("localhost");
+        builder.setScheme("http");
+        builder.setPort(5000);
+        try {
+            proxyUrl = builder.toUrl();
+            return proxyUrl;
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Registers the default set of sanitizers for sanitizing request and responses

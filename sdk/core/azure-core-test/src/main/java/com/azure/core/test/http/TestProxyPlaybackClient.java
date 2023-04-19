@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.test.models.RecordFilePayload;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
@@ -17,6 +18,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -51,11 +53,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
-     * @param proxyUrl The {@link URL} for the test proxy instance.
      */
-    public TestProxyPlaybackClient(HttpClient httpClient, URL proxyUrl) {
+    public TestProxyPlaybackClient(HttpClient httpClient) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
-        this.proxyUrl = proxyUrl;
+        this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
 
@@ -64,10 +65,16 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @param recordFile The name of the file to read.
      * @return A {@link Queue} representing the variables in the recording.
      * @throws UncheckedIOException if an {@link IOException} is thrown.
+     * @throws RuntimeException Failed to serialize body payload.
      */
-    public Queue<String> startPlayback(String recordFile) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
-            .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
+    public Queue<String> startPlayback(File recordFile) {
+        HttpRequest request = null;
+        try {
+            request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue("x-recording-id");
