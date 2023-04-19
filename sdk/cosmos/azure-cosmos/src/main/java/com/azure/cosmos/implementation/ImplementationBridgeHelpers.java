@@ -1407,7 +1407,7 @@ public class ImplementationBridgeHelpers {
     public static final class CosmosContainerProactiveInitConfigHelper {
 
         private static final AtomicReference<Boolean> cosmosContainerProactiveInitConfigClassLoaded = new AtomicReference<>(false);
-        private static final AtomicReference<CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor> accessor = new AtomicReference<>();
+        private static final AtomicReference<CosmosContainerProactiveInitConfigAccessor> accessor = new AtomicReference<>();
 
         private CosmosContainerProactiveInitConfigHelper() {}
 
