@@ -74,7 +74,8 @@ These settings apply only when `--tag=rbac` is specified on the command line.
 ``` yaml $(tag) == 'rbac'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/rbac.json
 title: KeyVaultAccessControlClient
-custom-types: KeyVaultDataAction,KeyVaultRoleScope,KeyVaultRoleType
+custom-types: KeyVaultDataAction,KeyVaultRoleDefinitionType,KeyVaultRoleScope,KeyVaultRoleType
+customization-class: src/main/java/RbacCustomizations.java
 ```
 
 #### Enum Renames
@@ -86,6 +87,7 @@ directive:
       $.DataAction["x-ms-enum"].name = "KeyVaultDataAction";
       $.RoleDefinitionProperties.properties.type["x-ms-enum"].name = "KeyVaultRoleType";
       $.RoleScope["x-ms-enum"].name = "KeyVaultRoleScope";
+      $.RoleDefinition.properties.type["x-ms-enum"].name = "KeyVaultRoleDefinitionType";
 ```
 
 ### Tag: backuprestore
@@ -112,4 +114,13 @@ directive:
     where: $.definitions.Setting
     transform: >
       $.properties.type["x-ms-enum"].name = "KeyVaultSettingType";
+```
+
+#### Bug in Autorest Java for required properties that are flattened in operation definition
+``` yaml $(tag) == 'settings'
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      delete $.UpdateSettingRequest.required;
 ```

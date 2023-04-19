@@ -214,6 +214,12 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*",
           "justification": "Removing Jackson annotations from Search in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
+          "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
         }
       ]
     }

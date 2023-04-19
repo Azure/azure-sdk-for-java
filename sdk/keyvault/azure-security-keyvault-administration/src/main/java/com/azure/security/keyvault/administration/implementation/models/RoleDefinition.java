@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 import java.io.IOException;
@@ -31,7 +32,7 @@ public class RoleDefinition implements JsonSerializable<RoleDefinition> {
     /*
      * The role definition type.
      */
-    private RoleDefinitionType type;
+    private KeyVaultRoleDefinitionType type;
 
     /*
      * The role name.
@@ -84,7 +85,7 @@ public class RoleDefinition implements JsonSerializable<RoleDefinition> {
      *
      * @return the type value.
      */
-    public RoleDefinitionType getType() {
+    public KeyVaultRoleDefinitionType getType() {
         return this.type;
     }
 
@@ -234,7 +235,7 @@ public class RoleDefinition implements JsonSerializable<RoleDefinition> {
                         } else if ("name".equals(fieldName)) {
                             deserializedRoleDefinition.name = reader.getString();
                         } else if ("type".equals(fieldName)) {
-                            deserializedRoleDefinition.type = RoleDefinitionType.fromString(reader.getString());
+                            deserializedRoleDefinition.type = KeyVaultRoleDefinitionType.fromString(reader.getString());
                         } else if ("properties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
                             while (reader.nextToken() != JsonToken.END_OBJECT) {
                                 fieldName = reader.getFieldName();

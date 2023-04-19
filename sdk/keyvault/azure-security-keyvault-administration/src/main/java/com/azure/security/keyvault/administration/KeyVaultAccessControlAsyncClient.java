@@ -15,7 +15,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
-import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
@@ -33,11 +32,11 @@ import java.util.UUID;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeAsync;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
 
 /**
  * The {@link KeyVaultAccessControlAsyncClient} provides asynchronous methods to view and manage Role Based Access
@@ -98,10 +97,7 @@ public final class KeyVaultAccessControlAsyncClient {
         this.serviceVersion = serviceVersion.getVersion();
         this.pipeline = httpPipeline;
 
-        clientImpl = new KeyVaultAccessControlClientImplBuilder()
-            .pipeline(httpPipeline)
-            .apiVersion(this.serviceVersion)
-            .buildClient();
+        clientImpl = new KeyVaultAccessControlClientImpl(httpPipeline, this.serviceVersion);
     }
 
     /**
