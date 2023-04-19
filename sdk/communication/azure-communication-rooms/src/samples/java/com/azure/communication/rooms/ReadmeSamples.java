@@ -15,7 +15,7 @@ import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.communication.rooms.models.ParticipantRole;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.UpdateRoomOptions;
-import com.azure.communication.rooms.models.UpsertParticipantsResult;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -153,9 +153,9 @@ public class ReadmeSamples {
     }
     // END: readme-sample-deleteRoomWithRoomId
 
-    // BEGIN: readme-sample-upsertRoomParticipantsWithRoomId
-    public void upsertRoomParticipantsWithRoomId() {
-        List<RoomParticipant> participantsToUpsert = new ArrayList<>();
+    // BEGIN: readme-sample-addOrUpdateRoomParticipantsWithRoomId
+    public void addOrUpdateRoomParticipantsWithRoomId() {
+        List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
 
         // New participant to add
         RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
@@ -164,18 +164,18 @@ public class ReadmeSamples {
         // consumer
         participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.ATTENDEE);
 
-        participantsToUpsert.add(participantToAdd); // Adding new participant to room
-        participantsToUpsert.add(participant2); // Update participant from Consumer -> Attendee
+        participantsToaddOrUpdate.add(participantToAdd); // Adding new participant to room
+        participantsToaddOrUpdate.add(participant2); // Update participant from Consumer -> Attendee
 
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
         try {
-            UpsertParticipantsResult upsertResult = roomsClient.upsertParticipants("<Room Id>", participantsToUpsert);
+            AddOrUpdateParticipantsResult addOrUpdateResult = roomsClient.addOrUpdateParticipants("<Room Id>", participantsToaddOrUpdate);
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
     }
-    // END: readme-sample-upsertRoomParticipantsWithRoomId
+    // END: readme-sample-addOrUpdateRoomParticipantsWithRoomId
 
     // BEGIN: readme-sample-removeRoomParticipantsWithRoomId
     public void removeRoomParticipantsWithRoomId() {

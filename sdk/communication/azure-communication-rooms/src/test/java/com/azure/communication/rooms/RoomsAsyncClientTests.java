@@ -164,12 +164,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 .verifyComplete();
 
         // Add 3 participants.
-        Mono<UpsertParticipantsResult> addPartcipantResponse = roomsAsyncClient.upsertParticipants(roomId,
+        Mono<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId,
                 participants3);
 
         StepVerifier.create(addPartcipantResponse)
                 .assertNext(result -> {
-                    assertEquals(true, result instanceof UpsertParticipantsResult);
+                    assertEquals(true, result instanceof AddOrUpdateParticipantsResult);
                 })
                 .verifyComplete();
 
@@ -193,12 +193,12 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                 .verifyComplete();
 
         // Update 2 participants roles, ATTENDEE -> CONSUMER
-        Mono<UpsertParticipantsResult> updateParticipantResponse = roomsAsyncClient.upsertParticipants(roomId,
+        Mono<AddOrUpdateParticipantsResult> updateParticipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId,
                 participantsWithRoleUpdates);
 
         StepVerifier.create(updateParticipantResponse)
                 .assertNext(result -> {
-                    assertEquals(true, result instanceof UpsertParticipantsResult);
+                    assertEquals(true, result instanceof AddOrUpdateParticipantsResult);
                 })
                 .verifyComplete();
 
@@ -215,7 +215,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         // Remove 2 participants
         Mono<RemoveParticipantsResult> removeParticipantResponse = roomsAsyncClient.removeParticipants(roomId,
-                communicationIdentifiersForParticipants2);
+                participantsIdentifiersForParticipants2);
 
         StepVerifier.create(removeParticipantResponse)
                 .assertNext(result -> {
@@ -286,7 +286,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         String roomId = response1.block().getValue().getRoomId();
 
-        Mono<Response<UpsertParticipantsResult>> response2 = roomsAsyncClient.upsertParticipantsWithResponse(roomId,
+        Mono<Response<AddOrUpdateParticipantsResult>> response2 = roomsAsyncClient.addOrUpdateParticipantsWithResponse(roomId,
                 participantsWithRoleUpdates);
 
         StepVerifier.create(response2)
@@ -317,7 +317,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         String roomId = response1.block().getValue().getRoomId();
 
-        Mono<Response<UpsertParticipantsResult>> response2 = roomsAsyncClient.upsertParticipantsWithResponse(roomId,
+        Mono<Response<AddOrUpdateParticipantsResult>> response2 = roomsAsyncClient.addOrUpdateParticipantsWithResponse(roomId,
                 participant1);
 
         StepVerifier.create(response2)

@@ -4,8 +4,8 @@
 package com.azure.communication.rooms.models;
 
 /**
- * Represents the result of an upsert operation for participants in a room.
+ * Represents the result of an addOrUpdate operation for participants in a room.
  */
-public final class UpsertParticipantsResult {
+public final class AddOrUpdateParticipantsResult {
 
 }

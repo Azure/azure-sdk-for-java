@@ -57,7 +57,7 @@ public class RoomsClientTest extends RoomsTestBase {
         assertEquals(true, updateCommunicationRoom.getValidUntil().toEpochSecond() > VALID_FROM.toEpochSecond());
         assertHappyPath(updateCommunicationRoom);
 
-        UpsertParticipantsResult roomParticipants = roomsClient.upsertParticipants(roomId, participants2);
+        AddOrUpdateParticipantsResult roomParticipants = roomsClient.addOrUpdateParticipants(roomId, participants2);
 
         CommunicationRoom getCommunicationRoom = roomsClient.getRoom(roomId);
         assertHappyPath(getCommunicationRoom);
@@ -111,7 +111,7 @@ public class RoomsClientTest extends RoomsTestBase {
                 Context.NONE);
         assertHappyPath(updateRoomResponse, 200);
 
-        Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
+        Response<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsClient.addOrUpdateParticipantsWithResponse(roomId,
                 participants2, Context.NONE);
         assertEquals(addPartcipantResponse.getStatusCode(), 200);
 
@@ -143,18 +143,18 @@ public class RoomsClientTest extends RoomsTestBase {
         assertEquals(0, listParticipantsResponse1.stream().count());
 
         // Add 3 participants.
-        UpsertParticipantsResult addPartcipantResponse = roomsClient.upsertParticipants(roomId,
+        AddOrUpdateParticipantsResult addPartcipantResponse = roomsClient.addOrUpdateParticipants(roomId,
                 participants3);
-        assertEquals(true, addPartcipantResponse instanceof UpsertParticipantsResult);
+        assertEquals(true, addPartcipantResponse instanceof AddOrUpdateParticipantsResult);
 
         // Check participant count, expected 3
         PagedIterable<RoomParticipant> listParticipantsResponse2 = roomsClient.listParticipants(roomId);
         assertEquals(3, listParticipantsResponse2.stream().count());
 
         // Update 2 participants roles, ATTENDEE -> CONSUMER
-        UpsertParticipantsResult updateParticipantResponse = roomsClient.upsertParticipants(roomId,
+        AddOrUpdateParticipantsResult updateParticipantResponse = roomsClient.addOrUpdateParticipants(roomId,
                 participantsWithRoleUpdates);
-        assertEquals(true, updateParticipantResponse instanceof UpsertParticipantsResult);
+        assertEquals(true, updateParticipantResponse instanceof AddOrUpdateParticipantsResult);
 
         // Check paticipants new roles, everyone should be CONSUMER
         PagedIterable<RoomParticipant> listParticipantsResponse3 = roomsClient.listParticipants(roomId);
@@ -164,7 +164,7 @@ public class RoomsClientTest extends RoomsTestBase {
         }
 
         // Remove 2 participants
-        RemoveParticipantsResult removeParticipantResponse = roomsClient.removeParticipants(roomId, communicationIdentifiersForParticipants2);
+        RemoveParticipantsResult removeParticipantResponse = roomsClient.removeParticipants(roomId, participantsIdentifiersForParticipants2);
 
         // Check participant count, expected 1
         PagedIterable<RoomParticipant> listParticipantsResponse4 = roomsClient.listParticipants(roomId);
@@ -191,7 +191,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getRoomId();
 
         // Add 3 participants
-        UpsertParticipantsResult addPartcipantResponse = roomsClient.upsertParticipants(roomId, participants3);
+        AddOrUpdateParticipantsResult addPartcipantResponse = roomsClient.addOrUpdateParticipants(roomId, participants3);
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
@@ -214,7 +214,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createdRoomResponse.getValue().getRoomId();
 
         // Add 3 participants.
-        Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
+        Response<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsClient.addOrUpdateParticipantsWithResponse(roomId,
                 participants3, Context.NONE);
         assertEquals(addPartcipantResponse.getStatusCode(), 200);
 
@@ -240,7 +240,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getValue().getRoomId();
 
         // Update participant to default role with null role.
-        Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
+        Response<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsClient.addOrUpdateParticipantsWithResponse(roomId,
                 participant1, Context.NONE);
         assertEquals(200, addPartcipantResponse.getStatusCode());
 
@@ -271,7 +271,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getRoomId();
 
         // Update 2 participants.
-        UpsertParticipantsResult addPartcipantResponse = roomsClient.upsertParticipants(roomId,
+        AddOrUpdateParticipantsResult addPartcipantResponse = roomsClient.addOrUpdateParticipants(roomId,
                 participantsWithRoleUpdates);
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
@@ -296,7 +296,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createdRoomResponse.getValue().getRoomId();
 
         // Add 3 participants.
-        Response<UpsertParticipantsResult> addPartcipantResponse = roomsClient.upsertParticipantsWithResponse(roomId,
+        Response<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsClient.addOrUpdateParticipantsWithResponse(roomId,
                 participantsWithRoleUpdates, Context.NONE);
         assertEquals(addPartcipantResponse.getStatusCode(), 200);
 
@@ -574,7 +574,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         String roomId = createdRoom.getRoomId();
         assertThrows(HttpResponseException.class, () -> {
-            roomsClient.upsertParticipants(roomId, badParticipant);
+            roomsClient.addOrUpdateParticipants(roomId, badParticipant);
         });
     }
 
@@ -819,7 +819,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         String roomId = createdRoom.getRoomId();
         assertThrows(HttpResponseException.class, () -> {
-            roomsClient.upsertParticipants(roomId, badParticipant);
+            roomsClient.addOrUpdateParticipants(roomId, badParticipant);
         });
     }
 

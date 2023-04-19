@@ -10,7 +10,7 @@ import com.azure.communication.rooms.models.CreateRoomOptions;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.communication.rooms.models.UpdateRoomOptions;
-import com.azure.communication.rooms.models.UpsertParticipantsResult;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -134,28 +134,39 @@ public final class RoomsClient {
     }
 
     /**
-     * Upsert participants to an existing Room.
+     * Lists all rooms.
      *
-     * @param roomId The room id.
-     * @param participants The participants list.
-     * @return response for a successful upsert participants room request.
+     * @param context The context of key value pairs for http request.
+     * @return The existing rooms.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UpsertParticipantsResult upsertParticipants(String roomId, Iterable<RoomParticipant> participants) {
-        return roomsAsyncClient.upsertParticipants(roomId, participants).block();
+    public PagedIterable<CommunicationRoom> listRooms(Context context) {
+        return new PagedIterable<>(roomsAsyncClient.listRooms(context));
     }
 
     /**
-     * Upsert participants to an existing Room with response
+     * addOrUpdate participants to an existing Room.
+     *
+     * @param roomId The room id.
+     * @param participants The participants list.
+     * @return response for a successful addOrUpdate participants room request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddOrUpdateParticipantsResult addOrUpdateParticipants(String roomId, Iterable<RoomParticipant> participants) {
+        return roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
+    }
+
+    /**
+     * addOrUpdate participants to an existing Room with response
      *
      * @param roomId The room id.
      * @param participants The participants list.
      * @param context The context of key value pairs for http request.
-     * @return response for a successful upsert participants room request.
+     * @return response for a successful addOrUpdate participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UpsertParticipantsResult> upsertParticipantsWithResponse(String roomId, Iterable<RoomParticipant> participants, Context context) {
-        return roomsAsyncClient.upsertParticipantsWithResponse(roomId, participants, context).block();
+    public Response<AddOrUpdateParticipantsResult> addOrUpdateParticipantsWithResponse(String roomId, Iterable<RoomParticipant> participants, Context context) {
+        return roomsAsyncClient.addOrUpdateParticipantsWithResponse(roomId, participants, context).block();
     }
 
     /**
@@ -194,4 +205,15 @@ public final class RoomsClient {
         return new PagedIterable<>(roomsAsyncClient.listParticipants(roomId));
     }
 
+    /**
+     * List Room participants.
+     *
+     * @param roomId The room id.
+     * @param context The context of key value pairs for http request.
+     * @return Room Participants List
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedIterable<RoomParticipant> listParticipants(String roomId, Context context) {
+        return new PagedIterable<>(roomsAsyncClient.listParticipants(roomId, context));
+    }
 }

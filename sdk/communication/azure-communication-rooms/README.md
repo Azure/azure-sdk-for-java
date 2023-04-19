@@ -154,11 +154,11 @@ public void deleteRoomWithRoomId() {
 ```
 
 ### Upsert participants an existing room
-Use the `upsertParticipants` function to add or update participants in an existing Room on Azure Communication Service.
+Use the `addOrUpdateParticipants` function to add or update participants in an existing Room on Azure Communication Service.
 
-```java readme-sample-upsertRoomParticipantsWithRoomId
-public void upsertRoomParticipantsWithRoomId() {
-    List<RoomParticipant> participantsToUpsert = new ArrayList<>();
+```java readme-sample-addOrUpdateRoomParticipantsWithRoomId
+public void addOrUpdateRoomParticipantsWithRoomId() {
+    List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
 
     // New participant to add
     RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
@@ -167,13 +167,13 @@ public void upsertRoomParticipantsWithRoomId() {
     // consumer
     participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.ATTENDEE);
 
-    participantsToUpsert.add(participantToAdd); // Adding new participant to room
-    participantsToUpsert.add(participant2); // Update participant from Consumer -> Attendee
+    participantsToaddOrUpdate.add(participantToAdd); // Adding new participant to room
+    participantsToaddOrUpdate.add(participant2); // Update participant from Consumer -> Attendee
 
     RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
     try {
-        UpsertParticipantsResult upsertResult = roomsClient.upsertParticipants("<Room Id>", participantsToUpsert);
+        AddOrUpdateParticipantsResult addOrUpdateResult = roomsClient.addOrUpdateParticipants("<Room Id>", participantsToaddOrUpdate);
     } catch (RuntimeException ex) {
         System.out.println(ex);
     }

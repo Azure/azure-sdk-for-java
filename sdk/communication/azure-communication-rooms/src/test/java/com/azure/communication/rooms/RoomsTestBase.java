@@ -51,7 +51,7 @@ public class RoomsTestBase extends TestBase {
     protected List<RoomParticipant> badParticipant;
     protected List<RoomParticipant> participantsWithRoleUpdates;
 
-    protected List<CommunicationIdentifier> communicationIdentifiersForParticipants2;
+    protected List<CommunicationIdentifier> participantsIdentifiersForParticipants2;
 
     private CommunicationIdentityClient communicationClient;
 
@@ -173,7 +173,7 @@ public class RoomsTestBase extends TestBase {
         participants2 = Arrays.asList(firstParticipant, secondParticipant);
         participants3 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
 
-        communicationIdentifiersForParticipants2 = getCommunicationIdentifiers(participants2);
+        participantsIdentifiersForParticipants2 = getparticipantsIdentifiers(participants2);
         participantsWithRoleUpdates = Arrays.asList(firstChangeParticipant, secondChangeParticipant);
 
         badParticipant = Arrays.asList(new RoomParticipant(new CommunicationUserIdentifier("Dummy_Mri")));
@@ -238,7 +238,7 @@ public class RoomsTestBase extends TestBase {
                 && participant1.getRole().toString().equals(participant2.getRole().toString());
     }
 
-    protected List<CommunicationIdentifier> getCommunicationIdentifiers(List<RoomParticipant> participants) {
+    protected List<CommunicationIdentifier> getparticipantsIdentifiers(List<RoomParticipant> participants) {
         List<CommunicationIdentifier> identifiers = new ArrayList<>();
         for (RoomParticipant participant : participants) {
             identifiers.add(participant.getCommunicationIdentifier());
