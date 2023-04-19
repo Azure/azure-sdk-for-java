@@ -6,7 +6,11 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
+import com.azure.cosmos.models.IndexingDirective;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.HashMap;
 import java.util.List;
