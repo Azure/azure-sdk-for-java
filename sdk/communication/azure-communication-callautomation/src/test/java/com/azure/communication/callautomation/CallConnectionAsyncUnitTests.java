@@ -117,7 +117,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        CallParticipant callParticipant = callConnectionAsync.getParticipant(CALL_CALLER_ID).block();
+        CallParticipant callParticipant = callConnectionAsync.getParticipant(USER_1).block();
 
         assertNotNull(callParticipant);
         assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) callParticipant.getIdentifier()).getId());
@@ -131,7 +131,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        Response<CallParticipant> callParticipantResponse = callConnectionAsync.getParticipantWithResponse(CALL_CALLER_ID).block();
+        Response<CallParticipant> callParticipantResponse = callConnectionAsync.getParticipantWithResponse(USER_1).block();
 
         assertNotNull(callParticipantResponse);
         assertEquals(200, callParticipantResponse.getStatusCode());

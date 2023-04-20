@@ -159,33 +159,34 @@ public class CallConnectionAsync {
     /**
      * Get a specific participant.
      *
-     * @param participantMri MRI of the participants to retrieve.
+     * @param targetParticipant The participant to retrieve.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of getting a desired participant in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallParticipant> getParticipant(String participantMri) {
-        return getParticipantWithResponse(participantMri).flatMap(FluxUtil::toMono);
+    public Mono<CallParticipant> getParticipant(CommunicationIdentifier targetParticipant) {
+        return getParticipantWithResponse(targetParticipant).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get a specific participant.
      *
-     * @param participantMri MRI of the participants to retrieve.
+     * @param targetParticipant The participant to retrieve.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with the result of getting a desired participant in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallParticipant>> getParticipantWithResponse(String participantMri) {
-        return withContext(context -> getParticipantWithResponseInternal(participantMri, context));
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier targetParticipant) {
+        return withContext(context -> getParticipantWithResponseInternal(targetParticipant, context));
     }
 
-    Mono<Response<CallParticipant>> getParticipantWithResponseInternal(String participantMri, Context context) {
+    Mono<Response<CallParticipant>> getParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
+            String participantMri = targetParticipant.getRawId();
             return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, participantMri, context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->

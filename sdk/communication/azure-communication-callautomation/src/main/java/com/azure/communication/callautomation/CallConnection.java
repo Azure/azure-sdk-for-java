@@ -89,28 +89,28 @@ public class CallConnection {
     /**
      * Get a specific participant.
      *
-     * @param participantMri The participant.
+     * @param targetParticipant The participant to retrieve.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return The desired call participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallParticipant getParticipant(String participantMri) {
-        return callConnectionAsync.getParticipant(participantMri).block();
+    public CallParticipant getParticipant(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.getParticipant(targetParticipant).block();
     }
 
     /**
      * Get all participants.
      *
-     * @param participantMri The participant.
+     * @param targetParticipant The participant to retrieve.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with the desired call participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallParticipant> getParticipantWithResponse(String participantMri, Context context) {
-        return callConnectionAsync.getParticipantWithResponseInternal(participantMri, context).block();
+    public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier targetParticipant, Context context) {
+        return callConnectionAsync.getParticipantWithResponseInternal(targetParticipant, context).block();
     }
 
     /**

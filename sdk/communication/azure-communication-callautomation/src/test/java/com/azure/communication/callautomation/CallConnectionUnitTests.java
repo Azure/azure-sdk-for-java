@@ -115,7 +115,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        CallParticipant callParticipant = callConnection.getParticipant(CALL_CALLER_ID);
+        CallParticipant callParticipant = callConnection.getParticipant(USER_1);
 
         assertNotNull(callParticipant);
         assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) callParticipant.getIdentifier()).getId());
@@ -129,7 +129,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(CALL_CALLER_ID, Context.NONE);
+        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(USER_1, Context.NONE);
 
         assertNotNull(callParticipantResponse);
         assertEquals(200, callParticipantResponse.getStatusCode());
