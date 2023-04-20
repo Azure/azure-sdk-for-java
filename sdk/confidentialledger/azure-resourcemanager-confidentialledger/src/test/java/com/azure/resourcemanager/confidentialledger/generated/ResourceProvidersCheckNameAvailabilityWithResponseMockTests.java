@@ -32,7 +32,7 @@ public final class ResourceProvidersCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"bdlwtgrhpdjpj\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"big\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class ResourceProvidersCheckNameAvailabilityWithResponseMockTests {
             manager
                 .resourceProviders()
                 .checkNameAvailabilityWithResponse(
-                    new CheckNameAvailabilityRequest().withName("ochcbonqvpkvl").withType("njeaseipheofloke"),
+                    new CheckNameAvailabilityRequest().withName("fgugnxkrxdqmid").withType("hzrvqd"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals(false, response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("bdlwtgrhpdjpj", response.message());
+        Assertions.assertEquals("big", response.message());
     }
 }
