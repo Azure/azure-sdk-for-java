@@ -53,9 +53,7 @@ public class TestUtils {
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
-
     static final int USE_CASE_DEFAULT = 0;
-    static final Object USE_CASE_DEFAULT_LOCK = new Object();
     static final int USE_CASE_RECEIVE_MORE_AND_COMPLETE = 1;
     static final int USE_CASE_SCHEDULE_MESSAGES = 2;
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
@@ -81,6 +79,7 @@ public class TestUtils {
     static final int USE_CASE_PROCESSOR_RECEIVE = 23;
     static final int USE_CASE_AMQP_TYPES = 24;
     static final int USE_CASE_RENEW_LOCK = 25;
+
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.

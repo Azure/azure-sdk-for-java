@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.servicebus.TestUtils.USE_CASE_DEFAULT_LOCK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -107,23 +106,21 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
-        synchronized (USE_CASE_DEFAULT_LOCK) {
-            // Arrange
-            setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
-            int count = 4;
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
+        int count = 4;
 
-            final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
-            // Assert & Act
-            StepVerifier.create(
-                    sender.sendMessages(messages)
-                        .doOnSuccess(aVoid ->
-                            messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet())
-                        )
-                )
-                .expectComplete()
-                .verify(TIMEOUT);
-        }
+        // Assert & Act
+        StepVerifier.create(
+                sender.sendMessages(messages)
+                    .doOnSuccess(aVoid ->
+                        messages.forEach(serviceBusMessage -> messagesPending.incrementAndGet())
+                    )
+            )
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -132,25 +129,23 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
-        synchronized (USE_CASE_DEFAULT_LOCK) {
-            // Arrange
-            setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
+        // Arrange
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT, false);
 
-            final String messageId = UUID.randomUUID().toString();
-            final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);
-            final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
+        final String messageId = UUID.randomUUID().toString();
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(1024);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
 
-            // Assert & Act
-            StepVerifier.create(sender.createMessageBatch(options)
-                    .flatMap(batch -> {
-                        for (ServiceBusMessage message : messages) {
-                            Assertions.assertTrue(batch.tryAddMessage(message));
-                        }
+        // Assert & Act
+        StepVerifier.create(sender.createMessageBatch(options)
+                .flatMap(batch -> {
+                    for (ServiceBusMessage message : messages) {
+                        Assertions.assertTrue(batch.tryAddMessage(message));
+                    }
 
-                        return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
-                    }))
-                .verifyComplete();
-        }
+                    return sender.sendMessages(batch).doOnSuccess(aVoid -> messagesPending.incrementAndGet());
+                }))
+            .verifyComplete();
     }
 
     /**
