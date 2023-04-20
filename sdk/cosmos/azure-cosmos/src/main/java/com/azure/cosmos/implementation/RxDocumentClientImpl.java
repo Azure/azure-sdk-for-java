@@ -1901,7 +1901,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 options, disableAutomaticIdGeneration, OperationType.Create);
 
             Mono<RxDocumentServiceResponse> responseObservable =
-                requestObs.flatMap(request -> create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options)));
+                requestObs.flatMap(request -> {
+                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                    Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
+                    if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+                        return rxDocumentServiceResponseMono
+                            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                            .onErrorMap(throwable -> getCancellationException(request, throwable));
+                    }
+                    return rxDocumentServiceResponseMono;
+                });
 
             return responseObservable
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -1910,6 +1919,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
+    }
+
+    private static Throwable getCancellationException(RxDocumentServiceRequest request, Throwable throwable) {
+        if (throwable instanceof TimeoutException) {
+            CosmosException exception = new RequestCancelledException();
+            exception.setStackTrace(throwable.getStackTrace());
+            return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+        }
+        return throwable;
     }
 
     @Override
@@ -1931,7 +1949,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(retryPolicyInstance, collectionLink, document,
                 options, disableAutomaticIdGeneration, OperationType.Upsert);
 
-            Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)));
+            Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
+                CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+                    return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options))
+                        .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                        .onErrorMap(throwable -> getCancellationException(request, throwable));
+                }
+                return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+            });
 
             return responseObservable
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
@@ -2046,8 +2072,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
-        return requestObs.flatMap(req -> replace(request, retryPolicyInstance)
-            .map(resp -> toResourceResponse(resp, Document.class)));
+        return requestObs.flatMap(req -> {
+            Mono<ResourceResponse<Document>> resourceResponseMono = replace(request, retryPolicyInstance)
+                .map(resp -> toResourceResponse(resp, Document.class));
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+            if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+                return resourceResponseMono
+                    .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                    .onErrorMap(throwable -> getCancellationException(request, throwable));
+            }
+            return resourceResponseMono;
+        });
+    }
+
+    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            (options != null && options.getCosmosEndToEndLatencyPolicyConfig() != null) ?
+                options.getCosmosEndToEndLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+        return endToEndPolicyConfig;
     }
 
     @Override
@@ -2236,14 +2278,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                     return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class))
                         .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
-                        .onErrorMap(throwable -> {
-                            if (throwable instanceof TimeoutException) {
-                                CosmosException exception = new RequestCancelledException();
-                                exception.setStackTrace(throwable.getStackTrace());
-                                return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
-                            }
-                            return throwable;
-                        });
+                        .onErrorMap(throwable -> getCancellationException(request, throwable));
                 }
                 return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
             });

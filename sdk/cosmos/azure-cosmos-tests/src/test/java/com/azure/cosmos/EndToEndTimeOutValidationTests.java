@@ -44,14 +44,18 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     private CosmosAsyncContainer createdContainer;
     private final Random random;
     private final List<TestObject> createdDocuments = new ArrayList<>();
+    private final CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public EndToEndTimeOutValidationTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();
+        endToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationLatencyPolicyConfigBuilder()
+            .endToEndOperationTimeout(Duration.ofSeconds(1))
+            .build();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT*100)
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
         CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
         CosmosAsyncDatabase createdDatabase = getSharedCosmosDatabase(client);
@@ -66,25 +70,82 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder()
-                .endToEndOperationTimeout(Duration.ofSeconds(1))
-                .build();
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
         TestObject itemToRead = createdDocuments.get(random.nextInt(createdDocuments.size()));
-        injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
+        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.READ_ITEM, null);
 
         Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
             createdContainer.readItem(itemToRead.id, new PartitionKey(itemToRead.mypk), options, TestObject.class);
 
+        verifyExpectError(cosmosItemResponseMono);
+        rule.disable();
+    }
+
+    @Test(groups = {"simple"}, timeOut = 10000L)
+    public void createItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+
+        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.CREATE_ITEM, null);
+        TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
+        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+            createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options);
+
+        verifyExpectError(cosmosItemResponseMono);
+        faultInjectionRule.disable();
+    }
+
+    @Test(groups = {"simple"}, timeOut = 10000L)
+    public void replaceItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+
+        TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
+        createdContainer.createItem(inputObject, new PartitionKey(inputObject.mypk), options).block();
+        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.REPLACE_ITEM, null);
+        inputObject.setName("replaceName");
+        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+            createdContainer.replaceItem(inputObject, inputObject.id, new PartitionKey(inputObject.mypk), options);
+
+        verifyExpectError(cosmosItemResponseMono);
+        rule.disable();
+    }
+
+    @Test(groups = {"simple"}, timeOut = 10000L)
+    public void upsertItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
+        if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Failure injection only supported for DIRECT mode");
+        }
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+
+        FaultInjectionRule rule = injectFailure(createdContainer, FaultInjectionOperationType.UPSERT_ITEM, null);
+        TestObject inputObject = new TestObject(UUID.randomUUID().toString(), "name123", 1, UUID.randomUUID().toString());
+        Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono =
+            createdContainer.upsertItem(inputObject, new PartitionKey(inputObject.mypk), options);
+
+        verifyExpectError(cosmosItemResponseMono);
+        rule.disable();
+    }
+
+    private static void verifyExpectError(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
         StepVerifier.create(cosmosItemResponseMono)
             .expectErrorMatches(throwable -> throwable instanceof RequestCancelledException)
             .verify();
     }
 
-    @Test(groups = {"simple"}, timeOut = 100000L)
+    @Test(groups = {"simple"}, timeOut = 10000L)
     public void queryItemWithEndToEndTimeoutPolicyInOptionsShouldTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -115,10 +176,6 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder()
-                .endToEndOperationTimeout(Duration.ofSeconds(1))
-                .build();
 
         CosmosClientBuilder builder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -126,12 +183,12 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             .credential(credential);
 
         try (CosmosAsyncClient cosmosAsyncClient = builder.buildAsyncClient()) {
-            String dbname = "db_"+ UUID.randomUUID();
-            String containerName = "container_"+ UUID.randomUUID();
+            String dbname = "db_" + UUID.randomUUID();
+            String containerName = "container_" + UUID.randomUUID();
             CosmosContainerProperties properties = new CosmosContainerProperties(containerName, "/mypk");
             cosmosAsyncClient.createDatabaseIfNotExists(dbname).block();
             cosmosAsyncClient.getDatabase(dbname)
-                    .createContainerIfNotExists(properties).block();
+                .createContainerIfNotExists(properties).block();
             CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(dbname)
                 .getContainer(containerName);
 
@@ -153,9 +210,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             injectFailure(container, FaultInjectionOperationType.READ_ITEM, null);
 
             // Should timeout after injected delay
-            StepVerifier.create(cosmosItemResponseMono)
-                .expectErrorMatches(throwable -> throwable instanceof RequestCancelledException)
-                .verify();
+            verifyExpectError(cosmosItemResponseMono);
 
             String queryText = "select top 1 * from c";
             SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
