@@ -33,6 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -457,7 +458,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
 
         // Arrange
         setSender(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
@@ -465,35 +466,39 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final int maxMessages = 4;
 
         Set<String> messageIds = new HashSet<>();
+        setReceiver(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
+        AtomicInteger allReceived = new AtomicInteger(0);
+        AtomicInteger iterations = new AtomicInteger(0);
+        Set<String> receivedFiltered = new HashSet<>();
+
+        Thread peekMessages = new Thread(() -> {
+            // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
+            // https://github.com/Azure/azure-sdk-for-java/issues/21168
+            while (iterations.getAndIncrement() < 10 && receivedFiltered.size() < maxMessages) {
+                IterableStream<ServiceBusReceivedMessage> received = receiver.peekMessages(maxMessages);
+                List<ServiceBusReceivedMessage> messages = logReceivedMessages(received, receiver.getEntityPath(), "peeked messages");
+
+                allReceived.addAndGet(messages.size());
+                receivedFiltered.addAll(messages.stream()
+                    .map(ServiceBusReceivedMessage::getMessageId)
+                    .filter(mId -> messageIds.contains(mId)).collect(Collectors.toList()));
+            }
+        });
+        toClose((AutoCloseable) () -> peekMessages.interrupt());
         // in case some other tests consume from the same queue
         for (int i = 0; i < maxMessages; ++i) {
             ServiceBusMessage message = getMessage(String.valueOf(i), isSessionEnabled, AmqpMessageBody.fromData(payload));
             messageIds.add(message.getMessageId());
             sendMessage(message);
         }
-        setReceiver(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
 
         // Act
-
-        // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
-        // https://github.com/Azure/azure-sdk-for-java/issues/21168
-        Set<String> receivedFiltered = new HashSet<>();
-        long allReceived = 0;
-        int t = 0;
-        for (; t < 10 && receivedFiltered.size() < maxMessages; t++) {
-            IterableStream<ServiceBusReceivedMessage> received = receiver.peekMessages(maxMessages);
-            List<ServiceBusReceivedMessage> messages = logReceivedMessages(received, receiver.getEntityPath(), "peeked messages");
-
-            allReceived += messages.size();
-            receivedFiltered.addAll(messages.stream()
-                .map(ServiceBusReceivedMessage::getMessageId)
-                .filter(mId -> messageIds.contains(mId)).collect(Collectors.toList()));
-        }
-
+        peekMessages.start();
+        peekMessages.join(TIMEOUT.toMillis());
         // Assert
         LOGGER.atInfo()
             .addKeyValue("received", allReceived)
-            .addKeyValue("iterations", t)
+            .addKeyValue("iterations", iterations.get())
             .addKeyValue("receivedFiltered", receivedFiltered.size())
             .addKeyValue("isSessionEnabled", isSessionEnabled)
             .log("done receiving");

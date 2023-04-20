@@ -440,7 +440,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .addKeyValue("test", testName)
             .addKeyValue("entity", entity)
             .addKeyValue("sequenceNo", seqNo)
-            .addKeyValue("messageId(s)", id)
+            .addKeyValue("messageId", id)
             .addKeyValue("positionId", positionId)
             .log(description == null ? "logging messages" : description);
     }
