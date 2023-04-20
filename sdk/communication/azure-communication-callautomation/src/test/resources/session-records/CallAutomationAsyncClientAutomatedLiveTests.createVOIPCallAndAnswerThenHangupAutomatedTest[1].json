@@ -3,23 +3,23 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.1 (17.0.3.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "951c7ebd-b49c-4b3f-8b93-6875ea83fab2",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.4 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e8c8ba9b-ee31-4a4b-8eb6-c70c83a2a40e",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "101",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 09 Dec 2022 22:51:10 GMT",
+      "Date" : "Thu, 20 Apr 2023 15:36:25 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "108ms",
-      "MS-CV" : "+yGIIHG2ckWfuUZ0YfOWGg.0",
-      "X-Azure-Ref" : "03ruTYwAAAAALw0RGRgTIQ7JTOFp6h/IFWVRPMjIxMDkwODE3MDMzADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "X-Processing-Time" : "84ms",
+      "MS-CV" : "428iIfv30keK1t9p0xRUpA.0",
+      "X-Azure-Ref" : "0+ltBZAAAAABD6D2BDfF9RoaoaQ08w6HqWVRPMjIxMDkwODE3MDQ5ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "101",
       "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
-      "x-ms-client-request-id" : "951c7ebd-b49c-4b3f-8b93-6875ea83fab2",
+      "x-ms-client-request-id" : "e8c8ba9b-ee31-4a4b-8eb6-c70c83a2a40e",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -28,23 +28,23 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.1 (17.0.3.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0932dfbf-6458-4435-9673-3175c1622078",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.4 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "fa260e41-1ed5-4864-b586-993a0956396f",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "101",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-10-31-preview, 2021-11-01, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 09 Dec 2022 22:51:10 GMT",
+      "Date" : "Thu, 20 Apr 2023 15:36:25 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "107ms",
-      "MS-CV" : "ldgwCGzKqE2ZJe4cGm/8zQ.0",
-      "X-Azure-Ref" : "037uTYwAAAAAbhQZv2F7YSq4On/drujU5WVRPMjIxMDkwODIwMDUzADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "X-Processing-Time" : "82ms",
+      "MS-CV" : "GJNqblO7qUaqTSO4qwEzgA.0",
+      "X-Azure-Ref" : "0+ltBZAAAAABgrj4rTMweRYNNS1h+4PUBWVRPMjIxMDkwODE3MDM3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "101",
       "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
-      "x-ms-client-request-id" : "0932dfbf-6458-4435-9673-3175c1622078",
+      "x-ms-client-request-id" : "fa260e41-1ed5-4864-b586-993a0956396f",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -53,20 +53,21 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2023-01-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (17.0.3.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "b471f7b6-913c-4984-b9d2-9b6bf86e483a",
+      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "bb12c90e-2419-4754-8a4a-fe500788acac",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "899",
       "X-Cache" : "CONFIG_NOCACHE",
+      "Repeatability-Result" : "accepted",
       "retry-after" : "0",
-      "X-Azure-Ref" : "04buTYwAAAABW+4yCi7yuTriVe1ECOeJ7WVRPMjIxMDkwODE3MDMzADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "X-Azure-Ref" : "0/FtBZAAAAAAJGPzZL0YPRa0N42HzytVCWVRPMjIxMDkwODE3MDQ5ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "915",
       "StatusCode" : "201",
-      "X-Microsoft-Skype-Chain-ID" : "51a81c7e-47d7-4373-8a8f-4bc1c86345e0",
-      "Body" : "{\"callConnectionId\":\"421f3500-3b46-4992-9acb-340c3ff2bb7f\",\"source\":{\"identifier\":{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}},\"targets\":[{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}],\"callConnectionState\":\"connecting\",\"callbackUri\":\"https://incomingcalldispatcher.azurewebsites.net/api/servicebuscallback/events?q=8acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000015-98f7-833b-3dfe-9c3a0d006b588acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000015-98f7-83f5-b4f1-9c3a0d006c0a\",\"mediaSubscriptionId\":\"965ecb64-db82-4528-8ff3-c7e328cf97bf\"}",
-      "Date" : "Fri, 09 Dec 2022 22:51:13 GMT",
-      "x-ms-client-request-id" : "b471f7b6-913c-4984-b9d2-9b6bf86e483a",
+      "X-Microsoft-Skype-Chain-ID" : "251ae364-6ae8-468f-8c90-25323fba9542",
+      "Body" : "{\"callConnectionId\":\"401f3500-ddd3-486f-84ff-f125c5ade0c1\",\"targets\":[{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}],\"callConnectionState\":\"connecting\",\"callbackUri\":\"https://incomingcalldispatcher.azurewebsites.net/api/servicebuscallback/events?q=8acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000018-3f30-edb2-defd-8b3a0d005f028acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000018-3f30-ee29-655d-573a0d00628d\",\"mediaSubscriptionId\":\"6ee11a50-92eb-41aa-9e1a-7631a2b3bfd8\",\"sourceDisplayName\":\"\",\"sourceIdentity\":{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}}",
+      "Date" : "Thu, 20 Apr 2023 15:36:27 GMT",
+      "x-ms-client-request-id" : "bb12c90e-2419-4754-8a4a-fe500788acac",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -74,58 +75,59 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections:answer?api-version=2023-01-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (17.0.3.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ac99a112-401d-4e31-8a5c-26b806112e5f",
+      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7fdc9316-d8e1-4a84-8870-527464e085d2",
       "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "1102",
-      "X-Cache" : "CONFIG_NOCACHE",
-      "retry-after" : "0",
-      "X-Azure-Ref" : "047uTYwAAAABfSOGJ7wEVSLXvpehljZcdWVRPMjIxMDkwODIwMDUzADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "StatusCode" : "200",
-      "X-Microsoft-Skype-Chain-ID" : "51a81c7e-47d7-4373-8a8f-4bc1c86345e0",
-      "Body" : "{\"callConnectionId\":\"411f3500-32d4-481f-a1f0-f812e4cc042d\",\"serverCallId\":\"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDEtc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L0RwU3Nwck9yQVVtNHpQMjR1eHdMSmc/aT0xMC02MC0wLTYmZT02MzgwNjEzNTAyOTk5MzYzMzM=\",\"source\":{\"identifier\":{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}},\"targets\":[{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}],\"callConnectionState\":\"unknown\",\"callbackUri\":\"https://incomingcalldispatcher.azurewebsites.net/api/servicebuscallback/events?q=8acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000015-98f7-833b-3dfe-9c3a0d006b588acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000015-98f7-83f5-b4f1-9c3a0d006c0a\",\"mediaSubscriptionId\":\"82e79de5-e0e6-4f26-86ab-ca5cc0b14143\"}",
-      "Date" : "Fri, 09 Dec 2022 22:51:15 GMT",
-      "x-ms-client-request-id" : "ac99a112-401d-4e31-8a5c-26b806112e5f",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f3500-32d4-481f-a1f0-f812e4cc042d:terminate?api-version=2023-01-15-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (17.0.3.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c5748972-7d72-4778-aa42-7781eacb70b8"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "Repeatability-Result" : "accepted",
       "retry-after" : "0",
-      "X-Azure-Ref" : "05ruTYwAAAAB/8TkjYQY9Q7nFj8sUVdEsWVRPMjIxMDkwODE3MDMzADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "StatusCode" : "204",
-      "X-Microsoft-Skype-Chain-ID" : "51a81c7e-47d7-4373-8a8f-4bc1c86345e0",
-      "Date" : "Fri, 09 Dec 2022 22:51:18 GMT",
-      "x-ms-client-request-id" : "c5748972-7d72-4778-aa42-7781eacb70b8"
+      "X-Azure-Ref" : "0/VtBZAAAAADwL99UVLP2RLA9iwE0IbQDWVRPMjIxMDkwODE3MDM3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "1122",
+      "StatusCode" : "200",
+      "X-Microsoft-Skype-Chain-ID" : "251ae364-6ae8-468f-8c90-25323fba9542",
+      "Body" : "{\"callConnectionId\":\"411f3500-dded-45f5-ba3e-41146d40bfa9\",\"serverCallId\":\"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDItc2RmLWFrcy5jb252LnNreXBlLmNvbS9jb252L2hiSk1SSmY2TjBxU0w2MEhHeHpUYmc/aT0xMC02MC03LTE0MiZlPTYzODE3NTUzMjU5NTQzMDY1NA==\",\"targets\":[{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}],\"callConnectionState\":\"unknown\",\"callbackUri\":\"https://incomingcalldispatcher.azurewebsites.net/api/servicebuscallback/events?q=8acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000018-3f30-edb2-defd-8b3a0d005f028acs1bdaa2b9-9507-4542-bb64-a7b22c00a8d4_00000018-3f30-ee29-655d-573a0d00628d\",\"mediaSubscriptionId\":\"62c7e0b8-7508-4d3e-a8b9-1992db473dac\",\"sourceDisplayName\":\"\",\"sourceIdentity\":{\"rawId\":\"REDACTED\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"REDACTED\"}}}",
+      "Date" : "Thu, 20 Apr 2023 15:36:29 GMT",
+      "x-ms-client-request-id" : "7fdc9316-d8e1-4a84-8870-527464e085d2",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f3500-32d4-481f-a1f0-f812e4cc042d:terminate?api-version=2023-01-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f3500-dded-45f5-ba3e-41146d40bfa9:terminate?api-version=2023-01-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (17.0.3.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f7cfeeb0-0aaf-43d6-b9c7-6fd335f40adb"
+      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a4e68f3d-3a8a-4e39-8c7d-f0f0ffc29dfe"
     },
     "Response" : {
-      "content-length" : "53",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Repeatability-Result" : "accepted",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0/1tBZAAAAACLNAolymOjQIxVDFeZ5iNuWVRPMjIxMDkwODE3MDQ5ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "204",
+      "X-Microsoft-Skype-Chain-ID" : "251ae364-6ae8-468f-8c90-25323fba9542",
+      "Date" : "Thu, 20 Apr 2023 15:36:31 GMT",
+      "x-ms-client-request-id" : "a4e68f3d-3a8a-4e39-8c7d-f0f0ffc29dfe"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/411f3500-dded-45f5-ba3e-41146d40bfa9:terminate?api-version=2023-01-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-callautomation/1.0.0-beta.2 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c914732f-0920-47c4-b6d4-1f4d244082b0"
+    },
+    "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
-      "X-Azure-Ref" : "057uTYwAAAAA1Kykw7No9RbIZtD8oHAGvWVRPMjIxMDkwODIwMDUzADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "X-Azure-Ref" : "0AFxBZAAAAACvhfrBrhwGSZUuocNt049TWVRPMjIxMDkwODE3MDM3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "53",
       "StatusCode" : "404",
-      "X-Microsoft-Skype-Chain-ID" : "ec53d7df-d725-4e3a-a666-a5df627b862c",
+      "X-Microsoft-Skype-Chain-ID" : "c3ab4977-0761-44d8-851d-e014665e7e2c",
       "Body" : "{\"error\":{\"code\":\"8522\",\"message\":\"Call not found.\"}}",
-      "Date" : "Fri, 09 Dec 2022 22:51:19 GMT",
-      "x-ms-client-request-id" : "f7cfeeb0-0aaf-43d6-b9c7-6fd335f40adb",
+      "Date" : "Thu, 20 Apr 2023 15:36:32 GMT",
+      "x-ms-client-request-id" : "c914732f-0920-47c4-b6d4-1f4d244082b0",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
