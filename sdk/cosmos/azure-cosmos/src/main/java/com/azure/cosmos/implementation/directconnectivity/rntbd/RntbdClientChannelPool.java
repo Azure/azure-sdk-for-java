@@ -1193,7 +1193,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                 if (promise.trySuccess(channel)) {
   
-                    if(logger.isDebugEnabled()) {
+                    if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
 
@@ -1217,7 +1217,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
             } else {
-                logger.info("notifyChannelConnect future was not successful");
+                logger.error("notifyChannelConnect future was not successful {}", future.cause());
 
                 promise.tryFailure(future.cause());
             }
@@ -1713,8 +1713,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         @Override
         public final void run() {
             // log is too noisy when debug is enabled
-            if (logger.isTraceEnabled()) {
-                logger.trace("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
             }
             long currentNanoTime = System.nanoTime();
 
