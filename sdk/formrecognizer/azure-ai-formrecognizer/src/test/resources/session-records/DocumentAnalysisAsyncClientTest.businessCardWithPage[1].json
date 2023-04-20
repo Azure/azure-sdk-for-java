@@ -1,65 +1,123 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?pages=1\u0026stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard:analyze?pages=1\u0026stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:16:11 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "bc0ab1f8-0543-459e-b05c-de099f5a39b4"
+        "Date": "Thu, 20 Apr 2023 20:15:12 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ad8471fa-0191-45c4-8c49-454de10d9797"
       },
       "RequestBody": {
         "urlSource": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "99adc3a1-843d-47f8-bebe-38d0e2423a0d",
+        "apim-request-id": "a84fb4a4-7418-47b7-82ed-e351f313b066",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:13 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/99adc3a1-843d-47f8-bebe-38d0e2423a0d?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:15:13 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/a84fb4a4-7418-47b7-82ed-e351f313b066?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "575",
+        "x-envoy-upstream-service-time": "654",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/99adc3a1-843d-47f8-bebe-38d0e2423a0d?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/a84fb4a4-7418-47b7-82ed-e351f313b066?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:19 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "3bbbb841-69ee-49e5-862c-05dd03004416"
+        "Date": "Thu, 20 Apr 2023 20:15:18 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "0a027448-268d-436c-b21d-b0d5866f14d4"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "3a86c3c9-8b73-46b3-8c95-e2348ea6e536",
-        "Content-Length": "9887",
+        "apim-request-id": "b3953840-1498-4dd5-977f-3aa346c50997",
+        "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:16:18 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:18 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "32",
+        "x-envoy-upstream-service-time": "20",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:15:13Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:13Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/a84fb4a4-7418-47b7-82ed-e351f313b066?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:15:23 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "07f9899d-9fca-4437-bfac-39a2aff4def6"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "1c347d5b-68df-48fe-b8fc-f3a8921078be",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:15:23 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "21",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:15:13Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:13Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/a84fb4a4-7418-47b7-82ed-e351f313b066?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:15:28 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1a375548-2f46-4afd-a0ad-07ba4b56431b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "4874b5f1-f164-412c-8b5c-c9f782053b20",
+        "Content-Length": "10673",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:15:28 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "43",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:16:13Z",
-        "lastUpdatedDateTime": "2023-04-14T18:16:15Z",
+        "createdDateTime": "2023-04-20T20:15:13Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:28Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
+          "apiVersion": "2022-08-31",
           "modelId": "prebuilt-businessCard",
           "stringIndexType": "utf16CodeUnit",
-          "content": "Dr. Avery Smith\nSenior Researcher\nCloud \u0026 Al Department\navery.smith@contoso.com\nhttps://www.contoso.com/\nmob: \u002B44 (0) 7911 123456\ntel: \u002B44 (0) 20 9876 5432\nfax: \u002B44 (0) 20 6789 2345\nContoso\n2 Kingdom Street\nPaddington, London, W2 6BD",
+          "content": "Dr. Avery Smith Senior Researcher Cloud \u0026 Al Department\navery.smith@contoso.com https://www.contoso.com/\nmob: \u002B44 (0) 7911 123456 tel: \u002B44 (0) 20 9876 5432 fax: \u002B44 (0) 20 6789 2345\nContoso 2 Kingdom Street Paddington, London, W2 6BD",
           "pages": [
             {
               "pageNumber": 1,
@@ -937,6 +995,104 @@
               "kind": "document"
             }
           ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 55
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    414,
+                    1156,
+                    1605,
+                    874,
+                    1683,
+                    1202,
+                    492,
+                    1484
+                  ]
+                }
+              ],
+              "content": "Dr. Avery Smith Senior Researcher Cloud \u0026 Al Department"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 56,
+                  "length": 48
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    2096,
+                    932,
+                    2967,
+                    686,
+                    3006,
+                    826,
+                    2135,
+                    1072
+                  ]
+                }
+              ],
+              "content": "avery.smith@contoso.com https://www.contoso.com/"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 105,
+                  "length": 76
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    2240,
+                    1096,
+                    3147,
+                    822,
+                    3218,
+                    1057,
+                    2312,
+                    1331
+                  ]
+                }
+              ],
+              "content": "mob: \u002B44 (0) 7911 123456 tel: \u002B44 (0) 20 9876 5432 fax: \u002B44 (0) 20 6789 2345"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 182,
+                  "length": 51
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1128,
+                    1904,
+                    2445,
+                    1441,
+                    2602,
+                    1888,
+                    1286,
+                    2351
+                  ]
+                }
+              ],
+              "content": "Contoso 2 Kingdom Street Paddington, London, W2 6BD"
+            }
+          ],
           "styles": [],
           "documents": [
             {
@@ -962,7 +1118,7 @@
                   "valueArray": [
                     {
                       "type": "address",
-                      "content": "2 Kingdom Street\nPaddington, London, W2 6BD",
+                      "content": "2 Kingdom Street Paddington, London, W2 6BD",
                       "boundingRegions": [
                         {
                           "pageNumber": 1,
@@ -1184,7 +1340,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B10207892345",
+                      "valuePhoneNumber": "\u002B442067892345",
                       "content": "\u002B44 (0) 20 6789 2345",
                       "boundingRegions": [
                         {
@@ -1248,7 +1404,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B10791112345",
+                      "valuePhoneNumber": "\u002B447911123456",
                       "content": "\u002B44 (0) 7911 123456",
                       "boundingRegions": [
                         {
@@ -1312,7 +1468,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B10209875432",
+                      "valuePhoneNumber": "\u002B442098765432",
                       "content": "\u002B44 (0) 20 9876 5432",
                       "boundingRegions": [
                         {
@@ -1353,37 +1509,37 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/99adc3a1-843d-47f8-bebe-38d0e2423a0d?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-businessCard/analyzeResults/a84fb4a4-7418-47b7-82ed-e351f313b066?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:20 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "1b81a974-349f-4d80-9538-8afb901982a1"
+        "Date": "Thu, 20 Apr 2023 20:15:28 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5d566d21-cf65-4a12-9ac4-7e0a7e955d64"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "14c0f720-7102-4831-ba63-e276e0cdc4e3",
-        "Content-Length": "9887",
+        "apim-request-id": "448fdc80-b117-4d61-a46e-8120ea7904d0",
+        "Content-Length": "10673",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:16:18 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:28 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "40",
+        "x-envoy-upstream-service-time": "38",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:16:13Z",
-        "lastUpdatedDateTime": "2023-04-14T18:16:15Z",
+        "createdDateTime": "2023-04-20T20:15:13Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:28Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
+          "apiVersion": "2022-08-31",
           "modelId": "prebuilt-businessCard",
           "stringIndexType": "utf16CodeUnit",
-          "content": "Dr. Avery Smith\nSenior Researcher\nCloud \u0026 Al Department\navery.smith@contoso.com\nhttps://www.contoso.com/\nmob: \u002B44 (0) 7911 123456\ntel: \u002B44 (0) 20 9876 5432\nfax: \u002B44 (0) 20 6789 2345\nContoso\n2 Kingdom Street\nPaddington, London, W2 6BD",
+          "content": "Dr. Avery Smith Senior Researcher Cloud \u0026 Al Department\navery.smith@contoso.com https://www.contoso.com/\nmob: \u002B44 (0) 7911 123456 tel: \u002B44 (0) 20 9876 5432 fax: \u002B44 (0) 20 6789 2345\nContoso 2 Kingdom Street Paddington, London, W2 6BD",
           "pages": [
             {
               "pageNumber": 1,
@@ -2261,6 +2417,104 @@
               "kind": "document"
             }
           ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 55
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    414,
+                    1156,
+                    1605,
+                    874,
+                    1683,
+                    1202,
+                    492,
+                    1484
+                  ]
+                }
+              ],
+              "content": "Dr. Avery Smith Senior Researcher Cloud \u0026 Al Department"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 56,
+                  "length": 48
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    2096,
+                    932,
+                    2967,
+                    686,
+                    3006,
+                    826,
+                    2135,
+                    1072
+                  ]
+                }
+              ],
+              "content": "avery.smith@contoso.com https://www.contoso.com/"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 105,
+                  "length": 76
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    2240,
+                    1096,
+                    3147,
+                    822,
+                    3218,
+                    1057,
+                    2312,
+                    1331
+                  ]
+                }
+              ],
+              "content": "mob: \u002B44 (0) 7911 123456 tel: \u002B44 (0) 20 9876 5432 fax: \u002B44 (0) 20 6789 2345"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 182,
+                  "length": 51
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1128,
+                    1904,
+                    2445,
+                    1441,
+                    2602,
+                    1888,
+                    1286,
+                    2351
+                  ]
+                }
+              ],
+              "content": "Contoso 2 Kingdom Street Paddington, London, W2 6BD"
+            }
+          ],
           "styles": [],
           "documents": [
             {
@@ -2286,7 +2540,7 @@
                   "valueArray": [
                     {
                       "type": "address",
-                      "content": "2 Kingdom Street\nPaddington, London, W2 6BD",
+                      "content": "2 Kingdom Street Paddington, London, W2 6BD",
                       "boundingRegions": [
                         {
                           "pageNumber": 1,
@@ -2508,7 +2762,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B10207892345",
+                      "valuePhoneNumber": "\u002B442067892345",
                       "content": "\u002B44 (0) 20 6789 2345",
                       "boundingRegions": [
                         {
@@ -2572,7 +2826,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B10791112345",
+                      "valuePhoneNumber": "\u002B447911123456",
                       "content": "\u002B44 (0) 7911 123456",
                       "boundingRegions": [
                         {
@@ -2636,7 +2890,7 @@
                   "valueArray": [
                     {
                       "type": "phoneNumber",
-                      "valuePhoneNumber": "\u002B10209875432",
+                      "valuePhoneNumber": "\u002B442098765432",
                       "content": "\u002B44 (0) 20 9876 5432",
                       "boundingRegions": [
                         {

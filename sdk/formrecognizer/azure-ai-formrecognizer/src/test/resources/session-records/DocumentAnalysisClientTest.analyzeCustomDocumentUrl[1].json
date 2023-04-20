@@ -1,19 +1,19 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "119",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:19:15 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "bd312cf3-356e-45bf-81f4-f2c344198d01"
+        "Date": "Thu, 20 Apr 2023 20:17:42 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "19c3c27f-da39-45bf-84b3-3cc9700168b1"
       },
       "RequestBody": {
-        "modelId": "830e705f-3d23-4027-a940-f5a9db9fa661",
+        "modelId": "ac1cdc04-374e-45b7-868e-46a9a28c7239",
         "buildMode": "template",
         "azureBlobSource": {
           "containerUrl": "REDACTED"
@@ -21,83 +21,83 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "3ee99a17-971b-4223-9637-861a5f4b2869",
+        "apim-request-id": "2564390a-c827-498d-96eb-4812a13e54ed",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:16 GMT",
-        "operation-location": "https://REDACTED/formrecognizer/operations/31484871646_3ee99a17-971b-4223-9637-861a5f4b2869?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:17:44 GMT",
+        "operation-location": "https://REDACTED/formrecognizer/operations/31484346137_2564390a-c827-498d-96eb-4812a13e54ed?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "2950",
+        "x-envoy-upstream-service-time": "2471",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31484871646_3ee99a17-971b-4223-9637-861a5f4b2869?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484346137_2564390a-c827-498d-96eb-4812a13e54ed?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:18 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "543b7032-fcad-49a8-8cb3-44c5d79c6d7d"
+        "Date": "Thu, 20 Apr 2023 20:17:45 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6cd51e32-bf72-45db-94a6-831eca297d98"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e1f92b3f-a0b7-4c0c-9745-2778c7e3fbcb",
+        "apim-request-id": "b9116977-2888-4b56-ae92-748256f2f081",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:16 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:45 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "14",
+        "x-envoy-upstream-service-time": "18",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31484871646_3ee99a17-971b-4223-9637-861a5f4b2869",
+        "operationId": "31484346137_2564390a-c827-498d-96eb-4812a13e54ed",
         "kind": "documentModelBuild",
         "status": "notStarted",
-        "createdDateTime": "2023-04-14T18:19:13Z",
-        "lastUpdatedDateTime": "2023-04-14T18:19:13Z",
+        "createdDateTime": "2023-04-20T20:17:42Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:42Z",
         "resourceLocation": "REDACTED"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31484871646_3ee99a17-971b-4223-9637-861a5f4b2869?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484346137_2564390a-c827-498d-96eb-4812a13e54ed?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:23 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "5c4915db-213b-4196-8c11-d830e2d6cb31"
+        "Date": "Thu, 20 Apr 2023 20:17:50 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "bb4df465-bdc9-40ea-bdb1-66b64a00ae63"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "3f1e7791-e575-4e3f-96b6-dfff492fafd6",
+        "apim-request-id": "bb59b416-9a22-4813-96c9-efbdf858d6e3",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:21 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:49 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "20",
+        "x-envoy-upstream-service-time": "23",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31484871646_3ee99a17-971b-4223-9637-861a5f4b2869",
+        "operationId": "31484346137_2564390a-c827-498d-96eb-4812a13e54ed",
         "kind": "documentModelBuild",
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:19:13Z",
-        "lastUpdatedDateTime": "2023-04-14T18:19:18Z",
+        "createdDateTime": "2023-04-20T20:17:42Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:46Z",
         "resourceLocation": "REDACTED",
         "percentCompleted": 100,
         "result": {
           "docTypes": {
-            "830e705f-3d23-4027-a940-f5a9db9fa661": {
+            "ac1cdc04-374e-45b7-868e-46a9a28c7239": {
               "fieldSchema": {
                 "Merchant": {
                   "type": "string"
@@ -165,47 +165,47 @@
               }
             }
           },
-          "modelId": "830e705f-3d23-4027-a940-f5a9db9fa661",
-          "createdDateTime": "2023-04-14T18:19:18Z",
-          "expirationDateTime": "2025-04-13T18:19:18Z",
-          "apiVersion": "2023-02-28-preview"
+          "modelId": "ac1cdc04-374e-45b7-868e-46a9a28c7239",
+          "createdDateTime": "2023-04-20T20:17:45Z",
+          "expirationDateTime": "2025-04-19T20:17:45Z",
+          "apiVersion": "2022-08-31"
         }
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31484871646_3ee99a17-971b-4223-9637-861a5f4b2869?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484346137_2564390a-c827-498d-96eb-4812a13e54ed?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:23 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "107f74e9-3c4b-42c5-9959-08bd7bc1df9d"
+        "Date": "Thu, 20 Apr 2023 20:17:50 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1a4125f5-563a-4351-9a37-0d2f4d85461e"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "65975eb3-8232-4744-9d77-675b33a81c3d",
+        "apim-request-id": "25598dc0-be1c-4685-811b-b990e0a2c2d4",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:22 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:50 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "21",
+        "x-envoy-upstream-service-time": "22",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31484871646_3ee99a17-971b-4223-9637-861a5f4b2869",
+        "operationId": "31484346137_2564390a-c827-498d-96eb-4812a13e54ed",
         "kind": "documentModelBuild",
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:19:13Z",
-        "lastUpdatedDateTime": "2023-04-14T18:19:18Z",
+        "createdDateTime": "2023-04-20T20:17:42Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:46Z",
         "resourceLocation": "REDACTED",
         "percentCompleted": 100,
         "result": {
           "docTypes": {
-            "830e705f-3d23-4027-a940-f5a9db9fa661": {
+            "ac1cdc04-374e-45b7-868e-46a9a28c7239": {
               "fieldSchema": {
                 "Merchant": {
                   "type": "string"
@@ -273,100 +273,100 @@
               }
             }
           },
-          "modelId": "830e705f-3d23-4027-a940-f5a9db9fa661",
-          "createdDateTime": "2023-04-14T18:19:18Z",
-          "expirationDateTime": "2025-04-13T18:19:18Z",
-          "apiVersion": "2023-02-28-preview"
+          "modelId": "ac1cdc04-374e-45b7-868e-46a9a28c7239",
+          "createdDateTime": "2023-04-20T20:17:45Z",
+          "expirationDateTime": "2025-04-19T20:17:45Z",
+          "apiVersion": "2022-08-31"
         }
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/830e705f-3d23-4027-a940-f5a9db9fa661:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/ac1cdc04-374e-45b7-868e-46a9a28c7239:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:19:23 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "9d8d8b15-35b1-4dc6-bb21-a73719f344a8"
+        "Date": "Thu, 20 Apr 2023 20:17:50 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "6df97220-8716-4e01-8fc3-ec354cde6c80"
       },
       "RequestBody": {
         "urlSource": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "ce4da092-2327-4830-bde7-f45c68202dde",
+        "apim-request-id": "1a29dc9d-66ca-4692-99b7-bee6a69b371e",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:22 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/830e705f-3d23-4027-a940-f5a9db9fa661/analyzeResults/ce4da092-2327-4830-bde7-f45c68202dde?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:17:50 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/ac1cdc04-374e-45b7-868e-46a9a28c7239/analyzeResults/1a29dc9d-66ca-4692-99b7-bee6a69b371e?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "369",
+        "x-envoy-upstream-service-time": "382",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/830e705f-3d23-4027-a940-f5a9db9fa661/analyzeResults/ce4da092-2327-4830-bde7-f45c68202dde?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/ac1cdc04-374e-45b7-868e-46a9a28c7239/analyzeResults/1a29dc9d-66ca-4692-99b7-bee6a69b371e?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:24 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "7452be59-85fa-4920-8a25-b5fbcb939e1a"
+        "Date": "Thu, 20 Apr 2023 20:17:51 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "baedf458-9250-4ad4-a30c-bbe2b441fdf3"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "80c6e177-c7e5-4bdd-9e7c-0e8ec8a4bd09",
+        "apim-request-id": "9810afe7-512a-4965-9f4d-08592f44ad01",
         "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:22 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:50 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "27",
+        "x-envoy-upstream-service-time": "13",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "running",
-        "createdDateTime": "2023-04-14T18:19:22Z",
-        "lastUpdatedDateTime": "2023-04-14T18:19:22Z"
+        "createdDateTime": "2023-04-20T20:17:51Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:51Z"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/830e705f-3d23-4027-a940-f5a9db9fa661/analyzeResults/ce4da092-2327-4830-bde7-f45c68202dde?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/ac1cdc04-374e-45b7-868e-46a9a28c7239/analyzeResults/1a29dc9d-66ca-4692-99b7-bee6a69b371e?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:29 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "2a499a7d-8f43-429e-a70d-abd6c04d4d0e"
+        "Date": "Thu, 20 Apr 2023 20:17:56 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "dc80b263-32aa-429f-b430-431905104b83"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "8df93a54-e295-468b-af05-bf9cc7d3e042",
-        "Content-Length": "32028",
+        "apim-request-id": "dcb3d2a9-302d-4d74-8a95-e62d887c6fbe",
+        "Content-Length": "32020",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:28 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:55 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "38",
+        "x-envoy-upstream-service-time": "41",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:19:22Z",
-        "lastUpdatedDateTime": "2023-04-14T18:19:26Z",
+        "createdDateTime": "2023-04-20T20:17:51Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:53Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
-          "modelId": "830e705f-3d23-4027-a940-f5a9db9fa661",
+          "apiVersion": "2022-08-31",
+          "modelId": "ac1cdc04-374e-45b7-868e-46a9a28c7239",
           "stringIndexType": "utf16CodeUnit",
           "content": "Purchase Order\nHero Limited\nCompany Phone: 555-348-6512 Website: www.herolimited.com Email: accounts@herolimited.com\nPurchase Order\nDated As: 12/20/2020 Purchase Order #: 948284\nShipped To Vendor Name: Hillary Swank Company Name: Higgly Wiggly Books Address: 938 NE Burner Road Boulder City, CO 92848 Phone: 938-294-2949\nShipped From Name: Bernie Sanders Company Name: Jupiter Book Supply Address: 383 N Kinnick Road Seattle, WA 38383\nPhone: 932-299-0292\nDetails\nQuantity\nUnit Price\nTotal\nBindings\n20\n1.00\n20.00\nCovers Small\n20\n1.00\n20.00\nFeather Bookmark\n20\n5.00\n100.00\nCopper Swirl Marker\n20\n5.00\n100.00\nBernie Sanders\nBernie Sanders Manager\nAdditional Notes:\nDo not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\nSUBTOTAL\n$140.00\nTAX\n$4.00\nTOTAL\n$144.00",
           "pages": [
@@ -4541,7 +4541,7 @@
           ],
           "documents": [
             {
-              "docType": "830e705f-3d23-4027-a940-f5a9db9fa661:830e705f-3d23-4027-a940-f5a9db9fa661",
+              "docType": "ac1cdc04-374e-45b7-868e-46a9a28c7239:ac1cdc04-374e-45b7-868e-46a9a28c7239",
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -4558,30 +4558,30 @@
                 }
               ],
               "fields": {
-                "PurchaseOrderNumber": {
+                "PhoneNumber": {
                   "type": "string",
-                  "valueString": "948284",
-                  "content": "948284",
+                  "valueString": "555-348-6512",
+                  "content": "555-348-6512",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        1276,
-                        460,
-                        1374,
-                        460,
-                        1374,
-                        489,
-                        1276,
-                        489
+                        365,
+                        349,
+                        527,
+                        349,
+                        527,
+                        377,
+                        365,
+                        377
                       ]
                     }
                   ],
                   "confidence": 0.992,
                   "spans": [
                     {
-                      "offset": 171,
-                      "length": 6
+                      "offset": 43,
+                      "length": 12
                     }
                   ]
                 },
@@ -4612,33 +4612,6 @@
                     }
                   ]
                 },
-                "Quantity": {
-                  "type": "number",
-                  "valueNumber": 20,
-                  "content": "20",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        860,
-                        1094,
-                        888,
-                        1094,
-                        888,
-                        1119,
-                        860,
-                        1119
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 498,
-                      "length": 2
-                    }
-                  ]
-                },
                 "Total": {
                   "type": "string",
                   "valueString": "$144.00",
@@ -4666,6 +4639,33 @@
                     }
                   ]
                 },
+                "CompanyAddress": {
+                  "type": "string",
+                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
+                  "content": "938 NE Burner Road Boulder City, CO 92848",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        272,
+                        683,
+                        563,
+                        683,
+                        563,
+                        753,
+                        272,
+                        753
+                      ]
+                    }
+                  ],
+                  "confidence": 0.665,
+                  "spans": [
+                    {
+                      "offset": 259,
+                      "length": 41
+                    }
+                  ]
+                },
                 "Tax": {
                   "type": "string",
                   "valueString": "$4.00",
@@ -4690,6 +4690,114 @@
                     {
                       "offset": 861,
                       "length": 5
+                    }
+                  ]
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "content": "948284",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        1276,
+                        460,
+                        1374,
+                        460,
+                        1374,
+                        489,
+                        1276,
+                        489
+                      ]
+                    }
+                  ],
+                  "confidence": 0.992,
+                  "spans": [
+                    {
+                      "offset": 171,
+                      "length": 6
+                    }
+                  ]
+                },
+                "CompanyName": {
+                  "type": "string",
+                  "valueString": "Higgly Wiggly Books",
+                  "content": "Higgly Wiggly Books",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        376,
+                        645,
+                        627,
+                        645,
+                        627,
+                        679,
+                        376,
+                        679
+                      ]
+                    }
+                  ],
+                  "confidence": 0.993,
+                  "spans": [
+                    {
+                      "offset": 230,
+                      "length": 19
+                    }
+                  ]
+                },
+                "Quantity": {
+                  "type": "number",
+                  "valueNumber": 20,
+                  "content": "20",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        860,
+                        1094,
+                        888,
+                        1094,
+                        888,
+                        1119,
+                        860,
+                        1119
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 498,
+                      "length": 2
+                    }
+                  ]
+                },
+                "Website": {
+                  "type": "string",
+                  "valueString": "www.herolimited.com",
+                  "content": "www.herolimited.com",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        273,
+                        392,
+                        522,
+                        392,
+                        522,
+                        418,
+                        273,
+                        418
+                      ]
+                    }
+                  ],
+                  "confidence": 0.992,
+                  "spans": [
+                    {
+                      "offset": 65,
+                      "length": 19
                     }
                   ]
                 },
@@ -4747,57 +4855,30 @@
                     }
                   ]
                 },
-                "PhoneNumber": {
+                "Merchant": {
                   "type": "string",
-                  "valueString": "555-348-6512",
-                  "content": "555-348-6512",
+                  "valueString": "Hero Limited",
+                  "content": "Hero Limited",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        365,
-                        349,
-                        527,
-                        349,
-                        527,
-                        377,
-                        365,
-                        377
+                        616,
+                        203,
+                        1059,
+                        203,
+                        1059,
+                        267,
+                        616,
+                        267
                       ]
                     }
                   ],
-                  "confidence": 0.992,
+                  "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 43,
+                      "offset": 15,
                       "length": 12
-                    }
-                  ]
-                },
-                "Email": {
-                  "type": "string",
-                  "valueString": "accounts@herolimited.com",
-                  "content": "accounts@herolimited.com",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        164,
-                        477,
-                        473,
-                        477,
-                        473,
-                        505,
-                        164,
-                        505
-                      ]
-                    }
-                  ],
-                  "confidence": 0.953,
-                  "spans": [
-                    {
-                      "offset": 92,
-                      "length": 24
                     }
                   ]
                 },
@@ -4828,114 +4909,6 @@
                     }
                   ]
                 },
-                "Merchant": {
-                  "type": "string",
-                  "valueString": "Hero Limited",
-                  "content": "Hero Limited",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        616,
-                        203,
-                        1059,
-                        203,
-                        1059,
-                        267,
-                        616,
-                        267
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 15,
-                      "length": 12
-                    }
-                  ]
-                },
-                "Website": {
-                  "type": "string",
-                  "valueString": "www.herolimited.com",
-                  "content": "www.herolimited.com",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        273,
-                        392,
-                        522,
-                        392,
-                        522,
-                        418,
-                        273,
-                        418
-                      ]
-                    }
-                  ],
-                  "confidence": 0.992,
-                  "spans": [
-                    {
-                      "offset": 65,
-                      "length": 19
-                    }
-                  ]
-                },
-                "CompanyAddress": {
-                  "type": "string",
-                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
-                  "content": "938 NE Burner Road Boulder City, CO 92848",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        272,
-                        683,
-                        563,
-                        683,
-                        563,
-                        753,
-                        272,
-                        753
-                      ]
-                    }
-                  ],
-                  "confidence": 0.665,
-                  "spans": [
-                    {
-                      "offset": 259,
-                      "length": 41
-                    }
-                  ]
-                },
-                "CompanyName": {
-                  "type": "string",
-                  "valueString": "Higgly Wiggly Books",
-                  "content": "Higgly Wiggly Books",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        376,
-                        645,
-                        627,
-                        645,
-                        627,
-                        679,
-                        376,
-                        679
-                      ]
-                    }
-                  ],
-                  "confidence": 0.993,
-                  "spans": [
-                    {
-                      "offset": 230,
-                      "length": 19
-                    }
-                  ]
-                },
                 "Subtotal": {
                   "type": "string",
                   "valueString": "$140.00",
@@ -4960,6 +4933,33 @@
                     {
                       "offset": 849,
                       "length": 7
+                    }
+                  ]
+                },
+                "Email": {
+                  "type": "string",
+                  "valueString": "accounts@herolimited.com",
+                  "content": "accounts@herolimited.com",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        164,
+                        477,
+                        473,
+                        477,
+                        473,
+                        505,
+                        164,
+                        505
+                      ]
+                    }
+                  ],
+                  "confidence": 0.953,
+                  "spans": [
+                    {
+                      "offset": 92,
+                      "length": 24
                     }
                   ]
                 }
@@ -4977,59 +4977,59 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/830e705f-3d23-4027-a940-f5a9db9fa661?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/ac1cdc04-374e-45b7-868e-46a9a28c7239?api-version=2022-08-31",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:29 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "3f9de928-5380-4685-8cb1-9f1e4a00d078"
+        "Date": "Thu, 20 Apr 2023 20:17:56 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "142bc1e6-ceea-4cf2-96f0-c317404432d1"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "apim-request-id": "2e4b2fca-8b05-48e7-83cf-3e0facf78898",
+        "apim-request-id": "2fad4e8e-47ca-43f1-8280-0792edd03d6b",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:28 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:56 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "64",
+        "x-envoy-upstream-service-time": "80",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/830e705f-3d23-4027-a940-f5a9db9fa661/analyzeResults/ce4da092-2327-4830-bde7-f45c68202dde?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/ac1cdc04-374e-45b7-868e-46a9a28c7239/analyzeResults/1a29dc9d-66ca-4692-99b7-bee6a69b371e?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:19:29 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "b4c4652c-b039-4ac8-980d-7578fe58da49"
+        "Date": "Thu, 20 Apr 2023 20:17:57 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8712385a-9a5f-4eed-92b4-0e581f84a456"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "01510cfe-faf8-435d-abda-82c9e52dba59",
-        "Content-Length": "32028",
+        "apim-request-id": "716e8928-b794-4e25-803f-ceddea5e666e",
+        "Content-Length": "32020",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:28 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:56 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "36",
+        "x-envoy-upstream-service-time": "32",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:19:22Z",
-        "lastUpdatedDateTime": "2023-04-14T18:19:26Z",
+        "createdDateTime": "2023-04-20T20:17:51Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:53Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
-          "modelId": "830e705f-3d23-4027-a940-f5a9db9fa661",
+          "apiVersion": "2022-08-31",
+          "modelId": "ac1cdc04-374e-45b7-868e-46a9a28c7239",
           "stringIndexType": "utf16CodeUnit",
           "content": "Purchase Order\nHero Limited\nCompany Phone: 555-348-6512 Website: www.herolimited.com Email: accounts@herolimited.com\nPurchase Order\nDated As: 12/20/2020 Purchase Order #: 948284\nShipped To Vendor Name: Hillary Swank Company Name: Higgly Wiggly Books Address: 938 NE Burner Road Boulder City, CO 92848 Phone: 938-294-2949\nShipped From Name: Bernie Sanders Company Name: Jupiter Book Supply Address: 383 N Kinnick Road Seattle, WA 38383\nPhone: 932-299-0292\nDetails\nQuantity\nUnit Price\nTotal\nBindings\n20\n1.00\n20.00\nCovers Small\n20\n1.00\n20.00\nFeather Bookmark\n20\n5.00\n100.00\nCopper Swirl Marker\n20\n5.00\n100.00\nBernie Sanders\nBernie Sanders Manager\nAdditional Notes:\nDo not Jostle Box. Unpack carefully. Enjoy. Jupiter Book Supply will refund you 50% per book if returned within 60 days of reading and offer you 25% off you next total purchase.\nSUBTOTAL\n$140.00\nTAX\n$4.00\nTOTAL\n$144.00",
           "pages": [
@@ -9204,7 +9204,7 @@
           ],
           "documents": [
             {
-              "docType": "830e705f-3d23-4027-a940-f5a9db9fa661:830e705f-3d23-4027-a940-f5a9db9fa661",
+              "docType": "ac1cdc04-374e-45b7-868e-46a9a28c7239:ac1cdc04-374e-45b7-868e-46a9a28c7239",
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -9221,30 +9221,30 @@
                 }
               ],
               "fields": {
-                "PurchaseOrderNumber": {
+                "PhoneNumber": {
                   "type": "string",
-                  "valueString": "948284",
-                  "content": "948284",
+                  "valueString": "555-348-6512",
+                  "content": "555-348-6512",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        1276,
-                        460,
-                        1374,
-                        460,
-                        1374,
-                        489,
-                        1276,
-                        489
+                        365,
+                        349,
+                        527,
+                        349,
+                        527,
+                        377,
+                        365,
+                        377
                       ]
                     }
                   ],
                   "confidence": 0.992,
                   "spans": [
                     {
-                      "offset": 171,
-                      "length": 6
+                      "offset": 43,
+                      "length": 12
                     }
                   ]
                 },
@@ -9275,33 +9275,6 @@
                     }
                   ]
                 },
-                "Quantity": {
-                  "type": "number",
-                  "valueNumber": 20,
-                  "content": "20",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        860,
-                        1094,
-                        888,
-                        1094,
-                        888,
-                        1119,
-                        860,
-                        1119
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 498,
-                      "length": 2
-                    }
-                  ]
-                },
                 "Total": {
                   "type": "string",
                   "valueString": "$144.00",
@@ -9329,6 +9302,33 @@
                     }
                   ]
                 },
+                "CompanyAddress": {
+                  "type": "string",
+                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
+                  "content": "938 NE Burner Road Boulder City, CO 92848",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        272,
+                        683,
+                        563,
+                        683,
+                        563,
+                        753,
+                        272,
+                        753
+                      ]
+                    }
+                  ],
+                  "confidence": 0.665,
+                  "spans": [
+                    {
+                      "offset": 259,
+                      "length": 41
+                    }
+                  ]
+                },
                 "Tax": {
                   "type": "string",
                   "valueString": "$4.00",
@@ -9353,6 +9353,114 @@
                     {
                       "offset": 861,
                       "length": 5
+                    }
+                  ]
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "content": "948284",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        1276,
+                        460,
+                        1374,
+                        460,
+                        1374,
+                        489,
+                        1276,
+                        489
+                      ]
+                    }
+                  ],
+                  "confidence": 0.992,
+                  "spans": [
+                    {
+                      "offset": 171,
+                      "length": 6
+                    }
+                  ]
+                },
+                "CompanyName": {
+                  "type": "string",
+                  "valueString": "Higgly Wiggly Books",
+                  "content": "Higgly Wiggly Books",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        376,
+                        645,
+                        627,
+                        645,
+                        627,
+                        679,
+                        376,
+                        679
+                      ]
+                    }
+                  ],
+                  "confidence": 0.993,
+                  "spans": [
+                    {
+                      "offset": 230,
+                      "length": 19
+                    }
+                  ]
+                },
+                "Quantity": {
+                  "type": "number",
+                  "valueNumber": 20,
+                  "content": "20",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        860,
+                        1094,
+                        888,
+                        1094,
+                        888,
+                        1119,
+                        860,
+                        1119
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 498,
+                      "length": 2
+                    }
+                  ]
+                },
+                "Website": {
+                  "type": "string",
+                  "valueString": "www.herolimited.com",
+                  "content": "www.herolimited.com",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        273,
+                        392,
+                        522,
+                        392,
+                        522,
+                        418,
+                        273,
+                        418
+                      ]
+                    }
+                  ],
+                  "confidence": 0.992,
+                  "spans": [
+                    {
+                      "offset": 65,
+                      "length": 19
                     }
                   ]
                 },
@@ -9410,57 +9518,30 @@
                     }
                   ]
                 },
-                "PhoneNumber": {
+                "Merchant": {
                   "type": "string",
-                  "valueString": "555-348-6512",
-                  "content": "555-348-6512",
+                  "valueString": "Hero Limited",
+                  "content": "Hero Limited",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        365,
-                        349,
-                        527,
-                        349,
-                        527,
-                        377,
-                        365,
-                        377
+                        616,
+                        203,
+                        1059,
+                        203,
+                        1059,
+                        267,
+                        616,
+                        267
                       ]
                     }
                   ],
-                  "confidence": 0.992,
+                  "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 43,
+                      "offset": 15,
                       "length": 12
-                    }
-                  ]
-                },
-                "Email": {
-                  "type": "string",
-                  "valueString": "accounts@herolimited.com",
-                  "content": "accounts@herolimited.com",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        164,
-                        477,
-                        473,
-                        477,
-                        473,
-                        505,
-                        164,
-                        505
-                      ]
-                    }
-                  ],
-                  "confidence": 0.953,
-                  "spans": [
-                    {
-                      "offset": 92,
-                      "length": 24
                     }
                   ]
                 },
@@ -9491,114 +9572,6 @@
                     }
                   ]
                 },
-                "Merchant": {
-                  "type": "string",
-                  "valueString": "Hero Limited",
-                  "content": "Hero Limited",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        616,
-                        203,
-                        1059,
-                        203,
-                        1059,
-                        267,
-                        616,
-                        267
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 15,
-                      "length": 12
-                    }
-                  ]
-                },
-                "Website": {
-                  "type": "string",
-                  "valueString": "www.herolimited.com",
-                  "content": "www.herolimited.com",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        273,
-                        392,
-                        522,
-                        392,
-                        522,
-                        418,
-                        273,
-                        418
-                      ]
-                    }
-                  ],
-                  "confidence": 0.992,
-                  "spans": [
-                    {
-                      "offset": 65,
-                      "length": 19
-                    }
-                  ]
-                },
-                "CompanyAddress": {
-                  "type": "string",
-                  "valueString": "938 NE Burner Road Boulder City, CO 92848",
-                  "content": "938 NE Burner Road Boulder City, CO 92848",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        272,
-                        683,
-                        563,
-                        683,
-                        563,
-                        753,
-                        272,
-                        753
-                      ]
-                    }
-                  ],
-                  "confidence": 0.665,
-                  "spans": [
-                    {
-                      "offset": 259,
-                      "length": 41
-                    }
-                  ]
-                },
-                "CompanyName": {
-                  "type": "string",
-                  "valueString": "Higgly Wiggly Books",
-                  "content": "Higgly Wiggly Books",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        376,
-                        645,
-                        627,
-                        645,
-                        627,
-                        679,
-                        376,
-                        679
-                      ]
-                    }
-                  ],
-                  "confidence": 0.993,
-                  "spans": [
-                    {
-                      "offset": 230,
-                      "length": 19
-                    }
-                  ]
-                },
                 "Subtotal": {
                   "type": "string",
                   "valueString": "$140.00",
@@ -9623,6 +9596,33 @@
                     {
                       "offset": 849,
                       "length": 7
+                    }
+                  ]
+                },
+                "Email": {
+                  "type": "string",
+                  "valueString": "accounts@herolimited.com",
+                  "content": "accounts@herolimited.com",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        164,
+                        477,
+                        473,
+                        477,
+                        473,
+                        505,
+                        164,
+                        505
+                      ]
+                    }
+                  ],
+                  "confidence": 0.953,
+                  "spans": [
+                    {
+                      "offset": 92,
+                      "length": 24
                     }
                   ]
                 }

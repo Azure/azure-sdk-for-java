@@ -8,53 +8,53 @@
         "Authorization": "Sanitized",
         "Content-Length": "21",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:17:50 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "5b380c90-6ea5-4784-b064-95395d16507d"
+        "Date": "Thu, 20 Apr 2023 20:18:15 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8ae7e72d-2a87-4173-9e5c-438178f47530"
       },
       "RequestBody": {
         "source": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "ddf4a657-45ca-4b36-bdc4-da5bb7ddf88b",
+        "apim-request-id": "c121576e-c59b-42ae-a443-30084a35a993",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:49 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/ddf4a657-45ca-4b36-bdc4-da5bb7ddf88b",
+        "Date": "Thu, 20 Apr 2023 20:18:15 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/c121576e-c59b-42ae-a443-30084a35a993",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "234",
+        "x-envoy-upstream-service-time": "213",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/ddf4a657-45ca-4b36-bdc4-da5bb7ddf88b",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/c121576e-c59b-42ae-a443-30084a35a993",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:56 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "43c49795-1f9a-4c20-9b2f-1f05fec8c74e"
+        "Date": "Thu, 20 Apr 2023 20:18:21 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "adba7067-7902-4be8-8774-66755b5b9c79"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "d539ab5a-f552-49b2-a956-7409174ed16b",
+        "apim-request-id": "15f7ff29-8256-4054-af03-2d048932bf2f",
         "Content-Length": "1606",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:17:54 GMT",
+        "Date": "Thu, 20 Apr 2023 20:18:21 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "35",
+        "x-envoy-upstream-service-time": "34",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:17:49Z",
-        "lastUpdatedDateTime": "2023-04-14T18:17:53Z",
+        "createdDateTime": "2023-04-20T20:18:16Z",
+        "lastUpdatedDateTime": "2023-04-20T20:18:17Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -211,32 +211,32 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/ddf4a657-45ca-4b36-bdc4-da5bb7ddf88b",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/prebuilt/idDocument/analyzeResults/c121576e-c59b-42ae-a443-30084a35a993",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:56 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "e9e61244-2b0b-4ff1-9aff-8d34b3d1f8a2"
+        "Date": "Thu, 20 Apr 2023 20:18:21 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b19c32a0-815a-4d42-afa8-9f0ec7c41a21"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "fe4f2491-a92f-486f-af2b-4957a951a300",
+        "apim-request-id": "ddc2a5c9-eb4e-4397-8f19-17734366ec40",
         "Content-Length": "1606",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:17:54 GMT",
+        "Date": "Thu, 20 Apr 2023 20:18:21 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "48",
+        "x-envoy-upstream-service-time": "34",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:17:49Z",
-        "lastUpdatedDateTime": "2023-04-14T18:17:53Z",
+        "createdDateTime": "2023-04-20T20:18:16Z",
+        "lastUpdatedDateTime": "2023-04-20T20:18:17Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [

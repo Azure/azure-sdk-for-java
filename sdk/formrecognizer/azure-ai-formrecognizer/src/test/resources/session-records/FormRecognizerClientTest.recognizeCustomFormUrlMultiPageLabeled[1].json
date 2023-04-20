@@ -8,9 +8,9 @@
         "Authorization": "Sanitized",
         "Content-Length": "84",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:20:16 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "90fc90c1-1645-42bf-a831-35c3fae1dfb7"
+        "Date": "Thu, 20 Apr 2023 20:20:18 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8e130d05-8f9e-4280-9480-87fa26252ac7"
       },
       "RequestBody": {
         "source": "REDACTED",
@@ -21,49 +21,49 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "apim-request-id": "74e0218a-3b79-45c2-84b9-085b6651cb3c",
+        "apim-request-id": "f2fb3181-2f96-4207-8ab2-bfd9c2ff0e72",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:15 GMT",
-        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3",
+        "Date": "Thu, 20 Apr 2023 20:20:19 GMT",
+        "Location": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "837",
+        "x-envoy-upstream-service-time": "548",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3?includeKeys=true",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51?includeKeys=true",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:22 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "894a10bc-ea59-41d3-a981-6d0a2e1ff8b4"
+        "Date": "Thu, 20 Apr 2023 20:20:24 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f5d3ee8c-5650-4f39-a58e-da280758ad28"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e9cef60d-98fe-463a-a93b-6c2619c61368",
+        "apim-request-id": "c646a7f1-d827-4554-a21e-ade7cac53cf8",
         "Content-Length": "1446",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:20:20 GMT",
+        "Date": "Thu, 20 Apr 2023 20:20:24 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "20",
+        "x-envoy-upstream-service-time": "21",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "modelInfo": {
-          "modelId": "0f730753-627c-4a02-aa9c-705520302ca3",
+          "modelId": "797bec8d-b18d-4daa-b348-38d7aee27b51",
           "attributes": {
             "isComposed": false
           },
           "status": "ready",
-          "createdDateTime": "2023-04-14T18:20:15Z",
-          "lastUpdatedDateTime": "2023-04-14T18:20:18Z"
+          "createdDateTime": "2023-04-20T20:20:19Z",
+          "lastUpdatedDateTime": "2023-04-20T20:20:21Z"
         },
         "trainResult": {
           "averageModelAccuracy": 0.889,
@@ -173,37 +173,37 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3?includeKeys=true",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51?includeKeys=true",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:22 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "ffc15684-4edc-4a3a-aca3-e93da855a2eb"
+        "Date": "Thu, 20 Apr 2023 20:20:24 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2a8e9226-1735-4cb1-96e7-952e4f3221f0"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "6974ad4a-b089-4ced-908d-b14e25a4d701",
+        "apim-request-id": "75d71940-34e4-4fc3-a618-aeabbd4fad52",
         "Content-Length": "1446",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:20:20 GMT",
+        "Date": "Thu, 20 Apr 2023 20:20:24 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "22",
+        "x-envoy-upstream-service-time": "25",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "modelInfo": {
-          "modelId": "0f730753-627c-4a02-aa9c-705520302ca3",
+          "modelId": "797bec8d-b18d-4daa-b348-38d7aee27b51",
           "attributes": {
             "isComposed": false
           },
           "status": "ready",
-          "createdDateTime": "2023-04-14T18:20:15Z",
-          "lastUpdatedDateTime": "2023-04-14T18:20:18Z"
+          "createdDateTime": "2023-04-20T20:20:19Z",
+          "lastUpdatedDateTime": "2023-04-20T20:20:21Z"
         },
         "trainResult": {
           "averageModelAccuracy": 0.889,
@@ -313,89 +313,89 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3/analyze?includeTextDetails=false",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51/analyze?includeTextDetails=false",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "21",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:20:22 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a96b2c02-cb1d-4e0a-a68c-fcafa6ed3b9c"
+        "Date": "Thu, 20 Apr 2023 20:20:24 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "888e4bbd-f8d7-4cad-baf9-b99aadf8d0f4"
       },
       "RequestBody": {
         "source": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "be3cd210-c0c6-4914-8e8f-bbfba93661ea",
+        "apim-request-id": "70c55457-d2ae-4502-9cb3-05ffb48e3c85",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:21 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3/analyzeresults/64447cc6-a56f-430e-ae4f-779e8c82fc77",
+        "Date": "Thu, 20 Apr 2023 20:20:24 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51/analyzeresults/6e43fcb2-3848-4c4d-b5e0-7200771901d1",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "226",
+        "x-envoy-upstream-service-time": "128",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3/analyzeResults/64447cc6-a56f-430e-ae4f-779e8c82fc77",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51/analyzeResults/6e43fcb2-3848-4c4d-b5e0-7200771901d1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:28 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a3b945e1-e3e7-4d35-bd8d-0ac5acbad0aa"
+        "Date": "Thu, 20 Apr 2023 20:20:30 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ab5f61d5-120e-43f7-a59b-50739e229432"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "cb73c3f9-5d1b-4032-bdd4-b9d8428d74f0",
+        "apim-request-id": "c846e30f-f0f3-49c7-8714-aedf387d836c",
         "Content-Length": "109",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:20:25 GMT",
+        "Date": "Thu, 20 Apr 2023 20:20:29 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "30",
+        "x-envoy-upstream-service-time": "31",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "notStarted",
-        "createdDateTime": "2023-04-14T18:20:21Z",
-        "lastUpdatedDateTime": "2023-04-14T18:20:25Z"
+        "createdDateTime": "2023-04-20T20:20:25Z",
+        "lastUpdatedDateTime": "2023-04-20T20:20:29Z"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3/analyzeResults/64447cc6-a56f-430e-ae4f-779e8c82fc77",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51/analyzeResults/6e43fcb2-3848-4c4d-b5e0-7200771901d1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:33 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "c7fbe79d-a1eb-4433-a38f-7035db8d4a86"
+        "Date": "Thu, 20 Apr 2023 20:20:35 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "0d1ca1f1-db0e-47fc-880a-c64d36f45745"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "8bb299b6-597d-4187-96b8-c4c28a4ef2b4",
+        "apim-request-id": "6476c748-646b-4037-bc8e-0e0c72a3a52b",
         "Content-Length": "10278",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:20:31 GMT",
+        "Date": "Thu, 20 Apr 2023 20:20:34 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "33",
+        "x-envoy-upstream-service-time": "34",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:20:21Z",
-        "lastUpdatedDateTime": "2023-04-14T18:20:29Z",
+        "createdDateTime": "2023-04-20T20:20:25Z",
+        "lastUpdatedDateTime": "2023-04-20T20:20:33Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -1255,13 +1255,268 @@
           ],
           "documentResults": [
             {
-              "docType": "custom:0f730753-627c-4a02-aa9c-705520302ca3",
-              "modelId": "0f730753-627c-4a02-aa9c-705520302ca3",
+              "docType": "custom:797bec8d-b18d-4daa-b348-38d7aee27b51",
+              "modelId": "797bec8d-b18d-4daa-b348-38d7aee27b51",
               "pageRange": [
                 1,
                 3
               ],
               "fields": {
+                "Tax": {
+                  "type": "string",
+                  "valueString": "30.00",
+                  "text": "30.00",
+                  "page": 1,
+                  "boundingBox": [
+                    5.835,
+                    5.125,
+                    6.2,
+                    5.125,
+                    6.2,
+                    5.235,
+                    5.835,
+                    5.235
+                  ],
+                  "confidence": 0.99
+                },
+                "Customer2": {
+                  "type": "string",
+                  "valueString": "Frodo Baggins",
+                  "text": "Frodo Baggins",
+                  "page": 3,
+                  "boundingBox": [
+                    6.015,
+                    1.45,
+                    6.95,
+                    1.45,
+                    6.95,
+                    1.595,
+                    6.015,
+                    1.595
+                  ],
+                  "confidence": 0.993
+                },
+                "MerchantPhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-555-5555",
+                  "text": "555-555-5555",
+                  "page": 1,
+                  "boundingBox": [
+                    0.885,
+                    2.29,
+                    1.81,
+                    2.29,
+                    1.81,
+                    2.395,
+                    0.885,
+                    2.395
+                  ],
+                  "confidence": 0.99
+                },
+                "Subtotal": {
+                  "type": "string",
+                  "valueString": "300.00",
+                  "text": "300.00",
+                  "page": 1,
+                  "boundingBox": [
+                    6.18,
+                    4.905,
+                    6.63,
+                    4.905,
+                    6.63,
+                    5.015,
+                    6.18,
+                    5.015
+                  ],
+                  "confidence": 0.99
+                },
+                "CustomerName": {
+                  "type": "string",
+                  "valueString": "Bilbo Baggins",
+                  "text": "Bilbo Baggins",
+                  "page": 1,
+                  "boundingBox": [
+                    6.015,
+                    1.45,
+                    6.895,
+                    1.45,
+                    6.895,
+                    1.595,
+                    6.015,
+                    1.595
+                  ],
+                  "confidence": 0.992
+                },
+                "Signature2": {
+                  "type": "string",
+                  "valueString": "Frodo Baggins",
+                  "text": "Frodo Baggins",
+                  "page": 3,
+                  "boundingBox": [
+                    2.07,
+                    6.655,
+                    3.09,
+                    6.655,
+                    3.09,
+                    6.8,
+                    2.07,
+                    6.8
+                  ],
+                  "confidence": 0.99
+                },
+                "FirstQuantity": {
+                  "type": "string",
+                  "valueString": "1",
+                  "text": "1",
+                  "page": 1,
+                  "boundingBox": [
+                    3.26,
+                    3.21,
+                    3.32,
+                    3.21,
+                    3.32,
+                    3.32,
+                    3.26,
+                    3.32
+                  ],
+                  "confidence": 0.993
+                },
+                "Merchant": {
+                  "type": "string",
+                  "valueString": "A",
+                  "text": "A",
+                  "page": 1,
+                  "boundingBox": [
+                    1.67,
+                    1.125,
+                    1.775,
+                    1.125,
+                    1.775,
+                    1.245,
+                    1.67,
+                    1.245
+                  ],
+                  "confidence": 0.059
+                },
+                "FirstItem": {
+                  "type": "string",
+                  "valueString": "A",
+                  "text": "A",
+                  "page": 1,
+                  "boundingBox": [
+                    1.085,
+                    3.21,
+                    1.175,
+                    3.21,
+                    1.175,
+                    3.32,
+                    1.085,
+                    3.32
+                  ],
+                  "confidence": 0.99
+                },
+                "FirstPrice": {
+                  "type": "string",
+                  "valueString": "10.99",
+                  "text": "10.99",
+                  "page": 1,
+                  "boundingBox": [
+                    5.425,
+                    3.21,
+                    5.78,
+                    3.21,
+                    5.78,
+                    3.32,
+                    5.425,
+                    3.32
+                  ],
+                  "confidence": 0.99
+                },
+                "Merchant2": {
+                  "type": "string",
+                  "valueString": "Company",
+                  "text": "Company",
+                  "page": 1,
+                  "boundingBox": [
+                    0.885,
+                    1.125,
+                    1.62,
+                    1.125,
+                    1.62,
+                    1.28,
+                    0.885,
+                    1.28
+                  ],
+                  "confidence": 0.024
+                },
+                "CustomerAddress": {
+                  "type": "string",
+                  "valueString": "123 Hobbit Lane Redmond, WA",
+                  "text": "123 Hobbit Lane Redmond, WA",
+                  "page": 1,
+                  "boundingBox": [
+                    6.015,
+                    1.67,
+                    7.1,
+                    1.67,
+                    7.1,
+                    2.03,
+                    6.015,
+                    2.03
+                  ],
+                  "confidence": 0.986
+                },
+                "Total": {
+                  "type": "string",
+                  "valueString": "430.00",
+                  "text": "430.00",
+                  "page": 1,
+                  "boundingBox": [
+                    5.94,
+                    5.565,
+                    6.4,
+                    5.565,
+                    6.4,
+                    5.675,
+                    5.94,
+                    5.675
+                  ],
+                  "confidence": 0.99
+                },
+                "Signature": {
+                  "type": "string",
+                  "valueString": "Bilbo Baggins",
+                  "text": "Bilbo Baggins",
+                  "page": 1,
+                  "boundingBox": [
+                    2.05,
+                    6.655,
+                    3.04,
+                    6.655,
+                    3.04,
+                    6.8,
+                    2.05,
+                    6.8
+                  ],
+                  "confidence": 0.99
+                },
+                "CustomerPhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-555-5555",
+                  "text": "555-555-5555",
+                  "page": 1,
+                  "boundingBox": [
+                    6.01,
+                    2.12,
+                    6.935,
+                    2.12,
+                    6.935,
+                    2.225,
+                    6.01,
+                    2.225
+                  ],
+                  "confidence": 0.99
+                },
                 "Total2": {
                   "type": "string",
                   "valueString": "4300.00",
@@ -1296,23 +1551,6 @@
                   ],
                   "confidence": 0.986
                 },
-                "CustomerName": {
-                  "type": "string",
-                  "valueString": "Bilbo Baggins",
-                  "text": "Bilbo Baggins",
-                  "page": 1,
-                  "boundingBox": [
-                    6.015,
-                    1.45,
-                    6.895,
-                    1.45,
-                    6.895,
-                    1.595,
-                    6.015,
-                    1.595
-                  ],
-                  "confidence": 0.992
-                },
                 "Tip": {
                   "type": "string",
                   "valueString": "100.00",
@@ -1327,244 +1565,6 @@
                     5.455,
                     5.81,
                     5.455
-                  ],
-                  "confidence": 0.99
-                },
-                "MerchantPhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-555-5555",
-                  "text": "555-555-5555",
-                  "page": 1,
-                  "boundingBox": [
-                    0.885,
-                    2.29,
-                    1.81,
-                    2.29,
-                    1.81,
-                    2.395,
-                    0.885,
-                    2.395
-                  ],
-                  "confidence": 0.99
-                },
-                "FirstQuantity": {
-                  "type": "string",
-                  "valueString": "1",
-                  "text": "1",
-                  "page": 1,
-                  "boundingBox": [
-                    3.26,
-                    3.21,
-                    3.32,
-                    3.21,
-                    3.32,
-                    3.32,
-                    3.26,
-                    3.32
-                  ],
-                  "confidence": 0.993
-                },
-                "Signature": {
-                  "type": "string",
-                  "valueString": "Bilbo Baggins",
-                  "text": "Bilbo Baggins",
-                  "page": 1,
-                  "boundingBox": [
-                    2.05,
-                    6.655,
-                    3.04,
-                    6.655,
-                    3.04,
-                    6.8,
-                    2.05,
-                    6.8
-                  ],
-                  "confidence": 0.99
-                },
-                "CustomerAddress": {
-                  "type": "string",
-                  "valueString": "123 Hobbit Lane Redmond, WA",
-                  "text": "123 Hobbit Lane Redmond, WA",
-                  "page": 1,
-                  "boundingBox": [
-                    6.015,
-                    1.67,
-                    7.1,
-                    1.67,
-                    7.1,
-                    2.03,
-                    6.015,
-                    2.03
-                  ],
-                  "confidence": 0.986
-                },
-                "CustomerPhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-555-5555",
-                  "text": "555-555-5555",
-                  "page": 1,
-                  "boundingBox": [
-                    6.01,
-                    2.12,
-                    6.935,
-                    2.12,
-                    6.935,
-                    2.225,
-                    6.01,
-                    2.225
-                  ],
-                  "confidence": 0.99
-                },
-                "FirstPrice": {
-                  "type": "string",
-                  "valueString": "10.99",
-                  "text": "10.99",
-                  "page": 1,
-                  "boundingBox": [
-                    5.425,
-                    3.21,
-                    5.78,
-                    3.21,
-                    5.78,
-                    3.32,
-                    5.425,
-                    3.32
-                  ],
-                  "confidence": 0.99
-                },
-                "Merchant": {
-                  "type": "string",
-                  "valueString": "A",
-                  "text": "A",
-                  "page": 1,
-                  "boundingBox": [
-                    1.67,
-                    1.125,
-                    1.775,
-                    1.125,
-                    1.775,
-                    1.245,
-                    1.67,
-                    1.245
-                  ],
-                  "confidence": 0.059
-                },
-                "Merchant2": {
-                  "type": "string",
-                  "valueString": "Company",
-                  "text": "Company",
-                  "page": 1,
-                  "boundingBox": [
-                    0.885,
-                    1.125,
-                    1.62,
-                    1.125,
-                    1.62,
-                    1.28,
-                    0.885,
-                    1.28
-                  ],
-                  "confidence": 0.024
-                },
-                "Signature2": {
-                  "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "text": "Frodo Baggins",
-                  "page": 3,
-                  "boundingBox": [
-                    2.07,
-                    6.655,
-                    3.09,
-                    6.655,
-                    3.09,
-                    6.8,
-                    2.07,
-                    6.8
-                  ],
-                  "confidence": 0.99
-                },
-                "Customer2": {
-                  "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "text": "Frodo Baggins",
-                  "page": 3,
-                  "boundingBox": [
-                    6.015,
-                    1.45,
-                    6.95,
-                    1.45,
-                    6.95,
-                    1.595,
-                    6.015,
-                    1.595
-                  ],
-                  "confidence": 0.993
-                },
-                "FirstItem": {
-                  "type": "string",
-                  "valueString": "A",
-                  "text": "A",
-                  "page": 1,
-                  "boundingBox": [
-                    1.085,
-                    3.21,
-                    1.175,
-                    3.21,
-                    1.175,
-                    3.32,
-                    1.085,
-                    3.32
-                  ],
-                  "confidence": 0.99
-                },
-                "Subtotal": {
-                  "type": "string",
-                  "valueString": "300.00",
-                  "text": "300.00",
-                  "page": 1,
-                  "boundingBox": [
-                    6.18,
-                    4.905,
-                    6.63,
-                    4.905,
-                    6.63,
-                    5.015,
-                    6.18,
-                    5.015
-                  ],
-                  "confidence": 0.99
-                },
-                "Total": {
-                  "type": "string",
-                  "valueString": "430.00",
-                  "text": "430.00",
-                  "page": 1,
-                  "boundingBox": [
-                    5.94,
-                    5.565,
-                    6.4,
-                    5.565,
-                    6.4,
-                    5.675,
-                    5.94,
-                    5.675
-                  ],
-                  "confidence": 0.99
-                },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "30.00",
-                  "text": "30.00",
-                  "page": 1,
-                  "boundingBox": [
-                    5.835,
-                    5.125,
-                    6.2,
-                    5.125,
-                    6.2,
-                    5.235,
-                    5.835,
-                    5.235
                   ],
                   "confidence": 0.99
                 }
@@ -1577,32 +1577,32 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/0f730753-627c-4a02-aa9c-705520302ca3/analyzeResults/64447cc6-a56f-430e-ae4f-779e8c82fc77",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/797bec8d-b18d-4daa-b348-38d7aee27b51/analyzeResults/6e43fcb2-3848-4c4d-b5e0-7200771901d1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:20:33 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "2d8e2355-00fd-4ef1-bad0-2f16142d8f13"
+        "Date": "Thu, 20 Apr 2023 20:20:35 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "91f483a3-aaf1-4493-8356-d4732ececde3"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "0a48f958-f5c9-46ed-8160-34de13c095a0",
+        "apim-request-id": "a7ab7c07-a2d0-4b6c-a5ab-8be9f1065a69",
         "Content-Length": "10278",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:20:31 GMT",
+        "Date": "Thu, 20 Apr 2023 20:20:34 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "30",
+        "x-envoy-upstream-service-time": "32",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:20:21Z",
-        "lastUpdatedDateTime": "2023-04-14T18:20:29Z",
+        "createdDateTime": "2023-04-20T20:20:25Z",
+        "lastUpdatedDateTime": "2023-04-20T20:20:33Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -2462,13 +2462,268 @@
           ],
           "documentResults": [
             {
-              "docType": "custom:0f730753-627c-4a02-aa9c-705520302ca3",
-              "modelId": "0f730753-627c-4a02-aa9c-705520302ca3",
+              "docType": "custom:797bec8d-b18d-4daa-b348-38d7aee27b51",
+              "modelId": "797bec8d-b18d-4daa-b348-38d7aee27b51",
               "pageRange": [
                 1,
                 3
               ],
               "fields": {
+                "Tax": {
+                  "type": "string",
+                  "valueString": "30.00",
+                  "text": "30.00",
+                  "page": 1,
+                  "boundingBox": [
+                    5.835,
+                    5.125,
+                    6.2,
+                    5.125,
+                    6.2,
+                    5.235,
+                    5.835,
+                    5.235
+                  ],
+                  "confidence": 0.99
+                },
+                "Customer2": {
+                  "type": "string",
+                  "valueString": "Frodo Baggins",
+                  "text": "Frodo Baggins",
+                  "page": 3,
+                  "boundingBox": [
+                    6.015,
+                    1.45,
+                    6.95,
+                    1.45,
+                    6.95,
+                    1.595,
+                    6.015,
+                    1.595
+                  ],
+                  "confidence": 0.993
+                },
+                "MerchantPhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-555-5555",
+                  "text": "555-555-5555",
+                  "page": 1,
+                  "boundingBox": [
+                    0.885,
+                    2.29,
+                    1.81,
+                    2.29,
+                    1.81,
+                    2.395,
+                    0.885,
+                    2.395
+                  ],
+                  "confidence": 0.99
+                },
+                "Subtotal": {
+                  "type": "string",
+                  "valueString": "300.00",
+                  "text": "300.00",
+                  "page": 1,
+                  "boundingBox": [
+                    6.18,
+                    4.905,
+                    6.63,
+                    4.905,
+                    6.63,
+                    5.015,
+                    6.18,
+                    5.015
+                  ],
+                  "confidence": 0.99
+                },
+                "CustomerName": {
+                  "type": "string",
+                  "valueString": "Bilbo Baggins",
+                  "text": "Bilbo Baggins",
+                  "page": 1,
+                  "boundingBox": [
+                    6.015,
+                    1.45,
+                    6.895,
+                    1.45,
+                    6.895,
+                    1.595,
+                    6.015,
+                    1.595
+                  ],
+                  "confidence": 0.992
+                },
+                "Signature2": {
+                  "type": "string",
+                  "valueString": "Frodo Baggins",
+                  "text": "Frodo Baggins",
+                  "page": 3,
+                  "boundingBox": [
+                    2.07,
+                    6.655,
+                    3.09,
+                    6.655,
+                    3.09,
+                    6.8,
+                    2.07,
+                    6.8
+                  ],
+                  "confidence": 0.99
+                },
+                "FirstQuantity": {
+                  "type": "string",
+                  "valueString": "1",
+                  "text": "1",
+                  "page": 1,
+                  "boundingBox": [
+                    3.26,
+                    3.21,
+                    3.32,
+                    3.21,
+                    3.32,
+                    3.32,
+                    3.26,
+                    3.32
+                  ],
+                  "confidence": 0.993
+                },
+                "Merchant": {
+                  "type": "string",
+                  "valueString": "A",
+                  "text": "A",
+                  "page": 1,
+                  "boundingBox": [
+                    1.67,
+                    1.125,
+                    1.775,
+                    1.125,
+                    1.775,
+                    1.245,
+                    1.67,
+                    1.245
+                  ],
+                  "confidence": 0.059
+                },
+                "FirstItem": {
+                  "type": "string",
+                  "valueString": "A",
+                  "text": "A",
+                  "page": 1,
+                  "boundingBox": [
+                    1.085,
+                    3.21,
+                    1.175,
+                    3.21,
+                    1.175,
+                    3.32,
+                    1.085,
+                    3.32
+                  ],
+                  "confidence": 0.99
+                },
+                "FirstPrice": {
+                  "type": "string",
+                  "valueString": "10.99",
+                  "text": "10.99",
+                  "page": 1,
+                  "boundingBox": [
+                    5.425,
+                    3.21,
+                    5.78,
+                    3.21,
+                    5.78,
+                    3.32,
+                    5.425,
+                    3.32
+                  ],
+                  "confidence": 0.99
+                },
+                "Merchant2": {
+                  "type": "string",
+                  "valueString": "Company",
+                  "text": "Company",
+                  "page": 1,
+                  "boundingBox": [
+                    0.885,
+                    1.125,
+                    1.62,
+                    1.125,
+                    1.62,
+                    1.28,
+                    0.885,
+                    1.28
+                  ],
+                  "confidence": 0.024
+                },
+                "CustomerAddress": {
+                  "type": "string",
+                  "valueString": "123 Hobbit Lane Redmond, WA",
+                  "text": "123 Hobbit Lane Redmond, WA",
+                  "page": 1,
+                  "boundingBox": [
+                    6.015,
+                    1.67,
+                    7.1,
+                    1.67,
+                    7.1,
+                    2.03,
+                    6.015,
+                    2.03
+                  ],
+                  "confidence": 0.986
+                },
+                "Total": {
+                  "type": "string",
+                  "valueString": "430.00",
+                  "text": "430.00",
+                  "page": 1,
+                  "boundingBox": [
+                    5.94,
+                    5.565,
+                    6.4,
+                    5.565,
+                    6.4,
+                    5.675,
+                    5.94,
+                    5.675
+                  ],
+                  "confidence": 0.99
+                },
+                "Signature": {
+                  "type": "string",
+                  "valueString": "Bilbo Baggins",
+                  "text": "Bilbo Baggins",
+                  "page": 1,
+                  "boundingBox": [
+                    2.05,
+                    6.655,
+                    3.04,
+                    6.655,
+                    3.04,
+                    6.8,
+                    2.05,
+                    6.8
+                  ],
+                  "confidence": 0.99
+                },
+                "CustomerPhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-555-5555",
+                  "text": "555-555-5555",
+                  "page": 1,
+                  "boundingBox": [
+                    6.01,
+                    2.12,
+                    6.935,
+                    2.12,
+                    6.935,
+                    2.225,
+                    6.01,
+                    2.225
+                  ],
+                  "confidence": 0.99
+                },
                 "Total2": {
                   "type": "string",
                   "valueString": "4300.00",
@@ -2503,23 +2758,6 @@
                   ],
                   "confidence": 0.986
                 },
-                "CustomerName": {
-                  "type": "string",
-                  "valueString": "Bilbo Baggins",
-                  "text": "Bilbo Baggins",
-                  "page": 1,
-                  "boundingBox": [
-                    6.015,
-                    1.45,
-                    6.895,
-                    1.45,
-                    6.895,
-                    1.595,
-                    6.015,
-                    1.595
-                  ],
-                  "confidence": 0.992
-                },
                 "Tip": {
                   "type": "string",
                   "valueString": "100.00",
@@ -2534,244 +2772,6 @@
                     5.455,
                     5.81,
                     5.455
-                  ],
-                  "confidence": 0.99
-                },
-                "MerchantPhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-555-5555",
-                  "text": "555-555-5555",
-                  "page": 1,
-                  "boundingBox": [
-                    0.885,
-                    2.29,
-                    1.81,
-                    2.29,
-                    1.81,
-                    2.395,
-                    0.885,
-                    2.395
-                  ],
-                  "confidence": 0.99
-                },
-                "FirstQuantity": {
-                  "type": "string",
-                  "valueString": "1",
-                  "text": "1",
-                  "page": 1,
-                  "boundingBox": [
-                    3.26,
-                    3.21,
-                    3.32,
-                    3.21,
-                    3.32,
-                    3.32,
-                    3.26,
-                    3.32
-                  ],
-                  "confidence": 0.993
-                },
-                "Signature": {
-                  "type": "string",
-                  "valueString": "Bilbo Baggins",
-                  "text": "Bilbo Baggins",
-                  "page": 1,
-                  "boundingBox": [
-                    2.05,
-                    6.655,
-                    3.04,
-                    6.655,
-                    3.04,
-                    6.8,
-                    2.05,
-                    6.8
-                  ],
-                  "confidence": 0.99
-                },
-                "CustomerAddress": {
-                  "type": "string",
-                  "valueString": "123 Hobbit Lane Redmond, WA",
-                  "text": "123 Hobbit Lane Redmond, WA",
-                  "page": 1,
-                  "boundingBox": [
-                    6.015,
-                    1.67,
-                    7.1,
-                    1.67,
-                    7.1,
-                    2.03,
-                    6.015,
-                    2.03
-                  ],
-                  "confidence": 0.986
-                },
-                "CustomerPhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-555-5555",
-                  "text": "555-555-5555",
-                  "page": 1,
-                  "boundingBox": [
-                    6.01,
-                    2.12,
-                    6.935,
-                    2.12,
-                    6.935,
-                    2.225,
-                    6.01,
-                    2.225
-                  ],
-                  "confidence": 0.99
-                },
-                "FirstPrice": {
-                  "type": "string",
-                  "valueString": "10.99",
-                  "text": "10.99",
-                  "page": 1,
-                  "boundingBox": [
-                    5.425,
-                    3.21,
-                    5.78,
-                    3.21,
-                    5.78,
-                    3.32,
-                    5.425,
-                    3.32
-                  ],
-                  "confidence": 0.99
-                },
-                "Merchant": {
-                  "type": "string",
-                  "valueString": "A",
-                  "text": "A",
-                  "page": 1,
-                  "boundingBox": [
-                    1.67,
-                    1.125,
-                    1.775,
-                    1.125,
-                    1.775,
-                    1.245,
-                    1.67,
-                    1.245
-                  ],
-                  "confidence": 0.059
-                },
-                "Merchant2": {
-                  "type": "string",
-                  "valueString": "Company",
-                  "text": "Company",
-                  "page": 1,
-                  "boundingBox": [
-                    0.885,
-                    1.125,
-                    1.62,
-                    1.125,
-                    1.62,
-                    1.28,
-                    0.885,
-                    1.28
-                  ],
-                  "confidence": 0.024
-                },
-                "Signature2": {
-                  "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "text": "Frodo Baggins",
-                  "page": 3,
-                  "boundingBox": [
-                    2.07,
-                    6.655,
-                    3.09,
-                    6.655,
-                    3.09,
-                    6.8,
-                    2.07,
-                    6.8
-                  ],
-                  "confidence": 0.99
-                },
-                "Customer2": {
-                  "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "text": "Frodo Baggins",
-                  "page": 3,
-                  "boundingBox": [
-                    6.015,
-                    1.45,
-                    6.95,
-                    1.45,
-                    6.95,
-                    1.595,
-                    6.015,
-                    1.595
-                  ],
-                  "confidence": 0.993
-                },
-                "FirstItem": {
-                  "type": "string",
-                  "valueString": "A",
-                  "text": "A",
-                  "page": 1,
-                  "boundingBox": [
-                    1.085,
-                    3.21,
-                    1.175,
-                    3.21,
-                    1.175,
-                    3.32,
-                    1.085,
-                    3.32
-                  ],
-                  "confidence": 0.99
-                },
-                "Subtotal": {
-                  "type": "string",
-                  "valueString": "300.00",
-                  "text": "300.00",
-                  "page": 1,
-                  "boundingBox": [
-                    6.18,
-                    4.905,
-                    6.63,
-                    4.905,
-                    6.63,
-                    5.015,
-                    6.18,
-                    5.015
-                  ],
-                  "confidence": 0.99
-                },
-                "Total": {
-                  "type": "string",
-                  "valueString": "430.00",
-                  "text": "430.00",
-                  "page": 1,
-                  "boundingBox": [
-                    5.94,
-                    5.565,
-                    6.4,
-                    5.565,
-                    6.4,
-                    5.675,
-                    5.94,
-                    5.675
-                  ],
-                  "confidence": 0.99
-                },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "30.00",
-                  "text": "30.00",
-                  "page": 1,
-                  "boundingBox": [
-                    5.835,
-                    5.125,
-                    6.2,
-                    5.125,
-                    6.2,
-                    5.235,
-                    5.835,
-                    5.235
                   ],
                   "confidence": 0.99
                 }
