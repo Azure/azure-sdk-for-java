@@ -154,7 +154,7 @@ public class TestUtils {
     }
 
     public static String getEndpoint() {
-        return getPropertyValue("AZURE_SERVICEBUS_EDNPOINT_SUFFIX", ".servicebus.windows.net");
+        return getPropertyValue("AZURE_SERVICEBUS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     }
 
     /**

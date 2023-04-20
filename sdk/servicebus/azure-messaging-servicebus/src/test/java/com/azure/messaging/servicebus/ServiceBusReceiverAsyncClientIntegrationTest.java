@@ -1506,14 +1506,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         });
     }
 
-    private int completeMessages(ServiceBusReceiverAsyncClient client, List<ServiceBusReceivedMessage> messages) {
-        StepVerifier.create(Flux.fromIterable(messages)
-            .flatMap(m -> client.complete(m).doOnSuccess(i -> logMessage(m, client.getEntityPath(), "completed message"))))
-            .verifyComplete();
-
-        return messages.size();
-    }
-
     /**
      * Class represents various options while creating receiver/sender client.
      */
