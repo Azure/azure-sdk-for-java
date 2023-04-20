@@ -581,7 +581,6 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * @return the max number of block bytes that can be uploaded based on service version.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public int getMaxAppendBlockBytes() {
         if (appendBlobAsyncClient.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()) {
             return MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
