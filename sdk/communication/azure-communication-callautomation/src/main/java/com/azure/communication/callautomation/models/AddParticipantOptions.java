@@ -18,7 +18,7 @@ public final class AddParticipantOptions {
     /**
      * Information for the target being add
      */
-    private final CallInvite target;
+    private final CallInvite targetParticipant;
 
     /**
      * The operational context
@@ -33,18 +33,18 @@ public final class AddParticipantOptions {
 
     /**
      * Constructor
-     * @param target target callinvite
+     * @param targetParticipant target callinvite
      */
-    public AddParticipantOptions(CallInvite target) {
-        this.target = target;
+    public AddParticipantOptions(CallInvite targetParticipant) {
+        this.targetParticipant = targetParticipant;
     }
 
     /**
      * Get Information for participant to add
      * @return target callInvite
      */
-    public CallInvite getTarget() {
-        return target;
+    public CallInvite getTargetParticipant() {
+        return targetParticipant;
     }
 
 

@@ -16,7 +16,7 @@ import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -141,20 +141,20 @@ public class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param target A {@link CallInvite} representing the target participant of this transfer.
+     * @param targetParticipant A {@link CallInvite} representing the targetParticipant participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferCallToParticipant(CallInvite target) {
-        return callConnectionAsync.transferCallToParticipant(target).block();
+    public TransferCallResult transferCallToParticipant(CallInvite targetParticipant) {
+        return callConnectionAsync.transferCallToParticipant(targetParticipant).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
+     * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,8 +162,8 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TransferCallResult> transferCallToParticipantWithResponse(
-        TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
-        return callConnectionAsync.transferCallToParticipantWithResponseInternal(transferToParticipantCallOptions, context).block();
+        TransferCallToParticipantOptions transferCallToParticipantOptions, Context context) {
+        return callConnectionAsync.transferCallToParticipantWithResponseInternal(transferCallToParticipantOptions, context).block();
     }
 
     /**

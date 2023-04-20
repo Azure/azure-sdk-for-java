@@ -35,7 +35,7 @@ import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -235,40 +235,40 @@ public class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param target A {@link CallInvite} representing the target participant of this transfer.
+     * @param targetParticipant A {@link CallInvite} representing the targetParticipant participant of this transfer.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferCallToParticipant(CallInvite target) {
-        return transferCallToParticipantWithResponse(new TransferToParticipantCallOptions(target)).flatMap(FluxUtil::toMono);
+    public Mono<TransferCallResult> transferCallToParticipant(CallInvite targetParticipant) {
+        return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions(targetParticipant)).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
+     * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransferCallResult>> transferCallToParticipantWithResponse(
-        TransferToParticipantCallOptions transferToParticipantCallOptions) {
-        return withContext(context -> transferCallToParticipantWithResponseInternal(transferToParticipantCallOptions, context));
+        TransferCallToParticipantOptions transferCallToParticipantOptions) {
+        return withContext(context -> transferCallToParticipantWithResponseInternal(transferCallToParticipantOptions, context));
     }
 
     Mono<Response<TransferCallResult>> transferCallToParticipantWithResponseInternal(
-        TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
+        TransferCallToParticipantOptions transferCallToParticipantOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTarget().getTarget()))
-                .setOperationContext(transferToParticipantCallOptions.getOperationContext());
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant().getTargetParticipant()))
+                .setOperationContext(transferCallToParticipantOptions.getOperationContext());
 
-            CallInvite callInvite = transferToParticipantCallOptions.getTarget();
+            CallInvite callInvite = transferCallToParticipantOptions.getTargetParticipant();
 
             if (callInvite.getSipHeaders() != null || callInvite.getVoipHeaders() != null) {
                 request.setCustomContext(new CustomContext()
@@ -316,9 +316,9 @@ public class CallConnectionAsync {
                                                                               Context context) {
         try {
             AddParticipantRequestInternal request = new AddParticipantRequestInternal()
-                .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTarget().getTarget()))
-                .setSourceDisplayName(addParticipantOptions.getTarget().getSourceDisplayName())
-                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTarget().getSourceCallerIdNumber()))
+                .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getTargetParticipant()))
+                .setSourceDisplayName(addParticipantOptions.getTargetParticipant().getSourceDisplayName())
+                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getSourceCallerIdNumber()))
                 .setOperationContext(addParticipantOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
@@ -327,10 +327,10 @@ public class CallConnectionAsync {
             }
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (addParticipantOptions.getTarget().getSipHeaders() != null || addParticipantOptions.getTarget().getVoipHeaders() != null) {
+            if (addParticipantOptions.getTargetParticipant().getSipHeaders() != null || addParticipantOptions.getTargetParticipant().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(addParticipantOptions.getTarget().getSipHeaders());
-                customContext.setVoipHeaders(addParticipantOptions.getTarget().getVoipHeaders());
+                customContext.setSipHeaders(addParticipantOptions.getTargetParticipant().getSipHeaders());
+                customContext.setVoipHeaders(addParticipantOptions.getTargetParticipant().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 
