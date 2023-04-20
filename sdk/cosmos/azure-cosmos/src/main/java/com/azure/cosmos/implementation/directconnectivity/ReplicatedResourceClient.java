@@ -117,7 +117,8 @@ public class ReplicatedResourceClient {
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
 
-            return getStoreResponseMono(request, forceRefreshAndTimeout);
+            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
         };
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> funcDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {
@@ -147,12 +148,14 @@ public class ReplicatedResourceClient {
                     return prepareRequestAsyncDelegate.apply(readRequestClone).flatMap(responseReq -> {
                         logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                         responseReq.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                        return getStoreResponseMono(responseReq, forceRefreshAndTimeout);
+                        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                            forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
                     });
                 } else {
                     logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                     readRequestClone.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                    return getStoreResponseMono(readRequestClone, forceRefreshAndTimeout);
+                    return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                        forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
                 }
 
             };
@@ -170,25 +173,6 @@ public class ReplicatedResourceClient {
                 ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS),
             request,
             addressSelector);
-    }
-
-    private Mono<StoreResponse> getStoreResponseMono(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-        if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0())
-                .timeout(request.requestContext.getEndToEndOperationLatencyPolicyConfig().getEndToEndOperationTimeout())
-                .onErrorMap(throwable -> {
-                    if (throwable instanceof TimeoutException){
-                        CosmosException exception = new RequestCancelledException();
-                        exception.setStackTrace(throwable.getStackTrace());
-                        return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
-                    }
-                    return throwable;
-                });
-        }
-        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-            forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
     }
 
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,

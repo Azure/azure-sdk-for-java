@@ -11,6 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -97,6 +98,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
@@ -941,7 +943,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             QueryInfo finalQueryInfo = queryInfo;
-            return iDocumentQueryExecutionContext.executeAsync()
+            Flux<FeedResponse<T>> feedResponseFlux = iDocumentQueryExecutionContext.executeAsync()
                 .map(tFeedResponse -> {
                     if (finalQueryInfo != null) {
                         if (finalQueryInfo.hasSelectValue()) {
@@ -956,6 +958,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     }
                     return tFeedResponse;
                 });
+
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+                options.getCosmosEndToEndOperationLatencyPolicyConfig() != null ?
+                options.getCosmosEndToEndOperationLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+
+            if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+                return feedResponseFlux
+                    .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                    .onErrorMap(throwable -> {
+                        if (throwable instanceof TimeoutException) {
+                            CosmosException exception = new RequestCancelledException();
+                            exception.setStackTrace(throwable.getStackTrace());
+                            return exception;
+                        }
+                        return throwable;
+                    });
+            }
+
+            return feedResponseFlux;
             // concurrency is set to Queues.SMALL_BUFFER_SIZE to
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
@@ -1160,9 +1181,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // If endToEndOperationLatencyPolicy is set in the query request options,
         // then it should have been populated into request context already
         // otherwise set them here with the client level policy
-        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() == null) {
-            request.requestContext.setEndToEndOperationLantencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
-        }
 
         return populateHeadersAsync(request, RequestVerb.POST)
             .flatMap(requestPopulated ->
@@ -2206,17 +2224,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
 
-            if (options.getCosmosEndToEndLatencyPolicyConfig() != null) {
-                request.requestContext.setEndToEndOperationLantencyPolicyConfig(options.getCosmosEndToEndLatencyPolicyConfig());
-            } else {
-                request.requestContext.setEndToEndOperationLantencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
-            }
-
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+                options.getCosmosEndToEndLatencyPolicyConfig() != null ? options.getCosmosEndToEndLatencyPolicyConfig()
+                    : this.cosmosEndToEndOperationLatencyPolicyConfig;
 
             return requestObs.flatMap(req -> {
+
+                if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+                    return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class))
+                        .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                        .onErrorMap(throwable -> {
+                            if (throwable instanceof TimeoutException) {
+                                CosmosException exception = new RequestCancelledException();
+                                exception.setStackTrace(throwable.getStackTrace());
+                                return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
+                            }
+                            return throwable;
+                        });
+                }
                 return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
             });
 

@@ -44,7 +44,6 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
-    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     public DocumentServiceRequestContext() {}
 
@@ -99,14 +98,6 @@ public class DocumentServiceRequestContext implements Cloneable {
                 this.failedEndpoints.add(address);
             }
         }
-    }
-
-    public void setEndToEndOperationLantencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
-        this.endToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
-    }
-
-    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
-        return endToEndOperationLatencyPolicyConfig;
     }
 
     @Override
