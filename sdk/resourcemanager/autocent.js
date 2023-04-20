@@ -161,7 +161,9 @@ function writeMarkdown() {
                 content +=
                     "    * [" +
                     sdk +
-                    "](https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-" +
+                    "](" +
+                    groupUrl +
+                    "azure-resourcemanager-" +
                     service +
                     "/" +
                     sdk +
