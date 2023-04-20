@@ -80,7 +80,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);

@@ -70,7 +70,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // create call and assert response
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId));
-            CreateCallResult createCallResult = callerClient.createCallWithResponse(createCallOptions, null).getValue();
+            CreateCallResult createCallResult = callerClient.createGroupCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 
@@ -154,7 +154,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // create call and assert response
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId));
-            CreateCallResult createCallResult = callerClient.createCallWithResponse(createCallOptions, null).getValue();
+            CreateCallResult createCallResult = callerClient.createGroupCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 

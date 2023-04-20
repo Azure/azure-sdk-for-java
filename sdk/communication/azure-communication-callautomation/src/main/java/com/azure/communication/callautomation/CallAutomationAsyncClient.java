@@ -89,19 +89,11 @@ public final class CallAutomationAsyncClient {
 
     //region Pre-call Actions
     /**
-     * Create a call connection request from a source identity to a list of target identity.
-     *
-     * @param targets The list of targets.
-     * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful CreateCallConnection request.
+     * Get Source Identity that is used for create and answer call
+     * @return {@link CommunicationUserIdentifier} represent source
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(List<CommunicationIdentifier> targets,
-                                             String callbackUrl) {
-        CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(targets, callbackUrl);
-        return createCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
+    public CommunicationUserIdentifier getSourceIdentity() {
+        return sourceIdentity == null ? null : (CommunicationUserIdentifier) CommunicationIdentifierConverter.convert(sourceIdentity);
     }
 
     /**
@@ -121,16 +113,19 @@ public final class CallAutomationAsyncClient {
     }
 
     /**
-     * Create a group call connection request from a source identity to multiple identities.
+     * Create a call connection request from a source identity to a list of target identity.
      *
-     * @param createGroupCallOptions Options for creating a new group call.
+     * @param targets The list of targets.
+     * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateCallResult>> createCallWithResponse(CreateGroupCallOptions createGroupCallOptions) {
-        return withContext(context -> createCallWithResponseInternal(createGroupCallOptions, context));
+    public Mono<CreateCallResult> createGroupCall(List<CommunicationIdentifier> targets,
+                                                  String callbackUrl) {
+        CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(targets, callbackUrl);
+        return createGroupCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -146,10 +141,23 @@ public final class CallAutomationAsyncClient {
         return withContext(context -> createCallWithResponseInternal(createCallOptions, context));
     }
 
-    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions, Context context) {
+    /**
+     * Create a group call connection request from a source identity to multiple identities.
+     *
+     * @param createGroupCallOptions Options for creating a new group call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful CreateCallConnection request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateCallResult>> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions) {
+        return withContext(context -> createGroupCallWithResponseInternal(createGroupCallOptions, context));
+    }
+
+    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
+            CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
                     context)
@@ -170,50 +178,10 @@ public final class CallAutomationAsyncClient {
         }
     }
 
-    /**
-     * Get Source Identity that is used for create and answer call
-     * @return {@link CommunicationUserIdentifier} represent source
-     */
-    public CommunicationUserIdentifier getSourceIdentity() {
-        return sourceIdentity == null ? null : (CommunicationUserIdentifier) CommunicationIdentifierConverter.convert(sourceIdentity);
-    }
-
-    private CreateCallRequestInternal getCreateCallRequestInternal(CreateGroupCallOptions createCallGroupOptions) {
-        List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargets()
-            .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
-
-        CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
-            .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
-            .setSourceIdentity(sourceIdentity)
-            .setTargets(targetsModel)
-            .setCallbackUri(createCallGroupOptions.getCallbackUrl())
-            .setOperationContext(createCallGroupOptions.getOperationContext());
-
-        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
-            CustomContext customContext = new CustomContext();
-            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
-            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
-            request.setCustomContext(customContext);
-        }
-
-        if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
-            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
-        }
-
-        if (createCallGroupOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallGroupOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
-            request.setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesEndpointUrl());
-        }
-
-        return request;
-    }
-
-    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions, Context context) {
+    Mono<Response<CreateCallResult>> createGroupCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
+            CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
                     context)
@@ -262,6 +230,38 @@ public final class CallAutomationAsyncClient {
 
         if (createCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
             request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesEndpointUrl());
+        }
+
+        return request;
+    }
+
+    private CreateCallRequestInternal getCreateCallRequestInternal(CreateGroupCallOptions createCallGroupOptions) {
+        List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargets()
+            .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+
+        CreateCallRequestInternal request = new CreateCallRequestInternal()
+            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
+            .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
+            .setSourceIdentity(sourceIdentity)
+            .setTargets(targetsModel)
+            .setCallbackUri(createCallGroupOptions.getCallbackUrl())
+            .setOperationContext(createCallGroupOptions.getOperationContext());
+
+        if (createCallGroupOptions.getSipHeaders() != null || createCallGroupOptions.getVoipHeaders() != null) {
+            CustomContext customContext = new CustomContext();
+            customContext.setSipHeaders(createCallGroupOptions.getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getVoipHeaders());
+            request.setCustomContext(customContext);
+        }
+
+        if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
+            MediaStreamingConfigurationInternal streamingConfigurationInternal =
+                getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
+            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
+        }
+
+        if (createCallGroupOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallGroupOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+            request.setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesEndpointUrl());
         }
 
         return request;
