@@ -94,7 +94,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
 
             for (int index = 0; index < (shortString ? this.utf8Value.length : MAX_STRING_BYTES_TO_APPEND + 1); index++) {
                 byte charByte = this.utf8Value[index];
-                if (charByte < 0xFF) charByte++;
+                charByte++;
                 outputStream.write(charByte);
             }
 
