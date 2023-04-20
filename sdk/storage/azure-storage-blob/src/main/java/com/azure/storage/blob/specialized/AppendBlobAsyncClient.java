@@ -82,6 +82,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public static final int MAX_BLOCKS = 50000;
 
     /**
+     * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     */
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = 4 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
+     * For versions 2022-11-02 and above.
+     */
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = 100 * Constants.MB;
+
+    /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
      *
      * @param pipeline The pipeline used to send and receive service requests.
@@ -652,5 +663,19 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(),
             context)
             .map(response -> new SimpleResponse<>(response, null));
+    }
+
+    /**
+     * Get the max number of append block bytes based on service version being used. Service versions 2022-11-02 and
+     * above support uploading block bytes up to 100MB, all older service versions support up to 4MB.
+     *
+     * @return the max number of block bytes that can be uploaded based on service version.
+     */
+    public int getMaxAppendBlockBytes() {
+        if (getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()) {
+            return MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
+        } else {
+            return MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
+        }
     }
 }
