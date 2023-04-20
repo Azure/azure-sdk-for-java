@@ -1713,8 +1713,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         @Override
         public final void run() {
             // log is too noisy when debug is enabled
-            if (logger.isDebugEnabled()) {
-                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
+            if (logger.isTraceEnabled()) {
+                logger.trace("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
             }
             long currentNanoTime = System.nanoTime();
 
