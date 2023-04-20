@@ -21,13 +21,13 @@ public final class ConfidentialLedgerListTests {
         ConfidentialLedgerList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"runningState\":\"Pausing\",\"properties\":{\"ledgerName\":\"jaeq\",\"ledgerUri\":\"qjbasvms\",\"identityServiceUri\":\"qulngsntnbybkzgc\",\"ledgerInternalNamespace\":\"wclxxwrl\",\"ledgerType\":\"Public\",\"provisioningState\":\"Creating\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"dkvwrwjfe\":\"pdappds\",\"je\":\"snhu\",\"hocdgeab\":\"tmrldhugjzzdatq\"},\"location\":\"jczdzevndh\",\"id\":\"gphuticndvka\",\"name\":\"zwyiftyhxhur\",\"type\":\"k\"},{\"runningState\":\"Unknown\",\"properties\":{\"ledgerName\":\"lniwpwcukjfkgiaw\",\"ledgerUri\":\"lryplwckbasyy\",\"identityServiceUri\":\"ddhsgcbacphe\",\"ledgerInternalNamespace\":\"ot\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Creating\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"f\":\"dgbb\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"},\"location\":\"kdosvqw\",\"id\":\"algbquxigjyjg\",\"name\":\"jaoyfhrtx\",\"type\":\"lnerkujysvleju\"},{\"runningState\":\"Resuming\",\"properties\":{\"ledgerName\":\"rlyxwjkcprbnw\",\"ledgerUri\":\"gjvtbv\",\"identityServiceUri\":\"sszdnru\",\"ledgerInternalNamespace\":\"guhmuouqfpr\",\"ledgerType\":\"Public\",\"provisioningState\":\"Canceled\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"rfidfvzwdz\":\"zuckyfi\",\"sdkf\":\"htymw\",\"pvkmijcmmxdcuf\":\"hwxmnteiwa\",\"cxtbzsg\":\"fsrpymzidnse\"},\"location\":\"x\",\"id\":\"yc\",\"name\":\"sne\",\"type\":\"mdwzjeiachboo\"},{\"runningState\":\"Unknown\",\"properties\":{\"ledgerName\":\"osfqpteehzzv\",\"ledgerUri\":\"yqrimzin\",\"identityServiceUri\":\"swjdkirso\",\"ledgerInternalNamespace\":\"qxhcrmn\",\"ledgerType\":\"Private\",\"provisioningState\":\"Unknown\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"l\":\"ocxscpaierhhbcs\"},\"location\":\"e\",\"id\":\"mmajtjaodx\",\"name\":\"bnbdxkqpxokajion\",\"type\":\"imexgstxgcpodgma\"}],\"nextLink\":\"r\"}")
+                    "{\"value\":[{\"properties\":{\"ledgerName\":\"wjzrnfygxgisp\",\"ledgerUri\":\"vtz\",\"identityServiceUri\":\"ufubl\",\"ledgerInternalNamespace\":\"fxqeof\",\"runningState\":\"Active\",\"ledgerType\":\"Private\",\"provisioningState\":\"Creating\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"s\",\"tags\":{\"nbybkzgcwrwcl\":\"mjqulngsn\",\"cjdkwtnhxbnjbi\":\"xwrljdouskcqvkoc\",\"jwnzlljfmp\":\"sqrglssainq\",\"yqduujit\":\"eebvmgxsab\"},\"id\":\"jczdzevndh\",\"name\":\"rwpdappdsbdkvwrw\",\"type\":\"feusnhut\"},{\"properties\":{\"ledgerName\":\"tmrldhugjzzdatq\",\"ledgerUri\":\"oc\",\"identityServiceUri\":\"eablg\",\"ledgerInternalNamespace\":\"uticndvkaozwyif\",\"runningState\":\"Resuming\",\"ledgerType\":\"Private\",\"provisioningState\":\"Unknown\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"tyxolniwpwc\",\"tags\":{\"ryplwckbasyypn\":\"fkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\",\"gakeqsr\":\"dlikwyqkgfgibma\"},\"id\":\"yb\",\"name\":\"qqedqytbciqfou\",\"type\":\"lmmnkzsmodmglo\"}],\"nextLink\":\"pbkwtmu\"}")
                 .toObject(ConfidentialLedgerList.class);
-        Assertions.assertEquals("jczdzevndh", model.value().get(0).location());
-        Assertions.assertEquals(RunningState.PAUSING, model.value().get(0).runningState());
-        Assertions.assertEquals(LedgerType.PUBLIC, model.value().get(0).properties().ledgerType());
-        Assertions.assertEquals("pdappds", model.value().get(0).tags().get("dkvwrwjfe"));
-        Assertions.assertEquals("r", model.nextLink());
+        Assertions.assertEquals("s", model.value().get(0).location());
+        Assertions.assertEquals("mjqulngsn", model.value().get(0).tags().get("nbybkzgcwrwcl"));
+        Assertions.assertEquals(RunningState.ACTIVE, model.value().get(0).properties().runningState());
+        Assertions.assertEquals(LedgerType.PRIVATE, model.value().get(0).properties().ledgerType());
+        Assertions.assertEquals("pbkwtmu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,57 +38,46 @@ public final class ConfidentialLedgerListTests {
                     Arrays
                         .asList(
                             new ConfidentialLedgerInner()
-                                .withLocation("jczdzevndh")
-                                .withRunningState(RunningState.PAUSING)
-                                .withProperties(
-                                    new LedgerProperties()
-                                        .withLedgerType(LedgerType.PUBLIC)
-                                        .withAadBasedSecurityPrincipals(Arrays.asList())
-                                        .withCertBasedSecurityPrincipals(Arrays.asList()))
-                                .withTags(mapOf("dkvwrwjfe", "pdappds", "je", "snhu", "hocdgeab", "tmrldhugjzzdatq")),
-                            new ConfidentialLedgerInner()
-                                .withLocation("kdosvqw")
-                                .withRunningState(RunningState.UNKNOWN)
-                                .withProperties(
-                                    new LedgerProperties()
-                                        .withLedgerType(LedgerType.UNKNOWN)
-                                        .withAadBasedSecurityPrincipals(Arrays.asList())
-                                        .withCertBasedSecurityPrincipals(Arrays.asList()))
-                                .withTags(mapOf("f", "dgbb", "bexppb", "dgmb", "rolfpfp", "tq")),
-                            new ConfidentialLedgerInner()
-                                .withLocation("x")
-                                .withRunningState(RunningState.RESUMING)
-                                .withProperties(
-                                    new LedgerProperties()
-                                        .withLedgerType(LedgerType.PUBLIC)
-                                        .withAadBasedSecurityPrincipals(Arrays.asList())
-                                        .withCertBasedSecurityPrincipals(Arrays.asList()))
+                                .withLocation("s")
                                 .withTags(
                                     mapOf(
-                                        "rfidfvzwdz",
-                                        "zuckyfi",
-                                        "sdkf",
-                                        "htymw",
-                                        "pvkmijcmmxdcuf",
-                                        "hwxmnteiwa",
-                                        "cxtbzsg",
-                                        "fsrpymzidnse")),
-                            new ConfidentialLedgerInner()
-                                .withLocation("e")
-                                .withRunningState(RunningState.UNKNOWN)
+                                        "nbybkzgcwrwcl",
+                                        "mjqulngsn",
+                                        "cjdkwtnhxbnjbi",
+                                        "xwrljdouskcqvkoc",
+                                        "jwnzlljfmp",
+                                        "sqrglssainq",
+                                        "yqduujit",
+                                        "eebvmgxsab"))
                                 .withProperties(
                                     new LedgerProperties()
+                                        .withRunningState(RunningState.ACTIVE)
                                         .withLedgerType(LedgerType.PRIVATE)
                                         .withAadBasedSecurityPrincipals(Arrays.asList())
-                                        .withCertBasedSecurityPrincipals(Arrays.asList()))
-                                .withTags(mapOf("l", "ocxscpaierhhbcs"))))
-                .withNextLink("r");
+                                        .withCertBasedSecurityPrincipals(Arrays.asList())),
+                            new ConfidentialLedgerInner()
+                                .withLocation("tyxolniwpwc")
+                                .withTags(
+                                    mapOf(
+                                        "ryplwckbasyypn",
+                                        "fkgiawxk",
+                                        "phejkotynqgoulz",
+                                        "dhsgcba",
+                                        "gakeqsr",
+                                        "dlikwyqkgfgibma"))
+                                .withProperties(
+                                    new LedgerProperties()
+                                        .withRunningState(RunningState.RESUMING)
+                                        .withLedgerType(LedgerType.PRIVATE)
+                                        .withAadBasedSecurityPrincipals(Arrays.asList())
+                                        .withCertBasedSecurityPrincipals(Arrays.asList()))))
+                .withNextLink("pbkwtmu");
         model = BinaryData.fromObject(model).toObject(ConfidentialLedgerList.class);
-        Assertions.assertEquals("jczdzevndh", model.value().get(0).location());
-        Assertions.assertEquals(RunningState.PAUSING, model.value().get(0).runningState());
-        Assertions.assertEquals(LedgerType.PUBLIC, model.value().get(0).properties().ledgerType());
-        Assertions.assertEquals("pdappds", model.value().get(0).tags().get("dkvwrwjfe"));
-        Assertions.assertEquals("r", model.nextLink());
+        Assertions.assertEquals("s", model.value().get(0).location());
+        Assertions.assertEquals("mjqulngsn", model.value().get(0).tags().get("nbybkzgcwrwcl"));
+        Assertions.assertEquals(RunningState.ACTIVE, model.value().get(0).properties().runningState());
+        Assertions.assertEquals(LedgerType.PRIVATE, model.value().get(0).properties().ledgerType());
+        Assertions.assertEquals("pbkwtmu", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")
