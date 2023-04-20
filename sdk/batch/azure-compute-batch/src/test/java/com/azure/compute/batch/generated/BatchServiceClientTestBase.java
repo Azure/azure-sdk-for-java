@@ -38,7 +38,7 @@ import org.junit.Assert;
 
 
 class BatchServiceClientTestBase extends TestBase {
-	static BatchServiceClientBuilder batchClientBulder;
+	static BatchServiceClientBuilder batchClientBuilder;
 	static final int MAX_LEN_ID = 64;
 
 	 public enum AuthMode {
@@ -47,17 +47,17 @@ class BatchServiceClientTestBase extends TestBase {
 	
     @Override
     protected void beforeTest() {
-    	batchClientBulder =
+    	batchClientBuilder =
                 new BatchServiceClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-        	batchClientBulder
+        	batchClientBuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-        	batchClientBulder
+        	batchClientBuilder
                     .addPolicy(interceptorManager.getRecordPolicy());
         }
         
@@ -73,7 +73,7 @@ class BatchServiceClientTestBase extends TestBase {
     
     public void authenticateClient(AuthMode auth) throws Exception {
     	if (auth == AuthMode.AAD) {
-    		batchClientBulder.credential(new DefaultAzureCredentialBuilder().build());
+    		batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
     	}
     	else if (auth == AuthMode.SharedKey) {
     		//TODO Add support for Shared Key Auth
@@ -109,7 +109,7 @@ class BatchServiceClientTestBase extends TestBase {
 
         // 10 minutes
         long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
-        PoolClient poolClient = batchClientBulder.buildPoolClient();
+        PoolClient poolClient = batchClientBuilder.buildPoolClient();
         
         
         	
@@ -210,9 +210,17 @@ class BatchServiceClientTestBase extends TestBase {
         return new NetworkConfiguration().setSubnetId(vNetResourceId);
     }
     
+    public void threadSleepInRecordMode(long millis) throws InterruptedException {
+        // Called for long timeouts which should only happen in Record mode.
+        // Speeds up the tests in Playback mode.
+        if (getTestMode() == TestMode.RECORD) {
+            Thread.sleep(millis);
+        }
+    }
+    
     public static boolean poolExists(String poolId) {
     	try {
-    		PoolClient poolOps = batchClientBulder.buildPoolClient();
+    		PoolClient poolOps = batchClientBuilder.buildPoolClient();
         	poolOps.exists(poolId);
         	return true;
         }

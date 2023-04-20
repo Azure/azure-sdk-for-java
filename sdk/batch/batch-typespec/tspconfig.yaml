@@ -10,4 +10,4 @@ options:
       - "2022-10-01"
     namer: false
     generate-samples: false
-    generate-tests: true
+    generate-tests: false

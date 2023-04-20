@@ -44,6 +44,7 @@ public final class UserAccount {
     @JsonProperty(value = "windowsUserConfiguration")
     private WindowsUserConfiguration windowsUserConfiguration;
 
+    //TODO: Changing password required to false is temporary
     /**
      * Creates an instance of UserAccount class.
      *
