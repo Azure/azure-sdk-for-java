@@ -396,8 +396,7 @@ public class CallMediaAsync {
         return recognizeRequest;
     }
 
-    private PlaySourceInternal getPlaySourceInternalFromRecognizeOptions(CallMediaRecognizeOptions recognizeOptions)
-    {
+    private PlaySourceInternal getPlaySourceInternalFromRecognizeOptions(CallMediaRecognizeOptions recognizeOptions) {
         PlaySourceInternal playSourceInternal = null;
         if (recognizeOptions.getPlayPrompt() != null) {
             PlaySource playSource = recognizeOptions.getPlayPrompt();
