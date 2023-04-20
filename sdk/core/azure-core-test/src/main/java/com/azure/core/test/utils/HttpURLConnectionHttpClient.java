@@ -5,6 +5,7 @@ package com.azure.core.test.utils;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -21,8 +22,6 @@ import java.net.HttpURLConnection;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A {@link HttpClient} that uses the JDK {@link HttpURLConnection}.
@@ -101,7 +100,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             for (HttpHeader header : headers) {
                 String name = header.getName();
 
-                connection.setRequestProperty(name, headers.getValue(name));
+                connection.setRequestProperty(name, header.getValue());
             }
         }
     }
@@ -163,19 +162,19 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
             return connection.getHeaderField(name);
         }
 
         @Override
+        public String getHeaderValue(HttpHeaderName headerName) {
+            return connection.getHeaderField(headerName.getCaseInsensitiveName());
+        }
+
+        @Override
         public HttpHeaders getHeaders() {
-            HttpHeaders ret = new HttpHeaders();
-            for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
-                for (String value : entry.getValue()) {
-                    ret.add(entry.getKey(), value);
-                }
-            }
-            return ret;
+            return new HttpHeaders().setAll(connection.getHeaderFields());
         }
 
         @Override

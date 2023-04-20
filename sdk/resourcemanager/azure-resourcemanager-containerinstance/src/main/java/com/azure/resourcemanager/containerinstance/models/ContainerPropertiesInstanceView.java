@@ -35,6 +35,10 @@ public final class ContainerPropertiesInstanceView {
     @JsonProperty(value = "events", access = JsonProperty.Access.WRITE_ONLY)
     private List<Event> events;
 
+    /** Creates an instance of ContainerPropertiesInstanceView class. */
+    public ContainerPropertiesInstanceView() {
+    }
+
     /**
      * Get the restartCount property: The number of times that the container instance has been restarted.
      *

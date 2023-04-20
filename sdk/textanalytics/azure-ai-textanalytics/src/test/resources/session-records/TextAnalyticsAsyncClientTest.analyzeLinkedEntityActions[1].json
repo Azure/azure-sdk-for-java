@@ -1,67 +1,248 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "70549222-4b3d-4430-b7d7-b3a43c9c8802",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "299",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 19:01:27 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "37cb6c42-2623-418a-a585-4f2bbdba65ee"
+      },
+      "RequestBody": {
+        "displayName": "Test1",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week.",
+              "language": "en"
+            },
+            {
+              "id": "1",
+              "text": "I work at Microsoft.",
+              "language": "en"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "EntityLinking",
+            "parameters": {
+              "loggingOptOut": false,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "06029ab3-2b0b-479c-aa1c-dc153e49428f",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 19:01:26 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/5d374be7-2896-4989-8b6f-3540efcb960c?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "174",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "169",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/24eadb2e-1b57-4af5-9803-5d82a4e8f599?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "8e3460e0-a1e1-400d-bd37-b776dbaee53d",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Mon, 14 Nov 2022 19:21:48 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/5d374be7-2896-4989-8b6f-3540efcb960c?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 19:01:58 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b4b6d722-f88e-449d-932f-cc7aaf28d57c"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "7f3ee4a2-7323-4732-83f8-f918d1bb3d47",
+        "Content-Length": "993",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 19:01:57 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "337",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "5d374be7-2896-4989-8b6f-3540efcb960c",
+        "lastUpdatedDateTime": "2023-04-05T19:01:31Z",
+        "createdDateTime": "2023-04-05T19:01:27Z",
+        "expirationDateTime": "2023-04-06T19:01:27Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "EntityLinkingLROResults",
+              "lastUpdateDateTime": "2023-04-05T19:01:31.1831912Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "bingId": "5fbba6b8-85e1-4d41-9444-d9055436e473",
+                        "name": "Seattle",
+                        "matches": [
+                          {
+                            "text": "Seattle",
+                            "offset": 26,
+                            "length": 7,
+                            "confidenceScore": 0.19
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Seattle",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "bingId": "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85",
+                        "name": "Microsoft",
+                        "matches": [
+                          {
+                            "text": "Microsoft",
+                            "offset": 10,
+                            "length": 9,
+                            "confidenceScore": 0.25
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Microsoft",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/24eadb2e-1b57-4af5-9803-5d82a4e8f599?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1df0aa91-f58b-4d2f-86be-e2881c3d0f3b"
-    },
-    "Response" : {
-      "content-length" : "1052",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "60",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "81361a76-db11-46d1-86f5-cb1ef6b28a29",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"24eadb2e-1b57-4af5-9803-5d82a4e8f599\",\"lastUpdateDateTime\":\"2022-11-14T19:21:50Z\",\"createdDateTime\":\"2022-11-14T19:21:48Z\",\"expirationDateTime\":\"2022-11-15T19:21:48Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"EntityLinkingLROResults\",\"lastUpdateDateTime\":\"2022-11-14T19:21:50.5601506Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}]}}",
-      "Date" : "Mon, 14 Nov 2022 19:22:18 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/24eadb2e-1b57-4af5-9803-5d82a4e8f599?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "111d07f4-c3cf-4e58-903d-3d73f9029892"
-    },
-    "Response" : {
-      "content-length" : "1052",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "33",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "34f9849a-a647-413d-b968-78a7731f227b",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"24eadb2e-1b57-4af5-9803-5d82a4e8f599\",\"lastUpdateDateTime\":\"2022-11-14T19:21:50Z\",\"createdDateTime\":\"2022-11-14T19:21:48Z\",\"expirationDateTime\":\"2022-11-15T19:21:48Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"EntityLinkingLROResults\",\"lastUpdateDateTime\":\"2022-11-14T19:21:50.5601506Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"REDACTED\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}]}}",
-      "Date" : "Mon, 14 Nov 2022 19:22:18 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/5d374be7-2896-4989-8b6f-3540efcb960c?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 19:01:58 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "4695651b-0b0a-4815-8ea3-86be0ebce3e5"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "8e8818c8-db46-41ad-b1d4-fce2ffb1f60d",
+        "Content-Length": "993",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 19:01:58 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "59",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "5d374be7-2896-4989-8b6f-3540efcb960c",
+        "lastUpdatedDateTime": "2023-04-05T19:01:31Z",
+        "createdDateTime": "2023-04-05T19:01:27Z",
+        "expirationDateTime": "2023-04-06T19:01:27Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "EntityLinkingLROResults",
+              "lastUpdateDateTime": "2023-04-05T19:01:31.1831912Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "bingId": "5fbba6b8-85e1-4d41-9444-d9055436e473",
+                        "name": "Seattle",
+                        "matches": [
+                          {
+                            "text": "Seattle",
+                            "offset": 26,
+                            "length": 7,
+                            "confidenceScore": 0.19
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Seattle",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "bingId": "a093e9b9-90f5-a3d5-c4b8-5855e1b01f85",
+                        "name": "Microsoft",
+                        "matches": [
+                          {
+                            "text": "Microsoft",
+                            "offset": 10,
+                            "length": 9,
+                            "confidenceScore": 0.25
+                          }
+                        ],
+                        "language": "en",
+                        "id": "Microsoft",
+                        "url": "REDACTED",
+                        "dataSource": "Wikipedia"
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

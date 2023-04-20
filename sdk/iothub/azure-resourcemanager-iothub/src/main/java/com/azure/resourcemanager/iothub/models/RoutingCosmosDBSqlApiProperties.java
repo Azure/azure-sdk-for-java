@@ -95,6 +95,10 @@ public final class RoutingCosmosDBSqlApiProperties {
     @JsonProperty(value = "partitionKeyTemplate")
     private String partitionKeyTemplate;
 
+    /** Creates an instance of RoutingCosmosDBSqlApiProperties class. */
+    public RoutingCosmosDBSqlApiProperties() {
+    }
+
     /**
      * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:

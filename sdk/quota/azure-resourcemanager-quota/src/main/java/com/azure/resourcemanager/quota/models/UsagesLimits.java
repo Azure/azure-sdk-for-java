@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.models.CurrentUsagesBaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Quota limits. */
 @Fluent
 public final class UsagesLimits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesLimits.class);
-
     /*
      * List of quota limits.
      */
@@ -23,11 +19,14 @@ public final class UsagesLimits {
     private List<CurrentUsagesBaseInner> value;
 
     /*
-     * The URI used to fetch the next page of quota limits. When there are no
-     * more pages, this is null.
+     * The URI used to fetch the next page of quota limits. When there are no more pages, this is null.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of UsagesLimits class. */
+    public UsagesLimits() {
+    }
 
     /**
      * Get the value property: List of quota limits.

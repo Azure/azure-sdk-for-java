@@ -15,6 +15,14 @@ public abstract class TestProxyTestBase extends TestBase {
     static {
         setTestProxyEnabled();
     }
+
+    /**
+     * Creates an instance of {@link TestProxyTestBase}.
+     */
+    public TestProxyTestBase() {
+        super();
+    }
+
     private static TestProxyManager testProxyManager;
 
     /**
@@ -22,10 +30,10 @@ public abstract class TestProxyTestBase extends TestBase {
      * If it is not set, {@link TestMode#PLAYBACK}
      */
     @BeforeAll
-    public static void setup() {
+    public static void setupTestProxy() {
         testMode = initializeTestMode();
         if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            testProxyManager = new TestProxyManager(TestUtils.getRecordFolder());
+            testProxyManager = new TestProxyManager(TestUtils.getRepoRoot());
             testProxyManager.startProxy();
         }
     }
@@ -34,7 +42,7 @@ public abstract class TestProxyTestBase extends TestBase {
      * Performs cleanup actions after all tests are executed.
      */
     @AfterAll
-    public static void teardown() {
+    public static void teardownTestProxy() {
         if (testProxyManager != null) {
             testProxyManager.stopProxy();
         }

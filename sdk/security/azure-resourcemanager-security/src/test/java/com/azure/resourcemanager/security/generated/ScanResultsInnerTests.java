@@ -18,10 +18,10 @@ public final class ScanResultsInnerTests {
         ScanResultsInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"ruleId\":\"auzpjlx\",\"status\":\"NonFinding\",\"isTrimmed\":true,\"queryResults\":[]},\"id\":\"lraymezxlskih\",\"name\":\"xrfdsajre\",\"type\":\"nw\"}]}")
+                    "{\"value\":[{\"properties\":{\"ruleId\":\"egthortudawl\",\"status\":\"InternalError\",\"isTrimmed\":true,\"queryResults\":[]},\"id\":\"ptcbgqnzmnh\",\"name\":\"ilialwcjgc\",\"type\":\"bbcccgz\"},{\"properties\":{\"ruleId\":\"oxnyuffatsg\",\"status\":\"InternalError\",\"isTrimmed\":true,\"queryResults\":[]},\"id\":\"ubhiqdxyur\",\"name\":\"pnuhzafccnu\",\"type\":\"iig\"}]}")
                 .toObject(ScanResultsInner.class);
-        Assertions.assertEquals("auzpjlx", model.value().get(0).properties().ruleId());
-        Assertions.assertEquals(RuleStatus.NON_FINDING, model.value().get(0).properties().status());
+        Assertions.assertEquals("egthortudawl", model.value().get(0).properties().ruleId());
+        Assertions.assertEquals(RuleStatus.INTERNAL_ERROR, model.value().get(0).properties().status());
         Assertions.assertEquals(true, model.value().get(0).properties().isTrimmed());
     }
 
@@ -35,13 +35,20 @@ public final class ScanResultsInnerTests {
                             new ScanResultInner()
                                 .withProperties(
                                     new ScanResultProperties()
-                                        .withRuleId("auzpjlx")
-                                        .withStatus(RuleStatus.NON_FINDING)
+                                        .withRuleId("egthortudawl")
+                                        .withStatus(RuleStatus.INTERNAL_ERROR)
+                                        .withIsTrimmed(true)
+                                        .withQueryResults(Arrays.asList())),
+                            new ScanResultInner()
+                                .withProperties(
+                                    new ScanResultProperties()
+                                        .withRuleId("oxnyuffatsg")
+                                        .withStatus(RuleStatus.INTERNAL_ERROR)
                                         .withIsTrimmed(true)
                                         .withQueryResults(Arrays.asList()))));
         model = BinaryData.fromObject(model).toObject(ScanResultsInner.class);
-        Assertions.assertEquals("auzpjlx", model.value().get(0).properties().ruleId());
-        Assertions.assertEquals(RuleStatus.NON_FINDING, model.value().get(0).properties().status());
+        Assertions.assertEquals("egthortudawl", model.value().get(0).properties().ruleId());
+        Assertions.assertEquals(RuleStatus.INTERNAL_ERROR, model.value().get(0).properties().status());
         Assertions.assertEquals(true, model.value().get(0).properties().isTrimmed());
     }
 }

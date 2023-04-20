@@ -1,26 +1,57 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/data/query",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "95d03d42-0277-4da0-91dc-abe09d6c0a65",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "f3d157fa-9f80-41c9-b69f-ca69a1419623",
-      "content-length" : "143",
-      "x-envoy-upstream-service-time" : "365",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f3d157fa-9f80-41c9-b69f-ca69a1419623",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"id\":{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"timestampList\":[],\"valueList\":[]}]}",
-      "Date" : "Fri, 08 Apr 2022 23:50:15 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/data/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "107",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:09 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "b2039c41-28be-4bff-96de-10d8c9a8671e",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "startTime": "2022-01-01T00:00:00Z",
+        "endTime": "2022-01-01T00:00:00Z",
+        "series": [
+          {
+            "Dim1": "JPN",
+            "Dim2": "JP"
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "3a1f1ac4-fde1-412d-830f-930048747240",
+        "Content-Length": "143",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:09 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "389",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "3a1f1ac4-fde1-412d-830f-930048747240"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": {
+              "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+              "dimension": {
+                "Dim1": "JPN",
+                "Dim2": "JP"
+              }
+            },
+            "timestampList": [],
+            "valueList": []
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

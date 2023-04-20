@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -320,7 +321,7 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
             }
             return testProxyPlaybackClient;
         } else {
@@ -368,9 +369,20 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
             testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
-            testProxyRecordPolicy.startRecording(playbackRecordName);
+            testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
         }
         return testProxyRecordPolicy;
+    }
+
+    /**
+     * Computes the relative path of the record file to the repo root.
+     * @return A {@link File} with the partial path to where the record file lives.
+     */
+    private File getTestProxyRecordFile() {
+        Path recordFolder = TestUtils.getRecordFolder().toPath();
+        Path repoRoot = TestUtils.getRepoRoot();
+        File recordFile = new File(recordFolder.toFile(), playbackRecordName + ".json");
+        return repoRoot.relativize(recordFile.toPath()).toFile();
     }
 
     /*

@@ -467,4 +467,16 @@ public class ReadmeSamples {
             .buildClient();
         // END: readme-sample-enablehttplogging
     }
+
+    public void beginClassifyDocumentFromUrl() throws IOException {
+        // BEGIN: readme-sample-classifyDocument
+        String documentUrl = "{file_source_url}";
+        String classifierId = "{custom_trained_classifier_id}";
+
+        documentAnalysisClient.beginClassifyDocumentFromUrl(classifierId, documentUrl, Context.NONE)
+            .getFinalResult()
+            .getDocuments()
+            .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
+        // END: readme-sample-classifyDocument
+    }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureResource;
 /** Samples for SqlResources CreateUpdateSqlStoredProcedure. */
 public final class SqlResourcesCreateUpdateSqlStoredProcedureSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBSqlStoredProcedureCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBSqlStoredProcedureCreateUpdate.

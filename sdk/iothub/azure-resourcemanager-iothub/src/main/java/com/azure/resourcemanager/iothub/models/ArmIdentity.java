@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** The ArmIdentity model. */
 @Fluent
-public class ArmIdentity {
+public final class ArmIdentity {
     /*
      * Principal Id
      */
@@ -38,6 +38,10 @@ public class ArmIdentity {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ArmUserIdentity> userAssignedIdentities;
+
+    /** Creates an instance of ArmIdentity class. */
+    public ArmIdentity() {
+    }
 
     /**
      * Get the principalId property: Principal Id.

@@ -5,6 +5,7 @@ package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
@@ -42,21 +43,23 @@ public class HttpResponseHeaderDecoderTests {
             }
         };
 
-        HttpResponse response = new MockHttpResponse(null, 200);
-
-        assertThrows(HttpResponseException.class,
-            () -> HttpResponseHeaderDecoder.decode(response, serializer, MockHeaders.class));
+        try (HttpResponse response = new MockHttpResponse(null, 200)) {
+            assertThrows(HttpResponseException.class,
+                () -> HttpResponseHeaderDecoder.decode(response, serializer, MockHeaders.class));
+        }
     }
 
     @Test
     public void headersAreDeserializedToType() {
-        HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().set("mock-a", "a"));
+        try (HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders()
+            .set(HttpHeaderName.fromString("mock-a"), "a"))) {
 
-        Object actual = assertDoesNotThrow(() -> HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(),
-            MockHeaders.class));
-        assertTrue(actual instanceof MockHeaders);
-        MockHeaders mockHeaders = (MockHeaders) actual;
-        assertEquals(Collections.singletonMap("a", "a"), mockHeaders.getHeaderCollection());
+            Object actual = assertDoesNotThrow(() -> HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(),
+                MockHeaders.class));
+            assertTrue(actual instanceof MockHeaders);
+            MockHeaders mockHeaders = (MockHeaders) actual;
+            assertEquals(Collections.singletonMap("a", "a"), mockHeaders.getHeaderCollection());
+        }
     }
 
     public static final class MockHeaders {

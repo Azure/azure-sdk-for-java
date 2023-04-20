@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Deleted configuration store information with extended details. */
-@Fluent
+@Immutable
 public final class DeletedConfigurationStoreInner {
     /*
      * The resource ID for the deleted configuration store.
@@ -35,6 +35,10 @@ public final class DeletedConfigurationStoreInner {
      */
     @JsonProperty(value = "properties")
     private DeletedConfigurationStoreProperties innerProperties;
+
+    /** Creates an instance of DeletedConfigurationStoreInner class. */
+    public DeletedConfigurationStoreInner() {
+    }
 
     /**
      * Get the id property: The resource ID for the deleted configuration store.

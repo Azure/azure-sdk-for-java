@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.azure.core.CoreTestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -70,7 +71,8 @@ public class HttpPipelineTests {
                 }
             }).build();
 
-        HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
+        HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET,
+            createUrl("http://foo.com")));
         assertNotNull(context);
         assertNotNull(pipeline.getHttpClient());
     }
@@ -78,7 +80,7 @@ public class HttpPipelineTests {
     @Test
     public void withNoRequestPolicies() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final URL expectedUrl = new URL("http://my.site.com");
+        final URL expectedUrl = createUrl("http://my.site.com");
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
@@ -99,13 +101,13 @@ public class HttpPipelineTests {
     @Test
     public void withUserAgentRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final URL expectedUrl = new URL("http://my.site.com/1");
+        final URL expectedUrl = createUrl("http://my.site.com/1");
         final String expectedUserAgent = "my-user-agent";
         final HttpClient httpClient = new NoOpHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
-                assertEquals(expectedUserAgent, request.getHeaders().getValue("User-Agent"));
+                assertEquals(expectedUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
                 assertEquals(expectedUrl, request.getUrl());
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -125,13 +127,13 @@ public class HttpPipelineTests {
     @Test
     public void withRequestIdRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final URL expectedUrl = new URL("http://my.site.com/1");
+        final URL expectedUrl = createUrl("http://my.site.com/1");
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     assertEquals(1, request.getHeaders().getSize());
-                    final String requestId = request.getHeaders().getValue("x-ms-client-request-id");
+                    final String requestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                     assertNotNull(requestId);
                     assertFalse(requestId.isEmpty());
 
@@ -152,12 +154,12 @@ public class HttpPipelineTests {
     public void sendSyncWithUserAgentPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final String expectedUserAgent = "my-user-agent";
-        final URL expectedUrl = new URL("http://my.site.com/1");
+        final URL expectedUrl = createUrl("http://my.site.com/1");
         final HttpClient httpClient = new NoOpHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
-                assertEquals(expectedUserAgent, request.getHeaders().getValue("User-Agent"));
+                assertEquals(expectedUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
                 assertEquals(expectedUrl, request.getUrl());
                 return Mono.just(new MockHttpResponse(request, 200));
@@ -178,7 +180,7 @@ public class HttpPipelineTests {
     @Test
     public void sendSyncWithPolicies() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final URL expectedUrl = new URL("http://my.site.com");
+        final URL expectedUrl = createUrl("http://my.site.com");
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override

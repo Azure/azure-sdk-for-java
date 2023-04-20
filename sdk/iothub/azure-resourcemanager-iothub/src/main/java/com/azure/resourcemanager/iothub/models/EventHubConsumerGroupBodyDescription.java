@@ -17,6 +17,10 @@ public final class EventHubConsumerGroupBodyDescription {
     @JsonProperty(value = "properties", required = true)
     private EventHubConsumerGroupName properties;
 
+    /** Creates an instance of EventHubConsumerGroupBodyDescription class. */
+    public EventHubConsumerGroupBodyDescription() {
+    }
+
     /**
      * Get the properties property: The EventHub consumer group name.
      *

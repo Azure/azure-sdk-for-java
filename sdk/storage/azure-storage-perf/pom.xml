@@ -25,25 +25,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.22.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.15.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <version>12.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.18.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
+      <version>12.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
 
     <dependency>
@@ -55,12 +55,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.37.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <dependency>
@@ -115,12 +115,12 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support;dependency} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-aot-graalvm-support-netty</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
+          <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-aot-graalvm-support-netty;dependency} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -130,7 +130,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-identity</artifactId>
-          <version>1.8.1</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+          <version>1.8.2</version>  <!-- {x-version-update;com.azure:azure-identity;dependency} -->
         </dependency>
       </dependencies>
     </profile>

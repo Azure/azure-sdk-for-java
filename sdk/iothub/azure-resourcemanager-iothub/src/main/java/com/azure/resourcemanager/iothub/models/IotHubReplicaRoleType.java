@@ -21,6 +21,15 @@ public final class IotHubReplicaRoleType extends ExpandableStringEnum<IotHubRepl
     public static final IotHubReplicaRoleType SECONDARY = fromString("secondary");
 
     /**
+     * Creates a new instance of IotHubReplicaRoleType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IotHubReplicaRoleType() {
+    }
+
+    /**
      * Creates or finds a IotHubReplicaRoleType from its string representation.
      *
      * @param name a name to look for.

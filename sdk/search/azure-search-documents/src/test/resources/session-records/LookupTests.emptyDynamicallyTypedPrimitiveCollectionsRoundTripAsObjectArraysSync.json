@@ -1,57 +1,102 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-lookup-shared-type-instance')/docs/search.index?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "87f4a07e-7d95-418e-a296-112e7637f63b",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-lookup-shared-type-instance\u0027)/docs/search.index?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "149",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:55:28 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "63ac564b-3e9c-4ded-8f33-483cd6110619"
+      },
+      "RequestBody": {
+        "value": [
+          {
+            "@search.action": "upload",
+            "Doubles": [],
+            "Points": [],
+            "Longs": [],
+            "Ints": [],
+            "Dates": [],
+            "Strings": [],
+            "Key": "key33633a7037847005d",
+            "Bools": []
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "63ac564b-3e9c-4ded-8f33-483cd6110619",
+        "Content-Length": "93",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:55:27 GMT",
+        "elapsed-time": "48",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "63ac564b-3e9c-4ded-8f33-483cd6110619",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "63ac564b-3e9c-4ded-8f33-483cd6110619"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "key": "key33633a7037847005d",
+            "status": true,
+            "errorMessage": null,
+            "statusCode": 201
+          }
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "87f4a07e-7d95-418e-a296-112e7637f63b",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:05:23 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "87f4a07e-7d95-418e-a296-112e7637f63b",
-      "elapsed-time" : "53",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "93",
-      "Body" : "{\"value\":[{\"key\":\"key549293af326fb7358\",\"status\":true,\"errorMessage\":null,\"statusCode\":201}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "87f4a07e-7d95-418e-a296-112e7637f63b",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-lookup-shared-type-instance')/docs('key549293af326fb7358')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "559e8962-d05f-433e-952a-2a55e28d8ce0"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "559e8962-d05f-433e-952a-2a55e28d8ce0",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 21:05:25 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "559e8962-d05f-433e-952a-2a55e28d8ce0",
-      "elapsed-time" : "16",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "111",
-      "Body" : "{\"Key\":\"key549293af326fb7358\",\"Bools\":[],\"Dates\":[],\"Doubles\":[],\"Points\":[],\"Ints\":[],\"Longs\":[],\"Strings\":[]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "559e8962-d05f-433e-952a-2a55e28d8ce0",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "key549293af326fb7358" ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-lookup-shared-type-instance\u0027)/docs(\u0027key33633a7037847005d\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:55:30 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d2c5ea6e-7531-4d2a-99e3-a1fe67460de4"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "d2c5ea6e-7531-4d2a-99e3-a1fe67460de4",
+        "Content-Length": "111",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:55:29 GMT",
+        "elapsed-time": "15",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "d2c5ea6e-7531-4d2a-99e3-a1fe67460de4",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "d2c5ea6e-7531-4d2a-99e3-a1fe67460de4"
+      },
+      "ResponseBody": {
+        "Key": "key33633a7037847005d",
+        "Bools": [],
+        "Dates": [],
+        "Doubles": [],
+        "Points": [],
+        "Ints": [],
+        "Longs": [],
+        "Strings": []
+      }
+    }
+  ],
+  "Variables": {
+    "0": "key33633a7037847005d"
+  }
 }

@@ -29,7 +29,7 @@ To use the [UsernamePasswordCredential][username_password_credential] provider s
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.7.2</version>
+    <version>1.8.2</version>
 </dependency>
 ```
 
@@ -46,6 +46,7 @@ PurviewWorkflowClient purviewWorkflowClient = new PurviewWorkflowClientBuilder()
         .password(Configuration.getGlobalConfiguration().get("PASSWORD", "password"))
         .build())
     .buildClient();
+
 ```
 
 ## Examples

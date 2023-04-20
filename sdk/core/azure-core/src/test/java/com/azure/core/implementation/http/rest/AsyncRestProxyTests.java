@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -103,7 +103,7 @@ public class AsyncRestProxyTests {
                 returnType))
             .assertNext(value -> {
                 assertTrue(value instanceof byte[]);
-                assertArrayEquals(expectedBytes, (byte[]) value);
+                assertArraysEqual(expectedBytes, (byte[]) value);
             })
             .expectComplete()
             .verify();
@@ -140,7 +140,7 @@ public class AsyncRestProxyTests {
                     final int read = inputStream.read(actualBytes);
 
                     assertEquals(available, read, "Should have read same number of bytes available.");
-                    assertArrayEquals(expectedBytes, actualBytes);
+                    assertArraysEqual(expectedBytes, actualBytes);
                 } catch (IOException e) {
                     fail("Should not have thrown an error.", e);
                 }
