@@ -39,7 +39,6 @@ import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -1016,7 +1015,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(
         String name, List<SnapshotSettingFilter> filters) {
-        return beginCreateSnapshotWithResponse(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
+        return beginCreateSnapshot(name, new ConfigurationSettingSnapshot(filters), Context.NONE);
     }
 
     /**
@@ -1025,7 +1024,27 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotWithResponse -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot#String-ConfigurationSettingSnapshot -->
+
+     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot#String-ConfigurationSettingSnapshot -->
+     *
+     * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
+     * @param snapshot The snapshot to create.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link SyncPoller} that polls the creating snapshot operation until it has completed or
+     * has failed. The completed operation returns a {@link ConfigurationSettingSnapshot}.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(
+        String name, ConfigurationSettingSnapshot snapshot, Context context) {
+        return createSnapshotUtilClient.beginCreateSnapshot(name, snapshot, context);
+    }
+
+    /**
+     * Get a {@link ConfigurationSettingSnapshot} by given the snapshot name.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshot#String -->
      * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshot#String -->
      *
@@ -1083,7 +1102,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.
@@ -1125,7 +1144,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag()} ETag}
      *                    is used as an IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.

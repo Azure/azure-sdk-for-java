@@ -291,7 +291,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapshotWithResponse(String, ConfigurationSettingSnapshot)}}
+     * Code snippets for {@link ConfigurationAsyncClient#beginCreateSnapshot(String, ConfigurationSettingSnapshot)}}
      */
     public void createSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
@@ -300,7 +300,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
         String snapshotName = "{snapshotName}";
-        client.beginCreateSnapshotWithResponse(snapshotName,
+        client.beginCreateSnapshot(snapshotName,
             new ConfigurationSettingSnapshot(filters).setRetentionPeriod(Duration.ZERO))
             .flatMap(result -> result.getFinalResult())
             .subscribe(

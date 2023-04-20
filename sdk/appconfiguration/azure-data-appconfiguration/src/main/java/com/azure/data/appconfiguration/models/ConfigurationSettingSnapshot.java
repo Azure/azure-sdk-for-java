@@ -83,40 +83,44 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
 
     static {
-        ConfigurationSettingSnapshotHelper.setAccessor(new ConfigurationSettingSnapshotHelper.ConfigurationSettingSnapshotAccessor() {
+        ConfigurationSettingSnapshotHelper.setAccessor(
+            new ConfigurationSettingSnapshotHelper.ConfigurationSettingSnapshotAccessor() {
             @Override
             public ConfigurationSettingSnapshot setName(ConfigurationSettingSnapshot snapshot, String name) {
                 return snapshot.setName(name);
             }
 
             @Override
-            public ConfigurationSettingSnapshot setStatus(ConfigurationSettingSnapshot snapshot, SnapshotStatus status) {
+            public ConfigurationSettingSnapshot setStatus(ConfigurationSettingSnapshot snapshot,
+                                                          SnapshotStatus status) {
                 return snapshot.setStatus(status);
             }
 
             @Override
-            public ConfigurationSettingSnapshot setCreatedAt(ConfigurationSettingSnapshot snapshot, OffsetDateTime createdAt) {
-                return null;
+            public ConfigurationSettingSnapshot setCreatedAt(ConfigurationSettingSnapshot snapshot,
+                                                             OffsetDateTime createdAt) {
+                return snapshot.setCreatedAt(createdAt);
             }
 
             @Override
-            public ConfigurationSettingSnapshot setExpiresAt(ConfigurationSettingSnapshot snapshot, OffsetDateTime expiresAt) {
-                return null;
+            public ConfigurationSettingSnapshot setExpiresAt(ConfigurationSettingSnapshot snapshot,
+                                                             OffsetDateTime expiresAt) {
+                return snapshot.setExpiresAt(expiresAt);
             }
 
             @Override
             public ConfigurationSettingSnapshot setSize(ConfigurationSettingSnapshot snapshot, Long size) {
-                return null;
+                return snapshot.setSize(size);
             }
 
             @Override
             public ConfigurationSettingSnapshot setItemCount(ConfigurationSettingSnapshot snapshot, Long itemCount) {
-                return null;
+                return snapshot.setItemCount(itemCount);
             }
 
             @Override
             public ConfigurationSettingSnapshot setEtag(ConfigurationSettingSnapshot snapshot, String etag) {
-                return null;
+                return snapshot.setETag(etag);
             }
         });
     }
@@ -200,6 +204,11 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         return this.createdAt;
     }
 
+    private ConfigurationSettingSnapshot setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
     /**
      * Get the expiresAt property: The time that the snapshot will expire.
      *
@@ -207,6 +216,11 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     public OffsetDateTime getExpiresAt() {
         return this.expiresAt;
+    }
+
+    private ConfigurationSettingSnapshot setExpiresAt(OffsetDateTime expiresAt) {
+        this.expiresAt = expiresAt;
+        return this;
     }
 
     /**
@@ -245,6 +259,11 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         return this.size;
     }
 
+    private ConfigurationSettingSnapshot setSize(Long size) {
+        this.size = size;
+        return this;
+    }
+
     /**
      * Get the itemCount property: The amount of key-values in the snapshot.
      *
@@ -252,6 +271,11 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     public Long getItemCount() {
         return this.itemCount;
+    }
+
+    private ConfigurationSettingSnapshot setItemCount(Long itemCount) {
+        this.itemCount = itemCount;
+        return this;
     }
 
     /**
@@ -279,8 +303,13 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      *
      * @return the etag value.
      */
-    public String getEtag() {
+    public String getETag() {
         return this.etag;
+    }
+
+    private ConfigurationSettingSnapshot setETag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     @Override

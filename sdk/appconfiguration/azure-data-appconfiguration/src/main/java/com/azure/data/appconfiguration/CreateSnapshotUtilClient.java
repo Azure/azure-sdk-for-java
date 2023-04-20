@@ -31,6 +31,9 @@ import static com.azure.data.appconfiguration.implementation.models.State.RUNNIN
 import static com.azure.data.appconfiguration.implementation.models.State.SUCCEEDED;
 import static reactor.core.Scannable.Attr.CANCELLED;
 
+/**
+ * A helper util client for creating a snapshot.
+ */
 class CreateSnapshotUtilClient {
     private static final ClientLogger LOGGER = new ClientLogger(CreateSnapshotUtilClient.class);
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
@@ -71,18 +74,19 @@ class CreateSnapshotUtilClient {
     SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(String name,
         ConfigurationSettingSnapshot snapshot, Context context) {
         try {
+            final Context finalContext = getNotNullContext(context);
             return SyncPoller.createPoller(
                 DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-                    activationOperationSync(name, snapshot, context).apply(cxt)),
+                    activationOperationSync(name, snapshot, finalContext).apply(cxt)),
                 pollingOperationSync(
-                    operationId -> service.getOperationDetailsWithResponse(name, context)),
+                    operationId -> service.getOperationDetailsWithResponse(name, finalContext)),
                 (pollingContext, activationResponse) -> {
                     throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported."));
                 },
                 fetchingOperationSync(
                     operationId -> service.getSnapshotWithResponse(name, null, null,
-                        null, context).getValue())
+                        null, finalContext).getValue())
             );
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
@@ -105,8 +109,9 @@ class CreateSnapshotUtilClient {
         activationOperationSync(String name, ConfigurationSettingSnapshot snapshot, Context context) {
         return pollingContext -> {
             try {
+                final Context finalContext = getNotNullContext(context);
                 final ResponseBase<CreateSnapshotHeaders, ConfigurationSettingSnapshot> snapshotWithResponse =
-                    service.createSnapshotWithResponse(name, snapshot, context);
+                    service.createSnapshotWithResponse(name, snapshot, finalContext);
                 CreateSnapshotOperationDetail operationDetail =
                     new CreateSnapshotOperationDetail();
                 CreateSnapshotOperationDetailPropertiesHelper.setOperationId(operationDetail,

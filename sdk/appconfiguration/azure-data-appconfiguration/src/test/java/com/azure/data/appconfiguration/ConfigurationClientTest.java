@@ -1025,7 +1025,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             .setRetentionPeriod(Duration.ofSeconds(2592000))
             .setCompositionType(CompositionType.GROUP_BY_KEY);
 
-        verifyConfigurationSettingSnapshot(expected, actual);
+        assertEqualsConfigurationSettingSnapshot(expected, actual);
     }
 
     /**

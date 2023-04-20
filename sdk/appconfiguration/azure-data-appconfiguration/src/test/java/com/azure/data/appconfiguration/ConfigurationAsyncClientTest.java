@@ -15,11 +15,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
+import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -1291,6 +1297,45 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 })
                 .verifyComplete());
     }
+
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Prepare some settings before creating a snapshot
+        addConfigurationSettingRunner((expected) ->
+            StepVerifier.create(client.addConfigurationSettingWithResponse(expected))
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete());
+
+        createSnapshotRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(10);
+
+            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
+                .setRetentionPeriod(retentionPeriod);
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, null);
+            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+
+            // Archived the sanpshot so the snapshot will be deleted automatically when retention period expires.
+            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
+            StepVerifier.create(client.archiveSnapshot(name))
+                .assertNext(response-> {
+                    assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response);
+                })
+                .verifyComplete();
+        });
+    }
+
 
     /**
      * Test helper that calling list configuration setting with given key and label input

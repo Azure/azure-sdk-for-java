@@ -378,7 +378,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationClient#beginCreateSnapshotWithResponse(String, ConfigurationSettingSnapshot, Context)}}
+     * Code snippets for {@link ConfigurationClient#beginCreateSnapshot(String, ConfigurationSettingSnapshot, Context)}}
      */
     public void createSnapshotMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
@@ -388,7 +388,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         filters.add(new SnapshotSettingFilter("{keyName}"));
         String snapshotName = "{snapshotName}";
         SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
-            client.beginCreateSnapshotWithResponse(snapshotName,
+            client.beginCreateSnapshot(snapshotName,
                 new ConfigurationSettingSnapshot(filters).setRetentionPeriod(Duration.ZERO), Context.NONE);
 
         poller.setPollInterval(Duration.ofSeconds(10));

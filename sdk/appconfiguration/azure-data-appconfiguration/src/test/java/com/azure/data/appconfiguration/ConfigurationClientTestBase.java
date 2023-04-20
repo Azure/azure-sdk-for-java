@@ -12,6 +12,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
+import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -19,9 +21,13 @@ import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
+import com.azure.data.appconfiguration.models.SnapshotStatus;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -541,6 +547,24 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration);
     }
 
+
+//    @Test
+//    public abstract void createSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+//
+//    @Test
+//    public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    void createSnapshotRunner(BiConsumer<String, List<SnapshotSettingFilter>> testRunner) {
+        String snapshotName = getKey();
+        List<SnapshotSettingFilter> filters = new ArrayList<>();
+        filters.add(new SnapshotSettingFilter(snapshotName));
+        testRunner.accept(snapshotName, filters);
+    }
+
+
+
+
+
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
      *
@@ -780,15 +804,61 @@ public abstract class ConfigurationClientTestBase extends TestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-    static void verifyConfigurationSettingSnapshot(ConfigurationSettingSnapshot expected,
-        ConfigurationSettingSnapshot actual) {
-        assertEquals(expected.getName(), actual.getName());
-        assertEquals(expected.getCompositionType(), actual.getCompositionType());
-//        assertEquals(expected.getFilters(), actual.getFilters());
-        assertEquals(expected.getItemCount(), actual.getItemCount());
-        assertEquals(expected.getRetentionPeriod(), actual.getRetentionPeriod());
-        assertEquals(expected.getSize(), actual.getSize());
-        assertEquals(expected.getStatus(), actual.getStatus());
 
+    ConfigurationSettingSnapshot getExpectedSettingSnapshot(String snapshotName, SnapshotStatus status,
+        List<SnapshotSettingFilter> filters, CompositionType compositionType, OffsetDateTime createdAt,
+        OffsetDateTime expiresAt, Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
+        String etag) {
+
+        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters);
+        ConfigurationSettingSnapshotHelper.setName(snapshot, snapshotName);
+        ConfigurationSettingSnapshotHelper.setStatus(snapshot, status);
+        ConfigurationSettingSnapshotHelper.setCreatedAt(snapshot, createdAt);
+        ConfigurationSettingSnapshotHelper.setExpiresAt(snapshot, expiresAt);
+        ConfigurationSettingSnapshotHelper.setSize(snapshot, size);
+        ConfigurationSettingSnapshotHelper.setItemCount(snapshot, itemCount);
+        ConfigurationSettingSnapshotHelper.setEtag(snapshot, etag);
+
+        snapshot.setCompositionType(compositionType);
+        snapshot.setTags(tags);
+        snapshot.setRetentionPeriod(retentionPeriod);
+        return snapshot;
+    }
+
+    static void assertEqualsConfigurationSettingSnapshot(ConfigurationSettingSnapshot o1,
+                                                         ConfigurationSettingSnapshot o2) {
+        if (o1 == o2) {
+            return;
+        }
+
+        assertEquals(o1.getName(), o2.getName());
+        assertEquals(o1.getCompositionType(), o2.getCompositionType());
+        assertEquals(o1.getRetentionPeriod(), o2.getRetentionPeriod());
+        assertNotNull(o2.getCreatedAt());
+        assertEqualsSnapshotFilters(o1.getFilters(), o2.getFilters());
+        assertEquals(o1.getItemCount(), o2.getItemCount());
+        assertEquals(o1.getSize(), o2.getSize());
+        assertEquals(o1.getStatus(), o2.getStatus());
+        assertNotNull(o2.getETag());
+
+        assertTrue(CoreUtils.isNullOrEmpty(o1.getTags()) == CoreUtils.isNullOrEmpty(o2.getTags()));
+        assertTrue(CoreUtils.isNullOrEmpty(o1.getFilters()) == CoreUtils.isNullOrEmpty(o2.getFilters()));
+
+        if (!CoreUtils.isNullOrEmpty(o1.getTags())) {
+            assertEquals(o1.getTags(), o2.getTags());
+        }
+    }
+
+    static void assertEqualsSnapshotFilters(List<SnapshotSettingFilter> o1, List<SnapshotSettingFilter> o2) {
+        if (o1 == o2) {
+            return;
+        }
+        assertEquals(o1.size(), o2.size());
+        for (int i = 0; i < o1.size(); i++) {
+            SnapshotSettingFilter expectedFilter = o1.get(i);
+            SnapshotSettingFilter actualFilter = o2.get(i);
+            assertEquals(expectedFilter.getKey(), actualFilter.getKey());
+            assertEquals(expectedFilter.getLabel(), actualFilter.getLabel());
+        }
     }
 }

@@ -24,7 +24,6 @@ import com.azure.data.appconfiguration.models.*;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -907,7 +906,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(
         String name, List<SnapshotSettingFilter> filters) {
-        return beginCreateSnapshotWithResponse(name, new ConfigurationSettingSnapshot(filters));
+        return beginCreateSnapshot(name, new ConfigurationSettingSnapshot(filters));
     }
 
     /**
@@ -939,7 +938,7 @@ public final class ConfigurationAsyncClient {
      * has failed. The completed operation returns a {@link ConfigurationSettingSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshotWithResponse(
+    public PollerFlux<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> beginCreateSnapshot(
         String name, ConfigurationSettingSnapshot snapshot) {
         return createSnapshotUtilClient.beginCreateSnapshot(name, snapshot);
     }
@@ -1004,7 +1003,7 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
      * used as a IF-MATCH header.
      * @return A {@link Mono} of {@link ConfigurationSettingSnapshot}.
      */
@@ -1045,7 +1044,7 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag()} ETag}
      *                    is used as an IF-MATCH header.
      * @return A {@link Mono} of {@link ConfigurationSettingSnapshot}.
      */
