@@ -482,18 +482,25 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 receivedFiltered.addAll(messages.stream()
                     .map(ServiceBusReceivedMessage::getMessageId)
                     .filter(mId -> messageIds.contains(mId)).collect(Collectors.toList()));
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    fail();
+                }
             }
         });
+
+        peekMessages.start();
         toClose((AutoCloseable) () -> peekMessages.interrupt());
         // in case some other tests consume from the same queue
         for (int i = 0; i < maxMessages; ++i) {
-            ServiceBusMessage message = getMessage(String.valueOf(i), isSessionEnabled, AmqpMessageBody.fromData(payload));
+            String messageId = String.format("5s-%s-%s", entityType, isSessionEnabled, i);
+            ServiceBusMessage message = getMessage(messageId, isSessionEnabled, AmqpMessageBody.fromData(payload));
             messageIds.add(message.getMessageId());
             sendMessage(message);
         }
 
         // Act
-        peekMessages.start();
         peekMessages.join(TIMEOUT.toMillis());
         // Assert
         LOGGER.atInfo()
