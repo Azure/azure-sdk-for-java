@@ -402,7 +402,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendScheduledMessageAndReceive(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_SEND_SCHEDULED, isSessionEnabled);
         final Duration shortDelay = Duration.ofSeconds(4);
 
         final String messageId = UUID.randomUUID().toString();
@@ -411,10 +411,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         sender.scheduleMessage(message, scheduledEnqueueTime).block();
 
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setReceiver(entityType, TestUtils.USE_CASE_SEND_SCHEDULED, isSessionEnabled);
 
         // Assert & Act
         StepVerifier.create(Mono.delay(shortDelay).then(receiver.receiveMessages()
+                .filter(m -> messageId.equals(m.getMessageId()))
                 .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
                 .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next()))
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled)).verifyComplete();
