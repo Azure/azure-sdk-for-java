@@ -85,7 +85,6 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
             interceptorManager.addMatchers(customMatchers);
         }
 
