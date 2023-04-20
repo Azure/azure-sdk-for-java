@@ -318,7 +318,7 @@ public class CallConnectionAsync {
             AddParticipantRequestInternal request = new AddParticipantRequestInternal()
                 .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getTarget()))
                 .setSourceDisplayName(addParticipantOptions.getTargetCallInvite().getSourceDisplayName())
-                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getSourceCallIdNumber()))
+                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getSourceCallerIdNumber()))
                 .setOperationContext(addParticipantOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
