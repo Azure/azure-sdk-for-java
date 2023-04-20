@@ -34,7 +34,6 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -67,8 +66,9 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(
-                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
+                ));
         }
 
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
@@ -110,7 +110,7 @@ public class BlobBatchTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getServiceClient(TestAccount account) {
-        return getServiceClient(account.getCredential(), account.getBlobEndpoint(), (HttpPipelinePolicy) null);
+        return getServiceClient(account.getCredential(), account.getBlobEndpoint());
     }
 
     protected BlobServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
@@ -119,7 +119,7 @@ public class BlobBatchTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getServiceClient(String sasToken, String endpoint) {
-        return getServiceClientBuilder(null, endpoint, (HttpPipelinePolicy) null).sasToken(sasToken).buildClient();
+        return getServiceClientBuilder(null, endpoint).sasToken(sasToken).buildClient();
     }
 
     protected BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {

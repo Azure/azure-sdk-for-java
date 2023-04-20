@@ -38,15 +38,10 @@
     <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
       --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.blob.batch/com.azure.storage.blob.batch=ALL-UNNAMED
-      --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.amqp=ALL-UNNAMED
-      --add-reads com.azure.storage.common=ALL-UNNAMED
-      --add-reads com.azure.storage.blob=ALL-UNNAMED
+      --add-reads com.azure.storage.blob.batch=com.azure.http.netty
+      --add-reads com.azure.storage.blob.batch=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
   </properties>
 
