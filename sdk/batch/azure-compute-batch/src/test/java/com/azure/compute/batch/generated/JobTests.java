@@ -38,7 +38,7 @@ public class JobTests extends BatchServiceClientTestBase {
     @Override
     protected void beforeTest() {
     	super.beforeTest();
-    	jobClient = batchClientBulder.buildJobClient();
+    	jobClient = batchClientBuilder.buildJobClient();
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(getTestMode() == TestMode.RECORD) {
         	if (livePool == null) {
@@ -54,13 +54,36 @@ public class JobTests extends BatchServiceClientTestBase {
     }
     
     @Test
+    public void testJobPut() throws Exception {
+    	String jobId = getStringIdWithUserNamePrefix("-Job-canPut");
+    	PoolInformation poolInfo = new PoolInformation();
+        poolInfo.setPoolId(poolId);
+        JobClient jobClient = batchClientBuilder.buildJobClient();
+        BatchJob jobToAdd = new BatchJob();
+        jobToAdd.setId(jobId);
+        jobToAdd.setPoolInfo(poolInfo);
+        
+        jobClient.add(jobToAdd);
+        
+        try {
+        	BatchJob getJob = jobClient.get(jobId);
+        	jobToAdd.setPriority(500);
+        	jobClient.update(jobId, getJob);
+        }
+        finally {
+        	jobClient.delete(jobId);
+        }
+        
+    }
+    
+    @Test
     public void canCrudJob() throws Exception {
     	 // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.setPoolId(poolId);
-        JobClient jobClient = batchClientBulder.buildJobClient();
+        JobClient jobClient = batchClientBuilder.buildJobClient();
         BatchJob jobToAdd = new BatchJob();
         jobToAdd.setId(jobId);
         jobToAdd.setPoolInfo(poolInfo);
