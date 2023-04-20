@@ -56,7 +56,8 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     public void beginBackup(HttpClient httpClient) {
         getClient(httpClient, false);
 
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller =
+            setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
 
         backupPoller.waitForCompletion();
 
@@ -75,14 +76,15 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         getClient(httpClient, false);
 
         // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller =
+            setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
 
         backupPoller.waitForCompletion();
 
         // Restore the backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller =
-            client.beginRestore(backupFolderUrl, sasToken);
+            setPlaybackSyncPollerPollInterval(client.beginRestore(backupFolderUrl, sasToken));
 
         restorePoller.waitForCompletion();
 
@@ -117,14 +119,16 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         getClient(httpClient, false);
 
         // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller = client.beginBackup(blobStorageUrl, sasToken);
+        SyncPoller<KeyVaultBackupOperation, String> backupPoller =
+            setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
 
         backupPoller.waitForCompletion();
 
         // Restore one key from said backup
         String backupFolderUrl = backupPoller.getFinalResult();
         SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> selectiveKeyRestorePoller =
-            client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl, sasToken);
+            setPlaybackSyncPollerPollInterval(client.beginSelectiveKeyRestore(createdKey.getName(), backupFolderUrl,
+                sasToken));
 
         selectiveKeyRestorePoller.waitForCompletion();
 
