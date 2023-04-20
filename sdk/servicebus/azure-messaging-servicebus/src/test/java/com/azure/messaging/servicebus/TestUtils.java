@@ -80,6 +80,8 @@ public class TestUtils {
     static final int USE_CASE_AMQP_TYPES = 24;
     static final int USE_CASE_RENEW_LOCK = 25;
     static final int USE_CASE_SEND_SCHEDULED = 26;
+    static final int USE_CASE_RECEIVE_AND_COMPLETE = 27;
+    static final int USE_CASE_PEEK_MESSAGE = 28;
 
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 

@@ -55,6 +55,8 @@ import java.util.stream.Collectors;
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_AUTO_COMPLETE;
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_BATCH_MESSAGES;
+import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_MESSAGE;
+import static com.azure.messaging.servicebus.TestUtils.USE_CASE_RECEIVE_AND_COMPLETE;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessages;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -354,18 +356,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setSender(entityType, USE_CASE_PEEK_MESSAGE, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block();
 
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setReceiver(entityType, USE_CASE_PEEK_MESSAGE, isSessionEnabled);
 
         // Assert & Act
         StepVerifier.create(receiver.peekMessage()
-                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "peeked message")))
+                .filter(m -> messageId.equals(m.getMessageId()))
+                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "peeked and filtered message")))
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
 
@@ -746,17 +749,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveAndComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setSender(entityType, USE_CASE_RECEIVE_AND_COMPLETE, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block(TIMEOUT);
 
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setReceiver(entityType, USE_CASE_RECEIVE_AND_COMPLETE, isSessionEnabled);
 
         // Assert & Act
         StepVerifier.create(receiver.receiveMessages()
+                .filter(receivedMessage -> messageId.equals(receivedMessage.getMessageId()))
+                .doOnNext(receivedMessage -> logMessage(receivedMessage, receiver.getEntityPath(), "received and filtered"))
                 .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).take(1))
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled)).verifyComplete();
     }
