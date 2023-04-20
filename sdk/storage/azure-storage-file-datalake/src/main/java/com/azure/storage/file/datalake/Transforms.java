@@ -43,6 +43,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
@@ -93,6 +94,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
@@ -888,5 +890,18 @@ class Transforms {
         return new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope(fileSystemEncryptionScope.getDefaultEncryptionScope())
             .setEncryptionScopeOverridePrevented(fileSystemEncryptionScope.isEncryptionScopeOverridePrevented());
+    }
+
+    static BlockBlobOutputStreamOptions toBlockBlobOutputStreamOptions(DataLakeFileOutputStreamOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(options.getParallelTransferOptions())
+            .setHeaders(toBlobHttpHeaders(options.getHeaders()))
+            .setMetadata(options.getMetadata())
+            .setTags(options.getTags())
+            .setTier(options.getTier())
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
     }
 }
