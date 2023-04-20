@@ -144,12 +144,16 @@ function writeMarkdown() {
                     } else if (aVerNums[1] < bVerNums[1]) {
                         return 1;
                     } else {
-                        var aPatchNums = aVerNums[2].split("-beta.");
-                        var bPatchNums = bVerNums[2].split("-beta.");
+                        var aPatchNums = a.split("-beta.");
+                        var bPatchNums = b.split("-beta.");
+                        // sort GA version before beta version
                         if (aPatchNums.length < bPatchNums.length) {
                             return -1;
                         } else if (aPatchNums.length > bPatchNums.length) {
                             return 1;
+                        } else if (aPatchNums.length > 1) {
+                          // sort according to beta minor version
+                          return parseInt(bPatchNums[1]) - parseInt(aPatchNums[1]);
                         } else {
                             return b.localeCompare(a);
                         }
