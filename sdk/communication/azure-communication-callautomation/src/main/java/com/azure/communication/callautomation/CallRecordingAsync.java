@@ -64,7 +64,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * CallRecordingAsync.
  */
-public class CallRecordingAsync {
+public final class CallRecordingAsync {
     private final CallRecordingsImpl callRecordingsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;

@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for adding participants.
  */
 @Fluent
-public class TransferCallToParticipantOptions {
+public final class TransferCallToParticipantOptions {
 
     /**
      * Iformation for TranferTarget

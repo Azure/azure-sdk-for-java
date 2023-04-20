@@ -4,11 +4,13 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
 /** The Recognize configurations specific for Recognize Choice. **/
-public class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOptions {
+@Fluent
+public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOptions {
     /*
      * List of recognize choice.
      */

@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 /**
  * CallConnection for mid-call actions
  */
-public class CallConnection {
+public final class CallConnection {
     private final CallConnectionAsync callConnectionAsync;
 
     CallConnection(CallConnectionAsync callConnectionAsync) {

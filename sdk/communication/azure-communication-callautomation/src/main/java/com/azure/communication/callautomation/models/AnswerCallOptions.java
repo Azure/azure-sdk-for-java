@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for creating a call.
  */
 @Fluent
-public class AnswerCallOptions {
+public final class AnswerCallOptions {
     /**
      * The incoming call context.
      */

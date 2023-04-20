@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for creating a p2p call.
  */
 @Fluent
-public class CreateCallOptions {
+public final class CreateCallOptions {
     /**
      * Call invitee information.
      */

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * CallContent.
  */
-public class CallMedia {
+public final class CallMedia {
     private final CallMediaAsync callMediaAsync;
 
     CallMedia(CallMediaAsync callMediaAsync) {

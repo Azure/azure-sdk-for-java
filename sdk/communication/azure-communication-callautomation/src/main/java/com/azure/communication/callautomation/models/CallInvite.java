@@ -12,11 +12,13 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.core.annotation.Fluent;
 
 /**
  *  Call invitee details.
  */
-public class CallInvite {
+@Fluent
+public final class CallInvite {
     private final CommunicationIdentifier targetParticipant;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private String sourceDisplayName;

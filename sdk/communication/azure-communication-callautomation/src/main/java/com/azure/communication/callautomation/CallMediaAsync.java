@@ -49,7 +49,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * CallContent.
  */
-public class CallMediaAsync {
+public final class CallMediaAsync {
     private final CallMediasImpl contentsInternal;
     private final String callConnectionId;
     private final ClientLogger logger;

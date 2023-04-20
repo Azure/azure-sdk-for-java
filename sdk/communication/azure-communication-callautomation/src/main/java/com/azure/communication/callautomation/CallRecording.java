@@ -22,7 +22,7 @@ import java.util.Objects;
 /**
  * CallRecording.
  */
-public class CallRecording {
+public final class CallRecording {
     private final CallRecordingAsync callRecordingAsync;
 
     CallRecording(CallRecordingAsync callRecordingAsync) {

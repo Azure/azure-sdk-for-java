@@ -59,7 +59,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * CallConnectionAsync for mid-call actions
  */
-public class CallConnectionAsync {
+public final class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
     private final CallMediasImpl callMediasInternal;

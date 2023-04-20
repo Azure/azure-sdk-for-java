@@ -3,13 +3,10 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
-
 /**
  * The options for creating a call.
  */
-@Fluent
-public class RedirectCallOptions {
+public final class RedirectCallOptions {
     /**
      * The incoming call context.
      */

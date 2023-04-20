@@ -14,7 +14,7 @@ import java.util.Map;
  * The options for creating a group call.
  */
 @Fluent
-public class CreateGroupCallOptions {
+public final class CreateGroupCallOptions {
     /**
      * The targets of the call.
      */
