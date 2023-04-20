@@ -15,17 +15,17 @@ public class CosmosEndToEndOperationLatencyPolicyConfig {
     /**
      * The default end to end operation latency policy with timeout of 2 seconds
      */
-    public static CosmosEndToEndOperationLatencyPolicyConfig DEFAULT =
+    public static final CosmosEndToEndOperationLatencyPolicyConfig DEFAULT =
         new CosmosEndToEndOperationLatencyPolicyConfigBuilder().build();
 
     /**
      * The disabled end to end operation latency policy
      */
-    public static CosmosEndToEndOperationLatencyPolicyConfig DISABLED =
+    public static final CosmosEndToEndOperationLatencyPolicyConfig DISABLED =
         new CosmosEndToEndOperationLatencyPolicyConfigBuilder(false).build();
 
-    private final boolean isEnabled;  // Can be inferred from endToEndOperationTimeout not being null?30
-    private final Duration endToEndOperationTimeout; // No lowerbound?
+    private final boolean isEnabled;
+    private final Duration endToEndOperationTimeout;
 
     /**
      * Constructor

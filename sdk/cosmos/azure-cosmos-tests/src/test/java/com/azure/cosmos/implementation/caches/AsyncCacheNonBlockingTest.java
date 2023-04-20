@@ -3,9 +3,11 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.guava25.base.Function;
+import org.reactivestreams.Subscription;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -115,6 +117,47 @@ public class AsyncCacheNonBlockingTest {
         cache.refresh(cacheKey, refreshFunc);
         //since the refresh happens asynchronously, so wait for sometime
         Thread.sleep(500);
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void getAndCancelAsync() throws InterruptedException {
+        AtomicInteger numberOfCacheRefreshes = new AtomicInteger(0);
+        final Function<Integer, Mono<Integer>> refreshFunc = key -> {
+            return Mono.just(key * 2)
+                .doOnNext(t -> {
+                    numberOfCacheRefreshes.incrementAndGet();
+                });
+        };
+
+        AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
+        // populate the cache
+        int cacheKey = 0;
+        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false).block();
+
+
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(1);
+
+        // New function created to refresh the cache by sending forceRefresh true
+        Function<Integer, Mono<Integer>> refreshFunc1 = key -> {
+            numberOfCacheRefreshes.incrementAndGet();
+            return Mono.just(key * 2 + 1);
+        };
+
+        Mono<Integer> monoAsync = cache.getAsync(cacheKey, value -> refreshFunc1.apply(cacheKey), forceRefresh -> true)
+            .doOnCancel(() -> System.out.println("Subscription Cancelled"))
+            .doOnSubscribe(Subscription::cancel);
+        StepVerifier.create(monoAsync)
+            .expectSubscription()
+            .thenCancel()
+            .verify();
+
+        // As we are cancelling the subscription immediately, we will not have the response
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(1);
+
+        // Even though the subscription got cancelled, the cache task would run in background so might take some
+        // time to finish so giving it some time
+        Thread.sleep(1000);
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
     }
 }

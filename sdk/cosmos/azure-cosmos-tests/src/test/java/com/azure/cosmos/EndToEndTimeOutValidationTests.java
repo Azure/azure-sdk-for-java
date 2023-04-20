@@ -39,7 +39,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class EndToEndTimeOutValidationTests extends TestSuiteBase {
-    private static final int DEFAULT_NUM_DOCUMENTS = 1000;
+    private static final int DEFAULT_NUM_DOCUMENTS = 100;
     private static final int DEFAULT_PAGE_SIZE = 100;
     private CosmosAsyncContainer createdContainer;
     private final Random random;

@@ -35,7 +35,7 @@ public class RequestCancelledException extends CosmosException {
                               Exception innerException,
                               HttpHeaders headers,
                               URI requestUrl) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_CANCELLED,
             requestUrl != null ? requestUrl.toString() : null);
     }
 }
