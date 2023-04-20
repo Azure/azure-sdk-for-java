@@ -74,7 +74,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -170,7 +170,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
