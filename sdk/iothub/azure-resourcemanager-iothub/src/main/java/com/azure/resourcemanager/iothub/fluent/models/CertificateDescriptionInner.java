@@ -24,6 +24,10 @@ public final class CertificateDescriptionInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of CertificateDescriptionInner class. */
+    public CertificateDescriptionInner() {
+    }
+
     /**
      * Get the properties property: The description of an X509 CA Certificate.
      *

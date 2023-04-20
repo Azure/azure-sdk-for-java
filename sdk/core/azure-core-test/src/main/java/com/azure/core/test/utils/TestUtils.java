@@ -11,6 +11,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -122,5 +124,26 @@ public final class TestUtils {
     }
 
     private TestUtils() {
+    }
+
+    /**
+     * Locates the root of the current repo by finding the eng folder's parent.
+     * @return The {@link Path} to the root of the repo.
+     * @throws RuntimeException The eng folder could not be located.
+     */
+    public static Path getRepoRoot() {
+        Path path = getRecordFolder().toPath();
+        Path candidate = null;
+        while (path != null) {
+            candidate = path.resolve("eng");
+            if (Files.exists(candidate)) {
+                break;
+            }
+            path = path.getParent();
+        }
+        if (path == null) {
+            throw new RuntimeException("Could not locate eng folder");
+        }
+        return path;
     }
 }

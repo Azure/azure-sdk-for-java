@@ -7,6 +7,8 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.AwsEnvironmentData;
 import com.azure.resourcemanager.security.models.AwsOrganizationalData;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class AwsEnvironmentDataTests {
     @org.junit.jupiter.api.Test
@@ -14,13 +16,18 @@ public final class AwsEnvironmentDataTests {
         AwsEnvironmentData model =
             BinaryData
                 .fromString(
-                    "{\"environmentType\":\"AwsAccount\",\"organizationalData\":{\"organizationMembershipType\":\"AwsOrganizationalData\"}}")
+                    "{\"environmentType\":\"AwsAccount\",\"organizationalData\":{\"organizationMembershipType\":\"AwsOrganizationalData\"},\"regions\":[\"krrbhmpful\"],\"accountName\":\"efgybpmfbfununmp\"}")
                 .toObject(AwsEnvironmentData.class);
+        Assertions.assertEquals("krrbhmpful", model.regions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwsEnvironmentData model = new AwsEnvironmentData().withOrganizationalData(new AwsOrganizationalData());
+        AwsEnvironmentData model =
+            new AwsEnvironmentData()
+                .withOrganizationalData(new AwsOrganizationalData())
+                .withRegions(Arrays.asList("krrbhmpful"));
         model = BinaryData.fromObject(model).toObject(AwsEnvironmentData.class);
+        Assertions.assertEquals("krrbhmpful", model.regions().get(0));
     }
 }

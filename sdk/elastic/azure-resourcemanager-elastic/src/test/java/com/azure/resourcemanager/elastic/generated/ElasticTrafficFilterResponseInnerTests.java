@@ -10,69 +10,68 @@ import com.azure.resourcemanager.elastic.models.ElasticTrafficFilter;
 import com.azure.resourcemanager.elastic.models.Type;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticTrafficFilterResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticTrafficFilterResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"rulesets\":[{\"id\":\"kwlzuvccfwnfn\",\"name\":\"cfionl\",\"description\":\"x\",\"region\":\"qgtz\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"wxrjfeallnwsub\",\"name\":\"njampm\",\"description\":\"nzscxa\",\"region\":\"ooch\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[]},{\"id\":\"vlrxnjeaseiph\",\"name\":\"f\",\"description\":\"keyyi\",\"region\":\"jbdlwtgrhpdjpju\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[]},{\"id\":\"qyeg\",\"name\":\"lhbxxhejjzzvdud\",\"description\":\"dslfhotwmcy\",\"region\":\"wlbjnpgacftade\",\"type\":\"azure_private_endpoint\",\"includeByDefault\":true,\"rules\":[]}]}")
+                    "{\"rulesets\":[{\"id\":\"ddntwndei\",\"name\":\"twnpzaoqvuhrhcf\",\"description\":\"yd\",\"region\":\"lmjthjq\",\"type\":\"ip\",\"includeByDefault\":true,\"rules\":[]},{\"id\":\"mqc\",\"name\":\"q\",\"description\":\"khixuigdtopbo\",\"region\":\"og\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"uhrzayvvt\",\"name\":\"vdfgiotk\",\"description\":\"utqxlngx\",\"region\":\"fgugnxkrxdqmid\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]},{\"id\":\"rabhjybigeho\",\"name\":\"bowsk\",\"description\":\"yktz\",\"region\":\"u\",\"type\":\"ip\",\"includeByDefault\":false,\"rules\":[]}]}")
                 .toObject(ElasticTrafficFilterResponseInner.class);
-        Assertions.assertEquals("kwlzuvccfwnfn", model.rulesets().get(0).id());
-        Assertions.assertEquals("cfionl", model.rulesets().get(0).name());
-        Assertions.assertEquals("x", model.rulesets().get(0).description());
-        Assertions.assertEquals("qgtz", model.rulesets().get(0).region());
-        Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, model.rulesets().get(0).type());
-        Assertions.assertEquals(false, model.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals("ddntwndei", model.rulesets().get(0).id());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.rulesets().get(0).name());
+        Assertions.assertEquals("yd", model.rulesets().get(0).description());
+        Assertions.assertEquals("lmjthjq", model.rulesets().get(0).region());
+        Assertions.assertEquals(Type.IP, model.rulesets().get(0).type());
+        Assertions.assertEquals(true, model.rulesets().get(0).includeByDefault());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticTrafficFilterResponseInner model =
             new ElasticTrafficFilterResponseInner()
                 .withRulesets(
                     Arrays
                         .asList(
                             new ElasticTrafficFilter()
-                                .withId("kwlzuvccfwnfn")
-                                .withName("cfionl")
-                                .withDescription("x")
-                                .withRegion("qgtz")
-                                .withType(Type.AZURE_PRIVATE_ENDPOINT)
+                                .withId("ddntwndei")
+                                .withName("twnpzaoqvuhrhcf")
+                                .withDescription("yd")
+                                .withRegion("lmjthjq")
+                                .withType(Type.IP)
+                                .withIncludeByDefault(true)
+                                .withRules(Arrays.asList()),
+                            new ElasticTrafficFilter()
+                                .withId("mqc")
+                                .withName("q")
+                                .withDescription("khixuigdtopbo")
+                                .withRegion("og")
+                                .withType(Type.IP)
                                 .withIncludeByDefault(false)
                                 .withRules(Arrays.asList()),
                             new ElasticTrafficFilter()
-                                .withId("wxrjfeallnwsub")
-                                .withName("njampm")
-                                .withDescription("nzscxa")
-                                .withRegion("ooch")
+                                .withId("uhrzayvvt")
+                                .withName("vdfgiotk")
+                                .withDescription("utqxlngx")
+                                .withRegion("fgugnxkrxdqmid")
                                 .withType(Type.IP)
-                                .withIncludeByDefault(true)
+                                .withIncludeByDefault(false)
                                 .withRules(Arrays.asList()),
                             new ElasticTrafficFilter()
-                                .withId("vlrxnjeaseiph")
-                                .withName("f")
-                                .withDescription("keyyi")
-                                .withRegion("jbdlwtgrhpdjpju")
+                                .withId("rabhjybigeho")
+                                .withName("bowsk")
+                                .withDescription("yktz")
+                                .withRegion("u")
                                 .withType(Type.IP)
-                                .withIncludeByDefault(true)
-                                .withRules(Arrays.asList()),
-                            new ElasticTrafficFilter()
-                                .withId("qyeg")
-                                .withName("lhbxxhejjzzvdud")
-                                .withDescription("dslfhotwmcy")
-                                .withRegion("wlbjnpgacftade")
-                                .withType(Type.AZURE_PRIVATE_ENDPOINT)
-                                .withIncludeByDefault(true)
+                                .withIncludeByDefault(false)
                                 .withRules(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ElasticTrafficFilterResponseInner.class);
-        Assertions.assertEquals("kwlzuvccfwnfn", model.rulesets().get(0).id());
-        Assertions.assertEquals("cfionl", model.rulesets().get(0).name());
-        Assertions.assertEquals("x", model.rulesets().get(0).description());
-        Assertions.assertEquals("qgtz", model.rulesets().get(0).region());
-        Assertions.assertEquals(Type.AZURE_PRIVATE_ENDPOINT, model.rulesets().get(0).type());
-        Assertions.assertEquals(false, model.rulesets().get(0).includeByDefault());
+        Assertions.assertEquals("ddntwndei", model.rulesets().get(0).id());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.rulesets().get(0).name());
+        Assertions.assertEquals("yd", model.rulesets().get(0).description());
+        Assertions.assertEquals("lmjthjq", model.rulesets().get(0).region());
+        Assertions.assertEquals(Type.IP, model.rulesets().get(0).type());
+        Assertions.assertEquals(true, model.rulesets().get(0).includeByDefault());
     }
 }

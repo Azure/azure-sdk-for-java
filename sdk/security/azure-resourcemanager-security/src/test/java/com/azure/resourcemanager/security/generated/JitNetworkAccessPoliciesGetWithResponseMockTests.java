@@ -31,7 +31,7 @@ public final class JitNetworkAccessPoliciesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"slce\"},\"kind\":\"qdktwtkvihlp\",\"location\":\"iwoynguu\",\"id\":\"hwvladpc\",\"name\":\"hjhausy\",\"type\":\"kekymffztsilsc\"}";
+            "{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"qbriq\"},\"kind\":\"wwtrjm\",\"location\":\"kvyhzokpoyu\",\"id\":\"h\",\"name\":\"ensnaa\",\"type\":\"phmpoejnglpwsada\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class JitNetworkAccessPoliciesGetWithResponseMockTests {
         JitNetworkAccessPolicy response =
             manager
                 .jitNetworkAccessPolicies()
-                .getWithResponse("paydhfn", "ocxm", "fshksnyzmspamwb", com.azure.core.util.Context.NONE)
+                .getWithResponse("ooxrqwoeurb", "igapdy", "rikeejdpdfht", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("qdktwtkvihlp", response.kind());
+        Assertions.assertEquals("wwtrjm", response.kind());
     }
 }

@@ -17,6 +17,10 @@ public final class IotHubPropertiesDeviceStreams {
     @JsonProperty(value = "streamingEndpoints")
     private List<String> streamingEndpoints;
 
+    /** Creates an instance of IotHubPropertiesDeviceStreams class. */
+    public IotHubPropertiesDeviceStreams() {
+    }
+
     /**
      * Get the streamingEndpoints property: List of Device Streams Endpoints.
      *

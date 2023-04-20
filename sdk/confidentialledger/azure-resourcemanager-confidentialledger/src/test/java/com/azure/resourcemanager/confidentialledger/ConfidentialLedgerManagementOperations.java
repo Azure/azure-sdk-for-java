@@ -30,8 +30,8 @@ public class ConfidentialLedgerManagementOperations {
         ledgerManager
                 .ledgers()
                 .define(ledgerName)
-                .withExistingResourceGroup(resourceGroupName)
                 .withRegion(location)
+                .withExistingResourceGroup(resourceGroupName)
                 .withTags(tags)
                 .withProperties(
                         new LedgerProperties()
@@ -48,8 +48,8 @@ public class ConfidentialLedgerManagementOperations {
         ledgerManager
             .ledgers()
             .define(ledgerName)
-            .withExistingResourceGroup(resourceGroupName)
             .withRegion(location)
+            .withExistingResourceGroup(resourceGroupName)
             .create();
     }
     public void deleteLedger(String resourceGroupName, String ledgerName) {

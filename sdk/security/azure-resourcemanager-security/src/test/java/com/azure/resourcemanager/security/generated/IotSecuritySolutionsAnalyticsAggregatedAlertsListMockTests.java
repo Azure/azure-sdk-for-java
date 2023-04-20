@@ -32,7 +32,7 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"alertType\":\"qjbknl\",\"alertDisplayName\":\"lctzeyowmndcovd\",\"vendorName\":\"auxzanh\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"ruw\",\"description\":\"drbcp\",\"count\":8240121340436615591,\"effectedResourceType\":\"qyemebu\",\"systemSource\":\"ucmci\",\"actionTaken\":\"nee\",\"logAnalyticsQuery\":\"jauwcgxefnohaitr\",\"topDevicesList\":[]},\"tags\":{\"fbngfcocef\":\"rwgudasmxub\",\"trauds\":\"priylfmp\"},\"id\":\"hlcdc\",\"name\":\"lregpq\",\"type\":\"moj\"}]}";
+            "{\"value\":[{\"properties\":{\"alertType\":\"xqabckmzeoxi\",\"alertDisplayName\":\"greohtwhlpuzjp\",\"vendorName\":\"znzangprbfaxy\",\"reportedSeverity\":\"Medium\",\"remediationSteps\":\"ciphmsexr\",\"description\":\"rndktx\",\"count\":8107112782048178404,\"effectedResourceType\":\"eeqgpkri\",\"systemSource\":\"bgnixxoww\",\"actionTaken\":\"yfwnw\",\"logAnalyticsQuery\":\"wxeiicrmpepk\",\"topDevicesList\":[]},\"tags\":{\"rasek\":\"xijvskwsdgkjgyac\"},\"id\":\"efcvo\",\"name\":\"nwoqartwy\",\"type\":\"qicladv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,8 +63,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
         PagedIterable<IoTSecurityAggregatedAlert> response =
             manager
                 .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-                .list("sqgpewqcfu", "mdpv", 720936037, com.azure.core.util.Context.NONE);
+                .list("fyvrtpqpemhzcgk", "epdqhqyhwq", 252630032, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rwgudasmxub", response.iterator().next().tags().get("fbngfcocef"));
+        Assertions.assertEquals("xijvskwsdgkjgyac", response.iterator().next().tags().get("rasek"));
     }
 }
