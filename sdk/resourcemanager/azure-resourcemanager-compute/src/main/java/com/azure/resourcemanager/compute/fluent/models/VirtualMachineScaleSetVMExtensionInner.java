@@ -9,6 +9,7 @@ import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Describes a VMSS VM Extension. */
 @Fluent
@@ -24,6 +25,12 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /*
+     * The location of the extension.
+     */
+    @JsonProperty(value = "location")
+    private String location;
 
     /*
      * Describes the properties of a Virtual Machine Extension.
@@ -51,6 +58,26 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the location property: The location of the extension.
+     *
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: The location of the extension.
+     *
+     * @param location the location value to set.
+     * @return the VirtualMachineScaleSetVMExtensionInner object itself.
+     */
+    public VirtualMachineScaleSetVMExtensionInner withLocation(String location) {
+        this.location = location;
+        return this;
     }
 
     /**
@@ -338,6 +365,31 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
             this.innerProperties = new VirtualMachineExtensionProperties();
         }
         this.innerProperties().withProtectedSettingsFromKeyVault(protectedSettingsFromKeyVault);
+        return this;
+    }
+
+    /**
+     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @return the provisionAfterExtensions value.
+     */
+    public List<String> provisionAfterExtensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisionAfterExtensions();
+    }
+
+    /**
+     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @param provisionAfterExtensions the provisionAfterExtensions value to set.
+     * @return the VirtualMachineScaleSetVMExtensionInner object itself.
+     */
+    public VirtualMachineScaleSetVMExtensionInner withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionProperties();
+        }
+        this.innerProperties().withProvisionAfterExtensions(provisionAfterExtensions);
         return this;
     }
 

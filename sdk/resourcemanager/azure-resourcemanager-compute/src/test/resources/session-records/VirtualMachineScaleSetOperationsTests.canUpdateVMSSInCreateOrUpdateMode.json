@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "ba8290b8-4c98-42bd-b4a6-7b6c396e6650",
@@ -56,7 +56,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "466b0c88-c2f0-4de3-a381-e261a4db14a5",
@@ -83,7 +83,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "466b0c88-c2f0-4de3-a381-e261a4db14a5",
@@ -349,7 +349,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "39e57a06-d31a-4ef3-af5d-9ce32d2aa602",
@@ -371,7 +371,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/CreateVMScaleSet3Min;57,Microsoft.Compute/CreateVMScaleSet30Min;293",
       "Expires" : "-1",
       "Content-Length" : "3342",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/45338663-fbda-4308-b6c7-d46952da5ac6?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/45338663-fbda-4308-b6c7-d46952da5ac6?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2023-03-01",
       "x-ms-request-id" : "45338663-fbda-4308-b6c7-d46952da5ac6",
       "Body" : "{\r\n  \"name\": \"vmss28149\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"eastus2euap\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\",\r\n    \"capacity\": 1\r\n  },\r\n  \"properties\": {\r\n    \"singlePlacementGroup\": false,\r\n    \"orchestrationMode\": \"Flexible\",\r\n    \"virtualMachineProfile\": {\r\n      \"osProfile\": {\r\n        \"computerNamePrefix\": \"vmss28149-vm\",\r\n        \"adminUsername\": \"jvuser\",\r\n        \"linuxConfiguration\": {\r\n          \"disablePasswordAuthentication\": true,\r\n          \"ssh\": {\r\n            \"publicKeys\": [\r\n              {\r\n                \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCWDIO2KhzxW6WmZc1nKrf9SEbcLlce//+rq9EdrGgHtEc8a+sL6Nj1s01FhzBQi6OLRGuLeECfYp2yiIAbZDCENk8N1Sapu6WAaKlt5T3dRcqsQjE1CBCLWt7Zb8h+w0ekqiEnn+WCNNxFvegYrVuj3C+VUwyO6D5x46ODOOq5QQ==\"\r\n              }\r\n            ]\r\n          },\r\n          \"provisionVMAgent\": true,\r\n          \"patchSettings\": {\r\n            \"patchMode\": \"ImageDefault\",\r\n            \"assessmentMode\": \"ImageDefault\"\r\n          },\r\n          \"enableVMAgentPlatformUpdates\": false\r\n        },\r\n        \"secrets\": [],\r\n        \"allowExtensionOperations\": true,\r\n        \"requireGuestProvisionSignal\": true\r\n      },\r\n      \"storageProfile\": {\r\n        \"osDisk\": {\r\n          \"osType\": \"Linux\",\r\n          \"createOption\": \"FromImage\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"deleteOption\": \"Delete\",\r\n          \"diskSizeGB\": 30\r\n        },\r\n        \"imageReference\": {\r\n          \"publisher\": \"Canonical\",\r\n          \"offer\": \"UbuntuServer\",\r\n          \"sku\": \"16.04.0-LTS\",\r\n          \"version\": \"latest\"\r\n        }\r\n      },\r\n      \"networkProfile\": {\"networkApiVersion\":\"2020-11-01\",\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"disableTcpStateTracking\":false,\"enableIPForwarding\":false,\"deleteOption\":\"Delete\",\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"privateIPAddressVersion\":\"IPv4\",\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"publicIPAddressConfiguration\":{\"name\":\"pip1\",\"properties\":{\"idleTimeoutInMinutes\":15,\"ipTags\":[],\"dnsSettings\":{\"domainNameLabel\":\"pip13774d\"},\"publicIPAddressVersion\":\"IPv4\"}},\"applicationSecurityGroups\":[],\"loadBalancerBackendAddressPools\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Network/loadBalancers/extlb1-57477b51/backendAddressPools/extlb1-57477b51-BAP1\"}],\"applicationGatewayBackendAddressPools\":[]}}],\"dnsSettings\":{\"dnsServers\":[]}}}]}\r\n    },\r\n    \"provisioningState\": \"Updating\",\r\n    \"uniqueId\": \"41fe7be2-4567-433b-899d-dd4b763618d0\",\r\n    \"platformFaultDomainCount\": 1,\r\n    \"constrainedMaximumCapacity\": false,\r\n    \"timeCreated\": \"2023-01-13T02:23:24.0881837+00:00\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "39e57a06-d31a-4ef3-af5d-9ce32d2aa602",
@@ -380,7 +380,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/45338663-fbda-4308-b6c7-d46952da5ac6?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/45338663-fbda-4308-b6c7-d46952da5ac6?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "41f6efcb-f2bb-4a62-bae6-33da5755636f"
@@ -408,7 +408,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "877e79b4-cbfd-494f-b70b-fe4e4c23a412"
@@ -496,7 +496,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "49e08993-1add-4cea-be54-07ff188bd740",
@@ -555,7 +555,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "689fffb0-2df0-4008-93cf-0e96454353b0",
@@ -577,7 +577,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/VMScaleSetActions3Min;236,Microsoft.Compute/VMScaleSetActions30Min;1194",
       "Expires" : "-1",
       "Content-Length" : "3365",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/6b1dd3a0-b067-43fa-a69c-2a3f0421e22a?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/6b1dd3a0-b067-43fa-a69c-2a3f0421e22a?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2023-03-01",
       "x-ms-request-id" : "6b1dd3a0-b067-43fa-a69c-2a3f0421e22a",
       "Body" : "{\r\n  \"name\": \"vmss28149\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149\",\r\n  \"type\": \"Microsoft.Compute/virtualMachineScaleSets\",\r\n  \"location\": \"eastus2euap\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\",\r\n    \"tag1\": \"value2\"\r\n  },\r\n  \"sku\": {\r\n    \"name\": \"Standard_A0\",\r\n    \"tier\": \"Standard\",\r\n    \"capacity\": 1\r\n  },\r\n  \"properties\": {\r\n    \"singlePlacementGroup\": false,\r\n    \"orchestrationMode\": \"Flexible\",\r\n    \"virtualMachineProfile\": {\r\n      \"osProfile\": {\r\n        \"computerNamePrefix\": \"vmss28149-vm\",\r\n        \"adminUsername\": \"jvuser\",\r\n        \"linuxConfiguration\": {\r\n          \"disablePasswordAuthentication\": true,\r\n          \"ssh\": {\r\n            \"publicKeys\": [\r\n              {\r\n                \"path\": \"/home/jvuser/.ssh/authorized_keys\",\r\n                \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQCWDIO2KhzxW6WmZc1nKrf9SEbcLlce//+rq9EdrGgHtEc8a+sL6Nj1s01FhzBQi6OLRGuLeECfYp2yiIAbZDCENk8N1Sapu6WAaKlt5T3dRcqsQjE1CBCLWt7Zb8h+w0ekqiEnn+WCNNxFvegYrVuj3C+VUwyO6D5x46ODOOq5QQ==\"\r\n              }\r\n            ]\r\n          },\r\n          \"provisionVMAgent\": true,\r\n          \"patchSettings\": {\r\n            \"patchMode\": \"ImageDefault\",\r\n            \"assessmentMode\": \"ImageDefault\"\r\n          },\r\n          \"enableVMAgentPlatformUpdates\": false\r\n        },\r\n        \"secrets\": [],\r\n        \"allowExtensionOperations\": true,\r\n        \"requireGuestProvisionSignal\": true\r\n      },\r\n      \"storageProfile\": {\r\n        \"osDisk\": {\r\n          \"osType\": \"Linux\",\r\n          \"createOption\": \"FromImage\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"deleteOption\": \"Delete\",\r\n          \"diskSizeGB\": 30\r\n        },\r\n        \"imageReference\": {\r\n          \"publisher\": \"Canonical\",\r\n          \"offer\": \"UbuntuServer\",\r\n          \"sku\": \"16.04.0-LTS\",\r\n          \"version\": \"latest\"\r\n        }\r\n      },\r\n      \"networkProfile\": {\"networkApiVersion\":\"2020-11-01\",\"networkInterfaceConfigurations\":[{\"name\":\"primary-nic-cfg\",\"properties\":{\"primary\":true,\"disableTcpStateTracking\":false,\"enableIPForwarding\":false,\"deleteOption\":\"Delete\",\"ipConfigurations\":[{\"name\":\"primary-nic-ip-cfg\",\"properties\":{\"privateIPAddressVersion\":\"IPv4\",\"subnet\":{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Network/virtualNetworks/vmssvnet/subnets/subnet1\"},\"publicIPAddressConfiguration\":{\"name\":\"pip1\",\"properties\":{\"idleTimeoutInMinutes\":15,\"ipTags\":[],\"dnsSettings\":{\"domainNameLabel\":\"pip13774d\"},\"publicIPAddressVersion\":\"IPv4\"}},\"applicationSecurityGroups\":[],\"loadBalancerBackendAddressPools\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Network/loadBalancers/extlb1-57477b51/backendAddressPools/extlb1-57477b51-BAP1\"}],\"applicationGatewayBackendAddressPools\":[]}}],\"dnsSettings\":{\"dnsServers\":[]}}}]}\r\n    },\r\n    \"provisioningState\": \"Updating\",\r\n    \"uniqueId\": \"41fe7be2-4567-433b-899d-dd4b763618d0\",\r\n    \"platformFaultDomainCount\": 1,\r\n    \"constrainedMaximumCapacity\": false,\r\n    \"timeCreated\": \"2023-01-13T02:23:24.0881837+00:00\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "689fffb0-2df0-4008-93cf-0e96454353b0",
@@ -586,7 +586,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/6b1dd3a0-b067-43fa-a69c-2a3f0421e22a?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/EastUS2EUAP/operations/6b1dd3a0-b067-43fa-a69c-2a3f0421e22a?p=844ecd36-0ff6-41a9-a4de-a74a3ffcbea8&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "b3ea65e4-a418-428b-adb9-f764328cbc1c"
@@ -614,7 +614,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30917/providers/Microsoft.Compute/virtualMachineScaleSets/vmss28149?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "b3cfa1bb-2053-4534-8cc7-202e88972d3b"

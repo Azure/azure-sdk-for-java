@@ -111,14 +111,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .create();
 
         PurchasePlan plan = new PurchasePlan()
-            .withName("access_server_byol")
+            .withName("openvpnas")
             .withPublisher("openvpn")
             .withProduct("openvpnas");
 
         ImageReference imageReference = new ImageReference()
             .withPublisher("openvpn")
             .withOffer("openvpnas")
-            .withSku("access_server_byol")
+            .withSku("openvpnas")
             .withVersion("latest");
 
         VirtualMachineScaleSet virtualMachineScaleSet =
@@ -141,7 +141,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         VirtualMachineScaleSet currentVirtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         // assertion for purchase plan
-        Assertions.assertEquals("access_server_byol", currentVirtualMachineScaleSet.plan().name());
+        Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().name());
         Assertions.assertEquals("openvpn", currentVirtualMachineScaleSet.plan().publisher());
         Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().product());
 
