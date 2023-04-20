@@ -30,7 +30,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
     private static final ClientLogger LOGGER = new ClientLogger(MemberNameConverterImpl.class);
 
     private final ObjectMapper mapper;
-    private final boolean useJackson212;
+    final boolean useJackson212;
 
     MemberNameConverterImpl(ObjectMapper mapper) {
         this.mapper = mapper;
