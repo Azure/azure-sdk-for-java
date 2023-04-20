@@ -205,6 +205,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotNull(foundVM);
         Assertions.assertEquals(region, foundVM.region());
         Assertions.assertEquals("Windows_Server", foundVM.licenseType());
+        Assertions.assertNotNull(foundVM.timeCreated());
 
         // Fetch instance view
         PowerState powerState = foundVM.powerState();

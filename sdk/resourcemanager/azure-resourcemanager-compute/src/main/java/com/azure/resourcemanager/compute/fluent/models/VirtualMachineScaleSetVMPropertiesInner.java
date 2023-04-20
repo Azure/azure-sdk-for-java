@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** Describes the properties of a virtual machine scale set virtual machine. */
 @Fluent
@@ -138,6 +139,12 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      */
     @JsonProperty(value = "userData")
     private String userData;
+
+    /*
+     * Specifies the time at which the Virtual Machine resource was created.
+     */
+    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime timeCreated;
 
     /** Creates an instance of VirtualMachineScaleSetVMPropertiesInner class. */
     public VirtualMachineScaleSetVMPropertiesInner() {
@@ -466,6 +473,15 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     public VirtualMachineScaleSetVMPropertiesInner withUserData(String userData) {
         this.userData = userData;
         return this;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
     }
 
     /**

@@ -20,6 +20,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -540,6 +541,15 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         }
         this.innerProperties().withUserData(userData);
         return this;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.innerProperties() == null ? null : this.innerProperties().timeCreated();
     }
 
     /**

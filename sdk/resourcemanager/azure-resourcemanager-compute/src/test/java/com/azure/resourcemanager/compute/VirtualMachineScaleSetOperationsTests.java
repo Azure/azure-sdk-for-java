@@ -1269,6 +1269,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         List<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list(null, VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW).stream().collect(Collectors.toList());
         Assertions.assertEquals(3, vmInstances.size());
+        Assertions.assertTrue(vmInstances.stream().allMatch(vm -> vm.timeCreated() != null));
         List<PowerState> powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(PowerState.RUNNING, PowerState.RUNNING, PowerState.RUNNING), powerStates);
 
@@ -1282,6 +1283,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // check single VM
         VirtualMachineScaleSetVM vmInstance0 = vmss.virtualMachines().getInstance(firstInstanceId);
         Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance0.powerState());
+        Assertions.assertNotNull(vmInstance0.timeCreated());
     }
 
     @Test

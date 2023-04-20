@@ -2,6 +2,10 @@
 
 ## 2.26.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `timeCreated()` in `VirtualMachineScaleSetVM` and `VirtualMachine`.
+
 ### Breaking Changes
 
 - Changed type from `ApiEntityReference` to `DiskRestorePointAttributes` of `diskRestorePoint` property in `RestorePointSourceVMDataDisk` and `RestorePointSourceVmosDisk` class.
