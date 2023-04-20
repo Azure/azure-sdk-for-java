@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.documentanalysis;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
@@ -15,7 +17,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,8 @@ import static com.azure.core.test.TestBase.getHttpClients;
  * Contains helper methods for generating inputs for test methods
  */
 public final class TestUtils {
+    private static final String REDACTED_VALUE = "REDACTED";
+    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     // Duration
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
 
@@ -132,17 +135,12 @@ public final class TestUtils {
             Long.valueOf(7));
     }
 
-    static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName, boolean isPlaybackMode) {
+    static void getDataRunnerHelper(BiConsumer<InputStream, Long> testRunner, String fileName) {
         final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
-
-        if (isPlaybackMode) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
+        try {
+            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
         }
     }
 
@@ -245,6 +243,17 @@ public final class TestUtils {
                     TestUtils::shouldServiceVersionBeTested)
                 .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
+    }
+
+    public static List<TestProxySanitizer> getTestProxySanitizers() {
+        return Arrays.asList(
+            new TestProxySanitizer("$..targetModelLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..targetResourceId", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..urlSource", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..azureBlobSource.containerUrl", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..source", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..resourceLocation", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
     }
 
     /**
