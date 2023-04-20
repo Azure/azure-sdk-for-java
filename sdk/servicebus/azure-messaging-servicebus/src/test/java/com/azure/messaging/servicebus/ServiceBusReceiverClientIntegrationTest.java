@@ -12,7 +12,6 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -25,7 +24,6 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,9 +31,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.TestUtils.USE_CASE_PEEK_BATCH;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -465,23 +463,28 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());
         final int maxMessages = 4;
 
-        Set<String> messageIds = new HashSet<>();
-        setReceiver(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
-        AtomicInteger allReceived = new AtomicInteger(0);
-        AtomicInteger iterations = new AtomicInteger(0);
-        Set<String> receivedFiltered = new HashSet<>();
+        List<ServiceBusMessage> messagesToSend = IntStream.range(0, maxMessages)
+            .mapToObj(i -> getMessage(String.format("%s-%s-%s", entityType, isSessionEnabled, i),
+                isSessionEnabled, AmqpMessageBody.fromData(payload)))
+            .collect(Collectors.toList());
+        Set<String> messageIds = messagesToSend.stream().map(ServiceBusMessage::getMessageId).collect(Collectors.toSet());
 
+        setReceiver(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
+        List<ServiceBusReceivedMessage> filtered = new ArrayList<>();
+        AtomicInteger iterations = new AtomicInteger(0);
+
+        // Act
         Thread peekMessages = new Thread(() -> {
             // maxMessages are not always guaranteed, sometime, we get less than asked for, just trying two times is not enough, so we will try many times
             // https://github.com/Azure/azure-sdk-for-java/issues/21168
-            while (iterations.getAndIncrement() < 10 && receivedFiltered.size() < maxMessages) {
-                IterableStream<ServiceBusReceivedMessage> received = receiver.peekMessages(maxMessages);
-                List<ServiceBusReceivedMessage> messages = logReceivedMessages(received, receiver.getEntityPath(), "peeked messages");
-
-                allReceived.addAndGet(messages.size());
-                receivedFiltered.addAll(messages.stream()
-                    .map(ServiceBusReceivedMessage::getMessageId)
-                    .filter(mId -> messageIds.contains(mId)).collect(Collectors.toList()));
+            while (iterations.getAndIncrement() < 10 && filtered.size() < maxMessages) {
+                receiver.peekMessages(maxMessages)
+                        .forEach(m -> {
+                            logMessage(m, receiver.getEntityPath(), "peeked messages");
+                            if (messageIds.contains(m.getMessageId())) {
+                                filtered.add(m);
+                            }
+                        });
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -492,25 +495,18 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         peekMessages.start();
         toClose((AutoCloseable) () -> peekMessages.interrupt());
-        // in case some other tests consume from the same queue
-        for (int i = 0; i < maxMessages; ++i) {
-            String messageId = String.format("5s-%s-%s", entityType, isSessionEnabled, i);
-            ServiceBusMessage message = getMessage(messageId, isSessionEnabled, AmqpMessageBody.fromData(payload));
-            messageIds.add(message.getMessageId());
-            sendMessage(message);
-        }
 
-        // Act
+        messagesToSend.forEach(message -> sendMessage(message));
         peekMessages.join(TIMEOUT.toMillis());
-        // Assert
+
         LOGGER.atInfo()
-            .addKeyValue("received", allReceived)
+            .addKeyValue("received", filtered.size())
             .addKeyValue("iterations", iterations.get())
-            .addKeyValue("receivedFiltered", receivedFiltered.size())
             .addKeyValue("isSessionEnabled", isSessionEnabled)
             .log("done receiving");
 
-        assertTrue(maxMessages == receivedFiltered.size(), String.format("Expected at least %s messages, got %s", maxMessages, receivedFiltered.size()));
+        // Assert
+        assertEquals(maxMessages, filtered.size());
     }
 
     /**

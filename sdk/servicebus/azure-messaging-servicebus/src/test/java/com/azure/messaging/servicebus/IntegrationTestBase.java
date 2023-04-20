@@ -28,7 +28,6 @@ import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
@@ -47,7 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
@@ -446,19 +444,13 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected void logMessages(List<ServiceBusMessage> messages, String entity, String description) {
-        messages.stream().forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+        messages.forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
     }
 
     protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages, String entity, String description) {
-        List<ServiceBusReceivedMessage> messageList = messages.stream().collect(Collectors.toList());
-        messageList.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
-        return messageList;
-    }
-
-    protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {
-        Assertions.assertNotNull(context);
-        Assertions.assertNotNull(context.getMessage());
-        assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);
+        List<ServiceBusReceivedMessage> list = messages.stream().toList();
+        list.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+        return list;
     }
 
     protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
