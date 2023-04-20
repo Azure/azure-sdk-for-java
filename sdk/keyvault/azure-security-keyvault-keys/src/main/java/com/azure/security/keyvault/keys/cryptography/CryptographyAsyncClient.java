@@ -73,11 +73,8 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  */
 @ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true, serviceInterfaces = CryptographyService.class)
 public class CryptographyAsyncClient {
-    static final String SECRETS_COLLECTION = "secrets";
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyAsyncClient.class);
 
-    JsonWebKey key;
-
-    private final ClientLogger logger = new ClientLogger(CryptographyAsyncClient.class);
     private final CryptographyService service;
     private final HttpPipeline pipeline;
     private final String keyId;
@@ -85,6 +82,10 @@ public class CryptographyAsyncClient {
     private CryptographyServiceClient cryptographyServiceClient;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
     private String keyCollection;
+
+    static final String SECRETS_COLLECTION = "secrets";
+
+    JsonWebKey key;
 
     /**
      * Creates a {@link CryptographyAsyncClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -145,7 +146,7 @@ public class CryptographyAsyncClient {
         } else if (key.getKeyType().equals(OCT) || key.getKeyType().equals(OCT_HSM)) {
             this.localKeyCryptographyClient = new AesKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", this.key.getKeyType().toString())));
         }
     }
@@ -189,7 +190,7 @@ public class CryptographyAsyncClient {
         try {
             return getKeyWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -221,7 +222,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(this::getKeyWithResponse);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -229,7 +230,7 @@ public class CryptographyAsyncClient {
         if (cryptographyServiceClient != null) {
             return cryptographyServiceClient.getKey(context);
         } else {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                 "Operation not supported when in operating local-only mode"));
         }
     }
@@ -239,7 +240,7 @@ public class CryptographyAsyncClient {
             return withContext(context -> cryptographyServiceClient.getSecretKey(context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -357,7 +358,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> encrypt(encryptParameters, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -368,7 +369,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
             }
 
@@ -383,7 +384,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
             }
 
@@ -503,7 +504,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> decrypt(decryptParameters, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -514,7 +515,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Decrypt operation is not allowed for key with id: %s", key.getId()))));
             }
 
@@ -529,7 +530,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Decrypt operation is not allowed for key with id: %s", key.getId()))));
             }
 
@@ -584,7 +585,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> sign(algorithm, digest, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -598,7 +599,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Sign operation is not allowed for key with id: %s", key.getId()))));
             }
 
@@ -655,7 +656,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> verify(algorithm, digest, signature, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -670,7 +671,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Verify operation is not allowed for key with id: %s", key.getId()))));
             }
 
@@ -723,7 +724,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> wrapKey(algorithm, key, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -737,7 +738,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Wrap Key operation is not allowed for key with id: %s", this.key.getId()))));
             }
 
@@ -791,7 +792,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> unwrapKey(algorithm, encryptedKey, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -805,7 +806,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Unwrap Key operation is not allowed for key with id: %s", this.key.getId()))));
             }
 
@@ -857,7 +858,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> signData(algorithm, data, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -871,7 +872,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.SIGN)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Sign Operation is not allowed for key with id: %s", this.key.getId()))));
             }
 
@@ -925,7 +926,7 @@ public class CryptographyAsyncClient {
         try {
             return withContext(context -> verifyData(algorithm, data, signature, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -940,7 +941,7 @@ public class CryptographyAsyncClient {
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.VERIFY)) {
-                return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+                return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                     "Verify operation is not allowed for key with id: %s", this.key.getId()))));
             }
 
@@ -950,7 +951,7 @@ public class CryptographyAsyncClient {
 
     private void unpackAndValidateId(String keyId) {
         if (CoreUtils.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
         }
 
         try {
@@ -966,14 +967,14 @@ public class CryptographyAsyncClient {
             this.keyCollection = (tokens.length >= 2 ? tokens[1] : null);
 
             if (Strings.isNullOrEmpty(endpoint)) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Key endpoint in key identifier is invalid."));
             } else if (Strings.isNullOrEmpty(keyName)) {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalArgumentException("Key name in key identifier is invalid."));
             }
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The key identifier is malformed.", e));
         }
     }
 

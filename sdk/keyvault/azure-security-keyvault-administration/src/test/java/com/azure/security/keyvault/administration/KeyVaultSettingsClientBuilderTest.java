@@ -11,7 +11,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -23,79 +22,75 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class KeyVaultAccessControlClientBuilderTest {
+public class KeyVaultSettingsClientBuilderTest {
     private String vaultUrl;
-    private String roleDefinitionId;
-    private String principalId;
     private KeyVaultAdministrationServiceVersion serviceVersion;
 
     @BeforeEach
     public void setUp() {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
-        roleDefinitionId = "RoleDefinitionId";
-        principalId = "PrincipalId";
         serviceVersion = KeyVaultAdministrationServiceVersion.getLatest();
     }
 
     @Test
     public void buildSyncClientTest() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .buildClient();
 
-        assertNotNull(keyVaultAccessControlClient);
-        assertEquals(KeyVaultAccessControlClient.class.getSimpleName(), keyVaultAccessControlClient.getClass().getSimpleName());
+        assertNotNull(keyVaultSettingsClient);
+        assertEquals(KeyVaultSettingsClient.class.getSimpleName(), keyVaultSettingsClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .buildClient();
 
-        assertNotNull(keyVaultAccessControlClient);
-        assertEquals(KeyVaultAccessControlClient.class.getSimpleName(), keyVaultAccessControlClient.getClass().getSimpleName());
+        assertNotNull(keyVaultSettingsClient);
+        assertEquals(KeyVaultSettingsClient.class.getSimpleName(), keyVaultSettingsClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientTest() {
-        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
             .buildAsyncClient();
 
         assertNotNull(keyVaultAccessControlAsyncClient);
-        assertEquals(KeyVaultAccessControlAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultSettingsAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .buildAsyncClient();
 
         assertNotNull(keyVaultAccessControlAsyncClient);
-        assertEquals(KeyVaultAccessControlAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultSettingsAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void emptyVaultUrlThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new KeyVaultAccessControlClientBuilder().vaultUrl(""));
+        assertThrows(IllegalArgumentException.class, () -> new KeyVaultSettingsClientBuilder().vaultUrl(""));
     }
 
     @Test
     public void nullCredentialThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new KeyVaultAccessControlClientBuilder().credential(null));
+        assertThrows(NullPointerException.class, () -> new KeyVaultSettingsClientBuilder().credential(null));
     }
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
@@ -106,13 +101,12 @@ public class KeyVaultAccessControlClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () ->
-            keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+        assertThrows(RuntimeException.class, keyVaultSettingsClient::getSettings);
     }
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
@@ -122,13 +116,12 @@ public class KeyVaultAccessControlClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () ->
-            keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+        assertThrows(RuntimeException.class, keyVaultSettingsClient::getSettings);
     }
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .clientOptions(new ClientOptions()
@@ -139,14 +132,13 @@ public class KeyVaultAccessControlClientBuilderTest {
             })
             .buildClient();
 
-        assertThrows(RuntimeException.class, () ->
-            keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+        assertThrows(RuntimeException.class, keyVaultSettingsClient::getSettings);
     }
 
     @Test
     public void bothRetryOptionsAndRetryPolicySpecified() {
         assertThrows(RuntimeException.class, () ->
-            new KeyVaultAccessControlClientBuilder()
+            new KeyVaultSettingsClientBuilder()
                 .vaultUrl(vaultUrl)
                 .serviceVersion(serviceVersion)
                 .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
@@ -159,7 +151,7 @@ public class KeyVaultAccessControlClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultAccessControlClientBuilder()
+        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultSettingsClientBuilder()
             .vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
