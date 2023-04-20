@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported `timeCreated()` in `VirtualMachineScaleSetVM`.
+- Supported `timeCreated()` in `VirtualMachineScaleSetVM` and `VirtualMachine`.
 
 ### Breaking Changes
 
