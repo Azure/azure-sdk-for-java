@@ -25,7 +25,6 @@ public final class DocumentField extends TypedDocumentField<Object> {
      *
      * @return the value.
      */
-
     @JsonIgnore
     public String getValueAsString() {
         return (String) super.getValue();
