@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -543,6 +544,31 @@ public final class ManagedClusterInner extends Resource {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withEnableRbac(enableRbac);
+        return this;
+    }
+
+    /**
+     * Get the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @return the supportPlan value.
+     */
+    public KubernetesSupportPlan supportPlan() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportPlan();
+    }
+
+    /**
+     * Set the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @param supportPlan the supportPlan value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withSupportPlan(KubernetesSupportPlan supportPlan) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withSupportPlan(supportPlan);
         return this;
     }
 
