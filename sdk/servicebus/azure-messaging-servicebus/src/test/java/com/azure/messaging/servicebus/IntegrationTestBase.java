@@ -46,6 +46,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
@@ -448,7 +449,7 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages, String entity, String description) {
-        List<ServiceBusReceivedMessage> list = messages.stream().toList();
+        List<ServiceBusReceivedMessage> list = messages.stream().collect(Collectors.toList());
         list.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
         return list;
     }
