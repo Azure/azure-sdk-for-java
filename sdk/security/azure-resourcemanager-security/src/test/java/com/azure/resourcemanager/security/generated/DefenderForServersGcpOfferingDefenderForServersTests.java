@@ -13,21 +13,20 @@ public final class DefenderForServersGcpOfferingDefenderForServersTests {
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingDefenderForServers model =
             BinaryData
-                .fromString(
-                    "{\"workloadIdentityProviderId\":\"exleqirccjcl\",\"serviceAccountEmailAddress\":\"cgxvrpj\"}")
+                .fromString("{\"workloadIdentityProviderId\":\"jajqmatxjt\",\"serviceAccountEmailAddress\":\"ln\"}")
                 .toObject(DefenderForServersGcpOfferingDefenderForServers.class);
-        Assertions.assertEquals("exleqirccjcl", model.workloadIdentityProviderId());
-        Assertions.assertEquals("cgxvrpj", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("jajqmatxjt", model.workloadIdentityProviderId());
+        Assertions.assertEquals("ln", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersGcpOfferingDefenderForServers model =
             new DefenderForServersGcpOfferingDefenderForServers()
-                .withWorkloadIdentityProviderId("exleqirccjcl")
-                .withServiceAccountEmailAddress("cgxvrpj");
+                .withWorkloadIdentityProviderId("jajqmatxjt")
+                .withServiceAccountEmailAddress("ln");
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingDefenderForServers.class);
-        Assertions.assertEquals("exleqirccjcl", model.workloadIdentityProviderId());
-        Assertions.assertEquals("cgxvrpj", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("jajqmatxjt", model.workloadIdentityProviderId());
+        Assertions.assertEquals("ln", model.serviceAccountEmailAddress());
     }
 }

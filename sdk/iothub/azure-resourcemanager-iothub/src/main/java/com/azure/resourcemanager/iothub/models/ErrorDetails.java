@@ -17,6 +17,10 @@ public final class ErrorDetails extends ManagementError {
     @JsonProperty(value = "httpStatusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String httpStatusCode;
 
+    /** Creates an instance of ErrorDetails class. */
+    public ErrorDetails() {
+    }
+
     /**
      * Get the httpStatusCode property: The HTTP status code.
      *

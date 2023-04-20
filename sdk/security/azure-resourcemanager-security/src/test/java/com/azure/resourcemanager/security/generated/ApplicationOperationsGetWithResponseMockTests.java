@@ -32,7 +32,7 @@ public final class ApplicationOperationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"nwosstfj\",\"description\":\"v\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datazqfcwrriomxee\",\"datawyhjmbjiqegmxdbs\"]},\"id\":\"hc\",\"name\":\"hpyvdkgdet\",\"type\":\"z\"}";
+            "{\"properties\":{\"displayName\":\"nmpaklwzlweepr\",\"description\":\"jzltkaszfjs\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"databduxapgrcq\",\"databmvrdjomlnwsbv\",\"datadls\",\"datalxkqesdfeds\"]},\"id\":\"gzancoinmphy\",\"name\":\"cqidkltvdhqnufbx\",\"type\":\"e\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,10 +61,10 @@ public final class ApplicationOperationsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Application response =
-            manager.applicationOperations().getWithResponse("f", com.azure.core.util.Context.NONE).getValue();
+            manager.applicationOperations().getWithResponse("wrqkza", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("nwosstfj", response.displayName());
-        Assertions.assertEquals("v", response.description());
+        Assertions.assertEquals("nmpaklwzlweepr", response.displayName());
+        Assertions.assertEquals("jzltkaszfjs", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

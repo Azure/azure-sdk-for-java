@@ -28,15 +28,6 @@ public final class LedgersImpl implements Ledgers {
         this.serviceManager = serviceManager;
     }
 
-    public ConfidentialLedger getByResourceGroup(String resourceGroupName, String ledgerName) {
-        ConfidentialLedgerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, ledgerName);
-        if (inner != null) {
-            return new ConfidentialLedgerImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ConfidentialLedger> getByResourceGroupWithResponse(
         String resourceGroupName, String ledgerName, Context context) {
         Response<ConfidentialLedgerInner> inner =
@@ -47,6 +38,15 @@ public final class LedgersImpl implements Ledgers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ConfidentialLedgerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ConfidentialLedger getByResourceGroup(String resourceGroupName, String ledgerName) {
+        ConfidentialLedgerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, ledgerName);
+        if (inner != null) {
+            return new ConfidentialLedgerImpl(inner, this.manager());
         } else {
             return null;
         }

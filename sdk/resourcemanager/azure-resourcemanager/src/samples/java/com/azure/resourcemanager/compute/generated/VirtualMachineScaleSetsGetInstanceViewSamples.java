@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineScaleSets GetInstanceView. */
 public final class VirtualMachineScaleSetsGetInstanceViewSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_GetInstanceView_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_GetInstanceView_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsGetInstanceViewMinimumSetGen(
+    public static void virtualMachineScaleSetGetInstanceViewMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -25,14 +25,14 @@ public final class VirtualMachineScaleSetsGetInstanceViewSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_GetInstanceView_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_GetInstanceView_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsGetInstanceViewMaximumSetGen(
+    public static void virtualMachineScaleSetGetInstanceViewMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

@@ -6,20 +6,19 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentInfoResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DeploymentInfoResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Unhealthy\",\"version\":\"dtqajzyulpkudj\",\"memoryCapacity\":\"lkhbz\",\"diskCapacity\":\"epgzgqexz\"}")
+                    "{\"status\":\"Unhealthy\",\"version\":\"jaoyfhrtx\",\"memoryCapacity\":\"n\",\"diskCapacity\":\"kujysvlejuvfq\",\"deploymentUrl\":\"rlyxwjkcprbnw\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"vtb\"},\"marketplaceName\":\"ysszdnrujqguh\",\"marketplaceResourceId\":\"ouqfprwz\"}}")
                 .toObject(DeploymentInfoResponseInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentInfoResponseInner model = new DeploymentInfoResponseInner();
         model = BinaryData.fromObject(model).toObject(DeploymentInfoResponseInner.class);
     }

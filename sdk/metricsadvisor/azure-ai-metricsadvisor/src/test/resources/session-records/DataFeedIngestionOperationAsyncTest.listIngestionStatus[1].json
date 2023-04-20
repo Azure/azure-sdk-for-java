@@ -1,26 +1,440 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionStatus/query",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "62512c91-3df1-4efb-b1ef-ec456ce09d44",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "4287f9cb-65b5-43ff-91ee-5960e470e9db",
-      "content-length" : "5697",
-      "x-envoy-upstream-service-time" : "257",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4287f9cb-65b5-43ff-91ee-5960e470e9db",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"timestamp\":\"2022-03-21T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-20T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-19T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-18T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-17T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-16T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-15T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-14T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-13T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-12T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-11T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-10T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-09T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-08T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-07T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-06T00:00:00Z\",\"status\":\"NotStarted\",\"message\":\"\"},{\"timestamp\":\"2022-03-05T00:00:00Z\",\"status\":\"Running\",\"message\":\"\"},{\"timestamp\":\"2022-03-04T00:00:00Z\",\"status\":\"Running\",\"message\":\"\"},{\"timestamp\":\"2022-03-03T00:00:00Z\",\"status\":\"Running\",\"message\":\"\"},{\"timestamp\":\"2022-03-02T00:00:00Z\",\"status\":\"Running\",\"message\":\"\"},{\"timestamp\":\"2022-03-01T00:00:00Z\",\"status\":\"Running\",\"message\":\"\"},{\"timestamp\":\"2022-02-28T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-27T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-26T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-25T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-24T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-23T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-22T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-21T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-20T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-19T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-18T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-17T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-16T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-15T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-14T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-13T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-12T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-11T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-10T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-09T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-08T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-07T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-06T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-05T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-04T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-03T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-02T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-02-01T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-31T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-30T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-29T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-28T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-27T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-26T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-25T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-24T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-23T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-22T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-21T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-20T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-19T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-18T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-17T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-16T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-15T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-14T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-13T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-12T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-11T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-10T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-09T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-08T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-07T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-06T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-05T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-04T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-03T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-02T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"},{\"timestamp\":\"2022-01-01T00:00:00Z\",\"status\":\"Succeeded\",\"message\":\"\"}]}",
-      "Date" : "Fri, 08 Apr 2022 23:50:22 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionStatus/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "69",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:19 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "362d149a-1b74-428d-af5e-d6557c3fe522",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "startTime": "2022-01-01T00:00:00Z",
+        "endTime": "2022-03-22T00:00:00Z"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "95152e8e-d49a-4dc4-9d93-928848c24c0d",
+        "Content-Length": "5697",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:18 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "212",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "95152e8e-d49a-4dc4-9d93-928848c24c0d"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "timestamp": "2022-03-21T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-20T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-19T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-18T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-17T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-16T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-15T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-14T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-13T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-12T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-11T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-10T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-09T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-08T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-07T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-06T00:00:00Z",
+            "status": "NotStarted",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-05T00:00:00Z",
+            "status": "Running",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-04T00:00:00Z",
+            "status": "Running",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-03T00:00:00Z",
+            "status": "Running",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-02T00:00:00Z",
+            "status": "Running",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-03-01T00:00:00Z",
+            "status": "Running",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-28T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-27T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-26T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-25T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-24T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-23T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-22T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-21T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-20T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-19T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-18T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-17T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-16T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-15T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-14T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-13T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-12T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-11T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-10T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-09T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-08T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-07T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-06T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-05T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-04T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-03T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-02T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-02-01T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-31T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-30T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-29T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-28T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-27T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-26T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-25T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-24T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-23T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-22T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-21T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-20T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-19T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-18T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-17T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-16T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-15T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-14T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-13T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-12T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-11T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-10T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-09T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-08T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-07T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-06T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-05T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-04T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-03T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-02T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          },
+          {
+            "timestamp": "2022-01-01T00:00:00Z",
+            "status": "Succeeded",
+            "message": ""
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

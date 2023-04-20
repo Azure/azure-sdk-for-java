@@ -31,7 +31,7 @@ public final class SettingsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"mvgoqpleh\",\"name\":\"umkz\",\"type\":\"llcz\"}]}";
+            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"i\",\"name\":\"zbkuckgkdsksw\",\"type\":\"iiqqcqikclsmalns\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

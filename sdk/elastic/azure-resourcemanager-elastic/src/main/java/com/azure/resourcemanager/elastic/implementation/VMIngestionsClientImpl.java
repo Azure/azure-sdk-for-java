@@ -53,8 +53,7 @@ public final class VMIngestionsClientImpl implements VMIngestionsClient {
     public interface VMIngestionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}/vmIngestionDetails")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/vmIngestionDetails")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VMIngestionDetailsResponseInner>> details(

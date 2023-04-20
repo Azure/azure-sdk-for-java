@@ -36,7 +36,7 @@ public final class SecurityContactsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"emails\":\"hflrufssjyghsfx\",\"phone\":\"bh\",\"alertNotifications\":{\"state\":\"Failed\",\"minimalSeverity\":\"Low\"},\"notificationsByRole\":{\"state\":\"Failed\",\"roles\":[]}},\"id\":\"gvqcpdwj\",\"name\":\"quxweyslandkd\",\"type\":\"djhunhghcgawnr\"}";
+            "{\"properties\":{\"emails\":\"ezacfpztga\",\"phone\":\"yqejga\",\"alertNotifications\":{\"state\":\"Unsupported\",\"minimalSeverity\":\"High\"},\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[]}},\"id\":\"kqzkcyzmff\",\"name\":\"gdyfcixrhlcqvhoe\",\"type\":\"goiutgw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,12 +67,12 @@ public final class SecurityContactsCreateWithResponseMockTests {
         SecurityContact response =
             manager
                 .securityContacts()
-                .define("lqxr")
-                .withEmails("nkobektmbozom")
-                .withPhone("amicbigwcdgz")
+                .define("nzsieuscplh")
+                .withEmails("gxlyzkxitdshezs")
+                .withPhone("olrupjovm")
                 .withAlertNotifications(
                     new SecurityContactPropertiesAlertNotifications()
-                        .withState(State.SKIPPED)
+                        .withState(State.PASSED)
                         .withMinimalSeverity(MinimalSeverity.MEDIUM))
                 .withNotificationsByRole(
                     new SecurityContactPropertiesNotificationsByRole()
@@ -80,10 +80,10 @@ public final class SecurityContactsCreateWithResponseMockTests {
                         .withRoles(Arrays.asList()))
                 .create();
 
-        Assertions.assertEquals("hflrufssjyghsfx", response.emails());
-        Assertions.assertEquals("bh", response.phone());
-        Assertions.assertEquals(State.FAILED, response.alertNotifications().state());
-        Assertions.assertEquals(MinimalSeverity.LOW, response.alertNotifications().minimalSeverity());
-        Assertions.assertEquals(State.FAILED, response.notificationsByRole().state());
+        Assertions.assertEquals("ezacfpztga", response.emails());
+        Assertions.assertEquals("yqejga", response.phone());
+        Assertions.assertEquals(State.UNSUPPORTED, response.alertNotifications().state());
+        Assertions.assertEquals(MinimalSeverity.HIGH, response.alertNotifications().minimalSeverity());
+        Assertions.assertEquals(State.UNSUPPORTED, response.notificationsByRole().state());
     }
 }

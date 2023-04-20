@@ -33,7 +33,7 @@ public final class RegulatoryComplianceAssessmentsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"spftesubzpv\",\"assessmentType\":\"dylytcovq\",\"assessmentDetailsLink\":\"usrf\",\"state\":\"Passed\",\"passedResources\":888538895,\"failedResources\":1270173306,\"skippedResources\":368641027,\"unsupportedResources\":1418678533},\"id\":\"b\",\"name\":\"uoswkjmdih\",\"type\":\"cy\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"otjgxieqfkyfhi\",\"assessmentType\":\"jaqupbyynvskpaj\",\"assessmentDetailsLink\":\"geumexm\",\"state\":\"Skipped\",\"passedResources\":1361345524,\"failedResources\":401303949,\"skippedResources\":997716401,\"unsupportedResources\":1703770909},\"id\":\"txapeqiscrpilgf\",\"name\":\"rqre\",\"type\":\"daahuqi\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,8 +64,8 @@ public final class RegulatoryComplianceAssessmentsListMockTests {
         PagedIterable<RegulatoryComplianceAssessment> response =
             manager
                 .regulatoryComplianceAssessments()
-                .list("ysemtmesrfsvpin", "zpatqtd", "swxspvckojaz", com.azure.core.util.Context.NONE);
+                .list("uw", "jmwvvbtuqkxxi", "wgxql", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(State.PASSED, response.iterator().next().state());
+        Assertions.assertEquals(State.SKIPPED, response.iterator().next().state());
     }
 }

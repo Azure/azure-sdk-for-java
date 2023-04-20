@@ -13,17 +13,19 @@ public final class GovernanceRuleOwnerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GovernanceRuleOwnerSource model =
-            BinaryData.fromString("{\"type\":\"ByTag\",\"value\":\"mtx\"}").toObject(GovernanceRuleOwnerSource.class);
+            BinaryData
+                .fromString("{\"type\":\"ByTag\",\"value\":\"vfkoxml\"}")
+                .toObject(GovernanceRuleOwnerSource.class);
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, model.type());
-        Assertions.assertEquals("mtx", model.value());
+        Assertions.assertEquals("vfkoxml", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GovernanceRuleOwnerSource model =
-            new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.BY_TAG).withValue("mtx");
+            new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.BY_TAG).withValue("vfkoxml");
         model = BinaryData.fromObject(model).toObject(GovernanceRuleOwnerSource.class);
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, model.type());
-        Assertions.assertEquals("mtx", model.value());
+        Assertions.assertEquals("vfkoxml", model.value());
     }
 }

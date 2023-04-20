@@ -11,36 +11,14 @@ import java.util.Map;
 /** Samples for CapacityReservationGroups Update. */
 public final class CapacityReservationGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: CapacityReservationGroups_Update_MaximumSet_Gen.
+     * Sample code: CapacityReservationGroup_Update_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void capacityReservationGroupsUpdateMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getCapacityReservationGroups()
-            .updateWithResponse(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaaaaaaaa",
-                new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "aaa")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: CapacityReservationGroups_Update_MinimumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void capacityReservationGroupsUpdateMinimumSetGen(
+    public static void capacityReservationGroupUpdateMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -51,6 +29,28 @@ public final class CapacityReservationGroupsUpdateSamples {
                 "rgcompute",
                 "aaaaaaaaaaaaaaaaaaaaaa",
                 new CapacityReservationGroupUpdate(),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: CapacityReservationGroup_Update_MaximumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void capacityReservationGroupUpdateMaximumSetGen(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCapacityReservationGroups()
+            .updateWithResponse(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaaaaaa",
+                new CapacityReservationGroupUpdate().withTags(mapOf("key5355", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
