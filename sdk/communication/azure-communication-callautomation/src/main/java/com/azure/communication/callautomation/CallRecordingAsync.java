@@ -432,7 +432,7 @@ public final class CallRecordingAsync {
         Path destinationPath) {
         try {
             DownloadToFileOptions options = new DownloadToFileOptions();
-            return downloadToWithResponse(sourceUrl, destinationPath, options).then();
+            return downloadTo(sourceUrl, destinationPath, options).then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -448,14 +448,14 @@ public final class CallRecordingAsync {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> downloadToWithResponse(
+    public Mono<Void> downloadTo(
         String sourceUrl,
         Path destinationPath,
         DownloadToFileOptions options) {
-        return downloadToWithResponseInternal(sourceUrl, destinationPath, options, null);
+        return downloadToInternal(sourceUrl, destinationPath, options, null);
     }
 
-    Mono<Response<Void>> downloadToWithResponseInternal(
+    Mono<Void> downloadToInternal(
         String sourceUrl,
         Path destinationPath,
         DownloadToFileOptions options,
@@ -476,23 +476,23 @@ public final class CallRecordingAsync {
             AsynchronousFileChannel file = AsynchronousFileChannel.open(destinationPath, openOptions, null);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return downloadToWithResponse(sourceUrl, destinationPath, file, options, contextValue);
+                return downloadTo(sourceUrl, destinationPath, file, options, contextValue);
             });
         } catch (IOException ex) {
             return monoError(logger, new RuntimeException(ex));
         }
     }
 
-    Mono<Response<Void>> downloadToWithResponse(
+    Mono<Void> downloadTo(
         String sourceUrl,
         OutputStream destinationStream,
         HttpRange httpRange,
         Context context) {
 
-        return contentDownloader.downloadToStreamWithResponse(sourceUrl, destinationStream, httpRange, context);
+        return contentDownloader.downloadToStreamWithResponse(sourceUrl, destinationStream, httpRange, context).then();
     }
 
-    Mono<Response<Void>> downloadToWithResponse(
+    Mono<Void> downloadTo(
         String sourceUrl,
         Path destinationPath,
         AsynchronousFileChannel fileChannel,
@@ -507,7 +507,8 @@ public final class CallRecordingAsync {
         return Mono.just(fileChannel).flatMap(
                 c -> contentDownloader.downloadToFileWithResponse(sourceUrl, c, finalParallelDownloadOptions, context))
             .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-            .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType));
+            .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType))
+            .then();
     }
 
     /**

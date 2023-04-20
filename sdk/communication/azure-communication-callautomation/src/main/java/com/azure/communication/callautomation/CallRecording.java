@@ -171,7 +171,7 @@ public final class CallRecording {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceUrl, OutputStream destinationStream) {
-        downloadToWithResponse(sourceUrl, destinationStream, null, null);
+        downloadTo(sourceUrl, destinationStream, null, null);
     }
 
     /**
@@ -182,18 +182,15 @@ public final class CallRecording {
      * @param httpRange - An optional {@link HttpRange} value containing the range of bytes to download. If missing,
      *                  the whole content will be downloaded.
      * @param context A {@link Context} representing the request context.
-     * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceUrl,
-                                                 OutputStream destinationStream,
-                                                 HttpRange httpRange,
-                                                 Context context) {
+    public void downloadTo(String sourceUrl,
+                           OutputStream destinationStream,
+                           HttpRange httpRange,
+                           Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
-        return callRecordingAsync
-            .downloadToWithResponse(sourceUrl, destinationStream, httpRange, context)
-            .block();
+        callRecordingAsync.downloadTo(sourceUrl, destinationStream, httpRange, context).block();
     }
 
     /**
@@ -212,7 +209,7 @@ public final class CallRecording {
     /**
      * Downloads the entire content.
      * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadToWithResponse(String, OutputStream, HttpRange, Context)} to download larger blobs.</p>
+     * Use {@link #downloadTo(String, OutputStream, HttpRange, Context)} to download larger blobs.</p>
      *
      * @param sourceUrl ACS URL where the content is located.
      * @param range An optional {@link HttpRange} value containing the range of bytes to download. If missing,
@@ -235,7 +232,7 @@ public final class CallRecording {
     public void downloadTo(String sourceUrl,
                            Path destinationPath) {
         DownloadToFileOptions options = new DownloadToFileOptions();
-        downloadToWithResponse(sourceUrl, destinationPath, options, null);
+        downloadTo(sourceUrl, destinationPath, options, null);
     }
 
     /**
@@ -249,14 +246,13 @@ public final class CallRecording {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> downloadToWithResponse(String sourceUrl,
-                                                 Path destinationPath,
-                                                 DownloadToFileOptions options,
-                                                 final Context context) {
+    public void downloadTo(String sourceUrl,
+                                     Path destinationPath,
+                                     DownloadToFileOptions options,
+                                     final Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-        return callRecordingAsync.downloadToWithResponseInternal(sourceUrl, destinationPath,
-            options, context).block();
+        callRecordingAsync.downloadToInternal(sourceUrl, destinationPath, options, context).block();
     }
 
     /**
