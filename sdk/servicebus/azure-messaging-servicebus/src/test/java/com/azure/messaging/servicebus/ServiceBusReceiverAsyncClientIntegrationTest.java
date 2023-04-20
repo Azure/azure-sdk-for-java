@@ -1182,9 +1182,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
     void autoAndManualRenewMessageLock(MessagingEntityType entityType) throws InterruptedException {
-        testRenewLock(entityType, Duration.ofSeconds(10), (m) -> Mono.empty());
+        testRenewLock(entityType, Duration.ofSeconds(10), (m) -> {
+            toClose(receiver.renewMessageLock(m, Duration.ofSeconds(10)).subscribe());
+            return Mono.empty();
+        });
     }
-
 
     private void testRenewLock(MessagingEntityType entityType, Duration lockRenewalDuration, Function<ServiceBusReceivedMessage, Mono<Void>> renewMono) throws InterruptedException {
         setSender(entityType, TestUtils.USE_CASE_RENEW_LOCK, false);

@@ -498,8 +498,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             .addKeyValue("isSessionEnabled", isSessionEnabled)
             .log("done receiving");
 
-        Assumptions.assumeTrue(allReceived >= maxMessages, String.format("Expected %s messages, got %s, test is inconclusive", maxMessages, receivedFiltered.size()));
-
         assertTrue(maxMessages == receivedFiltered.size(), String.format("Expected at least %s messages, got %s", maxMessages, receivedFiltered.size()));
     }
 
