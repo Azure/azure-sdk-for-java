@@ -19,6 +19,12 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings {
     @JsonProperty(value = "rebootSetting")
     private WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
 
+    /*
+     * Enables customer to schedule patching without accidental upgrades
+     */
+    @JsonProperty(value = "bypassPlatformSafetyChecksOnUserSchedule")
+    private Boolean bypassPlatformSafetyChecksOnUserSchedule;
+
     /** Creates an instance of WindowsVMGuestPatchAutomaticByPlatformSettings class. */
     public WindowsVMGuestPatchAutomaticByPlatformSettings() {
     }
@@ -43,6 +49,29 @@ public final class WindowsVMGuestPatchAutomaticByPlatformSettings {
     public WindowsVMGuestPatchAutomaticByPlatformSettings withRebootSetting(
         WindowsVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting) {
         this.rebootSetting = rebootSetting;
+        return this;
+    }
+
+    /**
+     * Get the bypassPlatformSafetyChecksOnUserSchedule property: Enables customer to schedule patching without
+     * accidental upgrades.
+     *
+     * @return the bypassPlatformSafetyChecksOnUserSchedule value.
+     */
+    public Boolean bypassPlatformSafetyChecksOnUserSchedule() {
+        return this.bypassPlatformSafetyChecksOnUserSchedule;
+    }
+
+    /**
+     * Set the bypassPlatformSafetyChecksOnUserSchedule property: Enables customer to schedule patching without
+     * accidental upgrades.
+     *
+     * @param bypassPlatformSafetyChecksOnUserSchedule the bypassPlatformSafetyChecksOnUserSchedule value to set.
+     * @return the WindowsVMGuestPatchAutomaticByPlatformSettings object itself.
+     */
+    public WindowsVMGuestPatchAutomaticByPlatformSettings withBypassPlatformSafetyChecksOnUserSchedule(
+        Boolean bypassPlatformSafetyChecksOnUserSchedule) {
+        this.bypassPlatformSafetyChecksOnUserSchedule = bypassPlatformSafetyChecksOnUserSchedule;
         return this;
     }
 
