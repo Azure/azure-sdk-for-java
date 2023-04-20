@@ -67,9 +67,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
     public interface DiskRestorePointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
-                + "/diskRestorePoints/{diskRestorePointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskRestorePointInner>> get(
@@ -85,9 +83,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
-                + "/diskRestorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DiskRestorePointList>> listByRestorePoint(
@@ -102,9 +98,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
-                + "/diskRestorePoints/{diskRestorePointName}/beginGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/beginGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> grantAccess(
@@ -121,9 +115,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}"
-                + "/diskRestorePoints/{diskRestorePointName}/endGetAccess")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints/{diskRestorePointName}/endGetAccess")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> revokeAccess(

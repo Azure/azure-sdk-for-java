@@ -16,10 +16,10 @@ public final class ApplicationInnerTests {
         ApplicationInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"fqlwxldykalsy\",\"description\":\"olnjpnnbmjksibj\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datajxxahmrnad\",\"datayqegx\",\"dataiv\",\"datainbmh\"]},\"id\":\"bjijkgqxnh\",\"name\":\"bkezn\",\"type\":\"aujvaa\"}")
+                    "{\"properties\":{\"displayName\":\"cfehuwaoagu\",\"description\":\"cqlliz\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datacsjvhrwef\"]},\"id\":\"kwqejpmvsseh\",\"name\":\"epwamcxtcz\",\"type\":\"upeuknijduyye\"}")
                 .toObject(ApplicationInner.class);
-        Assertions.assertEquals("fqlwxldykalsy", model.displayName());
-        Assertions.assertEquals("olnjpnnbmjksibj", model.description());
+        Assertions.assertEquals("cfehuwaoagu", model.displayName());
+        Assertions.assertEquals("cqlliz", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 
@@ -27,13 +27,13 @@ public final class ApplicationInnerTests {
     public void testSerialize() throws Exception {
         ApplicationInner model =
             new ApplicationInner()
-                .withDisplayName("fqlwxldykalsy")
-                .withDescription("olnjpnnbmjksibj")
+                .withDisplayName("cfehuwaoagu")
+                .withDescription("cqlliz")
                 .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-                .withConditionSets(Arrays.asList("datajxxahmrnad", "datayqegx", "dataiv", "datainbmh"));
+                .withConditionSets(Arrays.asList("datacsjvhrwef"));
         model = BinaryData.fromObject(model).toObject(ApplicationInner.class);
-        Assertions.assertEquals("fqlwxldykalsy", model.displayName());
-        Assertions.assertEquals("olnjpnnbmjksibj", model.description());
+        Assertions.assertEquals("cfehuwaoagu", model.displayName());
+        Assertions.assertEquals("cqlliz", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 }

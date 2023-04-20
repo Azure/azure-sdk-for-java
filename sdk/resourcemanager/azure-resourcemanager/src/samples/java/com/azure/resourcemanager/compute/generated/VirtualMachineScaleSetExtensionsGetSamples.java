@@ -7,33 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineScaleSetExtensions Get. */
 public final class VirtualMachineScaleSetExtensionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtensions_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetExtensions_Get_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSetExtension_Get_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetExtensionsGetMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineScaleSetExtensions()
-            .getWithResponse(
-                "rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtensions_Get_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: VirtualMachineScaleSetExtensions_Get_MaximumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void virtualMachineScaleSetExtensionsGetMaximumSetGen(
+    public static void virtualMachineScaleSetExtensionGetMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -46,5 +27,24 @@ public final class VirtualMachineScaleSetExtensionsGetSamples {
                 "aaaaaaaaaaaaaaaaaaaa",
                 "aaaaaaa",
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: VirtualMachineScaleSetExtension_Get_MinimumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void virtualMachineScaleSetExtensionGetMinimumSetGen(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetExtensions()
+            .getWithResponse(
+                "rgcompute", "a", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

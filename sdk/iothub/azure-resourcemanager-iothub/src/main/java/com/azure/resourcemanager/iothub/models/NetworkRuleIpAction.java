@@ -14,6 +14,15 @@ public final class NetworkRuleIpAction extends ExpandableStringEnum<NetworkRuleI
     public static final NetworkRuleIpAction ALLOW = fromString("Allow");
 
     /**
+     * Creates a new instance of NetworkRuleIpAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkRuleIpAction() {
+    }
+
+    /**
      * Creates or finds a NetworkRuleIpAction from its string representation.
      *
      * @param name a name to look for.

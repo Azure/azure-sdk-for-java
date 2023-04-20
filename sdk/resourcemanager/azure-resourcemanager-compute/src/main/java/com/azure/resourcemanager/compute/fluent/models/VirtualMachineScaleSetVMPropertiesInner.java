@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** Describes the properties of a virtual machine scale set virtual machine. */
 @Fluent
@@ -83,7 +84,7 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     private VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration;
 
     /*
-     * Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
+     * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
      */
     @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
@@ -92,10 +93,10 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Specifies information about the availability set that the virtual machine should be assigned to. Virtual
      * machines specified in the same availability set are allocated to different nodes to maximize availability. For
      * more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). <br><br> For more
-     * information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) <br><br> Currently, a VM can
-     * only be added to availability set at creation time. An existing VM cannot be added to an availability set.
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
      */
     @JsonProperty(value = "availabilitySet")
     private SubResource availabilitySet;
@@ -138,6 +139,12 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      */
     @JsonProperty(value = "userData")
     private String userData;
+
+    /*
+     * Specifies the time at which the Virtual Machine resource was created.
+     */
+    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime timeCreated;
 
     /** Creates an instance of VirtualMachineScaleSetVMPropertiesInner class. */
     public VirtualMachineScaleSetVMPropertiesInner() {
@@ -317,8 +324,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     }
 
     /**
-     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
+     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
      *
      * @return the diagnosticsProfile value.
      */
@@ -327,8 +334,8 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     }
 
     /**
-     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
+     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. Minimum api-version:
+     * 2015-06-15.
      *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
@@ -342,11 +349,10 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
      *
      * @return the availabilitySet value.
      */
@@ -358,11 +364,10 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
      * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). For more information on
+     * Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates). Currently, a VM can only be
+     * added to availability set at creation time. An existing VM cannot be added to an availability set.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
@@ -468,6 +473,15 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     public VirtualMachineScaleSetVMPropertiesInner withUserData(String userData) {
         this.userData = userData;
         return this;
+    }
+
+    /**
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine resource was created.
+     *
+     * @return the timeCreated value.
+     */
+    public OffsetDateTime timeCreated() {
+        return this.timeCreated;
     }
 
     /**

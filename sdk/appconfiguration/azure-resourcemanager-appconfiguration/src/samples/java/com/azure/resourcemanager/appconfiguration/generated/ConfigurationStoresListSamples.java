@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConfigurationStores List. */
 public final class ConfigurationStoresListSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/ConfigurationStoresList.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/ConfigurationStoresList.json
      */
     /**
      * Sample code: ConfigurationStores_List.
@@ -18,6 +16,6 @@ public final class ConfigurationStoresListSamples {
      */
     public static void configurationStoresList(
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
-        manager.configurationStores().list(null, Context.NONE);
+        manager.configurationStores().list(null, com.azure.core.util.Context.NONE);
     }
 }

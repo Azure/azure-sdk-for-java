@@ -32,7 +32,7 @@ public final class AdaptiveApplicationControlsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"Audit\",\"msi\":\"Enforce\",\"script\":\"Audit\",\"executable\":\"None\"},\"configurationStatus\":\"InProgress\",\"recommendationStatus\":\"NotRecommended\",\"issues\":[],\"sourceSystem\":\"Azure_AppLocker\",\"vmRecommendations\":[],\"pathRecommendations\":[]},\"location\":\"ouvmrsiflik\",\"id\":\"ypzkg\",\"name\":\"fxfmyrqsdb\",\"type\":\"oksz\"}";
+            "{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"Enforce\",\"msi\":\"Enforce\",\"script\":\"None\",\"executable\":\"Enforce\"},\"configurationStatus\":\"NoStatus\",\"recommendationStatus\":\"Recommended\",\"issues\":[],\"sourceSystem\":\"NonAzure_AuditD\",\"vmRecommendations\":[],\"pathRecommendations\":[]},\"location\":\"mef\",\"id\":\"vhkmoogjrhskbwgm\",\"name\":\"g\",\"type\":\"u\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,13 @@ public final class AdaptiveApplicationControlsGetWithResponseMockTests {
         AdaptiveApplicationControlGroup response =
             manager
                 .adaptiveApplicationControls()
-                .getWithResponse("ydjufbnklbl", "xpegj", com.azure.core.util.Context.NONE)
+                .getWithResponse("sgwqpsqaz", "hqodv", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(EnforcementMode.ENFORCE, response.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, response.protectionMode().exe());
         Assertions.assertEquals(EnforcementMode.ENFORCE, response.protectionMode().msi());
-        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().executable());
+        Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().script());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, response.protectionMode().executable());
     }
 }

@@ -29,6 +29,10 @@ public final class IotHubNameAvailabilityInfoInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of IotHubNameAvailabilityInfoInner class. */
+    public IotHubNameAvailabilityInfoInner() {
+    }
+
     /**
      * Get the nameAvailable property: The value which indicates whether the provided name is available.
      *

@@ -15,7 +15,7 @@ public final class DeviceSecurityGroupListTests {
         DeviceSecurityGroupList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"jkcpr\",\"name\":\"nwbxgjvtbvpyssz\",\"type\":\"nruj\"},{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"ouqfprwz\",\"name\":\"bngui\",\"type\":\"nwui\"},{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"fizuckyf\",\"name\":\"hr\",\"type\":\"idf\"}],\"nextLink\":\"wdzuhtymwisd\"}")
+                    "{\"value\":[{\"properties\":{\"thresholdRules\":[],\"timeWindowRules\":[],\"allowlistRules\":[],\"denylistRules\":[]},\"id\":\"dwzjeiach\",\"name\":\"oosflnr\",\"type\":\"sfqpteehz\"}],\"nextLink\":\"ypyqrimzinp\"}")
                 .toObject(DeviceSecurityGroupList.class);
     }
 
@@ -26,16 +26,6 @@ public final class DeviceSecurityGroupListTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new DeviceSecurityGroupInner()
-                                .withThresholdRules(Arrays.asList())
-                                .withTimeWindowRules(Arrays.asList())
-                                .withAllowlistRules(Arrays.asList())
-                                .withDenylistRules(Arrays.asList()),
-                            new DeviceSecurityGroupInner()
-                                .withThresholdRules(Arrays.asList())
-                                .withTimeWindowRules(Arrays.asList())
-                                .withAllowlistRules(Arrays.asList())
-                                .withDenylistRules(Arrays.asList()),
                             new DeviceSecurityGroupInner()
                                 .withThresholdRules(Arrays.asList())
                                 .withTimeWindowRules(Arrays.asList())
