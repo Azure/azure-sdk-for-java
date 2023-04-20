@@ -71,8 +71,7 @@ public final class ProximityPlacementGroupsClientImpl
     public interface ProximityPlacementGroupsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/proximityPlacementGroups/{proximityPlacementGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ProximityPlacementGroupInner>> createOrUpdate(
@@ -87,8 +86,7 @@ public final class ProximityPlacementGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/proximityPlacementGroups/{proximityPlacementGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ProximityPlacementGroupInner>> update(
@@ -103,8 +101,7 @@ public final class ProximityPlacementGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/proximityPlacementGroups/{proximityPlacementGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> delete(
@@ -118,8 +115,7 @@ public final class ProximityPlacementGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/proximityPlacementGroups/{proximityPlacementGroupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups/{proximityPlacementGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ProximityPlacementGroupInner>> getByResourceGroup(
@@ -145,8 +141,7 @@ public final class ProximityPlacementGroupsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/proximityPlacementGroups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/proximityPlacementGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<ProximityPlacementGroupListResult>> listByResourceGroup(
@@ -220,7 +215,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -284,7 +279,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -399,7 +394,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -463,7 +458,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -568,7 +563,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -621,7 +616,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -719,7 +714,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -776,7 +771,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -872,7 +867,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -915,7 +910,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1014,7 +1009,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1069,7 +1064,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

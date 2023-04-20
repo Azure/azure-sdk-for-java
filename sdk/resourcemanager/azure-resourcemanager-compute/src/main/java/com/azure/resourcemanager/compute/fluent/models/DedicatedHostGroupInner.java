@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Specifies information about the dedicated host group that the dedicated hosts should be assigned to.
- * &lt;br&gt;&lt;br&gt; Currently, a dedicated host can only be added to a dedicated host group at creation time. An
- * existing dedicated host cannot be added to another dedicated host group.
+ * Specifies information about the dedicated host group that the dedicated hosts should be assigned to. Currently, a
+ * dedicated host can only be added to a dedicated host group at creation time. An existing dedicated host cannot be
+ * added to another dedicated host group.
  */
 @Fluent
 public final class DedicatedHostGroupInner extends Resource {
@@ -131,7 +131,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * Get the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
      * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
-     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * not provided. Minimum api-version: 2020-06-01.
      *
      * @return the supportAutomaticPlacement value.
      */
@@ -143,7 +143,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * Set the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
      * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
-     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * not provided. Minimum api-version: 2020-06-01.
      *
      * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
      * @return the DedicatedHostGroupInner object itself.
@@ -157,8 +157,8 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host
-     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host group. Minimum
+     * api-version: 2022-03-01.
      *
      * @return the additionalCapabilities value.
      */
@@ -167,8 +167,8 @@ public final class DedicatedHostGroupInner extends Resource {
     }
 
     /**
-     * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host
-     * group.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-03-01.
+     * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host group. Minimum
+     * api-version: 2022-03-01.
      *
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the DedicatedHostGroupInner object itself.
