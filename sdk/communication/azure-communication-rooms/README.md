@@ -61,11 +61,9 @@ public RoomsClient createRoomsClientWithConnectionString() {
 - List all rooms
 
 ### Participants
-- Upsert (Add/Update) Participants
+- Add or Update Participants
 - Remove Participants
 - List all participants
-- 
-- 
 
 ## Examples
 
