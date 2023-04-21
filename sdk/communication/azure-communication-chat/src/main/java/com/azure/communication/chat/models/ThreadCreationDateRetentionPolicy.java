@@ -21,6 +21,11 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
     @JsonProperty(value = "daysAfterCreation", required = true)
     private int deleteThreadAfterDays;
 
+    public ThreadCreationDateRetentionPolicy(int deleteThreadAfterDays) {
+        super(Kind.THREAD_CREATION_DATE);
+        this.deleteThreadAfterDays = deleteThreadAfterDays;
+    }
+
     /**
      * Get the daysAfterCreation property: Indicates how many days after the thread creation the thread will be deleted.
      * Only 90 is accepted for now.
@@ -29,17 +34,5 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
      */
     public int getDeleteThreadAfterDays() {
         return this.deleteThreadAfterDays;
-    }
-
-    /**
-     * Set the deleteThreadAfterDays property: Indicates how many days after the thread creation the thread will be deleted.
-     * Only 90 is accepted for now.
-     *
-     * @param deleteThreadAfterDays the daysAfterCreation value to set.
-     * @return the BasedOnThreadCreationDateRetentionPolicy object itself.
-     */
-    public ThreadCreationDateRetentionPolicy setDeleteThreadAfterDays(int deleteThreadAfterDays) {
-        this.deleteThreadAfterDays = deleteThreadAfterDays;
-        return this;
     }
 }
