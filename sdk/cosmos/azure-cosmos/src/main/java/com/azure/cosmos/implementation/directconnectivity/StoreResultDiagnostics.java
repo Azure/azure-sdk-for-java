@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -198,10 +199,14 @@ public class StoreResultDiagnostics {
             this.writeNonNullStringField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
             this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
             this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", storeResponseDiagnostics.getFaultInjectionRuleId());
-            this.writeNonEmptyStringArrayField(
-                jsonGenerator,
-                "faultInjectionEvaluationResults",
-                storeResponseDiagnostics.getFaultInjectionEvaluationResults());
+
+            if (StringUtils.isEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
+                this.writeNonEmptyStringArrayField(
+                    jsonGenerator,
+                    "faultInjectionEvaluationResults",
+                    storeResponseDiagnostics.getFaultInjectionEvaluationResults());
+            }
+
             this.writeNonNullObjectField(jsonGenerator, "replicaStatusList", storeResponseDiagnostics.getReplicaStatusList());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 

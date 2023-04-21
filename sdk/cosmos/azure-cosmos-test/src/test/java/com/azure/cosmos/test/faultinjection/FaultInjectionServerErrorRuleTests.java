@@ -261,7 +261,11 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             }
         }
 
-        logger.info("Inside fault injection test, OperationType {}, write region {}, read region", operationType, this.writeRegionMap.values(), this.readRegionMap.values());
+        logger.info(
+            "Inside fault injection test, OperationType {}, write region {}, read region",
+            operationType,
+            this.writeRegionMap.values(),
+            this.readRegionMap.values());
         CosmosAsyncClient clientWithPreferredRegions;
         try {
             clientWithPreferredRegions = new CosmosClientBuilder()
