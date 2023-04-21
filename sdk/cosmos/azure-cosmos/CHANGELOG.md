@@ -5,7 +5,7 @@
 #### Bugs Fixed
 * Fixed an issue where throughput control is not triggered properly when target throughput is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
 * Fixed an issue where `IllegalStateException` being thrown during replica validation - See [PR 34538](https://github.com/Azure/azure-sdk-for-java/pull/34538)
-* Fixed an issue where `IllegalArgumentException` being thrown during partition re-balancing in `ChangeFeedProcessor` - See [PR 34538](https://github.com/Azure/azure-sdk-for-java/pull/34538)
+* Fixed an issue where `IllegalArgumentException` being thrown during partition re-balancing in `ChangeFeedProcessor` - See [PR 34599](https://github.com/Azure/azure-sdk-for-java/pull/34599)
 
 ### 4.43.0 (2023-04-06)
 
