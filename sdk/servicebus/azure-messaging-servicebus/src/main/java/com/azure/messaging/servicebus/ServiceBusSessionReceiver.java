@@ -78,7 +78,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
 
         receiveLink.setEmptyCreditListener(() -> 0);
 
-        final Flux<ServiceBusMessageContext> receivedMessagesFlux = receiveLink
+        this.receivedMessages = receiveLink
             .receive()
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
@@ -138,7 +138,6 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 messageReceivedSink.next(token);
             });
 
-        this.receivedMessages = Flux.concat(receivedMessagesFlux, cancelReceiveProcessor);
         this.subscriptions = Disposables.composite();
 
         // Creates a subscription that disposes/closes the receiver when there are no more messages in the session and
