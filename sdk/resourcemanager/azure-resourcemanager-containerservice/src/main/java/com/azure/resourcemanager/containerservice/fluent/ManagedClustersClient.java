@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.CredentialResultsInner;
+import com.azure.resourcemanager.containerservice.fluent.models.KubernetesVersionListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAccessProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
@@ -89,6 +90,68 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OSOptionProfileInner getOSOptions(String location);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<KubernetesVersionListResultInner>> listKubernetesVersionsWithResponseAsync(String location);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<KubernetesVersionListResultInner> listKubernetesVersionsAsync(String location);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<KubernetesVersionListResultInner> listKubernetesVersionsWithResponse(String location, Context context);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KubernetesVersionListResultInner listKubernetesVersions(String location);
 
     /**
      * Gets a list of managed clusters in the specified subscription.
