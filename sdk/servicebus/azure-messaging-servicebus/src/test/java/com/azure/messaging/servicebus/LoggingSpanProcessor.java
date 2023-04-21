@@ -10,7 +10,10 @@ import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.trace.ReadWriteSpan;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SpanProcessor;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
+
+import java.util.List;
 
 class LoggingSpanProcessor implements SpanProcessor {
     private final ClientLogger logger;
@@ -52,6 +55,13 @@ class LoggingSpanProcessor implements SpanProcessor {
                 log.addKeyValue(key.getKey(), value);
             }
         });
+
+        List<LinkData> links = data.getLinks();
+        for (int l = 0; l < data.getLinks().size(); l ++) {
+            log.addKeyValue("link[" + l + "].traceId", links.get(l).getSpanContext().getTraceId());
+            log.addKeyValue("link[" + l + "].spanId", links.get(l).getSpanContext().getSpanId());
+            log.addKeyValue("link[" + l + "].attributeCount", links.get(l).getTotalAttributeCount());
+        }
 
         log.log("span ended");
     }

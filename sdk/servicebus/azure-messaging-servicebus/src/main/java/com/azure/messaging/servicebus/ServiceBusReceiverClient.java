@@ -399,8 +399,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             .timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
-        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
-        messages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }
@@ -450,8 +448,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
-        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
-        messages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }
@@ -539,9 +535,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final Flux<ServiceBusReceivedMessage> messagesFlux = emitter.asFlux();
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveMessages", messagesFlux);
 
-        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
-        messagesFlux.subscribe();
-
         return new IterableStream<>(tracedMessages);
     }
 
@@ -614,8 +607,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch", messages);
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }

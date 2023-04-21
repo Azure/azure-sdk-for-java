@@ -232,7 +232,8 @@ public class ServiceBusTracer {
     public Flux<ServiceBusReceivedMessage> traceSyncReceive(String spanName, Flux<ServiceBusReceivedMessage> messages) {
         if (isEnabled()) {
             return Flux.defer(() -> {
-                StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE);
+                StartSpanOptions startOptions = createStartOption(SpanKind.CLIENT, OperationName.RECEIVE)
+                    .setStartTimestamp(Instant.now());
                 return messages
                     .doOnEach(signal -> {
                         if (signal.hasValue()) {

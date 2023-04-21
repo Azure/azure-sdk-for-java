@@ -65,6 +65,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -337,6 +338,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
 
     @SuppressWarnings("rawtypes")
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
+        // TODO (limolkova) remove me
+        LOGGER.atVerbose()
+            .addKeyValue("messageId", amqpMessage.getMessageId())
+            .log("deserializing amqp batch message");
+
         final List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
         final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(amqpMessage);
 
@@ -367,6 +373,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         for (Object message : (Iterable) messages) {
+            LOGGER.atVerbose()
+                .log("deserializing message");
+
             if (!(message instanceof Map)) {
                 LOGGER.warning("Message inside iterable of message is not correct type. Expected: {}. Actual: {}",
                     Map.class, message.getClass());
@@ -380,6 +389,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 messagePayLoad.getLength());
 
             final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage);
+
+            LOGGER.atVerbose()
+                .addKeyValue("messageId", receivedMessage.getMessageId())
+                .addKeyValue("sequenceNumber",  receivedMessage.getSequenceNumber())
+                .log("done deserializing");
 
             // if amqp message have lockToken
             if (((Map) message).containsKey(ManagementConstants.LOCK_TOKEN_KEY)) {
