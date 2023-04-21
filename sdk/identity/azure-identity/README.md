@@ -536,7 +536,7 @@ Token caching is a feature provided by the Azure Identity library that allows ap
 - Improve resilience and performance.
 - Reduce the number of requests made to Azure Active Directory (Azure AD) to obtain access tokens.
 
-The Azure Identity client library offers both in-memory caching and persistent disk caching. For more details refer to [token caching documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md)
+The Azure Identity library offers both in-memory and persistent disk caching. For more details, see the [token caching documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TOKEN_CACHING.md)
 
 ## Troubleshooting
 
