@@ -1,70 +1,102 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e525883a-185b-4f86-a587-0ee72dd66428",
-      "Content-Type" : "application/json;odata=nometadata"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json;odata=minimalmetadata",
+        "Authorization": "Sanitized",
+        "Content-Length": "33",
+        "Content-Type": "application/json;odata=nometadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 14 Apr 2023 20:22:20 GMT",
+        "Prefer": "return-no-content",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "a1f61a1d-f87b-46a3-b865-848140734937",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": {
+        "TableName": "tablename25969213"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "DataServiceId": "https://REDACTED/Tables(\u0027tablename25969213\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:22:19 GMT",
+        "Location": "https://REDACTED/Tables(\u0027tablename25969213\u0027)",
+        "Preference-Applied": "return-no-content",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "a1f61a1d-f87b-46a3-b865-848140734937",
+        "x-ms-request-id": "8716e9d5-9002-0036-270e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "Date" : "Wed, 09 Jun 2021 16:41:46 GMT",
-      "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename75432233')",
-      "x-ms-request-id" : "9a29f259-6002-0045-024e-5d03f0000000",
-      "x-ms-client-request-id" : "e525883a-185b-4f86-a587-0ee72dd66428",
-      "Preference-Applied" : "return-no-content",
-      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('tablename75432233')"
+    {
+      "RequestUri": "https://REDACTED/tablename25969213?REDACTED",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "445",
+        "Content-Type": "application/xml",
+        "Date": "Fri, 14 Apr 2023 20:22:20 GMT",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "40f14cfe-5431-4837-9f92-d843ed7d5cb8",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003EtestPolicy1\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2021-12-12T00:00:00Z\u003C/Start\u003E\u003CExpiry\u003E2022-12-12T00:00:00Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CId\u003EtestPolicy2\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2021-12-12T00:00:00Z\u003C/Start\u003E\u003CExpiry\u003E2022-12-12T00:00:00Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 20:22:20 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "40f14cfe-5431-4837-9f92-d843ed7d5cb8",
+        "x-ms-request-id": "8716e9ed-9002-0036-3d0e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
     },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.table.core.windows.net/tablename75432233?comp=acl",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "84daf1aa-c1db-4fa9-896c-7a73baaec8ef",
-      "Content-Type" : "application/xml"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "x-ms-request-id" : "9a29f27c-6002-0045-224e-5d03f0000000",
-      "x-ms-client-request-id" : "84daf1aa-c1db-4fa9-896c-7a73baaec8ef",
-      "Date" : "Wed, 09 Jun 2021 16:41:46 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.table.core.windows.net/tablename75432233?comp=acl",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8a9badde-cb39-4d9c-9cac-4eab21923603"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "9a29f2a4-6002-0045-464e-5d03f0000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><SignedIdentifiers><SignedIdentifier><Id>testPolicy1</Id><AccessPolicy><Start>2021-12-12T00:00:00.0000000Z</Start><Expiry>2022-12-12T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier><SignedIdentifier><Id>testPolicy2</Id><AccessPolicy><Start>2021-12-12T00:00:00.0000000Z</Start><Expiry>2022-12-12T00:00:00.0000000Z</Expiry><Permission>r</Permission></AccessPolicy></SignedIdentifier></SignedIdentifiers>",
-      "x-ms-client-request-id" : "8a9badde-cb39-4d9c-9cac-4eab21923603",
-      "Date" : "Wed, 09 Jun 2021 16:41:46 GMT",
-      "Content-Type" : "application/xml"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "tablename75432233" ]
+    {
+      "RequestUri": "https://REDACTED/tablename25969213?REDACTED",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 20:22:20 GMT",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "99dde0ed-9344-4a54-bca6-d85bb3d513f6",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "x-ms-client-request-id",
+        "Content-Type": "application/xml",
+        "Date": "Fri, 14 Apr 2023 20:22:20 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-client-request-id": "99dde0ed-9344-4a54-bca6-d85bb3d513f6",
+        "x-ms-request-id": "8716e9f7-9002-0036-470e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CSignedIdentifiers\u003E\u003CSignedIdentifier\u003E\u003CId\u003EtestPolicy1\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2021-12-12T00:00:00.0000000Z\u003C/Start\u003E\u003CExpiry\u003E2022-12-12T00:00:00.0000000Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003CSignedIdentifier\u003E\u003CId\u003EtestPolicy2\u003C/Id\u003E\u003CAccessPolicy\u003E\u003CStart\u003E2021-12-12T00:00:00.0000000Z\u003C/Start\u003E\u003CExpiry\u003E2022-12-12T00:00:00.0000000Z\u003C/Expiry\u003E\u003CPermission\u003Er\u003C/Permission\u003E\u003C/AccessPolicy\u003E\u003C/SignedIdentifier\u003E\u003C/SignedIdentifiers\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "tablename25969213"
+  }
 }

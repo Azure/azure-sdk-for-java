@@ -32,7 +32,7 @@ public final class JitNetworkAccessPoliciesListByRegionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"kmoogjrhs\"},\"kind\":\"w\",\"location\":\"jgrulcfogxhcxnwj\",\"id\":\"pfdzxcouzfwofw\",\"name\":\"k\",\"type\":\"kzkdtzxsoednlwg\"}]}";
+            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"kzidgzwdyd\"},\"kind\":\"isvpztdivykpxkqe\",\"location\":\"pjfojiunrls\",\"id\":\"xuknsykdtoi\",\"name\":\"oancdrco\",\"type\":\"nvxuldxonckb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,8 @@ public final class JitNetworkAccessPoliciesListByRegionMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JitNetworkAccessPolicy> response =
-            manager.jitNetworkAccessPolicies().listByRegion("ztibniyntsxjmfm", com.azure.core.util.Context.NONE);
+            manager.jitNetworkAccessPolicies().listByRegion("nzvajbvbnkrdem", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.iterator().next().kind());
+        Assertions.assertEquals("isvpztdivykpxkqe", response.iterator().next().kind());
     }
 }

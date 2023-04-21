@@ -57,8 +57,7 @@ public final class BackupsClientImpl implements BackupsClient {
     public interface BackupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/backups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBackupInner>> get(
@@ -73,8 +72,7 @@ public final class BackupsClientImpl implements BackupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL"
-                + "/flexibleServers/{serverName}/backups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/backups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerBackupListResult>> listByServer(
@@ -109,7 +107,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return specific backup for a given server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerBackupInner>> getWithResponseAsync(
+    public Mono<Response<ServerBackupInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String backupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -213,7 +211,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return specific backup for a given server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServerBackupInner> getAsync(String resourceGroupName, String serverName, String backupName) {
+    public Mono<ServerBackupInner> getAsync(String resourceGroupName, String serverName, String backupName) {
         return getWithResponseAsync(resourceGroupName, serverName, backupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -375,7 +373,7 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return a list of server backups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServerBackupInner> listByServerAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<ServerBackupInner> listByServerAsync(String resourceGroupName, String serverName) {
         return new PagedFlux<>(
             () -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));

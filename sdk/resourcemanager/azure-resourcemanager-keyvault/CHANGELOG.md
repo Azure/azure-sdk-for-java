@@ -1,10 +1,26 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
+## 2.27.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.26.0 (2023-04-21)
 
 ### Features Added
 
 - Supported `ManagedHsm` for Azure Key Vault Managed HSM.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-02-01`.
 
 ## 2.25.0 (2023-03-24)
 

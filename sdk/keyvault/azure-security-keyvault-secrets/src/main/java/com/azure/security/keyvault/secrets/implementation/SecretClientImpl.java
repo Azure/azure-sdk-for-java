@@ -50,18 +50,18 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 public class SecretClientImpl {
-    static final String ACCEPT_LANGUAGE = "en-US";
-    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
-    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private static final ClientLogger LOGGER = new ClientLogger(SecretClientImpl.class);
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
-    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
-
-    private final String vaultUrl;
-    private final SecretService service;
-    private final ClientLogger logger = new ClientLogger(SecretClientImpl.class);
     private final HttpPipeline pipeline;
+    private final SecretService service;
     private final SecretServiceVersion secretServiceVersion;
+    private final String vaultUrl;
+
+    static final int DEFAULT_MAX_PAGE_RESULTS = 25;
+    static final String ACCEPT_LANGUAGE = "en-US";
+    static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
 
     /**
      * Creates a {@link SecretClientImpl} that uses an {@link HttpPipeline} to service requests.
@@ -480,9 +480,9 @@ public class SecretClientImpl {
 
         return service.setSecretAsync(vaultUrl, secret.getName(), secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 parameters, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", secret.getName()))
-            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to set secret - {}", secret.getName(), error));
+            .doOnRequest(ignored -> LOGGER.verbose("Setting secret - {}", secret.getName()))
+            .doOnSuccess(response -> LOGGER.verbose("Set secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
     public Response<KeyVaultSecret> setSecretWithResponse(KeyVaultSecret secret, Context context) {
@@ -509,9 +509,9 @@ public class SecretClientImpl {
 
         return service.setSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Setting secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Set secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to set secret - {}", name, error));
+            .doOnRequest(ignored -> LOGGER.verbose("Setting secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Set secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to set secret - {}", name, error));
     }
 
     public Response<KeyVaultSecret> setSecretWithResponse(String name, String value, Context context) {
@@ -526,9 +526,9 @@ public class SecretClientImpl {
     public Mono<Response<KeyVaultSecret>> getSecretWithResponseAsync(String name, String version, Context context) {
         return service.getSecretAsync(vaultUrl, name, version == null ? "" : version, secretServiceVersion.getVersion(),
                 ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignoredValue -> logger.verbose("Retrieving secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Retrieved secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to get secret - {}", name, error));
+            .doOnRequest(ignoredValue -> LOGGER.verbose("Retrieving secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to get secret - {}", name, error));
     }
 
     public Response<KeyVaultSecret> getSecretWithResponse(String name, String version, Context context) {
@@ -546,9 +546,9 @@ public class SecretClientImpl {
         return service.updateSecretAsync(vaultUrl, secretProperties.getName(), secretProperties.getVersion(),
                 secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
                 context)
-            .doOnRequest(ignored -> logger.verbose("Updating secret - {}", secretProperties.getName()))
-            .doOnSuccess(response -> logger.verbose("Updated secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to update secret - {}", secretProperties.getName(), error));
+            .doOnRequest(ignored -> LOGGER.verbose("Updating secret - {}", secretProperties.getName()))
+            .doOnSuccess(response -> LOGGER.verbose("Updated secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to update secret - {}", secretProperties.getName(), error));
     }
 
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
@@ -654,9 +654,9 @@ public class SecretClientImpl {
     private Mono<Response<DeletedSecret>> deleteSecretWithResponseAsync(String name, Context context) {
         return service.deleteSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Deleting secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Deleted secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete secret - {}", name, error));
+            .doOnRequest(ignored -> LOGGER.verbose("Deleting secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Deleted secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to delete secret - {}", name, error));
     }
 
     private Response<DeletedSecret> deleteSecretWithResponse(String name, Context context) {
@@ -668,9 +668,9 @@ public class SecretClientImpl {
     public Mono<Response<DeletedSecret>> getDeletedSecretWithResponseAsync(String name, Context context) {
         return service.getDeletedSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Retrieving deleted secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Retrieved deleted secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to retrieve deleted secret - {}", name, error));
+            .doOnRequest(ignored -> LOGGER.verbose("Retrieving deleted secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved deleted secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to retrieve deleted secret - {}", name, error));
     }
 
     public Response<DeletedSecret> getDeletedSecretWithResponse(String name, Context context) {
@@ -684,9 +684,9 @@ public class SecretClientImpl {
     public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(String name, Context context) {
         return service.purgeDeletedSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Purging deleted secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Purged deleted secret - {}", name))
-            .doOnError(error -> logger.warning("Failed to purge deleted secret - {}", name, error));
+            .doOnRequest(ignored -> LOGGER.verbose("Purging deleted secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Purged deleted secret - {}", name))
+            .doOnError(error -> LOGGER.warning("Failed to purge deleted secret - {}", name, error));
     }
 
     public Response<Void> purgeDeletedSecretWithResponse(String name, Context context) {
@@ -738,17 +738,17 @@ public class SecretClientImpl {
     private Mono<Response<KeyVaultSecret>> recoverDeletedSecretWithResponseAsync(String name, Context context) {
         return service.recoverDeletedSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Recovering deleted secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Recovered deleted secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to recover deleted secret - {}", name, error));
+            .doOnRequest(ignored -> LOGGER.verbose("Recovering deleted secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Recovered deleted secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to recover deleted secret - {}", name, error));
     }
 
     public Mono<Response<byte[]>> backupSecretWithResponseAsync(String name, Context context) {
         return service.backupSecretAsync(vaultUrl, name, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Backing up secret - {}", name))
-            .doOnSuccess(response -> logger.verbose("Backed up secret - {}", name))
-            .doOnError(error -> logger.warning("Failed to back up secret - {}", name, error))
+            .doOnRequest(ignored -> LOGGER.verbose("Backing up secret - {}", name))
+            .doOnSuccess(response -> LOGGER.verbose("Backed up secret - {}", name))
+            .doOnError(error -> LOGGER.warning("Failed to back up secret - {}", name, error))
             .flatMap(base64URLResponse -> Mono.just(new SimpleResponse<>(base64URLResponse.getRequest(),
                 base64URLResponse.getStatusCode(), base64URLResponse.getHeaders(),
                 base64URLResponse.getValue().getValue())));
@@ -770,9 +770,9 @@ public class SecretClientImpl {
 
         return service.restoreSecretAsync(vaultUrl, secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, parameters,
                 CONTENT_TYPE_HEADER_VALUE, context)
-            .doOnRequest(ignored -> logger.verbose("Attempting to restore secret"))
-            .doOnSuccess(response -> logger.verbose("Restored secret - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to restore secret", error));
+            .doOnRequest(ignored -> LOGGER.verbose("Attempting to restore secret"))
+            .doOnSuccess(response -> LOGGER.verbose("Restored secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to restore secret", error));
     }
 
     public Response<KeyVaultSecret> restoreSecretBackupWithResponse(byte[] backup, Context context) {
@@ -790,7 +790,7 @@ public class SecretClientImpl {
                 () -> withContext(this::listSecretsFirstPage),
                 continuationToken -> withContext(context -> listSecretsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
@@ -813,11 +813,11 @@ public class SecretClientImpl {
         try {
             return service.getSecretsAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                .doOnRequest(ignored -> logger.verbose("Listing secrets"))
-                .doOnSuccess(response -> logger.verbose("Listed secrets"))
-                .doOnError(error -> logger.warning("Failed to list secrets", error));
+                .doOnRequest(ignored -> LOGGER.verbose("Listing secrets"))
+                .doOnSuccess(response -> LOGGER.verbose("Listed secrets"))
+                .doOnError(error -> LOGGER.warning("Failed to list secrets", error));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -836,12 +836,12 @@ public class SecretClientImpl {
             return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
                 .doOnRequest(ignoredValue ->
-                    logger.verbose("Retrieving the next secrets page - Page {}", continuationToken))
-                .doOnSuccess(response -> logger.verbose("Retrieved the next secrets page - Page {}", continuationToken))
+                    LOGGER.verbose("Retrieving the next secrets page - Page {}", continuationToken))
+                .doOnSuccess(response -> LOGGER.verbose("Retrieved the next secrets page - Page {}", continuationToken))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieve the next secrets page - Page {}", continuationToken, error));
+                    LOGGER.warning("Failed to retrieve the next secrets page - Page {}", continuationToken, error));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -851,7 +851,7 @@ public class SecretClientImpl {
                 () -> withContext(this::listDeletedSecretsFirstPage),
                 continuationToken -> withContext(context -> listDeletedSecretsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
@@ -874,11 +874,11 @@ public class SecretClientImpl {
         try {
             return service.getDeletedSecretsAsync(vaultUrl, DEFAULT_MAX_PAGE_RESULTS, secretServiceVersion.getVersion(),
                     ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
-                .doOnRequest(ignored -> logger.verbose("Listing deleted secrets"))
-                .doOnSuccess(response -> logger.verbose("Listed deleted secrets"))
-                .doOnError(error -> logger.warning("Failed to list deleted secrets", error));
+                .doOnRequest(ignored -> LOGGER.verbose("Listing deleted secrets"))
+                .doOnSuccess(response -> LOGGER.verbose("Listed deleted secrets"))
+                .doOnError(error -> LOGGER.warning("Failed to list deleted secrets", error));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -897,14 +897,14 @@ public class SecretClientImpl {
             return service.getDeletedSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE,
                     CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignoredValue ->
-                    logger.verbose("Retrieving the next deleted secrets page - Page {}", continuationToken))
+                    LOGGER.verbose("Retrieving the next deleted secrets page - Page {}", continuationToken))
                 .doOnSuccess(response ->
-                    logger.verbose("Retrieved the next deleted secrets page - Page {}", continuationToken))
+                    LOGGER.verbose("Retrieved the next deleted secrets page - Page {}", continuationToken))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieve the next deleted secrets page - Page {}", continuationToken,
+                    LOGGER.warning("Failed to retrieve the next deleted secrets page - Page {}", continuationToken,
                         error));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -914,7 +914,7 @@ public class SecretClientImpl {
                 () -> withContext(context -> listSecretVersionsFirstPage(name, context)),
                 continuationToken -> withContext(context -> listSecretVersionsNextPage(continuationToken, context)));
         } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
+            return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
     }
 
@@ -938,11 +938,11 @@ public class SecretClientImpl {
             return service.getSecretVersionsAsync(vaultUrl, name, DEFAULT_MAX_PAGE_RESULTS,
                     secretServiceVersion.getVersion(), ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
-                .doOnRequest(ignored -> logger.verbose("Listing secret versions - {}", name))
-                .doOnSuccess(response -> logger.verbose("Listed secret versions - {}", name))
-                .doOnError(error -> logger.warning("Failed to list secret versions - {}", name, error));
+                .doOnRequest(ignored -> LOGGER.verbose("Listing secret versions - {}", name))
+                .doOnSuccess(response -> LOGGER.verbose("Listed secret versions - {}", name))
+                .doOnError(error -> LOGGER.warning("Failed to list secret versions - {}", name, error));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -961,14 +961,14 @@ public class SecretClientImpl {
             return service.getSecretsAsync(vaultUrl, continuationToken, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
                     context)
                 .doOnRequest(ignoredValue ->
-                    logger.verbose("Retrieving the next secrets versions page - Page {}", continuationToken))
+                    LOGGER.verbose("Retrieving the next secrets versions page - Page {}", continuationToken))
                 .doOnSuccess(response ->
-                    logger.verbose("Retrieved the next secrets versions page - Page {}", continuationToken))
+                    LOGGER.verbose("Retrieved the next secrets versions page - Page {}", continuationToken))
                 .doOnError(error ->
-                    logger.warning("Failed to retrieve the next secrets versions page - Page {}", continuationToken,
+                    LOGGER.warning("Failed to retrieve the next secrets versions page - Page {}", continuationToken,
                         error));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 

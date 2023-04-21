@@ -37,6 +37,10 @@ public final class MhsmNetworkRuleSet {
     @JsonProperty(value = "virtualNetworkRules")
     private List<MhsmVirtualNetworkRule> virtualNetworkRules;
 
+    /** Creates an instance of MhsmNetworkRuleSet class. */
+    public MhsmNetworkRuleSet() {
+    }
+
     /**
      * Get the bypass property: Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If
      * not specified the default is 'AzureServices'.

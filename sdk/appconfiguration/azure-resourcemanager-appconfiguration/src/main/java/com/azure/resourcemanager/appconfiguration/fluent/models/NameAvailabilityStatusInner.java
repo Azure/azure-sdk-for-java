@@ -17,8 +17,7 @@ public final class NameAvailabilityStatusInner {
     private Boolean nameAvailable;
 
     /*
-     * If any, the error message that provides more detail for the reason that
-     * the name is not available.
+     * If any, the error message that provides more detail for the reason that the name is not available.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
@@ -28,6 +27,10 @@ public final class NameAvailabilityStatusInner {
      */
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
+
+    /** Creates an instance of NameAvailabilityStatusInner class. */
+    public NameAvailabilityStatusInner() {
+    }
 
     /**
      * Get the nameAvailable property: The value indicating whether the resource name is available.

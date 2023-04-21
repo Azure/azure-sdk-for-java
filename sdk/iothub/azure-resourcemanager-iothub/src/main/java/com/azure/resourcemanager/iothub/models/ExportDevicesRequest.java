@@ -55,6 +55,10 @@ public final class ExportDevicesRequest {
     @JsonProperty(value = "configurationsBlobName")
     private String configurationsBlobName;
 
+    /** Creates an instance of ExportDevicesRequest class. */
+    public ExportDevicesRequest() {
+    }
+
     /**
      * Get the exportBlobContainerUri property: The export blob container URI.
      *

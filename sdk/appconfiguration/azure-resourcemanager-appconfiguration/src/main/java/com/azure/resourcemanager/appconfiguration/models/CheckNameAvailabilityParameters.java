@@ -23,6 +23,10 @@ public final class CheckNameAvailabilityParameters {
     @JsonProperty(value = "type", required = true)
     private ConfigurationResourceType type;
 
+    /** Creates an instance of CheckNameAvailabilityParameters class. */
+    public CheckNameAvailabilityParameters() {
+    }
+
     /**
      * Get the name property: The name to check for availability.
      *

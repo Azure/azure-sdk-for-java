@@ -14,18 +14,20 @@ public final class RemediationEtaTests {
     public void testDeserialize() throws Exception {
         RemediationEta model =
             BinaryData
-                .fromString("{\"eta\":\"2021-09-03T06:27:36Z\",\"justification\":\"mxu\"}")
+                .fromString("{\"eta\":\"2021-03-27T00:38:49Z\",\"justification\":\"dbztjhqtfbov\"}")
                 .toObject(RemediationEta.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T06:27:36Z"), model.eta());
-        Assertions.assertEquals("mxu", model.justification());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T00:38:49Z"), model.eta());
+        Assertions.assertEquals("dbztjhqtfbov", model.justification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RemediationEta model =
-            new RemediationEta().withEta(OffsetDateTime.parse("2021-09-03T06:27:36Z")).withJustification("mxu");
+            new RemediationEta()
+                .withEta(OffsetDateTime.parse("2021-03-27T00:38:49Z"))
+                .withJustification("dbztjhqtfbov");
         model = BinaryData.fromObject(model).toObject(RemediationEta.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-03T06:27:36Z"), model.eta());
-        Assertions.assertEquals("mxu", model.justification());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T00:38:49Z"), model.eta());
+        Assertions.assertEquals("dbztjhqtfbov", model.justification());
     }
 }
