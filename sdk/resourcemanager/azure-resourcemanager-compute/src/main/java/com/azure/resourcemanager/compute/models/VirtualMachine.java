@@ -25,6 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -421,6 +422,9 @@ public interface VirtualMachine
 
     /** @return whether vTPM is enabled on the virtual machine */
     boolean isVTpmEnabled();
+
+    /** @return the time at which the Virtual Machine resource was created */
+    OffsetDateTime timeCreated();
 
     // Setters
     //

@@ -24,8 +24,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -73,7 +73,6 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
-    private URL proxyUrl;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -321,8 +320,8 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
             }
             if (testProxyPlaybackClient == null) {
-                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, proxyUrl);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
             }
             return testProxyPlaybackClient;
         } else {
@@ -369,10 +368,21 @@ public class InterceptorManager implements AutoCloseable {
             if (!isRecordMode()) {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
-            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, proxyUrl);
-            testProxyRecordPolicy.startRecording(playbackRecordName);
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
+            testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
         }
         return testProxyRecordPolicy;
+    }
+
+    /**
+     * Computes the relative path of the record file to the repo root.
+     * @return A {@link File} with the partial path to where the record file lives.
+     */
+    private File getTestProxyRecordFile() {
+        Path recordFolder = TestUtils.getRecordFolder().toPath();
+        Path repoRoot = TestUtils.getRepoRoot();
+        File recordFile = new File(recordFolder.toFile(), playbackRecordName + ".json");
+        return repoRoot.relativize(recordFile.toPath()).toFile();
     }
 
     /*
@@ -468,14 +478,5 @@ public class InterceptorManager implements AutoCloseable {
     void setHttpClient(HttpClient httpClient) {
 
         this.httpClient = httpClient;
-    }
-
-    /**
-     * Sets the {@link URL} to use for connecting to the test proxy.
-     * @param proxyUrl The test proxy {@link URL}.
-     */
-    public void setProxyUrl(URL proxyUrl) {
-
-        this.proxyUrl = proxyUrl;
     }
 }

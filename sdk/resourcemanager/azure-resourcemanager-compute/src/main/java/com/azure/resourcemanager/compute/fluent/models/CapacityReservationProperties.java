@@ -22,9 +22,9 @@ public final class CapacityReservationProperties {
     private String reservationId;
 
     /*
-     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size.<br>NOTE: The
-     * fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to this
-     * value if it deploys using capacity reservation.<br><br>Minimum api-version: 2022-08-01.
+     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size. **Note:**
+     * The fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to
+     * this value if it deploys using capacity reservation. Minimum api-version: 2022-08-01.
      */
     @JsonProperty(value = "platformFaultDomainCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer platformFaultDomainCount;
@@ -54,8 +54,7 @@ public final class CapacityReservationProperties {
     private CapacityReservationInstanceView instanceView;
 
     /*
-     * Specifies the time at which the Capacity Reservation resource was created.<br><br>Minimum api-version:
-     * 2021-11-01.
+     * Specifies the time at which the Capacity Reservation resource was created. Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
@@ -76,9 +75,9 @@ public final class CapacityReservationProperties {
 
     /**
      * Get the platformFaultDomainCount property: Specifies the value of fault domain count that Capacity Reservation
-     * supports for requested VM size.&lt;br&gt;NOTE: The fault domain count specified for a resource (like virtual
-     * machines scale set) must be less than or equal to this value if it deploys using capacity
-     * reservation.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-08-01.
+     * supports for requested VM size. **Note:** The fault domain count specified for a resource (like virtual machines
+     * scale set) must be less than or equal to this value if it deploys using capacity reservation. Minimum
+     * api-version: 2022-08-01.
      *
      * @return the platformFaultDomainCount value.
      */
@@ -124,8 +123,8 @@ public final class CapacityReservationProperties {
     }
 
     /**
-     * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Get the timeCreated property: Specifies the time at which the Capacity Reservation resource was created. Minimum
+     * api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

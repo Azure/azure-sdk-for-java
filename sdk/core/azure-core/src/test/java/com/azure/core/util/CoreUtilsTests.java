@@ -11,14 +11,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -26,6 +29,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -383,5 +387,76 @@ public class CoreUtilsTests {
             Arguments.of("", IllegalArgumentException.class),
             Arguments.of("0-1023/notanumber", NumberFormatException.class)
         );
+    }
+
+    @Test
+    public void parseNullQueryParameters() {
+        assertFalse(CoreUtils.parseQueryParameters(null).hasNext());
+    }
+
+    @Test
+    public void parseEmptyQueryParameters() {
+        assertFalse(CoreUtils.parseQueryParameters("").hasNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "key=value", "?key=value" })
+    public void parseSimpleQueryParameter(String queryParameters) {
+        Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
+
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key", "value"), iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "key=", "?key=" })
+    public void parseSimpleEmptyValueQueryParameter(String queryParameters) {
+        Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
+
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key", ""), iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "key", "?key" })
+    public void parseSimpleKeyOnlyQueryParameter(String queryParameters) {
+        Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
+
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key", ""), iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "key=value&key2=", "key=value&key2", "?key=value&key2=", "?key=value&key2" })
+    public void parseQueryParameterLastParameterEmpty(String queryParameters) {
+        Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
+
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key", "value"), iterator.next());
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key2", ""), iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "key=&key2=value2", "key&key2=value2", "?key=&key2=value2", "?key&key2=value2" })
+    public void parseQueryParameterFirstParameterEmpty(String queryParameters) {
+        Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
+
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key", ""), iterator.next());
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key2", "value2"), iterator.next());
+        assertFalse(iterator.hasNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        "key=value&key2=&key3=value3", "?key=value&key2=&key3=value3",
+        "key=value&key2&key3=value3", "?key=value&key2&key3=value3",
+    })
+    public void parseQueryParameterMiddleParameterEmpty(String queryParameters) {
+        Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
+
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key", "value"), iterator.next());
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key2", ""), iterator.next());
+        assertEquals(new AbstractMap.SimpleImmutableEntry<>("key3", "value3"), iterator.next());
+        assertFalse(iterator.hasNext());
     }
 }
