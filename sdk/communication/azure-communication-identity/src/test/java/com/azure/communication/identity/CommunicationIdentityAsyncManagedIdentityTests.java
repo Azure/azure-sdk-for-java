@@ -145,7 +145,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
                                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                                     return asyncClient.getToken(communicationUser, scopes);
                                 }))
-                .assertNext(this::verifyTokenNotEmpty)
+                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
     }
 
@@ -179,7 +179,7 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
         // Action & Assert
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-                .assertNext(this::verifyTokenNotEmpty)
+                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
                 .verifyComplete();
     }
 
@@ -202,4 +202,5 @@ public class CommunicationIdentityAsyncManagedIdentityTests extends Communicatio
                 })
                 .verifyComplete();
     }
+
 }
