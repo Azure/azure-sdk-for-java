@@ -46,7 +46,14 @@ import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -323,7 +330,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         int totalEncodedSize = 0;
         final CompositeReadableBuffer buffer = new CompositeReadableBuffer();
 
-        final byte[] envelopBytes = batchEnvelopAsBinaryData(batch.get(0), maxMessageSize);
+        final byte[] envelopBytes = batchEnvelopBytes(batch.get(0), maxMessageSize);
         totalEncodedSize += envelopBytes.length;
         if (totalEncodedSize > maxMessageSize) {
             return batchBufferOverflowError(maxMessageSize);
@@ -331,7 +338,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         buffer.append(envelopBytes);
 
         for (final Message message : batch) {
-            final byte[] sectionBytes = batchSectionAsBinaryData(message, maxMessageSize);
+            final byte[] sectionBytes = batchBinaryDataSectionBytes(message, maxMessageSize);
             totalEncodedSize += sectionBytes.length;
             if (totalEncodedSize > maxMessageSize) {
                 return batchBufferOverflowError(maxMessageSize);
@@ -352,7 +359,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         return sendMono.then();
     }
 
-    private byte[] batchEnvelopAsBinaryData(Message envelopMessage, int maxMessageSize) {
+    private byte[] batchEnvelopBytes(Message envelopMessage, int maxMessageSize) {
         final Message message = Proton.message();
         message.setMessageAnnotations(envelopMessage.getMessageAnnotations());
         final int size = messageSerializer.getSize(message);
@@ -363,7 +370,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         return Arrays.copyOf(encodedBytes, encodedSize);
     }
 
-    private byte[] batchSectionAsBinaryData(Message sectionMessage, int maxMessageSize) {
+    private byte[] batchBinaryDataSectionBytes(Message sectionMessage, int maxMessageSize) {
         final int size = messageSerializer.getSize(sectionMessage);
         final int allocationSize = Math.min(size + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         final byte[] encodedBytes = new byte[allocationSize];
@@ -373,9 +380,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         final Data binaryData = new Data(new Binary(encodedBytes, 0, encodedSize));
         message.setBody(binaryData);
         final int binaryRawSize = binaryData.getValue().getLength();
-        // Precompute the encoded size -
+        // Precompute the encoded size
         final int binaryEncodedSize = binaryEncodedSize(binaryRawSize);
-
         final byte[] binaryEncodedBytes = new byte[binaryEncodedSize];
         message.encode(binaryEncodedBytes, 0, binaryEncodedSize);
         return binaryEncodedBytes;
@@ -396,11 +402,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     private int binaryEncodedSize(int binaryRawSize) {
         if (binaryRawSize <= 255) {
             // [0x00,0x53,0x75,0xa0,{byte(Data.Binary.Length)},{Data.Binary.bytes}]
-            // The AMQP 1.0 spec format ^ for amqp:data:binary with raw byte <= 255.
+            // The AMQP 1.0 spec format ^ for amqp:data:binary when the raw bytes length is <= 255.
             return 5 + binaryRawSize;
         } else {
             // [0x00,0x53,0x75,0xb0,{int(Data.Binary.Length)},{Data.Binary.bytes}]
-            // The AMQP 1.0 spec format ^ for amqp:data:binary with raw byte > 255.
+            // The AMQP 1.0 spec format ^ for amqp:data:binary when the raw bytes length is > 255.
             return  8 + binaryRawSize;
         }
     }
