@@ -90,6 +90,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(0));
         long ruleHitCount = connectionErrorRule.getHitCount();
         assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
+        assertThat(connectionErrorRule.getHitCountDetails()).isNull();
 
         // do another request to open a new connection
         singlePartitionContainer.createItem(TestItem.createNewItem()).block();
