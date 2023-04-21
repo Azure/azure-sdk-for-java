@@ -3,52 +3,37 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
-
 import java.time.Duration;
-import java.util.List;
 
-/** The Recognize configurations specific for Recognize Choice. **/
-@Fluent
-public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOptions {
+import com.azure.communication.common.CommunicationIdentifier;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/** The Recognize configurations specific for Continuous Speech Recognition. **/
+public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     /*
-     * List of recognize choice.
+     * The length of end silence when user stops speaking and cogservice send
+     * response.
      */
-    private final List<RecognizeChoice> recognizeChoices;
-
-    /*
-     * Speech language to be recognized, If not set default is en-US
-     */
-    private String speechLanguage;
+    @JsonProperty(value = "endSilenceTimeoutInMs")
+    private Duration endSilenceTimeoutInMs;
 
     /**
-     * Get the list of recognize choice.
+     * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send
+     * response.
      *
-     * @return the list of recognize choice.
+     * @return the endSilenceTimeoutInMs value.
      */
-    public List<RecognizeChoice> getRecognizeChoices() {
-        return this.recognizeChoices;
+    public Duration getEndSilenceTimeoutInMs() {
+        return this.endSilenceTimeoutInMs;
     }
 
     /**
-     * Set the speech language property.
-     * @param speechLanguage the interToneTimeout value to set.
-     * @return the CallMediaRecognizeChoiceOptions object itself.
-     */
-    public CallMediaRecognizeChoiceOptions setSpeechLanguage(String speechLanguage) {
-        this.speechLanguage = speechLanguage;
-        return this;
-    }
-
-    /**
-     * Get the list of recognize choice.
+     * Initializes a CallMediaRecognizeSpeechOptions object.
      *
-     * @return the speech language.
+     * @param recognizeInputType Recognition type of continuous speech recognition.
+     * @param targetParticipant Target participant of continuous speech recognition.
+     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      */
-    public String getSpeechLanguage() {
-        return this.speechLanguage;
-    }
 
     /**
      * Set the recognizeInputType property: Determines the type of the recognition.
@@ -57,7 +42,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeRequest object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setRecognizeInputType(RecognizeInputType recognizeInputType) {
+    public CallMediaRecognizeSpeechOptions setRecognizeInputType(RecognizeInputType recognizeInputType) {
         super.setRecognizeInputType(recognizeInputType);
         return this;
     }
@@ -69,7 +54,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeRequest object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setPlayPrompt(PlaySource playPrompt) {
+    public CallMediaRecognizeSpeechOptions setPlayPrompt(PlaySource playPrompt) {
         super.setPlayPrompt(playPrompt);
         return this;
     }
@@ -82,7 +67,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeRequest object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+    public CallMediaRecognizeSpeechOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
         super.setInterruptCallMediaOperation(interruptCallMediaOperation);
         return this;
     }
@@ -95,7 +80,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeRequest object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
+    public CallMediaRecognizeSpeechOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
         super.setStopCurrentOperations(stopCurrentOperations);
         return this;
     }
@@ -107,7 +92,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeRequest object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setOperationContext(String operationContext) {
+    public CallMediaRecognizeSpeechOptions setOperationContext(String operationContext) {
         super.setOperationContext(operationContext);
         return this;
     }
@@ -119,7 +104,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeConfigurations object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setInterruptPrompt(
+    public CallMediaRecognizeSpeechOptions setInterruptPrompt(
         Boolean interruptPrompt) {
         super.setInterruptPrompt(interruptPrompt);
         return this;
@@ -132,19 +117,13 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * @return the RecognizeConfigurations object itself.
      */
     @Override
-    public CallMediaRecognizeChoiceOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {
+    public CallMediaRecognizeSpeechOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {
         super.setInitialSilenceTimeout(initialSilenceTimeout);
         return this;
     }
 
-    /**
-     * Initializes a CallMediaRecognizeDtmfOptions object.
-     *
-     * @param targetParticipant Target participant of DTFM tone recognition.
-     * @param recognizeChoices Maximum number of DTMF tones to be collected.
-     */
-    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognizeChoice> recognizeChoices) {
-        super(RecognizeInputType.CHOICES, targetParticipant);
-        this.recognizeChoices = recognizeChoices;
+    public CallMediaRecognizeSpeechOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
+        super(recognizeInputType, targetParticipant);
+        this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
     }
 }
