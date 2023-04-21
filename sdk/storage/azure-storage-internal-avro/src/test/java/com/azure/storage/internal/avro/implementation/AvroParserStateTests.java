@@ -23,8 +23,8 @@ public class AvroParserStateTests {
     @Test
     public void constructor() {
         AvroParserState state = new AvroParserState();
-        assertEquals(0, state.size);
-        assertTrue(state.cache.isEmpty());
+        assertEquals(0, state.getSize());
+        assertTrue(state.getCache().isEmpty());
     }
 
     @ParameterizedTest
@@ -35,7 +35,7 @@ public class AvroParserStateTests {
         new Random().nextBytes(b);
         state.write(ByteBuffer.wrap(b));
 
-        assertEquals(size, state.size);
+        assertEquals(size, state.getSize());
         assertArraysEqual(b, AvroSchema.getBytes(state.read(size)));
     }
 
@@ -47,8 +47,8 @@ public class AvroParserStateTests {
         state.write(ByteBuffer.wrap("World!".getBytes(StandardCharsets.UTF_8)));
 
         assertArraysEqual(value, AvroSchema.getBytes(state.read(size)));
-        assertEquals(remaining, state.size);
-        assertEquals(buffersLeft, state.cache.size());
+        assertEquals(remaining, state.getSize());
+        assertEquals(buffersLeft, state.getCache().size());
     }
 
     private static Stream<Arguments> readSizeSupplier() {
@@ -72,7 +72,7 @@ public class AvroParserStateTests {
         while (index < word.length()) {
             assertEquals(word.charAt(index), state.read());
             index++;
-            assertEquals(word.length() - index, state.size);
+            assertEquals(word.length() - index, state.getSize());
         }
     }
 }
