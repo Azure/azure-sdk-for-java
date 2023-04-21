@@ -58,28 +58,10 @@ public final class MetadatasImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/workspaces/{workspaceId}/metadata")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<MetadataResults> getSync(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/workspaces/{workspaceId}/metadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<MetadataResults>> post(
-                @HostParam("$host") String host,
-                @PathParam("workspaceId") String workspaceId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/workspaces/{workspaceId}/metadata")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<MetadataResults> postSync(
                 @HostParam("$host") String host,
                 @PathParam("workspaceId") String workspaceId,
                 @HeaderParam("Accept") String accept,
@@ -101,10 +83,11 @@ public final class MetadatasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> getWithResponseAsync(String workspaceId) {
         if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
+            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.get(this.client.getHost(), workspaceId, accept, context));
@@ -126,10 +109,11 @@ public final class MetadatasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> getWithResponseAsync(String workspaceId, Context context) {
         if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
+            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.get(this.client.getHost(), workspaceId, accept, context);
@@ -185,14 +169,7 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataResults> getWithResponse(String workspaceId, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        final String accept = "application/json";
-        return service.getSync(this.client.getHost(), workspaceId, accept, context);
+        return getWithResponseAsync(workspaceId, context).block();
     }
 
     /**
@@ -227,10 +204,11 @@ public final class MetadatasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> postWithResponseAsync(String workspaceId) {
         if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
+            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.post(this.client.getHost(), workspaceId, accept, context));
@@ -252,10 +230,11 @@ public final class MetadatasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetadataResults>> postWithResponseAsync(String workspaceId, Context context) {
         if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
+            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.post(this.client.getHost(), workspaceId, accept, context);
@@ -311,14 +290,7 @@ public final class MetadatasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetadataResults> postWithResponse(String workspaceId, Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (workspaceId == null) {
-            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
-        }
-        final String accept = "application/json";
-        return service.postSync(this.client.getHost(), workspaceId, accept, context);
+        return postWithResponseAsync(workspaceId, context).block();
     }
 
     /**
