@@ -28,18 +28,10 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     /**
-     * Initializes a CallMediaRecognizeSpeechOptions object.
-     *
-     * @param recognizeInputType Recognition type of continuous speech recognition.
-     * @param targetParticipant Target participant of continuous speech recognition.
-     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
-     */
-
-    /**
      * Set the recognizeInputType property: Determines the type of the recognition.
      *
      * @param recognizeInputType the recognizeInputType value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setRecognizeInputType(RecognizeInputType recognizeInputType) {
@@ -51,7 +43,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setPlayPrompt(PlaySource playPrompt) {
@@ -64,7 +56,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * queued-up/currently-processing requests.
      *
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
@@ -77,7 +69,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * queued-up/currently-processing requests.
      *
      * @param stopCurrentOperations the stopCurrentOperations value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
@@ -89,7 +81,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setOperationContext(String operationContext) {
@@ -101,7 +93,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *
      * @param interruptPrompt the interruptPrompt value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setInterruptPrompt(
@@ -114,7 +106,7 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
      * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
      * @param initialSilenceTimeout the initialSilenceTimeout value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the CallMediaRecognizeSpeechOptions object itself.
      */
     @Override
     public CallMediaRecognizeSpeechOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {
@@ -122,6 +114,13 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
         return this;
     }
 
+    /**
+     * Initializes a CallMediaRecognizeSpeechOptions object.
+     *
+     * @param recognizeInputType Recognition type of continuous speech recognition.
+     * @param targetParticipant Target participant of continuous speech recognition.
+     * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
+     */
     public CallMediaRecognizeSpeechOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
         super(recognizeInputType, targetParticipant);
         this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;

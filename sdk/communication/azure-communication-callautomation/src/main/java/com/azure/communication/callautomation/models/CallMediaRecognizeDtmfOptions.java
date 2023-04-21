@@ -75,7 +75,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * Set the stopTones property: List of tones that will stop recognizing.
      *
      * @param stopDtmfTones the stopTones value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     public CallMediaRecognizeDtmfOptions setStopTones(List<DtmfTone> stopDtmfTones) {
         this.stopDtmfTones = stopDtmfTones;
@@ -86,7 +86,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * Set the recognizeInputType property: Determines the type of the recognition.
      *
      * @param recognizeInputType the recognizeInputType value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setRecognizeInputType(RecognizeInputType recognizeInputType) {
@@ -98,7 +98,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setPlayPrompt(PlaySource playPrompt) {
@@ -111,7 +111,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * queued-up/currently-processing requests.
      *
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
@@ -124,7 +124,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * queued-up/currently-processing requests.
      *
      * @param stopCurrentOperations the stopCurrentOperations value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
@@ -136,7 +136,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setOperationContext(String operationContext) {
@@ -148,7 +148,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *
      * @param interruptPrompt the interruptPrompt value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setInterruptPrompt(
@@ -161,7 +161,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
      * @param initialSilenceTimeout the initialSilenceTimeout value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
     public CallMediaRecognizeDtmfOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {

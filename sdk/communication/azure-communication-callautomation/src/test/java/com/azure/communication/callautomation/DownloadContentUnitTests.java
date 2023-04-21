@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import org.junit.jupiter.api.BeforeEach;

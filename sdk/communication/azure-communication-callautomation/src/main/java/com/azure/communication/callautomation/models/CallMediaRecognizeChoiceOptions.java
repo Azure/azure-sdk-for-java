@@ -54,7 +54,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Set the recognizeInputType property: Determines the type of the recognition.
      *
      * @param recognizeInputType the recognizeInputType value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setRecognizeInputType(RecognizeInputType recognizeInputType) {
@@ -66,7 +66,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setPlayPrompt(PlaySource playPrompt) {
@@ -79,7 +79,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * queued-up/currently-processing requests.
      *
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
@@ -92,7 +92,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * queued-up/currently-processing requests.
      *
      * @param stopCurrentOperations the stopCurrentOperations value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
@@ -104,7 +104,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RecognizeRequest object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setOperationContext(String operationContext) {
@@ -116,7 +116,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *
      * @param interruptPrompt the interruptPrompt value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setInterruptPrompt(
@@ -129,7 +129,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
      *
      * @param initialSilenceTimeout the initialSilenceTimeout value to set.
-     * @return the RecognizeConfigurations object itself.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
      */
     @Override
     public CallMediaRecognizeChoiceOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {

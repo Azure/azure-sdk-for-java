@@ -188,7 +188,6 @@ public final class CallConnectionAsync {
 
             String participantMri = targetParticipant.getRawId();
             return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, participantMri, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {

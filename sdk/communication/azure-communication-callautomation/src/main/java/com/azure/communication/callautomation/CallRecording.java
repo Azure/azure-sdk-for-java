@@ -243,7 +243,6 @@ public final class CallRecording {
      * @param options - an optional {@link DownloadToFileOptions} object to modify how the
      *                 download will work.
      * @param context A {@link Context} representing the request context.
-     * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void downloadTo(String sourceUrl,
