@@ -21,9 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public abstract class ChatRetentionPolicy {
+    /** kind of the ChatRetentionPolicy*/
     private final Kind kind;
 
-    /*
+    /**
      * Kind of retention policy. Available values are ["THREAD_CREATION_DATE"]
      */
     public ChatRetentionPolicy(Kind kind) {

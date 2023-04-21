@@ -14,13 +14,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("threadCreationDate")
 @Fluent
 public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy {
-    /*
+    /**
      * Indicates how many days after the thread creation the thread will be
      * deleted. Only 90 is accepted for now.
      */
     @JsonProperty(value = "deleteThreadAfterDays", required = true)
     private int deleteThreadAfterDays;
 
+    /**
+     * Constructor
+     */
     public ThreadCreationDateRetentionPolicy (int deleteThreadAfterDays) {
         super(Kind.THREAD_CREATION_DATE);
         this.deleteThreadAfterDays = deleteThreadAfterDays;
