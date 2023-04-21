@@ -160,7 +160,6 @@ public abstract class TestBase implements BeforeEachCallback {
 
         if (isTestProxyEnabled()) {
             interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
-            interceptorManager.setProxyUrl(this.proxyUrl);
             // The supplier/consumer are used to retrieve/store variables over the wire.
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
