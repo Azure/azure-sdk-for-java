@@ -14,9 +14,9 @@ public final class DiskExclusionPropertiesTests {
     public void testDeserialize() throws Exception {
         DiskExclusionProperties model =
             BinaryData
-                .fromString("{\"diskLunList\":[693666625,662153855],\"isInclusionList\":true}")
+                .fromString("{\"diskLunList\":[1782711093,389915828],\"isInclusionList\":true}")
                 .toObject(DiskExclusionProperties.class);
-        Assertions.assertEquals(693666625, model.diskLunList().get(0));
+        Assertions.assertEquals(1782711093, model.diskLunList().get(0));
         Assertions.assertEquals(true, model.isInclusionList());
     }
 
@@ -24,10 +24,10 @@ public final class DiskExclusionPropertiesTests {
     public void testSerialize() throws Exception {
         DiskExclusionProperties model =
             new DiskExclusionProperties()
-                .withDiskLunList(Arrays.asList(693666625, 662153855))
+                .withDiskLunList(Arrays.asList(1782711093, 389915828))
                 .withIsInclusionList(true);
         model = BinaryData.fromObject(model).toObject(DiskExclusionProperties.class);
-        Assertions.assertEquals(693666625, model.diskLunList().get(0));
+        Assertions.assertEquals(1782711093, model.diskLunList().get(0));
         Assertions.assertEquals(true, model.isInclusionList());
     }
 }

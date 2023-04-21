@@ -63,6 +63,10 @@ public final class OperationInner {
     @JsonProperty(value = "geoMasterOperationId")
     private UUID geoMasterOperationId;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
      * Get the id property: Operation ID.
      *

@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
 
 /** Samples for ScalingPlans Update. */
 public final class ScalingPlansUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/ScalingPlan_Update.json
      */
     /**
      * Sample code: ScalingPlans_Update.
@@ -22,7 +21,7 @@ public final class ScalingPlansUpdateSamples {
         ScalingPlan resource =
             manager
                 .scalingPlans()
-                .getByResourceGroupWithResponse("resourceGroup1", "scalingPlan1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "scalingPlan1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().apply();
     }

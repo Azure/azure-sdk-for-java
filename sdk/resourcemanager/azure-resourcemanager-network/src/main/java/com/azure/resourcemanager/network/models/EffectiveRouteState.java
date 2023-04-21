@@ -17,6 +17,15 @@ public final class EffectiveRouteState extends ExpandableStringEnum<EffectiveRou
     public static final EffectiveRouteState INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of EffectiveRouteState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EffectiveRouteState() {
+    }
+
+    /**
      * Creates or finds a EffectiveRouteState from its string representation.
      *
      * @param name a name to look for.

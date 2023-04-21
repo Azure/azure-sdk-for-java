@@ -35,6 +35,10 @@ public final class SubvolumeModelInner {
     @JsonProperty(value = "properties")
     private SubvolumeModelProperties innerProperties;
 
+    /** Creates an instance of SubvolumeModelInner class. */
+    public SubvolumeModelInner() {
+    }
+
     /**
      * Get the id property: Resource Id.
      *

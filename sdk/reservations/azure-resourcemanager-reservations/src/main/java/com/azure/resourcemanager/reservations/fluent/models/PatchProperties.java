@@ -23,7 +23,8 @@ public final class PatchProperties {
     private AppliedScopeType appliedScopeType;
 
     /*
-     * List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared.
+     * List of the subscriptions that the benefit will be applied. Do not specify if AppliedScopeType is Shared. This
+     * property will be deprecated and replaced by appliedScopeProperties instead for Single AppliedScopeType.
      */
     @JsonProperty(value = "appliedScopes")
     private List<String> appliedScopes;
@@ -92,7 +93,8 @@ public final class PatchProperties {
 
     /**
      * Get the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
-     * AppliedScopeType is Shared.
+     * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
+     * Single AppliedScopeType.
      *
      * @return the appliedScopes value.
      */
@@ -102,7 +104,8 @@ public final class PatchProperties {
 
     /**
      * Set the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
-     * AppliedScopeType is Shared.
+     * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
+     * Single AppliedScopeType.
      *
      * @param appliedScopes the appliedScopes value to set.
      * @return the PatchProperties object itself.

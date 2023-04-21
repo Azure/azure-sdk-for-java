@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DdosCustomPolicies GetByResourceGroup. */
 public final class DdosCustomPoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DdosCustomPolicyGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/DdosCustomPolicyGet.json
      */
     /**
      * Sample code: Get DDoS custom policy.
@@ -22,6 +20,6 @@ public final class DdosCustomPoliciesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDdosCustomPolicies()
-            .getByResourceGroupWithResponse("rg1", "test-ddos-custom-policy", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "test-ddos-custom-policy", com.azure.core.util.Context.NONE);
     }
 }

@@ -35,6 +35,15 @@ public final class Threats extends ExpandableStringEnum<Threats> {
     public static final Threats DENIAL_OF_SERVICE = fromString("denialOfService");
 
     /**
+     * Creates a new instance of Threats value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Threats() {
+    }
+
+    /**
      * Creates or finds a Threats from its string representation.
      *
      * @param name a name to look for.

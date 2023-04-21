@@ -76,6 +76,10 @@ public final class ProcessModuleInfoProperties {
     @JsonProperty(value = "language")
     private String language;
 
+    /** Creates an instance of ProcessModuleInfoProperties class. */
+    public ProcessModuleInfoProperties() {
+    }
+
     /**
      * Get the baseAddress property: Base address. Used as module identifier in ARM resource URI.
      *

@@ -28,15 +28,6 @@ public final class DomainsImpl implements Domains {
         this.serviceManager = serviceManager;
     }
 
-    public DomainResource get(String resourceGroupName, String emailServiceName, String domainName) {
-        DomainResourceInner inner = this.serviceClient().get(resourceGroupName, emailServiceName, domainName);
-        if (inner != null) {
-            return new DomainResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DomainResource> getWithResponse(
         String resourceGroupName, String emailServiceName, String domainName, Context context) {
         Response<DomainResourceInner> inner =
@@ -47,6 +38,15 @@ public final class DomainsImpl implements Domains {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DomainResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DomainResource get(String resourceGroupName, String emailServiceName, String domainName) {
+        DomainResourceInner inner = this.serviceClient().get(resourceGroupName, emailServiceName, domainName);
+        if (inner != null) {
+            return new DomainResourceImpl(inner, this.manager());
         } else {
             return null;
         }

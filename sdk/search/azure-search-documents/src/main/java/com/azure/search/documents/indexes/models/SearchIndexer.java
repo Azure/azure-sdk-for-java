@@ -464,21 +464,21 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
                         }
                     }
                     if (nameFound) {
-                        SearchIndexer deserializedValue = new SearchIndexer(name);
-                        deserializedValue.description = description;
-                        deserializedValue.dataSourceName = dataSourceName;
-                        deserializedValue.skillsetName = skillsetName;
-                        deserializedValue.targetIndexName = targetIndexName;
-                        deserializedValue.schedule = schedule;
-                        deserializedValue.parameters = parameters;
-                        deserializedValue.fieldMappings = fieldMappings;
-                        deserializedValue.outputFieldMappings = outputFieldMappings;
-                        deserializedValue.isDisabled = isDisabled;
-                        deserializedValue.eTag = eTag;
-                        deserializedValue.encryptionKey = encryptionKey;
-                        deserializedValue.cache = cache;
+                        SearchIndexer deserializedSearchIndexer = new SearchIndexer(name);
+                        deserializedSearchIndexer.description = description;
+                        deserializedSearchIndexer.dataSourceName = dataSourceName;
+                        deserializedSearchIndexer.skillsetName = skillsetName;
+                        deserializedSearchIndexer.targetIndexName = targetIndexName;
+                        deserializedSearchIndexer.schedule = schedule;
+                        deserializedSearchIndexer.parameters = parameters;
+                        deserializedSearchIndexer.fieldMappings = fieldMappings;
+                        deserializedSearchIndexer.outputFieldMappings = outputFieldMappings;
+                        deserializedSearchIndexer.isDisabled = isDisabled;
+                        deserializedSearchIndexer.eTag = eTag;
+                        deserializedSearchIndexer.encryptionKey = encryptionKey;
+                        deserializedSearchIndexer.cache = cache;
 
-                        return deserializedValue;
+                        return deserializedSearchIndexer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

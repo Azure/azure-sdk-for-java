@@ -67,6 +67,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GatewayAddressCache implements IAddressCache {
@@ -81,6 +82,7 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI addressEndpoint;
+    private final URI serviceEndpoint;
 
     private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
@@ -123,6 +125,7 @@ public class GatewayAddressCache implements IAddressCache {
             assert false;
             throw new IllegalStateException(e);
         }
+        this.serviceEndpoint = serviceEndpoint;
         this.tokenProvider = tokenProvider;
         this.serverPartitionAddressCache = new AsyncCacheNonBlocking<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
@@ -664,7 +667,7 @@ public class GatewayAddressCache implements IAddressCache {
                             }
 
                             if (this.replicaAddressValidationEnabled) {
-                                this.validateReplicaAddresses(mergedAddresses);
+                                this.validateReplicaAddresses(collectionRid, mergedAddresses);
                             }
 
                             return Mono.just(mergedAddresses);
@@ -853,8 +856,9 @@ public class GatewayAddressCache implements IAddressCache {
         return mergedAddresses.toArray(new AddressInformation[mergedAddresses.size()]);
     }
 
-    private void validateReplicaAddresses(AddressInformation[] addresses) {
+    private void validateReplicaAddresses(String collectionRid, AddressInformation[] addresses) {
         checkNotNull(addresses, "Argument 'addresses' can not be null");
+        checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' can not be null");
 
         // By theory, when we reach here, the status of the address should be in one of the three status: Unknown, Connected, UnhealthyPending
         // using open connection to validate addresses in UnhealthyPending status
@@ -873,14 +877,18 @@ public class GatewayAddressCache implements IAddressCache {
                         addressesNeedToValidation.add(address.getPhysicalUri());
                         break;
                     default:
-                        throw new IllegalStateException("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        // the status of the replica can be changed by other flows
+                        // ignore the validation if the status is not in the validation scope anymore
+                        logger.debug("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        break;
                 }
             }
         }
 
         if (addressesNeedToValidation.size() > 0) {
+            logger.debug("Addresses to validate: [{}]", addressesNeedToValidation);
             this.openConnectionsHandler
-                    .openConnections(addressesNeedToValidation)
+                    .openConnections(collectionRid, this.serviceEndpoint, addressesNeedToValidation)
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
@@ -970,10 +978,12 @@ public class GatewayAddressCache implements IAddressCache {
 
                                     if (this.openConnectionsHandler != null) {
                                         return this.openConnectionsHandler.openConnections(
-                                                Arrays
-                                                    .stream(addressInfo.getRight())
-                                                    .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                    .collect(Collectors.toList()));
+                                            collection.getResourceId(),
+                                            this.serviceEndpoint,
+                                            Arrays
+                                                .stream(addressInfo.getRight())
+                                                .map(addressInformation -> addressInformation.getPhysicalUri())
+                                                .collect(Collectors.toList()));
                                     }
 
                                     logger.info("OpenConnectionHandler is null, can not open connections");

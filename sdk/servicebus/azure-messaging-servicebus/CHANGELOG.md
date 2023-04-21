@@ -1,15 +1,21 @@
 # Release History
 
-## 7.14.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 7.13.4 (2023-04-14)
 
 ### Bugs Fixed
+- Added a warning log message to indicate the use of Processor _start_ API after the _stop_ is not recommended. ([34464](https://github.com/Azure/azure-sdk-for-java/issues/34464))
+- Fixed the issue of not retrying for a new session after the last acquire-session timeout. ([#34314](https://github.com/Azure/azure-sdk-for-java/issues/34314))
+- Replay the terminal error to backing work of sync receive calls that arrive after the inner async client termination. ([#34332](https://github.com/Azure/azure-sdk-for-java/issues/34332))
+## 7.13.3 (2023-03-07)
 
+### Bugs Fixed
+- Removed delay in acquiring new link after timeout exception in `ServiceBusSessionManager`. ([#32455](https://github.com/Azure/azure-sdk-for-java/issues/32455))
 ### Other Changes
-
+#### Dependency Updates
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+- Upgraded `azure-core-amqp` from `2.8.2` to `2.8.3`.
+- Upgraded `azure-identity` from `1.8.0` to `1.8.1`.
+- 
 ## 7.13.2 (2023-02-20)
 
 ### Bugs Fixed

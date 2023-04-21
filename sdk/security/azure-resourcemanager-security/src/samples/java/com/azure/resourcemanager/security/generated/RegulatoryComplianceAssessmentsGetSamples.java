@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RegulatoryComplianceAssessments Get. */
 public final class RegulatoryComplianceAssessmentsGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class RegulatoryComplianceAssessmentsGetSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .regulatoryComplianceAssessments()
-            .getWithResponse("PCI-DSS-3.2", "1.1", "968548cb-02b3-8cd2-11f8-0cf64ab1a347", Context.NONE);
+            .getWithResponse(
+                "PCI-DSS-3.2", "1.1", "968548cb-02b3-8cd2-11f8-0cf64ab1a347", com.azure.core.util.Context.NONE);
     }
 }

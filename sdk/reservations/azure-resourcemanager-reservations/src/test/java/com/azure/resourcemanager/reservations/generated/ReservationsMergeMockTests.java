@@ -41,7 +41,7 @@ public final class ReservationsMergeMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "[{\"location\":\"gfpelolppvksrpqv\",\"etag\":2128211402,\"sku\":{\"name\":\"ehtwdwrft\"},\"properties\":{\"reservedResourceType\":\"Databricks\",\"instanceFlexibility\":\"Off\",\"displayName\":\"dl\",\"appliedScopes\":[\"hfwpracstwit\",\"khevxccedc\",\"nmdyodnwzxl\",\"jc\"],\"appliedScopeType\":\"ManagementGroup\",\"archived\":true,\"capabilities\":\"ugcxnavvwxq\",\"quantity\":165046754,\"provisioningState\":\"PendingBilling\",\"effectiveDateTime\":\"2021-05-22T21:00:43Z\",\"benefitStartTime\":\"2021-09-23T12:45:02Z\",\"lastUpdatedDateTime\":\"2021-06-28T16:16:43Z\",\"expiryDateTime\":\"2021-08-23T07:03:36Z\",\"reviewDateTime\":\"2021-02-11T03:05:15Z\",\"skuDescription\":\"vfgbvfvpdboda\",\"billingPlan\":\"Upfront\",\"displayProvisioningState\":\"q\",\"provisioningSubState\":\"krribdeibqi\",\"purchaseDateTime\":\"2021-05-03T06:31:18Z\",\"billingScopeId\":\"zwmk\",\"renew\":true,\"renewSource\":\"jpjorwkqnyhgb\",\"renewDestination\":\"tjivfxzsjabib\",\"term\":\"P5Y\",\"userFriendlyAppliedScopeType\":\"wfsdjpvkvpbj\",\"userFriendlyRenewState\":\"kzbzkdvncjabudu\"},\"kind\":\"Microsoft.Compute\",\"id\":\"mokzhjjklf\",\"name\":\"hmouwqlgzrfze\",\"type\":\"yebizikayuh\"}]";
+            "[{\"location\":\"hxvrhmzkwpjg\",\"etag\":856431804,\"sku\":{\"name\":\"ghftqsxhqxujxuk\"},\"properties\":{\"reservedResourceType\":\"AzureFiles\",\"instanceFlexibility\":\"Off\",\"displayName\":\"jguufzdm\",\"appliedScopes\":[\"tfih\",\"hbotzingamvppho\",\"zqzudph\",\"amvdkfwynwcvtbv\"],\"appliedScopeType\":\"Single\",\"archived\":false,\"capabilities\":\"nvyq\",\"quantity\":686807657,\"provisioningState\":\"Failed\",\"effectiveDateTime\":\"2021-05-19T06:58:08Z\",\"benefitStartTime\":\"2021-08-16T19:44:14Z\",\"lastUpdatedDateTime\":\"2021-09-23T11:43:17Z\",\"expiryDateTime\":\"2021-02-07T21:37:46Z\",\"reviewDateTime\":\"2021-05-22T23:16:36Z\",\"skuDescription\":\"gvvs\",\"billingPlan\":\"Upfront\",\"displayProvisioningState\":\"g\",\"provisioningSubState\":\"fhwygzlvdnkfxus\",\"purchaseDateTime\":\"2021-02-14T09:42:03Z\",\"billingScopeId\":\"apfcqdpsq\",\"renew\":true,\"renewSource\":\"svuo\",\"renewDestination\":\"gc\",\"term\":\"P5Y\",\"userFriendlyAppliedScopeType\":\"zrypqlmfeokerqw\",\"userFriendlyRenewState\":\"hkobopgxedk\"},\"kind\":\"Microsoft.Compute\",\"id\":\"qpcrf\",\"name\":\"bwccsnjvcdwxlpqe\",\"type\":\"ftnkhtj\"},{\"location\":\"i\",\"etag\":2104302004,\"sku\":{\"name\":\"atmtdhtmdvy\"},\"properties\":{\"reservedResourceType\":\"Databricks\",\"instanceFlexibility\":\"On\",\"displayName\":\"zywkb\",\"appliedScopes\":[\"yuzhlhkjoqrvq\",\"aatjinrvgoupmfi\"],\"appliedScopeType\":\"Shared\",\"archived\":false,\"capabilities\":\"ioolvrwxkvtkkgll\",\"quantity\":342609300,\"provisioningState\":\"Split\",\"effectiveDateTime\":\"2021-07-24T13:52:35Z\",\"benefitStartTime\":\"2021-03-15T01:10:56Z\",\"lastUpdatedDateTime\":\"2021-05-06T19:16:01Z\",\"expiryDateTime\":\"2021-04-03T14:41:24Z\",\"reviewDateTime\":\"2021-03-17T12:51:03Z\",\"skuDescription\":\"uhbxvvy\",\"billingPlan\":\"Monthly\",\"displayProvisioningState\":\"byrqufeg\",\"provisioningSubState\":\"vwz\",\"purchaseDateTime\":\"2021-03-16T15:12:59Z\",\"billingScopeId\":\"p\",\"renew\":false,\"renewSource\":\"tvgbmhrixkwmy\",\"renewDestination\":\"ejvegrhbpnaixex\",\"term\":\"P5Y\",\"userFriendlyAppliedScopeType\":\"eaxhcexdrrvqahqk\",\"userFriendlyRenewState\":\"tpwijnh\"},\"kind\":\"Microsoft.Compute\",\"id\":\"ycxzbfvoo\",\"name\":\"vrvmtgjqppyost\",\"type\":\"on\"}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -73,41 +73,41 @@ public final class ReservationsMergeMockTests {
             manager
                 .reservations()
                 .merge(
-                    "zrncsdt",
-                    new MergeRequest().withSources(Arrays.asList("iypbsfgytgusl", "eadcygqukyhejhz")),
+                    "ldvriiiojnalghfk",
+                    new MergeRequest().withSources(Arrays.asList("ex", "owueluqh")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gfpelolppvksrpqv", response.get(0).location());
-        Assertions.assertEquals(2128211402, response.get(0).etag());
-        Assertions.assertEquals("ehtwdwrft", response.get(0).sku().name());
-        Assertions.assertEquals(ReservedResourceType.DATABRICKS, response.get(0).properties().reservedResourceType());
+        Assertions.assertEquals("hxvrhmzkwpjg", response.get(0).location());
+        Assertions.assertEquals(856431804, response.get(0).etag());
+        Assertions.assertEquals("ghftqsxhqxujxuk", response.get(0).sku().name());
+        Assertions.assertEquals(ReservedResourceType.AZURE_FILES, response.get(0).properties().reservedResourceType());
         Assertions.assertEquals(InstanceFlexibility.OFF, response.get(0).properties().instanceFlexibility());
-        Assertions.assertEquals("dl", response.get(0).properties().displayName());
-        Assertions.assertEquals("hfwpracstwit", response.get(0).properties().appliedScopes().get(0));
-        Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, response.get(0).properties().appliedScopeType());
-        Assertions.assertEquals(true, response.get(0).properties().archived());
-        Assertions.assertEquals("ugcxnavvwxq", response.get(0).properties().capabilities());
-        Assertions.assertEquals(165046754, response.get(0).properties().quantity());
-        Assertions.assertEquals(ProvisioningState.PENDING_BILLING, response.get(0).properties().provisioningState());
+        Assertions.assertEquals("jguufzdm", response.get(0).properties().displayName());
+        Assertions.assertEquals("tfih", response.get(0).properties().appliedScopes().get(0));
+        Assertions.assertEquals(AppliedScopeType.SINGLE, response.get(0).properties().appliedScopeType());
+        Assertions.assertEquals(false, response.get(0).properties().archived());
+        Assertions.assertEquals("nvyq", response.get(0).properties().capabilities());
+        Assertions.assertEquals(686807657, response.get(0).properties().quantity());
+        Assertions.assertEquals(ProvisioningState.FAILED, response.get(0).properties().provisioningState());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-22T21:00:43Z"), response.get(0).properties().effectiveDateTime());
+                OffsetDateTime.parse("2021-05-19T06:58:08Z"), response.get(0).properties().effectiveDateTime());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-09-23T12:45:02Z"), response.get(0).properties().benefitStartTime());
+                OffsetDateTime.parse("2021-08-16T19:44:14Z"), response.get(0).properties().benefitStartTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-08-23T07:03:36Z"), response.get(0).properties().expiryDateTime());
+            .assertEquals(OffsetDateTime.parse("2021-02-07T21:37:46Z"), response.get(0).properties().expiryDateTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-02-11T03:05:15Z"), response.get(0).properties().reviewDateTime());
-        Assertions.assertEquals("vfgbvfvpdboda", response.get(0).properties().skuDescription());
+            .assertEquals(OffsetDateTime.parse("2021-05-22T23:16:36Z"), response.get(0).properties().reviewDateTime());
+        Assertions.assertEquals("gvvs", response.get(0).properties().skuDescription());
         Assertions.assertEquals(ReservationBillingPlan.UPFRONT, response.get(0).properties().billingPlan());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-05-03T06:31:18Z"), response.get(0).properties().purchaseDateTime());
-        Assertions.assertEquals("zwmk", response.get(0).properties().billingScopeId());
+                OffsetDateTime.parse("2021-02-14T09:42:03Z"), response.get(0).properties().purchaseDateTime());
+        Assertions.assertEquals("apfcqdpsq", response.get(0).properties().billingScopeId());
         Assertions.assertEquals(true, response.get(0).properties().renew());
-        Assertions.assertEquals("jpjorwkqnyhgb", response.get(0).properties().renewSource());
-        Assertions.assertEquals("tjivfxzsjabib", response.get(0).properties().renewDestination());
+        Assertions.assertEquals("svuo", response.get(0).properties().renewSource());
+        Assertions.assertEquals("gc", response.get(0).properties().renewDestination());
         Assertions.assertEquals(ReservationTerm.P5Y, response.get(0).properties().term());
         Assertions.assertEquals(Kind.MICROSOFT_COMPUTE, response.get(0).kind());
     }

@@ -53,6 +53,10 @@ parameters:
     displayName: azure-resourcemanager-purview
     type: boolean
     default: false
+  - name: release_azureanalyticspurviewsharing
+    displayName: azure-analytics-purview-sharing
+    type: boolean
+    default: true
   - name: release_azureanalyticspurviewworkflow
     displayName: azure-analytics-purview-workflow
     type: boolean
@@ -80,6 +84,10 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerpurview
         releaseInBatch: ${{ parameters.release_azureresourcemanagerpurview }}
+      - name: azure-analytics-purview-sharing
+        groupId: com.azure
+        safeName: azureanalyticspurviewsharing
+        releaseInBatch: ${{ parameters.release_azureanalyticspurviewsharing }}
       - name: azure-analytics-purview-workflow
         groupId: com.azure
         safeName: azureanalyticspurviewworkflow

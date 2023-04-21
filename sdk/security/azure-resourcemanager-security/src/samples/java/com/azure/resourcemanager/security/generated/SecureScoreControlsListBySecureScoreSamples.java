@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.ExpandControlsEnum;
 
 /** Samples for SecureScoreControls ListBySecureScore. */
@@ -20,7 +19,9 @@ public final class SecureScoreControlsListBySecureScoreSamples {
      */
     public static void getSecurityControlsAndTheirCurrentScoreForTheSpecifiedInitiativeWithTheExpandParameter(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.secureScoreControls().listBySecureScore("ascScore", ExpandControlsEnum.DEFINITION, Context.NONE);
+        manager
+            .secureScoreControls()
+            .listBySecureScore("ascScore", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -33,6 +34,6 @@ public final class SecureScoreControlsListBySecureScoreSamples {
      */
     public static void getSecurityControlsAndTheirCurrentScoreForTheSpecifiedInitiative(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.secureScoreControls().listBySecureScore("ascScore", null, Context.NONE);
+        manager.secureScoreControls().listBySecureScore("ascScore", null, com.azure.core.util.Context.NONE);
     }
 }

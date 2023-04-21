@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListDiagnostics. */
 public final class AppServiceEnvironmentsListDiagnosticsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListDiagnostics.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListDiagnostics.json
      */
     /**
      * Sample code: Get diagnostic information for an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListDiagnosticsSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listDiagnosticsWithResponse("test-rg", "test-ase", Context.NONE);
+            .listDiagnosticsWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

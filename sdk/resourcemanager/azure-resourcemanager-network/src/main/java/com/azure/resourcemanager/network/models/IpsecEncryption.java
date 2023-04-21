@@ -38,6 +38,15 @@ public final class IpsecEncryption extends ExpandableStringEnum<IpsecEncryption>
     public static final IpsecEncryption GCMAES256 = fromString("GCMAES256");
 
     /**
+     * Creates a new instance of IpsecEncryption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpsecEncryption() {
+    }
+
+    /**
      * Creates or finds a IpsecEncryption from its string representation.
      *
      * @param name a name to look for.

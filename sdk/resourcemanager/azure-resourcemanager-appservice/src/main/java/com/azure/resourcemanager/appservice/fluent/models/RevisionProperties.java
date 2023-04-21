@@ -71,6 +71,10 @@ public final class RevisionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RevisionProvisioningState provisioningState;
 
+    /** Creates an instance of RevisionProperties class. */
+    public RevisionProperties() {
+    }
+
     /**
      * Get the createdTime property: Timestamp describing when the revision was created by controller.
      *

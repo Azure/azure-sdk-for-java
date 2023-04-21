@@ -21,6 +21,10 @@ public final class ExpandMsixImageInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ExpandMsixImageProperties innerProperties;
 
+    /** Creates an instance of ExpandMsixImageInner class. */
+    public ExpandMsixImageInner() {
+    }
+
     /**
      * Get the innerProperties property: Detailed properties for ExpandMsixImage.
      *

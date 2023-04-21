@@ -44,7 +44,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
         MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
@@ -83,7 +83,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                                                               MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
@@ -121,7 +121,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                                                                       MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
@@ -166,7 +166,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     public void updateDetectionConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);

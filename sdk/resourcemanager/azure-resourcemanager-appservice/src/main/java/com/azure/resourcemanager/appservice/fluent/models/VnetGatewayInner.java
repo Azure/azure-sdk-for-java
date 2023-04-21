@@ -17,6 +17,10 @@ public final class VnetGatewayInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetGatewayProperties innerProperties;
 
+    /** Creates an instance of VnetGatewayInner class. */
+    public VnetGatewayInner() {
+    }
+
     /**
      * Get the innerProperties property: VnetGateway resource specific properties.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceHealthMetadata ListByResourceGroup. */
 public final class ResourceHealthMetadataListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListResourceHealthMetadataByResourceGroup.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListResourceHealthMetadataByResourceGroup.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a resource group.
@@ -23,6 +21,6 @@ public final class ResourceHealthMetadataListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getResourceHealthMetadatas()
-            .listByResourceGroup("Default-Web-NorthCentralUS", Context.NONE);
+            .listByResourceGroup("Default-Web-NorthCentralUS", com.azure.core.util.Context.NONE);
     }
 }

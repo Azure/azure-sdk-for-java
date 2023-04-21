@@ -183,7 +183,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -242,7 +242,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -360,7 +360,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -431,7 +431,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -533,7 +533,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             String virtualNetworkGatewayName,
             String natRuleName,
             VirtualNetworkGatewayNatRuleInner natRuleParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters)
             .getSyncPoller();
     }
 
@@ -558,7 +559,8 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             String natRuleName,
             VirtualNetworkGatewayNatRuleInner natRuleParameters,
             Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters, context)
             .getSyncPoller();
     }
@@ -698,7 +700,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -756,7 +758,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -830,7 +832,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayName, String natRuleName) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName).getSyncPoller();
     }
 
     /**
@@ -848,7 +850,9 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayName, String natRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -957,7 +961,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
                     new IllegalArgumentException(
                         "Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1020,7 +1024,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
                     new IllegalArgumentException(
                         "Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

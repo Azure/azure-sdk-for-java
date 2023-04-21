@@ -22,6 +22,10 @@ public final class Status {
     @JsonProperty(value = "statusId")
     private InsightStatus statusId;
 
+    /** Creates an instance of Status class. */
+    public Status() {
+    }
+
     /**
      * Get the message property: Descriptive message.
      *

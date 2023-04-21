@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.32.0</version>
+    <version>3.33.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -479,7 +479,7 @@ public class SampleApplication {
 }
 ```
 #### Indexing Policy
-- By default, IndexingPolicy will be set by azure service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 4 attributes to customize, see following:
+- By default, IndexingPolicy will be set by Azure Portal Service. To customize it add annotation `@CosmosIndexingPolicy` to domain class. This annotation has 5 attributes to customize, see following:
 ```java readme-sample-CosmosIndexingPolicyCodeSnippet
 // Indicate if indexing policy use automatic or not
 // Default value is true
@@ -940,7 +940,7 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
     private String tenantId;
-    
+
     /**
      * Validate config and initialization
      *
@@ -949,7 +949,7 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
      */
     public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         super(cosmosAsyncClient, databaseName);
-        
+
         this.tenantId = databaseName;
     }
 

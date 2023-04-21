@@ -8,15 +8,18 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+
 import org.junit.jupiter.api.Test;
 
-public abstract class TableClientTestBase extends TestBase {
+public abstract class TableClientTestBase extends TestProxyTestBase {
     protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     protected static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
     protected HttpPipelinePolicy recordPolicy;
     protected HttpClient playbackClient;
+
+    protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
     protected TableClientBuilder getClientBuilder(String tableName, String connectionString) {
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
@@ -46,17 +49,16 @@ public abstract class TableClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             playbackClient = interceptorManager.getPlaybackClient();
 
-            tableClientBuilder.httpClient(playbackClient);
+            tableClientBuilder.httpClient(buildAssertingClient(playbackClient));
         } else {
-            tableClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
+            tableClientBuilder.httpClient(buildAssertingClient(DEFAULT_HTTP_CLIENT));
 
-            if (!interceptorManager.isLiveMode()) {
+            if (interceptorManager.isRecordMode()) {
                 recordPolicy = interceptorManager.getRecordPolicy();
-
                 tableClientBuilder.addPolicy(recordPolicy);
             }
         }
-
+        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return tableClientBuilder;
     }
 

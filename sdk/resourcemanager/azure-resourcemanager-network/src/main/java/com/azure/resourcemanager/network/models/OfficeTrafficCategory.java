@@ -23,6 +23,15 @@ public final class OfficeTrafficCategory extends ExpandableStringEnum<OfficeTraf
     public static final OfficeTrafficCategory NONE = fromString("None");
 
     /**
+     * Creates a new instance of OfficeTrafficCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OfficeTrafficCategory() {
+    }
+
+    /**
      * Creates or finds a OfficeTrafficCategory from its string representation.
      *
      * @param name a name to look for.

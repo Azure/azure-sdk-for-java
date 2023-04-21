@@ -17,6 +17,15 @@ public final class IpAllocationType extends ExpandableStringEnum<IpAllocationTyp
     public static final IpAllocationType HYPERNET = fromString("Hypernet");
 
     /**
+     * Creates a new instance of IpAllocationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpAllocationType() {
+    }
+
+    /**
      * Creates or finds a IpAllocationType from its string representation.
      *
      * @param name a name to look for.

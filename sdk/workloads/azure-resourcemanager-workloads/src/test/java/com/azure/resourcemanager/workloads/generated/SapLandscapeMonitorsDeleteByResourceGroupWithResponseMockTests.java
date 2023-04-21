@@ -58,6 +58,6 @@ public final class SapLandscapeMonitorsDeleteByResourceGroupWithResponseMockTest
 
         manager
             .sapLandscapeMonitors()
-            .deleteByResourceGroupWithResponse("viauogphua", "tvt", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("qzdfuydzvkfvxcn", "mx", com.azure.core.util.Context.NONE);
     }
 }

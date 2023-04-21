@@ -22,6 +22,10 @@ public final class SiteAuthSettingsV2Inner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SiteAuthSettingsV2Properties innerProperties;
 
+    /** Creates an instance of SiteAuthSettingsV2Inner class. */
+    public SiteAuthSettingsV2Inner() {
+    }
+
     /**
      * Get the innerProperties property: SiteAuthSettingsV2 resource specific properties.
      *

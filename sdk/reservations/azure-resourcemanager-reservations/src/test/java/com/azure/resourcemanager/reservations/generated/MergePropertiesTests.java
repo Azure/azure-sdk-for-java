@@ -14,16 +14,16 @@ public final class MergePropertiesTests {
     public void testDeserialize() throws Exception {
         MergeProperties model =
             BinaryData
-                .fromString("{\"sources\":[\"dwxdndnv\",\"w\",\"ujjugwdkcglh\",\"lazjdyggdtjixhbk\"]}")
+                .fromString("{\"sources\":[\"yocf\",\"fksymddystki\",\"uxh\",\"yudxorrqnbp\"]}")
                 .toObject(MergeProperties.class);
-        Assertions.assertEquals("dwxdndnv", model.sources().get(0));
+        Assertions.assertEquals("yocf", model.sources().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MergeProperties model =
-            new MergeProperties().withSources(Arrays.asList("dwxdndnv", "w", "ujjugwdkcglh", "lazjdyggdtjixhbk"));
+            new MergeProperties().withSources(Arrays.asList("yocf", "fksymddystki", "uxh", "yudxorrqnbp"));
         model = BinaryData.fromObject(model).toObject(MergeProperties.class);
-        Assertions.assertEquals("dwxdndnv", model.sources().get(0));
+        Assertions.assertEquals("yocf", model.sources().get(0));
     }
 }

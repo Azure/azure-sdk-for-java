@@ -20,6 +20,10 @@ public final class StringDictionaryInner extends ProxyOnlyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
+    /** Creates an instance of StringDictionaryInner class. */
+    public StringDictionaryInner() {
+    }
+
     /**
      * Get the properties property: Settings.
      *

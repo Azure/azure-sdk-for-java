@@ -23,6 +23,15 @@ public final class ServiceProviderProvisioningState extends ExpandableStringEnum
     public static final ServiceProviderProvisioningState DEPROVISIONING = fromString("Deprovisioning");
 
     /**
+     * Creates a new instance of ServiceProviderProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceProviderProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ServiceProviderProvisioningState from its string representation.
      *
      * @param name a name to look for.

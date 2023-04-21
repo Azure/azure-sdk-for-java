@@ -153,6 +153,25 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     @JsonProperty(value = "identityBasedRestoreDetails")
     private IdentityBasedRestoreDetails identityBasedRestoreDetails;
 
+    /*
+     * Target extended location where the VM should be restored,
+     * should be null if restore is to be done in public cloud
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
+     * Stores Secured VM Details
+     */
+    @JsonProperty(value = "securedVMDetails")
+    private SecuredVMDetails securedVMDetails;
+
+    /*
+     * Specifies target network access settings for disks of VM to be restored,
+     */
+    @JsonProperty(value = "targetDiskNetworkAccessSettings")
+    private TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings;
+
     /** Creates an instance of IaasVMRestoreRequest class. */
     public IaasVMRestoreRequest() {
     }
@@ -583,6 +602,71 @@ public class IaasVMRestoreRequest extends RestoreRequest {
     }
 
     /**
+     * Get the extendedLocation property: Target extended location where the VM should be restored, should be null if
+     * restore is to be done in public cloud.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: Target extended location where the VM should be restored, should be null if
+     * restore is to be done in public cloud.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the IaasVMRestoreRequest object itself.
+     */
+    public IaasVMRestoreRequest withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the securedVMDetails property: Stores Secured VM Details.
+     *
+     * @return the securedVMDetails value.
+     */
+    public SecuredVMDetails securedVMDetails() {
+        return this.securedVMDetails;
+    }
+
+    /**
+     * Set the securedVMDetails property: Stores Secured VM Details.
+     *
+     * @param securedVMDetails the securedVMDetails value to set.
+     * @return the IaasVMRestoreRequest object itself.
+     */
+    public IaasVMRestoreRequest withSecuredVMDetails(SecuredVMDetails securedVMDetails) {
+        this.securedVMDetails = securedVMDetails;
+        return this;
+    }
+
+    /**
+     * Get the targetDiskNetworkAccessSettings property: Specifies target network access settings for disks of VM to be
+     * restored,.
+     *
+     * @return the targetDiskNetworkAccessSettings value.
+     */
+    public TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings() {
+        return this.targetDiskNetworkAccessSettings;
+    }
+
+    /**
+     * Set the targetDiskNetworkAccessSettings property: Specifies target network access settings for disks of VM to be
+     * restored,.
+     *
+     * @param targetDiskNetworkAccessSettings the targetDiskNetworkAccessSettings value to set.
+     * @return the IaasVMRestoreRequest object itself.
+     */
+    public IaasVMRestoreRequest withTargetDiskNetworkAccessSettings(
+        TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
+        this.targetDiskNetworkAccessSettings = targetDiskNetworkAccessSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -598,6 +682,15 @@ public class IaasVMRestoreRequest extends RestoreRequest {
         }
         if (identityBasedRestoreDetails() != null) {
             identityBasedRestoreDetails().validate();
+        }
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
+        if (securedVMDetails() != null) {
+            securedVMDetails().validate();
+        }
+        if (targetDiskNetworkAccessSettings() != null) {
+            targetDiskNetworkAccessSettings().validate();
         }
     }
 }

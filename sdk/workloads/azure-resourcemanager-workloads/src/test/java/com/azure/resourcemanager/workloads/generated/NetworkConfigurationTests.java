@@ -12,14 +12,14 @@ public final class NetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkConfiguration model =
-            BinaryData.fromString("{\"isSecondaryIpEnabled\":true}").toObject(NetworkConfiguration.class);
-        Assertions.assertEquals(true, model.isSecondaryIpEnabled());
+            BinaryData.fromString("{\"isSecondaryIpEnabled\":false}").toObject(NetworkConfiguration.class);
+        Assertions.assertEquals(false, model.isSecondaryIpEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkConfiguration model = new NetworkConfiguration().withIsSecondaryIpEnabled(true);
+        NetworkConfiguration model = new NetworkConfiguration().withIsSecondaryIpEnabled(false);
         model = BinaryData.fromObject(model).toObject(NetworkConfiguration.class);
-        Assertions.assertEquals(true, model.isSecondaryIpEnabled());
+        Assertions.assertEquals(false, model.isSecondaryIpEnabled());
     }
 }

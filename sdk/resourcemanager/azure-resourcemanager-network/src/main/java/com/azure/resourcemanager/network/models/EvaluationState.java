@@ -20,6 +20,15 @@ public final class EvaluationState extends ExpandableStringEnum<EvaluationState>
     public static final EvaluationState COMPLETED = fromString("Completed");
 
     /**
+     * Creates a new instance of EvaluationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EvaluationState() {
+    }
+
+    /**
      * Creates or finds a EvaluationState from its string representation.
      *
      * @param name a name to look for.

@@ -23,10 +23,12 @@ public class PathItem {
     private final OffsetDateTime creationTime;
     private final OffsetDateTime expiryTime;
     private String encryptionScope;
+    private String encryptionContext;
 
     static {
-        AccessorUtility.setPathItemAccessor((pathItem, encryptionScope) -> {
+        AccessorUtility.setPathItemAccessor((pathItem, encryptionScope, encryptionContext) -> {
             pathItem.encryptionScope = encryptionScope;
+            pathItem.encryptionContext = encryptionContext;
             return pathItem;
         });
     }
@@ -171,5 +173,14 @@ public class PathItem {
      */
     public String getEncryptionScope() {
         return this.encryptionScope;
+    }
+
+    /**
+     * Get the encryptionContext property: Encryption context for this path. Only applicable for files.
+     *
+     * @return the encryptionContext value.
+     */
+    public String getEncryptionContext() {
+        return this.encryptionContext;
     }
 }

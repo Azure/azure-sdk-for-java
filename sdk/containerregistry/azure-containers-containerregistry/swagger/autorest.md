@@ -2,11 +2,22 @@
 
 > see https://aka.ms/autorest
 
+This is the template AutoRest configuration file for client SDKs.
+
 ## Getting Started
 
-To build the client SDK for ContainerRegistry simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
+To build the SDK, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
 
 ### Setup
+
+Fork and clone [autorest.java](https://github.com/Azure/autorest.java) and run the following:
+
 ```ps
 You need to have the following installed on your machine:
 
@@ -20,16 +31,32 @@ npm i -g autorest
 
 ### Generation
 
-There is one swagger for Container Registry APIs.
+Generating client SDKs from Swagger involves using the `autorest` command installed to the command line above while
+also referencing the Java AutoRest packages, either the local installation performed above or using a released version.
+
+#### Local Installation
+
+Using a local installation of Java AutoRest allows for the most up-to-date code to be used and allows for debugging of
+code generation, see the [autorest.java usage](https://github.com/Azure/autorest.java#usage) for more details.
 
 ```ps
 cd <swagger-folder>
-autorest --java --use:@autorest/java@4.1.7 --use:@autorest/modelerfour@4.23.7
+autorest --use=<directory where autorest.java was cloned>
+```
+
+#### Released Version
+
+Using a released build of Java AutoRest ensures that a well-tested and durable implementation is used, as rebuilding
+the local installation of Java AutoRest won't affect code generation as it would above.
+
+```ps
+cd <swagger-folder>
+autorest --java --use:@autorest/java@4.1.*
 ```
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.13'
+use: '@autorest/java@4.1.15'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c8d9a26a2857828e095903efa72512cf3a76c15d/specification/containerregistry/data-plane/Azure.ContainerRegistry/stable/2021-07-01/containerregistry.json
 java: true
 output-folder: ./..
@@ -41,7 +68,7 @@ sync-methods: none
 context-client-method-parameter: true
 service-interface-as-public: true
 models-subpackage: implementation.models
-custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciBlobDescriptor,OciManifest,RepositoryProperties
+custom-types: ArtifactArchitecture,ArtifactManifestOrder,ArtifactManifestPlatform,ArtifactOperatingSystem,ArtifactTagOrder,ContainerRepositoryProperties,OciAnnotations,OciDescriptor,OciImageManifest,RepositoryProperties
 custom-types-subpackage: models
 enable-sync-stack: true
 generic-response-type: true
@@ -67,6 +94,15 @@ directive:
   transform: >
     $["x-ms-enum"].name = "ArtifactManifestOrder";
     $["x-ms-enum"].modelAsString = true;
+```
+
+### Remove "Authentication_GetAcrAccessTokenFromLogin" operation as the service team discourage using username/password to authenticate.
+```yaml
+directive:
+  - from: swagger-document
+    where: $["paths"]["/oauth2/token"]
+    transform: >
+      delete $.get
 ```
 
 ### Update the field names for RepositoryChangeableAttributes
@@ -136,6 +172,9 @@ directive:
 ```
 
 ### Set readonly flag to properties of TagAttributesBase
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -149,6 +188,9 @@ directive:
 ```
 
 ### Update the field names for TagChangeableAttributes
+
+<!-- Java specific -->
+
 ```yaml
 directive:
 - from: swagger-document
@@ -159,6 +201,7 @@ directive:
     $["properties"]["listEnabled"]["x-ms-client-name"] = "listEnabled";
     $["properties"]["readEnabled"]["x-ms-client-name"] = "readEnabled";
 ```
+
 # Add content-type parameter
 ```yaml
 directive:
@@ -192,19 +235,21 @@ directive:
     $["x-ms-client-name"] = "nextLink"
 ```
 
-# Updates to OciManifest
+# Updates to OCIManifest
 ```yaml
 directive:
   from: swagger-document
   where: $.definitions.OCIManifest
   transform: >
-    $["x-ms-client-name"] = "OciManifest";
+    $["x-ms-client-name"] = "OciImageManifest";
+    $.required = ["schemaVersion"];
     delete $["x-accessibility"];
     delete $["allOf"];
     $.properties["schemaVersion"] = {
           "type": "integer",
           "description": "Schema version"
         };
+    $.properties.config["x-ms-client-name"] = "configuration";
 ```
 
 # Take stream as manifest body
@@ -219,13 +264,29 @@ directive:
       }
 ```
 
-# Make ArtifactBlobDescriptor a public type
+# Replace ManifestWrapper with stream response to calculate SHA256
+
+<!-- Java specific -->
+
+```yaml
+directive:
+  from: swagger-document
+  where: $.paths["/v2/{name}/manifests/{reference}"].get.responses["200"]
+  transform: >
+      $.schema = {
+          "type": "string",
+          "format": "binary"
+      };
+```
+
+# Rename ArtifactBlobDescriptor to OciDescriptor
 ```yaml
 directive:
   from: swagger-document
   where: $.definitions.Descriptor
   transform: >
-    $["x-ms-client-name"] = "OciBlobDescriptor";
+    $["x-ms-client-name"] = "OciDescriptor";
+    $.properties.size["x-ms-client-name"] = "sizeInBytes";      
     delete $["x-accessibility"]
 ```
 
@@ -237,4 +298,40 @@ directive:
   transform: >
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
+```
+
+# Rename created to createdOn in OciAnnotations
+```yaml
+directive:
+  from: swagger-document
+  where: $.definitions.Annotations
+  transform: >
+    $.properties["org.opencontainers.image.created"] = {
+      "description": "Date and time on which the image was built (string, date-time as defined by https://tools.ietf.org/html/rfc3339#section-5.6)",
+      "type": "string",
+      "format": "date-time",
+      "x-ms-client-name": "CreatedOn"
+    };
+```
+
+# Remove security definitions
+``` yaml
+directive:
+- from: swagger-document
+  where: $.
+  transform: >
+    delete $["securityDefinitions"];
+    delete $["security"];
+```
+
+# Remove stream response from `deleteBlob`
+
+We don't care about the stream that is returned and we don't want to clean it up
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths["/v2/{name}/blobs/{digest}"]["delete"]
+    transform: >
+      delete $.responses["202"].schema;
 ```

@@ -21,15 +21,16 @@ public final class CachesListResultTests {
         CachesListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"fwnfnb\",\"value\":[{\"identity\":{\"principalId\":\"nlebxetqgtzxd\",\"tenantId\":\"qbqqwxr\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"cacheSizeGB\":69356874,\"mountAddresses\":[],\"provisioningState\":\"Failed\",\"subnet\":\"njampm\",\"zones\":[],\"primingJobs\":[],\"spaceAllocation\":[]},\"sku\":{\"name\":\"chcbonqvpkvlrxnj\"},\"location\":\"ase\",\"tags\":{\"lokeyy\":\"eo\",\"jp\":\"enjbdlwtgrhp\",\"e\":\"umasxazjpq\",\"zvdudgwdslfhotwm\":\"ualhbxxhejj\"},\"id\":\"ynpwlbj\",\"name\":\"pgacftadehxnlty\",\"type\":\"sop\"},{\"identity\":{\"principalId\":\"uesnzwdejbavo\",\"tenantId\":\"zdmohctbqvu\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"cacheSizeGB\":378897714,\"mountAddresses\":[],\"provisioningState\":\"Deleting\",\"subnet\":\"jugwdkcglhsl\",\"zones\":[],\"primingJobs\":[],\"spaceAllocation\":[]},\"sku\":{\"name\":\"hbkuofqwey\"},\"location\":\"hmenevfyexfwhybc\",\"tags\":{\"dectehfiqsc\":\"yvdcsitynnaa\",\"hcjrefovgmk\":\"eypvhezrkg\"},\"id\":\"sle\",\"name\":\"yvxyqjp\",\"type\":\"cattpngjcrcczsq\"}]}")
+                    "{\"nextLink\":\"fwnfnb\",\"value\":[{\"identity\":{\"principalId\":\"nlebxetqgtzxd\",\"tenantId\":\"qbqqwxr\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"cacheSizeGB\":69356874,\"scalingFactor\":72.7998351594212,\"mountAddresses\":[],\"provisioningState\":\"Creating\",\"subnet\":\"mpmngnzscxaqwoo\",\"zones\":[],\"primingJobs\":[],\"spaceAllocation\":[]},\"sku\":{\"name\":\"rxnjeaseipheofl\"},\"location\":\"keyyi\",\"tags\":{\"masxazjpqyegu\":\"bdlwtgrhpdjpj\",\"wdslfhotwmcy\":\"lhbxxhejjzzvdud\",\"cftadeh\":\"pwlbjnpg\",\"dejbavo\":\"nltyfsoppusuesnz\"},\"id\":\"xzdmohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"},{\"identity\":{\"principalId\":\"jjugwdkcglhslaz\",\"tenantId\":\"yggdtjixh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"cacheSizeGB\":194127225,\"scalingFactor\":8.463135298414981,\"mountAddresses\":[],\"provisioningState\":\"Creating\",\"subnet\":\"fyexfwhy\",\"zones\":[],\"primingJobs\":[],\"spaceAllocation\":[]},\"sku\":{\"name\":\"ynnaam\"},\"location\":\"ectehf\",\"tags\":{\"ypvhezrkg\":\"cj\",\"sle\":\"hcjrefovgmk\"},\"id\":\"yvxyqjp\",\"name\":\"cattpngjcrcczsq\",\"type\":\"jh\"}]}")
                 .toObject(CachesListResult.class);
         Assertions.assertEquals("fwnfnb", model.nextLink());
-        Assertions.assertEquals("ase", model.value().get(0).location());
-        Assertions.assertEquals("eo", model.value().get(0).tags().get("lokeyy"));
+        Assertions.assertEquals("keyyi", model.value().get(0).location());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).tags().get("masxazjpqyegu"));
         Assertions.assertEquals(CacheIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.value().get(0).sku().name());
+        Assertions.assertEquals("rxnjeaseipheofl", model.value().get(0).sku().name());
         Assertions.assertEquals(69356874, model.value().get(0).cacheSizeGB());
-        Assertions.assertEquals("njampm", model.value().get(0).subnet());
+        Assertions.assertEquals(72.7998351594212D, model.value().get(0).scalingFactor());
+        Assertions.assertEquals("mpmngnzscxaqwoo", model.value().get(0).subnet());
     }
 
     @org.junit.jupiter.api.Test
@@ -41,44 +42,47 @@ public final class CachesListResultTests {
                     Arrays
                         .asList(
                             new CacheInner()
-                                .withLocation("ase")
+                                .withLocation("keyyi")
                                 .withTags(
                                     mapOf(
-                                        "lokeyy",
-                                        "eo",
-                                        "jp",
-                                        "enjbdlwtgrhp",
-                                        "e",
-                                        "umasxazjpq",
-                                        "zvdudgwdslfhotwm",
-                                        "ualhbxxhejj"))
+                                        "masxazjpqyegu",
+                                        "bdlwtgrhpdjpj",
+                                        "wdslfhotwmcy",
+                                        "lhbxxhejjzzvdud",
+                                        "cftadeh",
+                                        "pwlbjnpg",
+                                        "dejbavo",
+                                        "nltyfsoppusuesnz"))
                                 .withIdentity(
                                     new CacheIdentity()
                                         .withType(CacheIdentityType.NONE)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withSku(new CacheSku().withName("chcbonqvpkvlrxnj"))
+                                .withSku(new CacheSku().withName("rxnjeaseipheofl"))
                                 .withCacheSizeGB(69356874)
-                                .withSubnet("njampm")
+                                .withScalingFactor(72.7998351594212D)
+                                .withSubnet("mpmngnzscxaqwoo")
                                 .withZones(Arrays.asList()),
                             new CacheInner()
-                                .withLocation("hmenevfyexfwhybc")
-                                .withTags(mapOf("dectehfiqsc", "yvdcsitynnaa", "hcjrefovgmk", "eypvhezrkg"))
+                                .withLocation("ectehf")
+                                .withTags(mapOf("ypvhezrkg", "cj", "sle", "hcjrefovgmk"))
                                 .withIdentity(
                                     new CacheIdentity()
-                                        .withType(CacheIdentityType.SYSTEM_ASSIGNED)
+                                        .withType(CacheIdentityType.USER_ASSIGNED)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withSku(new CacheSku().withName("hbkuofqwey"))
-                                .withCacheSizeGB(378897714)
-                                .withSubnet("jugwdkcglhsl")
+                                .withSku(new CacheSku().withName("ynnaam"))
+                                .withCacheSizeGB(194127225)
+                                .withScalingFactor(8.463135298414981D)
+                                .withSubnet("fyexfwhy")
                                 .withZones(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(CachesListResult.class);
         Assertions.assertEquals("fwnfnb", model.nextLink());
-        Assertions.assertEquals("ase", model.value().get(0).location());
-        Assertions.assertEquals("eo", model.value().get(0).tags().get("lokeyy"));
+        Assertions.assertEquals("keyyi", model.value().get(0).location());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).tags().get("masxazjpqyegu"));
         Assertions.assertEquals(CacheIdentityType.NONE, model.value().get(0).identity().type());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.value().get(0).sku().name());
+        Assertions.assertEquals("rxnjeaseipheofl", model.value().get(0).sku().name());
         Assertions.assertEquals(69356874, model.value().get(0).cacheSizeGB());
-        Assertions.assertEquals("njampm", model.value().get(0).subnet());
+        Assertions.assertEquals(72.7998351594212D, model.value().get(0).scalingFactor());
+        Assertions.assertEquals("mpmngnzscxaqwoo", model.value().get(0).subnet());
     }
 
     @SuppressWarnings("unchecked")

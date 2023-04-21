@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCircuits Delete. */
 public final class ExpressRouteCircuitsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCircuitDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCircuitDelete.json
      */
     /**
      * Sample code: Delete ExpressRouteCircuit.
@@ -17,6 +15,11 @@ public final class ExpressRouteCircuitsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteExpressRouteCircuit(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuits().delete("rg1", "circuitName", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuits()
+            .delete("rg1", "circuitName", com.azure.core.util.Context.NONE);
     }
 }

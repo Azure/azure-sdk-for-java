@@ -6,12 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.SsoSecretType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -104,15 +103,13 @@ public final class HostPoolPropertiesInner {
     private String ssoadfsAuthority;
 
     /*
-     * ClientId for the registered Relying Party used to issue WVD SSO
-     * certificates.
+     * ClientId for the registered Relying Party used to issue WVD SSO certificates.
      */
     @JsonProperty(value = "ssoClientId")
     private String ssoClientId;
 
     /*
-     * Path to Azure KeyVault storing the secret used for communication to
-     * ADFS.
+     * Path to Azure KeyVault storing the secret used for communication to ADFS.
      */
     @JsonProperty(value = "ssoClientSecretKeyVaultPath")
     private String ssoClientSecretKeyVaultPath;
@@ -124,8 +121,7 @@ public final class HostPoolPropertiesInner {
     private SsoSecretType ssoSecretType;
 
     /*
-     * The type of preferred application group type, default to Desktop
-     * Application Group
+     * The type of preferred application group type, default to Desktop Application Group
      */
     @JsonProperty(value = "preferredAppGroupType", required = true)
     private PreferredAppGroupType preferredAppGroupType;
@@ -137,24 +133,20 @@ public final class HostPoolPropertiesInner {
     private Boolean startVMOnConnect;
 
     /*
-     * The registration info of HostPool.
-     */
-    @JsonProperty(value = "migrationRequest")
-    private MigrationRequestProperties migrationRequest;
-
-    /*
      * Is cloud pc resource.
      */
     @JsonProperty(value = "cloudPcResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cloudPcResource;
 
     /*
-     * Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private
-     * endpoints
+     * The session host configuration for updating agent, monitoring agent, and stack component.
      */
-    @JsonProperty(value = "publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    @JsonProperty(value = "agentUpdate")
+    private AgentUpdateProperties agentUpdate;
+
+    /** Creates an instance of HostPoolPropertiesInner class. */
+    public HostPoolPropertiesInner() {
+    }
 
     /**
      * Get the objectId property: ObjectId of HostPool. (internal use).
@@ -520,26 +512,6 @@ public final class HostPoolPropertiesInner {
     }
 
     /**
-     * Get the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    public MigrationRequestProperties migrationRequest() {
-        return this.migrationRequest;
-    }
-
-    /**
-     * Set the migrationRequest property: The registration info of HostPool.
-     *
-     * @param migrationRequest the migrationRequest value to set.
-     * @return the HostPoolPropertiesInner object itself.
-     */
-    public HostPoolPropertiesInner withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        this.migrationRequest = migrationRequest;
-        return this;
-    }
-
-    /**
      * Get the cloudPcResource property: Is cloud pc resource.
      *
      * @return the cloudPcResource value.
@@ -549,24 +521,24 @@ public final class HostPoolPropertiesInner {
     }
 
     /**
-     * Get the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @return the publicNetworkAccess value.
+     * @return the agentUpdate value.
      */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+    public AgentUpdateProperties agentUpdate() {
+        return this.agentUpdate;
     }
 
     /**
-     * Set the publicNetworkAccess property: Enabled allows this resource to be accessed from both public and private
-     * networks, Disabled allows this resource to only be accessed via private endpoints.
+     * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
+     * component.
      *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @param agentUpdate the agentUpdate value to set.
      * @return the HostPoolPropertiesInner object itself.
      */
-    public HostPoolPropertiesInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+    public HostPoolPropertiesInner withAgentUpdate(AgentUpdateProperties agentUpdate) {
+        this.agentUpdate = agentUpdate;
         return this;
     }
 
@@ -597,8 +569,8 @@ public final class HostPoolPropertiesInner {
                     new IllegalArgumentException(
                         "Missing required property preferredAppGroupType in model HostPoolPropertiesInner"));
         }
-        if (migrationRequest() != null) {
-            migrationRequest().validate();
+        if (agentUpdate() != null) {
+            agentUpdate().validate();
         }
     }
 

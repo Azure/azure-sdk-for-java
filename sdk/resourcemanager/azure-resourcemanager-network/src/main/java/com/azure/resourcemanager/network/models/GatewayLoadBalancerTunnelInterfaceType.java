@@ -21,6 +21,15 @@ public final class GatewayLoadBalancerTunnelInterfaceType
     public static final GatewayLoadBalancerTunnelInterfaceType EXTERNAL = fromString("External");
 
     /**
+     * Creates a new instance of GatewayLoadBalancerTunnelInterfaceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GatewayLoadBalancerTunnelInterfaceType() {
+    }
+
+    /**
      * Creates or finds a GatewayLoadBalancerTunnelInterfaceType from its string representation.
      *
      * @param name a name to look for.

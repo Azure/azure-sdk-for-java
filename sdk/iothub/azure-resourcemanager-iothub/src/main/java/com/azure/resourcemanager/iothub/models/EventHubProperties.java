@@ -43,6 +43,10 @@ public final class EventHubProperties {
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
+    /** Creates an instance of EventHubProperties class. */
+    public EventHubProperties() {
+    }
+
     /**
      * Get the retentionTimeInDays property: The retention time for device-to-cloud messages in days. See:
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging#device-to-cloud-messages.

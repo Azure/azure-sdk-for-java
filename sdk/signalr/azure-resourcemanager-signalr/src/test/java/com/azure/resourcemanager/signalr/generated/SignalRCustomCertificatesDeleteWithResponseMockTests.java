@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +58,6 @@ public final class SignalRCustomCertificatesDeleteWithResponseMockTests {
 
         manager
             .signalRCustomCertificates()
-            .deleteWithResponse("ffhmouwqlgzr", "zeeyebi", "ikayuhqlbjbsybb", Context.NONE);
+            .deleteWithResponse("ffhmouwqlgzr", "zeeyebi", "ikayuhqlbjbsybb", com.azure.core.util.Context.NONE);
     }
 }

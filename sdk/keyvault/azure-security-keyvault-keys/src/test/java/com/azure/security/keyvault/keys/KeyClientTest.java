@@ -64,8 +64,8 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         KeyClientImpl implClient = spy(new KeyClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
@@ -125,21 +125,6 @@ public class KeyClientTest extends KeyClientTestBase {
         createKeyClient(httpClient, serviceVersion);
 
         createRsaKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createRsaKey(keyToCreate)));
-    }
-
-
-    /**
-     * Tests that an OKP key can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        // OKP keys are currently only supported in Managed HSM.
-        Assumptions.assumeTrue(runManagedHsmTest);
-
-        createKeyClient(httpClient, serviceVersion);
-
-        createOkpKeyRunner((keyToCreate) -> assertKeyEquals(keyToCreate, keyClient.createOkpKey(keyToCreate)));
     }
 
     /**

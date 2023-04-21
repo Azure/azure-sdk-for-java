@@ -105,7 +105,7 @@ public final class AppServiceEnvironmentsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface AppServiceEnvironmentsService {
+    public interface AppServiceEnvironmentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments")
         @ExpectedResponses({200})
@@ -119,8 +119,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceEnvironmentCollection>> listByResourceGroup(
@@ -133,8 +132,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceEnvironmentResourceInner>> getByResourceGroup(
@@ -148,8 +146,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -164,8 +161,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -180,8 +176,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceEnvironmentResourceInner>> update(
@@ -196,8 +191,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/capacities/compute")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/compute")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StampCapacityCollection>> listCapacities(
@@ -211,8 +205,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/capacities/virtualip")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/virtualip")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AddressResponseInner>> getVipInfo(
@@ -226,8 +219,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/changeVirtualNetwork")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/changeVirtualNetwork")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> changeVnet(
@@ -242,8 +234,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/configurations/customdnssuffix")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/customdnssuffix")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CustomDnsSuffixConfigurationInner>> getAseCustomDnsSuffixConfiguration(
@@ -257,8 +248,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/configurations/customdnssuffix")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/customdnssuffix")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CustomDnsSuffixConfigurationInner>> updateAseCustomDnsSuffixConfiguration(
@@ -273,8 +263,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/configurations/customdnssuffix")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/customdnssuffix")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Object>> deleteAseCustomDnsSuffixConfiguration(
@@ -288,8 +277,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/configurations/networking")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/networking")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AseV3NetworkingConfigurationInner>> getAseV3NetworkingConfiguration(
@@ -303,8 +291,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/configurations/networking")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/networking")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AseV3NetworkingConfigurationInner>> updateAseNetworkingConfiguration(
@@ -319,8 +306,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/diagnostics")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<HostingEnvironmentDiagnosticsInner>>> listDiagnostics(
@@ -334,8 +320,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/diagnostics/{diagnosticsName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics/{diagnosticsName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<HostingEnvironmentDiagnosticsInner>> getDiagnosticsItem(
@@ -350,8 +335,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<InboundEnvironmentEndpointCollection>> getInboundNetworkDependenciesEndpoints(
@@ -365,8 +349,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkerPoolCollection>> listMultiRolePools(
@@ -380,8 +363,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkerPoolResourceInner>> getMultiRolePool(
@@ -395,8 +377,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdateMultiRolePool(
@@ -411,8 +392,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkerPoolResourceInner>> updateMultiRolePool(
@@ -427,8 +407,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceMetricDefinitionCollection>> listMultiRolePoolInstanceMetricDefinitions(
@@ -443,8 +422,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceMetricDefinitionCollection>> listMultiRoleMetricDefinitions(
@@ -458,8 +436,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/skus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SkuInfoCollection>> listMultiRolePoolSkus(
@@ -473,8 +450,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/testUpgradeAvailableNotification")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/testUpgradeAvailableNotification")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> testUpgradeAvailableNotification(
@@ -488,8 +464,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/upgrade")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/upgrade")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> upgrade(
@@ -503,8 +478,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/multiRolePools/default/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<UsageCollection>> listMultiRoleUsages(
@@ -518,8 +492,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/operations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<List<OperationInner>>> listOperations(
@@ -533,8 +506,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> getOutboundNetworkDependenciesEndpoints(
@@ -548,8 +520,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<PrivateEndpointConnectionCollection>> getPrivateEndpointConnectionList(
@@ -563,8 +534,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RemotePrivateEndpointConnectionArmResourceInner>> getPrivateEndpointConnection(
@@ -579,8 +549,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnection(
@@ -596,8 +565,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnection(
@@ -612,8 +580,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<PrivateLinkResourcesWrapperInner>> getPrivateLinkResources(
@@ -627,8 +594,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/reboot")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/reboot")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> reboot(
@@ -642,8 +608,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/resume")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> resume(
@@ -657,8 +622,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/serverfarms")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServicePlanCollection>> listAppServicePlans(
@@ -672,8 +636,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/sites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WebAppCollection>> listWebApps(
@@ -688,8 +651,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/suspend")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> suspend(
@@ -703,8 +665,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CsmUsageQuotaCollection>> listUsages(
@@ -719,8 +680,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkerPoolCollection>> listWorkerPools(
@@ -734,8 +694,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkerPoolResourceInner>> getWorkerPool(
@@ -750,8 +709,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdateWorkerPool(
@@ -767,8 +725,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<WorkerPoolResourceInner>> updateWorkerPool(
@@ -784,8 +741,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceMetricDefinitionCollection>> listWorkerPoolInstanceMetricDefinitions(
@@ -801,8 +757,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ResourceMetricDefinitionCollection>> listWebWorkerMetricDefinitions(
@@ -817,8 +772,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<SkuInfoCollection>> listWorkerPoolSkus(
@@ -833,8 +787,7 @@ public final class AppServiceEnvironmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<UsageCollection>> listWebWorkerUsages(
@@ -1069,7 +1022,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1114,7 +1069,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1158,7 +1115,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1170,7 +1129,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1185,7 +1146,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1197,7 +1160,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1211,7 +1176,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1264,7 +1231,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -1315,7 +1284,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1331,7 +1302,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -1349,7 +1322,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,7 +1338,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -1379,7 +1356,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1428,7 +1407,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1475,7 +1456,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1487,33 +1470,13 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<AppServiceEnvironmentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get the properties of an App Service Environment.
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1530,7 +1493,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1589,7 +1571,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1649,7 +1633,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1676,7 +1662,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1708,7 +1696,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1722,11 +1712,13 @@ public final class AppServiceEnvironmentsClientImpl
     public SyncPoller<PollResult<AppServiceEnvironmentResourceInner>, AppServiceEnvironmentResourceInner>
         beginCreateOrUpdate(
             String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope).getSyncPoller();
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1744,11 +1736,15 @@ public final class AppServiceEnvironmentsClientImpl
             String name,
             AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, name, hostingEnvironmentEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1767,7 +1763,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1790,7 +1788,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1807,7 +1807,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1828,7 +1830,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1879,7 +1883,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1928,7 +1934,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1950,7 +1958,31 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
+        final Boolean forceDelete = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1973,24 +2005,27 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Boolean forceDelete) {
-        return beginDeleteAsync(resourceGroupName, name, forceDelete).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
+        final Boolean forceDelete = null;
+        return this.beginDeleteAsync(resourceGroupName, name, forceDelete).getSyncPoller();
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2005,11 +2040,13 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String name, Boolean forceDelete, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, forceDelete, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, forceDelete, context).getSyncPoller();
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2028,7 +2065,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2046,7 +2085,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2066,23 +2107,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String name, Boolean forceDelete) {
-        deleteAsync(resourceGroupName, name, forceDelete).block();
-    }
-
-    /**
-     * Description for Delete an App Service Environment.
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2097,7 +2124,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2114,7 +2143,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2173,7 +2204,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2233,7 +2266,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2247,35 +2282,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<AppServiceEnvironmentResourceInner> updateAsync(
         String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope) {
         return updateWithResponseAsync(resourceGroupName, name, hostingEnvironmentEnvelope)
-            .flatMap(
-                (Response<AppServiceEnvironmentResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServiceEnvironmentResourceInner update(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope) {
-        return updateAsync(resourceGroupName, name, hostingEnvironmentEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update an App Service Environment.
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2296,7 +2309,28 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppServiceEnvironmentResourceInner update(
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope) {
+        return updateWithResponse(resourceGroupName, name, hostingEnvironmentEnvelope, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2353,7 +2387,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2408,7 +2444,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2425,7 +2463,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2443,7 +2483,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2458,7 +2500,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2474,7 +2518,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2522,7 +2568,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2569,7 +2617,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2580,34 +2630,13 @@ public final class AppServiceEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddressResponseInner> getVipInfoAsync(String resourceGroupName, String name) {
-        return getVipInfoWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<AddressResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getVipInfoWithResponseAsync(resourceGroupName, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes main public IP address and any extra virtual IPs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddressResponseInner getVipInfo(String resourceGroupName, String name) {
-        return getVipInfoAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2624,7 +2653,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes main public IP address and any extra virtual IPs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddressResponseInner getVipInfo(String resourceGroupName, String name) {
+        return getVipInfoWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2704,7 +2752,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2777,7 +2827,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2795,7 +2847,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2815,7 +2869,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2831,7 +2887,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2958,29 +3016,7 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<CustomDnsSuffixConfigurationInner> getAseCustomDnsSuffixConfigurationAsync(
         String resourceGroupName, String name) {
         return getAseCustomDnsSuffixConfigurationWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<CustomDnsSuffixConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get Custom Dns Suffix configuration of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Dns Suffix configuration of an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDnsSuffixConfigurationInner getAseCustomDnsSuffixConfiguration(String resourceGroupName, String name) {
-        return getAseCustomDnsSuffixConfigurationAsync(resourceGroupName, name).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2998,6 +3034,21 @@ public final class AppServiceEnvironmentsClientImpl
     public Response<CustomDnsSuffixConfigurationInner> getAseCustomDnsSuffixConfigurationWithResponse(
         String resourceGroupName, String name, Context context) {
         return getAseCustomDnsSuffixConfigurationWithResponseAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
+     * Get Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Dns Suffix configuration of an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDnsSuffixConfigurationInner getAseCustomDnsSuffixConfiguration(String resourceGroupName, String name) {
+        return getAseCustomDnsSuffixConfigurationWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
     /**
@@ -3135,32 +3186,7 @@ public final class AppServiceEnvironmentsClientImpl
         String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration) {
         return updateAseCustomDnsSuffixConfigurationWithResponseAsync(
                 resourceGroupName, name, customDnsSuffixConfiguration)
-            .flatMap(
-                (Response<CustomDnsSuffixConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update Custom Dns Suffix configuration of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full view of the custom domain suffix configuration for ASEv3.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDnsSuffixConfigurationInner updateAseCustomDnsSuffixConfiguration(
-        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration) {
-        return updateAseCustomDnsSuffixConfigurationAsync(resourceGroupName, name, customDnsSuffixConfiguration)
-            .block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3184,6 +3210,25 @@ public final class AppServiceEnvironmentsClientImpl
         return updateAseCustomDnsSuffixConfigurationWithResponseAsync(
                 resourceGroupName, name, customDnsSuffixConfiguration, context)
             .block();
+    }
+
+    /**
+     * Update Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of the custom domain suffix configuration for ASEv3.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDnsSuffixConfigurationInner updateAseCustomDnsSuffixConfiguration(
+        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration) {
+        return updateAseCustomDnsSuffixConfigurationWithResponse(
+                resourceGroupName, name, customDnsSuffixConfiguration, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -3293,29 +3338,7 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> deleteAseCustomDnsSuffixConfigurationAsync(String resourceGroupName, String name) {
         return deleteAseCustomDnsSuffixConfigurationWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<Object> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Delete Custom Dns Suffix configuration of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object deleteAseCustomDnsSuffixConfiguration(String resourceGroupName, String name) {
-        return deleteAseCustomDnsSuffixConfigurationAsync(resourceGroupName, name).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3336,7 +3359,24 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Delete Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object deleteAseCustomDnsSuffixConfiguration(String resourceGroupName, String name) {
+        return deleteAseCustomDnsSuffixConfigurationWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3385,7 +3425,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3432,7 +3474,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3445,33 +3489,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<AseV3NetworkingConfigurationInner> getAseV3NetworkingConfigurationAsync(
         String resourceGroupName, String name) {
         return getAseV3NetworkingConfigurationWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<AseV3NetworkingConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full view of networking configuration for an ASE.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AseV3NetworkingConfigurationInner getAseV3NetworkingConfiguration(String resourceGroupName, String name) {
-        return getAseV3NetworkingConfigurationAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get networking configuration of an App Service Environment.
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3488,7 +3512,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of networking configuration for an ASE.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AseV3NetworkingConfigurationInner getAseV3NetworkingConfiguration(String resourceGroupName, String name) {
+        return getAseV3NetworkingConfigurationWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3547,7 +3590,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3607,7 +3652,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3621,35 +3668,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<AseV3NetworkingConfigurationInner> updateAseNetworkingConfigurationAsync(
         String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration) {
         return updateAseNetworkingConfigurationWithResponseAsync(resourceGroupName, name, aseNetworkingConfiguration)
-            .flatMap(
-                (Response<AseV3NetworkingConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Update networking configuration of an App Service Environment
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full view of networking configuration for an ASE.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AseV3NetworkingConfigurationInner updateAseNetworkingConfiguration(
-        String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration) {
-        return updateAseNetworkingConfigurationAsync(resourceGroupName, name, aseNetworkingConfiguration).block();
-    }
-
-    /**
-     * Description for Update networking configuration of an App Service Environment.
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3672,7 +3697,30 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of networking configuration for an ASE.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AseV3NetworkingConfigurationInner updateAseNetworkingConfiguration(
+        String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration) {
+        return updateAseNetworkingConfigurationWithResponse(
+                resourceGroupName, name, aseNetworkingConfiguration, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3721,7 +3769,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3768,7 +3818,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3780,33 +3832,13 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name) {
         return listDiagnosticsWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<List<HostingEnvironmentDiagnosticsInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of HostingEnvironmentDiagnostics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name) {
-        return listDiagnosticsAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3823,7 +3855,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of HostingEnvironmentDiagnostics.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name) {
+        return listDiagnosticsWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3878,7 +3929,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3931,7 +3984,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3945,35 +4000,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemAsync(
         String resourceGroupName, String name, String diagnosticsName) {
         return getDiagnosticsItemWithResponseAsync(resourceGroupName, name, diagnosticsName)
-            .flatMap(
-                (Response<HostingEnvironmentDiagnosticsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param diagnosticsName Name of the diagnostics item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostics for an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
-        String resourceGroupName, String name, String diagnosticsName) {
-        return getDiagnosticsItemAsync(resourceGroupName, name, diagnosticsName).block();
-    }
-
-    /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3991,7 +4024,28 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return diagnostics for an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
+        String resourceGroupName, String name, String diagnosticsName) {
+        return getDiagnosticsItemWithResponse(resourceGroupName, name, diagnosticsName, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4049,7 +4103,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4105,7 +4161,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4123,7 +4181,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4142,7 +4202,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4158,7 +4220,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4175,7 +4239,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4232,7 +4298,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4287,7 +4355,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4304,7 +4374,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4323,7 +4395,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4338,7 +4412,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4355,7 +4431,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4404,7 +4482,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4451,7 +4531,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4463,33 +4545,13 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name) {
         return getMultiRolePoolWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name) {
-        return getMultiRolePoolAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Get properties of a multi-role pool.
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4506,7 +4568,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name) {
+        return getMultiRolePoolWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4563,7 +4644,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4618,7 +4701,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4645,7 +4730,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4674,7 +4761,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4687,11 +4776,15 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).getSyncPoller();
+        return this
+            .beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope)
+            .getSyncPoller();
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4705,12 +4798,15 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateMultiRolePool(
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context) {
-        return beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context)
+        return this
+            .beginCreateOrUpdateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope, context)
             .getSyncPoller();
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4729,7 +4825,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4749,7 +4847,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4766,7 +4866,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4784,7 +4886,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4841,7 +4945,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4896,7 +5002,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4910,35 +5018,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<WorkerPoolResourceInner> updateMultiRolePoolAsync(
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
         return updateMultiRolePoolWithResponseAsync(resourceGroupName, name, multiRolePoolEnvelope)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Properties of the multi-role pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner updateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
-        return updateMultiRolePoolAsync(resourceGroupName, name, multiRolePoolEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a multi-role pool.
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4956,7 +5042,28 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param multiRolePoolEnvelope Properties of the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkerPoolResourceInner updateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope) {
+        return updateMultiRolePoolWithResponse(resourceGroupName, name, multiRolePoolEnvelope, Context.NONE).getValue();
+    }
+
+    /**
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -5021,7 +5128,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -5084,7 +5193,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -5104,7 +5215,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -5125,7 +5238,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -5143,7 +5258,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -5163,7 +5280,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5221,7 +5340,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5277,7 +5398,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5295,7 +5418,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5314,7 +5439,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5330,7 +5457,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5347,7 +5476,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5404,7 +5535,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5459,7 +5592,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5476,7 +5611,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5494,7 +5631,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5509,7 +5648,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5631,21 +5772,7 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> testUpgradeAvailableNotificationAsync(String resourceGroupName, String name) {
         return testUpgradeAvailableNotificationWithResponseAsync(resourceGroupName, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Send a test notification that an upgrade is available for this App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void testUpgradeAvailableNotification(String resourceGroupName, String name) {
-        testUpgradeAvailableNotificationAsync(resourceGroupName, name).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5666,7 +5793,23 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Send a test notification that an upgrade is available for this App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void testUpgradeAvailableNotification(String resourceGroupName, String name) {
+        testUpgradeAvailableNotificationWithResponse(resourceGroupName, name, Context.NONE);
+    }
+
+    /**
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5713,7 +5856,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5759,7 +5904,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5778,7 +5925,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5799,7 +5948,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5810,11 +5961,13 @@ public final class AppServiceEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String name) {
-        return beginUpgradeAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginUpgradeAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5826,11 +5979,13 @@ public final class AppServiceEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String name, Context context) {
-        return beginUpgradeAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginUpgradeAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5845,7 +6000,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5863,7 +6020,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5877,7 +6036,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5892,7 +6053,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -5948,7 +6111,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6003,7 +6168,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6020,7 +6187,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6038,7 +6207,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6053,7 +6224,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6069,7 +6242,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6116,7 +6291,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6162,7 +6339,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6174,33 +6353,13 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name) {
         return listOperationsWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<List<OperationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<OperationInner> listOperations(String resourceGroupName, String name) {
-        return listOperationsAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for List all currently running operations on the App Service Environment.
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6217,7 +6376,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<OperationInner> listOperations(String resourceGroupName, String name) {
+        return listOperationsWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6275,7 +6453,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6331,7 +6511,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6349,7 +6531,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6368,7 +6552,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6384,7 +6570,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6401,7 +6589,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6458,7 +6648,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6513,7 +6705,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6531,7 +6725,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6550,7 +6746,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6566,7 +6764,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6583,7 +6783,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6641,7 +6843,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6697,7 +6901,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6711,35 +6917,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
         return getPrivateEndpointConnectionWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName)
-            .flatMap(
-                (Response<RemotePrivateEndpointConnectionArmResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(
-        String resourceGroupName, String name, String privateEndpointConnectionName) {
-        return getPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Description for Gets a private endpoint connection.
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6759,7 +6943,30 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param privateEndpointConnectionName Name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote Private Endpoint Connection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(
+        String resourceGroupName, String name, String privateEndpointConnectionName) {
+        return getPrivateEndpointConnectionWithResponse(
+                resourceGroupName, name, privateEndpointConnectionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6828,7 +7035,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6896,7 +7105,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6931,7 +7142,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6969,7 +7182,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -6989,13 +7204,16 @@ public final class AppServiceEnvironmentsClientImpl
             String name,
             String privateEndpointConnectionName,
             PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
-        return beginApproveOrRejectPrivateEndpointConnectionAsync(
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(
                 resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper)
             .getSyncPoller();
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7017,13 +7235,16 @@ public final class AppServiceEnvironmentsClientImpl
             String privateEndpointConnectionName,
             PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
             Context context) {
-        return beginApproveOrRejectPrivateEndpointConnectionAsync(
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(
                 resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, context)
             .getSyncPoller();
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7047,7 +7268,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7073,7 +7296,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7096,7 +7321,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7121,7 +7348,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7177,7 +7406,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7231,7 +7462,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7253,7 +7486,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7277,7 +7512,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7290,12 +7527,15 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName) {
-        return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName)
+        return this
+            .beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName)
             .getSyncPoller();
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7309,13 +7549,15 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
-        return beginDeletePrivateEndpointConnectionAsync(
-                resourceGroupName, name, privateEndpointConnectionName, context)
+        return this
+            .beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7334,7 +7576,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7355,7 +7599,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7372,7 +7618,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7391,7 +7639,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7440,7 +7690,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7487,7 +7739,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7499,33 +7753,13 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesAsync(String resourceGroupName, String name) {
         return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<PrivateLinkResourcesWrapperInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name) {
-        return getPrivateLinkResourcesAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Gets the private link resources.
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7542,7 +7776,26 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper for a collection of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name) {
+        return getPrivateLinkResourcesWithResponse(resourceGroupName, name, Context.NONE).getValue();
+    }
+
+    /**
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7589,7 +7842,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7634,7 +7889,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7645,25 +7902,13 @@ public final class AppServiceEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rebootAsync(String resourceGroupName, String name) {
-        return rebootWithResponseAsync(resourceGroupName, name).flatMap((Response<Void> res) -> Mono.empty());
+        return rebootWithResponseAsync(resourceGroupName, name).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Reboot all machines in an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reboot(String resourceGroupName, String name) {
-        rebootAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Description for Reboot all machines in an App Service Environment.
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7679,7 +7924,25 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Resume an App Service Environment.
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reboot(String resourceGroupName, String name) {
+        rebootWithResponse(resourceGroupName, name, Context.NONE);
+    }
+
+    /**
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7751,7 +8014,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7817,7 +8082,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7833,7 +8100,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7851,7 +8120,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7866,7 +8137,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7882,7 +8155,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7940,7 +8215,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -7996,7 +8273,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8013,7 +8292,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8032,7 +8313,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8047,7 +8330,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8064,7 +8349,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8123,7 +8410,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8180,7 +8469,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8198,7 +8489,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8216,7 +8509,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8236,7 +8531,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8252,7 +8549,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8270,7 +8569,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8342,7 +8643,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8408,7 +8711,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8424,7 +8729,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8442,7 +8749,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8457,7 +8766,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8473,7 +8784,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8534,7 +8847,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8593,7 +8908,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8613,7 +8930,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8631,7 +8950,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8653,7 +8974,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8669,7 +8992,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8689,7 +9014,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8746,7 +9073,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8801,7 +9130,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8818,7 +9149,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8837,7 +9170,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8852,7 +9187,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8869,7 +9206,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8923,7 +9262,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8975,7 +9316,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -8989,34 +9332,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<WorkerPoolResourceInner> getWorkerPoolAsync(
         String resourceGroupName, String name, String workerPoolName) {
         return getWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
-        return getWorkerPoolAsync(resourceGroupName, name, workerPoolName).block();
-    }
-
-    /**
-     * Description for Get properties of a worker pool.
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9034,7 +9356,27 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName) {
+        return getWorkerPoolWithResponse(resourceGroupName, name, workerPoolName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9096,7 +9438,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9160,7 +9504,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9187,7 +9533,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9221,7 +9569,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9235,12 +9585,15 @@ public final class AppServiceEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkerPoolResourceInner>, WorkerPoolResourceInner> beginCreateOrUpdateWorkerPool(
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
+        return this
+            .beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
             .getSyncPoller();
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9259,12 +9612,15 @@ public final class AppServiceEnvironmentsClientImpl
         String workerPoolName,
         WorkerPoolResourceInner workerPoolEnvelope,
         Context context) {
-        return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
+        return this
+            .beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
             .getSyncPoller();
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9284,7 +9640,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9309,7 +9667,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9327,7 +9687,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9351,7 +9713,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9413,7 +9777,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9477,7 +9843,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9492,36 +9860,13 @@ public final class AppServiceEnvironmentsClientImpl
     public Mono<WorkerPoolResourceInner> updateWorkerPoolAsync(
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
         return updateWorkerPoolWithResponseAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope)
-            .flatMap(
-                (Response<WorkerPoolResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Properties of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkerPoolResourceInner updateWorkerPool(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
-        return updateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope).block();
-    }
-
-    /**
-     * Description for Create or update a worker pool.
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9545,7 +9890,30 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Properties of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkerPoolResourceInner updateWorkerPool(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope) {
+        return updateWorkerPoolWithResponse(resourceGroupName, name, workerPoolName, workerPoolEnvelope, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9613,7 +9981,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9679,7 +10049,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9701,7 +10073,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9724,7 +10098,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9743,7 +10119,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9763,7 +10141,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9826,7 +10206,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9887,7 +10269,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9906,7 +10290,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9926,7 +10312,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9943,7 +10331,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -9962,7 +10352,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10024,7 +10416,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10084,7 +10478,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10103,7 +10499,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10123,7 +10521,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10140,7 +10540,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10158,7 +10560,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10220,7 +10624,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10280,7 +10686,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10299,7 +10707,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10319,7 +10729,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10335,7 +10747,9 @@ public final class AppServiceEnvironmentsClientImpl
     }
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -10355,7 +10769,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10391,7 +10806,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10429,7 +10845,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10467,7 +10884,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10505,7 +10923,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10540,7 +10959,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10577,7 +10997,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10612,7 +11033,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10648,7 +11070,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10689,7 +11112,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10727,7 +11151,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10763,7 +11188,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10800,7 +11226,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10841,7 +11268,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10879,7 +11307,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10918,7 +11347,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -10956,7 +11386,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10992,7 +11423,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11029,7 +11461,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11065,7 +11498,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11101,7 +11535,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11142,7 +11577,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11180,7 +11616,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11218,7 +11655,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11255,7 +11693,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11290,7 +11729,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11326,7 +11766,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11363,7 +11804,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11401,7 +11843,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11436,7 +11879,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11472,7 +11916,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11507,7 +11952,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11543,7 +11989,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11578,7 +12025,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11614,7 +12062,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11649,7 +12098,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11686,7 +12136,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11727,7 +12178,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11765,7 +12217,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11804,7 +12257,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11842,7 +12296,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11878,7 +12333,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -11914,7 +12370,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11950,7 +12407,8 @@ public final class AppServiceEnvironmentsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

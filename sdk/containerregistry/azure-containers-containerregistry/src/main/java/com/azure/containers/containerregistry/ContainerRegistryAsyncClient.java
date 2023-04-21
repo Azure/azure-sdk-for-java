@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -19,6 +20,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -35,7 +37,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
@@ -50,7 +51,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -108,28 +108,20 @@ public final class ContainerRegistryAsyncClient {
     }
 
     private Mono<PagedResponse<String>> listRepositoryNamesSinglePageAsync(Integer pageSize, Context context) {
-        try {
-            if (pageSize != null && pageSize < 0) {
-                return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
-            }
-
-            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context)
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res))
-                .onErrorMap(UtilsImpl::mapException);
-            return pagedResponseMono;
-
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+        if (pageSize != null && pageSize < 0) {
+            return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
         }
+
+        return this.registriesImplClient.getRepositoriesSinglePageAsync(null, pageSize, context)
+            .map(UtilsImpl::getPagedResponseWithContinuationToken)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {
-        try {
-            Mono<PagedResponse<String>> pagedResponseMono = this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context);
-            return pagedResponseMono.map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res));
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
+        return this.registriesImplClient
+            .getRepositoriesNextSinglePageAsync(nextLink, context)
+            .map(UtilsImpl::getPagedResponseWithContinuationToken)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -167,13 +159,9 @@ public final class ContainerRegistryAsyncClient {
             return monoError(LOGGER, new IllegalArgumentException("'repositoryName' cannot be empty."));
         }
 
-        try {
-            return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
-                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
+        return this.registriesImplClient.deleteRepositoryWithResponseAsync(repositoryName, context)
+            .map(UtilsImpl::deleteResponseToSuccess)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsIdentityType;
@@ -34,7 +33,7 @@ public final class DigitalTwinsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-08-18T06:48:11Z\",\"lastUpdatedTime\":\"2021-11-13T00:34:54Z\",\"provisioningState\":\"Deleted\",\"hostName\":\"yxczfclh\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"lwrq\",\"tenantId\":\"ktsthsucocmny\",\"userAssignedIdentities\":{}},\"location\":\"t\",\"tags\":{\"ckzywbiexzfeyue\":\"wrqpue\"},\"id\":\"xibxujwbhqwalm\",\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"}";
+            "{\"properties\":{\"createdTime\":\"2021-10-12T16:41:20Z\",\"lastUpdatedTime\":\"2021-09-07T10:16:41Z\",\"provisioningState\":\"Suspending\",\"hostName\":\"hsucoc\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"None\",\"principalId\":\"twwrqp\",\"tenantId\":\"dckzywbiexz\",\"userAssignedIdentities\":{}},\"location\":\"eaxib\",\"tags\":{\"uzyoxaep\":\"wbhqwal\",\"bniwdj\":\"kzjancuxrhdwbav\",\"s\":\"wz\"},\"id\":\"bpg\",\"name\":\"xytxhpzxbz\",\"type\":\"fzab\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,12 +64,12 @@ public final class DigitalTwinsGetByResourceGroupWithResponseMockTests {
         DigitalTwinsDescription response =
             manager
                 .digitalTwins()
-                .getByResourceGroupWithResponse("hrbnlankxmyskpbh", "nbtkcxywnytnr", Context.NONE)
+                .getByResourceGroupWithResponse("synlqidybyxczfc", "haaxdbabphl", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("t", response.location());
-        Assertions.assertEquals("wrqpue", response.tags().get("ckzywbiexzfeyue"));
+        Assertions.assertEquals("eaxib", response.location());
+        Assertions.assertEquals("wbhqwal", response.tags().get("uzyoxaep"));
         Assertions.assertEquals(DigitalTwinsIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
     }
 }

@@ -23,11 +23,14 @@ public final class PrivateLinkServiceConnectionState {
     private String description;
 
     /*
-     * Any action that is required beyond basic workflow (approve/ reject/
-     * disconnect)
+     * Any action that is required beyond basic workflow (approve/ reject/ disconnect)
      */
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private ActionsRequired actionsRequired;
+
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
 
     /**
      * Get the status property: The private link service connection status.

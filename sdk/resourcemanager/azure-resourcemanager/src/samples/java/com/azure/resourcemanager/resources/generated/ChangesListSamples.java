@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Changes List. */
 public final class ChangesListSamples {
     /*
@@ -22,6 +20,13 @@ public final class ChangesListSamples {
             .manager()
             .resourceChangeClient()
             .getChanges()
-            .list("resourceGroup1", "resourceProvider1", "resourceType1", "resourceName1", null, null, Context.NONE);
+            .list(
+                "resourceGroup1",
+                "resourceProvider1",
+                "resourceType1",
+                "resourceName1",
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

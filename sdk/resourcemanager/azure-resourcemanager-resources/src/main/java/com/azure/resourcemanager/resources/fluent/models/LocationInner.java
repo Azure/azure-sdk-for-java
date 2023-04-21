@@ -55,6 +55,10 @@ public final class LocationInner {
     @JsonProperty(value = "metadata")
     private LocationMetadata metadata;
 
+    /** Creates an instance of LocationInner class. */
+    public LocationInner() {
+    }
+
     /**
      * Get the id property: The fully qualified ID of the location. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.

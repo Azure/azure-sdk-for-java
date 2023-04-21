@@ -101,6 +101,7 @@ public final class BlobBatch {
 
         batchPipelineBuilder.policies(this::buildBatchOperation);
 
+        batchPipelineBuilder.tracer(pipeline.getTracer());
         batchPipelineBuilder.httpClient(pipeline.getHttpClient());
 
         this.blobAsyncClient = new BlobClientBuilder()

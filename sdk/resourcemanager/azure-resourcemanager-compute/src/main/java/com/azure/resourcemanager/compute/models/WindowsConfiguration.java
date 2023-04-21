@@ -12,22 +12,22 @@ import java.util.List;
 @Fluent
 public final class WindowsConfiguration {
     /*
-     * Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this
-     * property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM
-     * Agent is installed on the VM so that extensions can be added to the VM later.
+     * Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not
+     * specified in the request body, it is set to true by default. This will ensure that VM Agent is installed on the
+     * VM so that extensions can be added to the VM later.
      */
     @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /*
-     * Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. <br><br>
-     * For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
+     * Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For
+     * virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
      */
     @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
     /*
-     * Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". <br><br> Possible values can be
+     * Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
@@ -66,9 +66,8 @@ public final class WindowsConfiguration {
 
     /**
      * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
-     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
-     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
-     * later.
+     * machine. When this property is not specified in the request body, it is set to true by default. This will ensure
+     * that VM Agent is installed on the VM so that extensions can be added to the VM later.
      *
      * @return the provisionVMAgent value.
      */
@@ -78,9 +77,8 @@ public final class WindowsConfiguration {
 
     /**
      * Set the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
-     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
-     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
-     * later.
+     * machine. When this property is not specified in the request body, it is set to true by default. This will ensure
+     * that VM Agent is installed on the VM so that extensions can be added to the VM later.
      *
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the WindowsConfiguration object itself.
@@ -92,8 +90,8 @@ public final class WindowsConfiguration {
 
     /**
      * Get the enableAutomaticUpdates property: Indicates whether Automatic Updates is enabled for the Windows virtual
-     * machine. Default value is true. &lt;br&gt;&lt;br&gt; For virtual machine scale sets, this property can be updated
-     * and updates will take effect on OS reprovisioning.
+     * machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will
+     * take effect on OS reprovisioning.
      *
      * @return the enableAutomaticUpdates value.
      */
@@ -103,8 +101,8 @@ public final class WindowsConfiguration {
 
     /**
      * Set the enableAutomaticUpdates property: Indicates whether Automatic Updates is enabled for the Windows virtual
-     * machine. Default value is true. &lt;br&gt;&lt;br&gt; For virtual machine scale sets, this property can be updated
-     * and updates will take effect on OS reprovisioning.
+     * machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will
+     * take effect on OS reprovisioning.
      *
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set.
      * @return the WindowsConfiguration object itself.
@@ -115,8 +113,8 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
-     * &lt;br&gt;&lt;br&gt; Possible values can be
+     * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible
+     * values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
@@ -128,8 +126,8 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
-     * &lt;br&gt;&lt;br&gt; Possible values can be
+     * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible
+     * values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).

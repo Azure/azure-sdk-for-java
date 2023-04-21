@@ -19,17 +19,17 @@ public final class CentralServerFullResourceNamesTests {
         CentralServerFullResourceNames model =
             BinaryData
                 .fromString(
-                    "{\"virtualMachines\":[{\"vmName\":\"qnyhgb\",\"hostName\":\"tjivfxzsjabib\",\"networkInterfaces\":[],\"osDiskName\":\"awfsdjpvkvpbjxbk\",\"dataDiskNames\":{\"kmokz\":[\"dvncjabudurgk\"],\"zeeyebi\":[\"jk\",\"ffhmouwqlgzr\"]}},{\"vmName\":\"kayuhqlbjbs\",\"hostName\":\"bqwrvtldgm\",\"networkInterfaces\":[],\"osDiskName\":\"mpipaslthaqfxs\",\"dataDiskNames\":{\"uyowqkdwy\":[\"twbdsrezpdrhn\"],\"pzimejzanlfzxi\":[\"sibircgpi\"],\"zpfrla\":[\"rmbzo\",\"okixrjqcir\"]}}],\"availabilitySetName\":\"zrnw\",\"loadBalancer\":{\"loadBalancerName\":\"ndfpwpj\",\"frontendIpConfigurationNames\":[\"bt\",\"h\",\"lsj\"],\"backendPoolNames\":[\"szfjvfbgofelja\",\"rqmq\"],\"healthProbeNames\":[\"vriiio\",\"nalghfkvtvsexso\",\"ueluqhhahhxvrhmz\"]}}")
+                    "{\"virtualMachines\":[{\"vmName\":\"rfzeey\",\"hostName\":\"izikayuhq\",\"networkInterfaces\":[],\"osDiskName\":\"sybbqwr\",\"dataDiskNames\":{\"owqkdwytisi\":[\"gmfpgvmp\",\"paslthaqfxssmwu\",\"wbdsr\",\"zpdrhneu\"],\"iavrm\":[\"rcgp\",\"kpzi\",\"ejzanlfz\"],\"pj\":[\"onok\",\"xrjqcirgzpfrlazs\",\"rnwoiindfp\"]}}],\"availabilitySetName\":\"wbtlhflsjcdh\",\"loadBalancer\":{\"loadBalancerName\":\"jvfbgofelja\",\"frontendIpConfigurationNames\":[\"mqhldvrii\",\"ojnal\",\"hfkvtvsexsowuel\"],\"backendPoolNames\":[\"hahhxvrhmzkwpj\",\"wws\",\"ughftqsx\",\"qxujxukndxd\"],\"healthProbeNames\":[\"jguufzdm\",\"yqtfihwh\",\"otzi\",\"gamv\"]}}")
                 .toObject(CentralServerFullResourceNames.class);
-        Assertions.assertEquals("qnyhgb", model.virtualMachines().get(0).vmName());
-        Assertions.assertEquals("tjivfxzsjabib", model.virtualMachines().get(0).hostname());
-        Assertions.assertEquals("awfsdjpvkvpbjxbk", model.virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("dvncjabudurgk", model.virtualMachines().get(0).dataDiskNames().get("kmokz").get(0));
-        Assertions.assertEquals("zrnw", model.availabilitySetName());
-        Assertions.assertEquals("ndfpwpj", model.loadBalancer().loadBalancerName());
-        Assertions.assertEquals("bt", model.loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("szfjvfbgofelja", model.loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("vriiio", model.loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("rfzeey", model.virtualMachines().get(0).vmName());
+        Assertions.assertEquals("izikayuhq", model.virtualMachines().get(0).hostname());
+        Assertions.assertEquals("sybbqwr", model.virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("gmfpgvmp", model.virtualMachines().get(0).dataDiskNames().get("owqkdwytisi").get(0));
+        Assertions.assertEquals("wbtlhflsjcdh", model.availabilitySetName());
+        Assertions.assertEquals("jvfbgofelja", model.loadBalancer().loadBalancerName());
+        Assertions.assertEquals("mqhldvrii", model.loadBalancer().frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("hahhxvrhmzkwpj", model.loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("jguufzdm", model.loadBalancer().healthProbeNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -40,46 +40,35 @@ public final class CentralServerFullResourceNamesTests {
                     Arrays
                         .asList(
                             new VirtualMachineResourceNames()
-                                .withVmName("qnyhgb")
-                                .withHostname("tjivfxzsjabib")
+                                .withVmName("rfzeey")
+                                .withHostname("izikayuhq")
                                 .withNetworkInterfaces(Arrays.asList())
-                                .withOsDiskName("awfsdjpvkvpbjxbk")
+                                .withOsDiskName("sybbqwr")
                                 .withDataDiskNames(
                                     mapOf(
-                                        "kmokz",
-                                        Arrays.asList("dvncjabudurgk"),
-                                        "zeeyebi",
-                                        Arrays.asList("jk", "ffhmouwqlgzr"))),
-                            new VirtualMachineResourceNames()
-                                .withVmName("kayuhqlbjbs")
-                                .withHostname("bqwrvtldgm")
-                                .withNetworkInterfaces(Arrays.asList())
-                                .withOsDiskName("mpipaslthaqfxs")
-                                .withDataDiskNames(
-                                    mapOf(
-                                        "uyowqkdwy",
-                                        Arrays.asList("twbdsrezpdrhn"),
-                                        "pzimejzanlfzxi",
-                                        Arrays.asList("sibircgpi"),
-                                        "zpfrla",
-                                        Arrays.asList("rmbzo", "okixrjqcir")))))
-                .withAvailabilitySetName("zrnw")
+                                        "owqkdwytisi",
+                                        Arrays.asList("gmfpgvmp", "paslthaqfxssmwu", "wbdsr", "zpdrhneu"),
+                                        "iavrm",
+                                        Arrays.asList("rcgp", "kpzi", "ejzanlfz"),
+                                        "pj",
+                                        Arrays.asList("onok", "xrjqcirgzpfrlazs", "rnwoiindfp")))))
+                .withAvailabilitySetName("wbtlhflsjcdh")
                 .withLoadBalancer(
                     new LoadBalancerResourceNames()
-                        .withLoadBalancerName("ndfpwpj")
-                        .withFrontendIpConfigurationNames(Arrays.asList("bt", "h", "lsj"))
-                        .withBackendPoolNames(Arrays.asList("szfjvfbgofelja", "rqmq"))
-                        .withHealthProbeNames(Arrays.asList("vriiio", "nalghfkvtvsexso", "ueluqhhahhxvrhmz")));
+                        .withLoadBalancerName("jvfbgofelja")
+                        .withFrontendIpConfigurationNames(Arrays.asList("mqhldvrii", "ojnal", "hfkvtvsexsowuel"))
+                        .withBackendPoolNames(Arrays.asList("hahhxvrhmzkwpj", "wws", "ughftqsx", "qxujxukndxd"))
+                        .withHealthProbeNames(Arrays.asList("jguufzdm", "yqtfihwh", "otzi", "gamv")));
         model = BinaryData.fromObject(model).toObject(CentralServerFullResourceNames.class);
-        Assertions.assertEquals("qnyhgb", model.virtualMachines().get(0).vmName());
-        Assertions.assertEquals("tjivfxzsjabib", model.virtualMachines().get(0).hostname());
-        Assertions.assertEquals("awfsdjpvkvpbjxbk", model.virtualMachines().get(0).osDiskName());
-        Assertions.assertEquals("dvncjabudurgk", model.virtualMachines().get(0).dataDiskNames().get("kmokz").get(0));
-        Assertions.assertEquals("zrnw", model.availabilitySetName());
-        Assertions.assertEquals("ndfpwpj", model.loadBalancer().loadBalancerName());
-        Assertions.assertEquals("bt", model.loadBalancer().frontendIpConfigurationNames().get(0));
-        Assertions.assertEquals("szfjvfbgofelja", model.loadBalancer().backendPoolNames().get(0));
-        Assertions.assertEquals("vriiio", model.loadBalancer().healthProbeNames().get(0));
+        Assertions.assertEquals("rfzeey", model.virtualMachines().get(0).vmName());
+        Assertions.assertEquals("izikayuhq", model.virtualMachines().get(0).hostname());
+        Assertions.assertEquals("sybbqwr", model.virtualMachines().get(0).osDiskName());
+        Assertions.assertEquals("gmfpgvmp", model.virtualMachines().get(0).dataDiskNames().get("owqkdwytisi").get(0));
+        Assertions.assertEquals("wbtlhflsjcdh", model.availabilitySetName());
+        Assertions.assertEquals("jvfbgofelja", model.loadBalancer().loadBalancerName());
+        Assertions.assertEquals("mqhldvrii", model.loadBalancer().frontendIpConfigurationNames().get(0));
+        Assertions.assertEquals("hahhxvrhmzkwpj", model.loadBalancer().backendPoolNames().get(0));
+        Assertions.assertEquals("jguufzdm", model.loadBalancer().healthProbeNames().get(0));
     }
 
     @SuppressWarnings("unchecked")

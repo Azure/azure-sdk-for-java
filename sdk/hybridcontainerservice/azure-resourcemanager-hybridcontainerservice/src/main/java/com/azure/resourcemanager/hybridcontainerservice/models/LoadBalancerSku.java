@@ -26,6 +26,15 @@ public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku>
     public static final LoadBalancerSku UNMANAGED = fromString("unmanaged");
 
     /**
+     * Creates a new instance of LoadBalancerSku value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerSku() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerSku from its string representation.
      *
      * @param name a name to look for.

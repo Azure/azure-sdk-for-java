@@ -20,6 +20,15 @@ public final class HubRoutingPreference extends ExpandableStringEnum<HubRoutingP
     public static final HubRoutingPreference ASPATH = fromString("ASPath");
 
     /**
+     * Creates a new instance of HubRoutingPreference value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HubRoutingPreference() {
+    }
+
+    /**
      * Creates or finds a HubRoutingPreference from its string representation.
      *
      * @param name a name to look for.

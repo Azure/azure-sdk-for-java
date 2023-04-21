@@ -728,9 +728,7 @@ class SparkE2EChangeFeedITest
             filteredCompositeContinuations should have size 1
 
             val quotedToken = filteredCompositeContinuations.head.getToken
-            // Spark 3 tracks the last LSN for which docs have been successfully processed
-            // Spark 2 LSN is offset by 1 because in Spark 2 the next-to-be-sent-as-continuation LSN is tracked
-            val lsn: Long = Math.max(0, quotedToken.substring(1, quotedToken.length - 1).toLong + 1)
+            val lsn: Long =  Math.max(0, quotedToken.substring(1, quotedToken.length - 1).toLong)
 
             tokenMap += (pkRangeId -> lsn)
           })

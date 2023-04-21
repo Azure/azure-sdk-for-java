@@ -26,6 +26,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -102,10 +103,12 @@ public class PartitionBasedLoadBalancerTest {
 
     private AutoCloseable mockCloseable;
 
+    private List<AutoCloseable> toClose;
+
     @BeforeEach
     public void setup(TestInfo testInfo) {
         System.out.println("Running " + testInfo.getDisplayName());
-
+        toClose = new ArrayList<>();
         mockCloseable = MockitoAnnotations.openMocks(this);
 
         final Date enqueuedTime = Date.from(Instant.now());
@@ -126,6 +129,18 @@ public class PartitionBasedLoadBalancerTest {
     public void teardown() throws Exception {
         if (mockCloseable != null) {
             mockCloseable.close();
+        }
+
+        for (final AutoCloseable closeable : toClose) {
+            if (closeable == null) {
+                continue;
+            }
+
+            try {
+                closeable.close();
+            } catch (IOException error) {
+                error.printStackTrace();
+            }
         }
 
         // Tear down any inline mocks to avoid memory leaks.
@@ -385,6 +400,7 @@ public class PartitionBasedLoadBalancerTest {
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
         }, LoadBalancingStrategy.BALANCED);
+        toClose.add(() -> partitionPumpManager.stopAllPartitionPumps());
         loadBalancer.loadBalance();
         sleep(2);
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
@@ -406,6 +422,7 @@ public class PartitionBasedLoadBalancerTest {
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
         }, LoadBalancingStrategy.BALANCED);
+        toClose.add(() -> partitionPumpManager.stopAllPartitionPumps());
         loadBalancer.loadBalance();
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
@@ -457,6 +474,7 @@ public class PartitionBasedLoadBalancerTest {
         final PartitionPumpManager partitionPumpManager = new PartitionPumpManager(mockCheckpointStore,
             () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER,
             Collections.emptyMap(), 1, null, BATCH_RECEIVE_MODE);
+        toClose.add(() -> partitionPumpManager.stopAllPartitionPumps());
         final PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(mockCheckpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner",
             TimeUnit.SECONDS.toSeconds(5),
@@ -487,6 +505,7 @@ public class PartitionBasedLoadBalancerTest {
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
             () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
             BATCH_RECEIVE_MODE);
+        toClose.add(() -> partitionPumpManager.stopAllPartitionPumps());
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
@@ -699,7 +718,7 @@ public class PartitionBasedLoadBalancerTest {
     }
 
     private PartitionPumpManager getPartitionPumpManager() {
-        return new PartitionPumpManager(checkpointStore,
+        PartitionPumpManager pumpManager = new PartitionPumpManager(checkpointStore,
             () -> new PartitionProcessor() {
                 @Override
                 public void processEvent(EventContext eventContext) {
@@ -719,6 +738,10 @@ public class PartitionBasedLoadBalancerTest {
                         eventProcessingErrorContext.getThrowable());
                 }
             }, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null, BATCH_RECEIVE_MODE);
+
+
+        toClose.add(() -> pumpManager.stopAllPartitionPumps());
+        return pumpManager;
     }
 
     private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner, LoadBalancingStrategy loadBalancingStrategy) {

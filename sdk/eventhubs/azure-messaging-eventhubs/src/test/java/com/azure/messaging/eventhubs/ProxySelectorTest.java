@@ -62,24 +62,20 @@ class ProxySelectorTest extends IntegrationTestBase {
             }
         });
 
-        final EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+        final EventHubConsumerAsyncClient consumer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncConsumerClient();
+            .buildAsyncConsumerClient());
 
-        try {
-            StepVerifier.create(consumer.receiveFromPartition("1", EventPosition.earliest()).take(1))
-                .expectErrorSatisfies(error -> {
-                    // The message can vary because it is returned from proton-j, so we don't want to compare against that.
-                    // This is a transient error from ExceptionUtil.java: line 67.
-                    System.out.println("Error: " + error);
-                })
-                .verify();
-        } finally {
-            dispose(consumer);
-        }
+        StepVerifier.create(consumer.receiveFromPartition("1", EventPosition.earliest()).take(1))
+            .expectErrorSatisfies(error -> {
+                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
+                // This is a transient error from ExceptionUtil.java: line 67.
+                System.out.println("Error: " + error);
+            })
+            .verify();
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
         Assertions.assertTrue(awaited);

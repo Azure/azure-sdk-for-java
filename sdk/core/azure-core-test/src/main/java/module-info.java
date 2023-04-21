@@ -9,6 +9,11 @@ module com.azure.core.test {
     requires org.junit.jupiter.params;
     requires reactor.test;
     requires java.management;
+    requires java.net.http;
+    requires reactor.netty.http;
+    requires reactor.netty.core;
+    requires io.netty.codec.http;
+    requires org.apache.commons.compress;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;

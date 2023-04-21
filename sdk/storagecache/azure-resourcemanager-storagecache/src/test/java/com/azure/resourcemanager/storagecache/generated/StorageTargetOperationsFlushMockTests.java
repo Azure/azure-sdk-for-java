@@ -56,6 +56,8 @@ public final class StorageTargetOperationsFlushMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.storageTargetOperations().flush("cqqudf", "byxbaaabjy", "ayffim", com.azure.core.util.Context.NONE);
+        manager
+            .storageTargetOperations()
+            .flush("vfvpdbodaciz", "j", "lhkrribdeibqipqk", com.azure.core.util.Context.NONE);
     }
 }

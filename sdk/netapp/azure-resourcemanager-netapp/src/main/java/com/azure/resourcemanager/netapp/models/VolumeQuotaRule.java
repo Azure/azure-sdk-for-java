@@ -149,7 +149,7 @@ public interface VolumeQuotaRule {
             /**
              * Specifies resourceGroupName, accountName, poolName, volumeName.
              *
-             * @param resourceGroupName The name of the resource group.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @param volumeName The name of the volume.
@@ -238,7 +238,7 @@ public interface VolumeQuotaRule {
     VolumeQuotaRule.Update update();
 
     /** The template for VolumeQuotaRule update. */
-    interface Update extends UpdateStages.WithQuotaSizeInKiBs {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithQuotaSizeInKiBs {
         /**
          * Executes the update request.
          *
@@ -256,6 +256,16 @@ public interface VolumeQuotaRule {
     }
     /** The VolumeQuotaRule update stages. */
     interface UpdateStages {
+        /** The stage of the VolumeQuotaRule update allowing to specify tags. */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags.
+             *
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
         /** The stage of the VolumeQuotaRule update allowing to specify quotaSizeInKiBs. */
         interface WithQuotaSizeInKiBs {
             /**

@@ -22,14 +22,15 @@ public interface QuotaRequestStatusClient {
      *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
      *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
      *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location.
+     *     specific location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaRequestDetailsInner get(String id, String scope);
+    Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context);
 
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
@@ -40,7 +41,6 @@ public interface QuotaRequestStatusClient {
      *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
      *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
      *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,7 +48,7 @@ public interface QuotaRequestStatusClient {
      *     specific location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context);
+    QuotaRequestDetailsInner get(String id, String scope);
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
@@ -61,7 +61,7 @@ public interface QuotaRequestStatusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaRequestDetailsInner> list(String scope);
@@ -85,7 +85,7 @@ public interface QuotaRequestStatusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return quota request information.
+     * @return quota request information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaRequestDetailsInner> list(

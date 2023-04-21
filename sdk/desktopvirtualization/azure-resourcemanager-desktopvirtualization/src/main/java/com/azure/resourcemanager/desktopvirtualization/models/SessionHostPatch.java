@@ -18,6 +18,10 @@ public final class SessionHostPatch extends ProxyResource {
     @JsonProperty(value = "properties")
     private SessionHostPatchProperties innerProperties;
 
+    /** Creates an instance of SessionHostPatch class. */
+    public SessionHostPatch() {
+    }
+
     /**
      * Get the innerProperties property: Detailed properties for SessionHost.
      *
@@ -70,6 +74,29 @@ public final class SessionHostPatch extends ProxyResource {
             this.innerProperties = new SessionHostPatchProperties();
         }
         this.innerProperties().withAssignedUser(assignedUser);
+        return this;
+    }
+
+    /**
+     * Get the friendlyName property: Friendly name of SessionHost.
+     *
+     * @return the friendlyName value.
+     */
+    public String friendlyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
+    }
+
+    /**
+     * Set the friendlyName property: Friendly name of SessionHost.
+     *
+     * @param friendlyName the friendlyName value to set.
+     * @return the SessionHostPatch object itself.
+     */
+    public SessionHostPatch withFriendlyName(String friendlyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SessionHostPatchProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
         return this;
     }
 

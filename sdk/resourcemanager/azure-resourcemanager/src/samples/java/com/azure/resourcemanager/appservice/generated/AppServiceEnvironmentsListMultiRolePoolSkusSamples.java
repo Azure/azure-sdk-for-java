@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListMultiRolePoolSkus. */
 public final class AppServiceEnvironmentsListMultiRolePoolSkusSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListMultiRolePoolSkus.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListMultiRolePoolSkus.json
      */
     /**
      * Sample code: Get available SKUs for scaling a multi-role pool.
@@ -22,6 +20,6 @@ public final class AppServiceEnvironmentsListMultiRolePoolSkusSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listMultiRolePoolSkus("test-rg", "test-ase", Context.NONE);
+            .listMultiRolePoolSkus("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

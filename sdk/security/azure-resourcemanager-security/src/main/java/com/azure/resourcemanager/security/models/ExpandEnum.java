@@ -17,6 +17,15 @@ public final class ExpandEnum extends ExpandableStringEnum<ExpandEnum> {
     public static final ExpandEnum METADATA = fromString("metadata");
 
     /**
+     * Creates a new instance of ExpandEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpandEnum() {
+    }
+
+    /**
      * Creates or finds a ExpandEnum from its string representation.
      *
      * @param name a name to look for.

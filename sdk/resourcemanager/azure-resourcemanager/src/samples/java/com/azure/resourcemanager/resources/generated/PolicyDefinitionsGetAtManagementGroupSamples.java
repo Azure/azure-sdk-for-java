@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyDefinitions GetAtManagementGroup. */
 public final class PolicyDefinitionsGetAtManagementGroupSamples {
     /*
@@ -23,6 +21,6 @@ public final class PolicyDefinitionsGetAtManagementGroupSamples {
             .manager()
             .policyClient()
             .getPolicyDefinitions()
-            .getAtManagementGroupWithResponse("ResourceNaming", "MyManagementGroup", Context.NONE);
+            .getAtManagementGroupWithResponse("ResourceNaming", "MyManagementGroup", com.azure.core.util.Context.NONE);
     }
 }

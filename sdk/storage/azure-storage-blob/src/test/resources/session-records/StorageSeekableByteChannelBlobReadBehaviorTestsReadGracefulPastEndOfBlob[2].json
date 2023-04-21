@@ -1,0 +1,93 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b24921340b249213412a99156aa23148d62c14d4ebfe?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "f2c2364a-f3c1-4117-b10a-4d5cd34bb531"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DB1B461A15B4D8",
+      "Last-Modified" : "Thu, 02 Mar 2023 17:46:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "7b3d737f-301e-002f-702e-4d6191000000",
+      "Date" : "Thu, 02 Mar 2023 17:46:49 GMT",
+      "x-ms-client-request-id" : "f2c2364a-f3c1-4117-b10a-4d5cd34bb531"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b24921340b249213412a99156aa23148d62c14d4ebfe/b2492134b249213412a10018b49e78b62b754202ab",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d017293b-9428-4322-ac53-98aad8160668",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "zP0W8wGgZPY=",
+      "Last-Modified" : "Thu, 02 Mar 2023 17:46:50 GMT",
+      "x-ms-version-id" : "2023-03-02T17:46:50.6471287Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 02 Mar 2023 17:46:50 GMT",
+      "Content-MD5" : "3DjqHCO4EMCrC0JMsOgCYg==",
+      "ETag" : "0x8DB1B461A549F77",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "153bd2fc-401e-006f-1d2e-4d487f000000",
+      "x-ms-client-request-id" : "d017293b-9428-4322-ac53-98aad8160668"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b24921340b249213412a99156aa23148d62c14d4ebfe/b2492134b249213412a10018b49e78b62b754202ab",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "584a2a70-8f02-4c5d-a6af-7088dd79b1f4"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Content-Range" : "bytes */1024",
+      "x-ms-error-code" : "InvalidRange",
+      "retry-after" : "0",
+      "Content-Length" : "249",
+      "StatusCode" : "416",
+      "x-ms-request-id" : "691de7a0-501e-0016-342e-4d2135000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidRange</Code><Message>The range specified is invalid for the current size of the resource.\nRequestId:691de7a0-501e-0016-342e-4d2135000000\nTime:2023-03-02T17:46:50.7554694Z</Message></Error>",
+      "Date" : "Thu, 02 Mar 2023 17:46:49 GMT",
+      "x-ms-client-request-id" : "584a2a70-8f02-4c5d-a6af-7088dd79b1f4",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/b24921340b249213412a99156aa23148d62c14d4ebfe?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-12-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.22.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "255e4e26-07a9-4cd4-9f24-980e0c8f3fba"
+    },
+    "Response" : {
+      "x-ms-version" : "2021-12-02",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "7cde5f2d-101e-0038-0a2e-4da1f2000000",
+      "Date" : "Thu, 02 Mar 2023 17:46:50 GMT",
+      "x-ms-client-request-id" : "255e4e26-07a9-4cd4-9f24-980e0c8f3fba"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "b24921340b249213412a99156aa23148d62c14d4ebfe", "b2492134b249213412a10018b49e78b62b754202ab", "b2492134b249213412a457591b343b1f362d485eab", "b2492134b249213412a456997c2bfd01a8c94e75b3", "b229d4f7-d316-4139-8133-497f54bbd7f2" ]
+}

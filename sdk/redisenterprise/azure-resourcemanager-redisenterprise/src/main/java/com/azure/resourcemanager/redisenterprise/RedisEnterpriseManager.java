@@ -31,12 +31,14 @@ import com.azure.resourcemanager.redisenterprise.implementation.PrivateEndpointC
 import com.azure.resourcemanager.redisenterprise.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterpriseManagementClientBuilder;
 import com.azure.resourcemanager.redisenterprise.implementation.RedisEnterprisesImpl;
+import com.azure.resourcemanager.redisenterprise.implementation.SkusImpl;
 import com.azure.resourcemanager.redisenterprise.models.Databases;
 import com.azure.resourcemanager.redisenterprise.models.Operations;
 import com.azure.resourcemanager.redisenterprise.models.OperationsStatus;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResources;
 import com.azure.resourcemanager.redisenterprise.models.RedisEnterprises;
+import com.azure.resourcemanager.redisenterprise.models.Skus;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -57,6 +59,8 @@ public final class RedisEnterpriseManager {
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
+
+    private Skus skus;
 
     private final RedisEnterpriseManagementClient clientObject;
 
@@ -223,7 +227,7 @@ public final class RedisEnterpriseManager {
                 .append("-")
                 .append("com.azure.resourcemanager.redisenterprise")
                 .append("/")
-                .append("1.1.0-beta.1");
+                .append("1.1.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -280,7 +284,11 @@ public final class RedisEnterpriseManager {
         }
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -288,7 +296,11 @@ public final class RedisEnterpriseManager {
         return operations;
     }
 
-    /** @return Resource collection API of OperationsStatus. */
+    /**
+     * Gets the resource collection API of OperationsStatus.
+     *
+     * @return Resource collection API of OperationsStatus.
+     */
     public OperationsStatus operationsStatus() {
         if (this.operationsStatus == null) {
             this.operationsStatus = new OperationsStatusImpl(clientObject.getOperationsStatus(), this);
@@ -296,7 +308,11 @@ public final class RedisEnterpriseManager {
         return operationsStatus;
     }
 
-    /** @return Resource collection API of RedisEnterprises. */
+    /**
+     * Gets the resource collection API of RedisEnterprises. It manages Cluster.
+     *
+     * @return Resource collection API of RedisEnterprises.
+     */
     public RedisEnterprises redisEnterprises() {
         if (this.redisEnterprises == null) {
             this.redisEnterprises = new RedisEnterprisesImpl(clientObject.getRedisEnterprises(), this);
@@ -304,7 +320,11 @@ public final class RedisEnterpriseManager {
         return redisEnterprises;
     }
 
-    /** @return Resource collection API of Databases. */
+    /**
+     * Gets the resource collection API of Databases. It manages Database.
+     *
+     * @return Resource collection API of Databases.
+     */
     public Databases databases() {
         if (this.databases == null) {
             this.databases = new DatabasesImpl(clientObject.getDatabases(), this);
@@ -312,7 +332,11 @@ public final class RedisEnterpriseManager {
         return databases;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -321,12 +345,28 @@ public final class RedisEnterpriseManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);
         }
         return privateLinkResources;
+    }
+
+    /**
+     * Gets the resource collection API of Skus.
+     *
+     * @return Resource collection API of Skus.
+     */
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(clientObject.getSkus(), this);
+        }
+        return skus;
     }
 
     /**

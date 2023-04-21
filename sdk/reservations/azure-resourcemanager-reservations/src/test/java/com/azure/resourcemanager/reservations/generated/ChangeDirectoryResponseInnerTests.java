@@ -16,16 +16,16 @@ public final class ChangeDirectoryResponseInnerTests {
         ChangeDirectoryResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"reservationOrder\":{\"id\":\"rlkdmtncvokotl\",\"name\":\"d\",\"isSucceeded\":false,\"error\":\"y\"},\"reservations\":[{\"id\":\"jlt\",\"name\":\"bnnhadoocrkvcik\",\"isSucceeded\":false,\"error\":\"amqgxqquezikyw\"},{\"id\":\"xkalla\",\"name\":\"elwuipi\",\"isSucceeded\":false,\"error\":\"kzivgvvcnayrh\"},{\"id\":\"nxxmueedndrdv\",\"name\":\"kwqqtchealmf\",\"isSucceeded\":false,\"error\":\"aygdvwvgpioh\"},{\"id\":\"xrtfudxep\",\"name\":\"yqagvrvm\",\"isSucceeded\":false,\"error\":\"kghimdblxgwimfnj\"}]}")
+                    "{\"reservationOrder\":{\"id\":\"k\",\"name\":\"oxafn\",\"isSucceeded\":false,\"error\":\"ichkoymkcdyhb\"},\"reservations\":[{\"id\":\"wdreqnovvqfovl\",\"name\":\"ywsuwsy\",\"isSucceeded\":true,\"error\":\"sytgadgvraea\"}]}")
                 .toObject(ChangeDirectoryResponseInner.class);
-        Assertions.assertEquals("rlkdmtncvokotl", model.reservationOrder().id());
-        Assertions.assertEquals("d", model.reservationOrder().name());
+        Assertions.assertEquals("k", model.reservationOrder().id());
+        Assertions.assertEquals("oxafn", model.reservationOrder().name());
         Assertions.assertEquals(false, model.reservationOrder().isSucceeded());
-        Assertions.assertEquals("y", model.reservationOrder().error());
-        Assertions.assertEquals("jlt", model.reservations().get(0).id());
-        Assertions.assertEquals("bnnhadoocrkvcik", model.reservations().get(0).name());
-        Assertions.assertEquals(false, model.reservations().get(0).isSucceeded());
-        Assertions.assertEquals("amqgxqquezikyw", model.reservations().get(0).error());
+        Assertions.assertEquals("ichkoymkcdyhb", model.reservationOrder().error());
+        Assertions.assertEquals("wdreqnovvqfovl", model.reservations().get(0).id());
+        Assertions.assertEquals("ywsuwsy", model.reservations().get(0).name());
+        Assertions.assertEquals(true, model.reservations().get(0).isSucceeded());
+        Assertions.assertEquals("sytgadgvraea", model.reservations().get(0).error());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,41 +34,26 @@ public final class ChangeDirectoryResponseInnerTests {
             new ChangeDirectoryResponseInner()
                 .withReservationOrder(
                     new ChangeDirectoryResult()
-                        .withId("rlkdmtncvokotl")
-                        .withName("d")
+                        .withId("k")
+                        .withName("oxafn")
                         .withIsSucceeded(false)
-                        .withError("y"))
+                        .withError("ichkoymkcdyhb"))
                 .withReservations(
                     Arrays
                         .asList(
                             new ChangeDirectoryResult()
-                                .withId("jlt")
-                                .withName("bnnhadoocrkvcik")
-                                .withIsSucceeded(false)
-                                .withError("amqgxqquezikyw"),
-                            new ChangeDirectoryResult()
-                                .withId("xkalla")
-                                .withName("elwuipi")
-                                .withIsSucceeded(false)
-                                .withError("kzivgvvcnayrh"),
-                            new ChangeDirectoryResult()
-                                .withId("nxxmueedndrdv")
-                                .withName("kwqqtchealmf")
-                                .withIsSucceeded(false)
-                                .withError("aygdvwvgpioh"),
-                            new ChangeDirectoryResult()
-                                .withId("xrtfudxep")
-                                .withName("yqagvrvm")
-                                .withIsSucceeded(false)
-                                .withError("kghimdblxgwimfnj")));
+                                .withId("wdreqnovvqfovl")
+                                .withName("ywsuwsy")
+                                .withIsSucceeded(true)
+                                .withError("sytgadgvraea")));
         model = BinaryData.fromObject(model).toObject(ChangeDirectoryResponseInner.class);
-        Assertions.assertEquals("rlkdmtncvokotl", model.reservationOrder().id());
-        Assertions.assertEquals("d", model.reservationOrder().name());
+        Assertions.assertEquals("k", model.reservationOrder().id());
+        Assertions.assertEquals("oxafn", model.reservationOrder().name());
         Assertions.assertEquals(false, model.reservationOrder().isSucceeded());
-        Assertions.assertEquals("y", model.reservationOrder().error());
-        Assertions.assertEquals("jlt", model.reservations().get(0).id());
-        Assertions.assertEquals("bnnhadoocrkvcik", model.reservations().get(0).name());
-        Assertions.assertEquals(false, model.reservations().get(0).isSucceeded());
-        Assertions.assertEquals("amqgxqquezikyw", model.reservations().get(0).error());
+        Assertions.assertEquals("ichkoymkcdyhb", model.reservationOrder().error());
+        Assertions.assertEquals("wdreqnovvqfovl", model.reservations().get(0).id());
+        Assertions.assertEquals("ywsuwsy", model.reservations().get(0).name());
+        Assertions.assertEquals(true, model.reservations().get(0).isSucceeded());
+        Assertions.assertEquals("sytgadgvraea", model.reservations().get(0).error());
     }
 }

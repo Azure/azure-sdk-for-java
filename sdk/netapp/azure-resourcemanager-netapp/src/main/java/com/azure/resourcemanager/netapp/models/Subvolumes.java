@@ -15,7 +15,7 @@ public interface Subvolumes {
      *
      * <p>Returns a list of the subvolumes in the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -32,7 +32,7 @@ public interface Subvolumes {
      *
      * <p>Returns a list of the subvolumes in the volume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -50,25 +50,7 @@ public interface Subvolumes {
      *
      * <p>Returns the path associated with the subvolumeName provided.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
-     */
-    SubvolumeInfo get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
-
-    /**
-     * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -88,11 +70,29 @@ public interface Subvolumes {
         Context context);
 
     /**
+     * Get the path associated with the subvolumeName
+     *
+     * <p>Returns the path associated with the subvolumeName provided.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subvolume Information properties.
+     */
+    SubvolumeInfo get(
+        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
+
+    /**
      * Delete a subvolume
      *
      * <p>Delete subvolume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -108,7 +108,7 @@ public interface Subvolumes {
      *
      * <p>Delete subvolume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -131,7 +131,7 @@ public interface Subvolumes {
      *
      * <p>Get details of the specified subvolume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -149,7 +149,7 @@ public interface Subvolumes {
      *
      * <p>Get details of the specified subvolume.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.

@@ -23,6 +23,10 @@ public final class ScopedDeploymentWhatIf {
     @JsonProperty(value = "properties", required = true)
     private DeploymentWhatIfProperties properties;
 
+    /** Creates an instance of ScopedDeploymentWhatIf class. */
+    public ScopedDeploymentWhatIf() {
+    }
+
     /**
      * Get the location property: The location to store the deployment data.
      *

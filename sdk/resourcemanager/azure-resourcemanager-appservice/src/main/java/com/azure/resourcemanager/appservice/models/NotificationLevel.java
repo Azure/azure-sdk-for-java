@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NotificationLevel. */
+/** Level indicating how critical this recommendation can impact. */
 public enum NotificationLevel {
     /** Enum value Critical. */
     CRITICAL("Critical"),
@@ -36,6 +36,9 @@ public enum NotificationLevel {
      */
     @JsonCreator
     public static NotificationLevel fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         NotificationLevel[] items = NotificationLevel.values();
         for (NotificationLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum NotificationLevel {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

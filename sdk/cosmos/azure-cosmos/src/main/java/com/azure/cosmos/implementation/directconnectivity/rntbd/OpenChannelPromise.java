@@ -7,7 +7,11 @@ import io.netty.channel.Channel;
 import io.netty.util.concurrent.Promise;
 
 public class OpenChannelPromise extends ChannelPromiseWithExpiryTime {
-    public OpenChannelPromise(Promise<Channel> channelPromise, long expiryTimeInNanos) {
-        super(channelPromise, expiryTimeInNanos);
+    public OpenChannelPromise(
+        Promise<Channel> channelPromise,
+        long expiryTimeInNanos,
+        OpenConnectionRntbdRequestRecord openConnectionRntbdRequestRecord) {
+
+        super(channelPromise, expiryTimeInNanos, openConnectionRntbdRequestRecord);
     }
 }

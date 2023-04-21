@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EvictionPolicy. */
+/** Redis eviction policy - default is VolatileLRU. */
 public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
     /** Static value AllKeysLFU for EvictionPolicy. */
     public static final EvictionPolicy ALL_KEYS_LFU = fromString("AllKeysLFU");
@@ -35,6 +35,15 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
     public static final EvictionPolicy NO_EVICTION = fromString("NoEviction");
 
     /**
+     * Creates a new instance of EvictionPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EvictionPolicy() {
+    }
+
+    /**
      * Creates or finds a EvictionPolicy from its string representation.
      *
      * @param name a name to look for.
@@ -45,7 +54,11 @@ public final class EvictionPolicy extends ExpandableStringEnum<EvictionPolicy> {
         return fromString(name, EvictionPolicy.class);
     }
 
-    /** @return known EvictionPolicy values. */
+    /**
+     * Gets known EvictionPolicy values.
+     *
+     * @return known EvictionPolicy values.
+     */
     public static Collection<EvictionPolicy> values() {
         return values(EvictionPolicy.class);
     }

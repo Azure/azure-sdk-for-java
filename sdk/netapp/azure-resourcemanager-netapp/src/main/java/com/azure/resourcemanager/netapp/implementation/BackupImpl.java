@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.azure.resourcemanager.netapp.models.Backup;
 import com.azure.resourcemanager.netapp.models.BackupPatch;
+import com.azure.resourcemanager.netapp.models.BackupRestoreFiles;
 import com.azure.resourcemanager.netapp.models.BackupType;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -32,6 +34,10 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
 
     public String location() {
         return this.innerModel().location();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String backupId() {
@@ -187,6 +193,16 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
                 .getWithResponse(resourceGroupName, accountName, poolName, volumeName, backupName, context)
                 .getValue();
         return this;
+    }
+
+    public void restoreFiles(BackupRestoreFiles body) {
+        serviceManager.backups().restoreFiles(resourceGroupName, accountName, poolName, volumeName, backupName, body);
+    }
+
+    public void restoreFiles(BackupRestoreFiles body, Context context) {
+        serviceManager
+            .backups()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, backupName, body, context);
     }
 
     public BackupImpl withRegion(Region location) {

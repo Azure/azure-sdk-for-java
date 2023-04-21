@@ -75,6 +75,8 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
@@ -278,13 +280,19 @@ public class CustomAnalyzerTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LEXICAL_ANALYZER_NAMES.parallelStream()
-            .map(an -> new AnalyzeTextOptions("One two", an))
-            .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
+        Flux.fromIterable(LEXICAL_ANALYZER_NAMES)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(an -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", an)))
+            .then()
+            .block();
 
-        LEXICAL_TOKENIZER_NAMES.parallelStream()
-            .map(tn -> new AnalyzeTextOptions("One two", tn))
-            .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
+        Flux.fromIterable(LEXICAL_TOKENIZER_NAMES)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(tn -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", tn)))
+            .then()
+            .block();
     }
 
     @Test

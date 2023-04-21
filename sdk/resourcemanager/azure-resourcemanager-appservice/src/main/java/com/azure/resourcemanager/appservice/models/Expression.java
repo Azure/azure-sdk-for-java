@@ -35,6 +35,10 @@ public class Expression {
     @JsonProperty(value = "error")
     private AzureResourceErrorInfo error;
 
+    /** Creates an instance of Expression class. */
+    public Expression() {
+    }
+
     /**
      * Get the text property: The text.
      *

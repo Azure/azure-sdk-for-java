@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApplicationGatewayPrivateEndpointConnections Get. */
 public final class ApplicationGatewayPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayPrivateEndpointConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ApplicationGatewayPrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: Get Application Gateway Private Endpoint Connection.
@@ -23,6 +21,6 @@ public final class ApplicationGatewayPrivateEndpointConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getApplicationGatewayPrivateEndpointConnections()
-            .getWithResponse("rg1", "appgw", "connection1", Context.NONE);
+            .getWithResponse("rg1", "appgw", "connection1", com.azure.core.util.Context.NONE);
     }
 }

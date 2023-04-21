@@ -9,24 +9,23 @@ import com.azure.resourcemanager.elastic.models.ElasticMonitorResourceUpdatePara
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticMonitorResourceUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model =
             BinaryData
-                .fromString("{\"tags\":{\"ehzzvypyqrim\":\"t\",\"hc\":\"inpvswjdkirsoodq\"}}")
+                .fromString("{\"tags\":{\"kzsmodm\":\"tbciqfouflmm\"}}")
                 .toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("t", model.tags().get("ehzzvypyqrim"));
+        Assertions.assertEquals("tbciqfouflmm", model.tags().get("kzsmodm"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model =
-            new ElasticMonitorResourceUpdateParameters().withTags(mapOf("ehzzvypyqrim", "t", "hc", "inpvswjdkirsoodq"));
+            new ElasticMonitorResourceUpdateParameters().withTags(mapOf("kzsmodm", "tbciqfouflmm"));
         model = BinaryData.fromObject(model).toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("t", model.tags().get("ehzzvypyqrim"));
+        Assertions.assertEquals("tbciqfouflmm", model.tags().get("kzsmodm"));
     }
 
     @SuppressWarnings("unchecked")

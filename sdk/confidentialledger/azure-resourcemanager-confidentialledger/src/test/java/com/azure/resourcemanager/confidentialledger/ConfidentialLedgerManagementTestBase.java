@@ -5,6 +5,8 @@ package com.azure.resourcemanager.confidentialledger;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
@@ -64,6 +66,7 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
         } else if (getTestMode() == TestMode.RECORD) {
             ledgerManager = ConfidentialLedgerManager
                 .configure()
+                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .withPolicy(interceptorManager.getRecordPolicy())
                 .authenticate(getCredential(), getAzureProfile());
         } else if (getTestMode() == TestMode.PLAYBACK) {
@@ -102,7 +105,7 @@ public class ConfidentialLedgerManagementTestBase extends TestBase {
     public static void setAzureProfile() {
         String testMode = getTestModeForStaticMethods();
         if ("PLAYBACK".equals(testMode)) {
-            azureProfile = new AzureProfile(null, "027da7f8-2fc6-46d4-9be9-560706b60fec", AzureEnvironment.AZURE);
+            azureProfile = new AzureProfile(null, "ec0aa5f7-9e78-40c9-85cd-535c6305b380", AzureEnvironment.AZURE);
         } else {
             azureProfile = new AzureProfile(AzureEnvironment.AZURE);
         }

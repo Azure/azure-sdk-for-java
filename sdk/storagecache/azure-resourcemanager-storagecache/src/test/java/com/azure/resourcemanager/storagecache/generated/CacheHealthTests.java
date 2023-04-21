@@ -15,18 +15,18 @@ public final class CacheHealthTests {
         CacheHealth model =
             BinaryData
                 .fromString(
-                    "{\"state\":\"Transitioning\",\"statusDescription\":\"whzlsicohoq\",\"conditions\":[{\"timestamp\":\"2021-08-05T01:30:43Z\",\"message\":\"yav\"}]}")
+                    "{\"state\":\"UpgradeFailed\",\"statusDescription\":\"mwvvjektcxsenhw\",\"conditions\":[{\"timestamp\":\"2021-01-30T03:05:29Z\",\"message\":\"zpwv\"}]}")
                 .toObject(CacheHealth.class);
-        Assertions.assertEquals(HealthStateType.TRANSITIONING, model.state());
-        Assertions.assertEquals("whzlsicohoq", model.statusDescription());
+        Assertions.assertEquals(HealthStateType.UPGRADE_FAILED, model.state());
+        Assertions.assertEquals("mwvvjektcxsenhw", model.statusDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CacheHealth model =
-            new CacheHealth().withState(HealthStateType.TRANSITIONING).withStatusDescription("whzlsicohoq");
+            new CacheHealth().withState(HealthStateType.UPGRADE_FAILED).withStatusDescription("mwvvjektcxsenhw");
         model = BinaryData.fromObject(model).toObject(CacheHealth.class);
-        Assertions.assertEquals(HealthStateType.TRANSITIONING, model.state());
-        Assertions.assertEquals("whzlsicohoq", model.statusDescription());
+        Assertions.assertEquals(HealthStateType.UPGRADE_FAILED, model.state());
+        Assertions.assertEquals("mwvvjektcxsenhw", model.statusDescription());
     }
 }

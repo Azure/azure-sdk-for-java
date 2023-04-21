@@ -66,7 +66,7 @@ public final class StorageSpacesOperationsClientImpl implements StorageSpacesOpe
      */
     @Host("{$host}")
     @ServiceInterface(name = "HybridContainerServi")
-    private interface StorageSpacesOperationsService {
+    public interface StorageSpacesOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
@@ -515,7 +515,7 @@ public final class StorageSpacesOperationsClientImpl implements StorageSpacesOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSpacesInner>, StorageSpacesInner> beginCreateOrUpdate(
         String resourceGroupName, String storageSpacesName, StorageSpacesInner storageSpaces) {
-        return beginCreateOrUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces).getSyncPoller();
     }
 
     /**
@@ -535,7 +535,9 @@ public final class StorageSpacesOperationsClientImpl implements StorageSpacesOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSpacesInner>, StorageSpacesInner> beginCreateOrUpdate(
         String resourceGroupName, String storageSpacesName, StorageSpacesInner storageSpaces, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces, context)
+            .getSyncPoller();
     }
 
     /**
@@ -956,7 +958,7 @@ public final class StorageSpacesOperationsClientImpl implements StorageSpacesOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSpacesInner>, StorageSpacesInner> beginUpdate(
         String resourceGroupName, String storageSpacesName, StorageSpacesPatch storageSpaces) {
-        return beginUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces).getSyncPoller();
     }
 
     /**
@@ -976,7 +978,7 @@ public final class StorageSpacesOperationsClientImpl implements StorageSpacesOpe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageSpacesInner>, StorageSpacesInner> beginUpdate(
         String resourceGroupName, String storageSpacesName, StorageSpacesPatch storageSpaces, Context context) {
-        return beginUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, storageSpacesName, storageSpaces, context).getSyncPoller();
     }
 
     /**

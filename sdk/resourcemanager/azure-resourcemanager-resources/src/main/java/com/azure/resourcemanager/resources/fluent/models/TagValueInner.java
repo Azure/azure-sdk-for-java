@@ -29,6 +29,10 @@ public final class TagValueInner {
     @JsonProperty(value = "count")
     private TagCount count;
 
+    /** Creates an instance of TagValueInner class. */
+    public TagValueInner() {
+    }
+
     /**
      * Get the id property: The tag value ID.
      *

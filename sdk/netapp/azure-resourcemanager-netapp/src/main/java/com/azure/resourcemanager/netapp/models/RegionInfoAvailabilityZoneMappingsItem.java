@@ -22,6 +22,10 @@ public final class RegionInfoAvailabilityZoneMappingsItem {
     @JsonProperty(value = "isAvailable")
     private Boolean isAvailable;
 
+    /** Creates an instance of RegionInfoAvailabilityZoneMappingsItem class. */
+    public RegionInfoAvailabilityZoneMappingsItem() {
+    }
+
     /**
      * Get the availabilityZone property: Logical availability zone.
      *

@@ -27,6 +27,10 @@ public final class BackupPatch {
     @JsonProperty(value = "properties")
     private BackupProperties innerProperties;
 
+    /** Creates an instance of BackupPatch class. */
+    public BackupPatch() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

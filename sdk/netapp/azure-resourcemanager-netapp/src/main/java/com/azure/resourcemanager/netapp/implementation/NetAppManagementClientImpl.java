@@ -34,7 +34,6 @@ import com.azure.resourcemanager.netapp.fluent.PoolsClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.SubvolumesClient;
-import com.azure.resourcemanager.netapp.fluent.VaultsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.netapp.fluent.VolumeQuotaRulesClient;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
@@ -50,15 +49,11 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the NetAppManagementClientImpl type. */
 @ServiceClient(builder = NetAppManagementClientBuilder.class)
 public final class NetAppManagementClientImpl implements NetAppManagementClient {
-    /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -270,18 +265,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         return this.volumeQuotaRules;
     }
 
-    /** The VaultsClient object to access its operations. */
-    private final VaultsClient vaults;
-
-    /**
-     * Gets the VaultsClient object to access its operations.
-     *
-     * @return the VaultsClient object.
-     */
-    public VaultsClient getVaults() {
-        return this.vaults;
-    }
-
     /** The VolumeGroupsClient object to access its operations. */
     private final VolumeGroupsClient volumeGroups;
 
@@ -313,8 +296,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     NetAppManagementClientImpl(
@@ -329,7 +311,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-01";
+        this.apiVersion = "2022-09-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
@@ -342,7 +324,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.accountBackups = new AccountBackupsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
-        this.vaults = new VaultsClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
         this.subvolumes = new SubvolumesClientImpl(this);
     }

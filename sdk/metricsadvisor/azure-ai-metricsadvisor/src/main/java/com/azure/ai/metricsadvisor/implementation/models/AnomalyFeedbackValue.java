@@ -17,6 +17,9 @@ public final class AnomalyFeedbackValue {
     @JsonProperty(value = "anomalyValue", required = true)
     private AnomalyValue anomalyValue;
 
+    /** Creates an instance of AnomalyFeedbackValue class. */
+    public AnomalyFeedbackValue() {}
+
     /**
      * Get the anomalyValue property: The anomalyValue property.
      *

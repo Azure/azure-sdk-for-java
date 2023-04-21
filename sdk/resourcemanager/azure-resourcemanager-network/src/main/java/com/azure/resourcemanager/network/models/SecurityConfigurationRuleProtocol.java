@@ -29,6 +29,15 @@ public final class SecurityConfigurationRuleProtocol extends ExpandableStringEnu
     public static final SecurityConfigurationRuleProtocol AH = fromString("Ah");
 
     /**
+     * Creates a new instance of SecurityConfigurationRuleProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SecurityConfigurationRuleProtocol() {
+    }
+
+    /**
      * Creates or finds a SecurityConfigurationRuleProtocol from its string representation.
      *
      * @param name a name to look for.

@@ -36,6 +36,15 @@ public final class CommissionedState extends ExpandableStringEnum<CommissionedSt
     public static final CommissionedState DEPROVISIONED = fromString("Deprovisioned");
 
     /**
+     * Creates a new instance of CommissionedState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommissionedState() {
+    }
+
+    /**
      * Creates or finds a CommissionedState from its string representation.
      *
      * @param name a name to look for.

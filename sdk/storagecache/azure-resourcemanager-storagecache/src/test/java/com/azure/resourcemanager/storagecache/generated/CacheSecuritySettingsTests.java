@@ -16,9 +16,9 @@ public final class CacheSecuritySettingsTests {
         CacheSecuritySettings model =
             BinaryData
                 .fromString(
-                    "{\"accessPolicies\":[{\"name\":\"yq\",\"accessRules\":[]},{\"name\":\"vuujq\",\"accessRules\":[]},{\"name\":\"dokgjl\",\"accessRules\":[]},{\"name\":\"oxgvclt\",\"accessRules\":[]}]}")
+                    "{\"accessPolicies\":[{\"name\":\"mpvecxgodebfqk\",\"accessRules\":[]},{\"name\":\"bmpukgriwflz\",\"accessRules\":[]}]}")
                 .toObject(CacheSecuritySettings.class);
-        Assertions.assertEquals("yq", model.accessPolicies().get(0).name());
+        Assertions.assertEquals("mpvecxgodebfqk", model.accessPolicies().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,9 @@ public final class CacheSecuritySettingsTests {
                 .withAccessPolicies(
                     Arrays
                         .asList(
-                            new NfsAccessPolicy().withName("yq").withAccessRules(Arrays.asList()),
-                            new NfsAccessPolicy().withName("vuujq").withAccessRules(Arrays.asList()),
-                            new NfsAccessPolicy().withName("dokgjl").withAccessRules(Arrays.asList()),
-                            new NfsAccessPolicy().withName("oxgvclt").withAccessRules(Arrays.asList())));
+                            new NfsAccessPolicy().withName("mpvecxgodebfqk").withAccessRules(Arrays.asList()),
+                            new NfsAccessPolicy().withName("bmpukgriwflz").withAccessRules(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(CacheSecuritySettings.class);
-        Assertions.assertEquals("yq", model.accessPolicies().get(0).name());
+        Assertions.assertEquals("mpvecxgodebfqk", model.accessPolicies().get(0).name());
     }
 }

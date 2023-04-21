@@ -19,6 +19,9 @@ public final class OperationKind extends ExpandableStringEnum<OperationKind> {
     /** Static value documentModelCopyTo for OperationKind. */
     public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
 
+    /** Static value documentClassifierBuild for OperationKind. */
+    public static final OperationKind DOCUMENT_CLASSIFIER_BUILD = fromString("documentClassifierBuild");
+
     /**
      * Creates a new instance of OperationKind value.
      *

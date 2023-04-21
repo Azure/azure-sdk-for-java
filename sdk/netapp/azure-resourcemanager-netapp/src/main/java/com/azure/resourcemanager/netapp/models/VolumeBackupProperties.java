@@ -23,16 +23,14 @@ public final class VolumeBackupProperties {
     private Boolean policyEnforced;
 
     /*
-     * Vault Resource ID
-     */
-    @JsonProperty(value = "vaultId")
-    private String vaultId;
-
-    /*
      * Backup Enabled
      */
     @JsonProperty(value = "backupEnabled")
     private Boolean backupEnabled;
+
+    /** Creates an instance of VolumeBackupProperties class. */
+    public VolumeBackupProperties() {
+    }
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
@@ -71,26 +69,6 @@ public final class VolumeBackupProperties {
      */
     public VolumeBackupProperties withPolicyEnforced(Boolean policyEnforced) {
         this.policyEnforced = policyEnforced;
-        return this;
-    }
-
-    /**
-     * Get the vaultId property: Vault Resource ID.
-     *
-     * @return the vaultId value.
-     */
-    public String vaultId() {
-        return this.vaultId;
-    }
-
-    /**
-     * Set the vaultId property: Vault Resource ID.
-     *
-     * @param vaultId the vaultId value to set.
-     * @return the VolumeBackupProperties object itself.
-     */
-    public VolumeBackupProperties withVaultId(String vaultId) {
-        this.vaultId = vaultId;
         return this;
     }
 

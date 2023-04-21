@@ -11,10 +11,13 @@ import java.util.Collection;
 
 /** Represents the mode the indexer is executing in. */
 public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
-    /** Static value indexingAllDocs for IndexingMode. */
+    /** The indexer is indexing all documents in the datasource. */
     public static final IndexingMode INDEXING_ALL_DOCS = fromString("indexingAllDocs");
 
-    /** Static value indexingResetDocs for IndexingMode. */
+    /**
+     * The indexer is indexing selective, reset documents in the datasource. The documents being indexed are defined on
+     * indexer status.
+     */
     public static final IndexingMode INDEXING_RESET_DOCS = fromString("indexingResetDocs");
 
     /**

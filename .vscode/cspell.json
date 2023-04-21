@@ -204,6 +204,7 @@
   ],
   "words": [
     "adal",
+    "akhtabar",
     "amqp",
     "Amqp",
     "AMQP",
@@ -212,6 +213,7 @@
     "AUHours",
     "autoscale",
     "autodetection",
+    "awps",
     "azsdk",
     "azsynapse",
     "azurecr",
@@ -240,24 +242,32 @@
     "databricks",
     "DAZURE",
     "ddos",
+    "dcis",
     "deallocate",
     "decryptor",
     "Deserialization",
     "destfile",
     "Dgenerate",
+    "Dincludes",
+    "Dverbose",
+    "dicom",
     "doclint",
     "doclinting",
     "doctitle",
     "dlocal",
+    "dtlk",
+    "dtlksd",
     "dummyrg",
     "eastus",
     "embedme",
     "encryptor",
     "endtoend",
+    "Esto",
     "etag",
     "eventhub",
     "eventhubs",
     "failondeprecatedstatus",
+    "FHIR",
     "filereports",
     "gapra",
     "gltf",
@@ -269,8 +279,10 @@
     "hanaonazure",
     "hdfs",
     "hdinsight",
+    "hudha",
     "hvac",
     "hybridkubernetes",
+    "insights",
     "intellij",
     "Intellij",
     "iotcentral",
@@ -292,6 +304,7 @@
     "KUBERNETES",
     "kubernetesconfiguration",
     "kusto",
+    "kvlt",
     "linecoverage",
     "linksource",
     "listbyconfigurationprofileassignments",
@@ -300,7 +313,9 @@
     "Lucene",
     "mgmt",
     "mibps",
+    "Mirena",
     "Mockito",
+    "mosca",
     "msal",
     "msix",
     "MSRC",
@@ -311,12 +326,16 @@
     "okhttp",
     "OLTP",
     "onboarded",
+    "Onco",
     "onenote",
+    "premf",
     "pwsh",
     "protonj",
+    "prueba",
     "PSQL",
     "qpid",
     "racdw",
+    "RAGRS",
     "reimage",
     "reimaging",
     "Remediations",
@@ -331,7 +350,9 @@
     "scalastyle",
     "schemaregistryapacheavroserializer",
     "servicebus",
+    "sftdl",
     "skus",
+    "snomed",
     "sonatype",
     "Sonatype",
     "spotbugs",
@@ -343,6 +364,7 @@
     "timeframe",
     "tofile",
     "toFile",
+    "umls",
     "undelete",
     "unmanaged",
     "unmutated",
@@ -353,6 +375,7 @@
     "westcentralus",
     "westus",
     "windowtitle",
+    "wordomatic",
     "xlint",
     "XLint"
   ],
@@ -628,6 +651,14 @@
       "words": [
         "Bourrillion",
         "kevinb"
+      ]
+    },
+    {
+      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "words": [
+        "Pfast",
+        "Pdirect",
+	"Pmulti"
       ]
     },
     {
@@ -989,6 +1020,16 @@
         "usgovcloudapi",
         "Pnative",
         "Djava"
+      ]
+    },
+    {
+      "filename": "sdk/purview/azure-analytics-purview-sharing/**",
+      "words": [
+        "ADLS",
+        "Adls"
+      ],
+      "ignoreRegExpList": [
+        "/\/\/\\s*(BEGIN:|END:).*/"
       ]
     }
   ],

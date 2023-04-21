@@ -7,11 +7,10 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.EventHubEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EventHubEndpointTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EventHubEndpoint model =
             BinaryData
                 .fromString(
@@ -21,8 +20,8 @@ public final class EventHubEndpointTests {
         Assertions.assertEquals("n", model.eventHubName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EventHubEndpoint model =
             new EventHubEndpoint().withFullyQualifiedNamespace("qkvpuvksgplsakn").withEventHubName("n");
         model = BinaryData.fromObject(model).toObject(EventHubEndpoint.class);

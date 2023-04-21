@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * True if there is a firmware update ready to install on this Cache. The firmware will automatically be installed after
+ * True if there is a firmware update ready to install on this cache. The firmware will automatically be installed after
  * firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
  */
 public final class FirmwareStatusType extends ExpandableStringEnum<FirmwareStatusType> {

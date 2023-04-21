@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RevisionHealthState. */
+/** Current health State of the revision. */
 public final class RevisionHealthState extends ExpandableStringEnum<RevisionHealthState> {
     /** Static value Healthy for RevisionHealthState. */
     public static final RevisionHealthState HEALTHY = fromString("Healthy");
@@ -18,6 +18,15 @@ public final class RevisionHealthState extends ExpandableStringEnum<RevisionHeal
 
     /** Static value None for RevisionHealthState. */
     public static final RevisionHealthState NONE = fromString("None");
+
+    /**
+     * Creates a new instance of RevisionHealthState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RevisionHealthState() {
+    }
 
     /**
      * Creates or finds a RevisionHealthState from its string representation.

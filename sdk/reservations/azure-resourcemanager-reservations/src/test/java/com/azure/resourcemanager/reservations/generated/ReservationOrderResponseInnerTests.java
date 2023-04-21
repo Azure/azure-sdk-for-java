@@ -22,61 +22,69 @@ public final class ReservationOrderResponseInnerTests {
         ReservationOrderResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"etag\":1230254023,\"properties\":{\"displayName\":\"dqxhcrmnohjtckwh\",\"requestDateTime\":\"2021-05-11T08:11:32Z\",\"createdDateTime\":\"2021-07-22T01:38:16Z\",\"expiryDateTime\":\"2020-12-23T06:13:14Z\",\"benefitStartTime\":\"2021-01-18T03:53:41Z\",\"originalQuantity\":1921161938,\"term\":\"P3Y\",\"provisioningState\":\"ConfirmedResourceHold\",\"billingPlan\":\"Upfront\",\"planInformation\":{\"transactions\":[]},\"reservations\":[{\"location\":\"snb\",\"etag\":1701008083,\"kind\":\"Microsoft.Compute\",\"id\":\"cpc\",\"name\":\"shurzafbljjgpbto\",\"type\":\"c\"}],\"reviewDateTime\":\"2021-08-23T17:30:32Z\"},\"id\":\"javbqidtqajz\",\"name\":\"ulpkudjkrl\",\"type\":\"hbzhfepg\"}")
+                    "{\"etag\":1381464845,\"properties\":{\"displayName\":\"yulpkudjkr\",\"requestDateTime\":\"2021-10-21T07:00:30Z\",\"createdDateTime\":\"2021-05-27T14:40:55Z\",\"expiryDateTime\":\"2021-01-13T00:49:17Z\",\"benefitStartTime\":\"2021-06-22T06:44:59Z\",\"originalQuantity\":384033547,\"term\":\"P1Y\",\"provisioningState\":\"Failed\",\"billingPlan\":\"Monthly\",\"planInformation\":{\"transactions\":[]},\"reservations\":[{\"location\":\"hhbcsglummajtjao\",\"etag\":1555681942,\"kind\":\"Microsoft.Compute\",\"id\":\"k\",\"name\":\"pxokajionp\",\"type\":\"mexgstxgcp\"},{\"location\":\"gmaajrm\",\"etag\":1305884847,\"kind\":\"Microsoft.Compute\",\"id\":\"vmclw\",\"name\":\"ijcoejctb\",\"type\":\"aqsqsycbkbfk\"},{\"location\":\"kdkexxp\",\"etag\":922056801,\"kind\":\"Microsoft.Compute\",\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"reviewDateTime\":\"2021-09-06T23:00:29Z\"},\"id\":\"qeojnxqbzvddntw\",\"name\":\"deicbtwnpzao\",\"type\":\"vuhrhcffcyddgl\"}")
                 .toObject(ReservationOrderResponseInner.class);
-        Assertions.assertEquals(1230254023, model.etag());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T08:11:32Z"), model.requestDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T01:38:16Z"), model.createdDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T06:13:14Z"), model.expiryDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T03:53:41Z"), model.benefitStartTime());
-        Assertions.assertEquals(1921161938, model.originalQuantity());
-        Assertions.assertEquals(ReservationTerm.P3Y, model.term());
-        Assertions.assertEquals(ProvisioningState.CONFIRMED_RESOURCE_HOLD, model.provisioningState());
-        Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.billingPlan());
-        Assertions.assertEquals("snb", model.reservations().get(0).location());
-        Assertions.assertEquals(1701008083, model.reservations().get(0).etag());
+        Assertions.assertEquals(1381464845, model.etag());
+        Assertions.assertEquals("yulpkudjkr", model.displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T07:00:30Z"), model.requestDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T14:40:55Z"), model.createdDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T00:49:17Z"), model.expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T06:44:59Z"), model.benefitStartTime());
+        Assertions.assertEquals(384033547, model.originalQuantity());
+        Assertions.assertEquals(ReservationTerm.P1Y, model.term());
+        Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.billingPlan());
+        Assertions.assertEquals("hhbcsglummajtjao", model.reservations().get(0).location());
+        Assertions.assertEquals(1555681942, model.reservations().get(0).etag());
         Assertions.assertEquals(Kind.MICROSOFT_COMPUTE, model.reservations().get(0).kind());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T17:30:32Z"), model.reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T23:00:29Z"), model.reviewDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReservationOrderResponseInner model =
             new ReservationOrderResponseInner()
-                .withEtag(1230254023)
-                .withDisplayName("dqxhcrmnohjtckwh")
-                .withRequestDateTime(OffsetDateTime.parse("2021-05-11T08:11:32Z"))
-                .withCreatedDateTime(OffsetDateTime.parse("2021-07-22T01:38:16Z"))
-                .withExpiryDateTime(OffsetDateTime.parse("2020-12-23T06:13:14Z"))
-                .withBenefitStartTime(OffsetDateTime.parse("2021-01-18T03:53:41Z"))
-                .withOriginalQuantity(1921161938)
-                .withTerm(ReservationTerm.P3Y)
-                .withProvisioningState(ProvisioningState.CONFIRMED_RESOURCE_HOLD)
-                .withBillingPlan(ReservationBillingPlan.UPFRONT)
+                .withEtag(1381464845)
+                .withDisplayName("yulpkudjkr")
+                .withRequestDateTime(OffsetDateTime.parse("2021-10-21T07:00:30Z"))
+                .withCreatedDateTime(OffsetDateTime.parse("2021-05-27T14:40:55Z"))
+                .withExpiryDateTime(OffsetDateTime.parse("2021-01-13T00:49:17Z"))
+                .withBenefitStartTime(OffsetDateTime.parse("2021-06-22T06:44:59Z"))
+                .withOriginalQuantity(384033547)
+                .withTerm(ReservationTerm.P1Y)
+                .withProvisioningState(ProvisioningState.FAILED)
+                .withBillingPlan(ReservationBillingPlan.MONTHLY)
                 .withPlanInformation(new ReservationOrderBillingPlanInformation().withTransactions(Arrays.asList()))
                 .withReservations(
                     Arrays
                         .asList(
                             new ReservationResponseInner()
-                                .withLocation("snb")
-                                .withEtag(1701008083)
+                                .withLocation("hhbcsglummajtjao")
+                                .withEtag(1555681942)
+                                .withKind(Kind.MICROSOFT_COMPUTE),
+                            new ReservationResponseInner()
+                                .withLocation("gmaajrm")
+                                .withEtag(1305884847)
+                                .withKind(Kind.MICROSOFT_COMPUTE),
+                            new ReservationResponseInner()
+                                .withLocation("kdkexxp")
+                                .withEtag(922056801)
                                 .withKind(Kind.MICROSOFT_COMPUTE)))
-                .withReviewDateTime(OffsetDateTime.parse("2021-08-23T17:30:32Z"));
+                .withReviewDateTime(OffsetDateTime.parse("2021-09-06T23:00:29Z"));
         model = BinaryData.fromObject(model).toObject(ReservationOrderResponseInner.class);
-        Assertions.assertEquals(1230254023, model.etag());
-        Assertions.assertEquals("dqxhcrmnohjtckwh", model.displayName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T08:11:32Z"), model.requestDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T01:38:16Z"), model.createdDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-23T06:13:14Z"), model.expiryDateTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-18T03:53:41Z"), model.benefitStartTime());
-        Assertions.assertEquals(1921161938, model.originalQuantity());
-        Assertions.assertEquals(ReservationTerm.P3Y, model.term());
-        Assertions.assertEquals(ProvisioningState.CONFIRMED_RESOURCE_HOLD, model.provisioningState());
-        Assertions.assertEquals(ReservationBillingPlan.UPFRONT, model.billingPlan());
-        Assertions.assertEquals("snb", model.reservations().get(0).location());
-        Assertions.assertEquals(1701008083, model.reservations().get(0).etag());
+        Assertions.assertEquals(1381464845, model.etag());
+        Assertions.assertEquals("yulpkudjkr", model.displayName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T07:00:30Z"), model.requestDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T14:40:55Z"), model.createdDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T00:49:17Z"), model.expiryDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T06:44:59Z"), model.benefitStartTime());
+        Assertions.assertEquals(384033547, model.originalQuantity());
+        Assertions.assertEquals(ReservationTerm.P1Y, model.term());
+        Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(ReservationBillingPlan.MONTHLY, model.billingPlan());
+        Assertions.assertEquals("hhbcsglummajtjao", model.reservations().get(0).location());
+        Assertions.assertEquals(1555681942, model.reservations().get(0).etag());
         Assertions.assertEquals(Kind.MICROSOFT_COMPUTE, model.reservations().get(0).kind());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T17:30:32Z"), model.reviewDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-06T23:00:29Z"), model.reviewDateTime());
     }
 }

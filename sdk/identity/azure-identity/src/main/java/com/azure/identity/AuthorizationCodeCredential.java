@@ -19,8 +19,35 @@ import java.net.URI;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * An AAD credential that acquires a token with an Oauth 2.0 authorization code grant
- * for an AAD application.
+ * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
+ * authenticate with <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active
+ * Directory (Azure AD)</a> and obtain an authorization code that can be used to request an access token to access
+ * Azure resources. It is a widely used authentication mechanism and is supported by a wide range of Azure services
+ * and applications. It provides a secure and scalable way to authenticate users and grant them access to Azure
+ * resources.
+ * The AuthorizationCodeCredential authenticates a user or an application and acquires a token with the configured
+ * authorization code and the redirectURL where authorization code was received.</p>
+ *
+ * <p><strong>Sample: Construct AuthorizationCodeCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.AuthorizationCodeCredential},
+ * using the {@link com.azure.identity.AuthorizationCodeCredentialBuilder} to configure it.
+ * The {@code authorizationCode}, {@code redirectUrl} and {@code clientId} are required to be configured to create
+ * {@link AuthorizationCodeCredential}. Once this credential is created, it may be passed into the builder of many of
+ * the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.authorizationcodecredential.construct -->
+ * <pre>
+ * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;
+ *     .authorizationCode&#40;&quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
+ *     .redirectUrl&#40;&quot;&#123;redirectUrl-where-authorization-code-is-received&#125;&quot;&#41;
+ *     .clientId&#40;&quot;&#123;clientId-of-application-being-authenticated&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.authorizationcodecredential.construct -->
+ *
+ * @see com.azure.identity
+ * @see AuthorizationCodeCredentialBuilder
  */
 @Immutable
 public class AuthorizationCodeCredential implements TokenCredential {

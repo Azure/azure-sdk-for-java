@@ -55,6 +55,7 @@ import com.azure.resourcemanager.eventhubs.models.EventHubDisasterRecoveryPairin
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
 import com.azure.resourcemanager.eventhubs.models.EventHubs;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.models.ManagedHsms;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActionGroups;
@@ -833,5 +834,10 @@ public final class AzureResourceManager {
     /** @return entry point to disk encryption sets management */
     public DiskEncryptionSets diskEncryptionSets() {
         return this.computeManager.diskEncryptionSets();
+    }
+
+    /** @return entry point to Managed Hardware Security Module management */
+    public ManagedHsms managedHsms() {
+        return this.keyVaultManager.managedHsms();
     }
 }

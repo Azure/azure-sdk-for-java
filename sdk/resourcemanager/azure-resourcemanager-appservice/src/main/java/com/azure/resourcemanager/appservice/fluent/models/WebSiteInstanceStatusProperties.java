@@ -51,6 +51,10 @@ public final class WebSiteInstanceStatusProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ContainerInfo> containers;
 
+    /** Creates an instance of WebSiteInstanceStatusProperties class. */
+    public WebSiteInstanceStatusProperties() {
+    }
+
     /**
      * Get the state property: The state property.
      *

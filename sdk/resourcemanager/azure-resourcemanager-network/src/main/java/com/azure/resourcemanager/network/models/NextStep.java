@@ -20,6 +20,15 @@ public final class NextStep extends ExpandableStringEnum<NextStep> {
     public static final NextStep TERMINATE = fromString("Terminate");
 
     /**
+     * Creates a new instance of NextStep value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NextStep() {
+    }
+
+    /**
      * Creates or finds a NextStep from its string representation.
      *
      * @param name a name to look for.

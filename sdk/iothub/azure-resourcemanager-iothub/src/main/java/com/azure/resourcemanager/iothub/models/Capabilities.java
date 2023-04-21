@@ -17,6 +17,15 @@ public final class Capabilities extends ExpandableStringEnum<Capabilities> {
     public static final Capabilities DEVICE_MANAGEMENT = fromString("DeviceManagement");
 
     /**
+     * Creates a new instance of Capabilities value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Capabilities() {
+    }
+
+    /**
      * Creates or finds a Capabilities from its string representation.
      *
      * @param name a name to look for.

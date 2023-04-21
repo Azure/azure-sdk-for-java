@@ -47,6 +47,12 @@ public final class RecognizeOptionsInternal {
     @JsonProperty(value = "choices")
     private List<RecognizeChoiceInternal> choices;
 
+    /*
+     * Defines continuous speech recognition option.
+     */
+    @JsonProperty(value = "speechOptions")
+    private SpeechOptionsInternal speechOptions;
+
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
      *
@@ -164,6 +170,26 @@ public final class RecognizeOptionsInternal {
      */
     public RecognizeOptionsInternal setChoices(List<RecognizeChoiceInternal> choices) {
         this.choices = choices;
+        return this;
+    }
+
+    /**
+     * Get the speechOptions property: Defines continuous speech recognition option.
+     *
+     * @return the speechOptions value.
+     */
+    public SpeechOptionsInternal getSpeechOptions() {
+        return this.speechOptions;
+    }
+
+    /**
+     * Set the speechOptions property: Defines continuous speech recognition option.
+     *
+     * @param speechOptions the speechOptions value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechOptions(SpeechOptionsInternal speechOptions) {
+        this.speechOptions = speechOptions;
         return this;
     }
 }

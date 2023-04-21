@@ -3,8 +3,6 @@
 
 package com.azure.communication.phonenumbers.siprouting;
 
-import com.azure.communication.phonenumbers.SipRoutingClientBuilder;
-
 public class BuilderJavaDocCodeSnippets {
 
     /**

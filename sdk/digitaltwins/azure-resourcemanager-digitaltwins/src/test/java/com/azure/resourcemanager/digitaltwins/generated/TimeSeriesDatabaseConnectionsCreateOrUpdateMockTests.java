@@ -34,7 +34,7 @@ public final class TimeSeriesDatabaseConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Succeeded\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"flrwd\"}},\"id\":\"dlxyjrxs\",\"name\":\"gafcnihgwqapnedg\",\"type\":\"bcvkcvqvpkeq\"}";
+            "{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Succeeded\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"elxprglyatddck\"}},\"id\":\"cuejrjxgci\",\"name\":\"ibrhosxsdqr\",\"type\":\"zoymibmrqyibahw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,17 @@ public final class TimeSeriesDatabaseConnectionsCreateOrUpdateMockTests {
         TimeSeriesDatabaseConnection response =
             manager
                 .timeSeriesDatabaseConnections()
-                .define("c")
-                .withExistingDigitalTwinsInstance("sg", "b")
+                .define("zksmondj")
+                .withExistingDigitalTwinsInstance("yzvqt", "nubexk")
                 .withProperties(
                     new TimeSeriesDatabaseConnectionProperties()
                         .withIdentity(
                             new ManagedIdentityReference()
                                 .withType(IdentityType.USER_ASSIGNED)
-                                .withUserAssignedIdentity("ka")))
+                                .withUserAssignedIdentity("mg")))
                 .create();
 
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.properties().identity().type());
-        Assertions.assertEquals("flrwd", response.properties().identity().userAssignedIdentity());
+        Assertions.assertEquals("elxprglyatddck", response.properties().identity().userAssignedIdentity());
     }
 }

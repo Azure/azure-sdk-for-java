@@ -16,6 +16,10 @@ public final class WorkflowOutputParameter extends WorkflowParameter {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
+    /** Creates an instance of WorkflowOutputParameter class. */
+    public WorkflowOutputParameter() {
+    }
+
     /**
      * Get the error property: Gets the error.
      *

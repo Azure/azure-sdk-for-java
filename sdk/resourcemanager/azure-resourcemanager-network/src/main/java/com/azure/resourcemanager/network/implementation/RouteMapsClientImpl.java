@@ -176,7 +176,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +232,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -342,7 +342,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         } else {
             routeMapParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -410,7 +410,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         } else {
             routeMapParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -498,7 +498,8 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String routeMapName, RouteMapInner routeMapParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeMapName, routeMapParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeMapName, routeMapParameters)
             .getSyncPoller();
     }
 
@@ -522,7 +523,8 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         String routeMapName,
         RouteMapInner routeMapParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeMapName, routeMapParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routeMapName, routeMapParameters, context)
             .getSyncPoller();
     }
 
@@ -649,7 +651,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -704,7 +706,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -778,7 +780,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String routeMapName) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName).getSyncPoller();
     }
 
     /**
@@ -796,7 +798,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String routeMapName, Context context) {
-        return beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, virtualHubName, routeMapName, context).getSyncPoller();
     }
 
     /**
@@ -900,7 +902,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -960,7 +962,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +43,15 @@ public final class TableServiceProperties {
             this.items = items;
         }
     }
+
     /*
      * The set of CORS rules.
      */
     @JsonProperty(value = "Cors")
     private CorsWrapper cors;
+
+    /** Creates an instance of TableServiceProperties class. */
+    public TableServiceProperties() {}
 
     /**
      * Get the logging property: Azure Analytics Logging settings.
@@ -119,7 +122,6 @@ public final class TableServiceProperties {
         if (this.cors == null) {
             this.cors = new CorsWrapper(new ArrayList<CorsRule>());
         }
-
         return this.cors.items;
     }
 

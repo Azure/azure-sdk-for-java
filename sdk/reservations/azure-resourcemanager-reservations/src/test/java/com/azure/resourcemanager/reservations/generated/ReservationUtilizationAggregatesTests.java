@@ -13,7 +13,7 @@ public final class ReservationUtilizationAggregatesTests {
         ReservationUtilizationAggregates model =
             BinaryData
                 .fromString(
-                    "{\"grain\":1.3349712,\"grainUnit\":\"udgwdslfho\",\"value\":17.321093,\"valueUnit\":\"ynpwlbj\"}")
+                    "{\"grain\":84.77034,\"grainUnit\":\"tpngjcrcczsqpjh\",\"value\":15.68377,\"valueUnit\":\"jvnysounqe\"}")
                 .toObject(ReservationUtilizationAggregates.class);
     }
 

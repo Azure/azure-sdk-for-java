@@ -23,6 +23,15 @@ public final class ApplicationGatewayRedirectType extends ExpandableStringEnum<A
     public static final ApplicationGatewayRedirectType TEMPORARY = fromString("Temporary");
 
     /**
+     * Creates a new instance of ApplicationGatewayRedirectType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayRedirectType() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayRedirectType from its string representation.
      *
      * @param name a name to look for.

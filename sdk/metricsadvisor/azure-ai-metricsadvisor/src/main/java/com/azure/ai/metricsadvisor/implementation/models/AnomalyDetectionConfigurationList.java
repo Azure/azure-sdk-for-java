@@ -23,6 +23,9 @@ public final class AnomalyDetectionConfigurationList {
     @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AnomalyDetectionConfigurationList class. */
+    public AnomalyDetectionConfigurationList() {}
+
     /**
      * Get the value property: The value property.
      *

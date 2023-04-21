@@ -20,6 +20,15 @@ public final class AzureFirewallThreatIntelMode extends ExpandableStringEnum<Azu
     public static final AzureFirewallThreatIntelMode OFF = fromString("Off");
 
     /**
+     * Creates a new instance of AzureFirewallThreatIntelMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallThreatIntelMode() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallThreatIntelMode from its string representation.
      *
      * @param name a name to look for.

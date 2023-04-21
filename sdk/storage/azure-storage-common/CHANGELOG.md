@@ -1,14 +1,35 @@
 # Release History
 
-## 12.21.0-beta.1 (Unreleased)
+## 12.22.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
+server timeout interval elapses before the service has finished processing the request, the service returns an error.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.21.0 (2023-04-13)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+
+## 12.21.0-beta.1 (2023-03-28)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+
+## 12.20.1 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 12.20.0 (2023-02-21)
 

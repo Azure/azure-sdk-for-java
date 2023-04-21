@@ -40,6 +40,10 @@ public final class WorkflowTriggerListCallbackUrlQueries {
     @JsonProperty(value = "se")
     private String se;
 
+    /** Creates an instance of WorkflowTriggerListCallbackUrlQueries class. */
+    public WorkflowTriggerListCallbackUrlQueries() {
+    }
+
     /**
      * Get the apiVersion property: The api version.
      *

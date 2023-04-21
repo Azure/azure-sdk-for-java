@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ScopeConnections Get. */
 public final class ScopeConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerScopeConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerScopeConnectionGet.json
      */
     /**
      * Sample code: Get Network Manager Scope Connection.
@@ -22,6 +20,6 @@ public final class ScopeConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getScopeConnections()
-            .getWithResponse("rg1", "testNetworkManager", "TestScopeConnection", Context.NONE);
+            .getWithResponse("rg1", "testNetworkManager", "TestScopeConnection", com.azure.core.util.Context.NONE);
     }
 }

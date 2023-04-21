@@ -5,13 +5,12 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 
 /** Samples for VirtualHubBgpConnections CreateOrUpdate. */
 public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualHubBgpConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualHubBgpConnectionPut.json
      */
     /**
      * Sample code: VirtualHubRouteTableV2Put.
@@ -35,6 +34,6 @@ public final class VirtualHubBgpConnectionsCreateOrUpdateSamples {
                         new SubResource()
                             .withId(
                                 "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/hubVirtualNetworkConnections/hubVnetConn1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,10 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The high availability Type. AvailabilitySet guarantees 99.95% availability. Availability Zone guarantees 99.99%
- * availability.
- */
+/** The high availability type (AvailabilitySet or AvailabilityZone). */
 public final class SapHighAvailabilityType extends ExpandableStringEnum<SapHighAvailabilityType> {
     /** Static value AvailabilitySet for SapHighAvailabilityType. */
     public static final SapHighAvailabilityType AVAILABILITY_SET = fromString("AvailabilitySet");

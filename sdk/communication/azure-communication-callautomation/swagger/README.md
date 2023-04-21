@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://raw.githubusercontent.com/williamzhao87/azure-rest-api-specs/becaba47bb961445fa2f8ab55b0ed199b391d179/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/ae5136ab33aa5d3a4e29028348ac060d0aafb4ab/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -118,11 +118,23 @@ directive:
     from: TextSource
     to: TextSourceInternal
 - rename-model:
+    from: SsmlSource
+    to: SsmlSourceInternal
+- rename-model:
     from: PlayOptions
     to: PlayOptionsInternal
 - rename-model:
     from: StartCallRecordingRequest
     to: StartCallRecordingRequestInternal
+- rename-model:
+    from: ContinuousDtmfRecognitionOptions
+    to: ContinuousDtmfRecognitionOptionsInternal
+- rename-model:
+    from: SendDtmfOptions
+    to: SendDtmfOptionsInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
 - rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
@@ -138,6 +150,9 @@ directive:
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
+- rename-model:
+    from: SpeechOptions
+    to: SpeechOptionsInternal
 - rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
@@ -162,6 +177,15 @@ directive:
 - rename-model:
     from: ChoiceResult
     to: ChoiceResultInternal
+- rename-model:
+    from: SpeechResult
+    to: SpeechResultInternal
+- rename-model:
+    from: ExternalStorage
+    to: ExternalStorageInternal
+- rename-model:
+    from: BlobStorage
+    to: BlobStorageInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -342,4 +366,13 @@ directive:
   where: $.definitions.Gender["x-ms-enum"]
   transform: >
     $.name = "GenderTypeInternal";
+```
+
+### Rename RecordingStorageType to RecordingStorageTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingStorageType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingStorageTypeInternal";
 ```

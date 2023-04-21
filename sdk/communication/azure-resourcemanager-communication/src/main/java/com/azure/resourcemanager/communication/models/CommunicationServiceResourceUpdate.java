@@ -19,6 +19,10 @@ public final class CommunicationServiceResourceUpdate extends TaggedResource {
     @JsonProperty(value = "properties")
     private CommunicationServiceUpdateProperties innerProperties;
 
+    /** Creates an instance of CommunicationServiceResourceUpdate class. */
+    public CommunicationServiceResourceUpdate() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the service.
      *

@@ -27,6 +27,15 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
         fromString("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots");
 
     /**
+     * Creates a new instance of CheckNameResourceTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CheckNameResourceTypes() {
+    }
+
+    /**
      * Creates or finds a CheckNameResourceTypes from its string representation.
      *
      * @param name a name to look for.

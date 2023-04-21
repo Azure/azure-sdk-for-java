@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** List of Cache health states. */
+/**
+ * List of cache health states. Down is when the cluster is not responding. Degraded is when its functioning but has
+ * some alerts. Transitioning when it is creating or deleting. Unknown will be returned in old api versions when a new
+ * value is added in future versions. WaitingForKey is when the create is waiting for the system assigned identity to be
+ * given access to the encryption key in the encryption settings.
+ */
 public final class HealthStateType extends ExpandableStringEnum<HealthStateType> {
     /** Static value Unknown for HealthStateType. */
     public static final HealthStateType UNKNOWN = fromString("Unknown");

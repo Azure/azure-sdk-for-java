@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Resource Reference. */
@@ -13,8 +14,12 @@ public class ResourceReference {
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of ResourceReference class. */
+    public ResourceReference() {
+    }
 
     /**
      * Get the id property: Resource ID.
@@ -42,5 +47,12 @@ public class ResourceReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (id() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model ResourceReference"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceReference.class);
 }

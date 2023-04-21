@@ -30,10 +30,6 @@ public final class AnalyzeTextTaskResultsKind extends ExpandableStringEnum<Analy
     /** Static value EntityLinkingResults for AnalyzeTextTaskResultsKind. */
     public static final AnalyzeTextTaskResultsKind ENTITY_LINKING_RESULTS = fromString("EntityLinkingResults");
 
-    /** Static value DynamicClassificationResults for AnalyzeTextTaskResultsKind. */
-    public static final AnalyzeTextTaskResultsKind DYNAMIC_CLASSIFICATION_RESULTS =
-            fromString("DynamicClassificationResults");
-
     /**
      * Creates or finds a AnalyzeTextTaskResultsKind from its string representation.
      *

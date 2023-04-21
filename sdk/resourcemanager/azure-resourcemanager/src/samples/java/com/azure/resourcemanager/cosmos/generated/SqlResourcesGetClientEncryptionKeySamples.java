@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for SqlResources GetClientEncryptionKey. */
 public final class SqlResourcesGetClientEncryptionKeySamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBSqlClientEncryptionKeyGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBSqlClientEncryptionKeyGet.json
      */
     /**
      * Sample code: CosmosDBClientEncryptionKeyGet.

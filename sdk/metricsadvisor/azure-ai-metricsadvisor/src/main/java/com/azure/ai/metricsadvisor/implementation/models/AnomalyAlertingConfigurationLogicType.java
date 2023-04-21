@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnomalyAlertingConfigurationLogicType. */
+/**
+ * cross metrics operator
+ *
+ * <p>should be specified when setting up multiple metric alerting configurations.
+ */
 public final class AnomalyAlertingConfigurationLogicType
         extends ExpandableStringEnum<AnomalyAlertingConfigurationLogicType> {
     /** Static value AND for AnomalyAlertingConfigurationLogicType. */
@@ -21,6 +25,14 @@ public final class AnomalyAlertingConfigurationLogicType
     public static final AnomalyAlertingConfigurationLogicType XOR = fromString("XOR");
 
     /**
+     * Creates a new instance of AnomalyAlertingConfigurationLogicType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnomalyAlertingConfigurationLogicType() {}
+
+    /**
      * Creates or finds a AnomalyAlertingConfigurationLogicType from its string representation.
      *
      * @param name a name to look for.
@@ -31,7 +43,11 @@ public final class AnomalyAlertingConfigurationLogicType
         return fromString(name, AnomalyAlertingConfigurationLogicType.class);
     }
 
-    /** @return known AnomalyAlertingConfigurationLogicType values. */
+    /**
+     * Gets known AnomalyAlertingConfigurationLogicType values.
+     *
+     * @return known AnomalyAlertingConfigurationLogicType values.
+     */
     public static Collection<AnomalyAlertingConfigurationLogicType> values() {
         return values(AnomalyAlertingConfigurationLogicType.class);
     }

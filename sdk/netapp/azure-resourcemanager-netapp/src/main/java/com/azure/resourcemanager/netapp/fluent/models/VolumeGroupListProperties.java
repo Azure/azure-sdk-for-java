@@ -23,6 +23,10 @@ public final class VolumeGroupListProperties {
     @JsonProperty(value = "groupMetaData")
     private VolumeGroupMetadata groupMetadata;
 
+    /** Creates an instance of VolumeGroupListProperties class. */
+    public VolumeGroupListProperties() {
+    }
+
     /**
      * Get the provisioningState property: Azure lifecycle management.
      *

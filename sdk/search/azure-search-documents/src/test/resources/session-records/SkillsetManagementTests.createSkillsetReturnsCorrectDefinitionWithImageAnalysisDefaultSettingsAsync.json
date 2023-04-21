@@ -1,54 +1,134 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "e098bb0e-afd4-442e-8c85-e00c50d190e8",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "435",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:38 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "af9ca940-e682-409b-9ecc-f388d0d24364"
+      },
+      "RequestBody": {
+        "name": "image-analysis-skillset4616369f85b310c",
+        "description": "Skillset for testing default configuration",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.ImageAnalysisSkill",
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url"
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "description",
+                "targetName": "mydescription"
+              }
+            ],
+            "name": "myimage",
+            "description": "Tested image analysis skill",
+            "context": "/document"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "af9ca940-e682-409b-9ecc-f388d0d24364",
+        "Content-Length": "768",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:37 GMT",
+        "elapsed-time": "55",
+        "ETag": "W/\u00220x8DB20DB77BF3504\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027image-analysis-skillset4616369f85b310c\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "af9ca940-e682-409b-9ecc-f388d0d24364",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "af9ca940-e682-409b-9ecc-f388d0d24364"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB77BF3504\u0022",
+        "name": "image-analysis-skillset4616369f85b310c",
+        "description": "Skillset for testing default configuration",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.ImageAnalysisSkill",
+            "name": "myimage",
+            "description": "Tested image analysis skill",
+            "context": "/document",
+            "defaultLanguageCode": null,
+            "visualFeatures": [],
+            "details": [],
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "description",
+                "targetName": "mydescription"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "e098bb0e-afd4-442e-8c85-e00c50d190e8",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:04 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "e098bb0e-afd4-442e-8c85-e00c50d190e8",
-      "ETag" : "W/\"0x8DAF8CBDA3AC287\"",
-      "elapsed-time" : "49",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "756",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBDA3AC287\\\"\",\"name\":\"image-analysis-skillset92096858477af07\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"visualFeatures\":[],\"details\":[],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "e098bb0e-afd4-442e-8c85-e00c50d190e8",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('image-analysis-skillset92096858477af07')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('image-analysis-skillset92096858477af07')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "a8c87edd-d964-440a-ad15-e42b6b136b7a"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "a8c87edd-d964-440a-ad15-e42b6b136b7a",
-      "elapsed-time" : "27",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "a8c87edd-d964-440a-ad15-e42b6b136b7a",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:04 GMT",
-      "x-ms-client-request-id" : "a8c87edd-d964-440a-ad15-e42b6b136b7a"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "image-analysis-skillset92096858477af07" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027image-analysis-skillset4616369f85b310c\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:39 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f411ef36-4919-4a18-a437-028d20250328"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "f411ef36-4919-4a18-a437-028d20250328",
+        "Date": "Thu, 09 Mar 2023 20:18:37 GMT",
+        "elapsed-time": "90",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "f411ef36-4919-4a18-a437-028d20250328",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "f411ef36-4919-4a18-a437-028d20250328"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "image-analysis-skillset4616369f85b310c"
+  }
 }

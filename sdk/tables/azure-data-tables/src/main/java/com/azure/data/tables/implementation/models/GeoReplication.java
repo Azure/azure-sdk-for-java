@@ -7,9 +7,11 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /** The GeoReplication model. */
+@JacksonXmlRootElement(localName = "GeoReplication")
 @Fluent
 public final class GeoReplication {
     /*
@@ -24,6 +26,9 @@ public final class GeoReplication {
      */
     @JsonProperty(value = "LastSyncTime", required = true)
     private DateTimeRfc1123 lastSyncTime;
+
+    /** Creates an instance of GeoReplication class. */
+    public GeoReplication() {}
 
     /**
      * Get the status property: The status of the secondary location.

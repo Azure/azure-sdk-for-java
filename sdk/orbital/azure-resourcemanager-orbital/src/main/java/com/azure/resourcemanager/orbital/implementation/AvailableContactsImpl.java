@@ -7,6 +7,7 @@ package com.azure.resourcemanager.orbital.implementation;
 import com.azure.resourcemanager.orbital.fluent.models.AvailableContactsInner;
 import com.azure.resourcemanager.orbital.models.AvailableContacts;
 import com.azure.resourcemanager.orbital.models.AvailableContactsSpacecraft;
+import java.time.OffsetDateTime;
 
 public final class AvailableContactsImpl implements AvailableContacts {
     private AvailableContactsInner innerObject;
@@ -25,6 +26,42 @@ public final class AvailableContactsImpl implements AvailableContacts {
 
     public String groundStationName() {
         return this.innerModel().groundStationName();
+    }
+
+    public Float maximumElevationDegrees() {
+        return this.innerModel().maximumElevationDegrees();
+    }
+
+    public OffsetDateTime txStartTime() {
+        return this.innerModel().txStartTime();
+    }
+
+    public OffsetDateTime txEndTime() {
+        return this.innerModel().txEndTime();
+    }
+
+    public OffsetDateTime rxStartTime() {
+        return this.innerModel().rxStartTime();
+    }
+
+    public OffsetDateTime rxEndTime() {
+        return this.innerModel().rxEndTime();
+    }
+
+    public Float startAzimuthDegrees() {
+        return this.innerModel().startAzimuthDegrees();
+    }
+
+    public Float endAzimuthDegrees() {
+        return this.innerModel().endAzimuthDegrees();
+    }
+
+    public Float startElevationDegrees() {
+        return this.innerModel().startElevationDegrees();
+    }
+
+    public Float endElevationDegrees() {
+        return this.innerModel().endElevationDegrees();
     }
 
     public AvailableContactsInner innerModel() {

@@ -38,7 +38,7 @@ public final class StorageSpacesOperationsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"hciStorageProfile\":{\"mocGroup\":\"uneqsxvmhf\",\"mocLocation\":\"zjyi\",\"mocStorageContainer\":\"as\"},\"vmwareStorageProfile\":{\"datacenter\":\"dyp\",\"datastore\":\"yue\",\"folder\":\"lynsqyrpf\",\"resourcePool\":\"brlttymsjnygq\"},\"provisioningState\":\"Succeeded\",\"status\":{}},\"extendedLocation\":{\"type\":\"gtilax\",\"name\":\"fhqlyvi\"},\"location\":\"ouwivkxoyzunbixx\",\"tags\":{\"ivtsoxfrkenxpm\":\"kvcpwpgclr\",\"ao\":\"yefrpmpdnqqska\"},\"id\":\"vmm\",\"name\":\"npqfrtqlkzmeg\",\"type\":\"itgvkx\"}";
+            "{\"properties\":{\"hciStorageProfile\":{\"mocGroup\":\"ajnjwltlwtjj\",\"mocLocation\":\"ktalhsnvkcdmxz\",\"mocStorageContainer\":\"oaimlnw\"},\"vmwareStorageProfile\":{\"datacenter\":\"omylwea\",\"datastore\":\"lcsethwwnpj\",\"folder\":\"fz\",\"resourcePool\":\"pchwa\"},\"provisioningState\":\"Succeeded\",\"status\":{}},\"extendedLocation\":{\"type\":\"epgfew\",\"name\":\"wlyxgncxyk\"},\"location\":\"hdjhlimmbcx\",\"tags\":{\"qizxfpxtgqscjavf\":\"cporxvxcjz\",\"r\":\"juhdqazkmtgguwpi\",\"f\":\"jcivmmg\",\"uvyinzqodfvpgs\":\"fiwrxgkn\"},\"id\":\"oxgsgbpfgzdjtx\",\"name\":\"zflbqvg\",\"type\":\"qvlgafcqusrdvetn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,38 +69,48 @@ public final class StorageSpacesOperationsCreateOrUpdateMockTests {
         StorageSpaces response =
             manager
                 .storageSpacesOperations()
-                .define("cporxvxcjz")
-                .withRegion("zflbqvg")
-                .withExistingResourceGroup("h")
-                .withTags(mapOf("nwsdtutnwlduyc", "lgafcqusrdve"))
+                .define("hlhzdsqtzbsrgno")
+                .withRegion("lqxihhrmooiz")
+                .withExistingResourceGroup("cuplcplcwkhih")
+                .withTags(
+                    mapOf(
+                        "hyrpetogebjoxs",
+                        "ypxiutcxap",
+                        "abrqnkkzj",
+                        "hvnh",
+                        "rgaehvvibrxjj",
+                        "jb",
+                        "lftidgfcwqmpim",
+                        "toqbeitpkxztmoob"))
                 .withProperties(
                     new StorageSpacesProperties()
                         .withHciStorageProfile(
                             new StorageSpacesPropertiesHciStorageProfile()
-                                .withMocGroup("xfpxtgqscja")
-                                .withMocLocation("t")
-                                .withMocStorageContainer("hdqazkmtgguwp"))
+                                .withMocGroup("fgmvecactxmwo")
+                                .withMocLocation("yowc")
+                                .withMocStorageContainer("qovekqvgqou"))
                         .withVmwareStorageProfile(
                             new StorageSpacesPropertiesVmwareStorageProfile()
-                                .withDatacenter("ajc")
-                                .withDatastore("m")
-                                .withFolder("hfcf")
-                                .withResourcePool("rxgkne"))
+                                .withDatacenter("zmpjwyiv")
+                                .withDatastore("kfxcvhrfs")
+                                .withFolder("uagrttikteusqc")
+                                .withResourcePool("vyklxuby"))
                         .withStatus(new StorageSpacesPropertiesStatus()))
-                .withExtendedLocation(new StorageSpacesExtendedLocation().withType("dfvpg").withName("oxgsgbpfgzdjtx"))
+                .withExtendedLocation(
+                    new StorageSpacesExtendedLocation().withType("lcqcuubgqibrt").withName("metttwgd"))
                 .create();
 
-        Assertions.assertEquals("ouwivkxoyzunbixx", response.location());
-        Assertions.assertEquals("kvcpwpgclr", response.tags().get("ivtsoxfrkenxpm"));
-        Assertions.assertEquals("uneqsxvmhf", response.properties().hciStorageProfile().mocGroup());
-        Assertions.assertEquals("zjyi", response.properties().hciStorageProfile().mocLocation());
-        Assertions.assertEquals("as", response.properties().hciStorageProfile().mocStorageContainer());
-        Assertions.assertEquals("dyp", response.properties().vmwareStorageProfile().datacenter());
-        Assertions.assertEquals("yue", response.properties().vmwareStorageProfile().datastore());
-        Assertions.assertEquals("lynsqyrpf", response.properties().vmwareStorageProfile().folder());
-        Assertions.assertEquals("brlttymsjnygq", response.properties().vmwareStorageProfile().resourcePool());
-        Assertions.assertEquals("gtilax", response.extendedLocation().type());
-        Assertions.assertEquals("fhqlyvi", response.extendedLocation().name());
+        Assertions.assertEquals("hdjhlimmbcx", response.location());
+        Assertions.assertEquals("cporxvxcjz", response.tags().get("qizxfpxtgqscjavf"));
+        Assertions.assertEquals("ajnjwltlwtjj", response.properties().hciStorageProfile().mocGroup());
+        Assertions.assertEquals("ktalhsnvkcdmxz", response.properties().hciStorageProfile().mocLocation());
+        Assertions.assertEquals("oaimlnw", response.properties().hciStorageProfile().mocStorageContainer());
+        Assertions.assertEquals("omylwea", response.properties().vmwareStorageProfile().datacenter());
+        Assertions.assertEquals("lcsethwwnpj", response.properties().vmwareStorageProfile().datastore());
+        Assertions.assertEquals("fz", response.properties().vmwareStorageProfile().folder());
+        Assertions.assertEquals("pchwa", response.properties().vmwareStorageProfile().resourcePool());
+        Assertions.assertEquals("epgfew", response.extendedLocation().type());
+        Assertions.assertEquals("wlyxgncxyk", response.extendedLocation().name());
     }
 
     @SuppressWarnings("unchecked")

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualApplianceSites List. */
 public final class VirtualApplianceSitesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkVirtualApplianceSiteList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkVirtualApplianceSiteList.json
      */
     /**
      * Sample code: List all Network Virtual Appliance sites for a given Network Virtual Appliance.
@@ -18,6 +16,11 @@ public final class VirtualApplianceSitesListSamples {
      */
     public static void listAllNetworkVirtualApplianceSitesForAGivenNetworkVirtualAppliance(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualApplianceSites().list("rg1", "nva", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getVirtualApplianceSites()
+            .list("rg1", "nva", com.azure.core.util.Context.NONE);
     }
 }

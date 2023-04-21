@@ -14,20 +14,20 @@ public final class SharedStorageResourceNamesTests {
         SharedStorageResourceNames model =
             BinaryData
                 .fromString(
-                    "{\"sharedStorageAccountName\":\"hhavgrvkffovjz\",\"sharedStorageAccountPrivateEndPointName\":\"jbibg\"}")
+                    "{\"sharedStorageAccountName\":\"mwctondzjluudfd\",\"sharedStorageAccountPrivateEndPointName\":\"gg\"}")
                 .toObject(SharedStorageResourceNames.class);
-        Assertions.assertEquals("hhavgrvkffovjz", model.sharedStorageAccountName());
-        Assertions.assertEquals("jbibg", model.sharedStorageAccountPrivateEndPointName());
+        Assertions.assertEquals("mwctondzjluudfd", model.sharedStorageAccountName());
+        Assertions.assertEquals("gg", model.sharedStorageAccountPrivateEndPointName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedStorageResourceNames model =
             new SharedStorageResourceNames()
-                .withSharedStorageAccountName("hhavgrvkffovjz")
-                .withSharedStorageAccountPrivateEndPointName("jbibg");
+                .withSharedStorageAccountName("mwctondzjluudfd")
+                .withSharedStorageAccountPrivateEndPointName("gg");
         model = BinaryData.fromObject(model).toObject(SharedStorageResourceNames.class);
-        Assertions.assertEquals("hhavgrvkffovjz", model.sharedStorageAccountName());
-        Assertions.assertEquals("jbibg", model.sharedStorageAccountPrivateEndPointName());
+        Assertions.assertEquals("mwctondzjluudfd", model.sharedStorageAccountName());
+        Assertions.assertEquals("gg", model.sharedStorageAccountPrivateEndPointName());
     }
 }

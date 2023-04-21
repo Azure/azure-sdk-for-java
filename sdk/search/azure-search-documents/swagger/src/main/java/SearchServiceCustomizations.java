@@ -540,7 +540,7 @@ public class SearchServiceCustomizations extends Customization {
                 "}"
             ))
             .getJavadoc()
-            .setReturn("Set the configuration property: A dictionary of indexer-specific configuration properties. "
+            .setDescription("Set the configuration property: A dictionary of indexer-specific configuration properties. "
                 + "Each name is the name of a specific property. Each value must be of a primitive type.")
             .setParam("configuration", "the configuration value to set.")
             .setReturn("the IndexingParameters object itself.");

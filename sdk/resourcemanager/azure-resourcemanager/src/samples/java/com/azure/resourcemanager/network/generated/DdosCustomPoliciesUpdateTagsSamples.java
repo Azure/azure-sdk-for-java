@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for DdosCustomPolicies UpdateTags. */
 public final class DdosCustomPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/DdosCustomPolicyUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/DdosCustomPolicyUpdateTags.json
      */
     /**
      * Sample code: DDoS Custom policy Update tags.
@@ -29,7 +28,7 @@ public final class DdosCustomPoliciesUpdateTagsSamples {
                 "rg1",
                 "test-ddos-custom-policy",
                 new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -26,6 +26,15 @@ public final class BgpPeerState extends ExpandableStringEnum<BgpPeerState> {
     public static final BgpPeerState CONNECTED = fromString("Connected");
 
     /**
+     * Creates a new instance of BgpPeerState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BgpPeerState() {
+    }
+
+    /**
      * Creates or finds a BgpPeerState from its string representation.
      *
      * @param name a name to look for.

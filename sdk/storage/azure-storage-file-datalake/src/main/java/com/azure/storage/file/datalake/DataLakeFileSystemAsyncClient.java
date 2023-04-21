@@ -69,8 +69,6 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -103,7 +101,12 @@ public class DataLakeFileSystemAsyncClient {
      */
     public static final String ROOT_FILESYSTEM_NAME = "$root";
 
-    private static final String ROOT_DIRECTORY_NAME = "";
+    /**
+     * Special directory name for the root directory of the file system.
+     * <p>
+     * This should only be used while getting the root directory from the file system client.
+     */
+    public static final String ROOT_DIRECTORY_NAME = "";
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final AzureDataLakeStorageRestAPIImpl azureDataLakeStorage;
@@ -212,11 +215,14 @@ public class DataLakeFileSystemAsyncClient {
      * DataLakeFileSystemAsyncClient's URL. The new DataLakeDirectoryAsyncClient uses the same request policy pipeline
      * as the DataLakeFileSystemAsyncClient.
      *
+     * Note: this should only be used while getting the root directory from the file system client.
+     *
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
      * <pre>
-     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient = client.getRootDirectoryAsyncClient&#40;&#41;;
+     * DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient =
+     *     client.getDirectoryAsyncClient&#40;DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.getRootDirectoryAsyncClient -->
      *
@@ -857,8 +863,7 @@ public class DataLakeFileSystemAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponseAsync(
                 prefix, null, marker, maxResults,
-                null, ListBlobsShowOnly.DELETED, null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout);
+                null, ListBlobsShowOnly.DELETED, null, null, context), timeout);
     }
 
     /**
@@ -1658,8 +1663,7 @@ public class DataLakeFileSystemAsyncClient {
 
         // Initial rest call
         return blobDataLakeStoragePath.getPaths().undeleteWithResponseAsync(null,
-            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            String.format("?%s=%s", Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null, context)
                 .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
                 // Construct the new client and final response from the undelete + getProperties responses
                 .map(response -> {

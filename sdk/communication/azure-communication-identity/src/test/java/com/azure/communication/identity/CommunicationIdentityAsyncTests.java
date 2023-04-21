@@ -174,7 +174,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
             });
     }
 
@@ -192,7 +192,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
             });
     }
 
@@ -475,7 +475,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
             });
     }
 
@@ -495,7 +495,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyErrorSatisfies(throwable -> {
                 assertTrue(throwable instanceof IllegalArgumentException);
                 assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().equals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE));
+                assertEquals(CommunicationIdentityClientUtils.TOKEN_EXPIRATION_OVERFLOW_MESSAGE, throwable.getMessage());
             });
     }
 
@@ -567,7 +567,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithValidParams");
         Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(options);
         StepVerifier.create(response)
-                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+                .assertNext(this::verifyTokenNotEmpty)
                 .verifyComplete();
     }
 
@@ -661,5 +661,4 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     assertTrue(throwable.getMessage().contains("400"));
                 });
     }
-
 }

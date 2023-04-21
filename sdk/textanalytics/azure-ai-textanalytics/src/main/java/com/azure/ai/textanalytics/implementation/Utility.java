@@ -11,7 +11,6 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
 import com.azure.ai.textanalytics.implementation.models.AreaResolution;
 import com.azure.ai.textanalytics.implementation.models.Association;
 import com.azure.ai.textanalytics.implementation.models.BaseResolution;
-import com.azure.ai.textanalytics.implementation.models.BooleanResolution;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
 import com.azure.ai.textanalytics.implementation.models.ClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.Conditionality;
@@ -28,9 +27,6 @@ import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
 import com.azure.ai.textanalytics.implementation.models.DocumentWarning;
-import com.azure.ai.textanalytics.implementation.models.DynamicClassificationResult;
-import com.azure.ai.textanalytics.implementation.models.DynamicClassificationResultDocumentsItem;
-import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResultWithDetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskResult;
@@ -152,7 +148,6 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
@@ -438,13 +433,6 @@ public final class Utility {
             toAnalyzeSentimentResultCollection(((SentimentTaskResult) response.getValue()).getResults()));
     }
 
-    public static Response<DynamicClassifyDocumentResultCollection> toDynamicClassifyDocumentResultCollectionResponse(
-        Response<AnalyzeTextTaskResult> response) {
-        return new SimpleResponse<>(response,
-            toDynamicClassificationResultCollection(
-                ((DynamicClassificationTaskResult) response.getValue()).getResults()));
-    }
-
     // Detect Language
     public static Response<DetectLanguageResultCollection> toDetectLanguageResultCollectionLegacyApi(
         Response<LanguageResult> response) {
@@ -586,47 +574,6 @@ public final class Utility {
                 keyPhraseResult.getStatistics() == null ? null
                     : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
-
-    // Dynamic Classification
-    public static DynamicClassifyDocumentResultCollection toDynamicClassificationResultCollection(
-        DynamicClassificationResult classificationResult) {
-        List<ClassifyDocumentResult> dynamicClassificationResults = new ArrayList<>();
-
-        // A list of document results
-        for (DynamicClassificationResultDocumentsItem documentItem: classificationResult.getDocuments()) {
-            dynamicClassificationResults.add(toDynamicClassificationResult(documentItem));
-        }
-        // Document errors
-        for (InputError documentError : classificationResult.getErrors()) {
-            dynamicClassificationResults.add(new ClassifyDocumentResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError())));
-        }
-
-        DynamicClassifyDocumentResultCollection resultCollection =
-            new DynamicClassifyDocumentResultCollection(dynamicClassificationResults);
-        DynamicClassifyDocumentResultCollectionPropertiesHelper.setStatistics(resultCollection,
-            toBatchStatistics(classificationResult.getStatistics()));
-        DynamicClassifyDocumentResultCollectionPropertiesHelper.setModelVersion(resultCollection,
-            classificationResult.getModelVersion());
-
-        return resultCollection;
-    }
-
-    public static ClassifyDocumentResult toDynamicClassificationResult(
-        DynamicClassificationResultDocumentsItem documentItem) {
-        ClassifyDocumentResult classifyDocumentResult = new ClassifyDocumentResult(
-            documentItem.getId(),
-            documentItem.getStatistics() == null ? null
-                : toTextDocumentStatistics(documentItem.getStatistics()),
-            null);
-        ClassifyDocumentResultPropertiesHelper.setClassifications(classifyDocumentResult,
-            new IterableStream<>(toDocumentClassifications(documentItem.getClassifications())));
-        ClassifyDocumentResultPropertiesHelper.setWarnings(classifyDocumentResult,
-            new IterableStream<>(documentItem.getWarnings().stream().map(
-                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())));
-        return classifyDocumentResult;
-    }
-
 
     // Named Entities Recognition
     public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollection(
@@ -782,12 +729,6 @@ public final class Utility {
             CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
             CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
             return currencyResolution;
-        } else if (resolution instanceof BooleanResolution) {
-            BooleanResolution booleanResolutionImpl = (BooleanResolution) resolution;
-            com.azure.ai.textanalytics.models.BooleanResolution booleanResolution =
-                new com.azure.ai.textanalytics.models.BooleanResolution();
-            BooleanResolutionPropertiesHelper.setValue(booleanResolution, booleanResolutionImpl.isValue());
-            return booleanResolution;
         } else if (resolution instanceof DateTimeResolution) {
             DateTimeResolution dateTimeResolutionImpl = (DateTimeResolution) resolution;
             com.azure.ai.textanalytics.models.DateTimeResolution dateTimeResolution

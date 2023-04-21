@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.ArcAgentProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.AutoUpgradeOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ArcAgentProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ArcAgentProfile model =
             BinaryData
                 .fromString("{\"agentVersion\":\"hsgcbacphejkot\",\"agentAutoUpgrade\":\"Enabled\"}")
@@ -21,8 +20,8 @@ public final class ArcAgentProfileTests {
         Assertions.assertEquals(AutoUpgradeOptions.ENABLED, model.agentAutoUpgrade());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ArcAgentProfile model =
             new ArcAgentProfile().withAgentVersion("hsgcbacphejkot").withAgentAutoUpgrade(AutoUpgradeOptions.ENABLED);
         model = BinaryData.fromObject(model).toObject(ArcAgentProfile.class);

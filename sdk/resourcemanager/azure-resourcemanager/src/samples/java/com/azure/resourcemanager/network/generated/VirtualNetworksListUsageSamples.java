@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworks ListUsage. */
 public final class VirtualNetworksListUsageSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkListUsage.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkListUsage.json
      */
     /**
      * Sample code: VnetGetUsage.
@@ -17,6 +15,11 @@ public final class VirtualNetworksListUsageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vnetGetUsage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworks().listUsage("rg1", "vnetName", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .listUsage("rg1", "vnetName", com.azure.core.util.Context.NONE);
     }
 }

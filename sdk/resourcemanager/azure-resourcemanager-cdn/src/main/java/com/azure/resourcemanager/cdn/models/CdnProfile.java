@@ -208,7 +208,15 @@ public interface CdnProfile extends
              * Selects the Standard Akamai SKU.
              *
              * @return the next stage of the definition.
+             * @deprecated Azure CDN will be retiring Azure CDN standard from Akamai on 31 October 2023.
+             *             After 1 June 2023, you'll no longer be able to create new Azure CDN Standard from Akamai profiles.
+             *             Azure CDN Standard from Akamai profiles still active on 31 October 2023 will be migrated
+             *             by Azure CDN product engineering to another Azure CDN profile with feature and pricing parity
+             *             beginning 1 November 2023.
+             *             Use {@link WithSku#withStandardVerizonSku()} , {@link WithSku#withSku(SkuName)} or
+             *             {@link WithSku#withStandardMicrosoftSku()} instead.
              */
+            @Deprecated
             WithStandardCreate withStandardAkamaiSku();
 
             /**
@@ -224,6 +232,13 @@ public interface CdnProfile extends
              * @return the next stage of the definition.
              */
             WithPremiumVerizonCreate withPremiumVerizonSku();
+
+            /**
+             * Selects the Standard Microsoft SKU.
+             *
+             * @return the next stage of the definition
+             */
+            WithStandardCreate withStandardMicrosoftSku();
 
             /**
              * Selects the SKU with SKU name.

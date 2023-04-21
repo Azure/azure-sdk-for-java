@@ -16,6 +16,10 @@ public final class AnalysisDefinitionProperties {
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
+    /** Creates an instance of AnalysisDefinitionProperties class. */
+    public AnalysisDefinitionProperties() {
+    }
+
     /**
      * Get the description property: Description of the Analysis.
      *

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.AuthenticationMethod;
 import com.azure.resourcemanager.network.models.P2SVpnProfileParameters;
 
 /** Samples for P2SVpnGateways GenerateVpnProfile. */
 public final class P2SVpnGatewaysGenerateVpnProfileSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/P2SVpnGatewayGenerateVpnProfile.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/P2SVpnGatewayGenerateVpnProfile.json
      */
     /**
      * Sample code: GenerateP2SVpnGatewayVPNProfile.
@@ -28,6 +27,6 @@ public final class P2SVpnGatewaysGenerateVpnProfileSamples {
                 "rg1",
                 "p2sVpnGateway1",
                 new P2SVpnProfileParameters().withAuthenticationMethod(AuthenticationMethod.EAPTLS),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

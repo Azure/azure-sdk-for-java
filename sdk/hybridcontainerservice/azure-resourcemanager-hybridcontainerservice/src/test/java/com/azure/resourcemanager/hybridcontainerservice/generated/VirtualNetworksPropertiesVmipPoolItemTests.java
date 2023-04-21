@@ -7,25 +7,24 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesVmipPoolItem;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksPropertiesVmipPoolItemTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworksPropertiesVmipPoolItem model =
             BinaryData
-                .fromString("{\"endIP\":\"iodhkhazxkhnz\",\"startIP\":\"nlwntoe\"}")
+                .fromString("{\"endIP\":\"gicccnxqhuex\",\"startIP\":\"ttlstvlzywemhz\"}")
                 .toObject(VirtualNetworksPropertiesVmipPoolItem.class);
-        Assertions.assertEquals("iodhkhazxkhnz", model.endIp());
-        Assertions.assertEquals("nlwntoe", model.startIp());
+        Assertions.assertEquals("gicccnxqhuex", model.endIp());
+        Assertions.assertEquals("ttlstvlzywemhz", model.startIp());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworksPropertiesVmipPoolItem model =
-            new VirtualNetworksPropertiesVmipPoolItem().withEndIp("iodhkhazxkhnz").withStartIp("nlwntoe");
+            new VirtualNetworksPropertiesVmipPoolItem().withEndIp("gicccnxqhuex").withStartIp("ttlstvlzywemhz");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPropertiesVmipPoolItem.class);
-        Assertions.assertEquals("iodhkhazxkhnz", model.endIp());
-        Assertions.assertEquals("nlwntoe", model.startIp());
+        Assertions.assertEquals("gicccnxqhuex", model.endIp());
+        Assertions.assertEquals("ttlstvlzywemhz", model.startIp());
     }
 }

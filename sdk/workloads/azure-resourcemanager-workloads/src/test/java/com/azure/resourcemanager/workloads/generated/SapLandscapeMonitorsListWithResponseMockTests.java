@@ -31,7 +31,7 @@ public final class SapLandscapeMonitorsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"wkojpllndnpd\",\"name\":\"rpqaf\",\"type\":\"fugsnnfhyetefy\"}],\"nextLink\":\"coc\"}";
+            "{\"value\":[{\"id\":\"biattgplucfotan\",\"name\":\"c\",\"type\":\"hnykz\"},{\"id\":\"swvxwlmzqwmv\",\"name\":\"xnjmxm\",\"type\":\"uqudtcvclxyn\"}],\"nextLink\":\"k\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class SapLandscapeMonitorsListWithResponseMockTests {
         SapLandscapeMonitorListResult response =
             manager
                 .sapLandscapeMonitors()
-                .listWithResponse("auxofshfph", "pnulaiywzej", com.azure.core.util.Context.NONE)
+                .listWithResponse("gmwohqfzizvu", "mmkjsvthnwpztek", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("coc", response.nextLink());
+        Assertions.assertEquals("k", response.nextLink());
     }
 }

@@ -45,13 +45,6 @@ public interface PolicyClient {
     DataPolicyManifestsClient getDataPolicyManifests();
 
     /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
-     *
-     * @return the PolicyAssignmentsClient object.
-     */
-    PolicyAssignmentsClient getPolicyAssignments();
-
-    /**
      * Gets the PolicyDefinitionsClient object to access its operations.
      *
      * @return the PolicyDefinitionsClient object.
@@ -64,6 +57,13 @@ public interface PolicyClient {
      * @return the PolicySetDefinitionsClient object.
      */
     PolicySetDefinitionsClient getPolicySetDefinitions();
+
+    /**
+     * Gets the PolicyAssignmentsClient object to access its operations.
+     *
+     * @return the PolicyAssignmentsClient object.
+     */
+    PolicyAssignmentsClient getPolicyAssignments();
 
     /**
      * Gets the PolicyExemptionsClient object to access its operations.

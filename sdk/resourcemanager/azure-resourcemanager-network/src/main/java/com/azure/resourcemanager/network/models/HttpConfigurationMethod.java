@@ -17,6 +17,15 @@ public final class HttpConfigurationMethod extends ExpandableStringEnum<HttpConf
     public static final HttpConfigurationMethod POST = fromString("Post");
 
     /**
+     * Creates a new instance of HttpConfigurationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HttpConfigurationMethod() {
+    }
+
+    /**
      * Creates or finds a HttpConfigurationMethod from its string representation.
      *
      * @param name a name to look for.

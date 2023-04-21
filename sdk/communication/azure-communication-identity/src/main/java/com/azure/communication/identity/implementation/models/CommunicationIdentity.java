@@ -16,6 +16,9 @@ public final class CommunicationIdentity {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of CommunicationIdentity class. */
+    public CommunicationIdentity() {}
+
     /**
      * Get the id property: Identifier of the identity.
      *

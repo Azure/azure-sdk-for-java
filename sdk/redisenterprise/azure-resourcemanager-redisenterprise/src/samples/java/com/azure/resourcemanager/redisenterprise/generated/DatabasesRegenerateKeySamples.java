@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.models.AccessKeyType;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
 
 /** Samples for Databases RegenerateKey. */
 public final class DatabasesRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDatabasesRegenerateKey.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDatabasesRegenerateKey.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesRegenerateKey.
@@ -27,6 +26,6 @@ public final class DatabasesRegenerateKeySamples {
                 "cache1",
                 "default",
                 new RegenerateKeyParameters().withKeyType(AccessKeyType.PRIMARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
