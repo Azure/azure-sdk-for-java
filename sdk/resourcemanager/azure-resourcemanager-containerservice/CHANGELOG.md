@@ -7,10 +7,7 @@
 ### Breaking Changes
 
 - Removed field `BASIC` from class `ManagedClusterSkuName`.
-- Removed field `PAID from class `ManagedClusterSkuTier`.
-- Changed class `ManagedClusterAddonProfileIdentity` to be `final`.
-- Changed class `ManagedClusterIdentity` to be `final`.
-- Changed class `ManagedClusterPodIdentity` to be `final`.
+- Removed field `PAID` from class `ManagedClusterSkuTier`.
 
 ### Bugs Fixed
 
