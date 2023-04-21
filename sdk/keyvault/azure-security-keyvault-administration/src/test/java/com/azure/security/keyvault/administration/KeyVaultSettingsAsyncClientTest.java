@@ -24,8 +24,9 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
     }
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildAsyncClient();
+        asyncClient = getClientBuilder(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildAsyncClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)

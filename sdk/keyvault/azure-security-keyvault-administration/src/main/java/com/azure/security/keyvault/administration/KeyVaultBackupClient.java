@@ -66,14 +66,14 @@ import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClie
  */
 @ServiceClient(builder = KeyVaultBackupClientBuilder.class)
 public final class KeyVaultBackupClient {
-    private final KeyVaultBackupAsyncClient asyncClient;
-
-    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
-
     /**
      * The logger to be used.
      */
-    private final ClientLogger logger = new ClientLogger(KeyVaultBackupClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClient.class);
+
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
+
+    private final KeyVaultBackupAsyncClient asyncClient;
 
     /**
      * The underlying AutoRest client used to interact with the Key Vault service.
@@ -172,13 +172,13 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultBackupOperation, String> beginBackup(String blobStorageUrl, String sasToken) {
         if (blobStorageUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'blobStorageUrl'")));
         }
 
         if (sasToken == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'sasToken'")));
         }
@@ -189,7 +189,7 @@ public final class KeyVaultBackupClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, backupActivationOperation(blobStorageUrl, sasToken, context).apply(cxt)),
             backupPollOperation(context),
             (pollingContext, firstResponse) -> {
-                throw logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             },
             backupFetchOperation());
     }
@@ -219,7 +219,7 @@ public final class KeyVaultBackupClient {
                 backupOperationResponse.getHeaders(),
                 (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -229,7 +229,7 @@ public final class KeyVaultBackupClient {
             try {
                 return backupWithResponse(blobStorageUrl, sasToken, context).getValue();
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -247,7 +247,7 @@ public final class KeyVaultBackupClient {
                 final KeyVaultBackupOperation keyVaultBackupOperation = pollResponse.getValue();
 
                 if (keyVaultBackupOperation == null) {
-                    logger.warning("Backup operation does not exist. Activation operation failed.");
+                    LOGGER.warning("Backup operation does not exist. Activation operation failed.");
                     return new PollResponse<KeyVaultBackupOperation>(
                         LongRunningOperationStatus.fromString("BACKUP_START_FAILED", true), null);
                 }
@@ -261,10 +261,10 @@ public final class KeyVaultBackupClient {
                             (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue())));
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
-                logger.logExceptionAsError(e);
+                LOGGER.logExceptionAsError(e);
                 return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -274,7 +274,7 @@ public final class KeyVaultBackupClient {
             try {
                 return pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUrl();
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -332,12 +332,12 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> beginRestore(String folderUrl, String sasToken) {
         if (folderUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'folderUrl'")));
         }
         if (sasToken == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'sasToken'")));
         }
@@ -346,7 +346,7 @@ public final class KeyVaultBackupClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, restoreActivationOperation(folderUrl, sasToken, context).apply(cxt)),
             restorePollOperation(context),
             (pollingContext, firstResponse) -> {
-                throw logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             },
             (pollingContext) -> new KeyVaultRestoreResult());
     }
@@ -387,7 +387,7 @@ public final class KeyVaultBackupClient {
                 restoreOperationResponse.getHeaders(),
                 (KeyVaultRestoreOperation) transformToLongRunningOperation(restoreOperationResponse.getValue()));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -396,7 +396,7 @@ public final class KeyVaultBackupClient {
             try {
                 return restoreWithResponse(folderUrl, sasToken, context).getValue();
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -415,7 +415,7 @@ public final class KeyVaultBackupClient {
                 final KeyVaultRestoreOperation keyVaultRestoreOperation = pollResponse.getValue();
 
                 if (keyVaultRestoreOperation == null) {
-                    logger.warning("Restore operation does not exist. Activation operation failed.");
+                    LOGGER.warning("Restore operation does not exist. Activation operation failed.");
 
                     return new PollResponse<>(LongRunningOperationStatus.fromString("RESTORE_START_FAILED", true), null);
                 }
@@ -430,10 +430,10 @@ public final class KeyVaultBackupClient {
 
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
-                logger.logExceptionAsError(e);
+                LOGGER.logExceptionAsError(e);
                 return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -494,19 +494,19 @@ public final class KeyVaultBackupClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> beginSelectiveKeyRestore(String keyName, String folderUrl, String sasToken) {
         if (keyName == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'keyName'")));
         }
 
         if (folderUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'folderUrl'")));
         }
 
         if (sasToken == null) {
-            throw logger.logExceptionAsError(new NullPointerException(
+            throw LOGGER.logExceptionAsError(new NullPointerException(
                 String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                     "'sasToken'")));
         }
@@ -516,7 +516,7 @@ public final class KeyVaultBackupClient {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, selectiveKeyRestoreActivationOperation(keyName, folderUrl, sasToken, context).apply(cxt)),
             selectiveKeyRestorePollOperation(context),
             (pollingContext, firstResponse) -> {
-                throw logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             },
             (pollingContext) -> new KeyVaultSelectiveKeyRestoreResult());
     }
@@ -562,7 +562,7 @@ public final class KeyVaultBackupClient {
                 (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
                     restoreOperationResponse.getValue()));
         } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -571,7 +571,7 @@ public final class KeyVaultBackupClient {
             try {
                 return selectiveKeyRestoreWithResponse(keyName, folderUrl, sasToken, context).getValue();
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
@@ -589,7 +589,7 @@ public final class KeyVaultBackupClient {
                 final KeyVaultSelectiveKeyRestoreOperation keyVaultSelectiveKeyRestoreOperation = pollResponse.getValue();
 
                 if (keyVaultSelectiveKeyRestoreOperation == null) {
-                    logger.warning("Restore operation does not exist. Activation operation failed.");
+                    LOGGER.warning("Restore operation does not exist. Activation operation failed.");
 
                     return new PollResponse<>(LongRunningOperationStatus.fromString("SELECTIVE_RESTORE_START_FAILED", true), null);
                 }
@@ -601,11 +601,11 @@ public final class KeyVaultBackupClient {
                         (KeyVaultSelectiveKeyRestoreOperation) restoreOperationToSelectiveKeyRestoreOperation(response.getValue())));
             } catch (HttpResponseException e) {
                 //noinspection ThrowableNotThrown
-                logger.logExceptionAsError(e);
+                LOGGER.logExceptionAsError(e);
 
                 return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
             } catch (RuntimeException e) {
-                throw logger.logExceptionAsError(e);
+                throw LOGGER.logExceptionAsError(e);
             }
         };
     }
