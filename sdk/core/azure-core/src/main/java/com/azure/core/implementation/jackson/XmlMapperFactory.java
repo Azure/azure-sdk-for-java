@@ -4,6 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.cfg.PackageVersion;
@@ -27,6 +28,7 @@ public final class XmlMapperFactory {
     private final Object emptyElementAsNull;
 
     final boolean useJackson212;
+    private boolean jackson212IsSafe = true;
 
     public static final XmlMapperFactory INSTANCE = new XmlMapperFactory();
 
@@ -103,6 +105,19 @@ public final class XmlMapperFactory {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", e));
         }
 
-        return useJackson212 ? JacksonDatabind212.mutateXmlCoercions(xmlMapper) : xmlMapper;
+        if (useJackson212 && jackson212IsSafe) {
+            try {
+                return JacksonDatabind212.mutateXmlCoercions(xmlMapper);
+            } catch (Throwable ex) {
+                if (ex instanceof LinkageError) {
+                    jackson212IsSafe = false;
+                    LOGGER.log(LogLevel.VERBOSE, JacksonVersion::getHelpInfo, ex);
+                }
+
+                throw ex;
+            }
+        }
+
+        return xmlMapper;
     }
 }

@@ -5,6 +5,7 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,6 +32,7 @@ final class MemberNameConverterImpl implements MemberNameConverter {
 
     private final ObjectMapper mapper;
     final boolean useJackson212;
+    private boolean jackson212IsSafe = true;
 
     MemberNameConverterImpl(ObjectMapper mapper) {
         this.mapper = mapper;
@@ -125,8 +127,17 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         String annotatedMethodName = annotatedMethod.getName();
 
         String name = null;
-        if (useJackson212) {
-            name = JacksonDatabind212.removePrefix(config, annotatedClass, annotatedMethod, annotatedMethodName);
+        if (useJackson212 && jackson212IsSafe) {
+            try {
+                name = JacksonDatabind212.removePrefix(config, annotatedClass, annotatedMethod, annotatedMethodName);
+            } catch (Throwable ex) {
+                if (ex instanceof LinkageError) {
+                    jackson212IsSafe = false;
+                    LOGGER.log(LogLevel.VERBOSE, JacksonVersion::getHelpInfo, ex);
+                }
+
+                throw ex;
+            }
         }
 
         if (name == null) {

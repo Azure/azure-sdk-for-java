@@ -27,34 +27,18 @@ final class JacksonDatabind212 {
      * @return The updated {@link ObjectMapper}.
      */
     static ObjectMapper mutateXmlCoercions(ObjectMapper mapper) {
-        try {
-            mapper.coercionConfigDefaults().setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
-            return mapper;
-        } catch (Exception ex) {
-            if (ex instanceof ReflectiveOperationException) {
-                throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
-            } else {
-                throw ex;
-            }
-        }
+        mapper.coercionConfigDefaults().setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
+        return mapper;
     }
 
-    static String removePrefix(MapperConfig<?> config, AnnotatedClass annotatedClass,
-        AnnotatedMethod method, String methodName) {
-        try {
-            AccessorNamingStrategy namingStrategy = config.getAccessorNaming().forPOJO(config, annotatedClass);
-            String name = namingStrategy.findNameForIsGetter(method, methodName);
-            if (name == null) {
-                name = namingStrategy.findNameForRegularGetter(method, methodName);
-            }
-
-            return name;
-        } catch (Exception ex) {
-            if (ex instanceof ReflectiveOperationException) {
-                throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
-            } else {
-                throw ex;
-            }
+    static String removePrefix(MapperConfig<?> config, AnnotatedClass annotatedClass, AnnotatedMethod method,
+        String methodName) {
+        AccessorNamingStrategy namingStrategy = config.getAccessorNaming().forPOJO(config, annotatedClass);
+        String name = namingStrategy.findNameForIsGetter(method, methodName);
+        if (name == null) {
+            name = namingStrategy.findNameForRegularGetter(method, methodName);
         }
+
+        return name;
     }
 }
