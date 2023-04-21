@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.FeedbackQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,9 +48,6 @@ public final class MetricFeedbackFilter {
      */
     @JsonProperty(value = "timeMode")
     private FeedbackQueryTimeMode timeMode;
-
-    /** Creates an instance of MetricFeedbackFilter class. */
-    public MetricFeedbackFilter() {}
 
     /**
      * Get the metricId property: filter feedbacks by metric id.

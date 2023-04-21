@@ -8,8 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The AzureCosmosDBDataFeedPatch model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
@@ -21,9 +19,6 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
      */
     @JsonProperty(value = "dataSourceParameter")
     private AzureCosmosDBParameterPatch dataSourceParameter;
-
-    /** Creates an instance of AzureCosmosDBDataFeedPatch class. */
-    public AzureCosmosDBDataFeedPatch() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
@@ -42,153 +37,6 @@ public final class AzureCosmosDBDataFeedPatch extends DataFeedDetailPatch {
      */
     public AzureCosmosDBDataFeedPatch setDataSourceParameter(AzureCosmosDBParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setDataFeedName(String dataFeedName) {
-        super.setDataFeedName(dataFeedName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
-        super.setDataFeedDescription(dataFeedDescription);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setTimestampColumn(String timestampColumn) {
-        super.setTimestampColumn(timestampColumn);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
-        super.setDataStartFrom(dataStartFrom);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
-        super.setStartOffsetInSeconds(startOffsetInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
-        super.setMaxConcurrency(maxConcurrency);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
-        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
-        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
-        super.setNeedRollup(needRollup);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
-        super.setRollUpMethod(rollUpMethod);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
-        super.setRollUpColumns(rollUpColumns);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setAllUpIdentification(String allUpIdentification) {
-        super.setAllUpIdentification(allUpIdentification);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
-        super.setFillMissingPointType(fillMissingPointType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
-        super.setFillMissingPointValue(fillMissingPointValue);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setViewMode(ViewMode viewMode) {
-        super.setViewMode(viewMode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setAdmins(List<String> admins) {
-        super.setAdmins(admins);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setViewers(List<String> viewers) {
-        super.setViewers(viewers);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setStatus(EntityStatus status) {
-        super.setStatus(status);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
-        super.setActionLinkTemplate(actionLinkTemplate);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
-        super.setAuthenticationType(authenticationType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureCosmosDBDataFeedPatch setCredentialId(String credentialId) {
-        super.setCredentialId(credentialId);
         return this;
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** mark if the data feed need rollup. */
+/** Defines values for NeedRollupEnum. */
 public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
     /** Static value NoRollup for NeedRollupEnum. */
     public static final NeedRollupEnum NO_ROLLUP = fromString("NoRollup");
@@ -18,14 +18,6 @@ public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
 
     /** Static value AlreadyRollup for NeedRollupEnum. */
     public static final NeedRollupEnum ALREADY_ROLLUP = fromString("AlreadyRollup");
-
-    /**
-     * Creates a new instance of NeedRollupEnum value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public NeedRollupEnum() {}
 
     /**
      * Creates or finds a NeedRollupEnum from its string representation.
@@ -38,11 +30,7 @@ public final class NeedRollupEnum extends ExpandableStringEnum<NeedRollupEnum> {
         return fromString(name, NeedRollupEnum.class);
     }
 
-    /**
-     * Gets known NeedRollupEnum values.
-     *
-     * @return known NeedRollupEnum values.
-     */
+    /** @return known NeedRollupEnum values. */
     public static Collection<NeedRollupEnum> values() {
         return values(NeedRollupEnum.class);
     }

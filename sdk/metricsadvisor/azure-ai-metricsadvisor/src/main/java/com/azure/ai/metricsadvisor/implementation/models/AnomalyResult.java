@@ -71,9 +71,6 @@ public final class AnomalyResult {
     @JsonProperty(value = "property", required = true)
     private AnomalyProperty property;
 
-    /** Creates an instance of AnomalyResult class. */
-    public AnomalyResult() {}
-
     /**
      * Get the dataFeedId property: data feed unique id
      *

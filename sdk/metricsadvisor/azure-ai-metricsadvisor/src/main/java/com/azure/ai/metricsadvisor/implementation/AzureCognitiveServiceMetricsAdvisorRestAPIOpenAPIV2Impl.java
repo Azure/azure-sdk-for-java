@@ -24,8 +24,6 @@ import com.azure.ai.metricsadvisor.implementation.models.CreateHookResponse;
 import com.azure.ai.metricsadvisor.implementation.models.CreateMetricFeedbackResponse;
 import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetail;
 import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetailPatch;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionProgress;
-import com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.implementation.models.DataFeedList;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredential;
 import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredentialList;
@@ -60,6 +58,8 @@ import com.azure.ai.metricsadvisor.implementation.models.RootCauseList;
 import com.azure.ai.metricsadvisor.implementation.models.SeriesResultList;
 import com.azure.ai.metricsadvisor.implementation.models.UsageStats;
 import com.azure.ai.metricsadvisor.models.AnomalyAlert;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.annotation.BodyParam;
@@ -95,10 +95,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the MetricsAdvisor type. */
-public final class MetricsAdvisorImpl {
+/** Initializes a new instance of the AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 type. */
+public final class AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl {
     /** The proxy service used to perform REST calls. */
-    private final MetricsAdvisorService service;
+    private final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service service;
 
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
@@ -141,12 +141,12 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
-     * Initializes an instance of MetricsAdvisor client.
+     * Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client.
      *
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      */
-    MetricsAdvisorImpl(String endpoint) {
+    AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -156,62 +156,53 @@ public final class MetricsAdvisorImpl {
     }
 
     /**
-     * Initializes an instance of MetricsAdvisor client.
+     * Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      */
-    MetricsAdvisorImpl(HttpPipeline httpPipeline, String endpoint) {
+    AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl(HttpPipeline httpPipeline, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**
-     * Initializes an instance of MetricsAdvisor client.
+     * Initializes an instance of AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://&lt;resource-name&gt;.cognitiveservices.azure.com).
      */
-    MetricsAdvisorImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.service = RestProxy.create(MetricsAdvisorService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service =
+                RestProxy.create(
+                        AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service.class,
+                        this.httpPipeline,
+                        this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for MetricsAdvisor to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2 to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}/metricsadvisor/v1.0")
-    @ServiceInterface(name = "MetricsAdvisor")
-    public interface MetricsAdvisorService {
+    @ServiceInterface(name = "AzureCognitiveServic")
+    public interface AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Service {
         @Get("/stats/latest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<UsageStats>> getActiveSeriesCount(
                 @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/stats/latest")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<UsageStats> getActiveSeriesCountSync(
-                @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
-
         @Get("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/alert/anomaly/configurations/{configurationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @HeaderParam("Accept") String accept,
@@ -227,29 +218,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/alert/anomaly/configurations/{configurationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @BodyParam("application/merge-patch+json") AnomalyAlertingConfigurationPatch body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Delete("/alert/anomaly/configurations/{configurationId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<Void>> deleteAnomalyAlertingConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Delete("/alert/anomaly/configurations/{configurationId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<Void> deleteAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @HeaderParam("Accept") String accept,
@@ -264,31 +236,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/alert/anomaly/configurations")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        CreateAnomalyAlertingConfigurationResponse createAnomalyAlertingConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @BodyParam("application/json") AnomalyAlertingConfiguration body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/alert/anomaly/configurations/{configurationId}/alerts/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AlertResultList>> getAlertsByAnomalyAlertingConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") AlertingResultQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/alert/anomaly/configurations/{configurationId}/alerts/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AlertResultList> getAlertsByAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$skip") Integer skip,
@@ -309,34 +260,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/anomalies")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyResultList> getAnomaliesFromAlertByAnomalyAlertingConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @PathParam("alertId") String alertId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/incidents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @PathParam("alertId") String alertId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/alert/anomaly/configurations/{configurationId}/alerts/{alertId}/incidents")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IncidentResultList> getIncidentsFromAlertByAnomalyAlertingConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @PathParam("alertId") String alertId,
@@ -354,29 +281,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/enrichment/anomalyDetection/configurations/{configurationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Patch("/enrichment/anomalyDetection/configurations/{configurationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfiguration>> updateAnomalyDetectionConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @BodyParam("application/merge-patch+json") AnomalyDetectionConfigurationPatch body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Patch("/enrichment/anomalyDetection/configurations/{configurationId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @BodyParam("application/merge-patch+json") AnomalyDetectionConfigurationPatch body,
@@ -392,28 +300,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/enrichment/anomalyDetection/configurations/{configurationId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<Void> deleteAnomalyDetectionConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @BodyParam("application/json") AnomalyDetectionConfiguration body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/enrichment/anomalyDetection/configurations")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        CreateAnomalyDetectionConfigurationResponse createAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") AnomalyDetectionConfiguration body,
                 @HeaderParam("Accept") String accept,
@@ -431,17 +321,6 @@ public final class MetricsAdvisorImpl {
                         @HeaderParam("Accept") String accept,
                         Context context);
 
-        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/alert/anomaly/configurations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyAlertingConfigurationList> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/series/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -452,32 +331,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/series/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<SeriesResultList> getSeriesByAnomalyDetectionConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @BodyParam("application/json") DetectionSeriesQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") DetectionAnomalyResultQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyResultList> getAnomaliesByAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$skip") Integer skip,
@@ -498,33 +355,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/anomalies/dimension/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyDimensionList> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") AnomalyDimensionQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") DetectionIncidentResultQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @QueryParam("$maxpagesize") Integer maxpagesize,
@@ -543,31 +377,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationNextPagesSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @QueryParam("$token") String token,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/{incidentId}/rootCause")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfiguration(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("configurationId") UUID configurationId,
-                @PathParam("incidentId") String incidentId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/enrichment/anomalyDetection/configurations/{configurationId}/incidents/{incidentId}/rootCause")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("configurationId") UUID configurationId,
                 @PathParam("incidentId") String incidentId,
@@ -583,29 +396,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/credentials")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        CreateCredentialResponse createCredentialSync(
-                @HostParam("endpoint") String endpoint,
-                @BodyParam("application/json") DataSourceCredential body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/credentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredentialList>> listCredentials(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/credentials")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataSourceCredentialList> listCredentialsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("$skip") Integer skip,
                 @QueryParam("$maxpagesize") Integer maxpagesize,
@@ -622,16 +416,6 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/credentials/{credentialId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataSourceCredential> updateCredentialSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("credentialId") UUID credentialId,
-                @BodyParam("application/merge-patch+json") DataSourceCredentialPatch body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Delete("/credentials/{credentialId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -641,28 +425,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/credentials/{credentialId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<Void> deleteCredentialSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("credentialId") UUID credentialId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/credentials/{credentialId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredential>> getCredential(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("credentialId") UUID credentialId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/credentials/{credentialId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataSourceCredential> getCredentialSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("credentialId") UUID credentialId,
                 @HeaderParam("Accept") String accept,
@@ -683,21 +449,6 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/dataFeeds")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataFeedList> listDataFeedsSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("dataFeedName") String dataFeedName,
-                @QueryParam("dataSourceType") DataSourceType dataSourceType,
-                @QueryParam("granularityName") Granularity granularityName,
-                @QueryParam("status") EntityStatus status,
-                @QueryParam("creator") String creator,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/dataFeeds")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -707,28 +458,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/dataFeeds")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        CreateDataFeedResponse createDataFeedSync(
-                @HostParam("endpoint") String endpoint,
-                @BodyParam("application/json") DataFeedDetail body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedDetail>> getDataFeedById(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("dataFeedId") UUID dataFeedId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/dataFeeds/{dataFeedId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataFeedDetail> getDataFeedByIdSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @HeaderParam("Accept") String accept,
@@ -744,16 +477,6 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/dataFeeds/{dataFeedId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataFeedDetail> updateDataFeedSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("dataFeedId") UUID dataFeedId,
-                @BodyParam("application/merge-patch+json") DataFeedDetailPatch body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Delete("/dataFeeds/{dataFeedId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -763,28 +486,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/dataFeeds/{dataFeedId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<Void> deleteDataFeedSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("dataFeedId") UUID dataFeedId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/feedback/metric/{feedbackId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricFeedback>> getMetricFeedback(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("feedbackId") UUID feedbackId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/feedback/metric/{feedbackId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricFeedback> getMetricFeedbackSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("feedbackId") UUID feedbackId,
                 @HeaderParam("Accept") String accept,
@@ -801,30 +506,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/feedback/metric/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricFeedbackList> listMetricFeedbacksSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") MetricFeedbackFilter body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/feedback/metric")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<CreateMetricFeedbackResponse> createMetricFeedback(
-                @HostParam("endpoint") String endpoint,
-                @BodyParam("application/json") MetricFeedback body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/feedback/metric")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        CreateMetricFeedbackResponse createMetricFeedbackSync(
                 @HostParam("endpoint") String endpoint,
                 @BodyParam("application/json") MetricFeedback body,
                 @HeaderParam("Accept") String accept,
@@ -841,17 +526,6 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Get("/hooks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<HookList> listHooksSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("hookName") String hookName,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/hooks")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -861,28 +535,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/hooks")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        CreateHookResponse createHookSync(
-                @HostParam("endpoint") String endpoint,
-                @BodyParam("application/json") HookInfo body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/hooks/{hookId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookInfo>> getHook(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("hookId") UUID hookId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/hooks/{hookId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<HookInfo> getHookSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("hookId") UUID hookId,
                 @HeaderParam("Accept") String accept,
@@ -898,16 +554,6 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Patch("/hooks/{hookId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<HookInfo> updateHookSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("hookId") UUID hookId,
-                @BodyParam("application/merge-patch+json") HookInfoPatch body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Delete("/hooks/{hookId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
@@ -917,31 +563,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Delete("/hooks/{hookId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<Void> deleteHookSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("hookId") UUID hookId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/dataFeeds/{dataFeedId}/ingestionStatus/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IngestionStatusList>> getDataFeedIngestionStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("dataFeedId") UUID dataFeedId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") IngestionStatusQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/dataFeeds/{dataFeedId}/ingestionStatus/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IngestionStatusList> getDataFeedIngestionStatusSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @QueryParam("$skip") Integer skip,
@@ -960,29 +585,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/dataFeeds/{dataFeedId}/ingestionProgress/reset")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<Void> resetDataFeedIngestionStatusSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("dataFeedId") UUID dataFeedId,
-                @BodyParam("application/json") IngestionProgressResetOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/dataFeeds/{dataFeedId}/ingestionProgress")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataFeedIngestionProgress>> getIngestionProgress(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("dataFeedId") UUID dataFeedId,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/dataFeeds/{dataFeedId}/ingestionProgress")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataFeedIngestionProgress> getIngestionProgressSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("dataFeedId") UUID dataFeedId,
                 @HeaderParam("Accept") String accept,
@@ -998,32 +604,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/metrics/{metricId}/data/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricDataList> getMetricDataSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("metricId") UUID metricId,
-                @BodyParam("application/json") MetricDataQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Post("/metrics/{metricId}/series/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricSeriesList>> getMetricSeries(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("metricId") UUID metricId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") MetricSeriesQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/metrics/{metricId}/series/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricSeriesList> getMetricSeriesSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
                 @QueryParam("$skip") Integer skip,
@@ -1044,33 +628,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/metrics/{metricId}/dimension/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricDimensionList> getMetricDimensionSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("metricId") UUID metricId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") MetricDimensionQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
         @Get("/metrics/{metricId}/enrichment/anomalyDetection/configurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDetectionConfigurationList>> getAnomalyDetectionConfigurationsByMetric(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("metricId") UUID metricId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("/metrics/{metricId}/enrichment/anomalyDetection/configurations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyDetectionConfigurationList> getAnomalyDetectionConfigurationsByMetricSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("metricId") UUID metricId,
                 @QueryParam("$skip") Integer skip,
@@ -1090,19 +651,7 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/metrics/{metricId}/status/enrichment/anomalyDetection/query")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<EnrichmentStatusList> getEnrichmentStatusByMetricSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("metricId") UUID metricId,
-                @QueryParam("$skip") Integer skip,
-                @QueryParam("$maxpagesize") Integer maxpagesize,
-                @BodyParam("application/json") EnrichmentStatusQueryOption body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AlertResultList>> getAlertsByAnomalyAlertingConfigurationNext(
@@ -1112,17 +661,7 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AlertResultList> getAlertsByAnomalyAlertingConfigurationNextSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") AlertingResultQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyResultList>> getAnomaliesByAnomalyDetectionConfigurationNext(
@@ -1132,30 +671,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyResultList> getAnomaliesByAnomalyDetectionConfigurationNextSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") DetectionAnomalyResultQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<AnomalyDimensionList>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNext(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") AnomalyDimensionQuery body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyDimensionList> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") AnomalyDimensionQuery body,
@@ -1175,16 +694,6 @@ public final class MetricsAdvisorImpl {
         @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricFeedbackList> listMetricFeedbacksNextSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") MetricFeedbackFilter body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IngestionStatusList>> getDataFeedIngestionStatusNext(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
@@ -1192,17 +701,7 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IngestionStatusList> getDataFeedIngestionStatusNextSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") IngestionStatusQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricSeriesList>> getMetricSeriesNext(
@@ -1212,17 +711,7 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricSeriesList> getMetricSeriesNextSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") MetricSeriesQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<MetricDimensionList>> getMetricDimensionNext(
@@ -1232,30 +721,10 @@ public final class MetricsAdvisorImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<MetricDimensionList> getMetricDimensionNextSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") MetricDimensionQueryOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
+        @Post("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<EnrichmentStatusList>> getEnrichmentStatusByMetricNext(
-                @HostParam("endpoint") String endpoint,
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @BodyParam("application/json") EnrichmentStatusQueryOption body,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Post("/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<EnrichmentStatusList> getEnrichmentStatusByMetricNextSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @BodyParam("application/json") EnrichmentStatusQueryOption body,
@@ -1274,25 +743,7 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyResultList> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsFromAlertByAnomalyAlertingConfigurationNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IncidentResultList> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -1311,26 +762,7 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyAlertingConfigurationList>
-                getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSync(
-                        @PathParam(value = "nextLink", encoded = true) String nextLink,
-                        @HostParam("endpoint") String endpoint,
-                        @HeaderParam("Accept") String accept,
-                        Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<IncidentResultList>> getIncidentsByAnomalyDetectionConfigurationNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -1348,25 +780,7 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<IncidentResultList> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<DataSourceCredentialList>> listCredentialsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataSourceCredentialList> listCredentialsNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -1384,25 +798,7 @@ public final class MetricsAdvisorImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<DataFeedList> listDataFeedsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
         Mono<Response<HookList>> listHooksNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<HookList> listHooksNextSync(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -1416,15 +812,6 @@ public final class MetricsAdvisorImpl {
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 Context context);
-
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MetricsAdvisorResponseException.class)
-        Response<AnomalyDetectionConfigurationList> getAnomalyDetectionConfigurationsByMetricNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
     }
 
     /**
@@ -1432,7 +819,7 @@ public final class MetricsAdvisorImpl {
      *
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest usage stats along with {@link Response} on successful completion of {@link Mono}.
+     * @return latest usage stats.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UsageStats>> getActiveSeriesCountWithResponseAsync() {
@@ -1447,7 +834,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest usage stats along with {@link Response} on successful completion of {@link Mono}.
+     * @return latest usage stats.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UsageStats>> getActiveSeriesCountWithResponseAsync(Context context) {
@@ -1460,11 +847,19 @@ public final class MetricsAdvisorImpl {
      *
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest usage stats on successful completion of {@link Mono}.
+     * @return latest usage stats.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UsageStats> getActiveSeriesCountAsync() {
-        return getActiveSeriesCountWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getActiveSeriesCountWithResponseAsync()
+                .flatMap(
+                        (Response<UsageStats> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1474,26 +869,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest usage stats on successful completion of {@link Mono}.
+     * @return latest usage stats.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UsageStats> getActiveSeriesCountAsync(Context context) {
-        return getActiveSeriesCountWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get latest usage stats.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest usage stats along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UsageStats> getActiveSeriesCountWithResponse(Context context) {
-        final String accept = "application/json";
-        return service.getActiveSeriesCountSync(this.getEndpoint(), accept, context);
+        return getActiveSeriesCountWithResponseAsync(context)
+                .flatMap(
+                        (Response<UsageStats> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1505,7 +893,21 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UsageStats getActiveSeriesCount() {
-        return getActiveSeriesCountWithResponse(Context.NONE).getValue();
+        return getActiveSeriesCountAsync().block();
+    }
+
+    /**
+     * Get latest usage stats.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return latest usage stats.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UsageStats> getActiveSeriesCountWithResponse(Context context) {
+        return getActiveSeriesCountWithResponseAsync(context).block();
     }
 
     /**
@@ -1515,7 +917,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfigurationWithResponseAsync(
@@ -1534,7 +936,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfiguration>> getAnomalyAlertingConfigurationWithResponseAsync(
@@ -1550,12 +952,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationAsync(UUID configurationId) {
         return getAnomalyAlertingConfigurationWithResponseAsync(configurationId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(
+                        (Response<AnomalyAlertingConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1566,30 +975,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationAsync(
             UUID configurationId, Context context) {
         return getAnomalyAlertingConfigurationWithResponseAsync(configurationId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Query a single anomaly alerting configuration.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationWithResponse(
-            UUID configurationId, Context context) {
-        final String accept = "application/json";
-        return service.getAnomalyAlertingConfigurationSync(this.getEndpoint(), configurationId, accept, context);
+                .flatMap(
+                        (Response<AnomalyAlertingConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1603,7 +1002,23 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnomalyAlertingConfiguration getAnomalyAlertingConfiguration(UUID configurationId) {
-        return getAnomalyAlertingConfigurationWithResponse(configurationId, Context.NONE).getValue();
+        return getAnomalyAlertingConfigurationAsync(configurationId).block();
+    }
+
+    /**
+     * Query a single anomaly alerting configuration.
+     *
+     * @param configurationId anomaly alerting configuration unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationWithResponse(
+            UUID configurationId, Context context) {
+        return getAnomalyAlertingConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -1614,7 +1029,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfiguration>> updateAnomalyAlertingConfigurationWithResponseAsync(
@@ -1635,7 +1050,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyAlertingConfiguration>> updateAnomalyAlertingConfigurationWithResponseAsync(
@@ -1652,13 +1067,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationAsync(
             UUID configurationId, AnomalyAlertingConfigurationPatch body) {
         return updateAnomalyAlertingConfigurationWithResponseAsync(configurationId, body)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(
+                        (Response<AnomalyAlertingConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1670,32 +1092,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationAsync(
             UUID configurationId, AnomalyAlertingConfigurationPatch body, Context context) {
         return updateAnomalyAlertingConfigurationWithResponseAsync(configurationId, body, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update anomaly alerting configuration.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param body anomaly alerting configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationWithResponse(
-            UUID configurationId, AnomalyAlertingConfigurationPatch body, Context context) {
-        final String accept = "application/json";
-        return service.updateAnomalyAlertingConfigurationSync(
-                this.getEndpoint(), configurationId, body, accept, context);
+                .flatMap(
+                        (Response<AnomalyAlertingConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1711,7 +1121,24 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnomalyAlertingConfiguration updateAnomalyAlertingConfiguration(
             UUID configurationId, AnomalyAlertingConfigurationPatch body) {
-        return updateAnomalyAlertingConfigurationWithResponse(configurationId, body, Context.NONE).getValue();
+        return updateAnomalyAlertingConfigurationAsync(configurationId, body).block();
+    }
+
+    /**
+     * Update anomaly alerting configuration.
+     *
+     * @param configurationId anomaly alerting configuration unique id.
+     * @param body anomaly alerting configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnomalyAlertingConfiguration> updateAnomalyAlertingConfigurationWithResponse(
+            UUID configurationId, AnomalyAlertingConfigurationPatch body, Context context) {
+        return updateAnomalyAlertingConfigurationWithResponseAsync(configurationId, body, context).block();
     }
 
     /**
@@ -1721,7 +1148,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyAlertingConfigurationWithResponseAsync(UUID configurationId) {
@@ -1740,7 +1167,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyAlertingConfigurationWithResponseAsync(
@@ -1756,11 +1183,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAnomalyAlertingConfigurationAsync(UUID configurationId) {
-        return deleteAnomalyAlertingConfigurationWithResponseAsync(configurationId).flatMap(ignored -> Mono.empty());
+        return deleteAnomalyAlertingConfigurationWithResponseAsync(configurationId)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1771,28 +1199,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAnomalyAlertingConfigurationAsync(UUID configurationId, Context context) {
         return deleteAnomalyAlertingConfigurationWithResponseAsync(configurationId, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete anomaly alerting configuration.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAnomalyAlertingConfigurationWithResponse(UUID configurationId, Context context) {
-        final String accept = "application/json";
-        return service.deleteAnomalyAlertingConfigurationSync(this.getEndpoint(), configurationId, accept, context);
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -1805,7 +1217,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAnomalyAlertingConfiguration(UUID configurationId) {
-        deleteAnomalyAlertingConfigurationWithResponse(configurationId, Context.NONE);
+        deleteAnomalyAlertingConfigurationAsync(configurationId).block();
+    }
+
+    /**
+     * Delete anomaly alerting configuration.
+     *
+     * @param configurationId anomaly alerting configuration unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAnomalyAlertingConfigurationWithResponse(UUID configurationId, Context context) {
+        return deleteAnomalyAlertingConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -1815,7 +1242,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyAlertingConfigurationResponse> createAnomalyAlertingConfigurationWithResponseAsync(
@@ -1833,7 +1260,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyAlertingConfigurationResponse> createAnomalyAlertingConfigurationWithResponseAsync(
@@ -1849,11 +1276,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAnomalyAlertingConfigurationAsync(AnomalyAlertingConfiguration body) {
-        return createAnomalyAlertingConfigurationWithResponseAsync(body).flatMap(ignored -> Mono.empty());
+        return createAnomalyAlertingConfigurationWithResponseAsync(body)
+                .flatMap((CreateAnomalyAlertingConfigurationResponse res) -> Mono.empty());
     }
 
     /**
@@ -1864,11 +1292,25 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAnomalyAlertingConfigurationAsync(AnomalyAlertingConfiguration body, Context context) {
-        return createAnomalyAlertingConfigurationWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
+        return createAnomalyAlertingConfigurationWithResponseAsync(body, context)
+                .flatMap((CreateAnomalyAlertingConfigurationResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Create anomaly alerting configuration.
+     *
+     * @param body anomaly alerting configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createAnomalyAlertingConfiguration(AnomalyAlertingConfiguration body) {
+        createAnomalyAlertingConfigurationAsync(body).block();
     }
 
     /**
@@ -1882,23 +1324,9 @@ public final class MetricsAdvisorImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateAnomalyAlertingConfigurationResponse createAnomalyAlertingConfigurationWithResponse(
+    public Response<Void> createAnomalyAlertingConfigurationWithResponse(
             AnomalyAlertingConfiguration body, Context context) {
-        final String accept = "application/json";
-        return service.createAnomalyAlertingConfigurationSync(this.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Create anomaly alerting configuration.
-     *
-     * @param body anomaly alerting configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createAnomalyAlertingConfiguration(AnomalyAlertingConfiguration body) {
-        createAnomalyAlertingConfigurationWithResponse(body, Context.NONE);
+        return createAnomalyAlertingConfigurationWithResponseAsync(body, context).block();
     }
 
     /**
@@ -1911,7 +1339,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
@@ -1943,7 +1371,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationSinglePageAsync(
@@ -1972,7 +1400,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationAsync(
@@ -1993,7 +1421,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationAsync(
@@ -2015,22 +1443,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<AlertResultList> res =
-                service.getAlertsByAnomalyAlertingConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getAlertsByAnomalyAlertingConfigurationAsync(configurationId, body, skip, maxpagesize));
     }
 
     /**
@@ -2044,67 +1463,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationSinglePage(
-            UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<AlertResultList> res =
-                service.getAlertsByAnomalyAlertingConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query alerts under anomaly alerting configuration.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param body query alerting result request.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
-            UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        getAlertsByAnomalyAlertingConfigurationSinglePage(
-                                configurationId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * Query alerts under anomaly alerting configuration.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param body query alerting result request.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlert> getAlertsByAnomalyAlertingConfiguration(
             UUID configurationId, AlertingResultQuery body, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getAlertsByAnomalyAlertingConfigurationSinglePage(
-                                configurationId, body, skip, maxpagesize, context),
-                nextLink -> getAlertsByAnomalyAlertingConfigurationNextSinglePage(nextLink, body, context));
+                getAlertsByAnomalyAlertingConfigurationAsync(configurationId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -2117,7 +1482,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
@@ -2155,7 +1520,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
@@ -2184,7 +1549,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationAsync(
@@ -2207,7 +1572,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationAsync(
@@ -2229,22 +1594,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSync(
-                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getAnomaliesFromAlertByAnomalyAlertingConfigurationAsync(configurationId, alertId, skip, maxpagesize));
     }
 
     /**
@@ -2258,67 +1614,14 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
-            UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationSync(
-                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query anomalies under a specific alert.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param alertId alert id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfiguration(
-            UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
-                                configurationId, alertId, skip, maxpagesize, Context.NONE),
-                nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink));
-    }
-
-    /**
-     * Query anomalies under a specific alert.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param alertId alert id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getAnomaliesFromAlertByAnomalyAlertingConfigurationSinglePage(
-                                configurationId, alertId, skip, maxpagesize, context),
-                nextLink -> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink, context));
+                getAnomaliesFromAlertByAnomalyAlertingConfigurationAsync(
+                        configurationId, alertId, skip, maxpagesize, context));
     }
 
     /**
@@ -2331,7 +1634,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
@@ -2369,7 +1672,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePageAsync(
@@ -2398,7 +1701,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationAsync(
@@ -2421,7 +1724,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationAsync(
@@ -2443,22 +1746,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsFromAlertByAnomalyAlertingConfigurationSync(
-                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getIncidentsFromAlertByAnomalyAlertingConfigurationAsync(configurationId, alertId, skip, maxpagesize));
     }
 
     /**
@@ -2472,67 +1766,14 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
-            UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsFromAlertByAnomalyAlertingConfigurationSync(
-                        this.getEndpoint(), configurationId, alertId, skip, maxpagesize, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query incidents under a specific alert.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param alertId alert id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfiguration(
-            UUID configurationId, String alertId, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
-                                configurationId, alertId, skip, maxpagesize, Context.NONE),
-                nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink));
-    }
-
-    /**
-     * Query incidents under a specific alert.
-     *
-     * @param configurationId anomaly alerting configuration unique id.
-     * @param alertId alert id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfiguration(
             UUID configurationId, String alertId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getIncidentsFromAlertByAnomalyAlertingConfigurationSinglePage(
-                                configurationId, alertId, skip, maxpagesize, context),
-                nextLink -> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(nextLink, context));
+                getIncidentsFromAlertByAnomalyAlertingConfigurationAsync(
+                        configurationId, alertId, skip, maxpagesize, context));
     }
 
     /**
@@ -2542,7 +1783,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfiguration>> getAnomalyDetectionConfigurationWithResponseAsync(
@@ -2561,7 +1802,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfiguration>> getAnomalyDetectionConfigurationWithResponseAsync(
@@ -2577,12 +1818,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationAsync(UUID configurationId) {
         return getAnomalyDetectionConfigurationWithResponseAsync(configurationId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(
+                        (Response<AnomalyDetectionConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -2593,30 +1841,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationAsync(
             UUID configurationId, Context context) {
         return getAnomalyDetectionConfigurationWithResponseAsync(configurationId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Query a single anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationWithResponse(
-            UUID configurationId, Context context) {
-        final String accept = "application/json";
-        return service.getAnomalyDetectionConfigurationSync(this.getEndpoint(), configurationId, accept, context);
+                .flatMap(
+                        (Response<AnomalyDetectionConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -2630,7 +1868,23 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnomalyDetectionConfiguration getAnomalyDetectionConfiguration(UUID configurationId) {
-        return getAnomalyDetectionConfigurationWithResponse(configurationId, Context.NONE).getValue();
+        return getAnomalyDetectionConfigurationAsync(configurationId).block();
+    }
+
+    /**
+     * Query a single anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationWithResponse(
+            UUID configurationId, Context context) {
+        return getAnomalyDetectionConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -2641,7 +1895,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfiguration>> updateAnomalyDetectionConfigurationWithResponseAsync(
@@ -2662,7 +1916,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnomalyDetectionConfiguration>> updateAnomalyDetectionConfigurationWithResponseAsync(
@@ -2679,13 +1933,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationAsync(
             UUID configurationId, AnomalyDetectionConfigurationPatch body) {
         return updateAnomalyDetectionConfigurationWithResponseAsync(configurationId, body)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(
+                        (Response<AnomalyDetectionConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -2697,32 +1958,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationAsync(
             UUID configurationId, AnomalyDetectionConfigurationPatch body, Context context) {
         return updateAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body anomaly detection configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationWithResponse(
-            UUID configurationId, AnomalyDetectionConfigurationPatch body, Context context) {
-        final String accept = "application/json";
-        return service.updateAnomalyDetectionConfigurationSync(
-                this.getEndpoint(), configurationId, body, accept, context);
+                .flatMap(
+                        (Response<AnomalyDetectionConfiguration> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -2738,7 +1987,24 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnomalyDetectionConfiguration updateAnomalyDetectionConfiguration(
             UUID configurationId, AnomalyDetectionConfigurationPatch body) {
-        return updateAnomalyDetectionConfigurationWithResponse(configurationId, body, Context.NONE).getValue();
+        return updateAnomalyDetectionConfigurationAsync(configurationId, body).block();
+    }
+
+    /**
+     * Update anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param body anomaly detection configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnomalyDetectionConfiguration> updateAnomalyDetectionConfigurationWithResponse(
+            UUID configurationId, AnomalyDetectionConfigurationPatch body, Context context) {
+        return updateAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context).block();
     }
 
     /**
@@ -2748,7 +2014,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyDetectionConfigurationWithResponseAsync(UUID configurationId) {
@@ -2767,7 +2033,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAnomalyDetectionConfigurationWithResponseAsync(
@@ -2783,11 +2049,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAnomalyDetectionConfigurationAsync(UUID configurationId) {
-        return deleteAnomalyDetectionConfigurationWithResponseAsync(configurationId).flatMap(ignored -> Mono.empty());
+        return deleteAnomalyDetectionConfigurationWithResponseAsync(configurationId)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -2798,28 +2065,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAnomalyDetectionConfigurationAsync(UUID configurationId, Context context) {
         return deleteAnomalyDetectionConfigurationWithResponseAsync(configurationId, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAnomalyDetectionConfigurationWithResponse(UUID configurationId, Context context) {
-        final String accept = "application/json";
-        return service.deleteAnomalyDetectionConfigurationSync(this.getEndpoint(), configurationId, accept, context);
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -2832,7 +2083,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAnomalyDetectionConfiguration(UUID configurationId) {
-        deleteAnomalyDetectionConfigurationWithResponse(configurationId, Context.NONE);
+        deleteAnomalyDetectionConfigurationAsync(configurationId).block();
+    }
+
+    /**
+     * Delete anomaly detection configuration.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAnomalyDetectionConfigurationWithResponse(UUID configurationId, Context context) {
+        return deleteAnomalyDetectionConfigurationWithResponseAsync(configurationId, context).block();
     }
 
     /**
@@ -2842,7 +2108,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfigurationWithResponseAsync(
@@ -2860,7 +2126,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateAnomalyDetectionConfigurationResponse> createAnomalyDetectionConfigurationWithResponseAsync(
@@ -2876,11 +2142,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAnomalyDetectionConfigurationAsync(AnomalyDetectionConfiguration body) {
-        return createAnomalyDetectionConfigurationWithResponseAsync(body).flatMap(ignored -> Mono.empty());
+        return createAnomalyDetectionConfigurationWithResponseAsync(body)
+                .flatMap((CreateAnomalyDetectionConfigurationResponse res) -> Mono.empty());
     }
 
     /**
@@ -2891,11 +2158,25 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAnomalyDetectionConfigurationAsync(AnomalyDetectionConfiguration body, Context context) {
-        return createAnomalyDetectionConfigurationWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
+        return createAnomalyDetectionConfigurationWithResponseAsync(body, context)
+                .flatMap((CreateAnomalyDetectionConfigurationResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Create anomaly detection configuration.
+     *
+     * @param body anomaly detection configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createAnomalyDetectionConfiguration(AnomalyDetectionConfiguration body) {
+        createAnomalyDetectionConfigurationAsync(body).block();
     }
 
     /**
@@ -2909,23 +2190,9 @@ public final class MetricsAdvisorImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateAnomalyDetectionConfigurationResponse createAnomalyDetectionConfigurationWithResponse(
+    public Response<Void> createAnomalyDetectionConfigurationWithResponse(
             AnomalyDetectionConfiguration body, Context context) {
-        final String accept = "application/json";
-        return service.createAnomalyDetectionConfigurationSync(this.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Create anomaly detection configuration.
-     *
-     * @param body anomaly detection configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createAnomalyDetectionConfiguration(AnomalyDetectionConfiguration body) {
-        createAnomalyDetectionConfigurationWithResponse(body, Context.NONE);
+        return createAnomalyDetectionConfigurationWithResponseAsync(body, context).block();
     }
 
     /**
@@ -2937,7 +2204,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlertingConfiguration>>
@@ -2969,7 +2236,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlertingConfiguration>>
@@ -2998,7 +2265,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(
@@ -3021,7 +2288,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(
@@ -3044,73 +2311,14 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlertingConfiguration>
-            getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
-                    UUID configurationId, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<AnomalyAlertingConfigurationList> res =
-                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all anomaly alerting configurations for specific anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlertingConfiguration>
-            getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
-                    UUID configurationId, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyAlertingConfigurationList> res =
-                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all anomaly alerting configurations for specific anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
             UUID configurationId, Integer skip, Integer maxpagesize) {
         return new PagedIterable<>(
-                () ->
-                        getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, skip, maxpagesize, Context.NONE),
-                nextLink -> getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(nextLink));
+                getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(
+                        configurationId, skip, maxpagesize));
     }
 
     /**
@@ -3123,18 +2331,14 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyAlertingConfiguration> getAnomalyAlertingConfigurationsByAnomalyDetectionConfiguration(
             UUID configurationId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, skip, maxpagesize, context),
-                nextLink ->
-                        getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(
-                                nextLink, context));
+                getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationAsync(
+                        configurationId, skip, maxpagesize, context));
     }
 
     /**
@@ -3145,7 +2349,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SeriesResultList>> getSeriesByAnomalyDetectionConfigurationWithResponseAsync(
@@ -3166,7 +2370,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SeriesResultList>> getSeriesByAnomalyDetectionConfigurationWithResponseAsync(
@@ -3184,13 +2388,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SeriesResultList> getSeriesByAnomalyDetectionConfigurationAsync(
             UUID configurationId, DetectionSeriesQuery body) {
         return getSeriesByAnomalyDetectionConfigurationWithResponseAsync(configurationId, body)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(
+                        (Response<SeriesResultList> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -3202,32 +2413,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SeriesResultList> getSeriesByAnomalyDetectionConfigurationAsync(
             UUID configurationId, DetectionSeriesQuery body, Context context) {
         return getSeriesByAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Query series enriched by anomaly detection.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query series detection result request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SeriesResultList> getSeriesByAnomalyDetectionConfigurationWithResponse(
-            UUID configurationId, DetectionSeriesQuery body, Context context) {
-        final String accept = "application/json";
-        return service.getSeriesByAnomalyDetectionConfigurationSync(
-                this.getEndpoint(), configurationId, body, accept, context);
+                .flatMap(
+                        (Response<SeriesResultList> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -3242,7 +2441,24 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SeriesResultList getSeriesByAnomalyDetectionConfiguration(UUID configurationId, DetectionSeriesQuery body) {
-        return getSeriesByAnomalyDetectionConfigurationWithResponse(configurationId, body, Context.NONE).getValue();
+        return getSeriesByAnomalyDetectionConfigurationAsync(configurationId, body).block();
+    }
+
+    /**
+     * Query series enriched by anomaly detection.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param body query series detection result request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SeriesResultList> getSeriesByAnomalyDetectionConfigurationWithResponse(
+            UUID configurationId, DetectionSeriesQuery body, Context context) {
+        return getSeriesByAnomalyDetectionConfigurationWithResponseAsync(configurationId, body, context).block();
     }
 
     /**
@@ -3255,7 +2471,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
@@ -3287,7 +2503,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
@@ -3320,7 +2536,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationAsync(
@@ -3343,7 +2559,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationAsync(
@@ -3369,22 +2585,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AnomalyResult> getAnomaliesByAnomalyDetectionConfiguration(
             UUID configurationId, DetectionAnomalyResultQuery body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getAnomaliesByAnomalyDetectionConfigurationAsync(configurationId, body, skip, maxpagesize));
     }
 
     /**
@@ -3398,62 +2605,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationSinglePage(
-            UUID configurationId,
-            DetectionAnomalyResultQuery body,
-            Integer skip,
-            Integer maxpagesize,
-            Context context) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query anomalies under anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query detection anomaly result request.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyResult> getAnomaliesByAnomalyDetectionConfiguration(
-            UUID configurationId, DetectionAnomalyResultQuery body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        getAnomaliesByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * Query anomalies under anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query detection anomaly result request.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyResult> getAnomaliesByAnomalyDetectionConfiguration(
@@ -3463,10 +2615,7 @@ public final class MetricsAdvisorImpl {
             Integer maxpagesize,
             Context context) {
         return new PagedIterable<>(
-                () ->
-                        getAnomaliesByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, body, skip, maxpagesize, context),
-                nextLink -> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body, context));
+                getAnomaliesByAnomalyDetectionConfigurationAsync(configurationId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -3479,7 +2628,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
@@ -3511,7 +2660,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePageAsync(
@@ -3540,7 +2689,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationAsync(
@@ -3563,7 +2712,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationAsync(
@@ -3587,22 +2736,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<AnomalyDimensionList> res =
-                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getDimensionOfAnomaliesByAnomalyDetectionConfigurationAsync(configurationId, body, skip, maxpagesize));
     }
 
     /**
@@ -3616,68 +2756,14 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
-            UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyDimensionList> res =
-                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query dimension values of anomalies.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query dimension values request.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
-            UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * Query dimension values of anomalies.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query dimension values request.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getDimensionOfAnomaliesByAnomalyDetectionConfiguration(
             UUID configurationId, AnomalyDimensionQuery body, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, body, skip, maxpagesize, context),
-                nextLink ->
-                        getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(nextLink, body, context));
+                getDimensionOfAnomaliesByAnomalyDetectionConfigurationAsync(
+                        configurationId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -3689,7 +2775,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
@@ -3720,7 +2806,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationSinglePageAsync(
@@ -3748,7 +2834,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentResult> getIncidentsByAnomalyDetectionConfigurationAsync(
@@ -3768,7 +2854,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentResult> getIncidentsByAnomalyDetectionConfigurationAsync(
@@ -3789,22 +2875,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfiguration(
             UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getIncidentsByAnomalyDetectionConfigurationAsync(configurationId, body, maxpagesize));
     }
 
     /**
@@ -3817,65 +2894,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationSinglePage(
-            UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationSync(
-                        this.getEndpoint(), configurationId, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query incidents under anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query detection incident result request.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfiguration(
-            UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        getIncidentsByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, body, maxpagesize, Context.NONE),
-                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextLink));
-    }
-
-    /**
-     * Query incidents under anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param body query detection incident result request.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfiguration(
             UUID configurationId, DetectionIncidentResultQuery body, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getIncidentsByAnomalyDetectionConfigurationSinglePage(
-                                configurationId, body, maxpagesize, context),
-                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(nextLink, context));
+                getIncidentsByAnomalyDetectionConfigurationAsync(configurationId, body, maxpagesize, context));
     }
 
     /**
@@ -3887,7 +2912,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(
@@ -3918,7 +2943,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePageAsync(
@@ -3946,7 +2971,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(
@@ -3968,7 +2993,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(
@@ -3989,22 +3014,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
             UUID configurationId, Integer maxpagesize, String token) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationNextPagesSync(
-                        this.getEndpoint(), configurationId, maxpagesize, token, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(configurationId, maxpagesize, token));
     }
 
     /**
@@ -4017,65 +3033,14 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
-            UUID configurationId, Integer maxpagesize, String token, Context context) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationNextPagesSync(
-                        this.getEndpoint(), configurationId, maxpagesize, token, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query incidents under anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param token the token for getting the next page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
-            UUID configurationId, Integer maxpagesize, String token) {
-        return new PagedIterable<>(
-                () ->
-                        getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
-                                configurationId, maxpagesize, token, Context.NONE),
-                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(nextLink));
-    }
-
-    /**
-     * Query incidents under anomaly detection configuration.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param token the token for getting the next page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPages(
             UUID configurationId, Integer maxpagesize, String token, Context context) {
         return new PagedIterable<>(
-                () ->
-                        getIncidentsByAnomalyDetectionConfigurationNextPagesSinglePage(
-                                configurationId, maxpagesize, token, context),
-                nextLink -> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(nextLink, context));
+                getIncidentsByAnomalyDetectionConfigurationNextPagesAsync(
+                        configurationId, maxpagesize, token, context));
     }
 
     /**
@@ -4086,7 +3051,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
@@ -4107,7 +3072,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RootCauseList>> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
@@ -4125,13 +3090,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationAsync(
             UUID configurationId, String incidentId) {
         return getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(configurationId, incidentId)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(
+                        (Response<RootCauseList> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -4143,33 +3115,21 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationAsync(
             UUID configurationId, String incidentId, Context context) {
         return getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
                         configurationId, incidentId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Query root cause for incident.
-     *
-     * @param configurationId anomaly detection configuration unique id.
-     * @param incidentId incident id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
-            UUID configurationId, String incidentId, Context context) {
-        final String accept = "application/json";
-        return service.getRootCauseOfIncidentByAnomalyDetectionConfigurationSync(
-                this.getEndpoint(), configurationId, incidentId, accept, context);
+                .flatMap(
+                        (Response<RootCauseList> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -4185,9 +3145,26 @@ public final class MetricsAdvisorImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RootCauseList getRootCauseOfIncidentByAnomalyDetectionConfiguration(
             UUID configurationId, String incidentId) {
-        return getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
-                        configurationId, incidentId, Context.NONE)
-                .getValue();
+        return getRootCauseOfIncidentByAnomalyDetectionConfigurationAsync(configurationId, incidentId).block();
+    }
+
+    /**
+     * Query root cause for incident.
+     *
+     * @param configurationId anomaly detection configuration unique id.
+     * @param incidentId incident id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RootCauseList> getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponse(
+            UUID configurationId, String incidentId, Context context) {
+        return getRootCauseOfIncidentByAnomalyDetectionConfigurationWithResponseAsync(
+                        configurationId, incidentId, context)
+                .block();
     }
 
     /**
@@ -4197,7 +3174,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateCredentialResponse> createCredentialWithResponseAsync(DataSourceCredential body) {
@@ -4213,7 +3190,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateCredentialResponse> createCredentialWithResponseAsync(
@@ -4229,11 +3206,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createCredentialAsync(DataSourceCredential body) {
-        return createCredentialWithResponseAsync(body).flatMap(ignored -> Mono.empty());
+        return createCredentialWithResponseAsync(body).flatMap((CreateCredentialResponse res) -> Mono.empty());
     }
 
     /**
@@ -4244,11 +3221,24 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createCredentialAsync(DataSourceCredential body, Context context) {
-        return createCredentialWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
+        return createCredentialWithResponseAsync(body, context).flatMap((CreateCredentialResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Create a new data source credential.
+     *
+     * @param body Create data source credential request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createCredential(DataSourceCredential body) {
+        createCredentialAsync(body).block();
     }
 
     /**
@@ -4262,22 +3252,8 @@ public final class MetricsAdvisorImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCredentialResponse createCredentialWithResponse(DataSourceCredential body, Context context) {
-        final String accept = "application/json";
-        return service.createCredentialSync(this.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Create a new data source credential.
-     *
-     * @param body Create data source credential request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createCredential(DataSourceCredential body) {
-        createCredentialWithResponse(body, Context.NONE);
+    public Response<Void> createCredentialWithResponse(DataSourceCredential body, Context context) {
+        return createCredentialWithResponseAsync(body, context).block();
     }
 
     /**
@@ -4288,7 +3264,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataSourceCredential>> listCredentialsSinglePageAsync(Integer skip, Integer maxpagesize) {
@@ -4315,7 +3291,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataSourceCredential>> listCredentialsSinglePageAsync(
@@ -4341,7 +3317,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataSourceCredential> listCredentialsAsync(Integer skip, Integer maxpagesize) {
@@ -4359,7 +3335,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataSourceCredential> listCredentialsAsync(Integer skip, Integer maxpagesize, Context context) {
@@ -4376,63 +3352,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataSourceCredential> listCredentialsSinglePage(Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DataSourceCredentialList> res =
-                service.listCredentialsSync(this.getEndpoint(), skip, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all credentials.
-     *
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataSourceCredential> listCredentialsSinglePage(
-            Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<DataSourceCredentialList> res =
-                service.listCredentialsSync(this.getEndpoint(), skip, maxpagesize, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all credentials.
-     *
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceCredential> listCredentials(Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> listCredentialsSinglePage(skip, maxpagesize, Context.NONE),
-                nextLink -> listCredentialsNextSinglePage(nextLink));
+        return new PagedIterable<>(listCredentialsAsync(skip, maxpagesize));
     }
 
     /**
@@ -4444,13 +3368,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataSourceCredential> listCredentials(Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> listCredentialsSinglePage(skip, maxpagesize, context),
-                nextLink -> listCredentialsNextSinglePage(nextLink, context));
+        return new PagedIterable<>(listCredentialsAsync(skip, maxpagesize, context));
     }
 
     /**
@@ -4461,7 +3383,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSourceCredential>> updateCredentialWithResponseAsync(
@@ -4480,7 +3402,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSourceCredential>> updateCredentialWithResponseAsync(
@@ -4497,11 +3419,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSourceCredential> updateCredentialAsync(UUID credentialId, DataSourceCredentialPatch body) {
-        return updateCredentialWithResponseAsync(credentialId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateCredentialWithResponseAsync(credentialId, body)
+                .flatMap(
+                        (Response<DataSourceCredential> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -4513,31 +3443,20 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSourceCredential> updateCredentialAsync(
             UUID credentialId, DataSourceCredentialPatch body, Context context) {
         return updateCredentialWithResponseAsync(credentialId, body, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update a data source credential.
-     *
-     * @param credentialId Data source credential unique ID.
-     * @param body Update data source credential request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredential> updateCredentialWithResponse(
-            UUID credentialId, DataSourceCredentialPatch body, Context context) {
-        final String accept = "application/json";
-        return service.updateCredentialSync(this.getEndpoint(), credentialId, body, accept, context);
+                .flatMap(
+                        (Response<DataSourceCredential> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -4552,7 +3471,24 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSourceCredential updateCredential(UUID credentialId, DataSourceCredentialPatch body) {
-        return updateCredentialWithResponse(credentialId, body, Context.NONE).getValue();
+        return updateCredentialAsync(credentialId, body).block();
+    }
+
+    /**
+     * Update a data source credential.
+     *
+     * @param credentialId Data source credential unique ID.
+     * @param body Update data source credential request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataSourceCredential> updateCredentialWithResponse(
+            UUID credentialId, DataSourceCredentialPatch body, Context context) {
+        return updateCredentialWithResponseAsync(credentialId, body, context).block();
     }
 
     /**
@@ -4562,7 +3498,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCredentialWithResponseAsync(UUID credentialId) {
@@ -4579,7 +3515,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCredentialWithResponseAsync(UUID credentialId, Context context) {
@@ -4594,11 +3530,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCredentialAsync(UUID credentialId) {
-        return deleteCredentialWithResponseAsync(credentialId).flatMap(ignored -> Mono.empty());
+        return deleteCredentialWithResponseAsync(credentialId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -4609,27 +3545,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCredentialAsync(UUID credentialId, Context context) {
-        return deleteCredentialWithResponseAsync(credentialId, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a data source credential.
-     *
-     * @param credentialId Data source credential unique ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCredentialWithResponse(UUID credentialId, Context context) {
-        final String accept = "application/json";
-        return service.deleteCredentialSync(this.getEndpoint(), credentialId, accept, context);
+        return deleteCredentialWithResponseAsync(credentialId, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -4642,7 +3562,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteCredential(UUID credentialId) {
-        deleteCredentialWithResponse(credentialId, Context.NONE);
+        deleteCredentialAsync(credentialId).block();
+    }
+
+    /**
+     * Delete a data source credential.
+     *
+     * @param credentialId Data source credential unique ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteCredentialWithResponse(UUID credentialId, Context context) {
+        return deleteCredentialWithResponseAsync(credentialId, context).block();
     }
 
     /**
@@ -4652,7 +3587,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data source credential along with {@link Response} on successful completion of {@link Mono}.
+     * @return a data source credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSourceCredential>> getCredentialWithResponseAsync(UUID credentialId) {
@@ -4669,7 +3604,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data source credential along with {@link Response} on successful completion of {@link Mono}.
+     * @return a data source credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataSourceCredential>> getCredentialWithResponseAsync(UUID credentialId, Context context) {
@@ -4684,11 +3619,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data source credential on successful completion of {@link Mono}.
+     * @return a data source credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSourceCredential> getCredentialAsync(UUID credentialId) {
-        return getCredentialWithResponseAsync(credentialId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getCredentialWithResponseAsync(credentialId)
+                .flatMap(
+                        (Response<DataSourceCredential> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -4699,27 +3642,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data source credential on successful completion of {@link Mono}.
+     * @return a data source credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataSourceCredential> getCredentialAsync(UUID credentialId, Context context) {
-        return getCredentialWithResponseAsync(credentialId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a data source credential.
-     *
-     * @param credentialId Data source credential unique ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data source credential along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredential> getCredentialWithResponse(UUID credentialId, Context context) {
-        final String accept = "application/json";
-        return service.getCredentialSync(this.getEndpoint(), credentialId, accept, context);
+        return getCredentialWithResponseAsync(credentialId, context)
+                .flatMap(
+                        (Response<DataSourceCredential> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -4733,7 +3668,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataSourceCredential getCredential(UUID credentialId) {
-        return getCredentialWithResponse(credentialId, Context.NONE).getValue();
+        return getCredentialAsync(credentialId).block();
+    }
+
+    /**
+     * Get a data source credential.
+     *
+     * @param credentialId Data source credential unique ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data source credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataSourceCredential> getCredentialWithResponse(UUID credentialId, Context context) {
+        return getCredentialWithResponseAsync(credentialId, context).block();
     }
 
     /**
@@ -4749,7 +3699,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedDetail>> listDataFeedsSinglePageAsync(
@@ -4799,7 +3749,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedDetail>> listDataFeedsSinglePageAsync(
@@ -4847,7 +3797,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFeedDetail> listDataFeedsAsync(
@@ -4879,7 +3829,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFeedDetail> listDataFeedsAsync(
@@ -4918,10 +3868,10 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedDetail> listDataFeedsSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataFeedDetail> listDataFeeds(
             String dataFeedName,
             DataSourceType dataSourceType,
             Granularity granularityName,
@@ -4929,26 +3879,8 @@ public final class MetricsAdvisorImpl {
             String creator,
             Integer skip,
             Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<DataFeedList> res =
-                service.listDataFeedsSync(
-                        this.getEndpoint(),
-                        dataFeedName,
-                        dataSourceType,
-                        granularityName,
-                        status,
-                        creator,
-                        skip,
-                        maxpagesize,
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(
+                listDataFeedsAsync(dataFeedName, dataSourceType, granularityName, status, creator, skip, maxpagesize));
     }
 
     /**
@@ -4965,93 +3897,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedDetail> listDataFeedsSinglePage(
-            String dataFeedName,
-            DataSourceType dataSourceType,
-            Granularity granularityName,
-            EntityStatus status,
-            String creator,
-            Integer skip,
-            Integer maxpagesize,
-            Context context) {
-        final String accept = "application/json";
-        Response<DataFeedList> res =
-                service.listDataFeedsSync(
-                        this.getEndpoint(),
-                        dataFeedName,
-                        dataSourceType,
-                        granularityName,
-                        status,
-                        creator,
-                        skip,
-                        maxpagesize,
-                        accept,
-                        context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all data feeds.
-     *
-     * @param dataFeedName filter data feed by its name.
-     * @param dataSourceType filter data feed by its source type.
-     * @param granularityName filter data feed by its granularity.
-     * @param status filter data feed by its status.
-     * @param creator filter data feed by its creator.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataFeedDetail> listDataFeeds(
-            String dataFeedName,
-            DataSourceType dataSourceType,
-            Granularity granularityName,
-            EntityStatus status,
-            String creator,
-            Integer skip,
-            Integer maxpagesize) {
-        return new PagedIterable<>(
-                () ->
-                        listDataFeedsSinglePage(
-                                dataFeedName,
-                                dataSourceType,
-                                granularityName,
-                                status,
-                                creator,
-                                skip,
-                                maxpagesize,
-                                Context.NONE),
-                nextLink -> listDataFeedsNextSinglePage(nextLink));
-    }
-
-    /**
-     * List all data feeds.
-     *
-     * @param dataFeedName filter data feed by its name.
-     * @param dataSourceType filter data feed by its source type.
-     * @param granularityName filter data feed by its granularity.
-     * @param status filter data feed by its status.
-     * @param creator filter data feed by its creator.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedDetail> listDataFeeds(
@@ -5064,17 +3910,8 @@ public final class MetricsAdvisorImpl {
             Integer maxpagesize,
             Context context) {
         return new PagedIterable<>(
-                () ->
-                        listDataFeedsSinglePage(
-                                dataFeedName,
-                                dataSourceType,
-                                granularityName,
-                                status,
-                                creator,
-                                skip,
-                                maxpagesize,
-                                context),
-                nextLink -> listDataFeedsNextSinglePage(nextLink, context));
+                listDataFeedsAsync(
+                        dataFeedName, dataSourceType, granularityName, status, creator, skip, maxpagesize, context));
     }
 
     /**
@@ -5084,7 +3921,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateDataFeedResponse> createDataFeedWithResponseAsync(DataFeedDetail body) {
@@ -5100,7 +3937,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateDataFeedResponse> createDataFeedWithResponseAsync(DataFeedDetail body, Context context) {
@@ -5115,11 +3952,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createDataFeedAsync(DataFeedDetail body) {
-        return createDataFeedWithResponseAsync(body).flatMap(ignored -> Mono.empty());
+        return createDataFeedWithResponseAsync(body).flatMap((CreateDataFeedResponse res) -> Mono.empty());
     }
 
     /**
@@ -5130,11 +3967,24 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createDataFeedAsync(DataFeedDetail body, Context context) {
-        return createDataFeedWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
+        return createDataFeedWithResponseAsync(body, context).flatMap((CreateDataFeedResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Create a new data feed.
+     *
+     * @param body parameters to create a data feed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createDataFeed(DataFeedDetail body) {
+        createDataFeedAsync(body).block();
     }
 
     /**
@@ -5148,22 +3998,8 @@ public final class MetricsAdvisorImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateDataFeedResponse createDataFeedWithResponse(DataFeedDetail body, Context context) {
-        final String accept = "application/json";
-        return service.createDataFeedSync(this.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Create a new data feed.
-     *
-     * @param body parameters to create a data feed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createDataFeed(DataFeedDetail body) {
-        createDataFeedWithResponse(body, Context.NONE);
+    public Response<Void> createDataFeedWithResponse(DataFeedDetail body, Context context) {
+        return createDataFeedWithResponseAsync(body, context).block();
     }
 
     /**
@@ -5173,7 +4009,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data feed by its id along with {@link Response} on successful completion of {@link Mono}.
+     * @return a data feed by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedDetail>> getDataFeedByIdWithResponseAsync(UUID dataFeedId) {
@@ -5190,7 +4026,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data feed by its id along with {@link Response} on successful completion of {@link Mono}.
+     * @return a data feed by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedDetail>> getDataFeedByIdWithResponseAsync(UUID dataFeedId, Context context) {
@@ -5205,11 +4041,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data feed by its id on successful completion of {@link Mono}.
+     * @return a data feed by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedDetail> getDataFeedByIdAsync(UUID dataFeedId) {
-        return getDataFeedByIdWithResponseAsync(dataFeedId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getDataFeedByIdWithResponseAsync(dataFeedId)
+                .flatMap(
+                        (Response<DataFeedDetail> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -5220,27 +4064,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data feed by its id on successful completion of {@link Mono}.
+     * @return a data feed by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedDetail> getDataFeedByIdAsync(UUID dataFeedId, Context context) {
-        return getDataFeedByIdWithResponseAsync(dataFeedId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a data feed by its id.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data feed by its id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFeedDetail> getDataFeedByIdWithResponse(UUID dataFeedId, Context context) {
-        final String accept = "application/json";
-        return service.getDataFeedByIdSync(this.getEndpoint(), dataFeedId, accept, context);
+        return getDataFeedByIdWithResponseAsync(dataFeedId, context)
+                .flatMap(
+                        (Response<DataFeedDetail> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -5254,7 +4090,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFeedDetail getDataFeedById(UUID dataFeedId) {
-        return getDataFeedByIdWithResponse(dataFeedId, Context.NONE).getValue();
+        return getDataFeedByIdAsync(dataFeedId).block();
+    }
+
+    /**
+     * Get a data feed by its id.
+     *
+     * @param dataFeedId The data feed unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data feed by its id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFeedDetail> getDataFeedByIdWithResponse(UUID dataFeedId, Context context) {
+        return getDataFeedByIdWithResponseAsync(dataFeedId, context).block();
     }
 
     /**
@@ -5265,7 +4116,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedDetail>> updateDataFeedWithResponseAsync(UUID dataFeedId, DataFeedDetailPatch body) {
@@ -5283,7 +4134,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedDetail>> updateDataFeedWithResponseAsync(
@@ -5300,11 +4151,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedDetail> updateDataFeedAsync(UUID dataFeedId, DataFeedDetailPatch body) {
-        return updateDataFeedWithResponseAsync(dataFeedId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateDataFeedWithResponseAsync(dataFeedId, body)
+                .flatMap(
+                        (Response<DataFeedDetail> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -5316,30 +4175,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedDetail> updateDataFeedAsync(UUID dataFeedId, DataFeedDetailPatch body, Context context) {
         return updateDataFeedWithResponseAsync(dataFeedId, body, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update a data feed.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param body parameters to update a data feed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFeedDetail> updateDataFeedWithResponse(
-            UUID dataFeedId, DataFeedDetailPatch body, Context context) {
-        final String accept = "application/json";
-        return service.updateDataFeedSync(this.getEndpoint(), dataFeedId, body, accept, context);
+                .flatMap(
+                        (Response<DataFeedDetail> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -5354,7 +4202,24 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFeedDetail updateDataFeed(UUID dataFeedId, DataFeedDetailPatch body) {
-        return updateDataFeedWithResponse(dataFeedId, body, Context.NONE).getValue();
+        return updateDataFeedAsync(dataFeedId, body).block();
+    }
+
+    /**
+     * Update a data feed.
+     *
+     * @param dataFeedId The data feed unique id.
+     * @param body parameters to update a data feed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFeedDetail> updateDataFeedWithResponse(
+            UUID dataFeedId, DataFeedDetailPatch body, Context context) {
+        return updateDataFeedWithResponseAsync(dataFeedId, body, context).block();
     }
 
     /**
@@ -5364,7 +4229,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFeedWithResponseAsync(UUID dataFeedId) {
@@ -5380,7 +4245,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDataFeedWithResponseAsync(UUID dataFeedId, Context context) {
@@ -5395,11 +4260,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFeedAsync(UUID dataFeedId) {
-        return deleteDataFeedWithResponseAsync(dataFeedId).flatMap(ignored -> Mono.empty());
+        return deleteDataFeedWithResponseAsync(dataFeedId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -5410,27 +4275,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataFeedAsync(UUID dataFeedId, Context context) {
-        return deleteDataFeedWithResponseAsync(dataFeedId, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a data feed.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDataFeedWithResponse(UUID dataFeedId, Context context) {
-        final String accept = "application/json";
-        return service.deleteDataFeedSync(this.getEndpoint(), dataFeedId, accept, context);
+        return deleteDataFeedWithResponseAsync(dataFeedId, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -5443,7 +4292,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataFeed(UUID dataFeedId) {
-        deleteDataFeedWithResponse(dataFeedId, Context.NONE);
+        deleteDataFeedAsync(dataFeedId).block();
+    }
+
+    /**
+     * Delete a data feed.
+     *
+     * @param dataFeedId The data feed unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteDataFeedWithResponse(UUID dataFeedId, Context context) {
+        return deleteDataFeedWithResponseAsync(dataFeedId, context).block();
     }
 
     /**
@@ -5453,7 +4317,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric feedback by its id along with {@link Response} on successful completion of {@link Mono}.
+     * @return a metric feedback by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricFeedback>> getMetricFeedbackWithResponseAsync(UUID feedbackId) {
@@ -5470,7 +4334,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric feedback by its id along with {@link Response} on successful completion of {@link Mono}.
+     * @return a metric feedback by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricFeedback>> getMetricFeedbackWithResponseAsync(UUID feedbackId, Context context) {
@@ -5485,11 +4349,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric feedback by its id on successful completion of {@link Mono}.
+     * @return a metric feedback by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricFeedback> getMetricFeedbackAsync(UUID feedbackId) {
-        return getMetricFeedbackWithResponseAsync(feedbackId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getMetricFeedbackWithResponseAsync(feedbackId)
+                .flatMap(
+                        (Response<MetricFeedback> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -5500,27 +4372,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric feedback by its id on successful completion of {@link Mono}.
+     * @return a metric feedback by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricFeedback> getMetricFeedbackAsync(UUID feedbackId, Context context) {
-        return getMetricFeedbackWithResponseAsync(feedbackId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a metric feedback by its id.
-     *
-     * @param feedbackId the unique feedback ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a metric feedback by its id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricFeedback> getMetricFeedbackWithResponse(UUID feedbackId, Context context) {
-        final String accept = "application/json";
-        return service.getMetricFeedbackSync(this.getEndpoint(), feedbackId, accept, context);
+        return getMetricFeedbackWithResponseAsync(feedbackId, context)
+                .flatMap(
+                        (Response<MetricFeedback> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -5534,7 +4398,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricFeedback getMetricFeedback(UUID feedbackId) {
-        return getMetricFeedbackWithResponse(feedbackId, Context.NONE).getValue();
+        return getMetricFeedbackAsync(feedbackId).block();
+    }
+
+    /**
+     * Get a metric feedback by its id.
+     *
+     * @param feedbackId the unique feedback ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a metric feedback by its id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MetricFeedback> getMetricFeedbackWithResponse(UUID feedbackId, Context context) {
+        return getMetricFeedbackWithResponseAsync(feedbackId, context).block();
     }
 
     /**
@@ -5546,7 +4425,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePageAsync(
@@ -5577,7 +4456,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksSinglePageAsync(
@@ -5604,7 +4483,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricFeedback> listMetricFeedbacksAsync(
@@ -5624,7 +4503,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricFeedback> listMetricFeedbacksAsync(
@@ -5643,21 +4522,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricFeedback> listMetricFeedbacksSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricFeedback> listMetricFeedbacks(
             MetricFeedbackFilter body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<MetricFeedbackList> res =
-                service.listMetricFeedbacksSync(this.getEndpoint(), skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(listMetricFeedbacksAsync(body, skip, maxpagesize));
     }
 
     /**
@@ -5670,60 +4540,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricFeedback> listMetricFeedbacksSinglePage(
-            MetricFeedbackFilter body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<MetricFeedbackList> res =
-                service.listMetricFeedbacksSync(this.getEndpoint(), skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List feedback on the given metric.
-     *
-     * @param body metric feedback filter.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricFeedback> listMetricFeedbacks(
-            MetricFeedbackFilter body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> listMetricFeedbacksSinglePage(body, skip, maxpagesize, Context.NONE),
-                nextLink -> listMetricFeedbacksNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * List feedback on the given metric.
-     *
-     * @param body metric feedback filter.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricFeedback> listMetricFeedbacks(
             MetricFeedbackFilter body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> listMetricFeedbacksSinglePage(body, skip, maxpagesize, context),
-                nextLink -> listMetricFeedbacksNextSinglePage(nextLink, body, context));
+        return new PagedIterable<>(listMetricFeedbacksAsync(body, skip, maxpagesize, context));
     }
 
     /**
@@ -5733,7 +4555,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateMetricFeedbackResponse> createMetricFeedbackWithResponseAsync(MetricFeedback body) {
@@ -5749,7 +4571,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateMetricFeedbackResponse> createMetricFeedbackWithResponseAsync(
@@ -5765,11 +4587,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createMetricFeedbackAsync(MetricFeedback body) {
-        return createMetricFeedbackWithResponseAsync(body).flatMap(ignored -> Mono.empty());
+        return createMetricFeedbackWithResponseAsync(body).flatMap((CreateMetricFeedbackResponse res) -> Mono.empty());
     }
 
     /**
@@ -5780,11 +4602,25 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createMetricFeedbackAsync(MetricFeedback body, Context context) {
-        return createMetricFeedbackWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
+        return createMetricFeedbackWithResponseAsync(body, context)
+                .flatMap((CreateMetricFeedbackResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Create a new metric feedback.
+     *
+     * @param body metric feedback.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createMetricFeedback(MetricFeedback body) {
+        createMetricFeedbackAsync(body).block();
     }
 
     /**
@@ -5798,22 +4634,8 @@ public final class MetricsAdvisorImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateMetricFeedbackResponse createMetricFeedbackWithResponse(MetricFeedback body, Context context) {
-        final String accept = "application/json";
-        return service.createMetricFeedbackSync(this.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Create a new metric feedback.
-     *
-     * @param body metric feedback.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createMetricFeedback(MetricFeedback body) {
-        createMetricFeedbackWithResponse(body, Context.NONE);
+    public Response<Void> createMetricFeedbackWithResponse(MetricFeedback body, Context context) {
+        return createMetricFeedbackWithResponseAsync(body, context).block();
     }
 
     /**
@@ -5825,7 +4647,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksSinglePageAsync(String hookName, Integer skip, Integer maxpagesize) {
@@ -5853,7 +4675,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksSinglePageAsync(
@@ -5880,7 +4702,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<HookInfo> listHooksAsync(String hookName, Integer skip, Integer maxpagesize) {
@@ -5899,7 +4721,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<HookInfo> listHooksAsync(String hookName, Integer skip, Integer maxpagesize, Context context) {
@@ -5917,65 +4739,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<HookInfo> listHooksSinglePage(String hookName, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<HookList> res =
-                service.listHooksSync(this.getEndpoint(), hookName, skip, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all hooks.
-     *
-     * @param hookName filter hook by its name.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<HookInfo> listHooksSinglePage(
-            String hookName, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<HookList> res =
-                service.listHooksSync(this.getEndpoint(), hookName, skip, maxpagesize, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all hooks.
-     *
-     * @param hookName filter hook by its name.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HookInfo> listHooks(String hookName, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> listHooksSinglePage(hookName, skip, maxpagesize, Context.NONE),
-                nextLink -> listHooksNextSinglePage(nextLink));
+        return new PagedIterable<>(listHooksAsync(hookName, skip, maxpagesize));
     }
 
     /**
@@ -5988,13 +4756,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HookInfo> listHooks(String hookName, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> listHooksSinglePage(hookName, skip, maxpagesize, context),
-                nextLink -> listHooksNextSinglePage(nextLink, context));
+        return new PagedIterable<>(listHooksAsync(hookName, skip, maxpagesize, context));
     }
 
     /**
@@ -6004,7 +4770,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateHookResponse> createHookWithResponseAsync(HookInfo body) {
@@ -6020,7 +4786,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateHookResponse> createHookWithResponseAsync(HookInfo body, Context context) {
@@ -6035,11 +4801,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createHookAsync(HookInfo body) {
-        return createHookWithResponseAsync(body).flatMap(ignored -> Mono.empty());
+        return createHookWithResponseAsync(body).flatMap((CreateHookResponse res) -> Mono.empty());
     }
 
     /**
@@ -6050,11 +4816,24 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createHookAsync(HookInfo body, Context context) {
-        return createHookWithResponseAsync(body, context).flatMap(ignored -> Mono.empty());
+        return createHookWithResponseAsync(body, context).flatMap((CreateHookResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Create a new hook.
+     *
+     * @param body Create hook request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createHook(HookInfo body) {
+        createHookAsync(body).block();
     }
 
     /**
@@ -6068,22 +4847,8 @@ public final class MetricsAdvisorImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateHookResponse createHookWithResponse(HookInfo body, Context context) {
-        final String accept = "application/json";
-        return service.createHookSync(this.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Create a new hook.
-     *
-     * @param body Create hook request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createHook(HookInfo body) {
-        createHookWithResponse(body, Context.NONE);
+    public Response<Void> createHookWithResponse(HookInfo body, Context context) {
+        return createHookWithResponseAsync(body, context).block();
     }
 
     /**
@@ -6093,7 +4858,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hook by its id along with {@link Response} on successful completion of {@link Mono}.
+     * @return a hook by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HookInfo>> getHookWithResponseAsync(UUID hookId) {
@@ -6109,7 +4874,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hook by its id along with {@link Response} on successful completion of {@link Mono}.
+     * @return a hook by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HookInfo>> getHookWithResponseAsync(UUID hookId, Context context) {
@@ -6124,11 +4889,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hook by its id on successful completion of {@link Mono}.
+     * @return a hook by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HookInfo> getHookAsync(UUID hookId) {
-        return getHookWithResponseAsync(hookId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getHookWithResponseAsync(hookId)
+                .flatMap(
+                        (Response<HookInfo> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6139,27 +4912,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hook by its id on successful completion of {@link Mono}.
+     * @return a hook by its id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HookInfo> getHookAsync(UUID hookId, Context context) {
-        return getHookWithResponseAsync(hookId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get a hook by its id.
-     *
-     * @param hookId Hook unique ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a hook by its id along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HookInfo> getHookWithResponse(UUID hookId, Context context) {
-        final String accept = "application/json";
-        return service.getHookSync(this.getEndpoint(), hookId, accept, context);
+        return getHookWithResponseAsync(hookId, context)
+                .flatMap(
+                        (Response<HookInfo> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6173,7 +4938,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HookInfo getHook(UUID hookId) {
-        return getHookWithResponse(hookId, Context.NONE).getValue();
+        return getHookAsync(hookId).block();
+    }
+
+    /**
+     * Get a hook by its id.
+     *
+     * @param hookId Hook unique ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a hook by its id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HookInfo> getHookWithResponse(UUID hookId, Context context) {
+        return getHookWithResponseAsync(hookId, context).block();
     }
 
     /**
@@ -6184,7 +4964,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HookInfo>> updateHookWithResponseAsync(UUID hookId, HookInfoPatch body) {
@@ -6201,7 +4981,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HookInfo>> updateHookWithResponseAsync(UUID hookId, HookInfoPatch body, Context context) {
@@ -6217,11 +4997,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HookInfo> updateHookAsync(UUID hookId, HookInfoPatch body) {
-        return updateHookWithResponseAsync(hookId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateHookWithResponseAsync(hookId, body)
+                .flatMap(
+                        (Response<HookInfo> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6233,28 +5021,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<HookInfo> updateHookAsync(UUID hookId, HookInfoPatch body, Context context) {
-        return updateHookWithResponseAsync(hookId, body, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Update a hook.
-     *
-     * @param hookId Hook unique ID.
-     * @param body Update hook request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HookInfo> updateHookWithResponse(UUID hookId, HookInfoPatch body, Context context) {
-        final String accept = "application/json";
-        return service.updateHookSync(this.getEndpoint(), hookId, body, accept, context);
+        return updateHookWithResponseAsync(hookId, body, context)
+                .flatMap(
+                        (Response<HookInfo> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6269,7 +5048,23 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public HookInfo updateHook(UUID hookId, HookInfoPatch body) {
-        return updateHookWithResponse(hookId, body, Context.NONE).getValue();
+        return updateHookAsync(hookId, body).block();
+    }
+
+    /**
+     * Update a hook.
+     *
+     * @param hookId Hook unique ID.
+     * @param body Update hook request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HookInfo> updateHookWithResponse(UUID hookId, HookInfoPatch body, Context context) {
+        return updateHookWithResponseAsync(hookId, body, context).block();
     }
 
     /**
@@ -6279,7 +5074,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteHookWithResponseAsync(UUID hookId) {
@@ -6295,7 +5090,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteHookWithResponseAsync(UUID hookId, Context context) {
@@ -6310,11 +5105,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteHookAsync(UUID hookId) {
-        return deleteHookWithResponseAsync(hookId).flatMap(ignored -> Mono.empty());
+        return deleteHookWithResponseAsync(hookId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -6325,27 +5120,11 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteHookAsync(UUID hookId, Context context) {
-        return deleteHookWithResponseAsync(hookId, context).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Delete a hook.
-     *
-     * @param hookId Hook unique ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteHookWithResponse(UUID hookId, Context context) {
-        final String accept = "application/json";
-        return service.deleteHookSync(this.getEndpoint(), hookId, accept, context);
+        return deleteHookWithResponseAsync(hookId, context).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -6358,7 +5137,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteHook(UUID hookId) {
-        deleteHookWithResponse(hookId, Context.NONE);
+        deleteHookAsync(hookId).block();
+    }
+
+    /**
+     * Delete a hook.
+     *
+     * @param hookId Hook unique ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteHookWithResponse(UUID hookId, Context context) {
+        return deleteHookWithResponseAsync(hookId, context).block();
     }
 
     /**
@@ -6371,8 +5165,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusSinglePageAsync(
@@ -6404,8 +5197,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusSinglePageAsync(
@@ -6434,7 +5226,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed as paginated response with {@link PagedFlux}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFeedIngestionStatus> getDataFeedIngestionStatusAsync(
@@ -6455,7 +5247,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed as paginated response with {@link PagedFlux}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFeedIngestionStatus> getDataFeedIngestionStatusAsync(
@@ -6475,22 +5267,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse}.
+     * @return data ingestion status by data feed.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataFeedIngestionStatus> getDataFeedIngestionStatus(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<IngestionStatusList> res =
-                service.getDataFeedIngestionStatusSync(
-                        this.getEndpoint(), dataFeedId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(getDataFeedIngestionStatusAsync(dataFeedId, body, skip, maxpagesize));
     }
 
     /**
@@ -6504,63 +5286,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusSinglePage(
-            UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<IngestionStatusList> res =
-                service.getDataFeedIngestionStatusSync(
-                        this.getEndpoint(), dataFeedId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get data ingestion status by data feed.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param body The query time range.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataFeedIngestionStatus> getDataFeedIngestionStatus(
-            UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> getDataFeedIngestionStatusSinglePage(dataFeedId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getDataFeedIngestionStatusNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * Get data ingestion status by data feed.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param body The query time range.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed as paginated response with {@link PagedIterable}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeedIngestionStatus> getDataFeedIngestionStatus(
             UUID dataFeedId, IngestionStatusQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> getDataFeedIngestionStatusSinglePage(dataFeedId, body, skip, maxpagesize, context),
-                nextLink -> getDataFeedIngestionStatusNextSinglePage(nextLink, body, context));
+        return new PagedIterable<>(getDataFeedIngestionStatusAsync(dataFeedId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -6571,7 +5302,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDataFeedIngestionStatusWithResponseAsync(
@@ -6590,7 +5321,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetDataFeedIngestionStatusWithResponseAsync(
@@ -6607,11 +5338,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetDataFeedIngestionStatusAsync(UUID dataFeedId, IngestionProgressResetOptions body) {
-        return resetDataFeedIngestionStatusWithResponseAsync(dataFeedId, body).flatMap(ignored -> Mono.empty());
+        return resetDataFeedIngestionStatusWithResponseAsync(dataFeedId, body)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -6623,31 +5355,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetDataFeedIngestionStatusAsync(
             UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
         return resetDataFeedIngestionStatusWithResponseAsync(dataFeedId, body, context)
-                .flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Reset data ingestion status by data feed to backfill data.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param body The backfill time range.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetDataFeedIngestionStatusWithResponse(
-            UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
-        final String accept = "application/json";
-        return service.resetDataFeedIngestionStatusSync(this.getEndpoint(), dataFeedId, body, accept, context);
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -6661,7 +5375,24 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetDataFeedIngestionStatus(UUID dataFeedId, IngestionProgressResetOptions body) {
-        resetDataFeedIngestionStatusWithResponse(dataFeedId, body, Context.NONE);
+        resetDataFeedIngestionStatusAsync(dataFeedId, body).block();
+    }
+
+    /**
+     * Reset data ingestion status by data feed to backfill data.
+     *
+     * @param dataFeedId The data feed unique id.
+     * @param body The backfill time range.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetDataFeedIngestionStatusWithResponse(
+            UUID dataFeedId, IngestionProgressResetOptions body, Context context) {
+        return resetDataFeedIngestionStatusWithResponseAsync(dataFeedId, body, context).block();
     }
 
     /**
@@ -6671,8 +5402,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data last success ingestion job timestamp by data feed along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return data last success ingestion job timestamp by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedIngestionProgress>> getIngestionProgressWithResponseAsync(UUID dataFeedId) {
@@ -6689,8 +5419,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data last success ingestion job timestamp by data feed along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return data last success ingestion job timestamp by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataFeedIngestionProgress>> getIngestionProgressWithResponseAsync(
@@ -6706,11 +5435,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data last success ingestion job timestamp by data feed on successful completion of {@link Mono}.
+     * @return data last success ingestion job timestamp by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedIngestionProgress> getIngestionProgressAsync(UUID dataFeedId) {
-        return getIngestionProgressWithResponseAsync(dataFeedId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getIngestionProgressWithResponseAsync(dataFeedId)
+                .flatMap(
+                        (Response<DataFeedIngestionProgress> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6721,28 +5458,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data last success ingestion job timestamp by data feed on successful completion of {@link Mono}.
+     * @return data last success ingestion job timestamp by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataFeedIngestionProgress> getIngestionProgressAsync(UUID dataFeedId, Context context) {
         return getIngestionProgressWithResponseAsync(dataFeedId, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get data last success ingestion job timestamp by data feed.
-     *
-     * @param dataFeedId The data feed unique id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data last success ingestion job timestamp by data feed along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataFeedIngestionProgress> getIngestionProgressWithResponse(UUID dataFeedId, Context context) {
-        final String accept = "application/json";
-        return service.getIngestionProgressSync(this.getEndpoint(), dataFeedId, accept, context);
+                .flatMap(
+                        (Response<DataFeedIngestionProgress> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6756,7 +5484,22 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFeedIngestionProgress getIngestionProgress(UUID dataFeedId) {
-        return getIngestionProgressWithResponse(dataFeedId, Context.NONE).getValue();
+        return getIngestionProgressAsync(dataFeedId).block();
+    }
+
+    /**
+     * Get data last success ingestion job timestamp by data feed.
+     *
+     * @param dataFeedId The data feed unique id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data last success ingestion job timestamp by data feed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataFeedIngestionProgress> getIngestionProgressWithResponse(UUID dataFeedId, Context context) {
+        return getIngestionProgressWithResponseAsync(dataFeedId, context).block();
     }
 
     /**
@@ -6767,7 +5510,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return time series data from metric along with {@link Response} on successful completion of {@link Mono}.
+     * @return time series data from metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricDataList>> getMetricDataWithResponseAsync(UUID metricId, MetricDataQueryOptions body) {
@@ -6785,7 +5528,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return time series data from metric along with {@link Response} on successful completion of {@link Mono}.
+     * @return time series data from metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricDataList>> getMetricDataWithResponseAsync(
@@ -6802,11 +5545,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return time series data from metric on successful completion of {@link Mono}.
+     * @return time series data from metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricDataList> getMetricDataAsync(UUID metricId, MetricDataQueryOptions body) {
-        return getMetricDataWithResponseAsync(metricId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getMetricDataWithResponseAsync(metricId, body)
+                .flatMap(
+                        (Response<MetricDataList> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6818,29 +5569,19 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return time series data from metric on successful completion of {@link Mono}.
+     * @return time series data from metric.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricDataList> getMetricDataAsync(UUID metricId, MetricDataQueryOptions body, Context context) {
-        return getMetricDataWithResponseAsync(metricId, body, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get time series data from metric.
-     *
-     * @param metricId metric unique id.
-     * @param body query time series data condition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return time series data from metric along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricDataList> getMetricDataWithResponse(
-            UUID metricId, MetricDataQueryOptions body, Context context) {
-        final String accept = "application/json";
-        return service.getMetricDataSync(this.getEndpoint(), metricId, body, accept, context);
+        return getMetricDataWithResponseAsync(metricId, body, context)
+                .flatMap(
+                        (Response<MetricDataList> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -6855,7 +5596,24 @@ public final class MetricsAdvisorImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricDataList getMetricData(UUID metricId, MetricDataQueryOptions body) {
-        return getMetricDataWithResponse(metricId, body, Context.NONE).getValue();
+        return getMetricDataAsync(metricId, body).block();
+    }
+
+    /**
+     * Get time series data from metric.
+     *
+     * @param metricId metric unique id.
+     * @param body query time series data condition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return time series data from metric.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MetricDataList> getMetricDataWithResponse(
+            UUID metricId, MetricDataQueryOptions body, Context context) {
+        return getMetricDataWithResponseAsync(metricId, body, context).block();
     }
 
     /**
@@ -6868,7 +5626,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesSinglePageAsync(
@@ -6900,7 +5658,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesSinglePageAsync(
@@ -6928,7 +5686,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricSeriesItem> getMetricSeriesAsync(
@@ -6949,7 +5707,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricSeriesItem> getMetricSeriesAsync(
@@ -6969,22 +5727,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricSeriesItem> getMetricSeriesSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricSeriesItem> getMetricSeries(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<MetricSeriesList> res =
-                service.getMetricSeriesSync(
-                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(getMetricSeriesAsync(metricId, body, skip, maxpagesize));
     }
 
     /**
@@ -6998,62 +5746,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricSeriesItem> getMetricSeriesSinglePage(
-            UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<MetricSeriesList> res =
-                service.getMetricSeriesSync(this.getEndpoint(), metricId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List series (dimension combinations) from metric.
-     *
-     * @param metricId metric unique id.
-     * @param body filter to query series.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricSeriesItem> getMetricSeries(
-            UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> getMetricSeriesSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getMetricSeriesNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * List series (dimension combinations) from metric.
-     *
-     * @param metricId metric unique id.
-     * @param body filter to query series.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricSeriesItem> getMetricSeries(
             UUID metricId, MetricSeriesQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> getMetricSeriesSinglePage(metricId, body, skip, maxpagesize, context),
-                nextLink -> getMetricSeriesNextSinglePage(nextLink, body, context));
+        return new PagedIterable<>(getMetricSeriesAsync(metricId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -7066,7 +5764,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionSinglePageAsync(
@@ -7098,7 +5796,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionSinglePageAsync(
@@ -7126,7 +5824,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> getMetricDimensionAsync(
@@ -7147,7 +5845,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> getMetricDimensionAsync(
@@ -7167,22 +5865,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getMetricDimensionSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getMetricDimension(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<MetricDimensionList> res =
-                service.getMetricDimensionSync(
-                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(getMetricDimensionAsync(metricId, body, skip, maxpagesize));
     }
 
     /**
@@ -7196,62 +5884,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getMetricDimensionSinglePage(
-            UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<MetricDimensionList> res =
-                service.getMetricDimensionSync(this.getEndpoint(), metricId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List dimension from certain metric.
-     *
-     * @param metricId metric unique id.
-     * @param body query dimension option.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMetricDimension(
-            UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> getMetricDimensionSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getMetricDimensionNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * List dimension from certain metric.
-     *
-     * @param metricId metric unique id.
-     * @param body query dimension option.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getMetricDimension(
             UUID metricId, MetricDimensionQueryOptions body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> getMetricDimensionSinglePage(metricId, body, skip, maxpagesize, context),
-                nextLink -> getMetricDimensionNextSinglePage(nextLink, body, context));
+        return new PagedIterable<>(getMetricDimensionAsync(metricId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -7263,7 +5901,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyDetectionConfiguration>> getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
@@ -7294,7 +5932,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyDetectionConfiguration>> getAnomalyDetectionConfigurationsByMetricSinglePageAsync(
@@ -7322,7 +5960,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricAsync(
@@ -7342,7 +5980,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricAsync(
@@ -7361,22 +5999,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetric(
             UUID metricId, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<AnomalyDetectionConfigurationList> res =
-                service.getAnomalyDetectionConfigurationsByMetricSync(
-                        this.getEndpoint(), metricId, skip, maxpagesize, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(getAnomalyDetectionConfigurationsByMetricAsync(metricId, skip, maxpagesize));
     }
 
     /**
@@ -7389,61 +6017,13 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricSinglePage(
-            UUID metricId, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyDetectionConfigurationList> res =
-                service.getAnomalyDetectionConfigurationsByMetricSync(
-                        this.getEndpoint(), metricId, skip, maxpagesize, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * List all anomaly detection configurations for specific metric.
-     *
-     * @param metricId metric unique id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetric(
-            UUID metricId, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> getAnomalyDetectionConfigurationsByMetricSinglePage(metricId, skip, maxpagesize, Context.NONE),
-                nextLink -> getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextLink));
-    }
-
-    /**
-     * List all anomaly detection configurations for specific metric.
-     *
-     * @param metricId metric unique id.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetric(
             UUID metricId, Integer skip, Integer maxpagesize, Context context) {
         return new PagedIterable<>(
-                () -> getAnomalyDetectionConfigurationsByMetricSinglePage(metricId, skip, maxpagesize, context),
-                nextLink -> getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextLink, context));
+                getAnomalyDetectionConfigurationsByMetricAsync(metricId, skip, maxpagesize, context));
     }
 
     /**
@@ -7456,7 +6036,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricSinglePageAsync(
@@ -7488,7 +6068,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricSinglePageAsync(
@@ -7517,7 +6097,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EnrichmentStatus> getEnrichmentStatusByMetricAsync(
@@ -7538,7 +6118,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EnrichmentStatus> getEnrichmentStatusByMetricAsync(
@@ -7558,22 +6138,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
+     * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricSinglePage(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EnrichmentStatus> getEnrichmentStatusByMetric(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize) {
-        final String accept = "application/json";
-        Response<EnrichmentStatusList> res =
-                service.getEnrichmentStatusByMetricSync(
-                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedIterable<>(getEnrichmentStatusByMetricAsync(metricId, body, skip, maxpagesize));
     }
 
     /**
@@ -7587,63 +6157,12 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricSinglePage(
-            UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize, Context context) {
-        final String accept = "application/json";
-        Response<EnrichmentStatusList> res =
-                service.getEnrichmentStatusByMetricSync(
-                        this.getEndpoint(), metricId, skip, maxpagesize, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Query anomaly detection status.
-     *
-     * @param metricId metric unique id.
-     * @param body query options.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnrichmentStatus> getEnrichmentStatusByMetric(
-            UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize) {
-        return new PagedIterable<>(
-                () -> getEnrichmentStatusByMetricSinglePage(metricId, body, skip, maxpagesize, Context.NONE),
-                nextLink -> getEnrichmentStatusByMetricNextSinglePage(nextLink, body));
-    }
-
-    /**
-     * Query anomaly detection status.
-     *
-     * @param metricId metric unique id.
-     * @param body query options.
-     * @param skip for paging, skipped number.
-     * @param maxpagesize the maximum number of items in one page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EnrichmentStatus> getEnrichmentStatusByMetric(
             UUID metricId, EnrichmentStatusQueryOption body, Integer skip, Integer maxpagesize, Context context) {
-        return new PagedIterable<>(
-                () -> getEnrichmentStatusByMetricSinglePage(metricId, body, skip, maxpagesize, context),
-                nextLink -> getEnrichmentStatusByMetricNextSinglePage(nextLink, body, context));
+        return new PagedIterable<>(getEnrichmentStatusByMetricAsync(metricId, body, skip, maxpagesize, context));
     }
 
     /**
@@ -7654,7 +6173,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
@@ -7671,7 +6190,7 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
     }
 
@@ -7684,7 +6203,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlert>> getAlertsByAnomalyAlertingConfigurationNextSinglePageAsync(
@@ -7698,51 +6217,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * Query alerts under anomaly alerting configuration.
-     *
-     * @param nextLink the next link.
-     * @param body query alerting result request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationNextSinglePage(
-            String nextLink, AlertingResultQuery body) {
-        final String accept = "application/json";
-        Response<AlertResultList> res =
-                service.getAlertsByAnomalyAlertingConfigurationNextSync(
-                        this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Query alerts under anomaly alerting configuration.
-     *
-     * @param nextLink the next link.
-     * @param body query alerting result request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlert> getAlertsByAnomalyAlertingConfigurationNextSinglePage(
-            String nextLink, AlertingResultQuery body, Context context) {
-        final String accept = "application/json";
-        Response<AlertResultList> res =
-                service.getAlertsByAnomalyAlertingConfigurationNextSync(
-                        this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7753,7 +6229,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
@@ -7770,7 +6246,7 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
     }
 
@@ -7783,7 +6259,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
@@ -7798,51 +6274,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * Query anomalies under anomaly detection configuration.
-     *
-     * @param nextLink the next link.
-     * @param body query detection anomaly result request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
-            String nextLink, DetectionAnomalyResultQuery body) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesByAnomalyDetectionConfigurationNextSync(
-                        this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Query anomalies under anomaly detection configuration.
-     *
-     * @param nextLink the next link.
-     * @param body query detection anomaly result request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
-            String nextLink, DetectionAnomalyResultQuery body, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesByAnomalyDetectionConfigurationNextSync(
-                        this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7853,7 +6286,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
@@ -7870,7 +6303,7 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
     }
 
@@ -7883,7 +6316,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePageAsync(
@@ -7898,51 +6331,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * Query dimension values of anomalies.
-     *
-     * @param nextLink the next link.
-     * @param body query dimension values request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
-            String nextLink, AnomalyDimensionQuery body) {
-        final String accept = "application/json";
-        Response<AnomalyDimensionList> res =
-                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSync(
-                        this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Query dimension values of anomalies.
-     *
-     * @param nextLink the next link.
-     * @param body query dimension values request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSinglePage(
-            String nextLink, AnomalyDimensionQuery body, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyDimensionList> res =
-                service.getDimensionOfAnomaliesByAnomalyDetectionConfigurationNextSync(
-                        this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -7953,7 +6343,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksNextSinglePageAsync(
@@ -7968,7 +6358,7 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
     }
 
@@ -7981,7 +6371,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricFeedback>> listMetricFeedbacksNextSinglePageAsync(
@@ -7995,48 +6385,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * List feedback on the given metric.
-     *
-     * @param nextLink the next link.
-     * @param body metric feedback filter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricFeedback> listMetricFeedbacksNextSinglePage(String nextLink, MetricFeedbackFilter body) {
-        final String accept = "application/json";
-        Response<MetricFeedbackList> res =
-                service.listMetricFeedbacksNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * List feedback on the given metric.
-     *
-     * @param nextLink the next link.
-     * @param body metric feedback filter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricFeedback> listMetricFeedbacksNextSinglePage(
-            String nextLink, MetricFeedbackFilter body, Context context) {
-        final String accept = "application/json";
-        Response<MetricFeedbackList> res =
-                service.listMetricFeedbacksNextSync(this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -8047,8 +6397,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusNextSinglePageAsync(
@@ -8065,7 +6414,7 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
     }
 
@@ -8078,8 +6427,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return data ingestion status by data feed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedIngestionStatus>> getDataFeedIngestionStatusNextSinglePageAsync(
@@ -8093,49 +6441,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * Get data ingestion status by data feed.
-     *
-     * @param nextLink the next link.
-     * @param body The query time range.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusNextSinglePage(
-            String nextLink, IngestionStatusQueryOptions body) {
-        final String accept = "application/json";
-        Response<IngestionStatusList> res =
-                service.getDataFeedIngestionStatusNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Get data ingestion status by data feed.
-     *
-     * @param nextLink the next link.
-     * @param body The query time range.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data ingestion status by data feed along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedIngestionStatus> getDataFeedIngestionStatusNextSinglePage(
-            String nextLink, IngestionStatusQueryOptions body, Context context) {
-        final String accept = "application/json";
-        Response<IngestionStatusList> res =
-                service.getDataFeedIngestionStatusNextSync(this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -8146,7 +6453,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesNextSinglePageAsync(
@@ -8161,7 +6468,7 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
     }
 
@@ -8174,7 +6481,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricSeriesItem>> getMetricSeriesNextSinglePageAsync(
@@ -8188,49 +6495,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * List series (dimension combinations) from metric.
-     *
-     * @param nextLink the next link.
-     * @param body filter to query series.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricSeriesItem> getMetricSeriesNextSinglePage(
-            String nextLink, MetricSeriesQueryOptions body) {
-        final String accept = "application/json";
-        Response<MetricSeriesList> res =
-                service.getMetricSeriesNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * List series (dimension combinations) from metric.
-     *
-     * @param nextLink the next link.
-     * @param body filter to query series.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<MetricSeriesItem> getMetricSeriesNextSinglePage(
-            String nextLink, MetricSeriesQueryOptions body, Context context) {
-        final String accept = "application/json";
-        Response<MetricSeriesList> res =
-                service.getMetricSeriesNextSync(this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
@@ -8241,7 +6507,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionNextSinglePageAsync(
@@ -8256,8 +6522,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
-                                        null));
+                                        res.getValue().getNextLink(),
+                                    null));
     }
 
     /**
@@ -8269,7 +6535,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMetricDimensionNextSinglePageAsync(
@@ -8283,48 +6549,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
-                                        null));
-    }
-
-    /**
-     * List dimension from certain metric.
-     *
-     * @param nextLink the next link.
-     * @param body query dimension option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getMetricDimensionNextSinglePage(String nextLink, MetricDimensionQueryOptions body) {
-        final String accept = "application/json";
-        Response<MetricDimensionList> res =
-                service.getMetricDimensionNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * List dimension from certain metric.
-     *
-     * @param nextLink the next link.
-     * @param body query dimension option.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<String> getMetricDimensionNextSinglePage(
-            String nextLink, MetricDimensionQueryOptions body, Context context) {
-        final String accept = "application/json";
-        Response<MetricDimensionList> res =
-                service.getMetricDimensionNextSync(this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
+                                        res.getValue().getNextLink(),
+                                    null));
     }
 
     /**
@@ -8335,7 +6561,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricNextSinglePageAsync(
@@ -8352,8 +6578,8 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
-                                        null));
+                                        res.getValue().getNextLink(),
+                                    null));
     }
 
     /**
@@ -8365,7 +6591,7 @@ public final class MetricsAdvisorImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EnrichmentStatus>> getEnrichmentStatusByMetricNextSinglePageAsync(
@@ -8379,60 +6605,18 @@ public final class MetricsAdvisorImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         res.getValue().getValue(),
-                                        null,
+                                        res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * Query anomaly detection status.
-     *
-     * @param nextLink the next link.
-     * @param body query options.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricNextSinglePage(
-            String nextLink, EnrichmentStatusQueryOption body) {
-        final String accept = "application/json";
-        Response<EnrichmentStatusList> res =
-                service.getEnrichmentStatusByMetricNextSync(this.getEndpoint(), nextLink, body, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Query anomaly detection status.
-     *
-     * @param nextLink the next link.
-     * @param body query options.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<EnrichmentStatus> getEnrichmentStatusByMetricNextSinglePage(
-            String nextLink, EnrichmentStatusQueryOption body, Context context) {
-        final String accept = "application/json";
-        Response<EnrichmentStatusList> res =
-                service.getEnrichmentStatusByMetricNextSync(this.getEndpoint(), nextLink, body, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
@@ -8456,13 +6640,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyResult>> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
@@ -8484,65 +6667,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(
-            String nextLink) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyResult> getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSinglePage(
-            String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyResultList> res =
-                service.getAnomaliesFromAlertByAnomalyAlertingConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
@@ -8566,13 +6695,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePageAsync(
@@ -8594,65 +6722,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(
-            String nextLink) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsFromAlertByAnomalyAlertingConfigurationNextSinglePage(
-            String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsFromAlertByAnomalyAlertingConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlertingConfiguration>>
@@ -8676,13 +6750,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyAlertingConfiguration>>
@@ -8705,66 +6778,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlertingConfiguration>
-            getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<AnomalyAlertingConfigurationList> res =
-                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyAlertingConfiguration>
-            getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(
-                    String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyAlertingConfigurationList> res =
-                service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(
@@ -8788,13 +6806,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextSinglePageAsync(
@@ -8815,64 +6832,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextSinglePage(
-            String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationNextSync(
-                        nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(
@@ -8896,13 +6860,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentResult>> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePageAsync(
@@ -8924,65 +6887,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(
-            String nextLink) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationNextPagesNextSync(
-                        nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<IncidentResult> getIncidentsByAnomalyDetectionConfigurationNextPagesNextSinglePage(
-            String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<IncidentResultList> res =
-                service.getIncidentsByAnomalyDetectionConfigurationNextPagesNextSync(
-                        nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataSourceCredential>> listCredentialsNextSinglePageAsync(String nextLink) {
@@ -9003,13 +6912,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataSourceCredential>> listCredentialsNextSinglePageAsync(
@@ -9030,61 +6938,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataSourceCredential> listCredentialsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataSourceCredentialList> res =
-                service.listCredentialsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataSourceCredential> listCredentialsNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<DataSourceCredentialList> res =
-                service.listCredentialsNextSync(nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedDetail>> listDataFeedsNextSinglePageAsync(String nextLink) {
@@ -9104,13 +6962,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFeedDetail>> listDataFeedsNextSinglePageAsync(String nextLink, Context context) {
@@ -9130,59 +6987,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedDetail> listDataFeedsNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<DataFeedList> res = service.listDataFeedsNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DataFeedDetail> listDataFeedsNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<DataFeedList> res = service.listDataFeedsNextSync(nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksNextSinglePageAsync(String nextLink) {
@@ -9202,13 +7011,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HookInfo>> listHooksNextSinglePageAsync(String nextLink, Context context) {
@@ -9228,59 +7036,11 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<HookInfo> listHooksNextSinglePage(String nextLink) {
-        final String accept = "application/json";
-        Response<HookList> res = service.listHooksNextSync(nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<HookInfo> listHooksNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<HookList> res = service.listHooksNextSync(nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyDetectionConfiguration>>
@@ -9304,13 +7064,12 @@ public final class MetricsAdvisorImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AnomalyDetectionConfiguration>>
@@ -9326,58 +7085,5 @@ public final class MetricsAdvisorImpl {
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
                                         null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricNextSinglePage(
-            String nextLink) {
-        final String accept = "application/json";
-        Response<AnomalyDetectionConfigurationList> res =
-                service.getAnomalyDetectionConfigurationsByMetricNextSync(
-                        nextLink, this.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws MetricsAdvisorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<AnomalyDetectionConfiguration> getAnomalyDetectionConfigurationsByMetricNextSinglePage(
-            String nextLink, Context context) {
-        final String accept = "application/json";
-        Response<AnomalyDetectionConfigurationList> res =
-                service.getAnomalyDetectionConfigurationsByMetricNextSync(
-                        nextLink, this.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
     }
 }

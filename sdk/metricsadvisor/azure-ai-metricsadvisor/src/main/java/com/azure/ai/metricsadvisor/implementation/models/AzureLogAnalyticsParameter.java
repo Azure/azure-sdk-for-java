@@ -11,19 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureLogAnalyticsParameter {
     /*
-     * The tenant id of service principal that have access to this Log Analytics
+     * The tenant id of service principal that have access to this Log
+     * Analytics
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
-     * The client id of service principal that have access to this Log Analytics
+     * The client id of service principal that have access to this Log
+     * Analytics
      */
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The client secret of service principal that have access to this Log Analytics
+     * The client secret of service principal that have access to this Log
+     * Analytics
      */
     @JsonProperty(value = "clientSecret")
     private String clientSecret;
@@ -35,13 +38,11 @@ public final class AzureLogAnalyticsParameter {
     private String workspaceId;
 
     /*
-     * The KQL (Kusto Query Language) query to fetch data from this Log Analytics
+     * The KQL (Kusto Query Language) query to fetch data from this Log
+     * Analytics
      */
     @JsonProperty(value = "query", required = true)
     private String query;
-
-    /** Creates an instance of AzureLogAnalyticsParameter class. */
-    public AzureLogAnalyticsParameter() {}
 
     /**
      * Get the tenantId property: The tenant id of service principal that have access to this Log Analytics.
