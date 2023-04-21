@@ -4,6 +4,7 @@
 package com.azure.core.amqp.implementation;
 
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.codec.ReadableBuffer;
 import reactor.core.publisher.MonoSink;
 
 import java.time.Duration;
@@ -17,7 +18,8 @@ class RetriableWorkItem {
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final MonoSink<DeliveryState> monoSink;
     private final TimeoutTracker timeoutTracker;
-    private final byte[] amqpMessage;
+    private final byte[] encodedBytes;
+    private final ReadableBuffer encodedBuffer;
     private final int messageFormat;
     private final int encodedMessageSize;
     private final DeliveryState deliveryState;
@@ -27,15 +29,22 @@ class RetriableWorkItem {
     private final AmqpMetricsProvider metricsProvider;
     private long tryStartTime = 0;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
+    RetriableWorkItem(byte[] encodedBytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
                       Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
-        this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
+        this(encodedBytes, null, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
             false), deliveryState, metricsProvider);
     }
 
-    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
+    RetriableWorkItem(ReadableBuffer encodedBytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
+                      Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
+        this(null, encodedBytes, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
+            false), deliveryState, metricsProvider);
+    }
+
+    private RetriableWorkItem(byte[] encodedBytes, ReadableBuffer encodedBuffer, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
         monoSink, TimeoutTracker timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
-        this.amqpMessage = amqpMessage;
+        this.encodedBytes = encodedBytes;
+        this.encodedBuffer = encodedBuffer;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
@@ -45,7 +54,11 @@ class RetriableWorkItem {
     }
 
     byte[] getMessage() {
-        return amqpMessage;
+        return encodedBytes;
+    }
+
+    ReadableBuffer getEncodedBuffer() {
+        return encodedBuffer;
     }
 
     DeliveryState getDeliveryState() {

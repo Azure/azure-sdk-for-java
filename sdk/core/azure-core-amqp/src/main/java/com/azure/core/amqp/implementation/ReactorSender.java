@@ -26,6 +26,8 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.codec.CompositeReadableBuffer;
+import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Sender;
@@ -44,13 +46,7 @@ import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -323,6 +319,92 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             }).then();
     }
 
+    private Mono<Void> batchSend(List<Message> batch, int maxMessageSize, DeliveryState deliveryState) {
+        int totalEncodedSize = 0;
+        final CompositeReadableBuffer buffer = new CompositeReadableBuffer();
+
+        final byte[] envelopBytes = batchEnvelopAsBinaryData(batch.get(0), maxMessageSize);
+        totalEncodedSize += envelopBytes.length;
+        if (totalEncodedSize > maxMessageSize) {
+            return batchBufferOverflowError(maxMessageSize);
+        }
+        buffer.append(envelopBytes);
+
+        for (final Message message : batch) {
+            final byte[] sectionBytes = batchSectionAsBinaryData(message, maxMessageSize);
+            totalEncodedSize += sectionBytes.length;
+            if (totalEncodedSize > maxMessageSize) {
+                return batchBufferOverflowError(maxMessageSize);
+            }
+            buffer.append(sectionBytes);
+        }
+
+        final Flux<EndpointState> activeEndpointFlux = RetryUtil.withRetry(
+            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), retryOptions,
+            activeTimeoutMessage);
+
+        final int totalEncodedBufferSize = totalEncodedSize;
+
+        Mono<DeliveryState> sendMono = activeEndpointFlux.then(Mono.create(sink -> {
+            sendWork(new RetriableWorkItem(buffer, totalEncodedBufferSize, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT, sink, retryOptions.getTryTimeout(),
+                deliveryState, metricsProvider));
+        }));
+        return sendMono.then();
+    }
+
+    private byte[] batchEnvelopAsBinaryData(Message envelopMessage, int maxMessageSize) {
+        final Message message = Proton.message();
+        message.setMessageAnnotations(envelopMessage.getMessageAnnotations());
+        final int size = messageSerializer.getSize(message);
+        final int allocationSize = Math.min(size + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        final byte[] encodedBytes = new byte[allocationSize];
+        final int encodedSize = message.encode(encodedBytes, 0, allocationSize);
+        // This copyOf copying is just few bytes for envelop.
+        return Arrays.copyOf(encodedBytes, encodedSize);
+    }
+
+    private byte[] batchSectionAsBinaryData(Message sectionMessage, int maxMessageSize) {
+        final int size = messageSerializer.getSize(sectionMessage);
+        final int allocationSize = Math.min(size + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        final byte[] encodedBytes = new byte[allocationSize];
+        final int encodedSize = sectionMessage.encode(encodedBytes, 0, allocationSize);
+
+        final Message message = Proton.message();
+        final Data binaryData = new Data(new Binary(encodedBytes, 0, encodedSize));
+        message.setBody(binaryData);
+        final int binaryRawSize = binaryData.getValue().getLength();
+        // Precompute the encoded size -
+        final int binaryEncodedSize = binaryEncodedSize(binaryRawSize);
+
+        final byte[] binaryEncodedBytes = new byte[binaryEncodedSize];
+        message.encode(binaryEncodedBytes, 0, binaryEncodedSize);
+        return binaryEncodedBytes;
+        // Had we not precompute the encoded size, instead of 'new byte[binaryEncodedSize]' allocation, we need two allocations-
+        //
+        // final int allocationSize = Math.min(messageSerializer.getSize(message) + MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        // final byte[] encodedBytes = new byte[allocationSize]; <-- allocation 1
+        // final binaryEncodedSize = message.encode(binaryEncodedBytes, 0, allocationSize);
+        // return Arrays.copyOf(encodedBytes, encodedSize);      <-- allocation 2
+    }
+
+    private Mono<Void> batchBufferOverflowError(int maxMessageSize) {
+        return Mono.error(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+            String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
+            new BufferOverflowException(), handler.getErrorContext(sender)));
+    }
+
+    private int binaryEncodedSize(int binaryRawSize) {
+        if (binaryRawSize <= 255) {
+            // [0x00,0x53,0x75,0xa0,{byte(Data.Binary.Length)},{Data.Binary.bytes}]
+            // The AMQP 1.0 spec format ^ for amqp:data:binary with raw byte <= 255.
+            return 5 + binaryRawSize;
+        } else {
+            // [0x00,0x53,0x75,0xb0,{int(Data.Binary.Length)},{Data.Binary.bytes}]
+            // The AMQP 1.0 spec format ^ for amqp:data:binary with raw byte > 255.
+            return  8 + binaryRawSize;
+        }
+    }
+
     @Override
     public AmqpErrorContext getErrorContext() {
         return handler.getErrorContext(sender);
@@ -536,6 +618,16 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 if (workItem.isDeliveryStateProvided()) {
                     delivery.disposition(workItem.getDeliveryState());
                 }
+
+                if (workItem.getMessage() != null) {
+                    final byte[] encodedBytes = workItem.getMessage();
+                    sentMsgSize = sender.send(encodedBytes, 0, workItem.getEncodedMessageSize());
+                } else {
+                    final ReadableBuffer encodedBuffer = workItem.getEncodedBuffer();
+                    encodedBuffer.position(0);
+                    sentMsgSize = sender.send(encodedBuffer);
+                }
+
                 sentMsgSize = sender.send(workItem.getMessage(), 0, workItem.getEncodedMessageSize());
                 assert sentMsgSize == workItem.getEncodedMessageSize()
                     : "Contract of the ProtonJ library for Sender. Send API changed";
