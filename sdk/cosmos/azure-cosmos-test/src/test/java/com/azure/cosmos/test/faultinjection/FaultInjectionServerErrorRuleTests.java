@@ -636,6 +636,32 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getDatabase(cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(cosmosAsyncContainer.getId());
 
+            logger.info("serverConnectionDelayWarmupRule: get all the addresses");
+            List<FeedRange> feedRanges = container.getFeedRanges().block();
+            for (FeedRange feedRange : feedRanges) {
+                String feedRangeRuleId = "serverErrorRule-test-feedRang" + feedRange.toString();
+                FaultInjectionRule feedRangeRule =
+                    new FaultInjectionRuleBuilder(feedRangeRuleId)
+                        .condition(
+                            new FaultInjectionConditionBuilder()
+                                .endpoints(
+                                    new FaultInjectionEndpointBuilder(feedRange).build()
+                                )
+                                .build()
+                        )
+                        .result(
+                            FaultInjectionResultBuilders
+                                .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                                .build()
+                        )
+                        .duration(Duration.ofMinutes(1))
+                        .build();
+
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(feedRangeRule)).block();
+                logger.info("serverConnectionDelayWarmupRul. FeedRange {}, Addresses {}", feedRange, feedRangeRule.getAddresses());
+                feedRangeRule.disable();
+            }
+
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayWarmupRule)).block();
 
             int partitionSize = container.getFeedRanges().block().size();
