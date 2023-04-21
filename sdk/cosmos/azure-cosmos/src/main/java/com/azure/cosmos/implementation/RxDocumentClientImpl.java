@@ -195,7 +195,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private Duration aggressiveProactiveConnectionEstablishmentDuration = Duration.ZERO;
+    private Duration aggressiveProactiveConnectionEstablishmentDuration;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,

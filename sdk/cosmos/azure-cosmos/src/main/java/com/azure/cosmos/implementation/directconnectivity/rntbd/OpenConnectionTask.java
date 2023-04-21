@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.IRetryPolicy;
@@ -61,24 +63,24 @@ public class OpenConnectionTask extends CompletableFuture<OpenConnectionResponse
     private static class ProactiveOpenConnectionsRetryPolicy implements IRetryPolicy {
 
         private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsRetryPolicy.class);
-        private static final int MaxRetryAttempts = 2;
-        private static final Duration InitialOpenConnectionReattemptBackOffInMs = Duration.ofMillis(1_000);
-        private static final Duration MaxFailedOpenConnectionRetryWindowInMs = Duration.ofMillis(15_000);
-        private static final int BackoffMultiplier = 4;
+        private static final int MAX_RETRY_ATTEMPTS = 2;
+        private static final Duration INITIAL_OPEN_CONNECTION_REATTEMPT_BACK_OFF_IN_MS = Duration.ofMillis(1_000);
+        private static final Duration MAX_FAILED_OPEN_CONNECTION_RETRY_WINDOW_IN_MS = Duration.ofMillis(15_000);
+        private static final int BACKOFF_MULTIPLIER = 4;
         private Duration currentBackoff;
         private final TimeoutHelper waitTimeTimeoutHelper;
         private final AtomicInteger retryCount;
 
         private ProactiveOpenConnectionsRetryPolicy() {
-            this.waitTimeTimeoutHelper = new TimeoutHelper(MaxFailedOpenConnectionRetryWindowInMs);
+            this.waitTimeTimeoutHelper = new TimeoutHelper(MAX_FAILED_OPEN_CONNECTION_RETRY_WINDOW_IN_MS);
             this.retryCount = new AtomicInteger(0);
-            this.currentBackoff = InitialOpenConnectionReattemptBackOffInMs;
+            this.currentBackoff = INITIAL_OPEN_CONNECTION_REATTEMPT_BACK_OFF_IN_MS;
         }
 
         @Override
         public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
-            if (this.retryCount.get() >= MaxRetryAttempts || this.waitTimeTimeoutHelper.isElapsed() || e == null) {
+            if (this.retryCount.get() >= MAX_RETRY_ATTEMPTS || this.waitTimeTimeoutHelper.isElapsed() || e == null) {
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
@@ -87,7 +89,7 @@ public class OpenConnectionTask extends CompletableFuture<OpenConnectionResponse
             this.retryCount.incrementAndGet();
 
             Duration effectiveBackoff = getEffectiveBackoff(this.currentBackoff, this.waitTimeTimeoutHelper.getRemainingTime());
-            this.currentBackoff = getEffectiveBackoff(Duration.ofMillis(this.currentBackoff.toMillis() * BackoffMultiplier), MaxFailedOpenConnectionRetryWindowInMs);
+            this.currentBackoff = getEffectiveBackoff(Duration.ofMillis(this.currentBackoff.toMillis() * BACKOFF_MULTIPLIER), MAX_FAILED_OPEN_CONNECTION_RETRY_WINDOW_IN_MS);
 
             return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
         }
