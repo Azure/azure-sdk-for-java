@@ -105,7 +105,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
                 requestArgs.serviceRequest().getOperationType().toString() + "-" + requestArgs.serviceRequest().getResourceType().toString();
             this.hitCountDetails.compute(name, (key, count) -> {
                 if (count == null) {
-                    count = 0l;
+                    count = 0L;
                 }
 
                 count++;

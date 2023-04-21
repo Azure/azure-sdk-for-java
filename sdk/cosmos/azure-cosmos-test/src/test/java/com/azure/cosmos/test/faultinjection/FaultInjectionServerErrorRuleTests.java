@@ -638,6 +638,11 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             container.openConnectionsAndInitCaches().block();
 
             if (primaryAddressesOnly) {
+                logger.info(
+                    "serverConnectionDelayWarmupRule. PartitionSize {}, hitCount{}, hitDetails {}",
+                    partitionSize,
+                    serverConnectionDelayWarmupRule.getHitCount(),
+                    serverConnectionDelayWarmupRule.getHitCountDetails());
                 this.validateHitCount(serverConnectionDelayWarmupRule, partitionSize, OperationType.Create, ResourceType.Connection);
             } else {
                 assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
