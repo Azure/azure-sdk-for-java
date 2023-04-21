@@ -2,14 +2,10 @@
 
 ## 2.26.0 (2023-04-21)
 
-### Features Added
-
 ### Breaking Changes
 
 - Removed field `BASIC` from class `ManagedClusterSkuName`.
 - Removed field `PAID` from class `ManagedClusterSkuTier`.
-
-### Bugs Fixed
 
 ### Other Changes
 
