@@ -37,7 +37,7 @@ public abstract class ChatRetentionPolicy {
      *
      * @return the kind.
      */
-    public Kind getKind() {
+    public Kind getChatRetentionPolicyKind() {
         return kind;
     }
 }
