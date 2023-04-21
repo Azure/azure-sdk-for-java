@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Describes the entities certainty and polarity. */
+/** Defines values for Certainty. */
 public enum Certainty {
     /** Enum value positive. */
     POSITIVE("positive"),
@@ -51,7 +51,6 @@ public enum Certainty {
         return null;
     }
 
-    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

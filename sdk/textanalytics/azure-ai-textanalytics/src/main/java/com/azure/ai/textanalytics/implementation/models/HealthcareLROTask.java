@@ -20,9 +20,6 @@ public final class HealthcareLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private HealthcareTaskParameters parameters;
 
-    /** Creates an instance of HealthcareLROTask class. */
-    public HealthcareLROTask() {}
-
     /**
      * Get the parameters property: Supported parameters for a Healthcare task.
      *

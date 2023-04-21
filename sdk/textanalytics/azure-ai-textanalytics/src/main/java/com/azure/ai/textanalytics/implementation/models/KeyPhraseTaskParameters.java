@@ -9,9 +9,6 @@ import com.azure.core.annotation.Fluent;
 /** Supported parameters for a Key Phrase Extraction task. */
 @Fluent
 public final class KeyPhraseTaskParameters extends PreBuiltTaskParameters {
-    /** Creates an instance of KeyPhraseTaskParameters class. */
-    public KeyPhraseTaskParameters() {}
-
     /** {@inheritDoc} */
     @Override
     public KeyPhraseTaskParameters setModelVersion(String modelVersion) {

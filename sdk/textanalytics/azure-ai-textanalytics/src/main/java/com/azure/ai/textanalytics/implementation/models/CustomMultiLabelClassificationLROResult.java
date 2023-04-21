@@ -21,9 +21,6 @@ public final class CustomMultiLabelClassificationLROResult extends AnalyzeTextLR
     @JsonProperty(value = "results", required = true)
     private CustomLabelClassificationResult results;
 
-    /** Creates an instance of CustomMultiLabelClassificationLROResult class. */
-    public CustomMultiLabelClassificationLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

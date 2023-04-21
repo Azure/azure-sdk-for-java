@@ -23,9 +23,6 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
     @JsonProperty(value = "entities", required = true)
     private List<Entity> entities;
 
-    /** Creates an instance of PiiEntitiesDocumentResult class. */
-    public PiiEntitiesDocumentResult() {}
-
     /**
      * Get the redactedText property: Returns redacted text.
      *

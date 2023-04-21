@@ -1,193 +1,64 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Content-Length": "318",
-        "Content-Type": "application/json",
-        "Date": "Wed, 05 Apr 2023 19:00:56 GMT",
-        "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "69dffa43-1336-401f-84eb-cdf45eef61ca"
-      },
-      "RequestBody": {
-        "displayName": "Test1",
-        "analysisInput": {
-          "documents": [
-            {
-              "id": "0",
-              "text": "I had a wonderful trip to Seattle last week.",
-              "language": "en"
-            },
-            {
-              "id": "1",
-              "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s.",
-              "language": "en"
-            }
-          ]
-        },
-        "tasks": [
-          {
-            "kind": "KeyPhraseExtraction",
-            "parameters": {
-              "loggingOptOut": false
-            }
-          }
-        ]
-      },
-      "StatusCode": 202,
-      "ResponseHeaders": {
-        "apim-request-id": "5d391570-8dd6-4c41-9ea4-2ba8db7fa9c3",
-        "Content-Length": "0",
-        "Date": "Wed, 05 Apr 2023 19:00:56 GMT",
-        "operation-location": "https://REDACTED/language/analyze-text/jobs/c7c5280b-67eb-4525-90bf-048e79f226c8?api-version=2022-10-01-preview",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "286",
-        "x-ms-region": "West US 2"
-      },
-      "ResponseBody": null
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a70b2b36-e55b-4c1e-9b80-4d1f42a01c3a",
+      "Content-Type" : "application/json"
     },
-    {
-      "RequestUri": "https://REDACTED/language/analyze-text/jobs/c7c5280b-67eb-4525-90bf-048e79f226c8?api-version=2022-10-01-preview\u0026showStats=false",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Content-Length": "0",
-        "Date": "Wed, 05 Apr 2023 19:01:27 GMT",
-        "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "265b39f4-945b-479c-9c85-799d0cc0386a"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "52f242cb-54ec-40c2-90fa-166cdd40b7ad",
-        "Content-Length": "631",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 19:01:26 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "222",
-        "x-ms-region": "West US 2"
-      },
-      "ResponseBody": {
-        "jobId": "c7c5280b-67eb-4525-90bf-048e79f226c8",
-        "lastUpdatedDateTime": "2023-04-05T19:00:59Z",
-        "createdDateTime": "2023-04-05T19:00:56Z",
-        "expirationDateTime": "2023-04-06T19:00:56Z",
-        "status": "succeeded",
-        "errors": [],
-        "displayName": "Test1",
-        "tasks": {
-          "completed": 1,
-          "failed": 0,
-          "inProgress": 0,
-          "total": 1,
-          "items": [
-            {
-              "kind": "KeyPhraseExtractionLROResults",
-              "lastUpdateDateTime": "2023-04-05T19:00:59.4892777Z",
-              "status": "succeeded",
-              "results": {
-                "documents": [
-                  {
-                    "id": "0",
-                    "keyPhrases": [
-                      "wonderful trip",
-                      "Seattle"
-                    ],
-                    "warnings": []
-                  },
-                  {
-                    "id": "1",
-                    "keyPhrases": [
-                      "Microsoft employee",
-                      "awesome API",
-                      "ssn"
-                    ],
-                    "warnings": []
-                  }
-                ],
-                "errors": [],
-                "modelVersion": "2022-10-01"
-              }
-            }
-          ]
-        }
-      }
+    "Response" : {
+      "content-length" : "0",
+      "x-envoy-upstream-service-time" : "138",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "operation-location" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/language/analyze-text/jobs/168a4aca-e83b-4702-97f7-ec1ac1427587?api-version=2022-05-01",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "b125a813-b644-4f3c-af53-6b3bff30661c",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Fri, 05 Aug 2022 20:46:47 GMT"
     },
-    {
-      "RequestUri": "https://REDACTED/language/analyze-text/jobs/c7c5280b-67eb-4525-90bf-048e79f226c8?api-version=2022-10-01-preview\u0026showStats=false",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Content-Length": "0",
-        "Date": "Wed, 05 Apr 2023 19:01:27 GMT",
-        "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "f0a8fa61-2c6e-453c-b52b-8eff0531f82e"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "27d02930-4f09-4f31-89a1-1c4ed27a3e2e",
-        "Content-Length": "631",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 19:01:26 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "300",
-        "x-ms-region": "West US 2"
-      },
-      "ResponseBody": {
-        "jobId": "c7c5280b-67eb-4525-90bf-048e79f226c8",
-        "lastUpdatedDateTime": "2023-04-05T19:00:59Z",
-        "createdDateTime": "2023-04-05T19:00:56Z",
-        "expirationDateTime": "2023-04-06T19:00:56Z",
-        "status": "succeeded",
-        "errors": [],
-        "displayName": "Test1",
-        "tasks": {
-          "completed": 1,
-          "failed": 0,
-          "inProgress": 0,
-          "total": 1,
-          "items": [
-            {
-              "kind": "KeyPhraseExtractionLROResults",
-              "lastUpdateDateTime": "2023-04-05T19:00:59.4892777Z",
-              "status": "succeeded",
-              "results": {
-                "documents": [
-                  {
-                    "id": "0",
-                    "keyPhrases": [
-                      "wonderful trip",
-                      "Seattle"
-                    ],
-                    "warnings": []
-                  },
-                  {
-                    "id": "1",
-                    "keyPhrases": [
-                      "Microsoft employee",
-                      "awesome API",
-                      "ssn"
-                    ],
-                    "warnings": []
-                  }
-                ],
-                "errors": [],
-                "modelVersion": "2022-10-01"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "Variables": {}
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/168a4aca-e83b-4702-97f7-ec1ac1427587?api-version=2022-05-01&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3ce8a1d5-1a76-414f-b168-977c6eb5326c"
+    },
+    "Response" : {
+      "content-length" : "631",
+      "x-envoy-upstream-service-time" : "32",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "95e23fae-8528-4622-bc7e-7f572391ef50",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"168a4aca-e83b-4702-97f7-ec1ac1427587\",\"lastUpdatedDateTime\":\"2022-08-05T20:46:49Z\",\"createdDateTime\":\"2022-08-05T20:46:47Z\",\"expirationDateTime\":\"2022-08-06T20:46:47Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"KeyPhraseExtractionLROResults\",\"lastUpdateDateTime\":\"2022-08-05T20:46:49.4695731Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"awesome API\",\"ssn\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-07-01\"}}]}}",
+      "Date" : "Fri, 05 Aug 2022 20:47:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs/168a4aca-e83b-4702-97f7-ec1ac1427587?api-version=2022-05-01&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c9c799ef-1a27-48c4-b228-366c21cd5726"
+    },
+    "Response" : {
+      "content-length" : "631",
+      "x-envoy-upstream-service-time" : "42",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "4b1757a2-9347-447f-86bb-809843941225",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"168a4aca-e83b-4702-97f7-ec1ac1427587\",\"lastUpdatedDateTime\":\"2022-08-05T20:46:49Z\",\"createdDateTime\":\"2022-08-05T20:46:47Z\",\"expirationDateTime\":\"2022-08-06T20:46:47Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"KeyPhraseExtractionLROResults\",\"lastUpdateDateTime\":\"2022-08-05T20:46:49.4695731Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"wonderful trip\",\"Seattle\"],\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"Microsoft employee\",\"awesome API\",\"ssn\"],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-07-01\"}}]}}",
+      "Date" : "Fri, 05 Aug 2022 20:47:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }
