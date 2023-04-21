@@ -279,7 +279,7 @@ public class CosmosEntityInformationHelper {
      * Gets the include paths from the indexing policy for the entity
      *
      * @param domainType the domain type
-     * @return List<IncludePath>
+     * @return List list of IncludePath's
      */
     protected static List<IncludedPath> getIndexingPolicyIncludePaths(Class<?> domainType) {
         final List<IncludedPath> pathArrayList = new ArrayList<>();
@@ -302,7 +302,7 @@ public class CosmosEntityInformationHelper {
      * Gets the exclude paths from the indexing policy for the entity
      *
      * @param domainType the domain type
-     * @return List<ExcludePath>
+     * @return List list of ExcludePath's
      */
     protected static List<ExcludedPath> getIndexingPolicyExcludePaths(Class<?> domainType) {
         final List<ExcludedPath> pathArrayList = new ArrayList<>();
@@ -324,7 +324,7 @@ public class CosmosEntityInformationHelper {
      * Gets the composite indexes from the indexing policy for the entity
      *
      * @param domainType the domain type
-     * @return List<List<CompositePath>>
+     * @return List List of compositepath's
      */
     protected static List<List<CompositePath>> getIndexingPolicyCompositeIndexes(Class<?> domainType) {
         final List<List<CompositePath>> compositePathList = new ArrayList<>();
@@ -353,7 +353,7 @@ public class CosmosEntityInformationHelper {
      * Gets the unique keys for the entity
      *
      * @param domainType the domain type
-     * @return List<UniqueKey>
+     * @return List list of UniqueKey's
      */
     protected static List<UniqueKey> getUniqueKeys(Class<?> domainType) {
         CosmosUniqueKeyPolicy annotation = domainType.getAnnotation(CosmosUniqueKeyPolicy.class);
