@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The response of the List Namespace operation. */
+/**
+ * The response of the List Namespace operation.
+ */
 @Fluent
 public final class EHNamespaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceListResult.class);
-
     /*
      * Result of the List Namespace operation
      */
@@ -23,15 +26,20 @@ public final class EHNamespaceListResult {
     private List<EHNamespaceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of namespaces.
+     * Link to the next set of results. Not empty if Value contains incomplete list of namespaces.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of EHNamespaceListResult class.
+     */
+    public EHNamespaceListResult() {
+    }
+
+    /**
      * Get the value property: Result of the List Namespace operation.
-     *
+     * 
      * @return the value value.
      */
     public List<EHNamespaceInner> value() {
@@ -40,7 +48,7 @@ public final class EHNamespaceListResult {
 
     /**
      * Set the value property: Result of the List Namespace operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the EHNamespaceListResult object itself.
      */
@@ -52,7 +60,7 @@ public final class EHNamespaceListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * namespaces.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +70,7 @@ public final class EHNamespaceListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * namespaces.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EHNamespaceListResult object itself.
      */
@@ -73,7 +81,7 @@ public final class EHNamespaceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

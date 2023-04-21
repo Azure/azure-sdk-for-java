@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 
 /** Samples for ConsumerGroups CreateOrUpdate. */
 public final class ConsumerGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/ConsumerGroup/EHConsumerGroupCreate.json
      */
     /**
      * Sample code: ConsumerGroupCreate.
@@ -29,6 +28,6 @@ public final class ConsumerGroupsCreateOrUpdateSamples {
                 "sdk-EventHub-6681",
                 "sdk-ConsumerGroup-5563",
                 new ConsumerGroupInner().withUserMetadata("New consumergroup"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

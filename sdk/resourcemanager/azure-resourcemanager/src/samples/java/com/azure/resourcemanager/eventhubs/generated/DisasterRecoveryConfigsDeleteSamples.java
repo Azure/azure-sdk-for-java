@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DisasterRecoveryConfigs Delete. */
 public final class DisasterRecoveryConfigsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasDelete.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasDelete.json
      */
     /**
      * Sample code: EHAliasDelete.
@@ -23,6 +21,9 @@ public final class DisasterRecoveryConfigsDeleteSamples {
             .serviceClient()
             .getDisasterRecoveryConfigs()
             .deleteWithResponse(
-                "exampleResourceGroup", "sdk-Namespace-5849", "sdk-DisasterRecovery-3814", Context.NONE);
+                "exampleResourceGroup",
+                "sdk-Namespace-5849",
+                "sdk-DisasterRecovery-3814",
+                com.azure.core.util.Context.NONE);
     }
 }

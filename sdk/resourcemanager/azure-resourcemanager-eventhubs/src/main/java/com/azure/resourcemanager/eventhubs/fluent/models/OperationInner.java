@@ -5,16 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** A Event Hub REST API operation. */
+/**
+ * A Event Hub REST API operation.
+ */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
@@ -46,8 +49,14 @@ public final class OperationInner {
     private Object properties;
 
     /**
+     * Creates an instance of OperationInner class.
+     */
+    public OperationInner() {
+    }
+
+    /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +65,7 @@ public final class OperationInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -65,7 +74,7 @@ public final class OperationInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationInner object itself.
      */
@@ -76,7 +85,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: Display of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -85,7 +94,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: Display of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -96,7 +105,7 @@ public final class OperationInner {
 
     /**
      * Get the origin property: Origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -105,7 +114,7 @@ public final class OperationInner {
 
     /**
      * Set the origin property: Origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationInner object itself.
      */
@@ -116,7 +125,7 @@ public final class OperationInner {
 
     /**
      * Get the properties property: Properties of the operation.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -125,7 +134,7 @@ public final class OperationInner {
 
     /**
      * Set the properties property: Properties of the operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationInner object itself.
      */
@@ -136,7 +145,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

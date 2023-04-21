@@ -5,15 +5,19 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** The response from the List namespace operation. */
+/**
+ * The response from the List namespace operation.
+ */
 @Fluent
 public final class NWRuleSetIpRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NWRuleSetIpRules.class);
-
     /*
      * IP Mask
      */
@@ -27,8 +31,14 @@ public final class NWRuleSetIpRules {
     private NetworkRuleIpAction action;
 
     /**
+     * Creates an instance of NWRuleSetIpRules class.
+     */
+    public NWRuleSetIpRules() {
+    }
+
+    /**
      * Get the ipMask property: IP Mask.
-     *
+     * 
      * @return the ipMask value.
      */
     public String ipMask() {
@@ -37,7 +47,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Set the ipMask property: IP Mask.
-     *
+     * 
      * @param ipMask the ipMask value to set.
      * @return the NWRuleSetIpRules object itself.
      */
@@ -48,7 +58,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Get the action property: The IP Filter Action.
-     *
+     * 
      * @return the action value.
      */
     public NetworkRuleIpAction action() {
@@ -57,7 +67,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Set the action property: The IP Filter Action.
-     *
+     * 
      * @param action the action value to set.
      * @return the NWRuleSetIpRules object itself.
      */
@@ -68,7 +78,7 @@ public final class NWRuleSetIpRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -1,14 +1,12 @@
 # Release History
 
-## 2.26.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.26.0 (2023-04-21)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.26.0-beta.1 (2023-04-17)
 

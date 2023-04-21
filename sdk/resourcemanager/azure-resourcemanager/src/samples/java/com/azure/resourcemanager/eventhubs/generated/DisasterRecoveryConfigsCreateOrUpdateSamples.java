@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.ArmDisasterRecoveryInner;
 
 /** Samples for DisasterRecoveryConfigs CreateOrUpdate. */
 public final class DisasterRecoveryConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasCreate.json
      */
     /**
      * Sample code: EHAliasCreate.
@@ -28,6 +27,6 @@ public final class DisasterRecoveryConfigsCreateOrUpdateSamples {
                 "sdk-Namespace-8859",
                 "sdk-DisasterRecovery-3814",
                 new ArmDisasterRecoveryInner().withPartnerNamespace("sdk-Namespace-37"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

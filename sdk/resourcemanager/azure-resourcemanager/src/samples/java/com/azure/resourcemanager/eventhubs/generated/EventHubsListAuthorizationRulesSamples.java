@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventHubs ListAuthorizationRules. */
 public final class EventHubsListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
      */
     /**
      * Sample code: EventHubAuthorizationRuleListAll.
@@ -22,6 +20,7 @@ public final class EventHubsListAuthorizationRulesSamples {
             .manager()
             .serviceClient()
             .getEventHubs()
-            .listAuthorizationRules("ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", Context.NONE);
+            .listAuthorizationRules(
+                "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", com.azure.core.util.Context.NONE);
     }
 }

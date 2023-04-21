@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SchemaRegistry ListByNamespace. */
 public final class SchemaRegistryListByNamespaceSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryListByNamespace.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/SchemaRegistry/SchemaRegistryListByNamespace.json
      */
     /**
      * Sample code: SchemaRegistryListAll.
@@ -22,6 +20,6 @@ public final class SchemaRegistryListByNamespaceSamples {
             .manager()
             .serviceClient()
             .getSchemaRegistries()
-            .listByNamespace("alitest", "ali-ua-test-eh-system-1", null, null, Context.NONE);
+            .listByNamespace("alitest", "ali-ua-test-eh-system-1", null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,18 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** The response from the List namespace operation. */
+/**
+ * The response from the List namespace operation.
+ */
 @Fluent
 public final class NWRuleSetVirtualNetworkRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NWRuleSetVirtualNetworkRules.class);
-
     /*
      * Subnet properties
      */
@@ -27,8 +30,14 @@ public final class NWRuleSetVirtualNetworkRules {
     private Boolean ignoreMissingVnetServiceEndpoint;
 
     /**
+     * Creates an instance of NWRuleSetVirtualNetworkRules class.
+     */
+    public NWRuleSetVirtualNetworkRules() {
+    }
+
+    /**
      * Get the subnet property: Subnet properties.
-     *
+     * 
      * @return the subnet value.
      */
     public Subnet subnet() {
@@ -37,7 +46,7 @@ public final class NWRuleSetVirtualNetworkRules {
 
     /**
      * Set the subnet property: Subnet properties.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the NWRuleSetVirtualNetworkRules object itself.
      */
@@ -49,7 +58,7 @@ public final class NWRuleSetVirtualNetworkRules {
     /**
      * Get the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing Vnet Service
      * Endpoint.
-     *
+     * 
      * @return the ignoreMissingVnetServiceEndpoint value.
      */
     public Boolean ignoreMissingVnetServiceEndpoint() {
@@ -59,7 +68,7 @@ public final class NWRuleSetVirtualNetworkRules {
     /**
      * Set the ignoreMissingVnetServiceEndpoint property: Value that indicates whether to ignore missing Vnet Service
      * Endpoint.
-     *
+     * 
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set.
      * @return the NWRuleSetVirtualNetworkRules object itself.
      */
@@ -70,7 +79,7 @@ public final class NWRuleSetVirtualNetworkRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

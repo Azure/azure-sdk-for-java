@@ -4,17 +4,18 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
+import com.azure.resourcemanager.eventhubs.models.CleanupPolicyRetentionDescription;
 import com.azure.resourcemanager.eventhubs.models.Destination;
 import com.azure.resourcemanager.eventhubs.models.EncodingCaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.EntityStatus;
+import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
 
 /** Samples for EventHubs CreateOrUpdate. */
 public final class EventHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubCreate.json
      */
     /**
      * Sample code: EventHubCreate.
@@ -48,7 +49,12 @@ public final class EventHubsCreateOrUpdateSamples {
                                         "/subscriptions/e2f361f0-3b27-4503-a9cc-21cfba380093/resourceGroups/Default-Storage-SouthCentralUS/providers/Microsoft.ClassicStorage/storageAccounts/arjunteststorage")
                                     .withBlobContainer("container")
                                     .withArchiveNameFormat(
-                                        "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}"))),
-                Context.NONE);
+                                        "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}")))
+                    .withRetentionDescription(
+                        new RetentionDescription()
+                            .withCleanupPolicy(CleanupPolicyRetentionDescription.COMPACTION)
+                            .withRetentionTimeInHours(96L)
+                            .withTombstoneRetentionTimeInHours(1)),
+                com.azure.core.util.Context.NONE);
     }
 }

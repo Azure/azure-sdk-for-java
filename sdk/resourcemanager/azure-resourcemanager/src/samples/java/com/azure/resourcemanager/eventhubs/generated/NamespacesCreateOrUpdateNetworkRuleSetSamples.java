@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
@@ -16,7 +15,7 @@ import java.util.Arrays;
 /** Samples for Namespaces CreateOrUpdateNetworkRuleSet. */
 public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
      */
     /**
      * Sample code: NameSpaceNetworkRuleSetCreate.
@@ -63,6 +62,6 @@ public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
                                 new NWRuleSetIpRules().withIpMask("1.1.1.3").withAction(NetworkRuleIpAction.ALLOW),
                                 new NWRuleSetIpRules().withIpMask("1.1.1.4").withAction(NetworkRuleIpAction.ALLOW),
                                 new NWRuleSetIpRules().withIpMask("1.1.1.5").withAction(NetworkRuleIpAction.ALLOW))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters Delete. */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterDelete.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ClusterDelete.json
      */
     /**
      * Sample code: ClusterDelete.
@@ -22,6 +20,6 @@ public final class ClustersDeleteSamples {
             .manager()
             .serviceClient()
             .getClusters()
-            .delete("myResourceGroup", "testCluster", Context.NONE);
+            .delete("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
     }
 }

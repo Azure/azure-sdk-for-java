@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters List. */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClustersListBySubscription.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ClustersListBySubscription.json
      */
     /**
      * Sample code: ClustersListBySubscription.
@@ -17,6 +15,6 @@ public final class ClustersListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void clustersListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.eventHubs().manager().serviceClient().getClusters().list(Context.NONE);
+        azure.eventHubs().manager().serviceClient().getClusters().list(com.azure.core.util.Context.NONE);
     }
 }
