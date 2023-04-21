@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
 
@@ -59,34 +58,26 @@ public @interface SearchableField {
     /**
      * A {@link LexicalAnalyzerName} to associate as the search and index analyzer for the {@link SearchField field}.
      *
-     * @return The {@link LexicalAnalyzerName} that will be associated as the search and index analyzer for the
-     * {@link SearchField field}.
+     * @return The {@link LexicalAnalyzerName} that will be associated as the search and index analyzer for the {@link
+     * SearchField field}.
      */
     String analyzerName() default "";
 
     /**
      * A {@link LexicalAnalyzerName} to associate as the search analyzer for the {@link SearchField field}.
      *
-     * @return The {@link LexicalAnalyzerName} that will be associated as the search analyzer for the
-     * {@link SearchField field}.
+     * @return The {@link LexicalAnalyzerName} that will be associated as the search analyzer for the {@link SearchField
+     * field}.
      */
     String searchAnalyzerName() default "";
 
     /**
      * A {@link LexicalAnalyzerName} to associate as the index analyzer for the {@link SearchField field}.
      *
-     * @return The {@link LexicalAnalyzerName} that will be associated as the index analyzer for the
-     * {@link SearchField field}.
+     * @return The {@link LexicalAnalyzerName} that will be associated as the index analyzer for the {@link SearchField
+     * field}.
      */
     String indexAnalyzerName() default "";
-
-    /**
-     * A {@link LexicalNormalizerName} to associate as the normalizer for the {@link SearchField field}.
-     *
-     * @return The {@link LexicalNormalizerName} that will be associated as the normalizer for the
-     * {@link SearchField field}.
-     */
-    String normalizerName() default "";
 
     /**
      * A list of {@link SynonymMap} names to be associated with the {@link SearchField field}.

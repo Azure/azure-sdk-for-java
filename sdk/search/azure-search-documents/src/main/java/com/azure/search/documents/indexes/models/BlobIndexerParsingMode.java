@@ -7,40 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represents the parsing mode for indexing from an Azure blob data source. */
+/** Defines values for BlobIndexerParsingMode. */
 public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndexerParsingMode> {
-    /** Set to default for normal file processing. */
+    /** Static value default for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode DEFAULT = fromString("default");
 
-    /** Set to text to improve indexing performance on plain text files in blob storage. */
+    /** Static value text for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode TEXT = fromString("text");
 
-    /** Set to delimitedText when blobs are plain CSV files. */
+    /** Static value delimitedText for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode DELIMITED_TEXT = fromString("delimitedText");
 
-    /** Set to json to extract structured content from JSON files. */
+    /** Static value json for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode JSON = fromString("json");
 
-    /**
-     * Set to jsonArray to extract individual elements of a JSON array as separate documents in Azure Cognitive Search.
-     */
+    /** Static value jsonArray for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode JSON_ARRAY = fromString("jsonArray");
 
-    /**
-     * Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents in Azure
-     * Cognitive Search.
-     */
+    /** Static value jsonLines for BlobIndexerParsingMode. */
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
-
-    /**
-     * Creates a new instance of BlobIndexerParsingMode value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public BlobIndexerParsingMode() {}
 
     /**
      * Creates or finds a BlobIndexerParsingMode from its string representation.
@@ -48,6 +36,7 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
      * @param name a name to look for.
      * @return the corresponding BlobIndexerParsingMode.
      */
+    @JsonCreator
     public static BlobIndexerParsingMode fromString(String name) {
         return fromString(name, BlobIndexerParsingMode.class);
     }
