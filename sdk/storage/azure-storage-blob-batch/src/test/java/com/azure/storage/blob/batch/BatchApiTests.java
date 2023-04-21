@@ -161,7 +161,7 @@ public class BatchApiTests extends BlobBatchTestBase {
     private static Stream<Arguments> setTierAcSupplier() {
         return Stream.of(
             Arguments.of(null, null),
-            Arguments.of(receivedLeaseID, null),
+            Arguments.of(RECEIVED_LEASE_ID, null),
             Arguments.of(null, "\"foo\" = 'bar'")
         );
     }
@@ -199,7 +199,7 @@ public class BatchApiTests extends BlobBatchTestBase {
     }
 
     private static Stream<Arguments> setTierAcFailSupplier() {
-        return Stream.of(Arguments.of(garbageLeaseID, null), Arguments.of(null, "\"notfoo\" = 'notbar'"));
+        return Stream.of(Arguments.of(GARBAGE_LEASE_ID, null), Arguments.of(null, "\"notfoo\" = 'notbar'"));
     }
 
     @Test
@@ -356,7 +356,6 @@ public class BatchApiTests extends BlobBatchTestBase {
             assertEquals(1, assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202));
         } else {
             assertEquals(202, response1.getStatusCode());
-            ;
             assertThrows(BlobStorageException.class, response2::getStatusCode);
         }
     }

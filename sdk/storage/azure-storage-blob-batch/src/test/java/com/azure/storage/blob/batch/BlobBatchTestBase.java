@@ -10,6 +10,8 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.ServiceVersion;
@@ -34,6 +36,7 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -48,8 +51,8 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
         .build();
 
-    protected static final String receivedLeaseID = "received";
-    protected static final String garbageLeaseID = UUID.randomUUID().toString();
+    protected static final String RECEIVED_LEASE_ID = "received";
+    protected static final String GARBAGE_LEASE_ID = UUID.randomUUID().toString();
 
     protected String prefix;
 
@@ -66,11 +69,12 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
-                ));
+            interceptorManager.addSanitizers(Collections.singletonList(
+                new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
+        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+            new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Content-Type"))));
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
@@ -183,12 +187,14 @@ public class BlobBatchTestBase extends TestProxyTestBase {
      * returned.
      */
     protected String setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
-        String responseLeaseId = null;
-        if (receivedLeaseID.equals(leaseID) || garbageLeaseID.equals(leaseID)) {
-            responseLeaseId = createLeaseClient(bc).acquireLease(-1);
+        String responseLeaseId;
+        if (RECEIVED_LEASE_ID.equals(leaseID) || GARBAGE_LEASE_ID.equals(leaseID)) {
+            responseLeaseId = createLeaseClient(bc, testResourceNamer.randomUuid()).acquireLease(-1);
+        } else {
+            responseLeaseId = leaseID;
         }
 
-        return receivedLeaseID.equals(leaseID) ? responseLeaseId : leaseID;
+        return responseLeaseId;
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {

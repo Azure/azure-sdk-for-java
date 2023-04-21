@@ -43,6 +43,7 @@
       --add-reads com.azure.storage.blob.batch=com.azure.http.netty
       --add-reads com.azure.storage.blob.batch=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
 
   <dependencies>
