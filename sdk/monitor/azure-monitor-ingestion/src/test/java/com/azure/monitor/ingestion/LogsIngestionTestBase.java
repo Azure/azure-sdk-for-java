@@ -17,16 +17,26 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.JsonSerializerProviders;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.zip.GZIPInputStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Base test class for logs ingestion client tests.
@@ -37,12 +47,46 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
     protected String dataCollectionRuleId;
     protected String streamName;
 
+    @Override
+    public void beforeTest() {
+        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
+        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-a64851bc17714f0483d1e96b5d84953b");
+        streamName = "Custom-MyTableRawData";
+
+        LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
+            .retryPolicy(new RetryPolicy(new RetryStrategy() {
+                @Override
+                public int getMaxRetries() {
+                    return 0;
+                }
+
+                @Override
+                public Duration calculateRetryDelay(int i) {
+                    return null;
+                }
+            }));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            clientBuilder
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                .httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            clientBuilder.credential(getCredential());
+        }
+        this.clientBuilder = clientBuilder
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .endpoint(dataCollectionEndpoint);
+    }
+
     protected TokenCredential getCredential() {
         return new ClientSecretCredentialBuilder()
-                .clientId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID))
-                .clientSecret(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))
-                .tenantId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID))
-                .build();
+            .clientId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID))
+            .clientSecret(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))
+            .tenantId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID))
+            .build();
     }
 
     public class BatchCountPolicy implements HttpPipelinePolicy {
@@ -94,13 +138,14 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
             counter.incrementAndGet();
             if (changeDcrId.get()) {
                 String url = context.getHttpRequest().getUrl().toString()
-                        .replace(dataCollectionRuleId, "dcr-id");
+                    .replace(dataCollectionRuleId, "dcr-id");
                 context.getHttpRequest().setUrl(url);
                 changeDcrId.set(false);
             } else {
                 changeDcrId.set(true);
             }
         }
+
         @Override
         public HttpPipelinePosition getPipelinePosition() {
             return HttpPipelinePosition.PER_CALL;
@@ -112,11 +157,67 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
 
         for (int i = 0; i < logsCount; i++) {
             LogData logData = new LogData()
-                    .setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
-                    .setExtendedColumn("test" + i)
-                    .setAdditionalContext("additional logs context");
+                .setTime(OffsetDateTime.parse("2022-01-01T00:00:00+07:00"))
+                .setExtendedColumn("test" + i)
+                .setAdditionalContext("additional logs context");
             logs.add(logData);
         }
         return logs;
+    }
+
+    public static class LogsCountPolicy implements HttpPipelinePolicy {
+
+        private AtomicLong totalLogsCount = new AtomicLong();
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            BinaryData bodyAsBinaryData = httpPipelineCallContext.getHttpRequest().getBodyAsBinaryData();
+            byte[] requestBytes = unzipRequestBody(bodyAsBinaryData);
+
+            List<Object> logs = JsonSerializerProviders.createInstance(true)
+                .deserializeFromBytes(requestBytes, new TypeReference<List<Object>>() { });
+            totalLogsCount.addAndGet(logs.size());
+            return httpPipelineNextPolicy.process();
+        }
+
+        public long getTotalLogsCount() {
+            return this.totalLogsCount.get();
+        }
+
+    }
+
+    public static class DataValidationPolicy implements HttpPipelinePolicy {
+
+        private final String expectedJson;
+
+        public DataValidationPolicy(List<Object> inputData) {
+            this.expectedJson = new String(JsonSerializerProviders.createInstance(true).serializeToBytes(inputData));
+        }
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            BinaryData bodyAsBinaryData = httpPipelineCallContext.getHttpRequest().getBodyAsBinaryData();
+            String actualJson = new String(unzipRequestBody(bodyAsBinaryData));
+            assertEquals(expectedJson, actualJson);
+            return httpPipelineNextPolicy.process();
+        }
+    }
+
+    private static byte[] unzipRequestBody(BinaryData bodyAsBinaryData) {
+        try {
+            byte[] buffer = new byte[1024];
+            GZIPInputStream gZIPInputStream = new GZIPInputStream(new ByteArrayInputStream(bodyAsBinaryData.toBytes()));
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            int bytesRead;
+            while ((bytesRead = gZIPInputStream.read(buffer)) > 0) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            gZIPInputStream.close();
+            outputStream.close();
+            return outputStream.toByteArray();
+        } catch (IOException exception) {
+            System.out.println("Failed to unzip data");
+        }
+        return null;
     }
 }

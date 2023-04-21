@@ -3,179 +3,147 @@
 
 package com.azure.monitor.ingestion;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link LogsIngestionClient}.
  */
 public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
-    @Override
-    public void beforeTest() {
-        dataCollectionEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCE", "https://dce.monitor.azure.com");
-        dataCollectionRuleId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_DCR_ID", "dcr-a64851bc17714f0483d1e96b5d84953b");
-        streamName = "Custom-MyTableRawData";
-
-        LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
-            .retryPolicy(new RetryPolicy(new RetryStrategy() {
-                @Override
-                public int getMaxRetries() {
-                    return 0;
-                }
-
-                @Override
-                public Duration calculateRetryDelay(int i) {
-                    return null;
-                }
-            }));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                .httpClient(interceptorManager.getPlaybackClient());
-        } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
-        } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
-        }
-        this.clientBuilder = clientBuilder
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .endpoint(dataCollectionEndpoint);
-    }
-
     @Test
     public void testUploadLogs() {
-        System.out.println(getTestMode());
         List<Object> logs = getObjects(10);
-        LogsIngestionClient client = clientBuilder.buildClient();
+        DataValidationPolicy dataValidationPolicy = new DataValidationPolicy(logs);
+        LogsIngestionClient client = clientBuilder.addPolicy(dataValidationPolicy).buildClient();
         client.upload(dataCollectionRuleId, streamName, logs);
     }
 
     @Test
-    @Disabled
     public void testUploadLogsInBatches() {
         List<Object> logs = getObjects(10000);
 
         AtomicInteger count = new AtomicInteger();
+        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new BatchCountPolicy(count))
-                .buildClient();
+            .addPolicy(new BatchCountPolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
         client.upload(dataCollectionRuleId, streamName, logs);
         assertEquals(2, count.get());
+        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
     }
 
     @Test
-    @Disabled
     public void testUploadLogsInBatchesConcurrently() {
         List<Object> logs = getObjects(10000);
 
         AtomicInteger count = new AtomicInteger();
+        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new BatchCountPolicy(count))
-                .buildClient();
+            .addPolicy(new BatchCountPolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
         client.upload(dataCollectionRuleId, streamName, logs, new LogsUploadOptions().setMaxConcurrency(3));
         assertEquals(2, count.get());
+        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
     }
 
     @Test
     public void testUploadLogsPartialFailure() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
+        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new PartialFailurePolicy(count))
-                .buildClient();
+            .addPolicy(new PartialFailurePolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
 
         LogsUploadException uploadLogsException = assertThrows(LogsUploadException.class, () -> {
             client.upload(dataCollectionRuleId, streamName, logs);
         });
         assertEquals(49460, uploadLogsException.getFailedLogsCount());
         assertEquals(5, uploadLogsException.getLogsUploadErrors().size());
+        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
+
     }
 
     @Test
-    @Disabled
     public void testUploadLogsPartialFailureWithErrorHandler() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
         LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
-                .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
+            .setLogsUploadErrorConsumer(error -> failedLogsCount.addAndGet(error.getFailedLogs().size()));
+        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new PartialFailurePolicy(count))
-                .buildClient();
+            .addPolicy(new PartialFailurePolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
 
         client.upload(dataCollectionRuleId, streamName, logs, logsUploadOptions);
         assertEquals(11, count.get());
         assertEquals(49460, failedLogsCount.get());
+        assertEquals(logs.size(), logsCountPolicy.getTotalLogsCount());
+
     }
 
     @Test
-    @Disabled
     public void testUploadLogsStopOnFirstError() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         LogsUploadOptions logsUploadOptions = new LogsUploadOptions()
-                .setLogsUploadErrorConsumer(error -> {
-                    // throw on first error
-                    throw error.getResponseException();
-                });
+            .setLogsUploadErrorConsumer(error -> {
+                // throw on first error
+                throw error.getResponseException();
+            });
+        LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
 
         LogsIngestionClient client = clientBuilder
-                .addPolicy(new PartialFailurePolicy(count))
-                .buildClient();
+            .addPolicy(new PartialFailurePolicy(count))
+            .addPolicy(logsCountPolicy)
+            .buildClient();
 
         assertThrows(HttpResponseException.class, () -> client.upload(dataCollectionRuleId, streamName, logs,
-                logsUploadOptions));
+            logsUploadOptions));
         assertEquals(2, count.get());
+
+        // only a subset of logs should be sent
+        assertTrue(logs.size() > logsCountPolicy.getTotalLogsCount());
     }
 
     @Test
-    @Disabled
     public void testUploadLogsProtocolMethod() {
         List<Object> logs = getObjects(10);
         LogsIngestionClient client = clientBuilder.buildClient();
         Response<Void> response = client.uploadWithResponse(dataCollectionRuleId, streamName,
-                BinaryData.fromObject(logs), new RequestOptions());
+            BinaryData.fromObject(logs), new RequestOptions());
         assertEquals(204, response.getStatusCode());
     }
 
     @Test
-    @Disabled
     public void testUploadLargeLogsProtocolMethod() {
-        List<Object> logs = getObjects(1000000);
+        List<Object> logs = getObjects(500000);
         LogsIngestionClient client = clientBuilder.buildClient();
 
         HttpResponseException responseException = assertThrows(HttpResponseException.class,
-                () -> client.uploadWithResponse(dataCollectionRuleId, streamName, BinaryData.fromObject(logs),
-                        new RequestOptions()));
+            () -> client.uploadWithResponse(dataCollectionRuleId, streamName, BinaryData.fromObject(logs),
+                new RequestOptions()));
         assertEquals(413, responseException.getResponse().getStatusCode());
     }
 }

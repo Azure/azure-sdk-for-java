@@ -1,0 +1,30 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/dataCollectionRules/dcr-a64851bc17714f0483d1e96b5d84953b/streams/Custom-MyTableRawData?api-version=2023-01-01",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Encoding": "gzip",
+        "Content-Length": "1031",
+        "Content-Type": "application/json",
+        "Date": "Fri, 21 Apr 2023 21:54:10 GMT",
+        "User-Agent": "azsdk-java-azure-monitor-ingestion/1.1.0-beta.1 (17.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "dda9d79f-2731-4052-a89f-ad663f01170f"
+      },
+      "RequestBody": "[{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test0\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test1\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test2\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test3\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test4\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test5\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test6\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test7\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test8\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022},{\u0022Time\u0022:\u00222021-12-31T17:00:00Z\u0022,\u0022ExtendedColumn\u0022:\u0022test9\u0022,\u0022AdditionalContext\u0022:\u0022additional logs context\u0022}]",
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Fri, 21 Apr 2023 21:54:10 GMT",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "dda9d79f-2731-4052-a89f-ad663f01170f",
+        "x-ms-request-id": "c4f8623a-9b92-4e88-889a-f0e5e5f10a76"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}
