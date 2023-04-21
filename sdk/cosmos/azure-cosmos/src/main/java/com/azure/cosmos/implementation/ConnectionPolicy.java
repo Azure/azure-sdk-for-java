@@ -48,8 +48,8 @@ public final class ConnectionPolicy {
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
     private int minConnectionsPerEndpoint;
-    private int openConnectionsDefensiveConcurrency;
-    private int openConnectionsAggressiveConcurrency;
+    private int defensiveWarmupConcurrency;
+    private int aggressiveWarmupConcurrency;
 
     /**
      * Constructor.
@@ -108,8 +108,8 @@ public final class ConnectionPolicy {
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
         this.minConnectionsPerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
-        this.openConnectionsDefensiveConcurrency = Configs.getOpenConnectionsDefensiveConcurrency();
-        this.openConnectionsAggressiveConcurrency = Configs.getOpenConnectionsAggressiveConcurrency();
+        this.defensiveWarmupConcurrency = Configs.getDefensiveWarmupConcurrency();
+        this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
     /**
@@ -574,8 +574,8 @@ public final class ConnectionPolicy {
         return this.minConnectionsPerEndpoint;
     }
 
-    public int getOpenConnectionsDefensiveConcurrency() {
-        return this.openConnectionsDefensiveConcurrency;
+    public int getDefensiveWarmupConcurrency() {
+        return this.defensiveWarmupConcurrency;
     }
 
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
@@ -614,8 +614,8 @@ public final class ConnectionPolicy {
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
             ", minConnectionsPerEndpoint=" + minConnectionsPerEndpoint +
-            ", openConnectionsDefensiveConcurrency=" + openConnectionsDefensiveConcurrency +
-            ", openConnectionsAggressiveConcurrency=" + openConnectionsAggressiveConcurrency +
+            ", defensiveWarmupConcurrency=" + defensiveWarmupConcurrency +
+            ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }
 }

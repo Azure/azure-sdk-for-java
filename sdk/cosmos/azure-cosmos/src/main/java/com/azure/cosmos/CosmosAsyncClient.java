@@ -606,11 +606,11 @@ public final class CosmosAsyncClient implements Closeable {
                 .blockLast();
     }
 
-    private <T> Flux<T> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<T> source, Duration timeout, Scheduler executionContext) {
-        return Flux.<T>create(sink -> {
+    private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout, Scheduler executionContext) {
+        return Flux.<Void>create(sink -> {
                     source
                             .subscribeOn(executionContext)
-                            .subscribe(t -> sink.next(t));
+                            .doOnNext(t -> sink.next(t));
                 })
                 .take(timeout);
     }

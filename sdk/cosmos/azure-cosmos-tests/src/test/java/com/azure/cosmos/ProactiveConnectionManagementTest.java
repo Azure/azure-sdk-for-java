@@ -472,7 +472,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
-                    .setAggressiveProactiveConnectionEstablishmentDuration(aggressiveProactiveConnectionEstablishmentDuration)
+                    .setAggressiveWarmupDuration(aggressiveProactiveConnectionEstablishmentDuration)
                     .build();
 
             clientWithOpenConnections = new CosmosClientBuilder()
