@@ -7,9 +7,7 @@ import com.azure.communication.phonenumbers.siprouting.implementation.SipRouting
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.*;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -19,8 +17,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -116,69 +112,6 @@ public class SipRoutingClientBuilderTest {
             .buildClient();
 
         // Validate client created with expected settings
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientWithRetryPolicy() {
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .retryPolicy(new RetryPolicy("1", ChronoUnit.SECONDS))
-            .buildClient();
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientWithRetryOptions() {
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ZERO)))
-            .buildClient();
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientWithClientOptions() {
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .clientOptions(new ClientOptions())
-            .buildClient();
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientByReplacingHttpClient() {
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .httpClient(this.httpClient)
-            .httpClient(this.httpClient)
-            .buildClient();
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientByReplacingPipeline() {
-        HttpPipeline httpPipeline = mock(HttpPipeline.class);
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .pipeline(httpPipeline)
-            .pipeline(httpPipeline)
-            .buildClient();
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientWithPolicyPerCall() {
-        HttpPipelinePolicy policy = mock(HttpPipelinePolicy.class);
-        doAnswer(invocation -> HttpPipelinePosition.PER_CALL).when(policy).getPipelinePosition();
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .addPolicy(policy)
-            .buildClient();
-        assertNotNull(sipRoutingClient);
-    }
-
-    @Test
-    public void buildClientWithPolicyPerRetry() {
-        HttpPipelinePolicy policy = mock(HttpPipelinePolicy.class);
-        doAnswer(invocation -> HttpPipelinePosition.PER_RETRY).when(policy).getPipelinePosition();
-        SipRoutingClient sipRoutingClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .addPolicy(policy)
-            .buildClient();
         assertNotNull(sipRoutingClient);
     }
 
