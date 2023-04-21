@@ -630,7 +630,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                     sentMsgSize = sender.send(encodedBytes, 0, workItem.getEncodedMessageSize());
                 } else {
                     final ReadableBuffer encodedBuffer = workItem.getEncodedBuffer();
-                    encodedBuffer.position(0);
+                    encodedBuffer.rewind();
                     sentMsgSize = sender.send(encodedBuffer);
                 }
 
