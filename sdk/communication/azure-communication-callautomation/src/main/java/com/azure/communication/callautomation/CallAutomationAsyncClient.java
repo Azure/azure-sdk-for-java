@@ -45,6 +45,7 @@ import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -70,7 +71,7 @@ public final class CallAutomationAsyncClient {
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
-    private final String resourceUrl;
+    private final URL resourceEndpoint;
     private final CommunicationIdentifierModel sourceIdentity;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {

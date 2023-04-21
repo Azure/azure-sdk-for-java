@@ -25,6 +25,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.net.URL;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CallMedias. */
@@ -57,7 +58,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> play(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
@@ -68,7 +69,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelAllMediaOperations(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -78,7 +79,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> recognize(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RecognizeRequest recognizeRequest,
@@ -89,7 +90,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> startContinuousDtmfRecognition(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -101,7 +102,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopContinuousDtmfRecognition(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -113,7 +114,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> sendDtmf(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
@@ -685,7 +686,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request body.
+     * @param sendDtmfRequest The send dtmf request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -710,7 +711,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request body.
+     * @param sendDtmfRequest The send dtmf request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -734,7 +735,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request body.
+     * @param sendDtmfRequest The send dtmf request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,7 +750,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request body.
+     * @param sendDtmfRequest The send dtmf request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -765,7 +766,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request body.
+     * @param sendDtmfRequest The send dtmf request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -779,7 +780,7 @@ public final class CallMediasImpl {
      * Send dtmf tones.
      *
      * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request body.
+     * @param sendDtmfRequest The send dtmf request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

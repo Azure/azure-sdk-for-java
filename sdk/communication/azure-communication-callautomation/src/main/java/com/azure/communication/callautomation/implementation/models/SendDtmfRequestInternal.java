@@ -12,16 +12,16 @@ import java.util.List;
 @Fluent
 public final class SendDtmfRequestInternal {
     /*
-     * Target participant of Send DTMF tone.
-     */
-    @JsonProperty(value = "targetParticipant", required = true)
-    private CommunicationIdentifierModel targetParticipant;
-
-    /*
-     * The captured tones.
+     * List of tones to be sent to target participant.
      */
     @JsonProperty(value = "tones", required = true)
     private List<DtmfToneInternal> tones;
+
+    /*
+     * Target participant of send DTMF.
+     */
+    @JsonProperty(value = "targetParticipant", required = true)
+    private CommunicationIdentifierModel targetParticipant;
 
     /*
      * The value to identify context of the operation.
@@ -30,27 +30,7 @@ public final class SendDtmfRequestInternal {
     private String operationContext;
 
     /**
-     * Get the targetParticipant property: Target participant of Send DTMF tone.
-     *
-     * @return the targetParticipant value.
-     */
-    public CommunicationIdentifierModel getTargetParticipant() {
-        return this.targetParticipant;
-    }
-
-    /**
-     * Set the targetParticipant property: Target participant of Send DTMF tone.
-     *
-     * @param targetParticipant the targetParticipant value to set.
-     * @return the SendDtmfRequestInternal object itself.
-     */
-    public SendDtmfRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        return this;
-    }
-
-    /**
-     * Get the tones property: The captured tones.
+     * Get the tones property: List of tones to be sent to target participant.
      *
      * @return the tones value.
      */
@@ -59,13 +39,33 @@ public final class SendDtmfRequestInternal {
     }
 
     /**
-     * Set the tones property: The captured tones.
+     * Set the tones property: List of tones to be sent to target participant.
      *
      * @param tones the tones value to set.
      * @return the SendDtmfRequestInternal object itself.
      */
     public SendDtmfRequestInternal setTones(List<DtmfToneInternal> tones) {
         this.tones = tones;
+        return this;
+    }
+
+    /**
+     * Get the targetParticipant property: Target participant of send DTMF.
+     *
+     * @return the targetParticipant value.
+     */
+    public CommunicationIdentifierModel getTargetParticipant() {
+        return this.targetParticipant;
+    }
+
+    /**
+     * Set the targetParticipant property: Target participant of send DTMF.
+     *
+     * @param targetParticipant the targetParticipant value to set.
+     * @return the SendDtmfRequestInternal object itself.
+     */
+    public SendDtmfRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+        this.targetParticipant = targetParticipant;
         return this;
     }
 

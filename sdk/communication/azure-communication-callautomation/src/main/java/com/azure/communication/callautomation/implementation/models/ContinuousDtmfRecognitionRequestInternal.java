@@ -7,11 +7,11 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload to start Continuous Dtmf Recognition request. */
+/** The ContinuousDtmfRecognitionRequestInternal model. */
 @Fluent
 public final class ContinuousDtmfRecognitionRequestInternal {
     /*
-     * Target participant of continuous DTMF tone recognition.
+     * Defines options for recognition.
      */
     @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
@@ -23,7 +23,7 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     private String operationContext;
 
     /**
-     * Get the targetParticipant property: Target participant of continuous DTMF tone recognition.
+     * Get the targetParticipant property: Defines options for recognition.
      *
      * @return the targetParticipant value.
      */
@@ -32,7 +32,7 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     }
 
     /**
-     * Set the targetParticipant property: Target participant of continuous DTMF tone recognition.
+     * Set the targetParticipant property: Defines options for recognition.
      *
      * @param targetParticipant the targetParticipant value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
