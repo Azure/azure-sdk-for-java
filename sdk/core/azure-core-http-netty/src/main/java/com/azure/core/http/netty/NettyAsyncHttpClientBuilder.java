@@ -170,9 +170,9 @@ public class NettyAsyncHttpClientBuilder {
                 DEFAULT_CONNECT_TIMEOUT))
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
-            .doOnRequest((request, connection) -> doOnRequest(request, connection, writeTimeout, responseTimeout,
+            .doOnRequest((request, connection) -> addHandler(request, connection, writeTimeout, responseTimeout,
                 readTimeout))
-            .doAfterResponseSuccess((ignored, connection) -> doAfterResponseSuccess(connection));
+            .doAfterResponseSuccess((ignored, connection) -> removeHandler(connection));
 
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
@@ -538,8 +538,8 @@ public class NettyAsyncHttpClientBuilder {
     /*
      * Request has started, add the Azure SDK ChannelAdapter.
      */
-    private void doOnRequest(HttpClientRequest request, Connection connection, long writeTimeout, long responseTimeout,
-        long readTimeout) {
+    private static void addHandler(HttpClientRequest request, Connection connection, long writeTimeout,
+        long responseTimeout, long readTimeout) {
         AzureNettyHttpClientContext attr = request.currentContextView().getOrDefault(
             AzureNettyHttpClientContext.KEY, null);
 
@@ -550,7 +550,7 @@ public class NettyAsyncHttpClientBuilder {
     /*
      * Response has completed, remove the Azure SDK ChannelHandler.
      */
-    private static void doAfterResponseSuccess(Connection connection) {
+    private static void removeHandler(Connection connection) {
         connection.removeHandler(AzureSdkHandler.HANDLER_NAME);
     }
 }
