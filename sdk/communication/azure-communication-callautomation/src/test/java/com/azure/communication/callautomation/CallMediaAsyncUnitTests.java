@@ -66,7 +66,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileWithResponseTest() {
         StepVerifier.create(
-            callMedia.playWithResponse(playFileSource,
+            callMedia.playMediaWithResponse(playFileSource,
                 Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -75,7 +75,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playFileToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playFileSource, playOptions))
+                callMedia.playMediaToAllWithResponse(playFileSource, playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -83,7 +83,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playTextWithResponseTest() {
         StepVerifier.create(
-            callMedia.playWithResponse(playTextSource,
+            callMedia.playMediaWithResponse(playTextSource,
                 Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -92,7 +92,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playTextToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playTextSource, playOptions))
+                callMedia.playMediaToAllWithResponse(playTextSource, playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -100,7 +100,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playSsmlWithResponseTest() {
         StepVerifier.create(
-            callMedia.playWithResponse(playSsmlSource,
+            callMedia.playMediaWithResponse(playSsmlSource,
                 Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -109,7 +109,7 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void playSsmlToAllWithResponseTest() {
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playSsmlSource, playOptions))
+                callMedia.playMediaToAllWithResponse(playSsmlSource, playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }

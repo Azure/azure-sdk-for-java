@@ -35,8 +35,8 @@ public final class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        callMediaAsync.play(playSource, playTo).block();
+    public void playMedia(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        callMediaAsync.playMedia(playSource, playTo).block();
     }
 
     /**
@@ -47,8 +47,8 @@ public final class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void playToAll(PlaySource playSource) {
-        callMediaAsync.playToAll(playSource).block();
+    public void playMediaToAll(PlaySource playSource) {
+        callMediaAsync.playMediaToAll(playSource).block();
     }
 
     /**
@@ -63,8 +63,8 @@ public final class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                           PlayOptions options, Context context) {
+    public Response<Void> playMediaWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
+                                                PlayOptions options, Context context) {
         return callMediaAsync.playWithResponseInternal(playSource, playTo, options, context).block();
     }
 
@@ -79,7 +79,7 @@ public final class CallMedia {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> playToAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
+    public Response<Void> playMediaToAllWithResponse(PlaySource playSource, PlayOptions options, Context context) {
         return callMediaAsync
             .playWithResponseInternal(playSource, Collections.emptyList(), options, context)
             .block();
