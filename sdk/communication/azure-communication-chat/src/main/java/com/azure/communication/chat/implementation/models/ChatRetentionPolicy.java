@@ -23,8 +23,9 @@ public abstract class ChatRetentionPolicy {
     public final Kind kind;
 
     /**
-    Kind of retention policy. Available values are [THREAD_CREATION_DATE]
-     */
+     * Kind of retention policy. Available values are [THREAD_CREATION_DATE]
+     * @param kind kind of the retention policy
+     * */
     public ChatRetentionPolicy(Kind kind) {
         this.kind = kind;
     }

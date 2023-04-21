@@ -23,6 +23,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
 
     /**
      * Constructor
+     * @param deleteThreadAfterDays set number of days deletion
      */
     public ThreadCreationDateRetentionPolicy(int deleteThreadAfterDays) {
         super(Kind.THREAD_CREATION_DATE);

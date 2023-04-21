@@ -26,6 +26,7 @@ public abstract class ChatRetentionPolicy {
 
     /**
      * Kind of retention policy. Available values are ["THREAD_CREATION_DATE"]
+     * @param kind kind of the retention policy
      */
     public ChatRetentionPolicy(Kind kind) {
         this.kind = kind;
