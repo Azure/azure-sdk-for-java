@@ -30,7 +30,6 @@ public final class AcrErrorsException extends HttpResponseException {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
     @Override
     public AcrErrors getValue() {
         return (AcrErrors) super.getValue();

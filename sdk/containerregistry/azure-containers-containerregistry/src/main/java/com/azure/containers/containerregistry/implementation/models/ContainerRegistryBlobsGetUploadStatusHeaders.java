@@ -5,8 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistryBlobsGetUploadStatusHeaders model. */
 @Fluent
@@ -14,25 +13,14 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
+    @JsonProperty(value = "Docker-Upload-UUID")
     private String dockerUploadUUID;
 
     /*
      * The Range property.
      */
+    @JsonProperty(value = "Range")
     private String range;
-
-    private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of ContainerRegistryBlobsGetUploadStatusHeaders class.
-     *
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public ContainerRegistryBlobsGetUploadStatusHeaders(HttpHeaders rawHeaders) {
-        this.dockerUploadUUID = rawHeaders.getValue(DOCKER_UPLOAD_UUID);
-        this.range = rawHeaders.getValue(HttpHeaderName.RANGE);
-    }
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.
