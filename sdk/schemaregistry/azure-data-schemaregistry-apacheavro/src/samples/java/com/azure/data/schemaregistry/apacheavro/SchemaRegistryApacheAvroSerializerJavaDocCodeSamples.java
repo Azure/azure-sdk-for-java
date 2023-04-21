@@ -65,7 +65,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         //   ]
         // }
         Person person = Person.newBuilder()
-            .setName("Chase")
+            .setName("Alina")
             .setFavouriteColour("Turquoise")
             .build();
 
@@ -91,7 +91,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
         //   ]
         // }
         Person person = Person.newBuilder()
-            .setName("Chase")
+            .setName("Alina")
             .setFavouriteColour("Turquoise")
             .build();
 
