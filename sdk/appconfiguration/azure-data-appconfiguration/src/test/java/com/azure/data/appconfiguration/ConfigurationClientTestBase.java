@@ -57,6 +57,9 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     public static final String FAKE_CONNECTION_STRING =
         "Endpoint=http://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
+
+    static final Duration DEFAULT_RETENTION_PERIOD = Duration.ofSeconds(2592000);
+
     static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
@@ -547,12 +550,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         testRunner.accept(newConfiguration);
     }
 
-
-//    @Test
-//    public abstract void createSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-//
-//    @Test
-//    public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+    @Test
+    public abstract void createSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
     void createSnapshotRunner(BiConsumer<String, List<SnapshotSettingFilter>> testRunner) {
         String snapshotName = getKey();
@@ -560,6 +559,12 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         filters.add(new SnapshotSettingFilter(snapshotName));
         testRunner.accept(snapshotName, filters);
     }
+
+    @Test
+    public abstract void createSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+
+
 
 
 
@@ -825,8 +830,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         return snapshot;
     }
 
-    static void assertEqualsConfigurationSettingSnapshot(ConfigurationSettingSnapshot o1,
-                                                         ConfigurationSettingSnapshot o2) {
+    void assertEqualsConfigurationSettingSnapshot(ConfigurationSettingSnapshot o1, ConfigurationSettingSnapshot o2) {
         if (o1 == o2) {
             return;
         }
@@ -849,7 +853,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
         }
     }
 
-    static void assertEqualsSnapshotFilters(List<SnapshotSettingFilter> o1, List<SnapshotSettingFilter> o2) {
+    void assertEqualsSnapshotFilters(List<SnapshotSettingFilter> o1, List<SnapshotSettingFilter> o2) {
         if (o1 == o2) {
             return;
         }
