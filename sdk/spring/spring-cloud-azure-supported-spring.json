@@ -3,15 +3,47 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : "TODO",
-    "spring-boot-version" : "3.0.4-SNAPSHOT",
-    "spring-cloud-version" : "2022.0.1"
+    "supportStatus" : null,
+    "spring-boot-version" : "3.1.0-SNAPSHOT",
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "PRERELEASE",
+    "snapshot" : false,
+    "supportStatus" : null,
+    "spring-boot-version" : "3.1.0-M2",
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "SNAPSHOT",
+    "snapshot" : true,
+    "supportStatus" : null,
+    "spring-boot-version" : "3.0.7-SNAPSHOT",
+    "spring-cloud-version" : "2022.0.2"
   },
   {
     "current" : true,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : "SUPPORTED",
+    "supportStatus" : null,
+    "spring-boot-version" : "3.0.6",
+    "spring-cloud-version" : "2022.0.2"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "SNAPSHOT",
+    "snapshot" : true,
+    "supportStatus" : "END_OF_LIFE",
+    "spring-boot-version" : "3.0.4-SNAPSHOT",
+    "spring-cloud-version" : "2022.0.1"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.0.3",
     "spring-cloud-version" : "2022.0.1"
   },
@@ -115,7 +147,23 @@
     "current" : false,
     "releaseStatus" : "SNAPSHOT",
     "snapshot" : true,
-    "supportStatus" : "TODO",
+    "supportStatus" : null,
+    "spring-boot-version" : "2.7.12-SNAPSHOT",
+    "spring-cloud-version" : "2021.0.6"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "GENERAL_AVAILABILITY",
+    "snapshot" : false,
+    "supportStatus" : null,
+    "spring-boot-version" : "2.7.11",
+    "spring-cloud-version" : "2021.0.6"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "SNAPSHOT",
+    "snapshot" : true,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "2.7.10-SNAPSHOT",
     "spring-cloud-version" : "2021.0.5"
   },
@@ -123,7 +171,7 @@
     "current" : false,
     "releaseStatus" : "GENERAL_AVAILABILITY",
     "snapshot" : false,
-    "supportStatus" : "SUPPORTED",
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "2.7.9",
     "spring-cloud-version" : "2021.0.5"
   },
@@ -277,7 +325,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.6.14",
-    "spring-cloud-version" : "2021.0.5"
+    "spring-cloud-version" : "2021.0.6"
   },
   {
     "current" : false,
