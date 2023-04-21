@@ -24,6 +24,11 @@ class SamplePartitionProcessor implements IEventProcessor {
     private final ConcurrentLinkedQueue<EventsCounter> currentCounters = new ConcurrentLinkedQueue<>();
     private final ArrayList<EventsCounter> allCounters = new ArrayList<>();
     private final AtomicBoolean isStopped = new AtomicBoolean();
+    private final Runnable onEventReceived;
+
+    SamplePartitionProcessor(Runnable onEventReceived) {
+        this.onEventReceived = onEventReceived;
+    }
 
     /**
      * Gets the event counters opened while processing this partition.
@@ -100,7 +105,10 @@ class SamplePartitionProcessor implements IEventProcessor {
         }
 
         for (EventData event : events) {
+            // So that the variable is used.
             Objects.requireNonNull(event, "'event' can't be null.");
+
+            onEventReceived.run();
             eventsCounter.increment();
         }
     }

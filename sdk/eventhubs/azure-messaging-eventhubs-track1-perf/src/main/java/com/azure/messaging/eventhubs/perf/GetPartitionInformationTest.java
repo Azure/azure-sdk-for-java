@@ -3,16 +3,28 @@
 
 package com.azure.messaging.eventhubs.perf;
 
+import com.azure.perf.test.core.EventPerfTest;
+import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Gets partition information.
  */
-public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionOptions> {
+public class GetPartitionInformationTest extends EventPerfTest<EventHubsPartitionOptions> {
+    private final EventHubsTestHelper<EventHubsPartitionOptions> testHelper;
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
+    private EventHubClient client;
+    private CompletableFuture<EventHubClient> clientFuture;
+    private Disposable subscription;
+
     /**
      * Creates an instance of performance test.
      *
@@ -20,21 +32,49 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
      */
     public GetPartitionInformationTest(EventHubsPartitionOptions options) {
         super(options);
+
+        this.testHelper = new EventHubsTestHelper<>(options);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Mono<Void> setupAsync() {
-        if (options.isSync() && client == null) {
-            client = createEventHubClient();
-        } else if (!options.isSync() && clientFuture == null) {
-            clientFuture = createEventHubClientAsync();
-        }
+        return Mono.fromRunnable(() -> {
+            if (isRunning.getAndSet(true)) {
+                return;
+            }
 
-        return super.setupAsync();
+            if (options.isSync() && client == null) {
+                this.client = testHelper.createEventHubClient();
+                this.subscription = Mono.fromRunnable(() -> getPartitionInformation())
+                    .repeat()
+                    .subscribe();
+            } else if (!options.isSync() && clientFuture == null) {
+                this.clientFuture = testHelper.createEventHubClientAsync();
+
+                this.subscription = Mono.defer(() -> getPartitionInformationAsync())
+                    .repeat()
+                    .subscribe();
+            }
+        });
     }
 
     @Override
-    public void run() {
+    public Mono<Void> cleanupAsync() {
+        if (!isRunning.getAndSet(false)) {
+            return Mono.empty();
+        }
+
+        subscription.dispose();
+
+        // Dispose of the scheduler at the very end.
+        return testHelper.cleanupAsync(client, clientFuture)
+            .doFinally(signal -> testHelper.close());
+    }
+
+    private void getPartitionInformation() {
         PartitionRuntimeInformation information;
         try {
             information = client.getPartitionRuntimeInformation(options.getPartitionId()).get();
@@ -45,8 +85,7 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
         printRuntimeInformation(information);
     }
 
-    @Override
-    public Mono<Void> runAsync() {
+    private Mono<Void> getPartitionInformationAsync() {
         return Mono.fromCompletionStage(clientFuture
             .thenComposeAsync(client -> client.getPartitionRuntimeInformation(options.getPartitionId()))
             .thenAccept(information -> printRuntimeInformation(information)));
