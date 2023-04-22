@@ -91,6 +91,7 @@ public class CosmosEntityInformationHelper {
      * @param domainType the domain type
      * @param javaType the java type of the domain class
      * @return Field id
+     * @throws IllegalArgumentException
      */
     protected static Field getIdField(Class<?> domainType, Class<?> javaType) {
         final Field idField;
@@ -123,6 +124,7 @@ public class CosmosEntityInformationHelper {
      *
      * @param idField the id of the entity
      * @return boolean
+     * @throws IllegalArgumentException
      */
     protected static boolean isIdFieldAnnotatedWithGeneratedValue(Field idField) {
         if (idField.getAnnotation(GeneratedValue.class) != null) {
@@ -174,6 +176,7 @@ public class CosmosEntityInformationHelper {
      *
      * @param domainType the domain type
      * @return Field partition key
+     * @throws IllegalArgumentException
      */
     protected static Field getPartitionKeyField(Class<?> domainType) {
         Field partitionKey = null;
@@ -375,6 +378,7 @@ public class CosmosEntityInformationHelper {
      *
      * @param domainClass the domain class
      * @return Field version
+     * @throws IllegalArgumentException
      */
     protected static Field getVersionedField(Class<?> domainClass) {
         Field version = null;
