@@ -307,7 +307,7 @@ public final class UrlBuilder {
                     break;
 
                 case QUERY:
-                    ImplUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
+                    CoreUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
                         addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 

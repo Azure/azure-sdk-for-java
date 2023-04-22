@@ -50,21 +50,6 @@ public interface PrivateEndpointConnectionsClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param privateEndpointConnectionName Private endpoint connection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String configStoreName, String privateEndpointConnectionName);
-
-    /**
-     * Gets the specified private endpoint connection associated with the configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param privateEndpointConnectionName Private endpoint connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +62,24 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String configStoreName, String privateEndpointConnectionName, Context context);
 
     /**
-     * Update the state of the specified private endpoint connection associated with the configuration store.
+     * Gets the specified private endpoint connection associated with the configuration store.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param privateEndpointConnectionName Private endpoint connection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the configuration store.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String configStoreName, String privateEndpointConnectionName);
+
+    /**
+     * Update the state of the specified private endpoint connection associated with the configuration store. This
+     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
+     * with the Network resource provider.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
@@ -96,7 +98,9 @@ public interface PrivateEndpointConnectionsClient {
         PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
-     * Update the state of the specified private endpoint connection associated with the configuration store.
+     * Update the state of the specified private endpoint connection associated with the configuration store. This
+     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
+     * with the Network resource provider.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
@@ -117,7 +121,9 @@ public interface PrivateEndpointConnectionsClient {
         Context context);
 
     /**
-     * Update the state of the specified private endpoint connection associated with the configuration store.
+     * Update the state of the specified private endpoint connection associated with the configuration store. This
+     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
+     * with the Network resource provider.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
@@ -136,7 +142,9 @@ public interface PrivateEndpointConnectionsClient {
         PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
-     * Update the state of the specified private endpoint connection associated with the configuration store.
+     * Update the state of the specified private endpoint connection associated with the configuration store. This
+     * operation cannot be used to create a private endpoint connection. Private endpoint connections must be created
+     * with the Network resource provider.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.

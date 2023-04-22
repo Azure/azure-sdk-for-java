@@ -1288,6 +1288,9 @@ public class ImplementationBridgeHelpers {
 
             void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId);
             String getFaultInjectionRuleId(CosmosException cosmosException);
+
+            void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults);
+            List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException);
         }
     }
 

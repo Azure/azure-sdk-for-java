@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -51,8 +52,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.testng.AssertJUnit.fail;
 
 public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
-
     private static final int TIMEOUT = 60000;
+    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS = "Addresses mismatch";
+    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_OPERATION_TYPE = "OperationType mismatch";
+    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT = "RegionEndpoint mismatch";
+    private static final String FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT = "Hit Limit reached";
+
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
@@ -183,7 +188,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
             cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem);
             if (operationType == OperationType.Read) {
-                assertThat(serverTooManyRequestsErrorRule.getHitCount()).isEqualTo(1);
+                this.validateHitCount(serverTooManyRequestsErrorRule, 1, OperationType.Read, ResourceType.Document);
                 this.validateFaultInjectionRuleApplied(
                     cosmosDiagnostics,
                     operationType,
@@ -192,7 +197,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     tooManyRequestsRuleId,
                     true);
             } else {
-                this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType);
+                this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType, FAULT_INJECTION_RULE_NON_APPLICABLE_OPERATION_TYPE);
             }
 
         } finally {
@@ -223,7 +228,6 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .duration(Duration.ofMinutes(5))
                 .build();
-
 
         String primaryReplicaServerGoneRuleId = "serverErrorRule-primaryReplicaOnly-" + UUID.randomUUID();
         FaultInjectionRule primaryReplicaServerGoneErrorRule =
@@ -257,6 +261,11 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             }
         }
 
+        logger.info(
+            "Inside fault injection test, OperationType {}, write region {}, read region",
+            operationType,
+            this.writeRegionMap.values(),
+            this.readRegionMap.values());
         CosmosAsyncClient clientWithPreferredRegions;
         try {
             clientWithPreferredRegions = new CosmosClientBuilder()
@@ -272,11 +281,14 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getContainer(this.cosmosAsyncContainer.getId());
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(writeRegionServerGoneErrorRule)).block();
-            assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(2);
+
+            // when the fault injection is not configured with any region, internally, the default endpoint will also be included
+            // So the size will be writeRegionCount + 1
+            assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
             if (operationType.isWriteOperation()) {
-                assertThat(writeRegionServerGoneErrorRule.getHitCount()).isEqualTo(1);
+                this.validateHitCount(writeRegionServerGoneErrorRule, 1, operationType, ResourceType.Document);
                 this.validateFaultInjectionRuleApplied(
                     cosmosDiagnostics,
                     operationType,
@@ -285,16 +297,15 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     writeRegionServerGoneRuleId,
                     true);
             } else {
-                this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType);
+                this.validateNoFaultInjectionApplied(cosmosDiagnostics, operationType, FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS);
             }
 
             writeRegionServerGoneErrorRule.disable();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(primaryReplicaServerGoneErrorRule)).block();
-            assertThat(
-                primaryReplicaServerGoneErrorRule.getRegionEndpoints().size() == this.writeRegionMap.size()
-                        && primaryReplicaServerGoneErrorRule.getRegionEndpoints().containsAll(this.writeRegionMap.keySet()));
-            assertThat(primaryReplicaServerGoneErrorRule.getAddresses().size() == this.writeRegionMap.size());
+            assertThat(primaryReplicaServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
+            assertThat(primaryReplicaServerGoneErrorRule.getRegionEndpoints().containsAll(this.writeRegionMap.values())).isTrue();
+            assertThat(primaryReplicaServerGoneErrorRule.getAddresses().size()).isEqualTo(this.writeRegionMap.size());
         } finally {
             writeRegionServerGoneErrorRule.disable();
             primaryReplicaServerGoneErrorRule.disable();
@@ -374,8 +385,9 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
             // Validate fault injection applied in the local region
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
-            assertThat(serverErrorRuleLocalRegion.getHitCount()).isEqualTo(1);
-            assertThat(serverErrorRuleRemoteRegion.getHitCount()).isEqualTo(0);
+
+            this.validateHitCount(serverErrorRuleLocalRegion, 1, OperationType.Read, ResourceType.Document);
+            this.validateHitCount(serverErrorRuleRemoteRegion, 0, OperationType.Read, ResourceType.Document);
 
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
@@ -389,7 +401,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             serverErrorRuleLocalRegion.disable();
 
             cosmosDiagnostics = this.performDocumentOperation(container, OperationType.Read, createdItem);
-            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read);
+            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_REGION_ENDPOINT);
         } finally {
             serverErrorRuleLocalRegion.disable();
             serverErrorRuleRemoteRegion.disable();
@@ -438,7 +450,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         CosmosDiagnostics cosmosDiagnostics =
             cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
 
-        assertThat(serverErrorRuleByFeedRange.getHitCount()).isEqualTo(1);
+        this.validateHitCount(serverErrorRuleByFeedRange, 1, OperationType.Query, ResourceType.Document);
         this.validateFaultInjectionRuleApplied(
             cosmosDiagnostics,
             OperationType.Query,
@@ -453,7 +465,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
         try {
             cosmosDiagnostics = cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
-            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Query);
+            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Query, FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS);
         } finally {
             serverErrorRuleByFeedRange.disable();
         }
@@ -506,6 +518,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 container.readItem(createdItem.getId(), new PartitionKey(createdItem.getId()), TestItem.class).block();
 
             assertThat(timeoutRule.getHitCount()).isEqualTo(1);
+            this.validateHitCount(timeoutRule, 1, OperationType.Read, ResourceType.Document);
+
             this.validateFaultInjectionRuleApplied(
                 itemResponse.getDiagnostics(),
                 OperationType.Read,
@@ -622,29 +636,52 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     .getDatabase(cosmosAsyncContainer.getDatabase().getId())
                     .getContainer(cosmosAsyncContainer.getId());
 
+            logger.info("serverConnectionDelayWarmupRule: get all the addresses");
+            List<FeedRange> feedRanges = container.getFeedRanges().block();
+            for (FeedRange feedRange : feedRanges) {
+                String feedRangeRuleId = "serverErrorRule-test-feedRang" + feedRange.toString();
+                FaultInjectionRule feedRangeRule =
+                    new FaultInjectionRuleBuilder(feedRangeRuleId)
+                        .condition(
+                            new FaultInjectionConditionBuilder()
+                                .endpoints(
+                                    new FaultInjectionEndpointBuilder(feedRange).build()
+                                )
+                                .build()
+                        )
+                        .result(
+                            FaultInjectionResultBuilders
+                                .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+                                .build()
+                        )
+                        .duration(Duration.ofMinutes(1))
+                        .build();
+
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(feedRangeRule)).block();
+                logger.info("serverConnectionDelayWarmupRul. FeedRange {}, Addresses {}", feedRange, feedRangeRule.getAddresses());
+                feedRangeRule.disable();
+            }
+
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(serverConnectionDelayWarmupRule)).block();
 
             int partitionSize = container.getFeedRanges().block().size();
             container.openConnectionsAndInitCaches().block();
 
             if (primaryAddressesOnly) {
-
-                // proactive connection management will try to establish one connection per primary
-                // and retry failed connection attempts at most twice per primary
-                int primaryAddressCount = partitionSize;
-                int maxConnectionRetriesPerPrimary = primaryAddressCount * 2;
-
-                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isLessThanOrEqualTo(primaryAddressCount + maxConnectionRetriesPerPrimary);
+                logger.info(
+                    "serverConnectionDelayWarmupRule. PartitionSize {}, hitCount{}, hitDetails {}",
+                    partitionSize,
+                    serverConnectionDelayWarmupRule.getHitCount(),
+                    serverConnectionDelayWarmupRule.getHitCountDetails());
+                this.validateHitCount(serverConnectionDelayWarmupRule, partitionSize, OperationType.Create, ResourceType.Connection);
             } else {
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
 
-                // proactive connection management will try to establish one connection per replica
-                // and retry failed connection attempts at most twice per replica
-                long minSecondaryAddressesCount = 3L * partitionSize;
-                long maxAddressesCount = 5L * partitionSize;
-                long minTotalConnectionEstablishmentAttempts = minSecondaryAddressesCount + 2 * minSecondaryAddressesCount;
-                long maxTotalConnectionEstablishmentAttempts = maxAddressesCount + 2 * maxAddressesCount;
-
-                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(minTotalConnectionEstablishmentAttempts, maxTotalConnectionEstablishmentAttempts);
+                this.validateHitCount(
+                    serverConnectionDelayWarmupRule,
+                    serverConnectionDelayWarmupRule.getHitCount(),
+                    OperationType.Create,
+                    ResourceType.Connection);
             }
         } finally {
             serverConnectionDelayWarmupRule.disable();
@@ -708,7 +745,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 }
             }
 
-            assertThat(serverErrorRule.getHitCount()).isEqualTo(1);
+            this.validateHitCount(serverErrorRule, 1, OperationType.Read, ResourceType.Document);
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 OperationType.Read,
@@ -767,11 +804,11 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 } else {
                     // the fault injection rule will not be applied due to hitLimit
                     cosmosDiagnostics = this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
-                    this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read);
+                    this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_HIT_LIMIT);
                 }
             }
 
-            assertThat(hitLimitServerErrorRule.getHitCount()).isEqualTo(2);
+            this.validateHitCount(hitLimitServerErrorRule, 2, OperationType.Read, ResourceType.Document);
         } finally {
             hitLimitServerErrorRule.disable();
         }
@@ -941,7 +978,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
     private void validateNoFaultInjectionApplied(
         CosmosDiagnostics cosmosDiagnostics,
-        OperationType operationType) throws JsonProcessingException {
+        OperationType operationType,
+        String faultInjectionNonApplicableReason) throws JsonProcessingException {
 
         List<ObjectNode> diagnosticsNode = new ArrayList<>();
         if (operationType == OperationType.Query) {
@@ -962,6 +1000,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             for (int i = 0; i < responseStatisticsList.size(); i++) {
                 JsonNode storeResult = responseStatisticsList.get(i).get("storeResult");
                 assertThat(storeResult.get("faultInjectionRuleId")).isNull();
+                assertThat(storeResult.get("faultInjectionEvaluationResults")).isNotNull();
+                assertThat(storeResult.get("faultInjectionEvaluationResults").toString().contains(faultInjectionNonApplicableReason));
             }
             assertThat(responseStatisticsList.size()).isOne();
         }
@@ -978,5 +1018,18 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         }
 
         return regionMap;
+    }
+
+    private void validateHitCount(
+        FaultInjectionRule rule,
+        long totalHitCount,
+        OperationType operationType,
+        ResourceType resourceType) {
+
+        assertThat(rule.getHitCount()).isEqualTo(totalHitCount);
+        if (totalHitCount > 0) {
+            assertThat(rule.getHitCountDetails().size()).isEqualTo(1);
+            assertThat(rule.getHitCountDetails().get(operationType.toString() + "-" + resourceType.toString())).isEqualTo(totalHitCount);
+        }
     }
 }

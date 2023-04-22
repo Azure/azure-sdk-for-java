@@ -311,6 +311,8 @@ public class RntbdTransportClient extends TransportClient {
             storeResponse.setRequestPayloadLength(request.getContentLength());
             storeResponse.setFaultInjectionRuleId(
                 request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
+            storeResponse.setFaultInjectionRuleEvaluationResults(
+                request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
             if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
@@ -364,6 +366,14 @@ public class RntbdTransportClient extends TransportClient {
                 .setFaultInjectionRuleId(
                     cosmosException,
                     request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
+
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setFaultInjectionEvaluationResults(
+                    cosmosException,
+                    request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
+
             if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }

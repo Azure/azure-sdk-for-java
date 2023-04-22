@@ -59,8 +59,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
     public interface SharedGalleryImagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries"
-                + "/{galleryUniqueName}/images")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryImageList>> list(
@@ -75,8 +74,7 @@ public final class SharedGalleryImagesClientImpl implements SharedGalleryImagesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries"
-                + "/{galleryUniqueName}/images/{galleryImageName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<SharedGalleryImageInner>> get(
