@@ -84,7 +84,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "invalidProactiveContainerInitConfigs")
-    public void openConnectionsAndInitCachesWithInvalidCosmosClientConfig(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers) {
+    public void openConnectionsAndInitCachesWithInvalidCosmosClientConfig(List<String> preferredRegions, int numProactiveConnectionRegions, int numContainers, Duration aggressiveWarmupDuration) {
 
         List<CosmosAsyncContainer> asyncContainers = new ArrayList<>();
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
@@ -94,6 +94,15 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             cosmosAsyncDatabase.createContainerIfNotExists(containerId, "/mypk").block();
             asyncContainers.add(cosmosAsyncDatabase.getContainer(containerId));
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
+        }
+
+        if (aggressiveWarmupDuration.compareTo(Duration.ZERO) < 0) {
+            try {
+                new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
+                        .setAggressiveWarmupDuration(aggressiveWarmupDuration)
+                        .build();
+                fail("Should have thrown exception");
+            } catch (IllegalArgumentException illegalArgEx) {}
         }
 
         if (numProactiveConnectionRegions > 5) {
@@ -597,13 +606,17 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
         // configure preferredLocation, no of proactive connection regions, no of containers
         return new Object[][] {
-            new Object[]{preferredLocations, preferredLocations.size() + 1, 1},
+            new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(2)},
             new Object[]{
                 Collections.unmodifiableList(
                     Arrays.asList("R1", "R2", "R3", "R4", "R5", "R6")),
                 6,
-                1
-            }
+                1,
+                    Duration.ofSeconds(2)
+            },
+                new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(0)},
+                new Object[]{preferredLocations, preferredLocations.size() + 1, 1, Duration.ofSeconds(-1)},
+
         };
     }
 
