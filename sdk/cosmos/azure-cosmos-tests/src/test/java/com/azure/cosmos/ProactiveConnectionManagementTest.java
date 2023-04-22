@@ -96,7 +96,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosAsyncDatabase.getId(), containerId));
         }
 
-        if (aggressiveWarmupDuration.compareTo(Duration.ZERO) < 0) {
+        if (aggressiveWarmupDuration.compareTo(Duration.ZERO) <= 0) {
             try {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
                         .setAggressiveWarmupDuration(aggressiveWarmupDuration)
