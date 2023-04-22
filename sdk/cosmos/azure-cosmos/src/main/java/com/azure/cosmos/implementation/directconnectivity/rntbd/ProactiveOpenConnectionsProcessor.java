@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
