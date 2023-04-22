@@ -673,9 +673,29 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     partitionSize,
                     serverConnectionDelayWarmupRule.getHitCount(),
                     serverConnectionDelayWarmupRule.getHitCountDetails());
-                this.validateHitCount(serverConnectionDelayWarmupRule, partitionSize, OperationType.Create, ResourceType.Connection);
+
+                // proactive connection management will try to establish one connection per primary
+                // and retry failed connection attempts at most twice per primary
+                int primaryAddressCount = partitionSize;
+                int maxConnectionRetriesPerPrimary = primaryAddressCount * 2;
+
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isLessThanOrEqualTo(primaryAddressCount + maxConnectionRetriesPerPrimary);
+
+                this.validateHitCount(
+                        serverConnectionDelayWarmupRule,
+                        serverConnectionDelayWarmupRule.getHitCount(),
+                        OperationType.Create,
+                        ResourceType.Connection);
             } else {
-                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
+
+                // proactive connection management will try to establish one connection per replica
+                // and retry failed connection attempts at most twice per replica
+                long minSecondaryAddressesCount = 3L * partitionSize;
+                long maxAddressesCount = 5L * partitionSize;
+                long minTotalConnectionEstablishmentAttempts = minSecondaryAddressesCount + 2 * minSecondaryAddressesCount;
+                long maxTotalConnectionEstablishmentAttempts = maxAddressesCount + 2 * maxAddressesCount;
+
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(minTotalConnectionEstablishmentAttempts, maxTotalConnectionEstablishmentAttempts);
 
                 this.validateHitCount(
                     serverConnectionDelayWarmupRule,
