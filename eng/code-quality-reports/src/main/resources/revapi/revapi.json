@@ -270,7 +270,21 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
-        }
+        },
+        {
+          "code": "java.field.addedStaticField",
+          "new" : "field com.azure.storage.blob.BlobServiceVersion.V2022_11_02",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
+        },
+        {
+          "code": "java.method.added",
+          "new" : "method void com.azure.storage.blob.models.StorageAccountInfo::<init>(com.azure.storage.blob.models.SkuName, com.azure.storage.blob.models.AccountKind, java.lang.Boolean)",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change"
+        },
+        {
+          "code": "java.method.added",
+          "new" : "method boolean com.azure.storage.blob.models.StorageAccountInfo::isHierarchicalNamespaceEnabled()",
+          "justification": "We do not need to do a minor version bump for libraries that use Storage for this change",
       ]
     }
   }
