@@ -610,7 +610,7 @@ public final class CosmosAsyncClient implements Closeable {
         return Flux.<Void>create(sink -> {
                     source
                             .subscribeOn(executionContext)
-                            .doOnNext(t -> sink.next(t));
+                            .subscribe(t -> sink.next(t));
                 })
                 .take(timeout);
     }
