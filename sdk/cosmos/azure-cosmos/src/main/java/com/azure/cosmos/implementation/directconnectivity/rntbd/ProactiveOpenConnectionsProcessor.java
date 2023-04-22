@@ -184,7 +184,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Mono.just(openConnectionResponse);
                             });
                 })
-                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .subscribe();
     }
 
