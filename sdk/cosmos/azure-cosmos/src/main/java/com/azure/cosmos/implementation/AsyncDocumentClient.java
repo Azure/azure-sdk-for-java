@@ -1572,8 +1572,4 @@ public interface AsyncDocumentClient {
      * @param injectorProvider the fault injector provider.
      */
     void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
-
-    enum OpenConnectionAggressivenessHint {
-        AGGRESSIVE, DEFENSIVE
-    }
 }

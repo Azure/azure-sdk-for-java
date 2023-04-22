@@ -147,8 +147,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                             })
                             .flatMapMany(containerLinkToPkrs -> {
                                 if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
-                                    return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
-                                        .take(proactiveContainerInitConfig.getProactiveConnectionRegionsCount())
+                                    return Flux.fromIterable(this.endpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                                         .flatMap(readEndpoint -> {
                                             if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
                                                 EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint);

@@ -35,17 +35,18 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final AtomicReference<AsyncDocumentClient.OpenConnectionAggressivenessHint> aggressivenessHint;
-    private static final Map<AsyncDocumentClient.OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
+    private final AtomicReference<OpenConnectionAggressivenessHint> aggressivenessHint;
+    private static final Map<OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
     private Disposable openConnectionBackgroundTask;
     private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
+    private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 1024;
 
     static {
-        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsDefensiveConcurrency(), Configs.getOpenConnectionsDefensiveConcurrency()));
-        concurrencySettings.put(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getOpenConnectionsAggressiveConcurrency(), Configs.getOpenConnectionsAggressiveConcurrency()));
+        concurrencySettings.put(OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
+        concurrencySettings.put(OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
     }
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
@@ -53,9 +54,9 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveConnectionEstablishmentDuration) {
-        this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer();
-        this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
-        this.aggressivenessHint = new AtomicReference<>(AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE);
+        this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
+        this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
+        this.aggressivenessHint = new AtomicReference<>(OpenConnectionAggressivenessHint.AGGRESSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
@@ -231,8 +232,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void forceDefensiveOpenConnections() {
-        if (aggressivenessHint.get() == AsyncDocumentClient.OpenConnectionAggressivenessHint.AGGRESSIVE) {
-            aggressivenessHint.set(AsyncDocumentClient.OpenConnectionAggressivenessHint.DEFENSIVE);
+        if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.AGGRESSIVE) {
+            aggressivenessHint.set(OpenConnectionAggressivenessHint.DEFENSIVE);
         }
     }
 
@@ -272,5 +273,9 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             logger.error("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
             return false;
         }
+    }
+
+    private static enum OpenConnectionAggressivenessHint {
+        AGGRESSIVE, DEFENSIVE
     }
 }

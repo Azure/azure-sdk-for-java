@@ -14,7 +14,6 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -378,7 +377,7 @@ abstract class AsyncBenchmark<T> {
                 logger.info("Setting an aggressive proactive connection establishment duration of {}", configuration.getAggressiveProactiveConnectionEstablishmentDuration());
 
                 cosmosContainerProactiveInitConfigBuilder = cosmosContainerProactiveInitConfigBuilder
-                        .setAggressiveProactiveConnectionEstablishmentDuration(configuration.getAggressiveProactiveConnectionEstablishmentDuration());
+                        .setAggressiveWarmupDuration(configuration.getAggressiveProactiveConnectionEstablishmentDuration());
 
                 cosmosClientBuilder = cosmosClientBuilder
                         .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())

@@ -66,16 +66,16 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      * aggressively and in a blocking manner and outside which connections will be opened defensively
      * and in a non-blocking manner
      *
-     * @param aggressiveProactiveConnectionEstablishmentDuration this denotes the aggressive proactive connection
+     * @param aggressiveWarmupDuration this denotes the aggressive proactive connection
      *                                                             establishment duration to be set
      * @return current {@link CosmosContainerProactiveInitConfigBuilder}
      */
-    public CosmosContainerProactiveInitConfigBuilder setAggressiveProactiveConnectionEstablishmentDuration(Duration aggressiveProactiveConnectionEstablishmentDuration) {
-        checkArgument(aggressiveProactiveConnectionEstablishmentDuration != null,
-                "aggressiveProactiveConnectionEstablishmentDuration cannot be a null value");
-        checkArgument(aggressiveProactiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0,
-                "aggressiveProactiveConnectionEstablishmentDuration should be greater than Duration.ZERO");
-        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
+    public CosmosContainerProactiveInitConfigBuilder setAggressiveWarmupDuration(Duration aggressiveWarmupDuration) {
+        checkArgument(aggressiveWarmupDuration != null,
+                "aggressiveWarmupDuration cannot be a null value");
+        checkArgument(aggressiveWarmupDuration.compareTo(Duration.ZERO) > 0,
+                "aggressiveWarmupDuration should be greater than Duration.ZERO");
+        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveWarmupDuration;
         return this;
     }
 
