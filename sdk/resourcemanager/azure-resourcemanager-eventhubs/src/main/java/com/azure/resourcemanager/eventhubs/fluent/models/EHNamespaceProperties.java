@@ -5,17 +5,29 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventhubs.models.TlsVersion;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/** Namespace properties supplied for create namespace operation. */
+/**
+ * Namespace properties supplied for create namespace operation.
+ */
 @Fluent
 public final class EHNamespaceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceProperties.class);
+    /*
+     * The minimum TLS version for the cluster to support, e.g. '1.2'
+     */
+    @JsonProperty(value = "minimumTlsVersion")
+    private TlsVersion minimumTlsVersion;
 
     /*
      * Provisioning state of the Namespace.
@@ -60,16 +72,20 @@ public final class EHNamespaceProperties {
     private String metricId;
 
     /*
-     * Value that indicates whether AutoInflate is enabled for eventhub
-     * namespace.
+     * Value that indicates whether AutoInflate is enabled for eventhub namespace.
      */
     @JsonProperty(value = "isAutoInflateEnabled")
     private Boolean isAutoInflateEnabled;
 
     /*
-     * Upper limit of throughput units when AutoInflate is enabled, value
-     * should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled =
-     * true)
+     * This determines if traffic is allowed over public network. By default it is enabled.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /*
+     * Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. (
+     * '0' if AutoInflateEnabled = true)
      */
     @JsonProperty(value = "maximumThroughputUnits")
     private Integer maximumThroughputUnits;
@@ -81,8 +97,7 @@ public final class EHNamespaceProperties {
     private Boolean kafkaEnabled;
 
     /*
-     * Enabling this property creates a Standard Event Hubs Namespace in
-     * regions supported availability zones.
+     * Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
      */
     @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
@@ -112,8 +127,34 @@ public final class EHNamespaceProperties {
     private String alternateName;
 
     /**
+     * Creates an instance of EHNamespaceProperties class.
+     */
+    public EHNamespaceProperties() {
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     * 
+     * @return the minimumTlsVersion value.
+     */
+    public TlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     * 
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the EHNamespaceProperties object itself.
+     */
+    public EHNamespaceProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the Namespace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -122,7 +163,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the status property: Status of the Namespace.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -131,7 +172,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the createdAt property: The time the Namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -140,7 +181,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the updatedAt property: The time the Namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -149,7 +190,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -158,7 +199,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the clusterArmId property: Cluster ARM ID of the Namespace.
-     *
+     * 
      * @return the clusterArmId value.
      */
     public String clusterArmId() {
@@ -167,7 +208,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Set the clusterArmId property: Cluster ARM ID of the Namespace.
-     *
+     * 
      * @param clusterArmId the clusterArmId value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -178,7 +219,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -188,7 +229,7 @@ public final class EHNamespaceProperties {
     /**
      * Get the isAutoInflateEnabled property: Value that indicates whether AutoInflate is enabled for eventhub
      * namespace.
-     *
+     * 
      * @return the isAutoInflateEnabled value.
      */
     public Boolean isAutoInflateEnabled() {
@@ -198,7 +239,7 @@ public final class EHNamespaceProperties {
     /**
      * Set the isAutoInflateEnabled property: Value that indicates whether AutoInflate is enabled for eventhub
      * namespace.
-     *
+     * 
      * @param isAutoInflateEnabled the isAutoInflateEnabled value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -208,9 +249,31 @@ public final class EHNamespaceProperties {
     }
 
     /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the EHNamespaceProperties object itself.
+     */
+    public EHNamespaceProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
      * Get the maximumThroughputUnits property: Upper limit of throughput units when AutoInflate is enabled, value
      * should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true).
-     *
+     * 
      * @return the maximumThroughputUnits value.
      */
     public Integer maximumThroughputUnits() {
@@ -220,7 +283,7 @@ public final class EHNamespaceProperties {
     /**
      * Set the maximumThroughputUnits property: Upper limit of throughput units when AutoInflate is enabled, value
      * should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true).
-     *
+     * 
      * @param maximumThroughputUnits the maximumThroughputUnits value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -231,7 +294,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the kafkaEnabled property: Value that indicates whether Kafka is enabled for eventhub namespace.
-     *
+     * 
      * @return the kafkaEnabled value.
      */
     public Boolean kafkaEnabled() {
@@ -240,7 +303,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Set the kafkaEnabled property: Value that indicates whether Kafka is enabled for eventhub namespace.
-     *
+     * 
      * @param kafkaEnabled the kafkaEnabled value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -252,7 +315,7 @@ public final class EHNamespaceProperties {
     /**
      * Get the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
      * supported availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -262,7 +325,7 @@ public final class EHNamespaceProperties {
     /**
      * Set the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
      * supported availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -273,7 +336,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the encryption property: Properties of BYOK Encryption description.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -282,7 +345,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Set the encryption property: Properties of BYOK Encryption description.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -293,7 +356,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -302,19 +365,18 @@ public final class EHNamespaceProperties {
 
     /**
      * Set the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the EHNamespaceProperties object itself.
      */
-    public EHNamespaceProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public EHNamespaceProperties withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the disableLocalAuth property: This property disables SAS authentication for the Event Hubs namespace.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -323,7 +385,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Set the disableLocalAuth property: This property disables SAS authentication for the Event Hubs namespace.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -334,7 +396,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Get the alternateName property: Alternate name specified when alias and namespace names are same.
-     *
+     * 
      * @return the alternateName value.
      */
     public String alternateName() {
@@ -343,7 +405,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Set the alternateName property: Alternate name specified when alias and namespace names are same.
-     *
+     * 
      * @param alternateName the alternateName value to set.
      * @return the EHNamespaceProperties object itself.
      */
@@ -354,7 +416,7 @@ public final class EHNamespaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/PrivateEndPointConnectionGet.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/NameSpaces/PrivateEndPointConnectionGet.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionGet.
@@ -22,6 +20,10 @@ public final class PrivateEndpointConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .getWithResponse("SDK-EventHub-4794", "sdk-Namespace-5828", "privateEndpointConnectionName", Context.NONE);
+            .getWithResponse(
+                "SDK-EventHub-4794",
+                "sdk-Namespace-5828",
+                "privateEndpointConnectionName",
+                com.azure.core.util.Context.NONE);
     }
 }

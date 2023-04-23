@@ -7,7 +7,10 @@ package com.azure.resourcemanager.eventhubs.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EncodingCaptureDescription. */
+/**
+ * Enumerates the possible values for the encoding format of capture description. Note: 'AvroDeflate' will be deprecated
+ * in New API Version.
+ */
 public enum EncodingCaptureDescription {
     /** Enum value Avro. */
     AVRO("Avro"),
@@ -30,6 +33,9 @@ public enum EncodingCaptureDescription {
      */
     @JsonCreator
     public static EncodingCaptureDescription fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EncodingCaptureDescription[] items = EncodingCaptureDescription.values();
         for (EncodingCaptureDescription item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum EncodingCaptureDescription {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

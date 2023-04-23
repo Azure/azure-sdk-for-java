@@ -5,16 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** The response of the List NetworkRuleSet operation. */
+/**
+ * The response of the List NetworkRuleSet operation.
+ */
 @Fluent
 public final class NetworkRuleSetListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetListResultInner.class);
-
     /*
      * Result of the List NetworkRuleSet operation
      */
@@ -22,15 +25,20 @@ public final class NetworkRuleSetListResultInner {
     private List<NetworkRuleSetInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of NetworkRuleSet.
+     * Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of NetworkRuleSetListResultInner class.
+     */
+    public NetworkRuleSetListResultInner() {
+    }
+
+    /**
      * Get the value property: Result of the List NetworkRuleSet operation.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkRuleSetInner> value() {
@@ -39,7 +47,7 @@ public final class NetworkRuleSetListResultInner {
 
     /**
      * Set the value property: Result of the List NetworkRuleSet operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkRuleSetListResultInner object itself.
      */
@@ -51,7 +59,7 @@ public final class NetworkRuleSetListResultInner {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * NetworkRuleSet.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +69,7 @@ public final class NetworkRuleSetListResultInner {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * NetworkRuleSet.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkRuleSetListResultInner object itself.
      */
@@ -72,7 +80,7 @@ public final class NetworkRuleSetListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

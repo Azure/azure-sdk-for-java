@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConsumerGroups ListByEventHub. */
 public final class ConsumerGroupsListByEventHubSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupListByEventHub.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/ConsumerGroup/EHConsumerGroupListByEventHub.json
      */
     /**
      * Sample code: ConsumerGroupsListAll.
@@ -22,6 +20,7 @@ public final class ConsumerGroupsListByEventHubSamples {
             .manager()
             .serviceClient()
             .getConsumerGroups()
-            .listByEventHub("ArunMonocle", "sdk-Namespace-2661", "sdk-EventHub-6681", null, null, Context.NONE);
+            .listByEventHub(
+                "ArunMonocle", "sdk-Namespace-2661", "sdk-EventHub-6681", null, null, com.azure.core.util.Context.NONE);
     }
 }

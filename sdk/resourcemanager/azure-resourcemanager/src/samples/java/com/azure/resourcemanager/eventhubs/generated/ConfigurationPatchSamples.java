@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterQuotaConfigurationPropertiesInner;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Configuration Patch. */
 public final class ConfigurationPatchSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterQuotaConfigurationPatch.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ClusterQuotaConfigurationPatch.json
      */
     /**
      * Sample code: ClustersQuotasConfigurationPatch.
@@ -30,7 +29,7 @@ public final class ConfigurationPatchSamples {
                 "testCluster",
                 new ClusterQuotaConfigurationPropertiesInner()
                     .withSettings(mapOf("eventhub-per-namespace-quota", "20", "namespaces-per-cluster-quota", "200")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventHubs ListByNamespace. */
 public final class EventHubsListByNamespaceSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubListByNameSpace.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubListByNameSpace.json
      */
     /**
      * Sample code: EventHubsListAll.
@@ -22,6 +20,11 @@ public final class EventHubsListByNamespaceSamples {
             .manager()
             .serviceClient()
             .getEventHubs()
-            .listByNamespace("Default-NotificationHubs-AustraliaEast", "sdk-Namespace-5357", null, null, Context.NONE);
+            .listByNamespace(
+                "Default-NotificationHubs-AustraliaEast",
+                "sdk-Namespace-5357",
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConsumerGroups Delete. */
 public final class ConsumerGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/ConsumerGroup/EHConsumerGroupDelete.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/ConsumerGroup/EHConsumerGroupDelete.json
      */
     /**
      * Sample code: ConsumerGroupDelete.
@@ -23,6 +21,10 @@ public final class ConsumerGroupsDeleteSamples {
             .serviceClient()
             .getConsumerGroups()
             .deleteWithResponse(
-                "ArunMonocle", "sdk-Namespace-2661", "sdk-EventHub-6681", "sdk-ConsumerGroup-5563", Context.NONE);
+                "ArunMonocle",
+                "sdk-Namespace-2661",
+                "sdk-EventHub-6681",
+                "sdk-ConsumerGroup-5563",
+                com.azure.core.util.Context.NONE);
     }
 }

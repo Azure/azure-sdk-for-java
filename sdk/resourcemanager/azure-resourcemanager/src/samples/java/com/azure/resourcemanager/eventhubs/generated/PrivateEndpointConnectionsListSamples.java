@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/PrivateEndPointConnectionList.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/NameSpaces/PrivateEndPointConnectionList.json
      */
     /**
      * Sample code: NameSpaceCreate.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsListSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .list("SDK-EventHub-4794", "sdk-Namespace-5828", Context.NONE);
+            .list("SDK-EventHub-4794", "sdk-Namespace-5828", com.azure.core.util.Context.NONE);
     }
 }

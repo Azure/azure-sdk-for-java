@@ -5,16 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** Properties of PrivateLinkResource. */
+/**
+ * Properties of PrivateLinkResource.
+ */
 @Fluent
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
-
     /*
      * The private link resource group id.
      */
@@ -34,8 +37,14 @@ public final class PrivateLinkResourceProperties {
     private List<String> requiredZoneNames;
 
     /**
+     * Creates an instance of PrivateLinkResourceProperties class.
+     */
+    public PrivateLinkResourceProperties() {
+    }
+
+    /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,7 +53,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Set the groupId property: The private link resource group id.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PrivateLinkResourceProperties object itself.
      */
@@ -55,7 +64,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -64,7 +73,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Set the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @param requiredMembers the requiredMembers value to set.
      * @return the PrivateLinkResourceProperties object itself.
      */
@@ -75,7 +84,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -84,7 +93,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResourceProperties object itself.
      */
@@ -95,7 +104,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

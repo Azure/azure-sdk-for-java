@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.regex.Pattern;
 
-/** Information of the private link resource. */
+/**
+ * Information of the private link resource.
+ */
 @Fluent
 public final class PrivateLinkResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
-
     /*
      * Properties of the private link resource.
      */
@@ -41,8 +44,14 @@ public final class PrivateLinkResource {
     private String type;
 
     /**
+     * Creates an instance of PrivateLinkResource class.
+     */
+    public PrivateLinkResource() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of the private link resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -51,7 +60,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the id property: Fully qualified identifier of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -60,7 +69,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the id property: Fully qualified identifier of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -71,7 +80,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +89,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the name property: Name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -91,7 +100,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -100,7 +109,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the type property: Type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -111,7 +120,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -120,7 +129,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the groupId property: The private link resource group id.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -134,7 +143,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -143,7 +152,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @param requiredMembers the requiredMembers value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -157,7 +166,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -166,7 +175,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -180,7 +189,7 @@ public final class PrivateLinkResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

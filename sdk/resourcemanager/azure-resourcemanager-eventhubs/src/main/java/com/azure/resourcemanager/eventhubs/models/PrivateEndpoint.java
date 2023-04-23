@@ -5,15 +5,18 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.regex.Pattern;
 
-/** PrivateEndpoint information. */
+/**
+ * PrivateEndpoint information.
+ */
 @Fluent
 public final class PrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
-
     /*
      * The ARM identifier for Private Endpoint.
      */
@@ -21,8 +24,14 @@ public final class PrivateEndpoint {
     private String id;
 
     /**
+     * Creates an instance of PrivateEndpoint class.
+     */
+    public PrivateEndpoint() {
+    }
+
+    /**
      * Get the id property: The ARM identifier for Private Endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +40,7 @@ public final class PrivateEndpoint {
 
     /**
      * Set the id property: The ARM identifier for Private Endpoint.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpoint object itself.
      */
@@ -42,7 +51,7 @@ public final class PrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

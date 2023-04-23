@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DisasterRecoveryConfigs ListKeys. */
 public final class DisasterRecoveryConfigsListKeysSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleListKey.
@@ -27,6 +25,6 @@ public final class DisasterRecoveryConfigsListKeysSamples {
                 "sdk-Namespace-2702",
                 "sdk-DisasterRecovery-4047",
                 "sdk-Authrules-1746",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
