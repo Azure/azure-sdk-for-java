@@ -24,6 +24,10 @@ public final class DeletedManagedHsmListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DeletedManagedHsmListResult class. */
+    public DeletedManagedHsmListResult() {
+    }
+
     /**
      * Get the value property: The list of deleted managed HSM Pools.
      *

@@ -347,7 +347,8 @@ public class CosmosTracerTest extends TestSuiteBase {
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 
-        FaultInjectionRule rule = new FaultInjectionRuleBuilder("InjectedResponseDelay" + UUID.randomUUID())
+        String faultInjectionRuleId = "InjectedResponseDelay" + UUID.randomUUID();
+        FaultInjectionRule rule = new FaultInjectionRuleBuilder(faultInjectionRuleId)
             .condition(condition)
             .result(result)
             .build();
@@ -373,8 +374,18 @@ public class CosmosTracerTest extends TestSuiteBase {
                         .block();
 
                     assertThat(cosmosItemResponse).isNotNull();
-                    assertThat(cosmosItemResponse.getDiagnostics().toString().contains("InjectedResponseDelay"))
-                        .isEqualTo(injectedFailureEnabled);
+
+                    if (injectedFailureEnabled) {
+                        assertThat(cosmosItemResponse.getDiagnostics().toString().contains(faultInjectionRuleId)).isTrue();
+                        assertThat(cosmosItemResponse.getDiagnostics().toString().contains("faultInjectionEvaluationResults")).isFalse();
+                    } else {
+                        assertThat(
+                            cosmosItemResponse
+                                .getDiagnostics()
+                                .toString()
+                                .contains(faultInjectionRuleId + "[Disable or Duration reached"))
+                            .isTrue();
+                    }
                     verifyTracerAttributes(
                         mockTracer,
                         "createItem." + cosmosAsyncContainer.getId(),

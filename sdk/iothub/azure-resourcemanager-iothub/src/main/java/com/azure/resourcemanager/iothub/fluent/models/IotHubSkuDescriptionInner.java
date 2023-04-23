@@ -31,6 +31,10 @@ public final class IotHubSkuDescriptionInner {
     @JsonProperty(value = "capacity", required = true)
     private IotHubCapacity capacity;
 
+    /** Creates an instance of IotHubSkuDescriptionInner class. */
+    public IotHubSkuDescriptionInner() {
+    }
+
     /**
      * Get the resourceType property: The type of the resource.
      *

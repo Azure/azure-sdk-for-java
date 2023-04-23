@@ -20,26 +20,30 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -51,18 +55,17 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.TestUtils.FAKE_ENCODED_EMPTY_SPACE_URL;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
-import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.getAudience;
+import static com.azure.ai.formrecognizer.TestUtils.getTestProxySanitizers;
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public abstract class FormRecognizerClientTestBase extends TestBase {
+public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     private static final String EXPECTED_RECEIPT_ADDRESS_VALUE = "123 Main Street Redmond, WA 98052";
     private static final String EXPECTED_JPEG_RECEIPT_PHONE_NUMBER_VALUE = "+19876543210";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
@@ -137,17 +140,20 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new MockTokenCredential());
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+        } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
@@ -158,17 +164,24 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy())
             .audience(audience);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new AzureKeyCredential(INVALID_KEY));
-        } else {
+        if (interceptorManager.isPlaybackMode()) {
+            builder.credential(new TokenCredential() {
+                @Override
+                public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+                    return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
+                }
+            });
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+        } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        interceptorManager.addSanitizers(getTestProxySanitizers());
         return builder;
     }
 
@@ -451,15 +464,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
         final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
 
-        if (interceptorManager.isPlaybackMode()) {
-            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
-        } else {
-            try {
-                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("Local file not found.", e);
-            }
+        try {
+            testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Local file not found.", e);
         }
+
     }
 
     void localFilePathRunner(BiConsumer<String, Long> testRunner, String fileName) {
@@ -1195,19 +1205,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
      * @return the training data set Url
      */
     private String getTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
-        }
+        return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL, "https://isPlaybackmode");
     }
 
     private String getSelectionMarkTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL);
-        }
+        return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL, "https://isPlaybackmode");
     }
 
     /**
@@ -1216,12 +1218,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
      * @return the training data set Url
      */
     private String getMultipageTrainingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration()
-                .get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL);
-        }
+        return Configuration.getGlobalConfiguration()
+                .get(FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL, "https://isPlaybackmode");
     }
 
     /**
@@ -1230,11 +1228,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
      * @return the testing data set Url
      */
     private String getTestingSasUri() {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode?SASToken";
-        } else {
-            return Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
-        }
+        return Configuration.getGlobalConfiguration().get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL", "https://isPlaybackmode?SASToken");
     }
 
     /**

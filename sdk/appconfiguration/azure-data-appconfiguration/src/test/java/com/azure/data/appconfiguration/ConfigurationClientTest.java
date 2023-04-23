@@ -12,8 +12,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -37,6 +37,7 @@ import reactor.test.StepVerifier;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -79,16 +80,31 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .httpClient(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-            if (getTestMode() != TestMode.PLAYBACK) {
+
+            setHttpClient(httpClient, builder);
+
+            if (interceptorManager.isRecordMode()) {
                 builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
+            } else if (interceptorManager.isPlaybackMode()) {
+                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildClient();
         });
+    }
+
+    private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
+        if (interceptorManager.isRecordMode()) {
+            return builder
+                .httpClient(buildSyncAssertingClient(httpClient));
+        } else if (interceptorManager.isPlaybackMode()) {
+            return builder
+                .httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));
+        }
+        return builder;
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {

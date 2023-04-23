@@ -58,7 +58,8 @@ public class FailFastRntbdRequestRecord extends RntbdRequestRecord {
         final GoneException admissionControlBlocksRequestException = new GoneException(
             reason,
             headers,
-            remoteAddress);
+            remoteAddress,
+            HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         BridgeInternal.setRequestHeaders(admissionControlBlocksRequestException, args.serviceRequest().getHeaders());
 
         failFastRecord.whenComplete((response, error) -> {

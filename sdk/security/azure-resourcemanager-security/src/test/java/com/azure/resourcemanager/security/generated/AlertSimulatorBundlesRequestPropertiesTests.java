@@ -16,18 +16,16 @@ public final class AlertSimulatorBundlesRequestPropertiesTests {
         AlertSimulatorBundlesRequestProperties model =
             BinaryData
                 .fromString(
-                    "{\"kind\":\"Bundles\",\"bundles\":[\"StorageAccounts\",\"VirtualMachines\",\"CosmosDbs\"],\"\":{\"czjnc\":\"dataybjufptb\"}}")
+                    "{\"kind\":\"Bundles\",\"bundles\":[\"DNS\"],\"\":{\"dtfohfaog\":\"datakywymxgaabj\",\"ykcrraue\":\"datavkiwrsiwdyjqu\",\"ddacbcbgydlqidy\":\"datakcsueho\"}}")
                 .toObject(AlertSimulatorBundlesRequestProperties.class);
-        Assertions.assertEquals(BundleType.STORAGE_ACCOUNTS, model.bundles().get(0));
+        Assertions.assertEquals(BundleType.DNS, model.bundles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertSimulatorBundlesRequestProperties model =
-            new AlertSimulatorBundlesRequestProperties()
-                .withBundles(
-                    Arrays.asList(BundleType.STORAGE_ACCOUNTS, BundleType.VIRTUAL_MACHINES, BundleType.COSMOS_DBS));
+            new AlertSimulatorBundlesRequestProperties().withBundles(Arrays.asList(BundleType.DNS));
         model = BinaryData.fromObject(model).toObject(AlertSimulatorBundlesRequestProperties.class);
-        Assertions.assertEquals(BundleType.STORAGE_ACCOUNTS, model.bundles().get(0));
+        Assertions.assertEquals(BundleType.DNS, model.bundles().get(0));
     }
 }

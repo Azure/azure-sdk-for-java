@@ -34,6 +34,15 @@ public final class EndpointHealthStatus extends ExpandableStringEnum<EndpointHea
     public static final EndpointHealthStatus DEAD = fromString("dead");
 
     /**
+     * Creates a new instance of EndpointHealthStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointHealthStatus() {
+    }
+
+    /**
      * Creates or finds a EndpointHealthStatus from its string representation.
      *
      * @param name a name to look for.

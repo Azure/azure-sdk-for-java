@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.models.QuotaRequestState;
 import com.azure.resourcemanager.quota.models.ServiceErrorDetail;
 import com.azure.resourcemanager.quota.models.SubRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Quota request properties. */
 @Fluent
 public final class QuotaRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaRequestProperties.class);
-
     /*
      * The quota request status.
      */
@@ -38,8 +34,8 @@ public final class QuotaRequestProperties {
     private ServiceErrorDetail error;
 
     /*
-     * The quota request submission time. The date conforms to the following
-     * format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
+     * The quota request submission time. The date conforms to the following format specified by the ISO 8601 standard:
+     * yyyy-MM-ddTHH:mm:ssZ
      */
     @JsonProperty(value = "requestSubmitTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime requestSubmitTime;
@@ -49,6 +45,10 @@ public final class QuotaRequestProperties {
      */
     @JsonProperty(value = "value")
     private List<SubRequest> value;
+
+    /** Creates an instance of QuotaRequestProperties class. */
+    public QuotaRequestProperties() {
+    }
 
     /**
      * Get the provisioningState property: The quota request status.

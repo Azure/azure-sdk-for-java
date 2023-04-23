@@ -34,8 +34,9 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = spy(getClientBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildClient());
+        client = spy(getClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildClient());
         if (interceptorManager.isPlaybackMode()) {
             when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }

@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = KeyEncryptionKeyClientBuilder.class, isAsync = true)
 public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient implements AsyncKeyEncryptionKey {
-    private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyAsyncClient.class);
 
     /**
      * Creates a {@link KeyEncryptionKeyAsyncClient} that uses {@code pipeline} to service requests
@@ -63,7 +63,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
 
             return wrapKey(wrapAlgorithm, key).flatMap(keyWrapResult -> Mono.just(keyWrapResult.getEncryptedKey()));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -79,7 +79,7 @@ public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient i
             return unwrapKey(wrapAlgorithm, encryptedKey)
                 .flatMap(keyUnwrapResult -> Mono.just(keyUnwrapResult.getKey()));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 }

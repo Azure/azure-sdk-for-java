@@ -13,10 +13,9 @@ import com.azure.resourcemanager.quota.fluent.QuotaRequestStatusClient;
 import com.azure.resourcemanager.quota.fluent.models.QuotaRequestDetailsInner;
 import com.azure.resourcemanager.quota.models.QuotaRequestDetails;
 import com.azure.resourcemanager.quota.models.QuotaRequestStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaRequestStatusImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaRequestStatusImpl.class);
 
     private final QuotaRequestStatusClient innerClient;
 
@@ -28,15 +27,6 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
         this.serviceManager = serviceManager;
     }
 
-    public QuotaRequestDetails get(String id, String scope) {
-        QuotaRequestDetailsInner inner = this.serviceClient().get(id, scope);
-        if (inner != null) {
-            return new QuotaRequestDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<QuotaRequestDetails> getWithResponse(String id, String scope, Context context) {
         Response<QuotaRequestDetailsInner> inner = this.serviceClient().getWithResponse(id, scope, context);
         if (inner != null) {
@@ -45,6 +35,15 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QuotaRequestDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QuotaRequestDetails get(String id, String scope) {
+        QuotaRequestDetailsInner inner = this.serviceClient().get(id, scope);
+        if (inner != null) {
+            return new QuotaRequestDetailsImpl(inner, this.manager());
         } else {
             return null;
         }
