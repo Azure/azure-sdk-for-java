@@ -103,6 +103,30 @@ def sync_external_dependencies(source_file, target_file):
 
 
 def version_bigger_than(source_version, target_version):
+    # Format version with jre ('11.2.3.jre17')
+    if source_version.find('.jre'):
+        source_version = source_version.partition('.jre')[0]
+    if target_version.find('.jre'):
+        target_version = target_version.partition('.jre')[0]
+
+    # Format version with Final ('4.1.89.Final')
+    if source_version.find('.Final'):
+        source_version = source_version.partition('.Final')[0]
+    if target_version.find('.Final'):
+        target_version = target_version.partition('.Final')[0]
+
+    # Format version with RELEASE ('6.2.0.RELEASE')
+    if source_version.find('.RELEASE'):
+        source_version = source_version.partition('.RELEASE')[0]
+    if target_version.find('.RELEASE'):
+        target_version = target_version.partition('.RELEASE')[0]
+
+    # Format version with v... ('9.4.50.v20221201')
+    if source_version.find('.v'):
+        source_version = source_version.partition('.v')[0]
+    if target_version.find('.v'):
+        target_version = target_version.partition('.v')[0]
+
     sv = parse(source_version)
     tv = parse(target_version)
 
@@ -185,6 +209,10 @@ class Tests(unittest.TestCase):
         self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-M5'), True)
         self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-RC2'), False)
         self.assertEqual(version_bigger_than('3.0.0-RC2', '3.0.0-RC1'), True)
+        self.assertEqual(version_bigger_than('11.2.3.jre17', '10.2.3.jre8'), True)
+        self.assertEqual(version_bigger_than('4.1.89.Final', '4.1.87.Final'), True)
+        self.assertEqual(version_bigger_than('6.2.0.RELEASE', '6.2.2.RELEASE'), False)
+        self.assertEqual(version_bigger_than('9.4.50.v20221201', '11.0.13'), False)
 
 
 if __name__ == '__main__':
