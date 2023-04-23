@@ -808,7 +808,6 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-
     ConfigurationSettingSnapshot getExpectedSettingSnapshot(String snapshotName, SnapshotStatus status,
         List<SnapshotSettingFilter> filters, CompositionType compositionType, OffsetDateTime createdAt,
         OffsetDateTime expiresAt, Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
@@ -827,6 +826,14 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         snapshot.setTags(tags);
         snapshot.setRetentionPeriod(retentionPeriod);
         return snapshot;
+    }
+
+    void assertConfigurationSettingSnapshotWithResponse(ConfigurationSettingSnapshot expected,
+        Response<ConfigurationSettingSnapshot> response, final int expectedStatusCode) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+
+        assertEqualsConfigurationSettingSnapshot(expected, response.getValue());
     }
 
     void assertEqualsConfigurationSettingSnapshot(ConfigurationSettingSnapshot o1, ConfigurationSettingSnapshot o2) {

@@ -1077,6 +1077,72 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            Duration retentionPeriod = Duration.ofMinutes(10);
+
+            ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters)
+                .setRetentionPeriod(retentionPeriod);
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, snapshot, Context.NONE);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
+                retentionPeriod, Long.valueOf(1000), Long.valueOf(0), null, null);
+            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+
+            // Retrieve a snapshot after creation
+            Response<ConfigurationSettingSnapshot> getSnapshot = client.getSnapshotWithResponse(name, Context.NONE);
+            assertConfigurationSettingSnapshotWithResponse(expectedSettingSnapshot, getSnapshot, 200);
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
+            ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(name);
+            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, archivedSnapshot);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void getSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationClient(httpClient, serviceVersion);
+        // Prepare a setting before creating a snapshot
+        addConfigurationSettingRunner((expected) -> assertConfigurationEquals(expected,
+            client.addConfigurationSettingWithResponse(expected, Context.NONE).getValue()));
+
+        createSnapshotRunner((name, filters) -> {
+            SyncPoller<CreateSnapshotOperationDetail, ConfigurationSettingSnapshot> poller =
+                client.beginCreateSnapshot(name, filters);
+            poller.setPollInterval(Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
+
+            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
+                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
+            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+
+            // Retrieve a snapshot after creation
+            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, client.getSnapshot(name));
+
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
+            ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot(name);
+            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, archivedSnapshot);
+        });
+    }
+
     /**
      * Test helper that calling list configuration setting with given key and label input
      *
