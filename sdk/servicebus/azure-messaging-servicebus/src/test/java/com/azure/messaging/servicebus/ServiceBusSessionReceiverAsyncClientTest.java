@@ -252,16 +252,17 @@ class ServiceBusSessionReceiverAsyncClientTest {
         final AtomicInteger count = new AtomicInteger();
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
             any(MessagingEntityType.class), eq(CLIENT_IDENTIFIER), isNull())).thenAnswer(invocation -> {
-            final int number = count.getAndIncrement();
-            switch (number) {
-                case 0:
-                    return Mono.just(amqpReceiveLink);
-                case 1:
-                    return Mono.just(amqpReceiveLink2);
-                default:
-                    return Mono.empty();
-            }
-        });
+                final int number = count.getAndIncrement();
+
+                switch (number) {
+                    case 0:
+                        return Mono.just(amqpReceiveLink);
+                    case 1:
+                        return Mono.just(amqpReceiveLink2);
+                    default:
+                        return Mono.empty();
+                }
+            });
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
