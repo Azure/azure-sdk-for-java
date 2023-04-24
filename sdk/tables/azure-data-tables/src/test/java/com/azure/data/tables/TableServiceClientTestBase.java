@@ -8,12 +8,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 
-public abstract class TableServiceClientTestBase extends TestBase {
+public abstract class TableServiceClientTestBase extends TestProxyTestBase {
     protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
 
     protected HttpPipelinePolicy recordPolicy;
@@ -58,7 +59,7 @@ public abstract class TableServiceClientTestBase extends TestBase {
                 tableServiceClientBuilder.addPolicy(recordPolicy);
             }
         }
-
+        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return tableServiceClientBuilder;
     }
 

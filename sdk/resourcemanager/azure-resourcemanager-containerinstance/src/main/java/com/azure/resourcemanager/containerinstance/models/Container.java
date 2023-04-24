@@ -25,6 +25,10 @@ public final class Container {
     @JsonProperty(value = "properties", required = true)
     private ContainerProperties innerProperties = new ContainerProperties();
 
+    /** Creates an instance of Container class. */
+    public Container() {
+    }
+
     /**
      * Get the name property: The user-provided name of the container instance.
      *
@@ -244,6 +248,29 @@ public final class Container {
             this.innerProperties = new ContainerProperties();
         }
         this.innerProperties().withReadinessProbe(readinessProbe);
+        return this;
+    }
+
+    /**
+     * Get the securityContext property: The container security properties.
+     *
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityContext();
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     *
+     * @param securityContext the securityContext value to set.
+     * @return the Container object itself.
+     */
+    public Container withSecurityContext(SecurityContextDefinition securityContext) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withSecurityContext(securityContext);
         return this;
     }
 

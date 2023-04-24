@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VMIngestion Details. */
 public final class VMIngestionDetailsSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/VMIngestion_Details.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/VMIngestion_Details.json
      */
     /**
      * Sample code: VMIngestion_Details.
@@ -17,6 +15,6 @@ public final class VMIngestionDetailsSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void vMIngestionDetails(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.vMIngestions().detailsWithResponse("myResourceGroup", "myMonitor", Context.NONE);
+        manager.vMIngestions().detailsWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,7 @@ public final class CspmMonitorAzureDevOpsOfferingTests {
     public void testDeserialize() throws Exception {
         CspmMonitorAzureDevOpsOffering model =
             BinaryData
-                .fromString("{\"offeringType\":\"CspmMonitorAzureDevOps\",\"description\":\"qqrsmpcbbprtugav\"}")
+                .fromString("{\"offeringType\":\"CspmMonitorAzureDevOps\",\"description\":\"ytjlkesmmpath\"}")
                 .toObject(CspmMonitorAzureDevOpsOffering.class);
     }
 

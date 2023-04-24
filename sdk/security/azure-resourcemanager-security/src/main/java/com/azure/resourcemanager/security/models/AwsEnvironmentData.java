@@ -8,8 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/** The aws connector environment data. */
+/** The AWS connector environment data. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
 @JsonTypeName("AwsAccount")
 @Fluent
@@ -19,6 +20,18 @@ public final class AwsEnvironmentData extends EnvironmentData {
      */
     @JsonProperty(value = "organizationalData")
     private AwsOrganizationalData organizationalData;
+
+    /*
+     * list of regions to scan
+     */
+    @JsonProperty(value = "regions")
+    private List<String> regions;
+
+    /*
+     * The AWS account name
+     */
+    @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
+    private String accountName;
 
     /** Creates an instance of AwsEnvironmentData class. */
     public AwsEnvironmentData() {
@@ -42,6 +55,35 @@ public final class AwsEnvironmentData extends EnvironmentData {
     public AwsEnvironmentData withOrganizationalData(AwsOrganizationalData organizationalData) {
         this.organizationalData = organizationalData;
         return this;
+    }
+
+    /**
+     * Get the regions property: list of regions to scan.
+     *
+     * @return the regions value.
+     */
+    public List<String> regions() {
+        return this.regions;
+    }
+
+    /**
+     * Set the regions property: list of regions to scan.
+     *
+     * @param regions the regions value to set.
+     * @return the AwsEnvironmentData object itself.
+     */
+    public AwsEnvironmentData withRegions(List<String> regions) {
+        this.regions = regions;
+        return this;
+    }
+
+    /**
+     * Get the accountName property: The AWS account name.
+     *
+     * @return the accountName value.
+     */
+    public String accountName() {
+        return this.accountName;
     }
 
     /**

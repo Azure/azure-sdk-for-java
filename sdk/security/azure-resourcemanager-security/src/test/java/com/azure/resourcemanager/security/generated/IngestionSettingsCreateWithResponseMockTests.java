@@ -29,7 +29,8 @@ public final class IngestionSettingsCreateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"properties\":\"datau\",\"id\":\"sqsnxf\",\"name\":\"xufeapd\",\"type\":\"bzyvbsua\"}";
+        String responseStr =
+            "{\"properties\":\"datanzrsbkkzovlzdmn\",\"id\":\"mfwsxafofu\",\"name\":\"orimmo\",\"type\":\"zwdehkkmvhz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -57,7 +58,6 @@ public final class IngestionSettingsCreateWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IngestionSetting response =
-            manager.ingestionSettings().define("xlayunomir").withProperties("datafabenqla").create();
+        IngestionSetting response = manager.ingestionSettings().define("ecuyr").withProperties("dataimb").create();
     }
 }

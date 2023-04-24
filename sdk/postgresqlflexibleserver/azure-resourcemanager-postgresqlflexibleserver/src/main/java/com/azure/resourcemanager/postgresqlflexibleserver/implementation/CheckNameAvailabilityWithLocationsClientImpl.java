@@ -61,8 +61,7 @@ public final class CheckNameAvailabilityWithLocationsClientImpl implements Check
     public interface CheckNameAvailabilityWithLocationsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> execute(
@@ -87,7 +86,7 @@ public final class CheckNameAvailabilityWithLocationsClientImpl implements Check
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
+    public Mono<Response<NameAvailabilityInner>> executeWithResponseAsync(
         String locationName, CheckNameAvailabilityRequest nameAvailabilityRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -188,7 +187,7 @@ public final class CheckNameAvailabilityWithLocationsClientImpl implements Check
      * @return represents a resource name availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityInner> executeAsync(
+    public Mono<NameAvailabilityInner> executeAsync(
         String locationName, CheckNameAvailabilityRequest nameAvailabilityRequest) {
         return executeWithResponseAsync(locationName, nameAvailabilityRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));

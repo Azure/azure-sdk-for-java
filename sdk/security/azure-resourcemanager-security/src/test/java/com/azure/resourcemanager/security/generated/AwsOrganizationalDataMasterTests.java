@@ -15,20 +15,20 @@ public final class AwsOrganizationalDataMasterTests {
         AwsOrganizationalDataMaster model =
             BinaryData
                 .fromString(
-                    "{\"organizationMembershipType\":\"Organization\",\"stacksetName\":\"omeikjcl\",\"excludedAccountIds\":[\"cnmwpfsuqtaa\",\"yqbxyxoyf\",\"uqqiqezxlhd\",\"zq\"]}")
+                    "{\"organizationMembershipType\":\"Organization\",\"stacksetName\":\"rvfyifkdsch\",\"excludedAccountIds\":[\"fict\",\"kjjwgcwn\",\"hbkgfyrt\",\"gm\"]}")
                 .toObject(AwsOrganizationalDataMaster.class);
-        Assertions.assertEquals("omeikjcl", model.stacksetName());
-        Assertions.assertEquals("cnmwpfsuqtaa", model.excludedAccountIds().get(0));
+        Assertions.assertEquals("rvfyifkdsch", model.stacksetName());
+        Assertions.assertEquals("fict", model.excludedAccountIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AwsOrganizationalDataMaster model =
             new AwsOrganizationalDataMaster()
-                .withStacksetName("omeikjcl")
-                .withExcludedAccountIds(Arrays.asList("cnmwpfsuqtaa", "yqbxyxoyf", "uqqiqezxlhd", "zq"));
+                .withStacksetName("rvfyifkdsch")
+                .withExcludedAccountIds(Arrays.asList("fict", "kjjwgcwn", "hbkgfyrt", "gm"));
         model = BinaryData.fromObject(model).toObject(AwsOrganizationalDataMaster.class);
-        Assertions.assertEquals("omeikjcl", model.stacksetName());
-        Assertions.assertEquals("cnmwpfsuqtaa", model.excludedAccountIds().get(0));
+        Assertions.assertEquals("rvfyifkdsch", model.stacksetName());
+        Assertions.assertEquals("fict", model.excludedAccountIds().get(0));
     }
 }

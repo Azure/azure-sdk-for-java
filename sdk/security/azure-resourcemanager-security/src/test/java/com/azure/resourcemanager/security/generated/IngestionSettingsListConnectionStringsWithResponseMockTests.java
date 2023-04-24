@@ -30,7 +30,7 @@ public final class IngestionSettingsListConnectionStringsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"nimtwuuhaueg\",\"value\":\"wmnfeubtzjyrkwfu\"},{\"location\":\"phrrkuum\",\"value\":\"durhzzfopueoqus\"},{\"location\":\"lujopwnibittozt\",\"value\":\"qumqvfmwcaddt\"},{\"location\":\"txegtvgwyurbelfn\",\"value\":\"ryizwbxgde\"}]}";
+            "{\"value\":[{\"location\":\"dccgndjgdpriggqq\",\"value\":\"qfcbuul\"},{\"location\":\"uflqjfshtuj\",\"value\":\"ohigimwdcsk\"},{\"location\":\"qnq\",\"value\":\"ixnmbz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class IngestionSettingsListConnectionStringsWithResponseMockTests {
         ConnectionStrings response =
             manager
                 .ingestionSettings()
-                .listConnectionStringsWithResponse("obdoey", com.azure.core.util.Context.NONE)
+                .listConnectionStringsWithResponse("il", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -30,7 +30,7 @@ public final class IngestionSettingsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":\"datarknsfdrlduyeh\",\"id\":\"iitt\",\"name\":\"gyuqwrldaxurfqa\",\"type\":\"csozjv\"}";
+            "{\"properties\":\"datafiybxqich\",\"id\":\"ybfzdqekivycp\",\"name\":\"cv\",\"type\":\"izulrqtbht\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,6 @@ public final class IngestionSettingsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IngestionSetting response =
-            manager.ingestionSettings().getWithResponse("aqjsgyzstujr", com.azure.core.util.Context.NONE).getValue();
+            manager.ingestionSettings().getWithResponse("kdtfo", com.azure.core.util.Context.NONE).getValue();
     }
 }

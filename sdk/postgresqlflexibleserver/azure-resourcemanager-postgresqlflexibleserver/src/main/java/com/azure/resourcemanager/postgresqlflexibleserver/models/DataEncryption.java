@@ -23,7 +23,7 @@ public final class DataEncryption {
     private String primaryUserAssignedIdentityId;
 
     /*
-     * Data encryption type to depict if it is System assigned vs Azure Key vault.
+     * Data encryption type to depict if it is System Managed vs Azure Key vault.
      */
     @JsonProperty(value = "type")
     private ArmServerKeyType type;
@@ -75,7 +75,7 @@ public final class DataEncryption {
     }
 
     /**
-     * Get the type property: Data encryption type to depict if it is System assigned vs Azure Key vault.
+     * Get the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
      *
      * @return the type value.
      */
@@ -84,7 +84,7 @@ public final class DataEncryption {
     }
 
     /**
-     * Set the type property: Data encryption type to depict if it is System assigned vs Azure Key vault.
+     * Set the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
      *
      * @param type the type value to set.
      * @return the DataEncryption object itself.

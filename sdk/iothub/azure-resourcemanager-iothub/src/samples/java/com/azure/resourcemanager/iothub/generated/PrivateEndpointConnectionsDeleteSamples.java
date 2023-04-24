@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_deleteprivateendpointconnection.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_deleteprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Delete.
@@ -19,6 +17,6 @@ public final class PrivateEndpointConnectionsDeleteSamples {
     public static void privateEndpointConnectionDelete(com.azure.resourcemanager.iothub.IotHubManager manager) {
         manager
             .privateEndpointConnections()
-            .delete("myResourceGroup", "testHub", "myPrivateEndpointConnection", Context.NONE);
+            .delete("myResourceGroup", "testHub", "myPrivateEndpointConnection", com.azure.core.util.Context.NONE);
     }
 }

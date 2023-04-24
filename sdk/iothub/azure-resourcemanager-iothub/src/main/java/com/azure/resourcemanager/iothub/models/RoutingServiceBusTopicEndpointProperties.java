@@ -68,6 +68,10 @@ public final class RoutingServiceBusTopicEndpointProperties {
     @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
+    /** Creates an instance of RoutingServiceBusTopicEndpointProperties class. */
+    public RoutingServiceBusTopicEndpointProperties() {
+    }
+
     /**
      * Get the id property: Id of the service bus topic endpoint.
      *

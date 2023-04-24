@@ -29,6 +29,10 @@ public final class MhsmPrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
+    /** Creates an instance of MhsmPrivateLinkResourceProperties class. */
+    public MhsmPrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the groupId property: Group identifier of private link resource.
      *

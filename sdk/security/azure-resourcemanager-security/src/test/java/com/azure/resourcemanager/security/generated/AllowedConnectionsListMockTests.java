@@ -31,7 +31,7 @@ public final class AllowedConnectionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-08-28T13:01:37Z\",\"connectableResources\":[]},\"location\":\"mqcbpokstsinv\",\"id\":\"gov\",\"name\":\"yhdrxb\",\"type\":\"dvcehqw\"}]}";
+            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-12-05T18:52:31Z\",\"connectableResources\":[]},\"location\":\"itwhrjsdmmazdnck\",\"id\":\"dbjp\",\"name\":\"lhzqpxzbawkikcdg\",\"type\":\"hbssdpjeyo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
