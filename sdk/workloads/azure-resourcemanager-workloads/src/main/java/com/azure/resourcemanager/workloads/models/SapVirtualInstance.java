@@ -48,7 +48,8 @@ public interface SapVirtualInstance {
     Map<String, String> tags();
 
     /**
-     * Gets the identity property: Managed service identity (user assigned identities).
+     * Gets the identity property: A pre-created user assigned identity with appropriate roles assigned. To learn more
+     * on identity and roles required, visit the ACSS how-to-guide.
      *
      * @return the identity value.
      */
@@ -264,9 +265,11 @@ public interface SapVirtualInstance {
         /** The stage of the SapVirtualInstance definition allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Managed service identity (user assigned identities).
+             * Specifies the identity property: A pre-created user assigned identity with appropriate roles assigned. To
+             * learn more on identity and roles required, visit the ACSS how-to-guide..
              *
-             * @param identity Managed service identity (user assigned identities).
+             * @param identity A pre-created user assigned identity with appropriate roles assigned. To learn more on
+             *     identity and roles required, visit the ACSS how-to-guide.
              * @return the next definition stage.
              */
             WithCreate withIdentity(UserAssignedServiceIdentity identity);
@@ -321,9 +324,11 @@ public interface SapVirtualInstance {
         /** The stage of the SapVirtualInstance update allowing to specify identity. */
         interface WithIdentity {
             /**
-             * Specifies the identity property: Managed service identity (user assigned identities).
+             * Specifies the identity property: A pre-created user assigned identity with appropriate roles assigned. To
+             * learn more on identity and roles required, visit the ACSS how-to-guide..
              *
-             * @param identity Managed service identity (user assigned identities).
+             * @param identity A pre-created user assigned identity with appropriate roles assigned. To learn more on
+             *     identity and roles required, visit the ACSS how-to-guide.
              * @return the next definition stage.
              */
             Update withIdentity(UserAssignedServiceIdentity identity);

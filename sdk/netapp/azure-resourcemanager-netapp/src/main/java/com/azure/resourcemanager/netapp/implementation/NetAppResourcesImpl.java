@@ -31,15 +31,6 @@ public final class NetAppResourcesImpl implements NetAppResources {
         this.serviceManager = serviceManager;
     }
 
-    public CheckAvailabilityResponse checkNameAvailability(String location, ResourceNameAvailabilityRequest body) {
-        CheckAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(location, body);
-        if (inner != null) {
-            return new CheckAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckAvailabilityResponse> checkNameAvailabilityWithResponse(
         String location, ResourceNameAvailabilityRequest body, Context context) {
         Response<CheckAvailabilityResponseInner> inner =
@@ -55,8 +46,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
         }
     }
 
-    public CheckAvailabilityResponse checkFilePathAvailability(String location, FilePathAvailabilityRequest body) {
-        CheckAvailabilityResponseInner inner = this.serviceClient().checkFilePathAvailability(location, body);
+    public CheckAvailabilityResponse checkNameAvailability(String location, ResourceNameAvailabilityRequest body) {
+        CheckAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(location, body);
         if (inner != null) {
             return new CheckAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -79,8 +70,8 @@ public final class NetAppResourcesImpl implements NetAppResources {
         }
     }
 
-    public CheckAvailabilityResponse checkQuotaAvailability(String location, QuotaAvailabilityRequest body) {
-        CheckAvailabilityResponseInner inner = this.serviceClient().checkQuotaAvailability(location, body);
+    public CheckAvailabilityResponse checkFilePathAvailability(String location, FilePathAvailabilityRequest body) {
+        CheckAvailabilityResponseInner inner = this.serviceClient().checkFilePathAvailability(location, body);
         if (inner != null) {
             return new CheckAvailabilityResponseImpl(inner, this.manager());
         } else {
@@ -103,10 +94,10 @@ public final class NetAppResourcesImpl implements NetAppResources {
         }
     }
 
-    public RegionInfo queryRegionInfo(String location) {
-        RegionInfoInner inner = this.serviceClient().queryRegionInfo(location);
+    public CheckAvailabilityResponse checkQuotaAvailability(String location, QuotaAvailabilityRequest body) {
+        CheckAvailabilityResponseInner inner = this.serviceClient().checkQuotaAvailability(location, body);
         if (inner != null) {
-            return new RegionInfoImpl(inner, this.manager());
+            return new CheckAvailabilityResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -120,6 +111,15 @@ public final class NetAppResourcesImpl implements NetAppResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegionInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegionInfo queryRegionInfo(String location) {
+        RegionInfoInner inner = this.serviceClient().queryRegionInfo(location);
+        if (inner != null) {
+            return new RegionInfoImpl(inner, this.manager());
         } else {
             return null;
         }

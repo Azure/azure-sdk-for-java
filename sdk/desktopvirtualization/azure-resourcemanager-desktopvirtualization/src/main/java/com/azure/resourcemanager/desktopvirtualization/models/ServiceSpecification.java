@@ -17,6 +17,10 @@ public final class ServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
 
+    /** Creates an instance of ServiceSpecification class. */
+    public ServiceSpecification() {
+    }
+
     /**
      * Get the logSpecifications property: Specifications of the Log for Azure Monitoring.
      *

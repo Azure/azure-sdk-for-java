@@ -18,33 +18,32 @@ public final class DeploymentWithOSConfigurationTests {
         DeploymentWithOSConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"configurationType\":\"DeploymentWithOSConfig\",\"appLocation\":\"tpwoqhihejq\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"zpnfqntcypsxj\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"},\"osSapConfiguration\":{\"deployerVmPackages\":{\"url\":\"wkslir\",\"storageAccountId\":\"zjxvydfcea\"},\"sapFqdn\":\"lhvygdyftu\"}}")
+                    "{\"configurationType\":\"DeploymentWithOSConfig\",\"appLocation\":\"dxtqmieoxo\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"gufhyaomtbg\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"},\"osSapConfiguration\":{\"deployerVmPackages\":{\"url\":\"rvk\",\"storageAccountId\":\"ovjzhpjbibgjmfx\"},\"sapFqdn\":\"vfcluyovwxnbkfe\"}}")
                 .toObject(DeploymentWithOSConfiguration.class);
-        Assertions.assertEquals("tpwoqhihejq", model.appLocation());
-        Assertions.assertEquals("zpnfqntcypsxj", model.infrastructureConfiguration().appResourceGroup());
-        Assertions.assertEquals("wkslir", model.osSapConfiguration().deployerVmPackages().url());
-        Assertions.assertEquals("zjxvydfcea", model.osSapConfiguration().deployerVmPackages().storageAccountId());
-        Assertions.assertEquals("lhvygdyftu", model.osSapConfiguration().sapFqdn());
+        Assertions.assertEquals("dxtqmieoxo", model.appLocation());
+        Assertions.assertEquals("gufhyaomtbg", model.infrastructureConfiguration().appResourceGroup());
+        Assertions.assertEquals("rvk", model.osSapConfiguration().deployerVmPackages().url());
+        Assertions.assertEquals("ovjzhpjbibgjmfx", model.osSapConfiguration().deployerVmPackages().storageAccountId());
+        Assertions.assertEquals("vfcluyovwxnbkfe", model.osSapConfiguration().sapFqdn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DeploymentWithOSConfiguration model =
             new DeploymentWithOSConfiguration()
-                .withAppLocation("tpwoqhihejq")
-                .withInfrastructureConfiguration(
-                    new InfrastructureConfiguration().withAppResourceGroup("zpnfqntcypsxj"))
+                .withAppLocation("dxtqmieoxo")
+                .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("gufhyaomtbg"))
                 .withSoftwareConfiguration(new SoftwareConfiguration())
                 .withOsSapConfiguration(
                     new OsSapConfiguration()
                         .withDeployerVmPackages(
-                            new DeployerVmPackages().withUrl("wkslir").withStorageAccountId("zjxvydfcea"))
-                        .withSapFqdn("lhvygdyftu"));
+                            new DeployerVmPackages().withUrl("rvk").withStorageAccountId("ovjzhpjbibgjmfx"))
+                        .withSapFqdn("vfcluyovwxnbkfe"));
         model = BinaryData.fromObject(model).toObject(DeploymentWithOSConfiguration.class);
-        Assertions.assertEquals("tpwoqhihejq", model.appLocation());
-        Assertions.assertEquals("zpnfqntcypsxj", model.infrastructureConfiguration().appResourceGroup());
-        Assertions.assertEquals("wkslir", model.osSapConfiguration().deployerVmPackages().url());
-        Assertions.assertEquals("zjxvydfcea", model.osSapConfiguration().deployerVmPackages().storageAccountId());
-        Assertions.assertEquals("lhvygdyftu", model.osSapConfiguration().sapFqdn());
+        Assertions.assertEquals("dxtqmieoxo", model.appLocation());
+        Assertions.assertEquals("gufhyaomtbg", model.infrastructureConfiguration().appResourceGroup());
+        Assertions.assertEquals("rvk", model.osSapConfiguration().deployerVmPackages().url());
+        Assertions.assertEquals("ovjzhpjbibgjmfx", model.osSapConfiguration().deployerVmPackages().storageAccountId());
+        Assertions.assertEquals("vfcluyovwxnbkfe", model.osSapConfiguration().sapFqdn());
     }
 }

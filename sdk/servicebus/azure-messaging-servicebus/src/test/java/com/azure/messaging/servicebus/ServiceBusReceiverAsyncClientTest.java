@@ -74,6 +74,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -209,7 +210,7 @@ class ServiceBusReceiverAsyncClientTest {
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID,
                 null),
-            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
     }
 
     @AfterEach
@@ -336,10 +337,11 @@ class ServiceBusReceiverAsyncClientTest {
         final List<Message> messages = getMessages();
         final String lockToken = UUID.randomUUID().toString();
         final Duration maxLockRenewDuration = Duration.ofMinutes(1);
+        final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
                 false, SESSION_ID, null), connectionProcessor,
-            CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
         try (
@@ -353,8 +355,9 @@ class ServiceBusReceiverAsyncClientTest {
             when(receivedMessage.getLockedUntil()).thenReturn(OffsetDateTime.now());
             when(receivedMessage.getLockToken()).thenReturn(lockToken);
 
-            when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
-                .thenReturn(receivedMessage);
+            final List<ServiceBusReceivedMessage> sessionMessages = new ArrayList<>();
+            sessionMessages.add(receivedMessage);
+            when(sessionManager.receive()).thenReturn(Flux.fromIterable(sessionMessages).map(ServiceBusMessageContext::new));
 
             // Act & Assert
             StepVerifier.create(mySessionReceiver.receiveMessages().take(numberOfEvents))
@@ -594,7 +597,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID,
             null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
 
         // Act & Assert
         StepVerifier.create(sessionReceiver2.renewSessionLock(SESSION_ID))
@@ -1031,12 +1034,17 @@ class ServiceBusReceiverAsyncClientTest {
     void getSessionState() {
         // Arrange
         final byte[] bytes = new byte[]{95, 11, 54, 10};
+        final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
+        ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
+            new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, CLEANUP_INTERVAL,
+                false, SESSION_ID, null), connectionProcessor,
+            CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
-        when(managementNode.getSessionState(SESSION_ID, null))
+        when(sessionManager.getSessionState(SESSION_ID))
             .thenReturn(Mono.just(bytes), Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(sessionReceiver.getSessionState(SESSION_ID))
+        StepVerifier.create(mySessionReceiver.getSessionState(SESSION_ID))
             .expectNext(bytes)
             .expectComplete()
             .verify();
@@ -1281,23 +1289,27 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken2 = "token2";
         final String lockToken3 = "token3";
 
+        final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
             true, SESSION_ID, null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
-            messageSerializer, onClientClose, CLIENT_IDENTIFIER);
+            messageSerializer, onClientClose, sessionManager);
 
         final ServiceBusReceivedMessage receivedMessage3 = mock(ServiceBusReceivedMessage.class);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
         when(receivedMessage3.getLockToken()).thenReturn(lockToken3);
-        when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
-            .thenReturn(receivedMessage, receivedMessage2, receivedMessage3);
+        final List<ServiceBusReceivedMessage> sessionMessages = new ArrayList<>();
+        sessionMessages.add(receivedMessage);
+        sessionMessages.add(receivedMessage2);
+        sessionMessages.add(receivedMessage3);
+        when(sessionManager.receive()).thenReturn(Flux.fromIterable(sessionMessages).map(ServiceBusMessageContext::new));
 
-        when(sessionReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
-        when(sessionReceiveLink.updateDisposition(lockToken2, Accepted.getInstance())).thenReturn(Mono.empty());
-        when(sessionReceiveLink.updateDisposition(lockToken3, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(sessionManager.updateDisposition(eq(lockToken), any(), eq(DispositionStatus.COMPLETED), any(), any(), any(), any())).thenReturn(Mono.empty());
+        when(sessionManager.updateDisposition(eq(lockToken2), any(), eq(DispositionStatus.COMPLETED), any(), any(), any(), any())).thenReturn(Mono.empty());
+        when(sessionManager.updateDisposition(eq(lockToken3), any(), eq(DispositionStatus.COMPLETED), any(), any(), any(), any())).thenReturn(Mono.empty());
 
         try {
             // Act & Assert
@@ -1309,9 +1321,9 @@ class ServiceBusReceiverAsyncClientTest {
             sessionReceiver2.close();
         }
 
-        verify(sessionReceiveLink).updateDisposition(lockToken, Accepted.getInstance());
-        verify(sessionReceiveLink).updateDisposition(lockToken2, Accepted.getInstance());
-        verify(sessionReceiveLink).updateDisposition(lockToken3, Accepted.getInstance());
+        verify(sessionManager).updateDisposition(eq(lockToken), any(), any(), any(), any(), any(), any());
+        verify(sessionManager).updateDisposition(eq(lockToken2), any(), any(), any(), any(), any(), any());
+        verify(sessionManager).updateDisposition(eq(lockToken3), any(), any(), any(), any(), any(), any());
     }
 
     @Test

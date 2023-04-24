@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters ListZones. */
 public final class ClustersListZonesSamples {
     /*
@@ -17,7 +15,7 @@ public final class ClustersListZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersListZoneDataStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,6 +27,6 @@ public final class ClustersListZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersListZoneData(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

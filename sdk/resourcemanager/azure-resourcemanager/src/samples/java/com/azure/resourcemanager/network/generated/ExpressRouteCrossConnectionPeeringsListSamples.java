@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExpressRouteCrossConnectionPeerings List. */
 public final class ExpressRouteCrossConnectionPeeringsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteCrossConnectionBgpPeeringList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/ExpressRouteCrossConnectionBgpPeeringList.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionBgpPeeringList.
@@ -22,6 +20,6 @@ public final class ExpressRouteCrossConnectionPeeringsListSamples {
             .manager()
             .serviceClient()
             .getExpressRouteCrossConnectionPeerings()
-            .list("CrossConnection-SiliconValley", "<circuitServiceKey>", Context.NONE);
+            .list("CrossConnection-SiliconValley", "<circuitServiceKey>", com.azure.core.util.Context.NONE);
     }
 }

@@ -80,7 +80,7 @@ public final class CommunicationIdentityClientImpl {
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    CommunicationIdentityClientImpl(String endpoint, String apiVersion) {
+    public CommunicationIdentityClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -97,7 +97,7 @@ public final class CommunicationIdentityClientImpl {
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    public CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -109,7 +109,7 @@ public final class CommunicationIdentityClientImpl {
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    CommunicationIdentityClientImpl(
+    public CommunicationIdentityClientImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

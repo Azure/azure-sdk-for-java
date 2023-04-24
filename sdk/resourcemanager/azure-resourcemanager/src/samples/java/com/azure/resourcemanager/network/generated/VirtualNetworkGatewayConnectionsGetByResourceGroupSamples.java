@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkGatewayConnections GetByResourceGroup. */
 public final class VirtualNetworkGatewayConnectionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayConnectionGet.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayConnection.
@@ -22,6 +20,6 @@ public final class VirtualNetworkGatewayConnectionsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .getByResourceGroupWithResponse("rg1", "connS2S", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "connS2S", com.azure.core.util.Context.NONE);
     }
 }

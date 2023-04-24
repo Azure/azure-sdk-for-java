@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ConnectivityConfigurationInner;
 import com.azure.resourcemanager.network.models.ConnectivityGroupItem;
 import com.azure.resourcemanager.network.models.ConnectivityTopology;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 /** Samples for ConnectivityConfigurations CreateOrUpdate. */
 public final class ConnectivityConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerConnectivityConfigurationPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkManagerConnectivityConfigurationPut.json
      */
     /**
      * Sample code: ConnectivityConfigurationsPut.
@@ -56,6 +55,6 @@ public final class ConnectivityConfigurationsCreateOrUpdateSamples {
                                     .withIsGlobal(IsGlobal.FALSE)
                                     .withGroupConnectivity(GroupConnectivity.NONE)))
                     .withDeleteExistingPeering(DeleteExistingPeering.TRUE),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

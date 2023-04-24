@@ -13,18 +13,18 @@ public final class StorageTargetSpaceAllocationTests {
     public void testDeserialize() throws Exception {
         StorageTargetSpaceAllocation model =
             BinaryData
-                .fromString("{\"name\":\"oxuscrpabgyepsbj\",\"allocationPercentage\":300871013}")
+                .fromString("{\"name\":\"wfqkquj\",\"allocationPercentage\":1148622887}")
                 .toObject(StorageTargetSpaceAllocation.class);
-        Assertions.assertEquals("oxuscrpabgyepsbj", model.name());
-        Assertions.assertEquals(300871013, model.allocationPercentage());
+        Assertions.assertEquals("wfqkquj", model.name());
+        Assertions.assertEquals(1148622887, model.allocationPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageTargetSpaceAllocation model =
-            new StorageTargetSpaceAllocation().withName("oxuscrpabgyepsbj").withAllocationPercentage(300871013);
+            new StorageTargetSpaceAllocation().withName("wfqkquj").withAllocationPercentage(1148622887);
         model = BinaryData.fromObject(model).toObject(StorageTargetSpaceAllocation.class);
-        Assertions.assertEquals("oxuscrpabgyepsbj", model.name());
-        Assertions.assertEquals(300871013, model.allocationPercentage());
+        Assertions.assertEquals("wfqkquj", model.name());
+        Assertions.assertEquals(1148622887, model.allocationPercentage());
     }
 }

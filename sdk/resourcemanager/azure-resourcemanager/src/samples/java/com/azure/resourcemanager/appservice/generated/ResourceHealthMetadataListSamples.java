@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceHealthMetadata List. */
 public final class ResourceHealthMetadataListSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ListResourceHealthMetadataBySubscription.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ListResourceHealthMetadataBySubscription.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a subscription.
@@ -18,6 +16,6 @@ public final class ResourceHealthMetadataListSamples {
      */
     public static void listResourceHealthMetadataForASubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getResourceHealthMetadatas().list(Context.NONE);
+        azure.webApps().manager().serviceClient().getResourceHealthMetadatas().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/e92016abe92016abd1899852b92735f0b9ba4718b6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.18.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "650c8027-99b7-4c12-a765-da01341365a0"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8DB16C602617570",
+      "Last-Modified" : "Sat, 25 Feb 2023 00:19:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "26a83c46-f01a-0078-6cae-488651000000",
+      "Date" : "Sat, 25 Feb 2023 00:19:49 GMT",
+      "x-ms-client-request-id" : "650c8027-99b7-4c12-a765-da01341365a0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/e92016abe92016abd1899852b92735f0b9ba4718b6?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.18.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0e68971b-2231-4063-9381-f58d218a62aa"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "x-ms-error-code" : "FileOAuthManagementApiRestrictedToSrp",
+      "retry-after" : "0",
+      "Content-Length" : "352",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "26a83c49-f01a-0078-6dae-488651000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>FileOAuthManagementApiRestrictedToSrp</Code><Message>This API does not support bearer tokens. For OAuth, use the Storage Resource Provider APIs instead. Learn more: https://aka.ms/azurefiles/restapi.\nRequestId:26a83c49-f01a-0078-6dae-488651000000\nTime:2023-02-25T00:19:51.3478386Z</Message></Error>",
+      "Date" : "Sat, 25 Feb 2023 00:19:50 GMT",
+      "x-ms-client-request-id" : "0e68971b-2231-4063-9381-f58d218a62aa",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e92016abe92016abd1899852b92735f0b9ba4718b6" ]
+}

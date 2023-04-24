@@ -20,6 +20,15 @@ public final class ScriptExecutionParameterType extends ExpandableStringEnum<Scr
     public static final ScriptExecutionParameterType CREDENTIAL = fromString("Credential");
 
     /**
+     * Creates a new instance of ScriptExecutionParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScriptExecutionParameterType() {
+    }
+
+    /**
      * Creates or finds a ScriptExecutionParameterType from its string representation.
      *
      * @param name a name to look for.

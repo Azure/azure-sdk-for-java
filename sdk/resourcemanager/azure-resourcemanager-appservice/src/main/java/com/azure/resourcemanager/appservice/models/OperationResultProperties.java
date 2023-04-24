@@ -47,6 +47,10 @@ public class OperationResultProperties {
     @JsonProperty(value = "error")
     private Object error;
 
+    /** Creates an instance of OperationResultProperties class. */
+    public OperationResultProperties() {
+    }
+
     /**
      * Get the startTime property: The start time of the workflow scope repetition.
      *

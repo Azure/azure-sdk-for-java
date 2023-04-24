@@ -4,14 +4,14 @@
 
 package com.azure.communication.email;
 
-import com.azure.communication.email.models.SendEmailResult;
-import com.azure.communication.email.models.SendStatusResult;
+import com.azure.communication.email.implementation.models.ErrorResponseException;
 import com.azure.communication.email.models.EmailMessage;
+import com.azure.communication.email.models.EmailSendResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 
 /** Initializes a new instance of the synchronous EmailClient type. */
 @ServiceClient(builder = EmailClientBuilder.class)
@@ -28,44 +28,16 @@ public final class EmailClient {
     }
 
     /**
-     * Gets the status of a message sent previously.
-     * @param messageId System generated message id (GUID) returned from a previous call to send email.
-     * @return the status of a message sent previously
+     * Queues an email message to be sent to one or more recipients.
+     *
+     * @param message Message payload for sending an email.
+     * @param context The context to associate with this operation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of status of the long running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendStatusResult getSendStatus(String messageId) {
-        return this.client.getSendStatus(messageId).block();
-    }
-
-    /**
-     * Gets the status of a message sent previously.
-     * @param messageId System generated message id (GUID) returned from a previous call to send email.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the status of a message sent previously along with {@link Response}
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendStatusResult> getSendStatusWithResponse(String messageId, RequestOptions requestOptions) {
-        return this.client.getSendStatusWithResponse(messageId, requestOptions).block();
-    }
-
-    /**
-     * Queues an email message to be sent to one or more recipients
-     * @param emailMessage Message payload for sending an email.
-     * @return the result of the email sent
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendEmailResult send(EmailMessage emailMessage) {
-        return this.client.send(emailMessage).block();
-    }
-
-    /**
-     * Queues an email message to be sent to one or more recipients
-     * @param emailMessage Message payload for sending an email.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the result of the email sent along with {@link Response}
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendEmailResult> sendWithResponse(EmailMessage emailMessage, RequestOptions requestOptions) {
-        return this.client.sendWithResponse(emailMessage, requestOptions).block();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<EmailSendResult, EmailSendResult> beginSend(EmailMessage message, Context context) {
+        return client.beginSend(message, context).getSyncPoller();
     }
 }

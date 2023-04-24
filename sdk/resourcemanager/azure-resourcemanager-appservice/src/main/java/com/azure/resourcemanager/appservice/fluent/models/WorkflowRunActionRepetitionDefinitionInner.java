@@ -26,6 +26,10 @@ public final class WorkflowRunActionRepetitionDefinitionInner extends WorkflowRe
     @JsonProperty(value = "properties", required = true)
     private WorkflowRunActionRepetitionProperties innerProperties = new WorkflowRunActionRepetitionProperties();
 
+    /** Creates an instance of WorkflowRunActionRepetitionDefinitionInner class. */
+    public WorkflowRunActionRepetitionDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: The workflow run action repetition properties definition.
      *

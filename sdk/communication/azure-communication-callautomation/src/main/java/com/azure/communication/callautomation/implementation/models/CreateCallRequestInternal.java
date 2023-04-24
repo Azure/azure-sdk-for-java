@@ -61,6 +61,12 @@ public final class CreateCallRequestInternal {
     @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
     private String azureCognitiveServicesEndpointUrl;
 
+    /*
+     * Used by customer to send custom context to targets
+     */
+    @JsonProperty(value = "customContext")
+    private CustomContext customContext;
+
     /**
      * Get the targets property: The targets of the call.
      *
@@ -223,6 +229,26 @@ public final class CreateCallRequestInternal {
      */
     public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
         this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
+    }
+
+    /**
+     * Get the customContext property: Used by customer to send custom context to targets.
+     *
+     * @return the customContext value.
+     */
+    public CustomContext getCustomContext() {
+        return this.customContext;
+    }
+
+    /**
+     * Set the customContext property: Used by customer to send custom context to targets.
+     *
+     * @param customContext the customContext value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setCustomContext(CustomContext customContext) {
+        this.customContext = customContext;
         return this;
     }
 }

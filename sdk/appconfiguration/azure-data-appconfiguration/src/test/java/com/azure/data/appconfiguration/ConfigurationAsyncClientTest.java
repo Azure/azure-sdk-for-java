@@ -3,8 +3,6 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -206,8 +204,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addExistingSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected).then(client.addConfigurationSettingWithResponse(expected)))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
+            StepVerifier.create(
+                client.addConfigurationSettingWithResponse(expected)
+                    .then(
+                        client.addConfigurationSettingWithResponse(expected)))
+                .verifyErrorSatisfies(ex -> assertRestException(ex,
+                    HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED)));
     }
 
     /**
@@ -273,7 +275,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         setConfigurationSettingIfETagRunner((initial, update) -> {
             // This ETag is not the correct format. It is not the correct hash that the service is expecting.
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial.setETag("badEtag"), true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             final String etag = client.addConfigurationSettingWithResponse(initial).block().getValue().getETag();
 
@@ -282,7 +284,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                     .verifyComplete();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial, true))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceExistsException.class, HttpURLConnection.HTTP_PRECON_FAILED));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(update, null, false))
                     .assertNext(response -> assertConfigurationEquals(update, response))
@@ -342,7 +344,9 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) ->
-            StepVerifier.create(client.addConfigurationSettingWithResponse(expected).then(client.getConfigurationSettingWithResponse(expected, null, false)))
+            StepVerifier.create(
+                client.addConfigurationSettingWithResponse(expected)
+                    .then(client.getConfigurationSettingWithResponse(expected, null, false)))
                 .assertNext(response -> assertConfigurationEquals(expected, response))
                 .verifyComplete());
     }
@@ -403,11 +407,11 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(client.getConfigurationSetting("myNonExistentKey", null, null))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
 
 
         StepVerifier.create(client.getConfigurationSettingWithResponse(nonExistentLabel, null, false))
-            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+            .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     /**
@@ -429,7 +433,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(expected, null, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -449,7 +453,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             StepVerifier.create(client.getConfigurationSetting(expected))
                 .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -471,7 +475,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             StepVerifier.create(client.getConfigurationSetting(expected))
                 .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -493,7 +497,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             StepVerifier.create(client.getConfigurationSetting(expected))
                 .verifyErrorSatisfies(
-                    ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                    ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -548,7 +552,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(initial, null, false))
-                .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_NOT_FOUND));
         });
     }
 
@@ -1133,14 +1137,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             settings.add(new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix));
         }
 
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting))
+                .expectNextCount(1)
+                .verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        Flux.merge(results).blockLast();
         StepVerifier.create(client.listRevisions(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
@@ -1156,16 +1159,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (int value = 0; value < numberExpected; value++) {
             ConfigurationSetting setting = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
             settings.add(setting);
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting))
+                .expectNextCount(1)
+                .verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        Flux.merge(results).blockLast();
 
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
@@ -1188,16 +1190,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
         List<ConfigurationSetting> settings = new ArrayList<>(numberExpected);
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (int value = 0; value < numberExpected; value++) {
             ConfigurationSetting setting = new ConfigurationSetting().setKey(keyPrefix).setValue("myValue" + value).setLabel(labelPrefix);
             settings.add(setting);
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix).setLabelFilter(labelPrefix);
-
-        Flux.merge(results).blockLast();
 
         List<ConfigurationSetting> configurationSettingList1 = new ArrayList<>();
         List<ConfigurationSetting> configurationSettingList2 = new ArrayList<>();
@@ -1224,14 +1223,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             settings.add(new ConfigurationSetting().setKey(keyPrefix + "-" + value).setValue("myValue").setLabel(labelPrefix));
         }
 
-        List<Mono<Response<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setConfigurationSettingWithResponse(setting, false));
+            StepVerifier.create(client.setConfigurationSetting(setting)).expectNextCount(1).verifyComplete();
         }
 
         SettingSelector filter = new SettingSelector().setKeyFilter(keyPrefix + "-*").setLabelFilter(labelPrefix);
 
-        Flux.merge(results).blockLast();
         StepVerifier.create(client.listConfigurationSettings(filter))
             .expectNextCount(numberExpected)
             .verifyComplete();
@@ -1251,6 +1248,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting block = client.addConfigurationSettingWithResponse(expected).block().getValue();
 
         assertNotNull(block);
+        assertConfigurationEquals(expected, block);
 
         // conditional get, now the setting has not be updated yet, resulting 304 and null value
         StepVerifier.create(client.getConfigurationSettingWithResponse(block, null, true))
@@ -1266,6 +1264,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(newExpected, response))
             .verifyComplete();
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     @Disabled

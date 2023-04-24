@@ -86,7 +86,7 @@ public abstract class IdentityClientBase {
     static final String WINDOWS_SWITCHER = "/c";
     static final String LINUX_MAC_SWITCHER = "-c";
     static final Pattern WINDOWS_PROCESS_ERROR_MESSAGE = Pattern.compile("'azd?' is not recognized");
-    static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?: command not found");
+    static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -223,6 +223,13 @@ public abstract class IdentityClientBase {
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
         }
+
+        if (!options.isCp1Disabled()) {
+            Set<String> set = new HashSet<>(1);
+            set.add("CP1");
+            applicationBuilder.clientCapabilities(set);
+        }
+
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -337,6 +344,10 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
+                if (accessToken.getClass().isInstance(MSIToken.class)) {
+                    MSIToken msiToken = (MSIToken) accessToken;
+                    result.setRefreshInSeconds(msiToken.getRefreshAtEpochSeconds());
+                }
                 return result;
             }).toFuture();
         });
@@ -373,10 +384,15 @@ public abstract class IdentityClientBase {
     }
 
     OnBehalfOfParameters buildOBOFlowParameters(TokenRequestContext request) {
-        return OnBehalfOfParameters
+        OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
-            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options))
-            .build();
+            .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            builder.claims(customClaimRequest);
+        }
+        return builder.build();
     }
 
     InteractiveRequestParameters.InteractiveRequestParametersBuilder buildInteractiveRequestParameters(TokenRequestContext request, String loginHint, URI redirectUri) {

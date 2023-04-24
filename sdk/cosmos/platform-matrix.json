@@ -9,8 +9,11 @@
     "-DargLine=\"-Dazure.cosmos.directModeProtocol=Tcp\"": "TCP",
     "Session": "",
     "ubuntu": "",
-    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }": "",
-    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": ""
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
+    "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}": ""
   },
   "include": [
     {
@@ -18,7 +21,7 @@
         "Session": {
           "DESIRED_CONSISTENCY": "Session",
           "ACCOUNT_CONSISTENCY": "Session",
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }"
         },
         "Strong": {
           "DESIRED_CONSISTENCY": "Strong",
@@ -39,7 +42,7 @@
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Pfast", "-Pdirect" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       }
@@ -80,7 +83,7 @@
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
       "ProfileFlag": [ "-Plong" ],
-      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enablePartitionMerge = $true }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
@@ -110,7 +113,7 @@
       "ACCOUNT_CONSISTENCY": "Session",
       "ArmConfig": {
         "SingleMaster_MultiRegion": {
-          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true; enablePartitionMerge = $true}"
         }
       },
       "ProfileFlag": "-Pmulti-region",

@@ -16,13 +16,13 @@ public final class RefundRequestTests {
         RefundRequest model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"sessionId\":\"crpab\",\"scope\":\"epsbjtazqu\",\"reservationToReturn\":{\"reservationId\":\"wpmueefj\",\"quantity\":1541291640},\"returnReason\":\"kqujidsuyono\"}}")
+                    "{\"properties\":{\"sessionId\":\"c\",\"scope\":\"mdua\",\"reservationToReturn\":{\"reservationId\":\"xqpvfadmw\",\"quantity\":448234135},\"returnReason\":\"gvxp\"}}")
                 .toObject(RefundRequest.class);
-        Assertions.assertEquals("crpab", model.properties().sessionId());
-        Assertions.assertEquals("epsbjtazqu", model.properties().scope());
-        Assertions.assertEquals("wpmueefj", model.properties().reservationToReturn().reservationId());
-        Assertions.assertEquals(1541291640, model.properties().reservationToReturn().quantity());
-        Assertions.assertEquals("kqujidsuyono", model.properties().returnReason());
+        Assertions.assertEquals("c", model.properties().sessionId());
+        Assertions.assertEquals("mdua", model.properties().scope());
+        Assertions.assertEquals("xqpvfadmw", model.properties().reservationToReturn().reservationId());
+        Assertions.assertEquals(448234135, model.properties().reservationToReturn().quantity());
+        Assertions.assertEquals("gvxp", model.properties().returnReason());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,16 +31,16 @@ public final class RefundRequestTests {
             new RefundRequest()
                 .withProperties(
                     new RefundRequestProperties()
-                        .withSessionId("crpab")
-                        .withScope("epsbjtazqu")
+                        .withSessionId("c")
+                        .withScope("mdua")
                         .withReservationToReturn(
-                            new ReservationToReturn().withReservationId("wpmueefj").withQuantity(1541291640))
-                        .withReturnReason("kqujidsuyono"));
+                            new ReservationToReturn().withReservationId("xqpvfadmw").withQuantity(448234135))
+                        .withReturnReason("gvxp"));
         model = BinaryData.fromObject(model).toObject(RefundRequest.class);
-        Assertions.assertEquals("crpab", model.properties().sessionId());
-        Assertions.assertEquals("epsbjtazqu", model.properties().scope());
-        Assertions.assertEquals("wpmueefj", model.properties().reservationToReturn().reservationId());
-        Assertions.assertEquals(1541291640, model.properties().reservationToReturn().quantity());
-        Assertions.assertEquals("kqujidsuyono", model.properties().returnReason());
+        Assertions.assertEquals("c", model.properties().sessionId());
+        Assertions.assertEquals("mdua", model.properties().scope());
+        Assertions.assertEquals("xqpvfadmw", model.properties().reservationToReturn().reservationId());
+        Assertions.assertEquals(448234135, model.properties().reservationToReturn().quantity());
+        Assertions.assertEquals("gvxp", model.properties().returnReason());
     }
 }

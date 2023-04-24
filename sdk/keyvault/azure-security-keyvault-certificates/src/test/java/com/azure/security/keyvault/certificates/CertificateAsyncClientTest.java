@@ -945,7 +945,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
                     assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
-                        .equalsIgnoreCase("7cb8b7539d87ba7215357b9b9049dff2d3fa59ba"));
+                        .equalsIgnoreCase("db1497bc2c82b365c5c7c73f611513ee117790a9"));
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                     // Load the CER part into X509Certificate object
@@ -959,7 +959,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     }
 
                     assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
-                    assertEquals("CN=Root Agency", x509Certificate.getIssuerX500Principal().getName());
+                    assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
                 }).verifyComplete();
         });
     }

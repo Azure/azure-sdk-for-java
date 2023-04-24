@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProvisionedClustersOperation GetByResourceGroup. */
 public final class ProvisionedClustersOperationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetProvisionedCluster.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/GetProvisionedCluster.json
      */
     /**
      * Sample code: GetProvisionedCluster.
@@ -20,6 +18,7 @@ public final class ProvisionedClustersOperationGetByResourceGroupSamples {
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
         manager
             .provisionedClustersOperations()
-            .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-hybridakscluster", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "test-arcappliance-resgrp", "test-hybridakscluster", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,25 +9,25 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for CertificateContentType.
+ * Content type of the certificate when the managed secret is downloaded using a {@code SecretClient}.
  */
 public final class CertificateContentType extends ExpandableStringEnum<CertificateContentType> {
-    
+
     /**
-     * Static value PKCS12 for CertificateContentType.
+     * Static value {@code PKCS12} for {@link CertificateContentType}.
      */
     public static final CertificateContentType PKCS12 = fromString("application/x-pkcs12");
 
     /**
-     * Static value PEM for CertificateContentType.
+     * Static value {@code PEM} for {@link CertificateContentType}.
      */
     public static final CertificateContentType PEM = fromString("application/x-pem-file");
-    
+
     /**
-     * Creates or finds a CertificateContentType from its string representation.
+     * Creates or finds a {@link CertificateContentType} from its string representation.
      *
-     * @param name a name to look for.
-     * @return the corresponding CertificateContentType.
+     * @param name A name to look for.
+     * @return The corresponding {@link CertificateContentType}.
      */
     @JsonCreator
     public static CertificateContentType fromString(String name) {
@@ -35,7 +35,7 @@ public final class CertificateContentType extends ExpandableStringEnum<Certifica
     }
 
     /**
-     * @return known CertificateContentType values.
+     * @return Known {@link CertificateContentType} values.
      */
     public static Collection<CertificateContentType> values() {
         return values(CertificateContentType.class);

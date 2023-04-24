@@ -8,14 +8,16 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.LifeCycleUtils;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -93,8 +95,13 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri) {
-        return this.transportClient.openConnection(addressUri);
+    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
+        return this.transportClient.openConnection(serviceEndpoint, addressUri);
+    }
+
+    @Override
+    public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        this.transportClient.configureFaultInjectorProvider(injectorProvider);
     }
 
     public int getReferenceCounter() {

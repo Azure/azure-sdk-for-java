@@ -35,6 +35,15 @@ public final class DatastoreProvisioningState extends ExpandableStringEnum<Datas
     public static final DatastoreProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of DatastoreProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatastoreProvisioningState() {
+    }
+
+    /**
      * Creates or finds a DatastoreProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -56,6 +56,6 @@ public final class CachesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.caches().delete("ppfufl", "wdmhdlxyjrxs", com.azure.core.util.Context.NONE);
+        manager.caches().delete("i", "pxacqqudfn", com.azure.core.util.Context.NONE);
     }
 }

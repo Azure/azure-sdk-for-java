@@ -20,6 +20,9 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
     @JsonProperty(value = "parameters")
     private ServicePrincipalParamPatch parameters;
 
+    /** Creates an instance of ServicePrincipalCredentialPatch class. */
+    public ServicePrincipalCredentialPatch() {}
+
     /**
      * Get the parameters property: The parameters property.
      *
@@ -37,6 +40,20 @@ public final class ServicePrincipalCredentialPatch extends DataSourceCredentialP
      */
     public ServicePrincipalCredentialPatch setParameters(ServicePrincipalParamPatch parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
+        super.setDataSourceCredentialName(dataSourceCredentialName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCredentialPatch setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
+        super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
     }
 }

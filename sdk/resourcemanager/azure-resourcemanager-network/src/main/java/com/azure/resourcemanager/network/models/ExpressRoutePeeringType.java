@@ -20,6 +20,15 @@ public final class ExpressRoutePeeringType extends ExpandableStringEnum<ExpressR
     public static final ExpressRoutePeeringType MICROSOFT_PEERING = fromString("MicrosoftPeering");
 
     /**
+     * Creates a new instance of ExpressRoutePeeringType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRoutePeeringType() {
+    }
+
+    /**
      * Creates or finds a ExpressRoutePeeringType from its string representation.
      *
      * @param name a name to look for.

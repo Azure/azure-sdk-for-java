@@ -55,19 +55,10 @@ public final class StartCallRecordingRequestInternal {
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /*
-     * Recording storage mode. When set to 'BlobStorage', specify required
-     * parameter 'ExternalStorageLocation', to export recording to your own
-     * blob container.
+     * Optional property to specify location where recording will be stored
      */
-    @JsonProperty(value = "recordingStorageType")
-    private RecordingStorageType recordingStorageType;
-
-    /*
-     * The location where recording is stored, when RecordingStorageType is set
-     * to 'BlobStorage'.
-     */
-    @JsonProperty(value = "externalStorageLocation")
-    private String externalStorageLocation;
+    @JsonProperty(value = "externalStorage")
+    private ExternalStorageInternal externalStorage;
 
     /**
      * Get the callLocator property: The call locator.
@@ -199,46 +190,22 @@ public final class StartCallRecordingRequestInternal {
     }
 
     /**
-     * Get the recordingStorageType property: Recording storage mode. When set to 'BlobStorage', specify required
-     * parameter 'ExternalStorageLocation', to export recording to your own blob container.
+     * Get the externalStorage property: Optional property to specify location where recording will be stored.
      *
-     * @return the recordingStorageType value.
+     * @return the externalStorage value.
      */
-    public RecordingStorageType getRecordingStorageType() {
-        return this.recordingStorageType;
+    public ExternalStorageInternal getExternalStorage() {
+        return this.externalStorage;
     }
 
     /**
-     * Set the recordingStorageType property: Recording storage mode. When set to 'BlobStorage', specify required
-     * parameter 'ExternalStorageLocation', to export recording to your own blob container.
+     * Set the externalStorage property: Optional property to specify location where recording will be stored.
      *
-     * @param recordingStorageType the recordingStorageType value to set.
+     * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setRecordingStorageType(RecordingStorageType recordingStorageType) {
-        this.recordingStorageType = recordingStorageType;
-        return this;
-    }
-
-    /**
-     * Get the externalStorageLocation property: The location where recording is stored, when RecordingStorageType is
-     * set to 'BlobStorage'.
-     *
-     * @return the externalStorageLocation value.
-     */
-    public String getExternalStorageLocation() {
-        return this.externalStorageLocation;
-    }
-
-    /**
-     * Set the externalStorageLocation property: The location where recording is stored, when RecordingStorageType is
-     * set to 'BlobStorage'.
-     *
-     * @param externalStorageLocation the externalStorageLocation value to set.
-     * @return the StartCallRecordingRequestInternal object itself.
-     */
-    public StartCallRecordingRequestInternal setExternalStorageLocation(String externalStorageLocation) {
-        this.externalStorageLocation = externalStorageLocation;
+    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
+        this.externalStorage = externalStorage;
         return this;
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.HubVirtualNetworkConnectionInner;
 import com.azure.resourcemanager.network.models.PropagatedRouteTable;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
@@ -18,7 +17,7 @@ import java.util.Arrays;
 /** Samples for HubVirtualNetworkConnections CreateOrUpdate. */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.
@@ -80,6 +79,6 @@ public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
                                 new SubResource()
                                     .withId(
                                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/virtualHub1/routeMaps/routeMap2"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

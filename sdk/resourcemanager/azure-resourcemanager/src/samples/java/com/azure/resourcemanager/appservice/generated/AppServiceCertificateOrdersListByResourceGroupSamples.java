@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceCertificateOrders ListByResourceGroup. */
 public final class AppServiceCertificateOrdersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ListAppServiceCertificateOrdersByResourceGroup.json
      */
     /**
      * Sample code: List App Service Certificate orders by resource group.
@@ -23,6 +21,6 @@ public final class AppServiceCertificateOrdersListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .listByResourceGroup("testrg123", Context.NONE);
+            .listByResourceGroup("testrg123", com.azure.core.util.Context.NONE);
     }
 }

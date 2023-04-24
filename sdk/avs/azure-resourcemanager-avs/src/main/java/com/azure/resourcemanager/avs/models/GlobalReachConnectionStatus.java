@@ -20,6 +20,15 @@ public final class GlobalReachConnectionStatus extends ExpandableStringEnum<Glob
     public static final GlobalReachConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of GlobalReachConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GlobalReachConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a GlobalReachConnectionStatus from its string representation.
      *
      * @param name a name to look for.

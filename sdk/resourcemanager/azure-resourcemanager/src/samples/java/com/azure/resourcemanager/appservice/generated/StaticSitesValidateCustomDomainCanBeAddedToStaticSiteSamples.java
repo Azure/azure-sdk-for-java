@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesArmResource;
 
 /** Samples for StaticSites ValidateCustomDomainCanBeAddedToStaticSite. */
 public final class StaticSitesValidateCustomDomainCanBeAddedToStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ValidateStaticSiteCustomDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/ValidateStaticSiteCustomDomain.json
      */
     /**
      * Sample code: Validate a custom domain for a static site.
@@ -28,6 +27,6 @@ public final class StaticSitesValidateCustomDomainCanBeAddedToStaticSiteSamples 
                 "testStaticSite0",
                 "custom.domain.net",
                 new StaticSiteCustomDomainRequestPropertiesArmResource(),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

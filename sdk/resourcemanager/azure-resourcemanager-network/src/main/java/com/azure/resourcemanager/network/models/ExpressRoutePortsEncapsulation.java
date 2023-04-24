@@ -17,6 +17,15 @@ public final class ExpressRoutePortsEncapsulation extends ExpandableStringEnum<E
     public static final ExpressRoutePortsEncapsulation QINQ = fromString("QinQ");
 
     /**
+     * Creates a new instance of ExpressRoutePortsEncapsulation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRoutePortsEncapsulation() {
+    }
+
+    /**
      * Creates or finds a ExpressRoutePortsEncapsulation from its string representation.
      *
      * @param name a name to look for.

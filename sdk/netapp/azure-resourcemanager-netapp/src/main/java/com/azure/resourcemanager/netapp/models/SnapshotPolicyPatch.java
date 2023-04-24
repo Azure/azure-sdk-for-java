@@ -50,6 +50,10 @@ public final class SnapshotPolicyPatch {
     @JsonProperty(value = "properties")
     private SnapshotPolicyProperties innerProperties;
 
+    /** Creates an instance of SnapshotPolicyPatch class. */
+    public SnapshotPolicyPatch() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

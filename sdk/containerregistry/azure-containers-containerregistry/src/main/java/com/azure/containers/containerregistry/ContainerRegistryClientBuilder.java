@@ -22,12 +22,15 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
@@ -42,7 +45,6 @@ import java.util.Objects;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;credential&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
@@ -52,7 +54,6 @@ import java.util.Objects;
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -78,7 +79,6 @@ import java.util.Objects;
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
@@ -94,7 +94,6 @@ import java.util.Objects;
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
  *     .pipeline&#40;pipeline&#41;
  *     .endpoint&#40;endpoint&#41;
- *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -394,7 +393,7 @@ public final class ContainerRegistryClientBuilder implements
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        HttpPipeline pipeline = getHttpPipeline();
+        HttpPipeline pipeline = getHttpPipeline(createTracer(clientOptions));
 
         ContainerRegistryAsyncClient client = new ContainerRegistryAsyncClient(pipeline, endpoint, serviceVersion.getVersion());
         return client;
@@ -422,10 +421,10 @@ public final class ContainerRegistryClientBuilder implements
             ? version
             : ContainerRegistryServiceVersion.getLatest();
 
-        return new ContainerRegistryClient(getHttpPipeline(), endpoint, serviceVersion.getVersion());
+        return new ContainerRegistryClient(getHttpPipeline(createTracer(clientOptions)), endpoint, serviceVersion.getVersion());
     }
 
-    private HttpPipeline getHttpPipeline() {
+    private HttpPipeline getHttpPipeline(Tracer tracer) {
         if (httpPipeline != null) {
             return httpPipeline;
         }
@@ -442,6 +441,7 @@ public final class ContainerRegistryClientBuilder implements
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
-            this.version);
+            this.version,
+            tracer);
     }
 }

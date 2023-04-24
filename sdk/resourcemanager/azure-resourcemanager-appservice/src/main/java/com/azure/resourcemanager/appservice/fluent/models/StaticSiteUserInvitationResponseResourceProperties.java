@@ -23,6 +23,10 @@ public final class StaticSiteUserInvitationResponseResourceProperties {
     @JsonProperty(value = "invitationUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String invitationUrl;
 
+    /** Creates an instance of StaticSiteUserInvitationResponseResourceProperties class. */
+    public StaticSiteUserInvitationResponseResourceProperties() {
+    }
+
     /**
      * Get the expiresOn property: The expiration time of the invitation.
      *

@@ -16,6 +16,10 @@ public final class IpAddress {
     @JsonProperty(value = "address")
     private String address;
 
+    /** Creates an instance of IpAddress class. */
+    public IpAddress() {
+    }
+
     /**
      * Get the address property: The address.
      *

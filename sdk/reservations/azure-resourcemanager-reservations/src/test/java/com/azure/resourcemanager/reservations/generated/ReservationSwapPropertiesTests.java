@@ -13,18 +13,18 @@ public final class ReservationSwapPropertiesTests {
     public void testDeserialize() throws Exception {
         ReservationSwapProperties model =
             BinaryData
-                .fromString("{\"swapSource\":\"zlcuiywgqywgndrv\",\"swapDestination\":\"hzgpphrcgyncocpe\"}")
+                .fromString("{\"swapSource\":\"hb\",\"swapDestination\":\"hejjz\"}")
                 .toObject(ReservationSwapProperties.class);
-        Assertions.assertEquals("zlcuiywgqywgndrv", model.swapSource());
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.swapDestination());
+        Assertions.assertEquals("hb", model.swapSource());
+        Assertions.assertEquals("hejjz", model.swapDestination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReservationSwapProperties model =
-            new ReservationSwapProperties().withSwapSource("zlcuiywgqywgndrv").withSwapDestination("hzgpphrcgyncocpe");
+            new ReservationSwapProperties().withSwapSource("hb").withSwapDestination("hejjz");
         model = BinaryData.fromObject(model).toObject(ReservationSwapProperties.class);
-        Assertions.assertEquals("zlcuiywgqywgndrv", model.swapSource());
-        Assertions.assertEquals("hzgpphrcgyncocpe", model.swapDestination());
+        Assertions.assertEquals("hb", model.swapSource());
+        Assertions.assertEquals("hejjz", model.swapDestination());
     }
 }

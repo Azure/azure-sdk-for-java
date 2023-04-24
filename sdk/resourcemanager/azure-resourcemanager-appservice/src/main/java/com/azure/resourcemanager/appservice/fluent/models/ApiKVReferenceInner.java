@@ -20,6 +20,10 @@ public final class ApiKVReferenceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ApiKVReferenceProperties innerProperties;
 
+    /** Creates an instance of ApiKVReferenceInner class. */
+    public ApiKVReferenceInner() {
+    }
+
     /**
      * Get the innerProperties property: ApiKVReference resource specific properties.
      *

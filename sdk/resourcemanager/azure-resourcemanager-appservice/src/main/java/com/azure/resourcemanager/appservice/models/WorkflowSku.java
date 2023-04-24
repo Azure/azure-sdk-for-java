@@ -23,6 +23,10 @@ public final class WorkflowSku {
     @JsonProperty(value = "plan")
     private ResourceReference plan;
 
+    /** Creates an instance of WorkflowSku class. */
+    public WorkflowSku() {
+    }
+
     /**
      * Get the name property: The name.
      *

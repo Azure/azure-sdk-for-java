@@ -13,7 +13,7 @@ public final class QuotaRequestSubmitResponse201InnerTests {
         QuotaRequestSubmitResponse201Inner model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"wlycoduhpkxkg\",\"name\":\"areqna\",\"type\":\"qugjhkycube\",\"properties\":{\"provisioningState\":\"InProgress\",\"message\":\"ofwq\"}}")
+                    "{\"id\":\"kdmtncvokotll\",\"name\":\"yhgsy\",\"type\":\"ogjltdtbnnhad\",\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"vcikhnvpamqgx\"}}")
                 .toObject(QuotaRequestSubmitResponse201Inner.class);
     }
 

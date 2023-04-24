@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters List. */
 public final class ClustersListSamples {
     /*
@@ -17,6 +15,6 @@ public final class ClustersListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().list("group1", "cloud1", Context.NONE);
+        manager.clusters().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

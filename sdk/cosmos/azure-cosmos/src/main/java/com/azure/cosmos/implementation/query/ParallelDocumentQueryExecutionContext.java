@@ -8,7 +8,9 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -74,7 +76,8 @@ public class ParallelDocumentQueryExecutionContext<T>
     public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
-            PipelinedDocumentQueryParams<T> initParams) {
+            PipelinedDocumentQueryParams<T> initParams,
+            DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
 
@@ -97,7 +100,7 @@ public class ParallelDocumentQueryExecutionContext<T>
 
         try {
             context.initialize(
-                    initParams.getCollectionRid(),
+                    collection,
                     initParams.getFeedRanges(),
                     initParams.getInitialPageSize(),
                     ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
@@ -131,9 +134,8 @@ public class ParallelDocumentQueryExecutionContext<T>
         return Flux.just(context);
     }
 
-
     private void initialize(
-        String collectionRid,
+        DocumentCollection collection,
         List<FeedRangeEpkImpl> feedRanges,
         int initialPageSize,
         String continuationToken) {
@@ -176,7 +178,7 @@ public class ParallelDocumentQueryExecutionContext<T>
 
         }
 
-        super.initialize(collectionRid,
+        super.initialize(collection,
                 partitionKeyRangeToContinuationTokenMap,
                 initialPageSize,
                 this.querySpec);

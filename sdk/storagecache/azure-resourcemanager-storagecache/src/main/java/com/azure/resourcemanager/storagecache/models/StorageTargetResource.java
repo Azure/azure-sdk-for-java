@@ -9,7 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource used by a Cache. */
+/** Resource used by a cache. */
 @Immutable
 public class StorageTargetResource extends ProxyResource {
     /*

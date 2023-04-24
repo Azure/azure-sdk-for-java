@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkGateways ListByResourceGroup. */
 public final class VirtualNetworkGatewaysListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayList.json
      */
     /**
      * Sample code: ListVirtualNetworkGatewaysinResourceGroup.
@@ -17,6 +15,11 @@ public final class VirtualNetworkGatewaysListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listVirtualNetworkGatewaysinResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().listByResourceGroup("rg1", Context.NONE);
+        azure
+            .networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

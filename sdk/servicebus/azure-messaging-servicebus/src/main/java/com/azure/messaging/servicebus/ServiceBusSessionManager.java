@@ -51,7 +51,6 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
  */
 class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
-    private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
     private static final String TRACKING_ID_KEY = "trackingId";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionManager.class);
@@ -298,10 +297,10 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
                         getErrorContext()));
                 } else if (failure instanceof TimeoutException) {
-                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
+                    return Mono.empty(); // Retry always
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    return Mono.delay(SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
+                    return Mono.empty(); // Retry always
                 } else {
                     final long id = System.nanoTime();
                     LOGGER.atInfo()

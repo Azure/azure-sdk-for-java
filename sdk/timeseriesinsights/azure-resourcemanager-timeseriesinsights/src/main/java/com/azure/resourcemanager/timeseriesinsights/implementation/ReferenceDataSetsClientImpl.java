@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.fluent.ReferenceDataSetsClient;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetListResponseInner;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetResourceInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReferenceDataSetsClient. */
 public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClient {
-    private final ClientLogger logger = new ClientLogger(ReferenceDataSetsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReferenceDataSetsService service;
 
@@ -60,7 +57,7 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
-    private interface ReferenceDataSetsService {
+    public interface ReferenceDataSetsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
@@ -154,7 +151,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(
@@ -221,7 +219,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(
@@ -285,7 +284,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReferenceDataSetResourceInner> createOrUpdateAsync(
@@ -294,14 +294,33 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         String referenceDataSetName,
         ReferenceDataSetCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, parameters)
-            .flatMap(
-                (Response<ReferenceDataSetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a reference data set in the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param referenceDataSetName Name of the reference data set.
+     * @param parameters Parameters for creating a reference data set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String referenceDataSetName,
+        ReferenceDataSetCreateOrUpdateParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, environmentName, referenceDataSetName, parameters, context)
+            .block();
     }
 
     /**
@@ -323,33 +342,9 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         String environmentName,
         String referenceDataSetName,
         ReferenceDataSetCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, referenceDataSetName, parameters).block();
-    }
-
-    /**
-     * Create or update a reference data set in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName Name of the reference data set.
-     * @param parameters Parameters for creating a reference data set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, parameters, context)
-            .block();
+        return createOrUpdateWithResponse(
+                resourceGroupName, environmentName, referenceDataSetName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -363,7 +358,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(
@@ -421,7 +417,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(
@@ -475,20 +472,34 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReferenceDataSetResourceInner> getAsync(
         String resourceGroupName, String environmentName, String referenceDataSetName) {
         return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName)
-            .flatMap(
-                (Response<ReferenceDataSetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the reference data set with the specified name in the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetResourceInner> getWithResponse(
+        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+        return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
     }
 
     /**
@@ -507,27 +518,7 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReferenceDataSetResourceInner get(
         String resourceGroupName, String environmentName, String referenceDataSetName) {
-        return getAsync(resourceGroupName, environmentName, referenceDataSetName).block();
-    }
-
-    /**
-     * Gets the reference data set with the specified name in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
+        return getWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE).getValue();
     }
 
     /**
@@ -544,7 +535,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(
@@ -617,7 +609,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(
@@ -687,7 +680,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReferenceDataSetResourceInner> updateAsync(
@@ -697,14 +691,36 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
         return updateWithResponseAsync(
                 resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters)
-            .flatMap(
-                (Response<ReferenceDataSetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the reference data set with the specified name in the specified subscription, resource group, and
+     * environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     *     environment.
+     * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
+     *     data set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetResourceInner> updateWithResponse(
+        String resourceGroupName,
+        String environmentName,
+        String referenceDataSetName,
+        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(
+                resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters, context)
+            .block();
     }
 
     /**
@@ -729,37 +745,13 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         String environmentName,
         String referenceDataSetName,
         ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
-        return updateAsync(resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters)
-            .block();
-    }
-
-    /**
-     * Updates the reference data set with the specified name in the specified subscription, resource group, and
-     * environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters, context)
-            .block();
+        return updateWithResponse(
+                resourceGroupName,
+                environmentName,
+                referenceDataSetName,
+                referenceDataSetUpdateParameters,
+                Context.NONE)
+            .getValue();
     }
 
     /**
@@ -774,7 +766,7 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -833,7 +825,7 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -888,12 +880,33 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, String referenceDataSetName) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes the reference data set with the specified name in the specified subscription, resource group, and
+     * environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
     }
 
     /**
@@ -911,28 +924,7 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String referenceDataSetName) {
-        deleteAsync(resourceGroupName, environmentName, referenceDataSetName).block();
-    }
-
-    /**
-     * Deletes the reference data set with the specified name in the specified subscription, resource group, and
-     * environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
+        deleteWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE);
     }
 
     /**
@@ -945,7 +937,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
+     * @return the response of the List Reference Data Sets operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironmentWithResponseAsync(
@@ -997,7 +990,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
+     * @return the response of the List Reference Data Sets operation along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironmentWithResponseAsync(
@@ -1045,20 +1039,32 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
+     * @return the response of the List Reference Data Sets operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ReferenceDataSetListResponseInner> listByEnvironmentAsync(
         String resourceGroupName, String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
-            .flatMap(
-                (Response<ReferenceDataSetListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists all the available reference data sets associated with the subscription and within the specified resource
+     * group and environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List Reference Data Sets operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, Context context) {
+        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 
     /**
@@ -1075,25 +1081,6 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReferenceDataSetListResponseInner listByEnvironment(String resourceGroupName, String environmentName) {
-        return listByEnvironmentAsync(resourceGroupName, environmentName).block();
-    }
-
-    /**
-     * Lists all the available reference data sets associated with the subscription and within the specified resource
-     * group and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+        return listByEnvironmentWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
     }
 }

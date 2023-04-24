@@ -305,7 +305,7 @@ public class ClientTelemetry {
                         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest,
                             Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds()));
                         return httpResponseMono.flatMap(response -> {
-                            if (response.statusCode() != HttpConstants.StatusCodes.OK) {
+                            if (response.statusCode() != HttpConstants.StatusCodes.NO_CONTENT) {
                                 logger.error("Client telemetry request did not succeeded, status code {}",
                                     response.statusCode());
                             }

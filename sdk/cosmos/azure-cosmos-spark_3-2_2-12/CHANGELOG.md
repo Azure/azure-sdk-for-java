@@ -10,6 +10,16 @@
 
 #### Other Changes
 
+### 4.17.2 (2023-02-28)
+
+#### Bugs Fixed
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33795](https://github.com/Azure/azure-sdk-for-java/pull/33795)
+
+### 4.17.1 (2023-02-27)
+
+#### Bugs Fixed
+- Fixed LSN offset for Spark 2 -> Spark 3 offset conversion UDF function - See [PR 33757](https://github.com/Azure/azure-sdk-for-java/pull/33757)
+
 ### 4.17.0 (2023-02-17)
 
 #### Features Added

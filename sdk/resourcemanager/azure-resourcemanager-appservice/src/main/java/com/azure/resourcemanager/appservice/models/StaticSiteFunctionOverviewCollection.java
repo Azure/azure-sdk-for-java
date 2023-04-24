@@ -25,6 +25,10 @@ public final class StaticSiteFunctionOverviewCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of StaticSiteFunctionOverviewCollection class. */
+    public StaticSiteFunctionOverviewCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkWatchers GetByResourceGroup. */
 public final class NetworkWatchersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkWatcherGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkWatcherGet.json
      */
     /**
      * Sample code: Get network watcher.
@@ -22,6 +20,6 @@ public final class NetworkWatchersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getNetworkWatchers()
-            .getByResourceGroupWithResponse("rg1", "nw1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "nw1", com.azure.core.util.Context.NONE);
     }
 }

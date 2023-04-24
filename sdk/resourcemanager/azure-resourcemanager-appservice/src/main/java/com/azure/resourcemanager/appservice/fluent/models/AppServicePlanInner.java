@@ -43,6 +43,10 @@ public final class AppServicePlanInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of AppServicePlanInner class. */
+    public AppServicePlanInner() {
+    }
+
     /**
      * Get the innerProperties property: AppServicePlan resource specific properties.
      *

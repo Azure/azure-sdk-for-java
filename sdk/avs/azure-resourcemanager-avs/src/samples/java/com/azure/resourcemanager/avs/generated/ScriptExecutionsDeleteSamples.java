@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ScriptExecutions Delete. */
 public final class ScriptExecutionsDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class ScriptExecutionsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptExecutions().delete("group1", "cloud1", "{scriptExecutionName}", Context.NONE);
+        manager
+            .scriptExecutions()
+            .delete("group1", "cloud1", "{scriptExecutionName}", com.azure.core.util.Context.NONE);
     }
 }

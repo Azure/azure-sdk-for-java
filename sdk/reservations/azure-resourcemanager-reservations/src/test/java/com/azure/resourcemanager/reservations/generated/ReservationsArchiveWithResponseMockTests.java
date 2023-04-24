@@ -56,6 +56,6 @@ public final class ReservationsArchiveWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.reservations().archiveWithResponse("jvcdwxlpqekf", "nkhtjsyingw", com.azure.core.util.Context.NONE);
+        manager.reservations().archiveWithResponse("pdso", "bshrnsvbuswd", com.azure.core.util.Context.NONE);
     }
 }

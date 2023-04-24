@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for CustomIpPrefixes UpdateTags. */
 public final class CustomIpPrefixesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/CustomIpPrefixUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/CustomIpPrefixUpdateTags.json
      */
     /**
      * Sample code: Update public IP address tags.
@@ -29,7 +28,7 @@ public final class CustomIpPrefixesUpdateTagsSamples {
                 "rg1",
                 "test-customipprefix",
                 new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

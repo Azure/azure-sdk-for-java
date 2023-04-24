@@ -34,6 +34,10 @@ public final class WorkflowTriggerHistoryInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of WorkflowTriggerHistoryInner class. */
+    public WorkflowTriggerHistoryInner() {
+    }
+
     /**
      * Get the innerProperties property: Gets the workflow trigger history properties.
      *

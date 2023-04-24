@@ -1006,6 +1006,11 @@ public class CosmosClientBuilder implements
                 public ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder) {
                     return builder.getConsistencyLevel();
                 }
+
+                @Override
+                public String getEndpoint(CosmosClientBuilder builder) {
+                    return builder.getEndpoint();
+                }
             });
     }
 

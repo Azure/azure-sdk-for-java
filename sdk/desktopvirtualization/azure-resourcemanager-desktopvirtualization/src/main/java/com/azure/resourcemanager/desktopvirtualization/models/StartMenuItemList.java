@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.StartMenuIt
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** StartMenuItemList List of StartMenuItem definitions. */
+/**
+ * StartMenuItemList
+ *
+ * <p>List of StartMenuItem definitions.
+ */
 @Fluent
 public final class StartMenuItemList {
     /*
@@ -23,6 +27,10 @@ public final class StartMenuItemList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of StartMenuItemList class. */
+    public StartMenuItemList() {
+    }
 
     /**
      * Get the value property: List of StartMenuItem definitions.

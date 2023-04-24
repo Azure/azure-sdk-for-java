@@ -17,6 +17,15 @@ public final class AvailabilityStrategy extends ExpandableStringEnum<Availabilit
     public static final AvailabilityStrategy DUAL_ZONE = fromString("DualZone");
 
     /**
+     * Creates a new instance of AvailabilityStrategy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilityStrategy() {
+    }
+
+    /**
      * Creates or finds a AvailabilityStrategy from its string representation.
      *
      * @param name a name to look for.

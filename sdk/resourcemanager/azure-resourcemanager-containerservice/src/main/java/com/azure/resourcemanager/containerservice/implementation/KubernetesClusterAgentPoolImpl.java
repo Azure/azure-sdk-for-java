@@ -173,6 +173,11 @@ public class KubernetesClusterAgentPoolImpl
             : Collections.unmodifiableMap(innerModel().tags());
     }
 
+    @Override
+    public boolean isFipsEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(innerModel().enableFips());
+    }
+
 //    @Override
 //    public void start() {
 //        startAsync().block();
@@ -412,6 +417,12 @@ public class KubernetesClusterAgentPoolImpl
         if (innerModel().tags() != null) {
             innerModel().tags().remove(key);
         }
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withFipsEnabled() {
+        innerModel().withEnableFips(true);
         return this;
     }
 }

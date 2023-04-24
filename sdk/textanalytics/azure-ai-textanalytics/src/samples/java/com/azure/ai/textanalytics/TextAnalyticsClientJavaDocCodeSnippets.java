@@ -21,7 +21,7 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
+import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
@@ -1340,19 +1340,18 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
     // Dynamic classification
     /**
-     * Code snippet for {@link TextAnalyticsClient#dynamicClassificationBatch(Iterable, String, DynamicClassificationOptions)}
+     * Code snippet for {@link TextAnalyticsClient#dynamicClassifyBatch(Iterable, Iterable, String, DynamicClassifyOptions)}
      */
     public void dynamicClassificationStringInputWithLanguage() {
-        // BEGIN: Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+        // BEGIN: Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
         List<String> documents = new ArrayList<>();
         documents.add("The WHO is issuing a warning about Monkey Pox.");
         documents.add("Mo Salah plays in Liverpool FC in England.");
-        DynamicClassificationOptions options = new DynamicClassificationOptions()
-            .setCategories("Health", "Politics", "Music", "Sport");
+        DynamicClassifyOptions options = new DynamicClassifyOptions();
 
         // Analyzing dynamic classification
-        DynamicClassifyDocumentResultCollection resultCollection =
-            textAnalyticsClient.dynamicClassificationBatch(documents, "en", options);
+        DynamicClassifyDocumentResultCollection resultCollection = textAnalyticsClient.dynamicClassifyBatch(
+            documents, Arrays.asList("Health", "Politics", "Music", "Sport"), "en", options);
 
         // Result of dynamic classification
         resultCollection.forEach(documentResult -> {
@@ -1362,23 +1361,23 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     classification.getCategory(), classification.getConfidenceScore());
             }
         });
-        // END: Client.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+        // END: Client.dynamicClassifyBatch#Iterable-Iterable-String-DynamicClassifyOptions
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsClient#dynamicClassificationBatchWithResponse(Iterable, DynamicClassificationOptions, Context)}
+     * Code snippet for {@link TextAnalyticsClient#dynamicClassifyBatchWithResponse(Iterable, Iterable, DynamicClassifyOptions, Context)}
      */
     public void dynamicClassificationMaxOverload() {
-        // BEGIN: Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context
+        // BEGIN: Client.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions-Context
         List<TextDocumentInput> documents = new ArrayList<>();
         documents.add(new TextDocumentInput("1", "The WHO is issuing a warning about Monkey Pox."));
         documents.add(new TextDocumentInput("2", "Mo Salah plays in Liverpool FC in England."));
-        DynamicClassificationOptions options = new DynamicClassificationOptions()
-            .setCategories("Health", "Politics", "Music", "Sport");
+        DynamicClassifyOptions options = new DynamicClassifyOptions();
 
         // Analyzing dynamic classification
         Response<DynamicClassifyDocumentResultCollection> response =
-            textAnalyticsClient.dynamicClassificationBatchWithResponse(documents, options, Context.NONE);
+            textAnalyticsClient.dynamicClassifyBatchWithResponse(documents,
+                Arrays.asList("Health", "Politics", "Music", "Sport"), options, Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
@@ -1397,7 +1396,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                     classification.getCategory(), classification.getConfidenceScore());
             }
         });
-        // END: Client.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions-Context
+        // END: Client.dynamicClassifyBatchWithResponse#Iterable-Iterable-DynamicClassifyOptions-Context
     }
 
     // Abstractive Summarization
@@ -1475,7 +1474,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
         SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents, "en",
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3));
+                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractSummaryResult documentResult : resultCollection) {
@@ -1521,7 +1520,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
         SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
             textAnalyticsClient.beginAbstractSummary(documents,
-                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setMaxSentenceCount(3),
+                new AbstractSummaryOptions().setDisplayName("{tasks_display_name}").setSentenceCount(3),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {

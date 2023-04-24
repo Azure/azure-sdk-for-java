@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for LoadBalancers UpdateTags. */
 public final class LoadBalancersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/LoadBalancerUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/LoadBalancerUpdateTags.json
      */
     /**
      * Sample code: Update load balancer tags.
@@ -26,7 +25,10 @@ public final class LoadBalancersUpdateTagsSamples {
             .serviceClient()
             .getLoadBalancers()
             .updateTagsWithResponse(
-                "rg1", "lb", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), Context.NONE);
+                "rg1",
+                "lb",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -3,11 +3,13 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
@@ -57,6 +59,13 @@ public class TableAsyncClientTest extends TableClientTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(100);
 
     private TableAsyncClient tableClient;
+
+    protected HttpClient buildAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
 
     @BeforeAll
     static void beforeAll() {
@@ -109,6 +118,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
             .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
             .tenantId(testResourceNamer.randomUuid())
+            .additionallyAllowedTenants("*")
             .build();
 
         final TableAsyncClient tableClient2 =

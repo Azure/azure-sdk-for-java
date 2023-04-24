@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Get. */
 public final class DatastoresGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class DatastoresGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void datastoresGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.datastores().getWithResponse("group1", "cloud1", "cluster1", "datastore1", Context.NONE);
+        manager
+            .datastores()
+            .getWithResponse("group1", "cloud1", "cluster1", "datastore1", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,6 +20,15 @@ public final class PortMirroringDirectionEnum extends ExpandableStringEnum<PortM
     public static final PortMirroringDirectionEnum BIDIRECTIONAL = fromString("BIDIRECTIONAL");
 
     /**
+     * Creates a new instance of PortMirroringDirectionEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PortMirroringDirectionEnum() {
+    }
+
+    /**
      * Creates or finds a PortMirroringDirectionEnum from its string representation.
      *
      * @param name a name to look for.

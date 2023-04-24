@@ -30,6 +30,15 @@ public final class WorkloadNetworkVMGroupProvisioningState
     public static final WorkloadNetworkVMGroupProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of WorkloadNetworkVMGroupProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkVMGroupProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkloadNetworkVMGroupProvisioningState from its string representation.
      *
      * @param name a name to look for.

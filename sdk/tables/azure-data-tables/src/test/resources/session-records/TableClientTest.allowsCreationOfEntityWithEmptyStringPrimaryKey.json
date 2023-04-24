@@ -1,0 +1,55 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.4.1; Linux; 5.4.0-1094-azure)",
+      "x-ms-client-request-id" : "42316341-de1f-4ec9-b13a-2705116b0291",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 02 Nov 2022 16:16:09 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://jairmyreestoragetest.table.core.windows.net/Tables('tablename46245ee9')",
+      "x-ms-request-id" : "cdd073bd-9002-0025-5fd6-eeec7b000000",
+      "x-ms-client-request-id" : "42316341-de1f-4ec9-b13a-2705116b0291",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://jairmyreestoragetest.table.core.windows.net/Tables('tablename46245ee9')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/tablename46245ee9",
+    "Headers" : {
+      "x-ms-version" : "2020-12-06",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.4.1; Linux; 5.4.0-1094-azure)",
+      "x-ms-client-request-id" : "733b8465-07de-404b-84bc-4191998d02c6",
+      "Content-Type" : "application/json;odata=nometadata"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-12-06",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 02 Nov 2022 16:16:09 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://jairmyreestoragetest.table.core.windows.net/tablename46245ee9(PartitionKey='',RowKey='')",
+      "eTag" : "W/datetime'2022-11-02T16%3A16%3A10.2699268Z'",
+      "x-ms-request-id" : "cdd073c5-9002-0025-64d6-eeec7b000000",
+      "x-ms-client-request-id" : "733b8465-07de-404b-84bc-4191998d02c6",
+      "Preference-Applied" : "return-no-content",
+      "Location" : "https://jairmyreestoragetest.table.core.windows.net/tablename46245ee9(PartitionKey='',RowKey='')"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "tablename46245ee9" ]
+}

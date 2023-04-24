@@ -111,7 +111,7 @@ class AbstractSummaryUtilClient {
                                 new AbstractiveSummarizationLROTask().setParameters(
                                     new AbstractiveSummarizationTaskParameters()
                                         .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                        .setSentenceCount(options.getMaxSentenceCount())
+                                        .setSentenceCount(options.getSentenceCount())
                                         .setModelVersion(options.getModelVersion())
                                         .setLoggingOptOut(options.isServiceLogsDisabled())
                                 ))),
@@ -151,7 +151,7 @@ class AbstractSummaryUtilClient {
             final AbstractiveSummarizationLROTask task = new AbstractiveSummarizationLROTask().setParameters(
                 new AbstractiveSummarizationTaskParameters()
                     .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                    .setSentenceCount(options.getMaxSentenceCount())
+                    .setSentenceCount(options.getSentenceCount())
                     .setModelVersion(options.getModelVersion())
                     .setLoggingOptOut(options.isServiceLogsDisabled()));
             return SyncPoller.createPoller(

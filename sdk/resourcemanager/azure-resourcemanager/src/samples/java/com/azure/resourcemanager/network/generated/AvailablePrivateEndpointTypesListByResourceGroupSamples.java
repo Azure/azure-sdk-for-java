@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AvailablePrivateEndpointTypes ListByResourceGroup. */
 public final class AvailablePrivateEndpointTypesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/AvailablePrivateEndpointTypesResourceGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/AvailablePrivateEndpointTypesResourceGroupGet.json
      */
     /**
      * Sample code: Get available PrivateEndpoint types in the resource group.
@@ -23,6 +21,6 @@ public final class AvailablePrivateEndpointTypesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAvailablePrivateEndpointTypes()
-            .listByResourceGroup("regionName", "rg1", Context.NONE);
+            .listByResourceGroup("regionName", "rg1", com.azure.core.util.Context.NONE);
     }
 }

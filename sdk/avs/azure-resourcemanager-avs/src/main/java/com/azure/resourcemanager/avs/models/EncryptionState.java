@@ -17,6 +17,15 @@ public final class EncryptionState extends ExpandableStringEnum<EncryptionState>
     public static final EncryptionState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EncryptionState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionState() {
+    }
+
+    /**
      * Creates or finds a EncryptionState from its string representation.
      *
      * @param name a name to look for.

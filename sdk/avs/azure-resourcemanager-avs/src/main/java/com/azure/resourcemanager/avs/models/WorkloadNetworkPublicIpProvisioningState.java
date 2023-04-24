@@ -30,6 +30,15 @@ public final class WorkloadNetworkPublicIpProvisioningState
     public static final WorkloadNetworkPublicIpProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of WorkloadNetworkPublicIpProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkPublicIpProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkloadNetworkPublicIpProvisioningState from its string representation.
      *
      * @param name a name to look for.

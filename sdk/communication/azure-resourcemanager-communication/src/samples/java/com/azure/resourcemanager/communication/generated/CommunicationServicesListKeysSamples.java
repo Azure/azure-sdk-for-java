@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CommunicationServices ListKeys. */
 public final class CommunicationServicesListKeysSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/listKeys.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-03-01-preview/examples/communicationServices/listKeys.json
      */
     /**
      * Sample code: List keys.
@@ -19,6 +17,6 @@ public final class CommunicationServicesListKeysSamples {
     public static void listKeys(com.azure.resourcemanager.communication.CommunicationManager manager) {
         manager
             .communicationServices()
-            .listKeysWithResponse("MyResourceGroup", "MyCommunicationResource", Context.NONE);
+            .listKeysWithResponse("MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }

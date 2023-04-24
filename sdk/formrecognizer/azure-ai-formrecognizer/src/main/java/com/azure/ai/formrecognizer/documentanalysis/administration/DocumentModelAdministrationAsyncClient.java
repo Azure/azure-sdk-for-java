@@ -17,7 +17,9 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.DocumentModelsImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.documentanalysis.implementation.MiscellaneousImpl;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.AuthorizeCopyRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.BuildDocumentModelRequest;
 import com.azure.ai.formrecognizer.documentanalysis.implementation.models.ComposeDocumentModelRequest;
@@ -79,7 +81,10 @@ import static com.azure.core.util.FluxUtil.withContext;
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
 public final class DocumentModelAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationAsyncClient.class);
-    private final FormRecognizerClientImpl service;
+    private final FormRecognizerClientImpl formRecognizerClientImpl;
+    private final DocumentModelsImpl documentModelsImpl;
+    private final MiscellaneousImpl miscellaneousImpl;
+
     private final DocumentAnalysisServiceVersion serviceVersion;
     private final DocumentAnalysisAudience audience;
 
@@ -87,14 +92,16 @@ public final class DocumentModelAdministrationAsyncClient {
      * Create a {@link DocumentModelAdministrationAsyncClient} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link DocumentModelAdministrationClientBuilder#pipeline http pipeline}.
      *
-     * @param service The proxy service used to perform REST calls.
+     * @param formRecognizerClientImpl The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      * @param audience ARM management audience associated with the given form recognizer resource.
      *
      */
-    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion,
-        DocumentAnalysisAudience audience) {
-        this.service = service;
+    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl, DocumentAnalysisServiceVersion serviceVersion,
+                                           DocumentAnalysisAudience audience) {
+        this.formRecognizerClientImpl = formRecognizerClientImpl;
+        this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
+        this.miscellaneousImpl = formRecognizerClientImpl.getMiscellaneous();
         this.serviceVersion = serviceVersion;
         this.audience = audience;
     }
@@ -117,7 +124,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @return the pipeline the client is using.
      */
     HttpPipeline getHttpPipeline() {
-        return service.getHttpPipeline();
+        return formRecognizerClientImpl.getHttpPipeline();
     }
 
     /**
@@ -126,7 +133,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @return the endpoint the client is using.
      */
     String getEndpoint() {
-        return service.getEndpoint();
+        return formRecognizerClientImpl.getEndpoint();
     }
 
     /**
@@ -327,7 +334,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     Mono<Response<ResourceDetails>> getResourceDetailsWithResponse(Context context) {
-        return service.getResourceDetailsWithResponseAsync(context)
+        return miscellaneousImpl.getResourceInfoWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue())));
     }
@@ -386,7 +393,7 @@ public final class DocumentModelAdministrationAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
-        return service.deleteDocumentModelWithResponseAsync(modelId, context)
+        return documentModelsImpl.deleteModelWithResponseAsync(modelId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -460,7 +467,7 @@ public final class DocumentModelAdministrationAsyncClient {
         AuthorizeCopyRequest authorizeCopyRequest =
             getAuthorizeCopyRequest(copyAuthorizationOptions, modelId);
 
-        return service.authorizeCopyDocumentModelWithResponseAsync(authorizeCopyRequest, context)
+        return documentModelsImpl.authorizeModelCopyWithResponseAsync(authorizeCopyRequest, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toCopyAuthorization(response.getValue())));
     }
@@ -581,7 +588,7 @@ public final class DocumentModelAdministrationAsyncClient {
 
             return new PollerFlux<OperationResult, DocumentModelDetails>(
                 DEFAULT_POLL_INTERVAL,
-                Utility.activationOperation(() -> service.composeDocumentModelWithResponseAsync(composeRequest, context)
+                Utility.activationOperation(() -> documentModelsImpl.composeModelWithResponseAsync(composeRequest, context)
                     .map(response -> Transforms.toDocumentOperationResult(
                         response.getDeserializedHeaders().getOperationLocation())), logger),
                 createModelPollOperation(context),
@@ -675,30 +682,6 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    /**
-     * List information for each model on the Form Recognizer account that were built successfully with a Http response
-     * and a specified {@link Context}.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentModels -->
-     * <pre>
-     * documentModelAdministrationAsyncClient.listDocumentModels&#40;&#41;
-     *     .subscribe&#40;documentModelInfo -&gt;
-     *         System.out.printf&#40;&quot;Model ID: %s, Model description: %s, Created on: %s.%n&quot;,
-     *             documentModelInfo.getModelId&#40;&#41;,
-     *             documentModelInfo.getDescription&#40;&#41;,
-     *             documentModelInfo.getCreatedOn&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentModels -->
-     *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return {@link PagedFlux} of {@link DocumentModelSummary}.
-     */
-    PagedFlux<DocumentModelSummary> listDocumentModels(Context context) {
-        return new PagedFlux<>(() -> listFirstPageModelInfo(context),
-            continuationToken -> listNextPageModelInfo(continuationToken, context));
-    }
 
     /**
      * Get detailed information for a specified model ID.
@@ -773,7 +756,7 @@ public final class DocumentModelAdministrationAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
         }
-        return service.getDocumentModelWithResponseAsync(modelId, context)
+        return documentModelsImpl.getModelWithResponseAsync(modelId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toDocumentModelDetails(response.getValue())));
     }
@@ -849,7 +832,7 @@ public final class DocumentModelAdministrationAsyncClient {
             throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
         }
-        return service.getOperationWithResponseAsync(operationId, context)
+        return miscellaneousImpl.getOperationWithResponseAsync(operationId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toOperationDetails(response.getValue())));
     }
@@ -885,17 +868,12 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    PagedFlux<OperationSummary> listOperations(Context context) {
-        return new PagedFlux<>(() -> listFirstPageOperationInfo(context),
-            continuationToken -> listNextPageOperationInfo(continuationToken, context));
-    }
-
     private Function<PollingContext<OperationResult>, Mono<DocumentModelDetails>>
         fetchModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final String modelId = pollingContext.getLatestResponse().getValue().getOperationId();
-                return service.getOperationWithResponseAsync(modelId, context)
+                return miscellaneousImpl.getOperationWithResponseAsync(modelId, context)
                     .map(modelSimpleResponse -> Transforms.toDocumentModelFromOperationId(modelSimpleResponse.getValue()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
@@ -911,7 +889,7 @@ public final class DocumentModelAdministrationAsyncClient {
                 PollResponse<OperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 String modelId = operationResultPollResponse.getValue().getOperationId();
-                return service.getOperationAsync(modelId, context)
+                return miscellaneousImpl.getOperationAsync(modelId, context)
                     .flatMap(modelSimpleResponse ->
                         processBuildingModelResponse(modelSimpleResponse, operationResultPollResponse))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
@@ -932,7 +910,7 @@ public final class DocumentModelAdministrationAsyncClient {
                     getBuildDocumentModelRequest(blobContainerUrl, buildMode, modelId, prefix,
                         buildDocumentModelOptions);
 
-                return service.buildDocumentModelWithResponseAsync(buildDocumentModelRequest, context)
+                return documentModelsImpl.buildModelWithResponseAsync(buildDocumentModelRequest, context)
                     .map(response ->
                         Transforms.toDocumentOperationResult(
                             response.getDeserializedHeaders().getOperationLocation()))
@@ -977,7 +955,8 @@ public final class DocumentModelAdministrationAsyncClient {
                 Objects.requireNonNull(target, "'target' cannot be null.");
                 com.azure.ai.formrecognizer.documentanalysis.implementation.models.CopyAuthorization copyRequest
                     = getInnerCopyAuthorization(target);
-                return service.copyDocumentModelToWithResponseAsync(modelId, copyRequest, context)
+
+                return documentModelsImpl.copyModelToWithResponseAsync(modelId, copyRequest, context)
                     .map(response ->
                         Transforms.toDocumentOperationResult(
                             response.getDeserializedHeaders().getOperationLocation()))
@@ -989,7 +968,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     private Mono<PagedResponse<DocumentModelSummary>> listFirstPageModelInfo(Context context) {
-        return service.getDocumentModelsSinglePageAsync(context)
+        return documentModelsImpl.listModelsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
             .doOnError(error -> logger.warning("Failed to list all models information", error))
@@ -1007,7 +986,7 @@ public final class DocumentModelAdministrationAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.getDocumentModelsNextSinglePageAsync(nextPageLink, context)
+        return documentModelsImpl.listModelsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -1023,7 +1002,7 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     private Mono<PagedResponse<OperationSummary>> listFirstPageOperationInfo(Context context) {
-        return service.getOperationsSinglePageAsync(context)
+        return miscellaneousImpl.listOperationsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all operations"))
             .doOnSuccess(response -> logger.info("Listed all operations"))
             .doOnError(error -> logger.warning("Failed to list all operations information", error))
@@ -1041,7 +1020,7 @@ public final class DocumentModelAdministrationAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.getOperationsNextSinglePageAsync(nextPageLink, context)
+        return miscellaneousImpl.listOperationsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,

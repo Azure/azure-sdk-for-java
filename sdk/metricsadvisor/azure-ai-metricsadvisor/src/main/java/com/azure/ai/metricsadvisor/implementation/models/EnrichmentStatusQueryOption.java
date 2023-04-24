@@ -23,6 +23,9 @@ public final class EnrichmentStatusQueryOption {
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of EnrichmentStatusQueryOption class. */
+    public EnrichmentStatusQueryOption() {}
+
     /**
      * Get the startTime property: the start point of time range to query anomaly detection status.
      *

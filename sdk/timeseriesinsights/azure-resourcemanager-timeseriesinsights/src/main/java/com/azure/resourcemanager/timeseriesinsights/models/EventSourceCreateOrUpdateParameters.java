@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,17 +24,17 @@ import java.util.Map;
 })
 @Fluent
 public class EventSourceCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSourceCreateOrUpdateParameters.class);
-
     /*
-     * An object that represents the local timestamp property. It contains the
-     * format of local timestamp that needs to be used and the corresponding
-     * timezone offset information. If a value isn't specified for
-     * localTimestamp, or if null, then the local timestamp will not be
-     * ingressed with the events.
+     * An object that represents the local timestamp property. It contains the format of local timestamp that needs to
+     * be used and the corresponding timezone offset information. If a value isn't specified for localTimestamp, or if
+     * null, then the local timestamp will not be ingressed with the events.
      */
     @JsonProperty(value = "localTimestamp")
     private LocalTimestamp localTimestamp;
+
+    /** Creates an instance of EventSourceCreateOrUpdateParameters class. */
+    public EventSourceCreateOrUpdateParameters() {
+    }
 
     /**
      * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format

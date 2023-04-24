@@ -294,7 +294,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     cosmosItemFeedResponse.getCosmosDiagnostics(), cosmosItemFeedResponse);
                 return Flux.fromIterable(cosmosItemFeedResponse.getResults());
             })
-            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItemProperties))
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItemProperties))
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
                     this.responseDiagnosticsProcessor));
@@ -325,7 +325,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Mono<T> findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        containerName = getContainerNameOverride(containerName);
+        final String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
         final SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(query, param);
@@ -336,7 +336,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         options.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-                                .getContainer(containerName)
+                                .getContainer(finalContainerName)
                                 .queryItems(sqlQuerySpec, options, JsonNode.class)
                                 .byPage()
                                 .publishOn(Schedulers.parallel())
@@ -347,7 +347,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     return Mono.justOrEmpty(cosmosItemFeedResponse
                                         .getResults()
                                         .stream()
-                                        .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItem))
+                                        .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, finalContainerName, cosmosItem))
                                         .findFirst());
                                 })
                                 .onErrorResume(throwable ->
@@ -378,7 +378,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
                                     return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType,
-                                        cosmosItemResponse.getItem()));
+                                        containerName, cosmosItemResponse.getItem()));
                                 })
                                 .onErrorResume(throwable ->
                                     CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
@@ -664,7 +664,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @Override
     public <T> Flux<T> find(CosmosQuery query, Class<T> domainType, String containerName) {
         return findItems(query, containerName, domainType)
-            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItemProperties));
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(domainType, containerName, cosmosItemProperties));
     }
 
     /**
@@ -744,7 +744,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Flux<T> runQuery(SqlQuerySpec querySpec, Sort sort, Class<?> domainType, Class<T> returnType) {
         SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, sort);
         return runQuery(sortedQuerySpec, domainType)
-            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(returnType, cosmosItemProperties));
+            .map(cosmosItemProperties -> emitOnLoadEventAndConvertToDomainObject(returnType, getContainerName(domainType), cosmosItemProperties));
     }
 
     private Flux<JsonNode> runQuery(SqlQuerySpec querySpec, Class<?> domainType) {
@@ -901,9 +901,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                         this.responseDiagnosticsProcessor));
     }
 
-    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, JsonNode responseJsonNode) {
-        CosmosEntityInformation<?, ?> entityInformation = CosmosEntityInformation.getInstance(domainType);
-        maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, entityInformation.getContainerName()));
+    private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, String containerName, JsonNode responseJsonNode) {
+        containerName = getContainerNameOverride(containerName);
+        maybeEmitEvent(new AfterLoadEvent<>(responseJsonNode, domainType, containerName));
         return toDomainObject(domainType, responseJsonNode);
     }
 

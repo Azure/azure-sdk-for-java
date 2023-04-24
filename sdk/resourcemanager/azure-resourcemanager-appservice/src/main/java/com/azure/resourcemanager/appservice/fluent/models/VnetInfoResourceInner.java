@@ -18,6 +18,10 @@ public final class VnetInfoResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetInfo innerProperties;
 
+    /** Creates an instance of VnetInfoResourceInner class. */
+    public VnetInfoResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

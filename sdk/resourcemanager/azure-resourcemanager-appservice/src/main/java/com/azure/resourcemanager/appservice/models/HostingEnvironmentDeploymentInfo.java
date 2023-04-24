@@ -22,6 +22,10 @@ public final class HostingEnvironmentDeploymentInfo {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of HostingEnvironmentDeploymentInfo class. */
+    public HostingEnvironmentDeploymentInfo() {
+    }
+
     /**
      * Get the name property: Name of the App Service Environment.
      *

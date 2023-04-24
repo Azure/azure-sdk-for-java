@@ -28,7 +28,7 @@ public class FeatureHandler implements HandlerInterceptor {
 
     private final FeatureManagerSnapshot featureManagerSnapshot;
 
-    private final IDisabledFeaturesHandler disabledFeaturesHandler;
+    private final DisabledFeaturesHandler disabledFeaturesHandler;
 
     /**
      * Interceptor for Requests to check if they should be run.
@@ -37,7 +37,7 @@ public class FeatureHandler implements HandlerInterceptor {
      * @param disabledFeaturesHandler optional handler for dealing with disabled endpoints.
      */
     public FeatureHandler(FeatureManager featureManager, FeatureManagerSnapshot featureManagerSnapshot,
-        IDisabledFeaturesHandler disabledFeaturesHandler) {
+        DisabledFeaturesHandler disabledFeaturesHandler) {
         this.featureManager = featureManager;
         this.featureManagerSnapshot = featureManagerSnapshot;
         this.disabledFeaturesHandler = disabledFeaturesHandler;

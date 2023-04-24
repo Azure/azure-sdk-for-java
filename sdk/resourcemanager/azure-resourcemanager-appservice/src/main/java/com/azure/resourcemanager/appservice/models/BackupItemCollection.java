@@ -25,6 +25,10 @@ public final class BackupItemCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of BackupItemCollection class. */
+    public BackupItemCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

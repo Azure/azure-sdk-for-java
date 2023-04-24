@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.Workspace;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +11,7 @@ import java.util.Map;
 /** Samples for Workspaces Update. */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Workspace_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/Workspace_Update.json
      */
     /**
      * Sample code: Workspace_Update.
@@ -25,14 +23,13 @@ public final class WorkspacesUpdateSamples {
         Workspace resource =
             manager
                 .workspaces()
-                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", Context.NONE)
+                .getByResourceGroupWithResponse("resourceGroup1", "workspace1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
             .withDescription("des1")
             .withFriendlyName("friendly")
-            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .apply();
     }
 

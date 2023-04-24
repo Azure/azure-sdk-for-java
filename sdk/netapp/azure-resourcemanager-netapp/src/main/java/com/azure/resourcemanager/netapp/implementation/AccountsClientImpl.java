@@ -65,7 +65,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
-    private interface AccountsService {
+    public interface AccountsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/netAppAccounts")
         @ExpectedResponses({200})
@@ -79,8 +79,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetAppAccountList>> listByResourceGroup(
@@ -93,8 +92,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetAppAccountInner>> getByResourceGroup(
@@ -108,8 +106,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -124,8 +121,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -138,8 +134,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -154,8 +149,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
-                + "/netAppAccounts/{accountName}/renewCredentials")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/renewCredentials")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> renewCredentials(
@@ -163,6 +157,7 @@ public final class AccountsClientImpl implements AccountsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -346,7 +341,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -400,7 +395,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -453,7 +448,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -470,7 +465,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,7 +484,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,7 +500,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>List and describe all NetApp accounts in the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -522,7 +517,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Get the NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -572,7 +567,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Get the NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -620,7 +615,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Get the NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -638,24 +633,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Get the NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetAppAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -670,11 +648,28 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the NetApp account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetAppAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+    }
+
+    /**
      * Create or update a NetApp account
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -731,7 +726,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -786,7 +781,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,7 +808,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -839,7 +834,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -850,7 +845,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NetAppAccountInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, body).getSyncPoller();
     }
 
     /**
@@ -858,7 +853,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -870,7 +865,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NetAppAccountInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, body, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, body, context).getSyncPoller();
     }
 
     /**
@@ -878,7 +873,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -899,7 +894,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -921,7 +916,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -939,7 +934,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Create or update the specified NetApp account within the resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -959,7 +954,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1006,7 +1001,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1052,7 +1047,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1073,7 +1068,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1096,7 +1091,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1105,7 +1100,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
@@ -1113,7 +1108,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1124,7 +1119,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**
@@ -1132,7 +1127,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1149,7 +1144,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1169,7 +1164,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1185,7 +1180,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Delete the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1202,7 +1197,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1259,7 +1254,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1314,7 +1309,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1341,7 +1336,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1366,7 +1361,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1377,7 +1372,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
         String resourceGroupName, String accountName, NetAppAccountPatch body) {
-        return beginUpdateAsync(resourceGroupName, accountName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, body).getSyncPoller();
     }
 
     /**
@@ -1385,7 +1380,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1397,7 +1392,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetAppAccountInner>, NetAppAccountInner> beginUpdate(
         String resourceGroupName, String accountName, NetAppAccountPatch body, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, body, context).getSyncPoller();
     }
 
     /**
@@ -1405,7 +1400,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1426,7 +1421,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1448,7 +1443,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1466,7 +1461,7 @@ public final class AccountsClientImpl implements AccountsClient {
      *
      * <p>Patch the specified NetApp account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param body NetApp Account object supplied in the body of the operation.
      * @param context The context to associate with this operation.
@@ -1487,7 +1482,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1525,6 +1520,7 @@ public final class AccountsClientImpl implements AccountsClient {
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1535,7 +1531,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1568,7 +1564,12 @@ public final class AccountsClientImpl implements AccountsClient {
         context = this.client.mergeContext(context);
         return service
             .renewCredentials(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, context);
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
@@ -1577,7 +1578,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1600,7 +1601,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1625,7 +1626,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1634,7 +1635,7 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRenewCredentials(String resourceGroupName, String accountName) {
-        return beginRenewCredentialsAsync(resourceGroupName, accountName).getSyncPoller();
+        return this.beginRenewCredentialsAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
@@ -1643,7 +1644,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1654,7 +1655,7 @@ public final class AccountsClientImpl implements AccountsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRenewCredentials(
         String resourceGroupName, String accountName, Context context) {
-        return beginRenewCredentialsAsync(resourceGroupName, accountName, context).getSyncPoller();
+        return this.beginRenewCredentialsAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**
@@ -1663,7 +1664,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1683,7 +1684,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1704,7 +1705,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1721,7 +1722,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

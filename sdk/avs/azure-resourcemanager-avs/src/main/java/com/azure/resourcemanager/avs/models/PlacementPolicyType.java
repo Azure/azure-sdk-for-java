@@ -17,6 +17,15 @@ public final class PlacementPolicyType extends ExpandableStringEnum<PlacementPol
     public static final PlacementPolicyType VM_HOST = fromString("VmHost");
 
     /**
+     * Creates a new instance of PlacementPolicyType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PlacementPolicyType() {
+    }
+
+    /**
      * Creates or finds a PlacementPolicyType from its string representation.
      *
      * @param name a name to look for.

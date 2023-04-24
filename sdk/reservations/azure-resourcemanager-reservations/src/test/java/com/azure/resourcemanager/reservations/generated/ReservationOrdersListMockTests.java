@@ -35,7 +35,7 @@ public final class ReservationOrdersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"etag\":1047026822,\"properties\":{\"displayName\":\"hcrat\",\"requestDateTime\":\"2021-08-13T20:41:57Z\",\"createdDateTime\":\"2021-06-27T16:40:41Z\",\"expiryDateTime\":\"2021-01-21T03:47:46Z\",\"benefitStartTime\":\"2021-07-03T11:09:27Z\",\"originalQuantity\":1438708374,\"term\":\"P1Y\",\"provisioningState\":\"PendingBilling\",\"billingPlan\":\"Monthly\",\"planInformation\":{\"transactions\":[]},\"reservations\":[],\"reviewDateTime\":\"2021-06-13T10:36:32Z\"},\"id\":\"honnxkrlgnyhmos\",\"name\":\"xkk\",\"type\":\"thrrgh\"}]}";
+            "{\"value\":[{\"etag\":893794792,\"properties\":{\"displayName\":\"zbrhubskhudyg\",\"requestDateTime\":\"2021-02-04T04:44:46Z\",\"createdDateTime\":\"2021-10-06T17:04:50Z\",\"expiryDateTime\":\"2021-01-08T15:56:19Z\",\"benefitStartTime\":\"2021-07-12T13:05:01Z\",\"originalQuantity\":1122494487,\"term\":\"P1Y\",\"provisioningState\":\"Created\",\"billingPlan\":\"Monthly\",\"planInformation\":{\"transactions\":[]},\"reservations\":[],\"reviewDateTime\":\"2021-05-04T19:19:19Z\"},\"id\":\"nqqyba\",\"name\":\"yeua\",\"type\":\"jkqa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,21 +66,21 @@ public final class ReservationOrdersListMockTests {
         PagedIterable<ReservationOrderResponse> response =
             manager.reservationOrders().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1047026822, response.iterator().next().etag());
-        Assertions.assertEquals("hcrat", response.iterator().next().displayName());
+        Assertions.assertEquals(893794792, response.iterator().next().etag());
+        Assertions.assertEquals("zbrhubskhudyg", response.iterator().next().displayName());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-08-13T20:41:57Z"), response.iterator().next().requestDateTime());
+            .assertEquals(OffsetDateTime.parse("2021-02-04T04:44:46Z"), response.iterator().next().requestDateTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-06-27T16:40:41Z"), response.iterator().next().createdDateTime());
+            .assertEquals(OffsetDateTime.parse("2021-10-06T17:04:50Z"), response.iterator().next().createdDateTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-21T03:47:46Z"), response.iterator().next().expiryDateTime());
+            .assertEquals(OffsetDateTime.parse("2021-01-08T15:56:19Z"), response.iterator().next().expiryDateTime());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-07-03T11:09:27Z"), response.iterator().next().benefitStartTime());
-        Assertions.assertEquals(1438708374, response.iterator().next().originalQuantity());
+            .assertEquals(OffsetDateTime.parse("2021-07-12T13:05:01Z"), response.iterator().next().benefitStartTime());
+        Assertions.assertEquals(1122494487, response.iterator().next().originalQuantity());
         Assertions.assertEquals(ReservationTerm.P1Y, response.iterator().next().term());
-        Assertions.assertEquals(ProvisioningState.PENDING_BILLING, response.iterator().next().provisioningState());
+        Assertions.assertEquals(ProvisioningState.CREATED, response.iterator().next().provisioningState());
         Assertions.assertEquals(ReservationBillingPlan.MONTHLY, response.iterator().next().billingPlan());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-06-13T10:36:32Z"), response.iterator().next().reviewDateTime());
+            .assertEquals(OffsetDateTime.parse("2021-05-04T19:19:19Z"), response.iterator().next().reviewDateTime());
     }
 }

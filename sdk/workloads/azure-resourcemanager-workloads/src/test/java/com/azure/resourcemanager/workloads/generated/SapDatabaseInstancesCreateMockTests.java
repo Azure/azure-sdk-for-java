@@ -33,7 +33,7 @@ public final class SapDatabaseInstancesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"subnet\":\"mgixhcmavmqfou\",\"databaseSid\":\"rhc\",\"databaseType\":\"yprotwyp\",\"ipAddress\":\"d\",\"loadBalancerDetails\":{\"id\":\"hu\"},\"vmDetails\":[],\"status\":\"Offline\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"rb\",\"tags\":{\"jltfvnzcyjtotpv\":\"pmdtz\"},\"id\":\"pvpbdbzqgqqiheds\",\"name\":\"qwthmky\",\"type\":\"bcysih\"}";
+            "{\"properties\":{\"subnet\":\"vbmqzbqq\",\"databaseSid\":\"aj\",\"databaseType\":\"wxacevehj\",\"ipAddress\":\"yxoaf\",\"loadBalancerDetails\":{\"id\":\"qltfaey\"},\"vmDetails\":[],\"status\":\"Starting\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"pghriypoqeyhl\",\"tags\":{\"qdsmexiit\":\"kprlpyznuc\",\"stgnl\":\"fuxtyasiibmiybnn\",\"vmqfoud\":\"hnmgixhcm\"},\"id\":\"rhc\",\"name\":\"yyprotwyp\",\"type\":\"ndm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,14 @@ public final class SapDatabaseInstancesCreateMockTests {
         SapDatabaseInstance response =
             manager
                 .sapDatabaseInstances()
-                .define("jee")
-                .withRegion("rnwxacevehjkuyxo")
-                .withExistingSapVirtualInstance("geyzihgrkyuiz", "bsnmfpph")
-                .withTags(mapOf("inmfgvxirp", "aoqltfaey", "prlpy", "hriypoqeyhlqhy"))
+                .define("fuojrngif")
+                .withRegion("phojeevyhy")
+                .withExistingSapVirtualInstance("ouau", "rjtloq")
+                .withTags(mapOf("mfg", "zfczbg"))
                 .create();
 
-        Assertions.assertEquals("rb", response.location());
-        Assertions.assertEquals("pmdtz", response.tags().get("jltfvnzcyjtotpv"));
+        Assertions.assertEquals("pghriypoqeyhl", response.location());
+        Assertions.assertEquals("kprlpyznuc", response.tags().get("qdsmexiit"));
     }
 
     @SuppressWarnings("unchecked")

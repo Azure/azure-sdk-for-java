@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.Gen2EnvironmentMutableProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,26 +14,33 @@ import java.util.Map;
 /** Parameters supplied to the Update Environment operation to update a Gen2 environment. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("Gen2")
-@JsonFlatten
 @Fluent
-public class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Gen2EnvironmentUpdateParameters.class);
-
+public final class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters {
     /*
-     * The storage configuration provides the connection details that allows
-     * the Time Series Insights service to connect to the customer storage
-     * account that is used to store the environment's data.
+     * Properties of the Gen2 environment.
      */
-    @JsonProperty(value = "properties.storageConfiguration")
-    private Gen2StorageConfigurationMutableProperties storageConfiguration;
+    @JsonProperty(value = "properties")
+    private Gen2EnvironmentMutableProperties innerProperties;
 
-    /*
-     * The warm store configuration provides the details to create a warm store
-     * cache that will retain a copy of the environment's data available for
-     * faster query.
+    /** Creates an instance of Gen2EnvironmentUpdateParameters class. */
+    public Gen2EnvironmentUpdateParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: Properties of the Gen2 environment.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.warmStoreConfiguration")
-    private WarmStoreConfigurationProperties warmStoreConfiguration;
+    private Gen2EnvironmentMutableProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Gen2EnvironmentUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the storageConfiguration property: The storage configuration provides the connection details that allows the
@@ -45,7 +50,7 @@ public class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      * @return the storageConfiguration value.
      */
     public Gen2StorageConfigurationMutableProperties storageConfiguration() {
-        return this.storageConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().storageConfiguration();
     }
 
     /**
@@ -58,7 +63,10 @@ public class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      */
     public Gen2EnvironmentUpdateParameters withStorageConfiguration(
         Gen2StorageConfigurationMutableProperties storageConfiguration) {
-        this.storageConfiguration = storageConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen2EnvironmentMutableProperties();
+        }
+        this.innerProperties().withStorageConfiguration(storageConfiguration);
         return this;
     }
 
@@ -69,7 +77,7 @@ public class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      * @return the warmStoreConfiguration value.
      */
     public WarmStoreConfigurationProperties warmStoreConfiguration() {
-        return this.warmStoreConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().warmStoreConfiguration();
     }
 
     /**
@@ -81,14 +89,10 @@ public class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters
      */
     public Gen2EnvironmentUpdateParameters withWarmStoreConfiguration(
         WarmStoreConfigurationProperties warmStoreConfiguration) {
-        this.warmStoreConfiguration = warmStoreConfiguration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Gen2EnvironmentUpdateParameters withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Gen2EnvironmentMutableProperties();
+        }
+        this.innerProperties().withWarmStoreConfiguration(warmStoreConfiguration);
         return this;
     }
 
@@ -100,11 +104,8 @@ public class Gen2EnvironmentUpdateParameters extends EnvironmentUpdateParameters
     @Override
     public void validate() {
         super.validate();
-        if (storageConfiguration() != null) {
-            storageConfiguration().validate();
-        }
-        if (warmStoreConfiguration() != null) {
-            warmStoreConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

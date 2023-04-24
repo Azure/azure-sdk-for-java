@@ -18,6 +18,10 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RemotePrivateEndpointConnectionProperties innerProperties;
 
+    /** Creates an instance of RemotePrivateEndpointConnection class. */
+    public RemotePrivateEndpointConnection() {
+    }
+
     /**
      * Get the innerProperties property: RemotePrivateEndpointConnection resource specific properties.
      *

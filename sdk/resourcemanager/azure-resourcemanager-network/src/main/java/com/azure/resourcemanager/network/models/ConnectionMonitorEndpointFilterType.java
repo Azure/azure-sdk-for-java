@@ -15,6 +15,15 @@ public final class ConnectionMonitorEndpointFilterType
     public static final ConnectionMonitorEndpointFilterType INCLUDE = fromString("Include");
 
     /**
+     * Creates a new instance of ConnectionMonitorEndpointFilterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionMonitorEndpointFilterType() {
+    }
+
+    /**
      * Creates or finds a ConnectionMonitorEndpointFilterType from its string representation.
      *
      * @param name a name to look for.

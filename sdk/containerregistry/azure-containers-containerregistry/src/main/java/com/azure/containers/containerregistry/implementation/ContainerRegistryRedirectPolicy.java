@@ -77,6 +77,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
         HttpRequest redirectRequest = createRedirectRequest(redirectResponse, redirectUrl);
         context.setHttpRequest(redirectRequest.copy());
+        redirectResponse.close();
 
         return next.clone().process().flatMap((httpResponse) -> {
             if (!isRedirectResponse(httpResponse)) {
@@ -98,6 +99,7 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
 
         HttpRequest redirectRequest = createRedirectRequest(redirectResponse, redirectUrl);
         context.setHttpRequest(redirectRequest.copy());
+        redirectResponse.close();
 
         HttpResponse httpResponse = next.clone().processSync();
         if (!isRedirectResponse(httpResponse)) {

@@ -148,6 +148,7 @@ public final class VpnGatewaysClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gatewayName") String gatewayName,
+            @QueryParam("ipConfigurationId") String ipConfigurationId,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
@@ -263,7 +264,7 @@ public final class VpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -313,7 +314,7 @@ public final class VpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -414,7 +415,7 @@ public final class VpnGatewaysClientImpl
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -472,7 +473,7 @@ public final class VpnGatewaysClientImpl
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -551,7 +552,7 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters).getSyncPoller();
     }
 
     /**
@@ -569,7 +570,9 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -685,7 +688,7 @@ public final class VpnGatewaysClientImpl
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -743,7 +746,7 @@ public final class VpnGatewaysClientImpl
         } else {
             vpnGatewayParameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -822,7 +825,7 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
         String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters) {
-        return beginUpdateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters).getSyncPoller();
     }
 
     /**
@@ -840,7 +843,7 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
         String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context).getSyncPoller();
+        return this.beginUpdateTagsAsync(resourceGroupName, gatewayName, vpnGatewayParameters, context).getSyncPoller();
     }
 
     /**
@@ -947,7 +950,7 @@ public final class VpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -997,7 +1000,7 @@ public final class VpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1063,7 +1066,7 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName) {
-        return beginDeleteAsync(resourceGroupName, gatewayName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, gatewayName).getSyncPoller();
     }
 
     /**
@@ -1080,7 +1083,7 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, Context context) {
-        return beginDeleteAsync(resourceGroupName, gatewayName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, gatewayName, context).getSyncPoller();
     }
 
     /**
@@ -1150,13 +1153,15 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName) {
+    public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
+        String resourceGroupName, String gatewayName, String ipConfigurationId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1176,7 +1181,7 @@ public final class VpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1186,6 +1191,7 @@ public final class VpnGatewaysClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             gatewayName,
+                            ipConfigurationId,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
@@ -1198,6 +1204,7 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1206,7 +1213,7 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
-        String resourceGroupName, String gatewayName, Context context) {
+        String resourceGroupName, String gatewayName, String ipConfigurationId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1226,7 +1233,7 @@ public final class VpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1234,6 +1241,7 @@ public final class VpnGatewaysClientImpl
                 this.client.getEndpoint(),
                 resourceGroupName,
                 gatewayName,
+                ipConfigurationId,
                 apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
@@ -1245,6 +1253,7 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1252,8 +1261,9 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(
-        String resourceGroupName, String gatewayName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName);
+        String resourceGroupName, String gatewayName, String ipConfigurationId) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetWithResponseAsync(resourceGroupName, gatewayName, ipConfigurationId);
         return this
             .client
             .<VpnGatewayInner, VpnGatewayInner>getLroResult(
@@ -1269,6 +1279,33 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of vpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(
+        String resourceGroupName, String gatewayName) {
+        final String ipConfigurationId = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetWithResponseAsync(resourceGroupName, gatewayName, ipConfigurationId);
+        return this
+            .client
+            .<VpnGatewayInner, VpnGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VpnGatewayInner.class,
+                VpnGatewayInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Resets the primary of the vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1277,9 +1314,10 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(
-        String resourceGroupName, String gatewayName, Context context) {
+        String resourceGroupName, String gatewayName, String ipConfigurationId, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetWithResponseAsync(resourceGroupName, gatewayName, ipConfigurationId, context);
         return this
             .client
             .<VpnGatewayInner, VpnGatewayInner>getLroResult(
@@ -1299,7 +1337,8 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(
         String resourceGroupName, String gatewayName) {
-        return beginResetAsync(resourceGroupName, gatewayName).getSyncPoller();
+        final String ipConfigurationId = null;
+        return this.beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId).getSyncPoller();
     }
 
     /**
@@ -1307,6 +1346,7 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1315,8 +1355,26 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(
-        String resourceGroupName, String gatewayName, Context context) {
-        return beginResetAsync(resourceGroupName, gatewayName, context).getSyncPoller();
+        String resourceGroupName, String gatewayName, String ipConfigurationId, Context context) {
+        return this.beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId, context).getSyncPoller();
+    }
+
+    /**
+     * Resets the primary of the vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnGateway Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName, String ipConfigurationId) {
+        return beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1331,7 +1389,10 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName) {
-        return beginResetAsync(resourceGroupName, gatewayName).last().flatMap(this.client::getLroFinalResultOrError);
+        final String ipConfigurationId = null;
+        return beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1339,6 +1400,7 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1346,8 +1408,9 @@ public final class VpnGatewaysClientImpl
      * @return vpnGateway Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName, Context context) {
-        return beginResetAsync(resourceGroupName, gatewayName, context)
+    private Mono<VpnGatewayInner> resetAsync(
+        String resourceGroupName, String gatewayName, String ipConfigurationId, Context context) {
+        return beginResetAsync(resourceGroupName, gatewayName, ipConfigurationId, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1364,7 +1427,8 @@ public final class VpnGatewaysClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VpnGatewayInner reset(String resourceGroupName, String gatewayName) {
-        return resetAsync(resourceGroupName, gatewayName).block();
+        final String ipConfigurationId = null;
+        return resetAsync(resourceGroupName, gatewayName, ipConfigurationId).block();
     }
 
     /**
@@ -1372,6 +1436,7 @@ public final class VpnGatewaysClientImpl
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param ipConfigurationId VpnGateway ipConfigurationId to specify the gateway instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1379,8 +1444,9 @@ public final class VpnGatewaysClientImpl
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnGatewayInner reset(String resourceGroupName, String gatewayName, Context context) {
-        return resetAsync(resourceGroupName, gatewayName, context).block();
+    public VpnGatewayInner reset(
+        String resourceGroupName, String gatewayName, String ipConfigurationId, Context context) {
+        return resetAsync(resourceGroupName, gatewayName, ipConfigurationId, context).block();
     }
 
     /**
@@ -1419,7 +1485,7 @@ public final class VpnGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1477,7 +1543,7 @@ public final class VpnGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1576,7 +1642,7 @@ public final class VpnGatewaysClientImpl
     public SyncPoller<PollResult<String>, String> beginStartPacketCapture(
         String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStartParameters parameters = null;
-        return beginStartPacketCaptureAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
+        return this.beginStartPacketCaptureAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
     }
 
     /**
@@ -1597,7 +1663,7 @@ public final class VpnGatewaysClientImpl
         String gatewayName,
         VpnGatewayPacketCaptureStartParameters parameters,
         Context context) {
-        return beginStartPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
+        return this.beginStartPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1733,7 +1799,7 @@ public final class VpnGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1791,7 +1857,7 @@ public final class VpnGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1889,7 +1955,7 @@ public final class VpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<String>, String> beginStopPacketCapture(String resourceGroupName, String gatewayName) {
         final VpnGatewayPacketCaptureStopParameters parameters = null;
-        return beginStopPacketCaptureAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
+        return this.beginStopPacketCaptureAsync(resourceGroupName, gatewayName, parameters).getSyncPoller();
     }
 
     /**
@@ -1910,7 +1976,7 @@ public final class VpnGatewaysClientImpl
         String gatewayName,
         VpnGatewayPacketCaptureStopParameters parameters,
         Context context) {
-        return beginStopPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
+        return this.beginStopPacketCaptureAsync(resourceGroupName, gatewayName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2038,7 +2104,7 @@ public final class VpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2093,7 +2159,7 @@ public final class VpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2199,7 +2265,7 @@ public final class VpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2242,7 +2308,7 @@ public final class VpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-07-01";
+        final String apiVersion = "2022-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

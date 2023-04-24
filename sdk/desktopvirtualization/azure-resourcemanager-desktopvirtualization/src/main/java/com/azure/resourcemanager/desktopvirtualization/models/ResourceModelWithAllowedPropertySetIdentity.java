@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 
 /** The ResourceModelWithAllowedPropertySetIdentity model. */
 @Fluent
-public class ResourceModelWithAllowedPropertySetIdentity extends Identity {
+public final class ResourceModelWithAllowedPropertySetIdentity extends Identity {
+    /** Creates an instance of ResourceModelWithAllowedPropertySetIdentity class. */
+    public ResourceModelWithAllowedPropertySetIdentity() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ResourceModelWithAllowedPropertySetIdentity withType(ResourceIdentityType type) {

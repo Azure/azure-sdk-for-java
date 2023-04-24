@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.models.ArtifactManifestPlatform;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
 import com.azure.containers.containerregistry.models.ArtifactOperatingSystem;
 import com.azure.containers.containerregistry.models.ArtifactTagProperties;
-import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.containers.containerregistry.specialized.ContainerRegistryBlobClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -96,15 +95,12 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
-
         return new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential)
-            .audience(audience);
+            .credential(credential);
     }
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential) {
@@ -126,16 +122,13 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        ContainerRegistryAudience audience = TestUtils.getAudience(endpoint);
-
         return new ContainerRegistryBlobClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .repository(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
-            .credential(credential)
-            .audience(audience);
+            .credential(credential);
     }
 
     List<String> getChildArtifacts(Collection<ArtifactManifestPlatform> artifacts) {

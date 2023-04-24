@@ -1,51 +1,51 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/contacts?api-version=7.3",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/contacts?api-version=7.4",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "160",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 03 Oct 2022 19:44:52 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:20 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "a616e66f-bc69-4682-8963-8f98e2b376fa",
-      "x-ms-keyvault-service-version" : "1.9.538.1",
-      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/contacts\",\"contacts\":[{\"email\":\"first.last@gmail.com\",\"name\":\"name\",\"phone\":\"2323-31232\"}]}",
+      "Content-Length" : "155",
+      "x-ms-request-id" : "b2756870-3d60-420e-9b7c-7131d1917e3b",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/contacts\",\"contacts\":[{\"email\":\"first.last@gmail.com\",\"name\":\"name\",\"phone\":\"000-000-0000\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/contacts?api-version=7.3",
+    "Uri" : "https://REDACTED.vault.azure.net/certificates/contacts?api-version=7.4",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (17.0.1; Mac OS X; 11.7)",
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "160",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 03 Oct 2022 19:44:52 GMT",
+      "Date" : "Thu, 16 Mar 2023 08:09:20 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=208.110.102.77;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=187.190.190.225;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "20150655-d264-41f3-919a-baae2aaef209",
-      "x-ms-keyvault-service-version" : "1.9.538.1",
-      "Body" : "{\"id\":\"https://vigera-identity-keyvault.vault.azure.net/certificates/contacts\",\"contacts\":[{\"email\":\"first.last@gmail.com\",\"name\":\"name\",\"phone\":\"2323-31232\"}]}",
+      "Content-Length" : "155",
+      "x-ms-request-id" : "8b31e933-df32-443a-a59c-f97acbbc9e91",
+      "x-ms-keyvault-service-version" : "1.9.736.1",
+      "Body" : "{\"id\":\"https://azsdktests.vault.azure.net/certificates/contacts\",\"contacts\":[{\"email\":\"first.last@gmail.com\",\"name\":\"name\",\"phone\":\"000-000-0000\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

@@ -1170,13 +1170,12 @@ public class OpenTelemetryTracerTest {
     @Test
     public void setStatusErrorMessageNoDescription() {
         final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
-        openTelemetryTracer.end("error", null, span);
+        openTelemetryTracer.end("", null, span);
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
         assertEquals("", spanData.getStatus().getDescription());
     }
-
 
     @Test
     public void setStatusThrowable() {

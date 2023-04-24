@@ -17,11 +17,14 @@ public final class VnetValidationTestFailureProperties {
     private String testName;
 
     /*
-     * The details of what caused the failure, e.g. the blocking rule name,
-     * etc.
+     * The details of what caused the failure, e.g. the blocking rule name, etc.
      */
     @JsonProperty(value = "details")
     private String details;
+
+    /** Creates an instance of VnetValidationTestFailureProperties class. */
+    public VnetValidationTestFailureProperties() {
+    }
 
     /**
      * Get the testName property: The name of the test that failed.

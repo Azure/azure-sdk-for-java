@@ -34,7 +34,7 @@ public final class ResourceProvidersSapAvailabilityZoneDetailsWithResponseMockTe
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"availabilityZonePairs\":[{\"zoneA\":1586614318517999656,\"zoneB\":3005842301651128236},{\"zoneA\":6472514649626093953,\"zoneB\":7990032212619233729}]}";
+            "{\"availabilityZonePairs\":[{\"zoneA\":6361635428329654747,\"zoneB\":7784785853201585272},{\"zoneA\":3454564679932943672,\"zoneB\":5824526456552081192},{\"zoneA\":6174770568857951171,\"zoneB\":6143780622017155787}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,15 +66,15 @@ public final class ResourceProvidersSapAvailabilityZoneDetailsWithResponseMockTe
             manager
                 .resourceProviders()
                 .sapAvailabilityZoneDetailsWithResponse(
-                    "qplhlvnu",
+                    "emvvhm",
                     new SapAvailabilityZoneDetailsRequest()
-                        .withAppLocation("epzl")
-                        .withSapProduct(SapProductType.ECC)
-                        .withDatabaseType(SapDatabaseType.HANA),
+                        .withAppLocation("tdrjfutacoebj")
+                        .withSapProduct(SapProductType.OTHER)
+                        .withDatabaseType(SapDatabaseType.DB2),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(1586614318517999656L, response.availabilityZonePairs().get(0).zoneA());
-        Assertions.assertEquals(3005842301651128236L, response.availabilityZonePairs().get(0).zoneB());
+        Assertions.assertEquals(6361635428329654747L, response.availabilityZonePairs().get(0).zoneA());
+        Assertions.assertEquals(7784785853201585272L, response.availabilityZonePairs().get(0).zoneB());
     }
 }

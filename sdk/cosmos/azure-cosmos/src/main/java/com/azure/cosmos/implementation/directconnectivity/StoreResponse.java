@@ -35,6 +35,8 @@ public class StoreResponse {
     private int rntbdResponseLength;
     private final List<String> replicaStatusList;
 
+    private String faultInjectionRuleId;
+
     public StoreResponse(
             int status,
             Map<String, String> headerMap,
@@ -198,5 +200,13 @@ public class StoreResponse {
 
     public List<String> getReplicaStatusList() {
         return this.replicaStatusList;
+    }
+
+    public String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
+    }
+
+    public void setFaultInjectionRuleId(String faultInjectionRuleId) {
+        this.faultInjectionRuleId = faultInjectionRuleId;
     }
 }

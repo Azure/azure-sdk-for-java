@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceEnvironments ListUsages. */
 public final class AppServiceEnvironmentsListUsagesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_ListUsages.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListUsages.json
      */
     /**
      * Sample code: Get global usage metrics of an App Service Environment.
@@ -23,6 +21,6 @@ public final class AppServiceEnvironmentsListUsagesSamples {
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .listUsages("test-rg", "test-ase", null, Context.NONE);
+            .listUsages("test-rg", "test-ase", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -30,6 +30,15 @@ public final class WorkloadNetworkDnsServiceProvisioningState
     public static final WorkloadNetworkDnsServiceProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of WorkloadNetworkDnsServiceProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadNetworkDnsServiceProvisioningState() {
+    }
+
+    /**
      * Creates or finds a WorkloadNetworkDnsServiceProvisioningState from its string representation.
      *
      * @param name a name to look for.

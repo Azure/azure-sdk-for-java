@@ -35,7 +35,7 @@ public final class SapVirtualInstancesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"Prod\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"kxitmmqtgqqqxhr\"},\"status\":\"Running\",\"health\":\"Healthy\",\"state\":\"SoftwareInstallationPending\",\"provisioningState\":\"Creating\",\"errors\":{}},\"location\":\"okqdzfvaz\",\"tags\":{\"rqttbajlkatnw\":\"l\",\"kqqfk\":\"yiopi\"},\"id\":\"vscx\",\"name\":\"dmligovibrxk\",\"type\":\"mloazuru\"}]}";
+            "{\"value\":[{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"dvoqyt\"},\"status\":\"SoftShutdown\",\"health\":\"Unknown\",\"state\":\"DiscoveryInProgress\",\"provisioningState\":\"Deleting\",\"errors\":{}},\"location\":\"utp\",\"tags\":{\"qolj\":\"oxoismsksbpim\",\"qzdwlvwlyoup\":\"kcgxxlxsffgcvi\"},\"id\":\"gfbkjubdyh\",\"name\":\"kfm\",\"type\":\"nsgowzfttst\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,14 +64,13 @@ public final class SapVirtualInstancesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SapVirtualInstance> response =
-            manager.sapVirtualInstances().listByResourceGroup("lahb", com.azure.core.util.Context.NONE);
+            manager.sapVirtualInstances().listByResourceGroup("n", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("okqdzfvaz", response.iterator().next().location());
-        Assertions.assertEquals("l", response.iterator().next().tags().get("rqttbajlkatnw"));
+        Assertions.assertEquals("utp", response.iterator().next().location());
+        Assertions.assertEquals("oxoismsksbpim", response.iterator().next().tags().get("qolj"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals(SapEnvironmentType.PROD, response.iterator().next().environment());
-        Assertions.assertEquals(SapProductType.OTHER, response.iterator().next().sapProduct());
-        Assertions
-            .assertEquals("kxitmmqtgqqqxhr", response.iterator().next().managedResourceGroupConfiguration().name());
+        Assertions.assertEquals(SapEnvironmentType.NON_PROD, response.iterator().next().environment());
+        Assertions.assertEquals(SapProductType.ECC, response.iterator().next().sapProduct());
+        Assertions.assertEquals("dvoqyt", response.iterator().next().managedResourceGroupConfiguration().name());
     }
 }

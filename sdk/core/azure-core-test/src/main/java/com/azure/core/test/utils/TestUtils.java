@@ -3,8 +3,13 @@
 
 package com.azure.core.test.utils;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Objects;
@@ -13,6 +18,11 @@ import java.util.Objects;
  * Contains utility methods used for testing.
  */
 public final class TestUtils {
+
+    private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
+
+    private static final String RECORD_FOLDER = "session-records/";
+
     /**
      * Asserts that two arrays are equal.
      * <p>
@@ -80,6 +90,34 @@ public final class TestUtils {
             actual.get(actualArray);
 
             Assertions.assertArrayEquals(expectedArray, actualArray);
+        }
+    }
+
+    /**
+     * Get the {@link File} pointing to the folder where session records live.
+     * @return The session-records folder.
+     * @throws IllegalStateException if the session-records folder cannot be found.
+     */
+    public static File getRecordFolder() {
+        URL folderUrl = TestUtils.class.getClassLoader().getResource(RECORD_FOLDER);
+
+        if (folderUrl != null) {
+            // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
+            // URI-based constructor of File.
+            return new File(toURI(folderUrl, LOGGER));
+        }
+
+        throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
+            + "folder in '/src/test/resources' of the module (ex. for azure-core-test this is "
+            + "'/sdk/core/azure-core-test/src/test/resources/session-records').");
+    }
+
+
+    private static URI toURI(URL url, ClientLogger logger) {
+        try {
+            return url.toURI();
+        } catch (URISyntaxException ex) {
+            throw logger.logExceptionAsError(new IllegalStateException(ex));
         }
     }
 

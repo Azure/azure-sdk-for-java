@@ -23,6 +23,15 @@ public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<Virtu
     public static final VirtualNetworkPeeringLevel LOCAL_AND_REMOTE_NOT_IN_SYNC = fromString("LocalAndRemoteNotInSync");
 
     /**
+     * Creates a new instance of VirtualNetworkPeeringLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VirtualNetworkPeeringLevel() {
+    }
+
+    /**
      * Creates or finds a VirtualNetworkPeeringLevel from its string representation.
      *
      * @param name a name to look for.

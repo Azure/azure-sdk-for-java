@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks List. */
 public final class WorkloadNetworksListSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkloadNetworksListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().list("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

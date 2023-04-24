@@ -56,6 +56,8 @@ public final class StorageTargetOperationsResumeMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.storageTargetOperations().resume("wmewzsyy", "euzsoi", "judpfrxt", com.azure.core.util.Context.NONE);
+        manager
+            .storageTargetOperations()
+            .resume("sjabibs", "stawfsdjpvkv", "bjxbkzbzk", com.azure.core.util.Context.NONE);
     }
 }

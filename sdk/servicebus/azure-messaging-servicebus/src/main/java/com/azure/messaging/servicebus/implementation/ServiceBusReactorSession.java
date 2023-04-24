@@ -209,7 +209,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 receiverSettleMode)
                 .cast(ServiceBusReceiveLink.class));
         } else {
-            return createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
+            return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
                 null, senderSettleMode, receiverSettleMode).cast(ServiceBusReceiveLink.class);
         }
     }

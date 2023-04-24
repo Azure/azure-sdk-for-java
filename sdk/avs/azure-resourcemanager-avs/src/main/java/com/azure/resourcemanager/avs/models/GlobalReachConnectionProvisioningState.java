@@ -24,6 +24,15 @@ public final class GlobalReachConnectionProvisioningState
     public static final GlobalReachConnectionProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of GlobalReachConnectionProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GlobalReachConnectionProvisioningState() {
+    }
+
+    /**
      * Creates or finds a GlobalReachConnectionProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -30,4 +30,13 @@ public final class Utility {
         throw LOGGER.logExceptionAsError(
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
     }
+
+    /**
+     * Returns toString or null if object passed is null.
+     * @param obj the object
+     * @return Returns toString or null if object passed is null.
+     */
+    public static String toStringOrNull(Object obj) {
+        return obj != null ? obj.toString() : null;
+    }
 }

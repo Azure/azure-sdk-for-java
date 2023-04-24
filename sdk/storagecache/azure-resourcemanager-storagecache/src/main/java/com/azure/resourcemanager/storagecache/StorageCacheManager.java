@@ -24,19 +24,23 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.fluent.StorageCacheManagementClient;
+import com.azure.resourcemanager.storagecache.implementation.AmlFilesystemsImpl;
 import com.azure.resourcemanager.storagecache.implementation.AscOperationsImpl;
 import com.azure.resourcemanager.storagecache.implementation.AscUsagesImpl;
 import com.azure.resourcemanager.storagecache.implementation.CachesImpl;
 import com.azure.resourcemanager.storagecache.implementation.OperationsImpl;
+import com.azure.resourcemanager.storagecache.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.storagecache.implementation.SkusImpl;
 import com.azure.resourcemanager.storagecache.implementation.StorageCacheManagementClientBuilder;
 import com.azure.resourcemanager.storagecache.implementation.StorageTargetOperationsImpl;
 import com.azure.resourcemanager.storagecache.implementation.StorageTargetsImpl;
 import com.azure.resourcemanager.storagecache.implementation.UsageModelsImpl;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystems;
 import com.azure.resourcemanager.storagecache.models.AscOperations;
 import com.azure.resourcemanager.storagecache.models.AscUsages;
 import com.azure.resourcemanager.storagecache.models.Caches;
 import com.azure.resourcemanager.storagecache.models.Operations;
+import com.azure.resourcemanager.storagecache.models.ResourceProviders;
 import com.azure.resourcemanager.storagecache.models.Skus;
 import com.azure.resourcemanager.storagecache.models.StorageTargetOperations;
 import com.azure.resourcemanager.storagecache.models.StorageTargets;
@@ -69,6 +73,10 @@ public final class StorageCacheManager {
     private StorageTargets storageTargets;
 
     private StorageTargetOperations storageTargetOperations;
+
+    private AmlFilesystems amlFilesystems;
+
+    private ResourceProviders resourceProviders;
 
     private final StorageCacheManagementClient clientObject;
 
@@ -235,7 +243,7 @@ public final class StorageCacheManager {
                 .append("-")
                 .append("com.azure.resourcemanager.storagecache")
                 .append("/")
-                .append("1.0.0-beta.7");
+                .append("1.0.0-beta.8");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -387,6 +395,30 @@ public final class StorageCacheManager {
                 new StorageTargetOperationsImpl(clientObject.getStorageTargetOperations(), this);
         }
         return storageTargetOperations;
+    }
+
+    /**
+     * Gets the resource collection API of AmlFilesystems. It manages AmlFilesystem.
+     *
+     * @return Resource collection API of AmlFilesystems.
+     */
+    public AmlFilesystems amlFilesystems() {
+        if (this.amlFilesystems == null) {
+            this.amlFilesystems = new AmlFilesystemsImpl(clientObject.getAmlFilesystems(), this);
+        }
+        return amlFilesystems;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceProviders.
+     *
+     * @return Resource collection API of ResourceProviders.
+     */
+    public ResourceProviders resourceProviders() {
+        if (this.resourceProviders == null) {
+            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
+        }
+        return resourceProviders;
     }
 
     /**

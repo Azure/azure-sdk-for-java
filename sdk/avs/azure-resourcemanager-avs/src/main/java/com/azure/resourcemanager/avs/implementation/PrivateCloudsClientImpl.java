@@ -67,7 +67,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientPrivateClou")
-    private interface PrivateCloudsService {
+    public interface PrivateCloudsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds")
         @ExpectedResponses({200})
@@ -840,7 +840,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud).getSyncPoller();
     }
 
     /**
@@ -858,7 +858,9 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginCreateOrUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudInner privateCloud, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, privateCloud, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1111,7 +1113,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
-        return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).getSyncPoller();
     }
 
     /**
@@ -1129,7 +1131,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(
         String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
-        return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).getSyncPoller();
     }
 
     /**
@@ -1354,7 +1356,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -1371,7 +1373,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -1590,7 +1592,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
         String resourceGroupName, String privateCloudName) {
-        return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
+        return this.beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -1607,7 +1609,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateVcenterPassword(
         String resourceGroupName, String privateCloudName, Context context) {
-        return beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
+        return this.beginRotateVcenterPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -1826,7 +1828,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
         String resourceGroupName, String privateCloudName) {
-        return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
+        return this.beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -1843,7 +1845,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateNsxtPassword(
         String resourceGroupName, String privateCloudName, Context context) {
-        return beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
+        return this.beginRotateNsxtPasswordAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
     }
 
     /**

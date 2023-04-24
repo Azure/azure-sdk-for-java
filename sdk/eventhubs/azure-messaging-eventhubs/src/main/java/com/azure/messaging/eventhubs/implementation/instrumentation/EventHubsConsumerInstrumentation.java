@@ -5,15 +5,18 @@ package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
-import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.SpanKind;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME;
 
 public class EventHubsConsumerInstrumentation {
     private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
@@ -39,7 +42,14 @@ public class EventHubsConsumerInstrumentation {
         Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(), ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
         Context child = parent;
         if (tracer.isEnabled() && !isSync) {
-            child = tracer.startSpan(spanName, tracer.setParentAndAttributes(message, enqueuedTime, parent), ProcessKind.PROCESS);
+            StartSpanOptions options = tracer.createStartOption(SpanKind.CONSUMER, EventHubsTracer.OperationName.PROCESS)
+                .setAttribute(MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME, enqueuedTime.atOffset(ZoneOffset.UTC).toEpochSecond());
+
+            if (message.getApplicationProperties() != null) {
+                options.setRemoteParent(tracer.extractContext(message.getApplicationProperties().getValue()));
+            }
+
+            child = tracer.startSpan(spanName, options, parent);
         }
 
         meter.reportReceive(enqueuedTime, partitionId, child);

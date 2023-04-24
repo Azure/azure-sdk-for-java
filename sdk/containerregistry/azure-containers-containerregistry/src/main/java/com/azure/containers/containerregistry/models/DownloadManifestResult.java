@@ -2,26 +2,28 @@
 // Licensed under the MIT License.
 package com.azure.containers.containerregistry.models;
 
+import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * The result from downloading an OCI manifest from the registry.
  */
 public class DownloadManifestResult {
-    private final String digest;
-    private final OciManifest manifest;
-    private final BinaryData manifestStream;
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadManifestResult.class);
+    static {
+        ConstructorAccessors.setDownloadManifestResultAccessor(DownloadManifestResult::new);
+    }
 
-    /**
-     * Instantiate an instance of the DownloadManifestResult object.
-     * @param digest The digest of the manifest.
-     * @param manifest The OCIManifest object.
-     * @param manifestStream The manifest stream.
-     */
-    public DownloadManifestResult(String digest, OciManifest manifest, BinaryData manifestStream) {
+    private final String digest;
+    private OciImageManifest ociManifest;
+    private final ManifestMediaType mediaType;
+    private final BinaryData rawData;
+
+    DownloadManifestResult(String digest, ManifestMediaType mediaType, BinaryData rawData) {
         this.digest = digest;
-        this.manifest = manifest;
-        this.manifestStream = manifestStream;
+        this.mediaType = mediaType;
+        this.rawData = rawData;
     }
 
     /**
@@ -34,17 +36,38 @@ public class DownloadManifestResult {
 
     /**
      * The OCI manifest that was downloaded.
-     * @return The OCIManifest object.
+     * @return The {@link OciImageManifest} instance.
+     * @throws IllegalStateException thrown when attempting to get {@link OciImageManifest} from incompatible media type.
      */
-    public OciManifest getManifest() {
-        return this.manifest;
+    public OciImageManifest asOciManifest() {
+        if (ociManifest != null) {
+            return ociManifest;
+        }
+
+        if (!ManifestMediaType.DOCKER_MANIFEST.equals(mediaType)
+            && !ManifestMediaType.OCI_MANIFEST.equals(mediaType)) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                String.format("Cannot convert manifest with %s media type to OciImageManifest", mediaType)));
+        }
+
+        ociManifest = rawData.toObject(OciImageManifest.class);
+
+        return ociManifest;
     }
 
     /**
      * The manifest stream that was downloaded.
      * @return The associated manifest stream.
      */
-    public BinaryData getManifestStream() {
-        return this.manifestStream;
+    public BinaryData getContent() {
+        return this.rawData;
+    }
+
+    /**
+     * Get manifest media type.
+     * @return Instance of {@link ManifestMediaType}
+     */
+    public ManifestMediaType getMediaType() {
+        return mediaType;
     }
 }

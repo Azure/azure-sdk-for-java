@@ -15,7 +15,7 @@ public interface VolumeGroups {
      *
      * <p>List all volume groups for given account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface VolumeGroups {
      *
      * <p>List all volume groups for given account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,22 +44,7 @@ public interface VolumeGroups {
      *
      * <p>Get details of the specified volume group.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param volumeGroupName The name of the volumeGroup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
-     */
-    VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName);
-
-    /**
-     * Describe a Volume Group
-     *
-     * <p>Get details of the specified volume group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.
@@ -72,11 +57,26 @@ public interface VolumeGroups {
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param volumeGroupName The name of the volumeGroup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified volume group.
+     */
+    VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName);
+
+    /**
      * Delete a volume group
      *
      * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +90,7 @@ public interface VolumeGroups {
      *
      * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param volumeGroupName The name of the volumeGroup.
      * @param context The context to associate with this operation.

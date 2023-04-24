@@ -22,7 +22,7 @@ public final class CacheActiveDirectorySettingsCredentials {
      * Plain text password of the Active Directory domain administrator. This value is stored encrypted and not
      * returned on response.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /** Creates an instance of CacheActiveDirectorySettingsCredentials class. */
@@ -84,12 +84,6 @@ public final class CacheActiveDirectorySettingsCredentials {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model CacheActiveDirectorySettingsCredentials"));
-        }
-        if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model CacheActiveDirectorySettingsCredentials"));
         }
     }
 

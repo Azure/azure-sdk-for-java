@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZone;
 import java.util.Arrays;
 
@@ -20,7 +19,10 @@ public final class WorkloadNetworksUpdateDnsZoneSamples {
      */
     public static void workloadNetworksUpdateDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDnsZone resource =
-            manager.workloadNetworks().getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withDisplayName("dnsZone1")

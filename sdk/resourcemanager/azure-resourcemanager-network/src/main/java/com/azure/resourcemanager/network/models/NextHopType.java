@@ -29,6 +29,15 @@ public final class NextHopType extends ExpandableStringEnum<NextHopType> {
     public static final NextHopType NONE = fromString("None");
 
     /**
+     * Creates a new instance of NextHopType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NextHopType() {
+    }
+
+    /**
      * Creates or finds a NextHopType from its string representation.
      *
      * @param name a name to look for.

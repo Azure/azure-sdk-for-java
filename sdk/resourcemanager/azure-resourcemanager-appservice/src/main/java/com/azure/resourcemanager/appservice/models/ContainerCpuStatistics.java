@@ -34,6 +34,10 @@ public final class ContainerCpuStatistics {
     @JsonProperty(value = "throttlingData")
     private ContainerThrottlingData throttlingData;
 
+    /** Creates an instance of ContainerCpuStatistics class. */
+    public ContainerCpuStatistics() {
+    }
+
     /**
      * Get the cpuUsage property: The cpuUsage property.
      *

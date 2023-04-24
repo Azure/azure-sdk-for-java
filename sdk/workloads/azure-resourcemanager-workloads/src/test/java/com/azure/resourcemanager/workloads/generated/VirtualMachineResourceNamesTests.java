@@ -18,41 +18,41 @@ public final class VirtualMachineResourceNamesTests {
         VirtualMachineResourceNames model =
             BinaryData
                 .fromString(
-                    "{\"vmName\":\"juetaebur\",\"hostName\":\"dmovsm\",\"networkInterfaces\":[{\"networkInterfaceName\":\"ab\"},{\"networkInterfaceName\":\"oefki\"}],\"osDiskName\":\"vtpuqujmqlgk\",\"dataDiskNames\":{\"bjcntujitc\":[\"doaon\"],\"wwa\":[\"df\"],\"pzfoqoui\":[\"kojvd\"]}}")
+                    "{\"vmName\":\"l\",\"hostName\":\"ab\",\"networkInterfaces\":[{\"networkInterfaceName\":\"fkifr\"},{\"networkInterfaceName\":\"puqujmqlgkfbtn\"}],\"osDiskName\":\"aongbj\",\"dataDiskNames\":{\"ybxarzgszu\":[\"jitcjedftwwaez\",\"ojvdcpzfoqo\",\"i\"],\"szzcmrvexztv\":[\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\",\"oegokdwbwh\"],\"lmnguxaw\":[\"qgsfraoyzkoow\"]}}")
                 .toObject(VirtualMachineResourceNames.class);
-        Assertions.assertEquals("juetaebur", model.vmName());
-        Assertions.assertEquals("dmovsm", model.hostname());
-        Assertions.assertEquals("ab", model.networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("vtpuqujmqlgk", model.osDiskName());
-        Assertions.assertEquals("doaon", model.dataDiskNames().get("bjcntujitc").get(0));
+        Assertions.assertEquals("l", model.vmName());
+        Assertions.assertEquals("ab", model.hostname());
+        Assertions.assertEquals("fkifr", model.networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("aongbj", model.osDiskName());
+        Assertions.assertEquals("jitcjedftwwaez", model.dataDiskNames().get("ybxarzgszu").get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineResourceNames model =
             new VirtualMachineResourceNames()
-                .withVmName("juetaebur")
-                .withHostname("dmovsm")
+                .withVmName("l")
+                .withHostname("ab")
                 .withNetworkInterfaces(
                     Arrays
                         .asList(
-                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("ab"),
-                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("oefki")))
-                .withOsDiskName("vtpuqujmqlgk")
+                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("fkifr"),
+                            new NetworkInterfaceResourceNames().withNetworkInterfaceName("puqujmqlgkfbtn")))
+                .withOsDiskName("aongbj")
                 .withDataDiskNames(
                     mapOf(
-                        "bjcntujitc",
-                        Arrays.asList("doaon"),
-                        "wwa",
-                        Arrays.asList("df"),
-                        "pzfoqoui",
-                        Arrays.asList("kojvd")));
+                        "ybxarzgszu",
+                        Arrays.asList("jitcjedftwwaez", "ojvdcpzfoqo", "i"),
+                        "szzcmrvexztv",
+                        Arrays.asList("x", "iqopidoamciod", "khazxkhnzbonlwn", "oegokdwbwh"),
+                        "lmnguxaw",
+                        Arrays.asList("qgsfraoyzkoow")));
         model = BinaryData.fromObject(model).toObject(VirtualMachineResourceNames.class);
-        Assertions.assertEquals("juetaebur", model.vmName());
-        Assertions.assertEquals("dmovsm", model.hostname());
-        Assertions.assertEquals("ab", model.networkInterfaces().get(0).networkInterfaceName());
-        Assertions.assertEquals("vtpuqujmqlgk", model.osDiskName());
-        Assertions.assertEquals("doaon", model.dataDiskNames().get("bjcntujitc").get(0));
+        Assertions.assertEquals("l", model.vmName());
+        Assertions.assertEquals("ab", model.hostname());
+        Assertions.assertEquals("fkifr", model.networkInterfaces().get(0).networkInterfaceName());
+        Assertions.assertEquals("aongbj", model.osDiskName());
+        Assertions.assertEquals("jitcjedftwwaez", model.dataDiskNames().get("ybxarzgszu").get(0));
     }
 
     @SuppressWarnings("unchecked")

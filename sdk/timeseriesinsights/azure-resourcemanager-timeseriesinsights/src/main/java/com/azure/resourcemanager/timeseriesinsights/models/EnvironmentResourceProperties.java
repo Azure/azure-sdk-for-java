@@ -5,37 +5,36 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Properties of the environment. */
 @Immutable
 public class EnvironmentResourceProperties extends ResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentResourceProperties.class);
-
     /*
-     * An id used to access the environment data, e.g. to query the
-     * environment's events or upload reference data for the environment.
+     * An id used to access the environment data, e.g. to query the environment's events or upload reference data for
+     * the environment.
      */
     @JsonProperty(value = "dataAccessId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID dataAccessId;
 
     /*
-     * The fully qualified domain name used to access the environment data,
-     * e.g. to query the environment's events or upload reference data for the
-     * environment.
+     * The fully qualified domain name used to access the environment data, e.g. to query the environment's events or
+     * upload reference data for the environment.
      */
     @JsonProperty(value = "dataAccessFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String dataAccessFqdn;
 
     /*
-     * An object that represents the status of the environment, and its
-     * internal state in the Time Series Insights service.
+     * An object that represents the status of the environment, and its internal state in the Time Series Insights
+     * service.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EnvironmentStatus status;
+
+    /** Creates an instance of EnvironmentResourceProperties class. */
+    public EnvironmentResourceProperties() {
+    }
 
     /**
      * Get the dataAccessId property: An id used to access the environment data, e.g. to query the environment's events

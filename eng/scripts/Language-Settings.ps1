@@ -741,9 +741,9 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
 }
 
 function Get-java-EmitterName() {
-  return "@azure-tools/cadl-java"
+  return "@azure-tools/typespec-java"
 }
 
 function Get-java-EmitterAdditionalOptions([string]$projectDirectory) {
-  return "--option @azure-tools/cadl-java.emitter-output-dir=$projectDirectory/"
+  return "--option @azure-tools/typespec-java.emitter-output-dir=$projectDirectory/"
 }

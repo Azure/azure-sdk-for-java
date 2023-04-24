@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for SapLandscapeMonitor Create. */
 public final class SapLandscapeMonitorCreateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_Create.json
+     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_Create.json
      */
     /**
      * Sample code: Create for SAP Landscape monitor Dashboard.

@@ -29,6 +29,15 @@ public final class RouteMapActionType extends ExpandableStringEnum<RouteMapActio
     public static final RouteMapActionType DROP = fromString("Drop");
 
     /**
+     * Creates a new instance of RouteMapActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RouteMapActionType() {
+    }
+
+    /**
      * Creates or finds a RouteMapActionType from its string representation.
      *
      * @param name a name to look for.

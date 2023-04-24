@@ -6,7 +6,6 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,15 +25,16 @@ import java.util.Map;
 })
 @Fluent
 public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentCreateOrUpdateParameters.class);
-
     /*
-     * The sku determines the type of environment, either Gen1 (S1 or S2) or
-     * Gen2 (L1). For Gen1 environments the sku determines the capacity of the
-     * environment, the ingress rate, and the billing rate.
+     * The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1 environments the sku
+     * determines the capacity of the environment, the ingress rate, and the billing rate.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
+
+    /** Creates an instance of EnvironmentCreateOrUpdateParameters class. */
+    public EnvironmentCreateOrUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The sku determines the type of environment, either Gen1 (S1 or S2) or Gen2 (L1). For Gen1
@@ -81,7 +81,7 @@ public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
     public void validate() {
         super.validate();
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sku in model EnvironmentCreateOrUpdateParameters"));
@@ -89,4 +89,6 @@ public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCreateOrUpdateParameters.class);
 }

@@ -11,7 +11,6 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
 import com.azure.ai.textanalytics.implementation.models.AreaResolution;
 import com.azure.ai.textanalytics.implementation.models.Association;
 import com.azure.ai.textanalytics.implementation.models.BaseResolution;
-import com.azure.ai.textanalytics.implementation.models.BooleanResolution;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
 import com.azure.ai.textanalytics.implementation.models.ClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.Conditionality;
@@ -782,12 +781,6 @@ public final class Utility {
             CurrencyResolutionPropertiesHelper.setUnit(currencyResolution, currencyResolutionImpl.getUnit());
             CurrencyResolutionPropertiesHelper.setValue(currencyResolution, currencyResolutionImpl.getValue());
             return currencyResolution;
-        } else if (resolution instanceof BooleanResolution) {
-            BooleanResolution booleanResolutionImpl = (BooleanResolution) resolution;
-            com.azure.ai.textanalytics.models.BooleanResolution booleanResolution =
-                new com.azure.ai.textanalytics.models.BooleanResolution();
-            BooleanResolutionPropertiesHelper.setValue(booleanResolution, booleanResolutionImpl.isValue());
-            return booleanResolution;
         } else if (resolution instanceof DateTimeResolution) {
             DateTimeResolution dateTimeResolutionImpl = (DateTimeResolution) resolution;
             com.azure.ai.textanalytics.models.DateTimeResolution dateTimeResolution

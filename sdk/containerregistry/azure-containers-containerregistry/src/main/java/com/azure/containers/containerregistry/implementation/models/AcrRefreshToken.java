@@ -60,21 +60,19 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
     public static AcrRefreshToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    String refreshToken = null;
+                    AcrRefreshToken deserializedAcrRefreshToken = new AcrRefreshToken();
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
                         if ("refresh_token".equals(fieldName)) {
-                            refreshToken = reader.getString();
+                            deserializedAcrRefreshToken.refreshToken = reader.getString();
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    AcrRefreshToken deserializedValue = new AcrRefreshToken();
-                    deserializedValue.refreshToken = refreshToken;
 
-                    return deserializedValue;
+                    return deserializedAcrRefreshToken;
                 });
     }
 }

@@ -130,26 +130,25 @@ class OpenTelemetryUtils {
     }
 
     /**
-     * Parses an OpenTelemetry Status from AMQP Error Condition.
+     * Parses an OpenTelemetry status from error description.
      *
      * @param span the span to set the status for.
-     * @param statusMessage description for this error condition.
+     * @param statusMessage description for this error condition. Any non-null {@code statusMessage} indicates an error.
+     *                      Pass empty string to create error status without description.
      * @param throwable the error occurred during response transmission (optional).
      * @return the corresponding OpenTelemetry {@link Span}.
      */
-    public static Span setError(Span span, String statusMessage, Throwable throwable) {
+    static Span setError(Span span, String statusMessage, Throwable throwable) {
         if (throwable != null) {
             span.recordException(throwable);
             return span.setStatus(StatusCode.ERROR, statusMessage);
         }
 
-        if (statusMessage != null) {
-            if ("error".equals(statusMessage)) {
-                return span.setStatus(StatusCode.ERROR);
-            }
-            return span.setStatus(StatusCode.ERROR, statusMessage);
+        // "success" is needed for back compat with older Event Hubs and Service Bus, don't use it.
+        if (statusMessage == null || "success".equals(statusMessage)) {
+            return span;
         }
 
-        return span;
+        return span.setStatus(StatusCode.ERROR, statusMessage);
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.netapp.models.Snapshot;
@@ -35,6 +36,10 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
 
     public String location() {
         return this.innerModel().location();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String snapshotId() {

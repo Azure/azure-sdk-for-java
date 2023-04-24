@@ -21,7 +21,6 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 
@@ -568,7 +567,7 @@ public final class EventHubBufferedProducerClientBuilder implements
             ? EventHubClientBuilder.DEFAULT_RETRY
             : retryOptions;
 
-        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options, EventHubsTracer.getDefaultTracer());
+        return new EventHubBufferedProducerAsyncClient(builder, clientOptions, partitionResolver, options, builder.createTracer());
     }
 
     /**

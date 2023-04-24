@@ -96,6 +96,12 @@ public final class VirtualNetworkPropertiesFormat {
     @JsonProperty(value = "ipAllocations")
     private List<SubResource> ipAllocations;
 
+    /*
+     * A collection of references to flow log resources.
+     */
+    @JsonProperty(value = "flowLogs", access = JsonProperty.Access.WRITE_ONLY)
+    private List<FlowLogInner> flowLogs;
+
     /** Creates an instance of VirtualNetworkPropertiesFormat class. */
     public VirtualNetworkPropertiesFormat() {
     }
@@ -352,6 +358,15 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
+     * Get the flowLogs property: A collection of references to flow log resources.
+     *
+     * @return the flowLogs value.
+     */
+    public List<FlowLogInner> flowLogs() {
+        return this.flowLogs;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -374,6 +389,9 @@ public final class VirtualNetworkPropertiesFormat {
         }
         if (encryption() != null) {
             encryption().validate();
+        }
+        if (flowLogs() != null) {
+            flowLogs().forEach(e -> e.validate());
         }
     }
 }

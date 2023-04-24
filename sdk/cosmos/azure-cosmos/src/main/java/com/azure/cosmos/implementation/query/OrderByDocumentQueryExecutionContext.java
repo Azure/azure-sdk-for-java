@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
@@ -57,7 +58,6 @@ public class OrderByDocumentQueryExecutionContext
     private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
     private final static String True = "true";
     private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
-    private final String collectionRid;
     private final OrderbyRowComparer<Document> consumeComparer;
     private final RequestChargeTracker tracker;
     private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
@@ -74,12 +74,10 @@ public class OrderByDocumentQueryExecutionContext
             String resourceLink,
             String rewrittenQuery,
             OrderbyRowComparer<Document> consumeComparer,
-            String collectionRid,
             UUID correlatedActivityId,
             boolean hasSelectValue) {
         super(diagnosticsClientContext, client, resourceTypeEnum, Document.class, query, cosmosQueryRequestOptions,
             resourceLink, rewrittenQuery, correlatedActivityId, hasSelectValue);
-        this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
         this.tracker = new RequestChargeTracker();
         this.queryMetricMap = new ConcurrentHashMap<>();
@@ -88,9 +86,10 @@ public class OrderByDocumentQueryExecutionContext
     }
 
     public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
-            DiagnosticsClientContext diagnosticsClientContext,
-            IDocumentQueryClient client,
-            PipelinedDocumentQueryParams<Document> initParams) {
+        DiagnosticsClientContext diagnosticsClientContext,
+        IDocumentQueryClient client,
+        PipelinedDocumentQueryParams<Document> initParams,
+        DocumentCollection collection) {
 
         QueryInfo queryInfo = initParams.getQueryInfo();
 
@@ -102,7 +101,6 @@ public class OrderByDocumentQueryExecutionContext
                 initParams.getResourceLink(),
                 initParams.getQueryInfo().getRewrittenQuery(),
                 new OrderbyRowComparer<>(queryInfo.getOrderBy()),
-                initParams.getCollectionRid(),
                 initParams.getCorrelatedActivityId(),
                 queryInfo.hasSelectValue());
 
@@ -114,7 +112,8 @@ public class OrderByDocumentQueryExecutionContext
                     initParams.getQueryInfo().getOrderBy(),
                     initParams.getQueryInfo().getOrderByExpressions(),
                     initParams.getInitialPageSize(),
-                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()));
+                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(initParams.getCosmosQueryRequestOptions()),
+                collection);
 
             return Flux.just(context);
         } catch (CosmosException dce) {
@@ -126,7 +125,8 @@ public class OrderByDocumentQueryExecutionContext
         List<FeedRangeEpkImpl> feedRanges, List<SortOrder> sortOrders,
         Collection<String> orderByExpressions,
         int initialPageSize,
-        String continuationToken) throws CosmosException {
+        String continuationToken,
+        DocumentCollection collection) throws CosmosException {
         if (continuationToken == null) {
             // First iteration so use null continuation tokens and "true" filters
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
@@ -134,7 +134,7 @@ public class OrderByDocumentQueryExecutionContext
                 partitionKeyRangeToContinuationToken.put(feedRangeEpk,
                         null);
             }
-            super.initialize(collectionRid,
+            super.initialize(collection,
                     partitionKeyRangeToContinuationToken,
                     initialPageSize,
                     new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder, True),
@@ -182,11 +182,11 @@ public class OrderByDocumentQueryExecutionContext
                 PartitionMapper.getPartitionMapping(feedRanges, Collections.singletonList(orderByContinuationToken));
 
             initializeWithTokenAndFilter(partitionMapping.getMappingLeftOfTarget(), initialPageSize,
-                                         formattedFilterInfo.filterForRangesLeftOfTheTargetRange);
+                                         formattedFilterInfo.filterForRangesLeftOfTheTargetRange, collection);
             initializeWithTokenAndFilter(partitionMapping.getTargetMapping(), initialPageSize,
-                                         formattedFilterInfo.filterForTargetRange);
+                                         formattedFilterInfo.filterForTargetRange, collection);
             initializeWithTokenAndFilter(partitionMapping.getMappingRightOfTarget(), initialPageSize,
-                                         formattedFilterInfo.filterForRangesRightOfTheTargetRange);
+                                         formattedFilterInfo.filterForRangesRightOfTheTargetRange, collection);
         }
 
         orderByObservable = OrderByUtils.orderedMerge(
@@ -200,7 +200,8 @@ public class OrderByDocumentQueryExecutionContext
 
     private void initializeWithTokenAndFilter(Map<FeedRangeEpkImpl, OrderByContinuationToken> rangeToTokenMapping,
                                               int initialPageSize,
-                                              String filter) {
+                                              String filter,
+                                              DocumentCollection collection) {
         for (Map.Entry<FeedRangeEpkImpl, OrderByContinuationToken> entry :
             rangeToTokenMapping.entrySet()) {
             //  only put the entry if the value is not null
@@ -209,7 +210,7 @@ public class OrderByDocumentQueryExecutionContext
             }
             Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<FeedRangeEpkImpl, String>();
             partitionKeyRangeToContinuationToken.put(entry.getKey(), null);
-            super.initialize(collectionRid,
+            super.initialize(collection,
                              partitionKeyRangeToContinuationToken,
                              initialPageSize,
                              new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder,

@@ -22,6 +22,10 @@ public final class HybridConnectionKeyProperties {
     @JsonProperty(value = "sendKeyValue", access = JsonProperty.Access.WRITE_ONLY)
     private String sendKeyValue;
 
+    /** Creates an instance of HybridConnectionKeyProperties class. */
+    public HybridConnectionKeyProperties() {
+    }
+
     /**
      * Get the sendKeyName property: The name of the send key.
      *

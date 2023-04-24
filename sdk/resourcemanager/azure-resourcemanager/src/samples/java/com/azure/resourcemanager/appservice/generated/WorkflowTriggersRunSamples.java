@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkflowTriggers Run. */
 public final class WorkflowTriggersRunSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/WorkflowTriggers_Run.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowTriggers_Run.json
      */
     /**
      * Sample code: Run a workflow trigger.
@@ -22,6 +20,6 @@ public final class WorkflowTriggersRunSamples {
             .manager()
             .serviceClient()
             .getWorkflowTriggers()
-            .run("test-resource-group", "test-name", "test-workflow", "manual", Context.NONE);
+            .run("test-resource-group", "test-name", "test-workflow", "recurrence", com.azure.core.util.Context.NONE);
     }
 }

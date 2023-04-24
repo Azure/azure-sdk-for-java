@@ -16,23 +16,23 @@ public final class SubRequestTests {
         SubRequest model =
             BinaryData
                 .fromString(
-                    "{\"limit\":80294620,\"name\":{\"value\":\"or\",\"localizedValue\":\"lt\"},\"resourceType\":\"mncwsobqwcsdb\",\"unit\":\"dcfhucqdpf\",\"provisioningState\":\"Succeeded\",\"message\":\"sbjjc\",\"subRequestId\":\"vxb\"}")
+                    "{\"limit\":1110186498,\"name\":{\"value\":\"kjj\",\"localizedValue\":\"xrbuukzclew\"},\"resourceType\":\"mlwpazt\",\"unit\":\"ofncckwyfzqwhxxb\",\"provisioningState\":\"Failed\",\"message\":\"xzfe\",\"subRequestId\":\"tpp\"}")
                 .toObject(SubRequest.class);
-        Assertions.assertEquals("or", model.name().value());
-        Assertions.assertEquals("dcfhucqdpf", model.unit());
-        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.provisioningState());
+        Assertions.assertEquals("kjj", model.name().value());
+        Assertions.assertEquals("ofncckwyfzqwhxxb", model.unit());
+        Assertions.assertEquals(QuotaRequestState.FAILED, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubRequest model =
             new SubRequest()
-                .withName(new ResourceName().withValue("or"))
-                .withUnit("dcfhucqdpf")
-                .withProvisioningState(QuotaRequestState.SUCCEEDED);
+                .withName(new ResourceName().withValue("kjj"))
+                .withUnit("ofncckwyfzqwhxxb")
+                .withProvisioningState(QuotaRequestState.FAILED);
         model = BinaryData.fromObject(model).toObject(SubRequest.class);
-        Assertions.assertEquals("or", model.name().value());
-        Assertions.assertEquals("dcfhucqdpf", model.unit());
-        Assertions.assertEquals(QuotaRequestState.SUCCEEDED, model.provisioningState());
+        Assertions.assertEquals("kjj", model.name().value());
+        Assertions.assertEquals("ofncckwyfzqwhxxb", model.unit());
+        Assertions.assertEquals(QuotaRequestState.FAILED, model.provisioningState());
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Delete. */
 public final class DatastoresDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class DatastoresDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void datastoresDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.datastores().delete("group1", "cloud1", "cluster1", "datastore1", Context.NONE);
+        manager.datastores().delete("group1", "cloud1", "cluster1", "datastore1", com.azure.core.util.Context.NONE);
     }
 }

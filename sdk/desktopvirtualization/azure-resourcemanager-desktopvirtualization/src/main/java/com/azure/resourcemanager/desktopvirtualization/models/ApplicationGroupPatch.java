@@ -27,6 +27,10 @@ public final class ApplicationGroupPatch extends ProxyResource {
     @JsonProperty(value = "properties")
     private ApplicationGroupPatchProperties innerProperties;
 
+    /** Creates an instance of ApplicationGroupPatch class. */
+    public ApplicationGroupPatch() {
+    }
+
     /**
      * Get the tags property: tags to be updated.
      *

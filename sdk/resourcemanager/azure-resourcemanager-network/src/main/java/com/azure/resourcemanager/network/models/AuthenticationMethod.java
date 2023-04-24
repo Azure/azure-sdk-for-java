@@ -17,6 +17,15 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
     public static final AuthenticationMethod EAPMSCHAPV2 = fromString("EAPMSCHAPv2");
 
     /**
+     * Creates a new instance of AuthenticationMethod value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationMethod() {
+    }
+
+    /**
      * Creates or finds a AuthenticationMethod from its string representation.
      *
      * @param name a name to look for.

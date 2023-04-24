@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Domains Delete. */
 public final class DomainsDeleteSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/delete.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-03-01-preview/examples/domains/delete.json
      */
     /**
      * Sample code: Delete Domains resource.
@@ -17,6 +15,8 @@ public final class DomainsDeleteSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void deleteDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().delete("MyResourceGroup", "MyEmailServiceResource", "mydomain.com", Context.NONE);
+        manager
+            .domains()
+            .delete("MyResourceGroup", "MyEmailServiceResource", "mydomain.com", com.azure.core.util.Context.NONE);
     }
 }
