@@ -78,9 +78,6 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
                 }
             }
 
-            if (partitionsNeededForMe <= 0)
-                return new ArrayList<Lease>();
-
             return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
         }
 
