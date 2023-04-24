@@ -23,6 +23,8 @@ public final class BestWorkerMode extends DistributionMode {
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
+     * WebhookRule: A rule providing a binding to a webserver following
+     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "scoringRule")
     private RouterRule scoringRule;
@@ -39,7 +41,8 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the scoringRule value.
      */
@@ -52,7 +55,8 @@ public final class BestWorkerMode extends DistributionMode {
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @param scoringRule the scoringRule value to set.
      * @return the BestWorkerMode object itself.

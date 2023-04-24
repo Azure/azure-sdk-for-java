@@ -1,14 +1,12 @@
 ## Release History
 
-### 1.0.0-beta.3 (Unreleased)
+### 1.0.0-beta.3 (2023-04-21)
 
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+* Added `getHitCountDetails` in `FaultInjectionRule` - See [PR 34581](https://github.com/Azure/azure-sdk-for-java/pull/34581)
 
 #### Other Changes
+* Added `faultInjectionEvaluationResults` in `CosmosDiagnostics` - See [PR 34581](https://github.com/Azure/azure-sdk-for-java/pull/34581)
 
 ### 1.0.0-beta.2 (2023-04-06)
 
