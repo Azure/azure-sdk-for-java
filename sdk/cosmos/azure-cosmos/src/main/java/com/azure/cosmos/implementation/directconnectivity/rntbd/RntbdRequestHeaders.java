@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.IndexingDirective;
+import com.azure.cosmos.models.PriorityLevel;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -120,6 +121,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addIntendedCollectionRid(headers);
         this.addCorrelatedActivityId(headers);
         this.addSDKSupportedCapabilities(headers);
+        this.addPriorityLevel(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -275,6 +277,8 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     private RntbdToken getCorrelatedActivityId() {
         return this.get(RntbdRequestHeader.CorrelatedActivityId);
     }
+
+    private RntbdToken getPriorityLevel() { return this.get(RntbdRequestHeader.PriorityLevel); }
 
     private RntbdToken getDatabaseName() {
         return this.get(RntbdRequestHeader.DatabaseName);
@@ -739,6 +743,33 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.CORRELATED_ACTIVITY_ID);
         if (StringUtils.isNotEmpty(value)) {
             this.getCorrelatedActivityId().setValue(UUID.fromString(value));
+        }
+    }
+
+    private void addPriorityLevel(final Map<String, String> headers)
+    {
+        final String value = headers.get(HttpHeaders.PRIORITY_LEVEL);
+
+        final PriorityLevel priorityLevel = EnumUtils.getEnumIgnoreCase(
+            PriorityLevel.class,
+            value);
+
+        if (priorityLevel == null) {
+            final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
+                HttpHeaders.PRIORITY_LEVEL,
+                value);
+            throw new IllegalStateException(reason);
+        }
+
+        switch (priorityLevel) {
+            case High:
+                this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.High.id());
+                break;
+            case Low:
+                this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.Low.id());
+                break;
+            default:
+                assert false;
         }
     }
 

@@ -590,7 +590,8 @@ public final class RntbdConstants {
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
         IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false),
         CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false),
-        SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false);
+        SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false),
+        PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false);
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));
@@ -908,5 +909,22 @@ public final class RntbdConstants {
         String name();
 
         RntbdTokenType type();
+    }
+
+    public enum RntbdPriorityLevel {
+
+        High((byte) 0x01),
+
+        Low((byte) 0x02);
+
+        private final byte id;
+
+        RntbdPriorityLevel(final byte id) {
+            this.id = id;
+        }
+
+        public byte id() {
+            return this.id;
+        }
     }
 }

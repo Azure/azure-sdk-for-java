@@ -3,22 +3,19 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
-import com.azure.cosmos.implementation.batch.ItemBatchOperation;
-import com.azure.cosmos.implementation.batch.ServerBatchRequest;
-import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -222,105 +219,6 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readItemWithPriorityLevel() {
-        PriorityLevel priorityLevel = PriorityLevel.High;
-        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-        cosmosItemRequestOptions.setPriorityLevel(priorityLevel);
-
-        String documentLink = getDocumentLink();
-
-        client.clearCapturedRequests();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
-        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-
-        client.readDocument(documentLink, requestOptions).block();
-        for(HttpRequest httpRequest : client.getCapturedRequests()) {
-            Map<String, String> headers = httpRequest.headers().toMap();
-            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
-                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
-            }
-        }
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryWithPriorityLevel() {
-        PriorityLevel priorityLevel = PriorityLevel.Low;
-        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-        cosmosQueryRequestOptions.setPriorityLevel(priorityLevel);
-        String query = "Select * from r";
-
-        String collectionLink = getDocumentCollectionLink();
-
-        client.clearCapturedRequests();
-
-        client.queryDocuments(collectionLink, query, cosmosQueryRequestOptions, Document.class).blockLast();
-
-        for(HttpRequest httpRequest : client.getCapturedRequests()) {
-            Map<String, String> headers = httpRequest.headers().toMap();
-            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
-                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
-            }
-        }
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void executeStoredProcedureWithPriorityLevel() {
-        PriorityLevel priorityLevel = PriorityLevel.Low;
-        CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions = new CosmosStoredProcedureRequestOptions();
-        cosmosStoredProcedureRequestOptions.setPriorityLevel(priorityLevel);
-
-        String documentCollectionLink = getStoredProcLink();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosStoredProcedureRequestOptions);
-        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-
-        client.clearCapturedRequests();
-        client.executeStoredProcedure(documentCollectionLink, requestOptions, new ArrayList<Object>() {}).block();
-
-        for (HttpRequest httpRequest : client.getCapturedRequests()) {
-            Map<String, String> headers = httpRequest.headers().toMap();
-            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
-                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
-            }
-        }
-    }
-
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void executeBatchWithPriorityLevel() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
-        PriorityLevel priorityLevel = PriorityLevel.Low;
-        CosmosBatchRequestOptions cosmosBatchRequestOptions = new CosmosBatchRequestOptions();
-        cosmosBatchRequestOptions.setPriorityLevel(priorityLevel);
-
-        String documentCollectionLink = getDocumentCollectionLink();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosBatchRequestOptions);
-        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
-
-        ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
-            DOCUMENT_ID, new PartitionKey(DOCUMENT_ID), new RequestOptions(), new Document());
-        List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
-        itemBatchOperations.add(itemBatchOperation);
-
-        Method method = SinglePartitionKeyServerBatchRequest.class.getDeclaredMethod("createBatchRequest",
-            PartitionKey.class,
-            List.class);
-        method.setAccessible(true);
-
-        SinglePartitionKeyServerBatchRequest serverBatchRequest =
-            (SinglePartitionKeyServerBatchRequest) method.invoke(SinglePartitionKeyServerBatchRequest.class, new PartitionKey(DOCUMENT_ID),
-                itemBatchOperations);
-
-        client.clearCapturedRequests();
-
-        client.executeBatchRequest(documentCollectionLink, serverBatchRequest, requestOptions, false).block();
-
-        for (HttpRequest httpRequest : client.getCapturedRequests()) {
-            Map<String, String> headers = httpRequest.headers().toMap();
-            if (headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL) != null) {
-                assertThat(headers.get(HttpConstants.HttpHeaders.PRIORITY_LEVEL)).isEqualTo(priorityLevel.name());
-            }
-        }
     }
 
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,

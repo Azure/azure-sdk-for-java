@@ -14,10 +14,13 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
+import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -31,11 +34,13 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.CosmosItemResponseValidator;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -111,6 +116,22 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.validateRequestThrottled(
             cosmosDiagnostics.toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputLocalControlPriorityLevel(OperationType operationType) {
+        ThroughputControlGroupConfig groupConfig =
+            ThroughputControlGroupConfig.PriorityGroupConfig("group-" + UUID.randomUUID(), PriorityLevel.Low);
+
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+
+        assertThat(createItemResponse.getStatusCode()).isEqualTo(201);
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
@@ -694,6 +715,17 @@ public class ThroughputControlTests extends TestSuiteBase {
         return controlContainer.queryItems(querySpec, GlobalThroughputControlClientItem.class)
                                .collectList()
                                .block();
+    }
+
+    private RxDocumentServiceRequest createMockRequest() {
+        PartitionKeyRange pkRange1 = new PartitionKeyRange(UUID.randomUUID().toString(), "AA", "BB");
+        RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
+        Mockito.doReturn(OperationType.Read).when(requestMock).getOperationType();
+        DocumentServiceRequestContext requestContextMock = Mockito.mock(DocumentServiceRequestContext.class);
+        requestContextMock.resolvedPartitionKeyRange = pkRange1;
+        requestMock.requestContext = requestContextMock;
+
+        return requestMock;
     }
 
     // TODO: add tests split

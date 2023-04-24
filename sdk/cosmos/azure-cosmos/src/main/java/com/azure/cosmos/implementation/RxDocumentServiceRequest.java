@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -1129,5 +1130,9 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setNumberOfItemsInBatchRequest(int numberOfItemsInBatchRequest) {
         this.numberOfItemsInBatchRequest = numberOfItemsInBatchRequest;
+    }
+
+    public void setPriorityLevel(PriorityLevel priorityLevel) {
+        this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.name());
     }
 }
