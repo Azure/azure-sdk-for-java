@@ -74,8 +74,8 @@ public final class CallMediaAsync {
      * @return Void for successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> playMedia(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return playMediaWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        return playWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -87,8 +87,8 @@ public final class CallMediaAsync {
      * @return Void for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> playMediaToAll(PlaySource playSource) {
-        return playMediaToAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> playToAll(PlaySource playSource) {
+        return playToAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -102,8 +102,8 @@ public final class CallMediaAsync {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playMediaWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                      PlayOptions options) {
+    public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
+                                                 PlayOptions options) {
         return playWithResponseInternal(playSource, playTo, options, null);
     }
 
@@ -117,7 +117,7 @@ public final class CallMediaAsync {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playMediaToAllWithResponse(PlaySource playSource, PlayOptions options) {
+    public Mono<Response<Void>> playToAllWithResponse(PlaySource playSource, PlayOptions options) {
         return playWithResponseInternal(playSource, Collections.emptyList(), options, null);
     }
 

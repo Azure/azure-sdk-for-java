@@ -56,27 +56,27 @@ public class CallMediaUnitTests {
 
     @Test
     public void playFileWithResponseTest() {
-        Response<Void> response = callMedia.playMediaWithResponse(playFileSource,
+        Response<Void> response = callMedia.playWithResponse(playFileSource,
             Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void playFileToAllWithResponseTest() {
-        Response<Void> response = callMedia.playMediaToAllWithResponse(playFileSource, playOptions, Context.NONE);
+        Response<Void> response = callMedia.playToAllWithResponse(playFileSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void playTextWithResponseTest() {
-        Response<Void> response = callMedia.playMediaWithResponse(playTextSource,
+        Response<Void> response = callMedia.playWithResponse(playTextSource,
             Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
     @Test
     public void playTextToAllWithResponseTest() {
-        Response<Void> response = callMedia.playMediaToAllWithResponse(playTextSource, playOptions, Context.NONE);
+        Response<Void> response = callMedia.playToAllWithResponse(playTextSource, playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
