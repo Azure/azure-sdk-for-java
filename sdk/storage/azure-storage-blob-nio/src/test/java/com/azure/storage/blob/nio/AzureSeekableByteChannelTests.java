@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         cc.create();
         bc = cc.getBlobClient(generateBlobName());
         writeBc = cc.getBlobClient(generateBlobName());
-        bc.uploadFromFile(sourceFile.getPath());
+        bc.upload(DATA.getDefaultBinaryData());
         fs = createFS(initializeConfigMap());
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
         AzurePath writePath = ((AzurePath) fs.getPath(writeBc.getContainerName() + ":", writeBc.getBlobName()));
@@ -73,8 +74,24 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         }
     }
 
+    private void resetForLargeSource() {
+        // Base setup only uploads a small source to reduce size of session record.
+        BlobClient blobClient = getNonRecordingServiceClient()
+            .getBlobContainerClient(bc.getContainerName())
+            .getBlobClient(bc.getBlobName());
+        blobClient.upload(BinaryData.fromBytes(fileBytes), true);
+        AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
+        AzurePath writePath = ((AzurePath) fs.getPath(writeBc.getContainerName() + ":", writeBc.getBlobName()));
+
+        readByteChannel = new AzureSeekableByteChannel(new NioBlobInputStream(bc.openInputStream(), path), path);
+        // For writing, we don't want a blob to exist there yet
+        writeByteChannel = new AzureSeekableByteChannel(
+            new NioBlobOutputStream(writeBc.getBlockBlobClient().getBlobOutputStream(true), writePath), writePath);
+    }
+
     @Test
     public void read() throws IOException {
+        resetForLargeSource();
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         int count = 0;
         Random rand = new Random();
@@ -92,6 +109,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     @Test
     @Timeout(value = 60, unit = TimeUnit.SECONDS) // fail if test runs >= 1 minute
     public void readLoopUntilEof() throws IOException {
+        resetForLargeSource();
         ByteArrayOutputStream os = new ByteArrayOutputStream(sourceFileSize);
         Random rand = new Random();
 
@@ -109,6 +127,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void readRespectDestBufferPos() throws IOException {
+        resetForLargeSource();
         Random rand = new Random();
         int initialOffset = rand.nextInt(512) + 1; // always > 0
         byte[] randArray = new byte[2 * initialOffset + sourceFileSize];
@@ -145,6 +164,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void write() throws IOException {
+        resetForLargeSource();
         int count = 0;
         Random rand = new Random();
         writeByteChannel.write(ByteBuffer.wrap(fileBytes));
@@ -163,6 +183,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void writeRespectSrcBufferPos() throws IOException {
+        resetForLargeSource();
         Random rand = new Random();
         int initialOffset = rand.nextInt(512) + 1; // always > 0
         byte[] srcBufferContent = new byte[2 * initialOffset + sourceFileSize];
@@ -222,6 +243,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void positionRead() throws IOException {
+        resetForLargeSource();
         int bufferSize = sourceFileSize / 10;
         ByteBuffer dest = ByteBuffer.allocate(bufferSize);
 
@@ -236,6 +258,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void positionSizeWrite() throws IOException {
+        resetForLargeSource();
         int bufferSize = sourceFileSize / 10;
         ByteBuffer src = getRandomData(bufferSize);
 
@@ -261,6 +284,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     @ParameterizedTest
     @MethodSource("seekSupplier")
     public void seek(int readCount0, int seekPos1, int readCount1, int seekPos2, int readCount2) throws IOException {
+        resetForLargeSource();
         ByteBuffer streamContent = ByteBuffer.allocate(readCount0);
         readByteChannel.read(streamContent);
         compareInputStreams(fileStream, new ByteArrayInputStream(streamContent.array()), readCount0);
@@ -315,6 +339,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void sizeRead() throws IOException {
+        resetForLargeSource();
         assertEquals(sourceFileSize, readByteChannel.size());
 
         bc.upload(DATA.getDefaultBinaryData(), true);
