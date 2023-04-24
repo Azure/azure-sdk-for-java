@@ -612,8 +612,9 @@ public final class CosmosAsyncClient implements Closeable {
     private void blockVoidFlux(Flux<Void> voidFlux) {
         try {
             voidFlux.blockLast();
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // swallow exceptions here
+            logger.warn("The void flux did not complete successfully", ex);
         }
     }
 

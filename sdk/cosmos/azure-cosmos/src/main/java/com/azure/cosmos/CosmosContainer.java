@@ -31,6 +31,8 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,6 +49,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class CosmosContainer {
 
+    private static final Logger logger = LoggerFactory.getLogger(CosmosContainer.class);
     final CosmosAsyncContainer asyncContainer;
     private final CosmosDatabase database;
     private final String id;
@@ -820,6 +823,7 @@ public class CosmosContainer {
             voidMono.block();
         } catch (Exception ex) {
             // swallow exceptions here
+            logger.warn("The void flux did not complete successfully", ex);
         }
     }
 }
