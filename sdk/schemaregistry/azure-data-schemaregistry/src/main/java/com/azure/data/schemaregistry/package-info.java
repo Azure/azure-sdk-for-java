@@ -7,6 +7,14 @@
  * href="https://learn.microsoft.com/azure/event-hubs/schema-registry-overview">Azure Schema Registry</a>.  The library
  * focuses on registering and fetching schemas stored in Schema Registry.
  *
+ * <h2>Key Concepts</h2>
+ *
+ * <ul>
+ *     <li><strong>Schema:</strong>  Text describing the how to deserialize and serialize an object.</li>
+ *     <li><strong>Schema Registry:</strong>  Centralized location for event producers and consumers to fetch schemas
+ *     used to serialize and deserialized structured data.</li>
+ * </ul>
+ *
  * <h2>Getting Started</h2>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Schema Registry.

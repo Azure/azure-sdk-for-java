@@ -51,7 +51,13 @@ import java.util.Objects;
  * {@link SchemaRegistryClient}.  To build the client, the builder requires the service endpoint of the Schema Registry
  * and an Azure AD credential.
  *
- * <p><strong>Instantiating the client</strong></p>
+ * <p><strong>Sample: Construct a sync service client</strong></p>
+ *
+ *  <p>The following code sample demonstrates the creation of the synchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The credential used is {@code DefaultAzureCredential}
+ * because it combines commonly used credentials in deployment and development and chooses the credential to used based
+ * on its running environment.</p>
+ *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
  * <pre>
  * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
@@ -62,8 +68,14 @@ import java.util.Objects;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.construct -->
+
+ * <p><strong>Sample: Construct an async service client</strong></p>
  *
- * <p><strong>Instantiating the async client</strong></p>
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient}.  The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.</p>
+ *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  * <pre>
  * &#47;&#47; AAD credential to authorize with Schema Registry service.
@@ -76,7 +88,11 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  *
- * <p><strong>Instantiating with custom retry policy and HTTP log options</strong></p>
+ * <p><strong>Sample: Instantiating with custom retry policy and HTTP log options</strong></p>
+ *
+ * <p>The following code sample demonstrates customizing parts of the HTTP pipeline and client behavior such as
+ * outputting the body of the HTTP request and response or using another retry policy.</p>
+ *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.retrypolicy.construct -->
  * <pre>
  * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;

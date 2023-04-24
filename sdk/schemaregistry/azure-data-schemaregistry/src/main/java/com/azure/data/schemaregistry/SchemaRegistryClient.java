@@ -117,6 +117,15 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties -->
  *
+ * <p><strong>Sample: Get a schema with its HTTP response</strong></p>
+ *
+ * <p>The following code sample demonstrates how to get a schema using its group name, schema name, and version number.
+ * In addition, it gets the underlying HTTP response that backs this service call.  This is useful in cases where
+ * customers want more insight into the HTTP request/response.</p>
+ *
+ * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse -->
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse -->
+ *
  * @see SchemaRegistryClientBuilder
  * @see SchemaRegistryAsyncClient
  */

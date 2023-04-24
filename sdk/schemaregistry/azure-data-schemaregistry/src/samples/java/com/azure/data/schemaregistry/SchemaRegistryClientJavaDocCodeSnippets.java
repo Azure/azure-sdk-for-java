@@ -7,6 +7,8 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -115,6 +117,27 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         System.out.println("Schema contents: " + schema.getDefinition());
         // END: com.azure.data.schemaregistry.schemaregistryclient.getschema
     }
+
+
+    /**
+     * Gets schema by name, groupname, version.
+     */
+    public void getSchemaWithResponse() {
+        SchemaRegistryClient client = buildClient();
+
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
+        Response<SchemaRegistrySchema> response = client.getSchemaWithResponse("{group-name}", "{schema-name}", 1, Context.NONE);
+
+        System.out.println("Headers in HTTP response: ");
+        response.getHeaders().forEach(header -> System.out.printf("%s: %s%n", header.getName(), header.getValue()));
+
+        SchemaRegistrySchema schema = response.getValue();
+        System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
+            schema.getProperties().getFormat());
+        System.out.println("Schema contents: " + schema.getDefinition());
+        // END: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
+    }
+
 
     /**
      * Gets schema by id using async client.
