@@ -13,6 +13,7 @@ import com.azure.core.util.FaultyAsynchronousByteChannel;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.PartialWriteChannel;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -100,6 +101,7 @@ public class IOUtilsTest {
     }
 
     @Test
+    @RepeatedTest(1000) // Remove once CI passes this consistently.
     public void canResumeStreamResponseTransfer() throws IOException, InterruptedException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
         fillArray(data);
