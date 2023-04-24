@@ -168,8 +168,8 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
                 withReceiveLinkInformation(LOGGER.atInfo())
-                    .addKeyValue("existing", sessionLockedUntil.get())
-                    .addKeyValue("new", lockedUntil)
+                    .addKeyValue("existingLockToken", sessionLockedUntil.get())
+                    .addKeyValue("newLockToken", lockedUntil)
                     .log("SessionLockedUntil was already set.");
 
                 return;
