@@ -108,7 +108,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         return new PageBlobOutputStream(client, pageRange, requestConditions);
     }
 
-    protected abstract void commit();
+    abstract void commit();
 
     /**
      * Closes this output stream and releases any system resources associated with this stream. If any data remains in
