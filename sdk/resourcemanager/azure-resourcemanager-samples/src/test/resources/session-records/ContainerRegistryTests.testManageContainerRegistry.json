@@ -75,7 +75,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "4c21a3e1-2490-4eb6-b957-a8de421adca2",
-      "Body" : "{\"username\":\"acrsample76501943e\",\"passwords\":[{\"name\":\"password\",\"value\":\"qMI=oQFnnDLOnUKP81=FqVga3GTEh4Ym\"},{\"name\":\"password2\",\"value\":\"4apXkkuIfy+yR1u2DSI/p1w9w3iL1h1Z\"}]}"
+      "Body" : "{\"username\":\"acrsample76501943e\",\"passwords\":[{\"name\":\"password\",\"value\":\"***REMOVED***\"},{\"name\":\"password2\",\"value\":\"***REMOVED***\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -102,7 +102,7 @@
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "ca1460e9-f235-408b-a5ab-c1b6721231ca",
-      "Body" : "{\"username\":\"acrsample76501943e\",\"passwords\":[{\"name\":\"password\",\"value\":\"qMI=oQFnnDLOnUKP81=FqVga3GTEh4Ym\"},{\"name\":\"password2\",\"value\":\"4apXkkuIfy+yR1u2DSI/p1w9w3iL1h1Z\"}]}"
+      "Body" : "{\"username\":\"acrsample76501943e\",\"passwords\":[{\"name\":\"password\",\"value\":\"***REMOVED***\"},{\"name\":\"password2\",\"value\":\"***REMOVED***\"}]}"
     }
   }, {
     "Method" : "PUT",

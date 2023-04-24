@@ -80,6 +80,8 @@ public class RxDocumentServiceRequest implements Cloneable {
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
 
+    private volatile boolean nonIdempotentWriteRetriesEnabled = false;
+
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
                 || this.operationType == OperationType.ReadFeed
@@ -101,6 +103,16 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
         }
+    }
+
+    public RxDocumentServiceRequest setNonIdempotentWriteRetriesEnabled(boolean enabled) {
+        this.nonIdempotentWriteRetriesEnabled = enabled;
+
+        return this;
+    }
+
+    public boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     public boolean isReadOnly() {
@@ -416,6 +428,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
+
         return request;
     }
 
@@ -1035,6 +1048,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
+        rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         return rxDocumentServiceRequest;
     }
 

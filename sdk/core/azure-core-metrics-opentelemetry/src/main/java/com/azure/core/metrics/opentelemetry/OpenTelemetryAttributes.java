@@ -23,7 +23,7 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
         // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants and in EventHubs, ServiceBus
         // metric helpers
         mappings.put("status", "otel.status_code");
-        mappings.put("entityName", "messaging.destination");
+        mappings.put("entityName", "messaging.destination.name");
         mappings.put("entityPath", "messaging.az.entity_path");
         mappings.put("hostName", "net.peer.name");
         mappings.put("errorCondition", "amqp.error_condition");

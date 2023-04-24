@@ -4,7 +4,8 @@
 package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 
@@ -26,15 +27,52 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
     }
 
     @Override
-    public boolean injectRntbdServerResponseDelay(
+    public boolean injectRntbdServerResponseDelayBeforeProcessing(
         RntbdRequestRecord requestRecord,
         Consumer<Duration> writeRequestWithDelayConsumer) {
 
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
+        RntbdRequestArgs requestArgs = requestRecord.args();
 
-        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(request);
+        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
         if (serverResponseDelayRule != null) {
-            request.faultInjectionRequestContext
+
+            if (serverResponseDelayRule.getResult() != null
+                && serverResponseDelayRule.getResult().getSuppressServiceRequests() != null
+                && !serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
+
+                // delay will be injected after processing the request
+                return false;
+            }
+
+            requestArgs.serviceRequest().faultInjectionRequestContext
+                .applyFaultInjectionRule(
+                    requestRecord.transportRequestId(),
+                    serverResponseDelayRule.getId());
+
+            writeRequestWithDelayConsumer.accept(serverResponseDelayRule.getResult().getDelay());
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean injectRntbdServerResponseDelayAfterProcessing(RntbdRequestRecord requestRecord,
+                                                                 Consumer<Duration> writeRequestWithDelayConsumer) {
+        RntbdRequestArgs requestArgs = requestRecord.args();
+
+        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
+        if (serverResponseDelayRule != null) {
+
+            if (serverResponseDelayRule.getResult() == null
+                || serverResponseDelayRule.getResult().getSuppressServiceRequests() == null
+                || serverResponseDelayRule.getResult().getSuppressServiceRequests()) {
+
+                // delay was injected before processing the request
+                return false;
+            }
+
+            requestArgs.serviceRequest().faultInjectionRequestContext
                 .applyFaultInjectionRule(
                     requestRecord.transportRequestId(),
                     serverResponseDelayRule.getId());
@@ -48,16 +86,18 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
     @Override
     public boolean injectRntbdServerResponseError(RntbdRequestRecord requestRecord) {
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
+        RntbdRequestArgs requestArgs = requestRecord.args();
 
-        FaultInjectionServerErrorRule serverResponseErrorRule = this.ruleStore.findRntbdServerResponseErrorRule(request);
+        FaultInjectionServerErrorRule serverResponseErrorRule =
+            this.ruleStore.findRntbdServerResponseErrorRule(requestArgs);
+
         if (serverResponseErrorRule != null) {
-            request.faultInjectionRequestContext
+            requestArgs.serviceRequest().faultInjectionRequestContext
                 .applyFaultInjectionRule(
                     requestRecord.transportRequestId(),
                     serverResponseErrorRule.getId());
 
-            CosmosException cause = serverResponseErrorRule.getInjectedServerError(request);
+            CosmosException cause = serverResponseErrorRule.getInjectedServerError(requestArgs.serviceRequest());
             requestRecord.completeExceptionally(cause);
             return true;
         }
@@ -67,23 +107,24 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
     @Override
     public boolean injectRntbdServerConnectionDelay(
-        RntbdRequestRecord requestRecord,
+        IRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer) {
         if (requestRecord == null) {
             return false;
         }
 
-        RxDocumentServiceRequest request = requestRecord.args().serviceRequest();
-        FaultInjectionServerErrorRule serverConnectionDelayRule = this.ruleStore.findRntbdServerConnectionDelayRule(request);
+        RntbdRequestArgs requestArgs = requestRecord.args();
+
+        FaultInjectionServerErrorRule serverConnectionDelayRule =
+            this.ruleStore.findRntbdServerConnectionDelayRule(requestArgs);
 
         if (serverConnectionDelayRule != null) {
-            request.faultInjectionRequestContext
+            requestArgs.serviceRequest().faultInjectionRequestContext
                 .applyFaultInjectionRule(
-                    requestRecord.transportRequestId(),
+                    requestRecord.getRequestId(),
                     serverConnectionDelayRule.getId());
             openConnectionWithDelayConsumer.accept(serverConnectionDelayRule.getResult().getDelay());
             return true;
-
         }
 
         return false;

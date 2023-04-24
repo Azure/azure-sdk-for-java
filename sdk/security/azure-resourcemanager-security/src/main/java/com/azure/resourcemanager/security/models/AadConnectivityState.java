@@ -20,6 +20,15 @@ public final class AadConnectivityState extends ExpandableStringEnum<AadConnecti
     public static final AadConnectivityState CONNECTED = fromString("Connected");
 
     /**
+     * Creates a new instance of AadConnectivityState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AadConnectivityState() {
+    }
+
+    /**
      * Creates or finds a AadConnectivityState from its string representation.
      *
      * @param name a name to look for.

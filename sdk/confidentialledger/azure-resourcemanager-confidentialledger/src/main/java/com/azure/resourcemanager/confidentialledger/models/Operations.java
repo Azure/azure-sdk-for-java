@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Operations. */
 public interface Operations {
     /**
-     * Retrieves a list of available API operations.
+     * Retrieves a list of available API operations under this Resource Provider.
+     *
+     * <p>Retrieves a list of available API operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -20,7 +22,9 @@ public interface Operations {
     PagedIterable<ResourceProviderOperationDefinition> list();
 
     /**
-     * Retrieves a list of available API operations.
+     * Retrieves a list of available API operations under this Resource Provider.
+     *
+     * <p>Retrieves a list of available API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

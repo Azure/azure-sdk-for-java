@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Subscriptions ListLocations. */
 public final class SubscriptionsListLocationsSamples {
     /*
@@ -22,7 +20,7 @@ public final class SubscriptionsListLocationsSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .listLocations("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", true, Context.NONE);
+            .listLocations("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", true, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,6 +37,6 @@ public final class SubscriptionsListLocationsSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .listLocations("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", null, Context.NONE);
+            .listLocations("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", null, com.azure.core.util.Context.NONE);
     }
 }

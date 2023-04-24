@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IngestionSettings List. */
 public final class IngestionSettingsListSamples {
     /*
@@ -17,6 +15,6 @@ public final class IngestionSettingsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getIngestionSettingsOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.ingestionSettings().list(Context.NONE);
+        manager.ingestionSettings().list(com.azure.core.util.Context.NONE);
     }
 }

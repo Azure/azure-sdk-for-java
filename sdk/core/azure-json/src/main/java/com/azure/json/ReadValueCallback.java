@@ -10,6 +10,8 @@ import java.io.IOException;
  *
  * @param <T> Input type of the callback.
  * @param <R> Output type of the callback.
+ *
+ * @see JsonReader
  */
 @FunctionalInterface
 public interface ReadValueCallback<T, R> {

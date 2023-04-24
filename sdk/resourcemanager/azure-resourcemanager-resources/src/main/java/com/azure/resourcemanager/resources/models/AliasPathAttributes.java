@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AliasPathAttributes. */
+/** The attributes of the token that the alias path is referring to. */
 public final class AliasPathAttributes extends ExpandableStringEnum<AliasPathAttributes> {
     /** Static value None for AliasPathAttributes. */
     public static final AliasPathAttributes NONE = fromString("None");
 
     /** Static value Modifiable for AliasPathAttributes. */
     public static final AliasPathAttributes MODIFIABLE = fromString("Modifiable");
+
+    /**
+     * Creates a new instance of AliasPathAttributes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AliasPathAttributes() {
+    }
 
     /**
      * Creates or finds a AliasPathAttributes from its string representation.

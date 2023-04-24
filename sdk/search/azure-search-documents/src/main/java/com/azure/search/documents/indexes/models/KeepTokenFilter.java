@@ -130,10 +130,10 @@ public final class KeepTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && keepWordsFound) {
-                        KeepTokenFilter deserializedValue = new KeepTokenFilter(name, keepWords);
-                        deserializedValue.lowerCaseKeepWords = lowerCaseKeepWords;
+                        KeepTokenFilter deserializedKeepTokenFilter = new KeepTokenFilter(name, keepWords);
+                        deserializedKeepTokenFilter.lowerCaseKeepWords = lowerCaseKeepWords;
 
-                        return deserializedValue;
+                        return deserializedKeepTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

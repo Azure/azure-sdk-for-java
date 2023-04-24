@@ -8,26 +8,35 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContactsPropertiesProvisioningState. */
+/** The current state of the resource's creation, deletion, or modification. */
 public final class ContactsPropertiesProvisioningState
     extends ExpandableStringEnum<ContactsPropertiesProvisioningState> {
-    /** Static value Creating for ContactsPropertiesProvisioningState. */
-    public static final ContactsPropertiesProvisioningState CREATING = fromString("Creating");
+    /** Static value creating for ContactsPropertiesProvisioningState. */
+    public static final ContactsPropertiesProvisioningState CREATING = fromString("creating");
 
-    /** Static value Succeeded for ContactsPropertiesProvisioningState. */
-    public static final ContactsPropertiesProvisioningState SUCCEEDED = fromString("Succeeded");
+    /** Static value succeeded for ContactsPropertiesProvisioningState. */
+    public static final ContactsPropertiesProvisioningState SUCCEEDED = fromString("succeeded");
 
-    /** Static value Failed for ContactsPropertiesProvisioningState. */
-    public static final ContactsPropertiesProvisioningState FAILED = fromString("Failed");
+    /** Static value failed for ContactsPropertiesProvisioningState. */
+    public static final ContactsPropertiesProvisioningState FAILED = fromString("failed");
 
-    /** Static value Canceled for ContactsPropertiesProvisioningState. */
-    public static final ContactsPropertiesProvisioningState CANCELED = fromString("Canceled");
+    /** Static value canceled for ContactsPropertiesProvisioningState. */
+    public static final ContactsPropertiesProvisioningState CANCELED = fromString("canceled");
 
-    /** Static value Updating for ContactsPropertiesProvisioningState. */
-    public static final ContactsPropertiesProvisioningState UPDATING = fromString("Updating");
+    /** Static value updating for ContactsPropertiesProvisioningState. */
+    public static final ContactsPropertiesProvisioningState UPDATING = fromString("updating");
 
-    /** Static value Deleting for ContactsPropertiesProvisioningState. */
-    public static final ContactsPropertiesProvisioningState DELETING = fromString("Deleting");
+    /** Static value deleting for ContactsPropertiesProvisioningState. */
+    public static final ContactsPropertiesProvisioningState DELETING = fromString("deleting");
+
+    /**
+     * Creates a new instance of ContactsPropertiesProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContactsPropertiesProvisioningState() {
+    }
 
     /**
      * Creates or finds a ContactsPropertiesProvisioningState from its string representation.

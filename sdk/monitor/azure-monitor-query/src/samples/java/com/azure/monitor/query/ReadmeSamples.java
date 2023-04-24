@@ -90,6 +90,24 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample to query logs from a resource using a single Kusto query.
+     */
+    public void queryLogsByResourceId() {
+        // BEGIN: readme-sample-logsquerybyresourceid
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+
+        LogsQueryResult queryResults = logsQueryClient.queryResource("{resource-id}", "{kusto-query}",
+            new QueryTimeInterval(Duration.ofDays(2)));
+
+        for (LogsTableRow row : queryResults.getTable().getRows()) {
+            System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
+        }
+        // END: readme-sample-logsquerybyresourceid
+    }
+
+    /**
      * A custom model type to map logs query result to an object.
      */
     // BEGIN: readme-sample-custommodel

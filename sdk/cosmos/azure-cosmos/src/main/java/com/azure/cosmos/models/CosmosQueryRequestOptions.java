@@ -4,12 +4,13 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
@@ -23,6 +24,9 @@ import java.util.function.Function;
  * in the Azure Cosmos DB database service.
  */
 public class CosmosQueryRequestOptions {
+    private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private String partitionKeyRangeId;
@@ -41,7 +45,7 @@ public class CosmosQueryRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private String throughputControlGroupName;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
-    private Duration thresholdForDiagnosticsOnTracer;
+    private CosmosDiagnosticsThresholds thresholds;
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private boolean queryPlanRetrievalDisallowed;
@@ -49,12 +53,12 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
-    private PriorityLevel priorityLevel;
     /**
      * Instantiates a new query request options.
      */
     public CosmosQueryRequestOptions() {
 
+        this.thresholds = null;
         this.queryMetricsEnabled = true;
         this.emptyPageDiagnosticsEnabled = Configs.isEmptyPageDiagnosticsEnabled();
     }
@@ -89,8 +93,7 @@ public class CosmosQueryRequestOptions {
         this.itemFactoryMethod = options.itemFactoryMethod;
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
-        this.thresholdForDiagnosticsOnTracer = options.thresholdForDiagnosticsOnTracer;
-        this.priorityLevel = options.priorityLevel;
+        this.thresholds = options.thresholds;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -506,7 +509,11 @@ public class CosmosQueryRequestOptions {
      * @return  thresholdForDiagnosticsOnTracer the latency threshold for diagnostics on tracer.
      */
     public Duration getThresholdForDiagnosticsOnTracer() {
-        return thresholdForDiagnosticsOnTracer;
+        if (this.thresholds == null) {
+            return CosmosDiagnosticsThresholds.DEFAULT_NON_POINT_OPERATION_LATENCY_THRESHOLD;
+        }
+
+        return thresholdsAccessor.getNonPointReadLatencyThreshold(this.thresholds);
     }
 
     /**
@@ -519,7 +526,26 @@ public class CosmosQueryRequestOptions {
      * @return the CosmosQueryRequestOptions
      */
     public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
-        this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        if (this.thresholds == null) {
+            this.thresholds = new CosmosDiagnosticsThresholds();
+        }
+
+        this.thresholds.setNonPointOperationLatencyThreshold(
+            thresholdForDiagnosticsOnTracer
+        );
+
+        return this;
+    }
+
+    /**
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
+     * @return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptions setDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
         return this;
     }
 
@@ -636,36 +662,6 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
-    /**
-     * Gets the priority level of the request.
-     *
-     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
-     * low priority requests are throttled before high priority requests start getting throttled.
-     *
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * @return enum representing priority level
-     */
-    public PriorityLevel getPriorityLevel() {
-        return this.priorityLevel;
-    }
-
-    /**
-     * Sets the priority level of the request.
-     *
-     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
-     * low priority requests are throttled before high priority requests start getting throttled.
-     *
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * @param priorityLevel priority level of the request
-     * @return the CosmosQueryRequestOptions.
-     */
-    public CosmosQueryRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
-        this.priorityLevel = priorityLevel;
-        return this;
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -774,8 +770,9 @@ public class CosmosQueryRequestOptions {
                     requestOptions.setThroughputControlGroupName(queryRequestOptions.getThroughputControlGroupName());
                     requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
                     requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
-                    requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
-                    requestOptions.setPriorityLevel(queryRequestOptions.getPriorityLevel());
+                    if (queryRequestOptions.thresholds != null) {
+                        requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
+                    }
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -784,6 +781,27 @@ public class CosmosQueryRequestOptions {
                     }
 
                     return requestOptions;
+                }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options) {
+                    return options.thresholds;
+                }
+
+                @Override
+                public void applyMaxItemCount(
+                    CosmosQueryRequestOptions requestOptions,
+                    CosmosPagedFluxOptions fluxOptions) {
+
+                    if (requestOptions == null || requestOptions.getMaxItemCount() == null || fluxOptions == null) {
+                        return;
+                    }
+
+                    if (fluxOptions.getMaxItemCount() != null) {
+                        return;
+                    }
+
+                    fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
                 }
             });
     }

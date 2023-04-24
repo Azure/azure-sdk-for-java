@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,19 +32,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NettyToAzureCoreHttpHeadersWrapperTests {
     @ParameterizedTest
     @MethodSource("getValueSupplier")
-    public void getValue(HttpHeaders nettyHeaders, String key, String expected) {
+    public void getValue(HttpHeaders nettyHeaders, HttpHeaderName key, String expected) {
         assertEquals(expected, createHeaderWrapper(nettyHeaders).getValue(key));
     }
 
     @ParameterizedTest
     @MethodSource("getValuesSupplier")
-    public void getValues(HttpHeaders nettyHeaders, String key, String[] expected) {
+    public void getValues(HttpHeaders nettyHeaders, HttpHeaderName key, String[] expected) {
         assertArrayEquals(expected, createHeaderWrapper(nettyHeaders).getValues(key));
     }
 
     @ParameterizedTest
     @MethodSource("getHeaderValueSupplier")
-    public void getHeaderValue(HttpHeaders nettyHeaders, String key, String expected) {
+    public void getHeaderValue(HttpHeaders nettyHeaders, HttpHeaderName key, String expected) {
         NettyToAzureCoreHttpHeadersWrapper headerWrapper = createHeaderWrapper(nettyHeaders);
         if (expected == null) {
             assertNull(headerWrapper.get(key));
@@ -54,7 +55,7 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
 
     @ParameterizedTest
     @MethodSource("getHeaderValuesSupplier")
-    public void getHeaderValues(HttpHeaders nettyHeaders, String key, String[] expected) {
+    public void getHeaderValues(HttpHeaders nettyHeaders, HttpHeaderName key, String[] expected) {
         NettyToAzureCoreHttpHeadersWrapper headerWrapper = createHeaderWrapper(nettyHeaders);
         if (expected == null) {
             assertNull(headerWrapper.get(key));
@@ -65,7 +66,7 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
 
     @ParameterizedTest
     @MethodSource("getHeaderValuesListSupplier")
-    public void getHeaderValuesList(HttpHeaders nettyHeaders, String key, List<String> expected) {
+    public void getHeaderValuesList(HttpHeaders nettyHeaders, HttpHeaderName key, List<String> expected) {
         NettyToAzureCoreHttpHeadersWrapper headerWrapper = createHeaderWrapper(nettyHeaders);
         if (expected == null) {
             assertNull(headerWrapper.get(key));
@@ -117,6 +118,9 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
         });
     }
 
+    private static final HttpHeaderName NOT_A_KEY = HttpHeaderName.fromString("notAKey");
+    private static final HttpHeaderName TEST = HttpHeaderName.fromString("test");
+
     private static Stream<Arguments> getSupplierBase(Function<String, Object> expectedConverter) {
         // Null
         HttpHeaders nullValueHeader = new DefaultHttpHeaders()
@@ -137,11 +141,11 @@ public class NettyToAzureCoreHttpHeadersWrapperTests {
             .add("test", "value2");
 
         return Stream.of(
-            Arguments.of(new DefaultHttpHeaders(), "notAKey", null),
-            Arguments.of(nullValueHeader, "test", expectedConverter.apply(null)),
-            Arguments.of(singleValueHeader, "test", expectedConverter.apply("value")),
-            Arguments.of(overwrittenValueHeader, "test", expectedConverter.apply("value2")),
-            Arguments.of(multiValueHeader, "test", expectedConverter.apply("value,value2"))
+            Arguments.of(new DefaultHttpHeaders(), NOT_A_KEY, null),
+            Arguments.of(nullValueHeader, TEST, expectedConverter.apply(null)),
+            Arguments.of(singleValueHeader, TEST, expectedConverter.apply("value")),
+            Arguments.of(overwrittenValueHeader, TEST, expectedConverter.apply("value2")),
+            Arguments.of(multiValueHeader, TEST, expectedConverter.apply("value,value2"))
         );
     }
 

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -250,11 +251,10 @@ public class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
-        request.requestContext.storePhysicalAddress = address;
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, address);
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI());
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
@@ -278,6 +278,8 @@ public class RntbdTransportClient extends TransportClient {
             storeResponse.setRequestPayloadLength(request.getContentLength());
             storeResponse.setFaultInjectionRuleId(
                 request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
+            storeResponse.setFaultInjectionRuleEvaluationResults(
+                request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
             if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
@@ -309,7 +311,8 @@ public class RntbdTransportClient extends TransportClient {
                 error = new GoneException(
                     lenientFormat("an unexpected %s occurred: %s", unexpectedError),
                     address,
-                    error instanceof Exception ? (Exception) error : new RuntimeException(error));
+                    error instanceof Exception ? (Exception) error : new RuntimeException(error),
+                    HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
             }
 
             assert error instanceof CosmosException;
@@ -330,6 +333,14 @@ public class RntbdTransportClient extends TransportClient {
                 .setFaultInjectionRuleId(
                     cosmosException,
                     request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
+
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setFaultInjectionEvaluationResults(
+                    cosmosException,
+                    request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
+
             if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }
@@ -349,16 +360,19 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public Mono<OpenConnectionResponse> openConnection(URI serviceEndpoint, Uri addressUri) {
+    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, RxDocumentServiceRequest openConnectionRequest) {
+        checkNotNull(openConnectionRequest, "Argument 'openConnectionRequest' should not be null");
         checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-        checkNotNull(serviceEndpoint, "Argument 'serviceEndpoint' should not be null");
 
         this.throwIfClosed();
 
-        final URI address = addressUri.getURI();
+        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
+        final RntbdEndpoint endpoint =
+            this.endpointProvider.createIfAbsent(
+                openConnectionRequest.requestContext.locationEndpointToRoute,
+                addressUri.getURI());
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(serviceEndpoint, address);
-        return Mono.fromFuture(endpoint.openConnection(addressUri));
+        return Mono.fromFuture(endpoint.openConnection(requestArgs));
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

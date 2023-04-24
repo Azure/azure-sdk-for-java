@@ -72,8 +72,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
     public interface WebPubSubPrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/privateEndpointConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionList>> list(
@@ -87,8 +86,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> get(
@@ -103,8 +101,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionInner>> update(
@@ -120,8 +117,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/webPubSub/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -884,7 +880,7 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -903,7 +899,8 @@ public final class WebPubSubPrivateEndpointConnectionsClientImpl implements WebP
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context)
+        return this
+            .beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context)
             .getSyncPoller();
     }
 

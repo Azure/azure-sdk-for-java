@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for GremlinResources GetGremlinGraphThroughput. */
 public final class GremlinResourcesGetGremlinGraphThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBGremlinGraphThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBGremlinGraphThroughputGet.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputGet.

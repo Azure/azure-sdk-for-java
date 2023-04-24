@@ -41,8 +41,8 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def channel = primaryFileClient.getFileSeekableByteChannelWrite(
-            new ShareFileSeekableByteChannelWriteOptions(ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
-                .setFileSize(data.length).setChunkSize(streamBufferSize))
+            new ShareFileSeekableByteChannelWriteOptions(true)
+                .setFileSize(data.length).setChunkSizeInBytes(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -73,7 +73,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
 
         when: "Channel initialized"
         def channel = primaryFileClient.getFileSeekableByteChannelRead(
-            new ShareFileSeekableByteChannelReadOptions().setChunkSize(streamBufferSize))
+            new ShareFileSeekableByteChannelReadOptions().setChunkSizeInBytes(streamBufferSize))
 
         then: "Channel initialized to position zero"
         channel.position() == 0
@@ -98,7 +98,7 @@ class StorageFileSeekableByteChannelTests extends APISpec {
     def "Client creates appropriate channel writemode"() {
         when: "make channel in write mode"
         def channel = primaryFileClient.getFileSeekableByteChannelWrite(
-            new ShareFileSeekableByteChannelWriteOptions(ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE)
+            new ShareFileSeekableByteChannelWriteOptions(true)
                 .setRequestConditions(conditions).setFileLastWrittenMode(lastWrittenMode).setFileSize(Constants.KB))
             as StorageSeekableByteChannel
 

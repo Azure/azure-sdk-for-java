@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.iothub.models.IotHubDescription;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for IotHubResource Update. */
 public final class IotHubResourceUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_patch.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_patch.json
      */
     /**
      * Sample code: IotHubResource_Update.
@@ -23,7 +22,7 @@ public final class IotHubResourceUpdateSamples {
         IotHubDescription resource =
             manager
                 .iotHubResources()
-                .getByResourceGroupWithResponse("myResourceGroup", "myHub", Context.NONE)
+                .getByResourceGroupWithResponse("myResourceGroup", "myHub", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("foo", "bar")).apply();
     }

@@ -6,6 +6,8 @@ package com.azure.resourcemanager.orbital.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.orbital.models.SpacecraftLink;
 import com.azure.resourcemanager.orbital.models.SpacecraftsPropertiesProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,14 +20,18 @@ public final class SpacecraftInner extends Resource {
     /*
      * Spacecraft Properties
      */
-    @JsonProperty(value = "properties")
-    private SpacecraftsProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private SpacecraftsProperties innerProperties = new SpacecraftsProperties();
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of SpacecraftInner class. */
+    public SpacecraftInner() {
+    }
 
     /**
      * Get the innerProperties property: Spacecraft Properties.
@@ -37,12 +43,12 @@ public final class SpacecraftInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
-     * @return the etag value.
+     * @return the systemData value.
      */
-    public String etag() {
-        return this.etag;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -203,8 +209,14 @@ public final class SpacecraftInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property innerProperties in model SpacecraftInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SpacecraftInner.class);
 }

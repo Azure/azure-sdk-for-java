@@ -62,8 +62,7 @@ public final class SecurityConnectorApplicationsClientImpl implements SecurityCo
     public interface SecurityConnectorApplicationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationsList>> list(

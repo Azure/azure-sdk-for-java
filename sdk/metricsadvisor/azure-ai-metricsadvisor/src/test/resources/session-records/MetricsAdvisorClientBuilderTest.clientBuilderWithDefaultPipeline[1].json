@@ -1,224 +1,411 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "44a813f5-4b71-4bfd-8302-307869e784f6",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "51",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 22:59:58 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "dda75fd2-6f8b-4366-bb9e-99efa328fc79",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "790e0f70-22ba-4422-b1ca-c92682700126",
+        "Content-Length": "3663",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 22:59:57 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "142",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "790e0f70-22ba-4422-b1ca-c92682700126"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "feedbackId": "2e157fbc-34ab-422e-aa8e-3133323a4c61",
+            "createdTime": "2023-03-08T23:53:53.675Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "JPN",
+                "Dim2": "JP"
+              }
+            },
+            "feedbackType": "ChangePoint",
+            "startTime": "2020-01-01T00:00:00Z",
+            "endTime": "2020-09-09T00:00:00Z",
+            "value": {
+              "changePointValue": "AutoDetect"
+            }
+          },
+          {
+            "feedbackId": "e4a4c55e-486d-46dc-a857-75bbb9c30c3c",
+            "createdTime": "2022-11-17T08:28:26.451Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Period",
+            "value": {
+              "periodType": "AssignValue",
+              "periodValue": 2
+            }
+          },
+          {
+            "feedbackId": "68e2b300-d70c-4994-b565-4cc155b277b3",
+            "createdTime": "2022-11-17T08:28:25.817Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Comment",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "commentValue": "comment"
+            }
+          },
+          {
+            "feedbackId": "2eb51c14-af15-4b9e-9410-6927db36d501",
+            "createdTime": "2022-11-17T08:28:25.188Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "ChangePoint",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "changePointValue": "NotChangePoint"
+            }
+          },
+          {
+            "feedbackId": "6499b105-3d22-4bd4-98ec-8527ffd144af",
+            "createdTime": "2022-11-17T08:28:24.161Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Anomaly",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "anomalyValue": "NotAnomaly"
+            }
+          },
+          {
+            "feedbackId": "8f7537f4-555a-449f-b661-09c20ca56739",
+            "createdTime": "2022-11-17T08:28:17.646Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Period",
+            "value": {
+              "periodType": "AssignValue",
+              "periodValue": 2
+            }
+          },
+          {
+            "feedbackId": "371ebae3-fb38-4833-b786-09d310e79c03",
+            "createdTime": "2022-11-17T08:28:16.894Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Comment",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "commentValue": "comment"
+            }
+          },
+          {
+            "feedbackId": "40e31831-31a0-4da1-9c45-544a01085442",
+            "createdTime": "2022-11-17T08:28:15.998Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "ChangePoint",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "changePointValue": "NotChangePoint"
+            }
+          },
+          {
+            "feedbackId": "20923f71-36c5-4785-b743-e811927c2643",
+            "createdTime": "2022-11-17T08:28:16.046Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Period",
+            "value": {
+              "periodType": "AssignValue",
+              "periodValue": 2
+            }
+          },
+          {
+            "feedbackId": "411a192d-a69c-40e8-93ba-4e7ffa901fbe",
+            "createdTime": "2022-11-17T08:28:15.39Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Comment",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "commentValue": "comment"
+            }
+          }
+        ],
+        "@nextLink": "https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10\u0026$skip=10"
+      }
     },
-    "Response" : {
-      "x-request-id" : "4845a8d1-81ae-48f5-a730-5e05034d16da",
-      "content-length" : "3818",
-      "x-envoy-upstream-service-time" : "163",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "4845a8d1-81ae-48f5-a730-5e05034d16da",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"19d58618-9c1e-4635-9994-347ed75688a7\",\"createdTime\":\"2022-04-08T23:35:56.83Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"084553f4-8aba-49d2-87dc-8b742b3af6d4\",\"createdTime\":\"2022-04-08T23:35:55.917Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"6b7e36c0-8c1f-497c-8dae-344b193cde4d\",\"createdTime\":\"2022-04-08T23:35:55.196Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"52e77863-c8cf-4a4a-83ec-8064af10344b\",\"createdTime\":\"2022-04-08T23:35:53.277Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"a2085296-415d-4ed1-8c46-c8de65d7c8ca\",\"createdTime\":\"2022-04-08T23:35:52.549Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"b0ebd182-a6d3-4ecd-8b09-298a22e567f0\",\"createdTime\":\"2022-04-08T23:35:51.822Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"913cda7e-de3b-4690-9a02-47fe62e9e424\",\"createdTime\":\"2022-04-08T23:35:51.338Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"48965322-9d27-4d88-8378-edee9860be5c\",\"createdTime\":\"2022-04-08T23:35:50.616Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"a3307c4c-e99c-4e1e-9424-014f9e6f5757\",\"createdTime\":\"2022-04-08T23:35:49.548Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"60f60f09-f8e4-4d58-b759-439bed5b9953\",\"createdTime\":\"2022-04-08T23:35:48.751Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=10\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:08 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "38a50297-7be7-4ad4-b512-286c05455955",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "3f9d7925-ee0a-4fd2-8f89-815cb4673cfb",
-      "content-length" : "3877",
-      "x-envoy-upstream-service-time" : "107",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "3f9d7925-ee0a-4fd2-8f89-815cb4673cfb",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"d013b8af-e355-46f3-8f02-2fdbcdc864c6\",\"createdTime\":\"2022-04-08T23:35:47.851Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"823e82f2-59b7-4dd8-9642-ad959c3bcbe4\",\"createdTime\":\"2022-04-08T23:35:47.247Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"0581672b-3b8c-4038-befd-8de9ce6afdaf\",\"createdTime\":\"2022-04-08T23:35:45.079Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"8f6fd703-5951-445c-8ef7-74faa1fb1b79\",\"createdTime\":\"2022-04-08T23:35:44.193Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"81d2c3b9-e8d0-4292-895a-4b4998f7c037\",\"createdTime\":\"2022-04-08T23:35:43.264Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"ef29c76f-f705-4175-882f-de69bb0c5756\",\"createdTime\":\"2022-04-08T23:35:42.709Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"96b963eb-8a09-4249-b94e-8c2d71ef1416\",\"createdTime\":\"2022-04-08T23:35:27.049Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"133b6e9f-5050-45d8-b924-aa14a77f3986\",\"createdTime\":\"2022-04-08T23:35:25.5Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"bd795eaf-342e-4d46-8239-8822fd638582\",\"createdTime\":\"2022-04-08T23:34:58.033Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"ade49d58-37e8-4c70-a61f-a684da1a1254\",\"createdTime\":\"2022-04-08T23:34:56.863Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=20\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:08 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=20",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "50065a05-dcc5-4eea-ad01-f0359039fc8c",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "f27abf44-4961-4754-81bf-f04a411717bd",
-      "content-length" : "3871",
-      "x-envoy-upstream-service-time" : "119",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f27abf44-4961-4754-81bf-f04a411717bd",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"e1426bfb-06ee-436f-be1f-fb8fc1ff14c9\",\"createdTime\":\"2022-04-08T23:34:56.327Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"e26d6b92-e82f-4d7c-8661-3f464e68c43d\",\"createdTime\":\"2022-04-08T23:34:54.68Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"d3f87537-7467-4290-9ace-4b0ad3a162a5\",\"createdTime\":\"2022-04-08T23:34:54.022Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"c2105cb6-4abc-42b7-b445-b1d305271a9e\",\"createdTime\":\"2022-04-08T23:34:53.212Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"f73f5db7-8009-4be4-b3e0-f6d709c783cd\",\"createdTime\":\"2022-04-08T23:34:52.71Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"76c2a0e1-51f0-4371-b73d-67542d433ca9\",\"createdTime\":\"2022-04-08T23:34:52.129Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"55e3f57a-6cb5-4458-b68d-f6133c4bfe75\",\"createdTime\":\"2022-04-08T23:34:51.35Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"f522c9de-25c7-41d5-b6d9-3feef6433110\",\"createdTime\":\"2022-04-08T23:34:50.684Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"55386b84-036f-4ddd-9e72-6f2d1c7cac0a\",\"createdTime\":\"2022-04-08T23:34:49.875Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"e746aadd-ee5a-47e0-a304-b80a6f7c9421\",\"createdTime\":\"2022-04-08T23:34:49.362Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=30\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:09 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=30",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0eb85799-a2ee-4786-a7b6-60271b942856",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "2649960b-4846-4638-9ec7-9abf514103bf",
-      "content-length" : "3873",
-      "x-envoy-upstream-service-time" : "110",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "2649960b-4846-4638-9ec7-9abf514103bf",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"0de1d115-a1ae-4bde-a9c6-0ef0772ad48b\",\"createdTime\":\"2022-04-08T23:34:47.602Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"39c34acd-33c0-4a7a-ae05-4d55e65c0df9\",\"createdTime\":\"2022-04-08T23:34:46.91Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"9d3e5ccd-7b41-4c08-b825-a3e5b80d0774\",\"createdTime\":\"2022-04-08T23:34:46.252Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"2d24fcf2-d2d0-45ff-a7ce-0d57a45fea1d\",\"createdTime\":\"2022-04-08T23:34:45.662Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"7408c9dc-f995-499b-87d2-56e702e15094\",\"createdTime\":\"2022-04-08T23:34:44.971Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"01f4eb17-63c2-4d9b-81ca-f778663f120f\",\"createdTime\":\"2022-04-08T23:34:44.072Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"c9383859-6932-4d0a-9503-22c0090ef1bf\",\"createdTime\":\"2022-04-08T23:32:39.958Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"f3c632e3-95df-41ed-a352-9c262acc6f14\",\"createdTime\":\"2022-04-08T23:32:39.047Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"86bdc4b5-4265-4233-a39d-78dd9775b78e\",\"createdTime\":\"2022-04-08T23:32:38.476Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"6126cc7e-6ea5-48f8-a773-bb69170265a4\",\"createdTime\":\"2022-04-08T23:32:36.993Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=40\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=40",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "99ef1067-96f3-4ff4-96f1-5cc8f56c099b",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "365adea0-e5ab-476e-8eec-a7d134b155ce",
-      "content-length" : "3878",
-      "x-envoy-upstream-service-time" : "120",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "365adea0-e5ab-476e-8eec-a7d134b155ce",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"52aa39ce-9c14-48d2-919e-b78f93c1b3c0\",\"createdTime\":\"2022-04-08T23:32:36.272Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"ef7cdbf0-23e7-46ee-a9f1-addaeaa85215\",\"createdTime\":\"2022-04-08T23:32:35.516Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"96259f3c-ca43-45d3-b117-f145ebe2a7db\",\"createdTime\":\"2022-04-08T23:32:34.866Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"7258d11d-c8fc-4824-b155-a2a31de861ed\",\"createdTime\":\"2022-04-08T23:32:34.19Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"dcc4c77c-ee9a-453a-83b1-5a5a43513207\",\"createdTime\":\"2022-04-08T23:32:33.217Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"d91c1589-f30e-4a64-a884-05f20f5e1743\",\"createdTime\":\"2022-04-08T23:32:32.469Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"ffec6a95-f16d-4f7e-9d72-146f70c11df3\",\"createdTime\":\"2022-04-08T23:32:31.627Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"21025dab-a80e-40ae-ad8f-39eb7259a50d\",\"createdTime\":\"2022-04-08T23:32:30.983Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"058baa11-2363-4b40-9e63-78e583e6f30e\",\"createdTime\":\"2022-04-08T23:32:29.453Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"6fbe1f22-69a8-4ea1-a8ff-66f673a29cdf\",\"createdTime\":\"2022-04-08T23:32:28.649Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=50\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:09 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=50",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "5bf904c5-227e-42b6-ac86-e8d6087743db",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "684dc03f-972a-4ab6-ad4d-da3b954f52f8",
-      "content-length" : "3878",
-      "x-envoy-upstream-service-time" : "99",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "684dc03f-972a-4ab6-ad4d-da3b954f52f8",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"b029b396-c087-4cc8-b1b7-cedad2e5229e\",\"createdTime\":\"2022-04-08T23:32:27.88Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"5369dd55-0213-4680-ade5-97ea60ca34d2\",\"createdTime\":\"2022-04-08T23:32:27.305Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"96f43ca5-163b-4184-af37-cf0d9977cdea\",\"createdTime\":\"2022-04-08T23:32:26.278Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"7c43a067-66d1-48e5-ba23-16b157a2d467\",\"createdTime\":\"2022-04-08T23:32:25.312Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"ef04270e-5a1e-4d17-8aa2-107010f4d3d1\",\"createdTime\":\"2022-04-08T23:31:53.466Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"99b24324-81a0-4f48-94e8-3cea1a6fc188\",\"createdTime\":\"2022-04-08T23:31:52.648Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"bb8a48b4-5d76-40cd-ad80-4a39aff0d795\",\"createdTime\":\"2022-04-08T23:31:52.116Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"563f657c-3c49-48ee-a721-5152b5c0e742\",\"createdTime\":\"2022-04-08T23:31:50.719Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"5941049b-2b1c-45cb-9538-d6647d803e17\",\"createdTime\":\"2022-04-08T23:31:49.849Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"eff24166-c73c-4a97-8d20-69d37e07fda4\",\"createdTime\":\"2022-04-08T23:31:49.199Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=60\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=60",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "04bc684c-430b-4fc3-82b2-bf9e3f69c426",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "7378b084-2093-44fb-b8bd-3051810ad1b5",
-      "content-length" : "3878",
-      "x-envoy-upstream-service-time" : "162",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "7378b084-2093-44fb-b8bd-3051810ad1b5",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"b026b79f-adf6-493e-8c1b-54aa5260a8ec\",\"createdTime\":\"2022-04-08T23:31:48.67Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"64d0c735-5392-41a2-9bcf-7477628f441a\",\"createdTime\":\"2022-04-08T23:31:47.983Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"aa28ae0d-3179-495a-b3fe-d2a28d60b155\",\"createdTime\":\"2022-04-08T23:31:47.012Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"65fd64c9-19c8-44b3-844a-12c5a6c5f586\",\"createdTime\":\"2022-04-08T23:31:46.295Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"fb7bdcaa-6058-4c16-b26a-303258d2af5d\",\"createdTime\":\"2022-04-08T23:31:45.389Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"f16afdc4-7b3a-4c4f-ad50-bcbae3f47bb8\",\"createdTime\":\"2022-04-08T23:31:44.751Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"d347c52f-9b5a-4420-a68c-eac3ddfd8e5a\",\"createdTime\":\"2022-04-08T23:31:43.309Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"43a5c5dc-8579-4303-ae67-720254c4efd9\",\"createdTime\":\"2022-04-08T23:31:42.271Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"1efd6a02-8510-40db-a17c-9b36add61b58\",\"createdTime\":\"2022-04-08T23:31:41.582Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"3c7ee77b-1afd-465a-92df-bfb1ee252e98\",\"createdTime\":\"2022-04-08T23:31:40.972Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=70\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=70",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6bd3046d-e241-4ba5-a542-7749c761dde7",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "ec9ddc72-6bf9-4d8f-87f0-e0263097e6b7",
-      "content-length" : "3939",
-      "x-envoy-upstream-service-time" : "116",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "ec9ddc72-6bf9-4d8f-87f0-e0263097e6b7",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"fa486d03-12f1-447d-b16a-a9273afc1b46\",\"createdTime\":\"2022-04-08T23:31:40.133Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"e4b852f9-a765-489b-b057-abb2949cd140\",\"createdTime\":\"2022-04-08T23:31:39.032Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"b13f3eac-bbf8-4d73-835d-3a0ba69164a3\",\"createdTime\":\"2022-04-08T23:18:22.793Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"53c46c70-7cac-449b-9d44-cbf2f0e6e4ae\",\"createdTime\":\"2022-04-08T23:18:22.19Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"fbf43319-b8eb-42fa-be49-8b5a7b0ced94\",\"createdTime\":\"2022-04-08T23:18:21.419Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"edf921bb-911e-4b7a-98f8-8c5e046a4036\",\"createdTime\":\"2022-04-08T23:18:22.028Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"21e61889-8573-44c5-8c95-e8e2c63f4e4a\",\"createdTime\":\"2022-04-08T23:18:21.026Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"552d4a8e-261f-4742-8584-77c0454b5c06\",\"createdTime\":\"2022-04-08T23:18:20.367Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"dd06a900-2206-49ef-a6a2-842fe2b8f7d2\",\"createdTime\":\"2022-04-08T23:18:20.279Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"4888a657-4326-4f56-a952-3151926a4e61\",\"createdTime\":\"2022-04-08T23:18:19.609Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=80\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=80",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b2185901-8d43-4700-a0d0-f6010f902827",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "5764a04a-1d8a-41d9-8a77-694853ff4093",
-      "content-length" : "3815",
-      "x-envoy-upstream-service-time" : "100",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5764a04a-1d8a-41d9-8a77-694853ff4093",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"791a78ed-4d3f-4c14-9ab6-291278e1c3eb\",\"createdTime\":\"2022-04-08T23:18:19.251Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"373410f8-0e22-4921-bd46-ef0fe0d6f826\",\"createdTime\":\"2022-04-08T23:18:18.336Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}},{\"feedbackId\":\"4529c2d6-169a-4dc0-961c-e9b07d1508c4\",\"createdTime\":\"2022-04-08T23:18:18.348Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"e8a85b3b-58bf-42fe-9b52-f053f1ad1d7f\",\"createdTime\":\"2022-04-08T23:18:17.17Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"36b612ee-95a9-43ac-8cf9-87b7e984bfd6\",\"createdTime\":\"2022-04-08T23:18:16.362Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"1dc0d9f5-5e03-4ab2-b6ca-47c712b83327\",\"createdTime\":\"2022-04-08T23:18:15.529Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"de65ffa7-b9ee-4a35-b909-b367e99b7f59\",\"createdTime\":\"2022-04-08T23:18:14.334Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"dbed043d-bdc7-490a-95d1-e09751f50d8f\",\"createdTime\":\"2022-04-08T23:18:13.396Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"6f4561a1-b4bd-4201-8aaa-1dc6ae180e00\",\"createdTime\":\"2022-04-08T23:18:12.125Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"edf6a9e1-a95b-4ffd-b368-a45e7c5d5e5a\",\"createdTime\":\"2022-04-08T23:18:11.303Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=90\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=90",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "562dfd82-e8da-4c83-abbc-f136ee4a2731",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "daf277fe-68b3-479d-8159-3a1de7cd0944",
-      "content-length" : "3882",
-      "x-envoy-upstream-service-time" : "170",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "daf277fe-68b3-479d-8159-3a1de7cd0944",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"feedbackId\":\"176a3fc9-4d5f-41af-99fe-2d3b2b3da291\",\"createdTime\":\"2022-04-06T02:28:57.657Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"77affbd3-e0e1-4746-b3b3-affef608357f\",\"createdTime\":\"2022-04-06T02:28:57.476Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"89b4c916-1a43-4f0c-b9de-d821652d78e9\",\"createdTime\":\"2022-04-06T02:28:56.022Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"dfe47f73-e91d-46d1-a5a6-abd53210da01\",\"createdTime\":\"2022-04-06T02:28:56.106Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"1cbb0477-fda0-4cba-8a99-56aac23dfced\",\"createdTime\":\"2022-04-06T02:28:55.955Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"}},{\"feedbackId\":\"441e8afd-43d3-4065-81f6-cc1b7a582cb6\",\"createdTime\":\"2022-04-06T02:28:55.786Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"8db09894-03e4-49d3-b2f7-17c55752eee1\",\"createdTime\":\"2022-04-06T02:28:55.54Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"d054434f-b53f-478d-89f5-92c9287fceb3\",\"createdTime\":\"2022-04-06T02:28:55.117Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}},{\"feedbackId\":\"dccc35c4-3935-4990-b47a-d7ad3625be2e\",\"createdTime\":\"2022-04-06T02:28:53.993Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}},{\"feedbackId\":\"0732d268-644d-4362-88d5-08848773f247\",\"createdTime\":\"2022-04-06T02:28:53.801Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimensionFilter\":{\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},\"feedbackType\":\"Period\",\"value\":{\"periodType\":\"AutoDetect\",\"periodValue\":3}}],\"@nextLink\":\"https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10&$skip=100\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:10 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10\u0026$skip=10",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "51",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 22:59:58 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "62692afc-be72-4525-96cb-fd35901b6716",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "9f98bfce-2e02-453b-bd26-5ffbad32cd0c",
+        "Content-Length": "3712",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 22:59:57 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "234",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "9f98bfce-2e02-453b-bd26-5ffbad32cd0c"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "feedbackId": "7e44f1f2-73e5-4da4-b6e3-6a232a1c341c",
+            "createdTime": "2022-11-17T08:28:14.714Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Anomaly",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "anomalyValue": "NotAnomaly"
+            }
+          },
+          {
+            "feedbackId": "e586b348-5711-4a75-bf7b-1557bce2897f",
+            "createdTime": "2022-11-17T08:28:14.641Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "ChangePoint",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "changePointValue": "NotChangePoint"
+            }
+          },
+          {
+            "feedbackId": "42c85de4-7b27-42ca-8185-a29d5525c45a",
+            "createdTime": "2022-11-17T08:28:13.473Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Anomaly",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "anomalyValue": "NotAnomaly"
+            }
+          },
+          {
+            "feedbackId": "a6e7e725-7ed7-42f6-a6fe-badec96e46bb",
+            "createdTime": "2022-11-16T08:38:58.346Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Period",
+            "value": {
+              "periodType": "AssignValue",
+              "periodValue": 2
+            }
+          },
+          {
+            "feedbackId": "f9c117b2-ce5e-461e-b17b-041683206c2a",
+            "createdTime": "2022-11-16T08:38:57.54Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Comment",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "commentValue": "comment"
+            }
+          },
+          {
+            "feedbackId": "32ae7475-7d35-4bb8-8672-8f225babd142",
+            "createdTime": "2022-11-16T08:38:56.901Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "ChangePoint",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "changePointValue": "NotChangePoint"
+            }
+          },
+          {
+            "feedbackId": "f5edbc48-f95e-43a6-81a1-829b38a51200",
+            "createdTime": "2022-11-16T08:38:56.029Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Anomaly",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "anomalyValue": "NotAnomaly"
+            }
+          },
+          {
+            "feedbackId": "323dd22a-2488-4963-84cd-b59c5721404d",
+            "createdTime": "2022-11-16T08:34:45.575Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Period",
+            "value": {
+              "periodType": "AssignValue",
+              "periodValue": 2
+            }
+          },
+          {
+            "feedbackId": "653386ef-b866-4cf4-9307-9de4e85a391b",
+            "createdTime": "2022-11-16T08:34:44.768Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "Comment",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "commentValue": "comment"
+            }
+          },
+          {
+            "feedbackId": "b5894399-94ae-4210-9c03-a5d557de1534",
+            "createdTime": "2022-11-16T08:34:44.121Z",
+            "userPrincipal": "REDACTED.microsoft.com",
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimensionFilter": {
+              "dimension": {
+                "Dim1": "USD"
+              }
+            },
+            "feedbackType": "ChangePoint",
+            "startTime": "2022-03-01T00:00:00Z",
+            "endTime": "2022-09-29T00:00:00Z",
+            "value": {
+              "changePointValue": "NotChangePoint"
+            }
+          }
+        ],
+        "@nextLink": "https://ga-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/feedback/metric/query?$maxpagesize=10\u0026$skip=20"
+      }
+    }
+  ],
+  "Variables": {}
 }

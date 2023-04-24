@@ -253,7 +253,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                             && dataSourceCounterFound
                             && storageSizeCounterFound
                             && synonymMapCounterFound) {
-                        SearchServiceCounters deserializedValue =
+                        SearchServiceCounters deserializedSearchServiceCounters =
                                 new SearchServiceCounters(
                                         documentCounter,
                                         indexCounter,
@@ -261,10 +261,10 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                                         dataSourceCounter,
                                         storageSizeCounter,
                                         synonymMapCounter);
-                        deserializedValue.aliasCounter = aliasCounter;
-                        deserializedValue.skillsetCounter = skillsetCounter;
+                        deserializedSearchServiceCounters.aliasCounter = aliasCounter;
+                        deserializedSearchServiceCounters.skillsetCounter = skillsetCounter;
 
-                        return deserializedValue;
+                        return deserializedSearchServiceCounters;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!documentCounterFound) {

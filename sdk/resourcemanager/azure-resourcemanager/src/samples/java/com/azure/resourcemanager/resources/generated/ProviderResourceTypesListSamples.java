@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProviderResourceTypes List. */
 public final class ProviderResourceTypesListSamples {
     /*
@@ -22,6 +20,6 @@ public final class ProviderResourceTypesListSamples {
             .manager()
             .serviceClient()
             .getProviderResourceTypes()
-            .listWithResponse("Microsoft.TestRP", null, Context.NONE);
+            .listWithResponse("Microsoft.TestRP", null, com.azure.core.util.Context.NONE);
     }
 }

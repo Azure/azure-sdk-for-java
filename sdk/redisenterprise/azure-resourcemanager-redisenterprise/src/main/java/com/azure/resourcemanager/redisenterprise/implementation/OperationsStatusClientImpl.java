@@ -53,8 +53,7 @@ public final class OperationsStatusClientImpl implements OperationsStatusClient 
     public interface OperationsStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/operationsStatus"
-                + "/{operationId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/operationsStatus/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationStatusInner>> get(

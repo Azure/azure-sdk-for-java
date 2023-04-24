@@ -142,7 +142,7 @@ public abstract class LogsIngestionTestBase extends TestBase {
         }
     }
 
-    protected List<Object> getObjects(int logsCount) {
+    public static List<Object> getObjects(int logsCount) {
         List<Object> logs = new ArrayList<>();
 
         for (int i = 0; i < logsCount; i++) {

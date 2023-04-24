@@ -7,11 +7,10 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.SharedPrivateLinkResourceInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SharedPrivateLinkResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SharedPrivateLinkResourceInner model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class SharedPrivateLinkResourceInnerTests {
         Assertions.assertEquals("dhmdua", model.requestMessage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SharedPrivateLinkResourceInner model =
             new SharedPrivateLinkResourceInner()
                 .withGroupId("ofmxagkvtmelmqkr")

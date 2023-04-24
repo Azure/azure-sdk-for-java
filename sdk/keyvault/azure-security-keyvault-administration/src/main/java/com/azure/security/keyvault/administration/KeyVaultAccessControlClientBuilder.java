@@ -27,9 +27,12 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
@@ -77,14 +80,18 @@ public final class KeyVaultAccessControlClientBuilder implements
     HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final ClientLogger logger = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
+
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -166,7 +173,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException(
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
@@ -212,9 +219,14 @@ public final class KeyVaultAccessControlClientBuilder implements
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
     }
 
@@ -232,13 +244,13 @@ public final class KeyVaultAccessControlClientBuilder implements
      */
     public KeyVaultAccessControlClientBuilder vaultUrl(String vaultUrl) {
         if (vaultUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
         }
 
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
@@ -259,7 +271,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     @Override
     public KeyVaultAccessControlClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
@@ -307,7 +319,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     @Override
     public KeyVaultAccessControlClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {

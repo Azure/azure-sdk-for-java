@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks DeleteAtSubscriptionLevel. */
 public final class ManagementLocksDeleteAtSubscriptionLevelSamples {
     /*
@@ -22,6 +20,6 @@ public final class ManagementLocksDeleteAtSubscriptionLevelSamples {
             .manager()
             .managementLockClient()
             .getManagementLocks()
-            .deleteAtSubscriptionLevelWithResponse("testlock", Context.NONE);
+            .deleteAtSubscriptionLevelWithResponse("testlock", com.azure.core.util.Context.NONE);
     }
 }

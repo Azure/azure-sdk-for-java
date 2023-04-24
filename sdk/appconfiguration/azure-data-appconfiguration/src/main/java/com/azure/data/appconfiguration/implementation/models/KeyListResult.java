@@ -5,22 +5,24 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** The result of a list request. */
 @Fluent
-public final class KeyListResult {
+public final class KeyListResult implements JsonSerializable<KeyListResult> {
     /*
      * The collection value.
      */
-    @JsonProperty(value = "items")
     private List<Key> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @JsonProperty(value = "@nextLink")
     private String nextLink;
 
     /** Creates an instance of KeyListResult class. */
@@ -64,5 +66,43 @@ public final class KeyListResult {
     public KeyListResult setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("items", this.items, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyListResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyListResult if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyListResult.
+     */
+    public static KeyListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    KeyListResult deserializedKeyListResult = new KeyListResult();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("items".equals(fieldName)) {
+                            List<Key> items = reader.readArray(reader1 -> Key.fromJson(reader1));
+                            deserializedKeyListResult.items = items;
+                        } else if ("@nextLink".equals(fieldName)) {
+                            deserializedKeyListResult.nextLink = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedKeyListResult;
+                });
     }
 }

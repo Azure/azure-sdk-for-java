@@ -34,6 +34,10 @@ public final class ChangeBase {
     @JsonProperty(value = "newValue", access = JsonProperty.Access.WRITE_ONLY)
     private String newValue;
 
+    /** Creates an instance of ChangeBase class. */
+    public ChangeBase() {
+    }
+
     /**
      * Get the propertyChangeType property: The type of change that occurred.
      *

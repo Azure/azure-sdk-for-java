@@ -104,6 +104,10 @@ public final class VaultPatchProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
 
+    /** Creates an instance of VaultPatchProperties class. */
+    public VaultPatchProperties() {
+    }
+
     /**
      * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
      * to the key vault.

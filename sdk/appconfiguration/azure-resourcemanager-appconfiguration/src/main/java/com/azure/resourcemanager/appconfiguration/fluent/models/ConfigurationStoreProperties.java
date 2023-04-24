@@ -42,15 +42,13 @@ public final class ConfigurationStoreProperties {
     private EncryptionProperties encryption;
 
     /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
+     * The list of private endpoint connections that are set up for this resource.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionReference> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -62,15 +60,13 @@ public final class ConfigurationStoreProperties {
     private Boolean disableLocalAuth;
 
     /*
-     * The amount of time in days that the configuration store will be retained
-     * when it is soft deleted.
+     * The amount of time in days that the configuration store will be retained when it is soft deleted.
      */
     @JsonProperty(value = "softDeleteRetentionInDays")
     private Integer softDeleteRetentionInDays;
 
     /*
-     * Property specifying whether protection against purge is enabled for this
-     * configuration store.
+     * Property specifying whether protection against purge is enabled for this configuration store.
      */
     @JsonProperty(value = "enablePurgeProtection")
     private Boolean enablePurgeProtection;
@@ -80,6 +76,10 @@ public final class ConfigurationStoreProperties {
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
+
+    /** Creates an instance of ConfigurationStoreProperties class. */
+    public ConfigurationStoreProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the configuration store.

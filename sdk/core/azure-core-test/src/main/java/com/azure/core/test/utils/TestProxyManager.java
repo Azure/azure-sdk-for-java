@@ -6,34 +6,37 @@ package com.azure.core.test.utils;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.Map;
 
 /**
  * Manages running the test recording proxy server
  */
 public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private static final Path PROXYPATH = Paths.get(System.getProperty("java.io.tmpdir"), "test-proxy");
-    private final File recordingPath;
+    private final Path recordingPath;
     private Process proxy;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
      * @param recordingPath The local path in the file system where recordings are saved.
      */
-    public TestProxyManager(File recordingPath) {
+    public TestProxyManager(Path recordingPath) {
         this.recordingPath = recordingPath;
 
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
-        TestProxyDownloader.installTestProxy();
+        if (runningLocally()) {
+            TestProxyDownloader.installTestProxy();
+        }
     }
 
     /**
@@ -42,26 +45,27 @@ public class TestProxyManager {
      * @throws RuntimeException There was an issue starting the proxy process.
      */
     public void startProxy() {
-
         try {
-            ProcessBuilder builder = new ProcessBuilder(Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
-                TestProxyUtils.getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
-                .directory(TestProxyDownloader.getProxyDirectory().toFile());
-            proxy = builder.start();
-            HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-            HttpRequest request = new HttpRequest(HttpMethod.GET,
-                String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
-            for (int i = 0; i < 10; i++) {
-                HttpResponse response = null;
-                try {
-                    response = client.sendSync(request, Context.NONE);
-                    if (response != null && response.getStatusCode() == 200) {
-                        return;
-                    }
-                    TestProxyUtils.checkForTestProxyErrors(response);
-                } catch (Exception ignored) {
-                }
-                Thread.sleep(1000);
+            // if we're not running in CI we will check to see if someone has started the proxy, and start one if not.
+            if (runningLocally() && !checkAlive(1, Duration.ofSeconds(1))) {
+                String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
+                    TestProxyUtils.getProxyProcessName()).toString();
+
+                ProcessBuilder builder = new ProcessBuilder(commandLine,
+                    "--storage-location",
+                    recordingPath.toString(),
+                    "--",
+                    "--urls",
+                    TestProxyUtils.getProxyUrl().toString());
+                Map<String, String> environment = builder.environment();
+                environment.put("LOGGING__LOGLEVEL", "Information");
+                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
+                proxy = builder.start();
+            }
+            // in either case the proxy should now be started, so let's wait to make sure.
+            if (checkAlive(10, Duration.ofSeconds(6))) {
+                return;
             }
             throw new RuntimeException("Test proxy did not initialize.");
 
@@ -72,12 +76,48 @@ public class TestProxyManager {
         }
     }
 
+    private boolean checkAlive(int loops, Duration waitTime) throws InterruptedException {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpRequest request = new HttpRequest(HttpMethod.GET,
+            String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
+        for (int i = 0; i < loops; i++) {
+            HttpResponse response = null;
+            try {
+                response = client.sendSync(request, Context.NONE);
+                if (response != null && response.getStatusCode() == 200) {
+                    return true;
+                }
+                TestProxyUtils.checkForTestProxyErrors(response);
+            } catch (Exception ignored) {
+            }
+            Thread.sleep(waitTime.toMillis());
+        }
+        return false;
+    }
+
     /**
      * Stop the running instance of the test proxy.
      */
     public void stopProxy() {
-        if (proxy.isAlive()) {
+        if (proxy != null && proxy.isAlive()) {
             proxy.destroy();
         }
+    }
+
+    /**
+     * Get the proxy URL.
+     *
+     * @return A string containing the proxy URL.
+     * @throws RuntimeException The proxy URL could not be constructed.
+     */
+
+
+    /**
+     * Checks the environment variables commonly set in CI to determine if the run is local.
+     * @return True if the run is local.
+     */
+    private boolean runningLocally() {
+        return Configuration.getGlobalConfiguration().get("TF_BUILD") == null
+            && Configuration.getGlobalConfiguration().get("CI") == null;
     }
 }

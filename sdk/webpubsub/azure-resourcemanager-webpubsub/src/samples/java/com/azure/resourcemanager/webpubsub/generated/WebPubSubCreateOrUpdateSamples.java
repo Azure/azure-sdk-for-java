@@ -10,6 +10,7 @@ import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentity;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentityType;
 import com.azure.resourcemanager.webpubsub.models.NetworkAcl;
+import com.azure.resourcemanager.webpubsub.models.PrivateEndpointAcl;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubRequestType;
@@ -22,7 +23,7 @@ import java.util.Map;
 /** Samples for WebPubSub CreateOrUpdate. */
 public final class WebPubSubCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSub_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSub_CreateOrUpdate.
@@ -48,7 +49,13 @@ public final class WebPubSubCreateOrUpdateSamples {
                 new WebPubSubNetworkACLs()
                     .withDefaultAction(AclAction.DENY)
                     .withPublicNetwork(
-                        new NetworkAcl().withAllow(Arrays.asList(WebPubSubRequestType.CLIENT_CONNECTION))))
+                        new NetworkAcl().withAllow(Arrays.asList(WebPubSubRequestType.CLIENT_CONNECTION)))
+                    .withPrivateEndpoints(
+                        Arrays
+                            .asList(
+                                new PrivateEndpointAcl()
+                                    .withAllow(Arrays.asList(WebPubSubRequestType.SERVER_CONNECTION))
+                                    .withName("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"))))
             .withPublicNetworkAccess("Enabled")
             .withDisableLocalAuth(false)
             .withDisableAadAuth(false)

@@ -171,12 +171,12 @@ public final class SearchResourceEncryptionKey implements JsonSerializable<Searc
                         }
                     }
                     if (keyNameFound && keyVersionFound && vaultUrlFound) {
-                        SearchResourceEncryptionKey deserializedValue =
+                        SearchResourceEncryptionKey deserializedSearchResourceEncryptionKey =
                                 new SearchResourceEncryptionKey(keyName, keyVersion, vaultUrl);
-                        deserializedValue.accessCredentials = accessCredentials;
-                        deserializedValue.identity = identity;
+                        deserializedSearchResourceEncryptionKey.accessCredentials = accessCredentials;
+                        deserializedSearchResourceEncryptionKey.identity = identity;
 
-                        return deserializedValue;
+                        return deserializedSearchResourceEncryptionKey;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!keyNameFound) {

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSub ListSkus. */
 public final class WebPubSubListSkusSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSub_ListSkus.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_ListSkus.json
      */
     /**
      * Sample code: WebPubSub_ListSkus.
@@ -17,6 +15,8 @@ public final class WebPubSubListSkusSamples {
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubListSkus(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubs().listSkusWithResponse("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager
+            .webPubSubs()
+            .listSkusWithResponse("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExternalSecuritySolutions ListByHomeRegion. */
 public final class ExternalSecuritySolutionsListByHomeRegionSamples {
     /*
@@ -18,6 +16,6 @@ public final class ExternalSecuritySolutionsListByHomeRegionSamples {
      */
     public static void getExternalSecuritySolutionsOnASubscriptionFromSecurityDataLocation(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.externalSecuritySolutions().listByHomeRegion("centralus", Context.NONE);
+        manager.externalSecuritySolutions().listByHomeRegion("centralus", com.azure.core.util.Context.NONE);
     }
 }

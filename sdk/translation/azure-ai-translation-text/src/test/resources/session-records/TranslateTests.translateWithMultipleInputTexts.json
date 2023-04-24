@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitive.microsofttranslator.com/translate?to=cs&api-version=3.0",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-translation-text/1.0.0-beta.1 (11.0.18; Linux; 5.15.90.1-microsoft-standard-WSL2)",
+      "x-ms-client-request-id" : "d4529f01-d36c-4a1b-b5f4-2bb30a4333be",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-RequestId" : "TRAN.MW1P.9A67.0324T1755.EEBAC37",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Access-Control-Expose-Headers" : "X-RequestId,X-Metered-Usage",
+      "X-Content-Type-Options" : "nosniff",
+      "X-Metered-Usage" : "52",
+      "X-MT-System" : "Microsoft,Microsoft,Microsoft",
+      "retry-after" : "0",
+      "Content-Length" : "313",
+      "StatusCode" : "200",
+      "Body" : "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":1.0},\"translations\":[{\"text\":\"Tohle je test.\",\"to\":\"cs\"}]},{\"detectedLanguage\":{\"language\":\"es\",\"score\":1.0},\"translations\":[{\"text\":\"Tohle je test.\",\"to\":\"cs\"}]},{\"detectedLanguage\":{\"language\":\"de\",\"score\":1.0},\"translations\":[{\"text\":\"Tohle je test.\",\"to\":\"cs\"}]}]",
+      "Date" : "Fri, 24 Mar 2023 17:55:03 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

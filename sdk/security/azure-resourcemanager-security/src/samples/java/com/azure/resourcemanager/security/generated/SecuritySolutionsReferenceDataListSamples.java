@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecuritySolutionsReferenceData List. */
 public final class SecuritySolutionsReferenceDataListSamples {
     /*
@@ -17,6 +15,6 @@ public final class SecuritySolutionsReferenceDataListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecuritySolutions(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securitySolutionsReferenceDatas().listWithResponse(Context.NONE);
+        manager.securitySolutionsReferenceDatas().listWithResponse(com.azure.core.util.Context.NONE);
     }
 }

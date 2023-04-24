@@ -179,6 +179,7 @@ public final class PollerJavaDocCodeSnippets {
      * Instantiating and subscribing to PollerFlux created from a
      * {@link PollingStrategy}.
      */
+    @SuppressWarnings("deprecation")
     public void initializeAndSubscribeWithPollingStrategy() {
         // BEGIN: com.azure.core.util.polling.poller.instantiationAndSubscribeWithPollingStrategy
         // Create poller instance
@@ -209,6 +210,7 @@ public final class PollerJavaDocCodeSnippets {
      * Instantiating and subscribing to PollerFlux created from a custom modified
      * {@link PollingStrategy}.
      */
+    @SuppressWarnings("deprecation")
     public void initializeAndSubscribeWithCustomPollingStrategy() {
         // BEGIN: com.azure.core.util.polling.poller.initializeAndSubscribeWithCustomPollingStrategy
 

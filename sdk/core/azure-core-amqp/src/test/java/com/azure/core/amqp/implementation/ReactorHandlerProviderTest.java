@@ -15,6 +15,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
+import com.azure.core.util.UrlBuilder;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -366,7 +367,7 @@ public class ReactorHandlerProviderTest {
     @Test
     public void correctPeerDetailsCustomEndpoint() throws MalformedURLException {
         // Arrange
-        final URL customEndpoint = new URL("https://myappservice.windows.net");
+        final URL customEndpoint = UrlBuilder.parse("https://myappservice.windows.net").toUrl();
         final String anotherFakeHostname = "hostname.fake";
         final ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,

@@ -168,13 +168,13 @@ public class ShareFileClient {
     public SeekableByteChannel getFileSeekableByteChannelWrite(ShareFileSeekableByteChannelWriteOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        if (options.getChannelMode() == ShareFileSeekableByteChannelWriteOptions.WriteMode.OVERWRITE) {
-            Objects.requireNonNull(options.getFileSize(), "'options.getFileSize()' cannot return null.");
-            create(options.getFileSize());
+        if (options.isOverwriteMode()) {
+            Objects.requireNonNull(options.getFileSizeInBytes(), "'options.getFileSize()' cannot return null.");
+            create(options.getFileSizeInBytes());
         }
 
-        int chunkSize = options.getChunkSize() != null
-            ? options.getChunkSize().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
+        int chunkSize = options.getChunkSizeInBytes() != null
+            ? options.getChunkSizeInBytes().intValue() : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;
         return new StorageSeekableByteChannel(chunkSize,
             new StorageSeekableByteChannelShareFileWriteBehavior(this, options.getRequestConditions(),
                 options.getFileLastWrittenMode()), 0L);
@@ -187,7 +187,7 @@ public class ShareFileClient {
      */
     public SeekableByteChannel getFileSeekableByteChannelRead(ShareFileSeekableByteChannelReadOptions options) {
         ShareRequestConditions conditions = options != null ? options.getRequestConditions() : null;
-        Long configuredChunkSize = options != null ? options.getChunkSize() : null;
+        Long configuredChunkSize = options != null ? options.getChunkSizeInBytes() : null;
         int chunkSize = configuredChunkSize != null
             ? configuredChunkSize.intValue()
             : (int) ShareFileAsyncClient.FILE_MAX_PUT_RANGE_SIZE;

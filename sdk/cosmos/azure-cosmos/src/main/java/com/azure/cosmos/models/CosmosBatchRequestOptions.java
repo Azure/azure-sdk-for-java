@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 
@@ -17,7 +18,7 @@ public final class CosmosBatchRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private Map<String, String> customOptions;
-    private PriorityLevel priorityLevel;
+    private CosmosDiagnosticsThresholds thresholds = new CosmosDiagnosticsThresholds();
 
     /**
      * Gets the consistency level required for the request.
@@ -60,32 +61,14 @@ public final class CosmosBatchRequestOptions {
     }
 
     /**
-     * Gets the priority level of the request.
-     *
-     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
-     * low priority requests are throttled before high priority requests start getting throttled.
-     *
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * @return enum representing priority level
-     */
-    public PriorityLevel getPriorityLevel() {
-        return priorityLevel;
-    }
-
-    /**
-     * Sets the priority level of the request.
-     *
-     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
-     * low priority requests are throttled before high priority requests start getting throttled.
-     *
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * @param priorityLevel priority level of the request
+     * Allows overriding the diagnostic thresholds for a specific operation.
+     * @param operationSpecificThresholds the diagnostic threshold override for this operation
      * @return the TransactionalBatchRequestOptions.
      */
-    public CosmosBatchRequestOptions setPriorityLevel(PriorityLevel priorityLevel) {
-        this.priorityLevel = priorityLevel;
+    public CosmosBatchRequestOptions setDiagnosticsThresholds(
+        CosmosDiagnosticsThresholds operationSpecificThresholds) {
+
+        this.thresholds = operationSpecificThresholds;
         return this;
     }
 
@@ -93,7 +76,7 @@ public final class CosmosBatchRequestOptions {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setSessionToken(sessionToken);
-        requestOptions.setPriorityLevel(priorityLevel);
+        requestOptions.setDiagnosticsThresholds(thresholds);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());

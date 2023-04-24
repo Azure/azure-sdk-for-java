@@ -20,6 +20,15 @@ public final class StatusReason extends ExpandableStringEnum<StatusReason> {
     public static final StatusReason NEWER_REQUEST_INITIATED = fromString("NewerRequestInitiated");
 
     /**
+     * Creates a new instance of StatusReason value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StatusReason() {
+    }
+
+    /**
      * Creates or finds a StatusReason from its string representation.
      *
      * @param name a name to look for.

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.Operation;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"jyofdxluusdtto\",\"display\":{\"provider\":\"boekqvkel\",\"resource\":\"mvb\",\"operation\":\"yjsflhhcaalnji\",\"description\":\"sxyawjoyaqcs\"},\"origin\":\"jpkiidzyexznelix\",\"isDataAction\":false,\"properties\":{\"ulppggdtpnapnyir\":\"datafolhbnxknal\",\"pigvpgylgqgitx\":\"datapu\"}}]}";
+            "{\"value\":[{\"name\":\"xyawj\",\"display\":{\"provider\":\"qcslyjpkiid\",\"resource\":\"exznelixhnr\",\"operation\":\"folhbnxknal\",\"description\":\"lp\"},\"origin\":\"gdtpnapnyiro\",\"isDataAction\":false,\"properties\":{\"gqgitxmedjvcsl\":\"datagvpgy\",\"wwncwzzhxgk\":\"datan\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +59,6 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Operation> response = manager.operations().list(Context.NONE);
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

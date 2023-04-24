@@ -9,11 +9,10 @@ import com.azure.resourcemanager.signalr.models.Dimension;
 import com.azure.resourcemanager.signalr.models.MetricSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MetricSpecificationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MetricSpecification model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class MetricSpecificationTests {
         Assertions.assertEquals(false, model.dimensions().get(0).toBeExportedForShoebox());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MetricSpecification model =
             new MetricSpecification()
                 .withName("fpdvhpfxxypi")

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.models.WorkspaceSetting;
 
 /** Samples for WorkspaceSettings Update. */
@@ -19,7 +18,8 @@ public final class WorkspaceSettingsUpdateSamples {
      */
     public static void updateAWorkspaceSettingDataForSubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        WorkspaceSetting resource = manager.workspaceSettings().getWithResponse("default", Context.NONE).getValue();
+        WorkspaceSetting resource =
+            manager.workspaceSettings().getWithResponse("default", com.azure.core.util.Context.NONE).getValue();
         resource
             .update()
             .withWorkspaceId(

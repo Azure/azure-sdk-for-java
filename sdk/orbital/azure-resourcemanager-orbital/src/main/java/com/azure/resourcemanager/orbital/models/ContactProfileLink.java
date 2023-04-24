@@ -25,21 +25,19 @@ public final class ContactProfileLink {
     private Polarization polarization;
 
     /*
-     * Direction (uplink or downlink).
+     * Direction (Uplink or Downlink).
      */
     @JsonProperty(value = "direction", required = true)
     private Direction direction;
 
     /*
-     * Gain To Noise Temperature in db/K. It is the required G/T by the
-     * customer. Not used yet.
+     * Gain to noise temperature in db/K. It is the required G/T by the customer. Not used yet.
      */
     @JsonProperty(value = "gainOverTemperature")
     private Float gainOverTemperature;
 
     /*
-     * Effective Isotropic Radiated Power (EIRP) in dBW. It is the required
-     * EIRP by the customer. Not used yet.
+     * Effective Isotropic Radiated Power (EIRP) in dBW. It is the required EIRP by the customer. Not used yet.
      */
     @JsonProperty(value = "eirpdBW")
     private Float eirpdBW;
@@ -49,6 +47,10 @@ public final class ContactProfileLink {
      */
     @JsonProperty(value = "channels", required = true)
     private List<ContactProfileLinkChannel> channels;
+
+    /** Creates an instance of ContactProfileLink class. */
+    public ContactProfileLink() {
+    }
 
     /**
      * Get the name property: Link name.
@@ -91,7 +93,7 @@ public final class ContactProfileLink {
     }
 
     /**
-     * Get the direction property: Direction (uplink or downlink).
+     * Get the direction property: Direction (Uplink or Downlink).
      *
      * @return the direction value.
      */
@@ -100,7 +102,7 @@ public final class ContactProfileLink {
     }
 
     /**
-     * Set the direction property: Direction (uplink or downlink).
+     * Set the direction property: Direction (Uplink or Downlink).
      *
      * @param direction the direction value to set.
      * @return the ContactProfileLink object itself.
@@ -111,7 +113,7 @@ public final class ContactProfileLink {
     }
 
     /**
-     * Get the gainOverTemperature property: Gain To Noise Temperature in db/K. It is the required G/T by the customer.
+     * Get the gainOverTemperature property: Gain to noise temperature in db/K. It is the required G/T by the customer.
      * Not used yet.
      *
      * @return the gainOverTemperature value.
@@ -121,7 +123,7 @@ public final class ContactProfileLink {
     }
 
     /**
-     * Set the gainOverTemperature property: Gain To Noise Temperature in db/K. It is the required G/T by the customer.
+     * Set the gainOverTemperature property: Gain to noise temperature in db/K. It is the required G/T by the customer.
      * Not used yet.
      *
      * @param gainOverTemperature the gainOverTemperature value to set.

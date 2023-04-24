@@ -194,7 +194,7 @@ public final class CommunicationServiceManagementClientImpl implements Communica
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-03-01-preview";
+        this.apiVersion = "2023-03-31";
         this.operations = new OperationsClientImpl(this);
         this.communicationServices = new CommunicationServicesClientImpl(this);
         this.domains = new DomainsClientImpl(this);
