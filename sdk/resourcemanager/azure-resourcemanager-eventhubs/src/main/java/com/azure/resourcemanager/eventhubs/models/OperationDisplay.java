@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation display payload. */
+/**
+ * Operation display payload.
+ */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Resource provider of the operation
      */
@@ -37,6 +35,12 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the provider property: Resource provider of the operation.

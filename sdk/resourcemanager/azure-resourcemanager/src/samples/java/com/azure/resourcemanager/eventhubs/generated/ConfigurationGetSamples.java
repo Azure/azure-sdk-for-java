@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Configuration Get. */
 public final class ConfigurationGetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterQuotaConfigurationGet.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ClusterQuotaConfigurationGet.json
      */
     /**
      * Sample code: ClustersQuotasConfigurationGet.
@@ -22,6 +20,6 @@ public final class ConfigurationGetSamples {
             .manager()
             .serviceClient()
             .getConfigurations()
-            .getWithResponse("myResourceGroup", "testCluster", Context.NONE);
+            .getWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
     }
 }

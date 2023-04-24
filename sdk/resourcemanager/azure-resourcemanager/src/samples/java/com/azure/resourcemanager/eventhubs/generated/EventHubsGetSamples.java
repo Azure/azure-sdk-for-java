@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventHubs Get. */
 public final class EventHubsGetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubGet.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubGet.json
      */
     /**
      * Sample code: EventHubGet.
@@ -23,6 +21,9 @@ public final class EventHubsGetSamples {
             .serviceClient()
             .getEventHubs()
             .getWithResponse(
-                "Default-NotificationHubs-AustraliaEast", "sdk-Namespace-716", "sdk-EventHub-10", Context.NONE);
+                "Default-NotificationHubs-AustraliaEast",
+                "sdk-Namespace-716",
+                "sdk-EventHub-10",
+                com.azure.core.util.Context.NONE);
     }
 }

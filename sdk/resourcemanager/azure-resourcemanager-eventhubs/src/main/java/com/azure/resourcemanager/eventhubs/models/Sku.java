@@ -6,14 +6,13 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU parameters supplied to the create namespace operation. */
+/**
+ * SKU parameters supplied to the create namespace operation.
+ */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * Name of this SKU.
      */
@@ -27,12 +26,17 @@ public final class Sku {
     private SkuTier tier;
 
     /*
-     * The Event Hubs throughput units for Basic or Standard tiers, where value
-     * should be 0 to 20 throughput units. The Event Hubs premium units for
-     * Premium tier, where value should be 0 to 10 premium units.
+     * The Event Hubs throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The
+     * Event Hubs premium units for Premium tier, where value should be 0 to 10 premium units.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
 
     /**
      * Get the name property: Name of this SKU.
@@ -105,8 +109,9 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.SchemaGroupInner;
 import com.azure.resourcemanager.eventhubs.models.SchemaCompatibility;
 import com.azure.resourcemanager.eventhubs.models.SchemaType;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for SchemaRegistry CreateOrUpdate. */
 public final class SchemaRegistryCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/SchemaRegistry/SchemaRegistryCreate.json
      */
     /**
      * Sample code: SchemaRegistryCreate.
@@ -35,7 +34,7 @@ public final class SchemaRegistryCreateOrUpdateSamples {
                     .withGroupProperties(mapOf())
                     .withSchemaCompatibility(SchemaCompatibility.FORWARD)
                     .withSchemaType(SchemaType.AVRO),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

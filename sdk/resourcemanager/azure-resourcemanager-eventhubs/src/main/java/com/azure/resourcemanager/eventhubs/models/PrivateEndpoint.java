@@ -5,20 +5,24 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PrivateEndpoint information. */
+/**
+ * PrivateEndpoint information.
+ */
 @Fluent
 public final class PrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
-
     /*
      * The ARM identifier for Private Endpoint.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Creates an instance of PrivateEndpoint class.
+     */
+    public PrivateEndpoint() {
+    }
 
     /**
      * Get the id property: The ARM identifier for Private Endpoint.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventhubs.models.ConnectionState;
 import com.azure.resourcemanager.eventhubs.models.EndPointProvisioningState;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.eventhubs.models.PrivateLinkConnectionStatus;
 /** Samples for PrivateEndpointConnections CreateOrUpdate. */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/PrivateEndPointConnectionCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/NameSpaces/PrivateEndPointConnectionCreate.json
      */
     /**
      * Sample code: NameSpacePrivateEndPointConnectionCreate.
@@ -41,6 +40,6 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
                             .withStatus(PrivateLinkConnectionStatus.REJECTED)
                             .withDescription("testing"))
                     .withProvisioningState(EndPointProvisioningState.SUCCEEDED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

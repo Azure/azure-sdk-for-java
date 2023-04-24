@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Namespaces ListKeys. */
 public final class NamespacesListKeysSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleListKey.
@@ -22,6 +20,7 @@ public final class NamespacesListKeysSamples {
             .manager()
             .serviceClient()
             .getNamespaces()
-            .listKeysWithResponse("ArunMonocle", "sdk-Namespace-2702", "sdk-Authrules-1746", Context.NONE);
+            .listKeysWithResponse(
+                "ArunMonocle", "sdk-Namespace-2702", "sdk-Authrules-1746", com.azure.core.util.Context.NONE);
     }
 }

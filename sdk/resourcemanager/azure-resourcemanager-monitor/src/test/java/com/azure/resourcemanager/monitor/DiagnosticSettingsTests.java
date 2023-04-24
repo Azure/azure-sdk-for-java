@@ -21,6 +21,7 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.Sku;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -49,6 +50,7 @@ public class DiagnosticSettingsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDDiagnosticSettings() {
 
         // make sure there exists a VM

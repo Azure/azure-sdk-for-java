@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.models.CheckNameAvailabilityParameter;
 
 /** Samples for DisasterRecoveryConfigs CheckNameAvailability. */
 public final class DisasterRecoveryConfigsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
      */
     /**
      * Sample code: NamespacesCheckNameAvailability.
@@ -27,6 +26,6 @@ public final class DisasterRecoveryConfigsCheckNameAvailabilitySamples {
                 "exampleResourceGroup",
                 "sdk-Namespace-9080",
                 new CheckNameAvailabilityParameter().withName("sdk-DisasterRecovery-9474"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

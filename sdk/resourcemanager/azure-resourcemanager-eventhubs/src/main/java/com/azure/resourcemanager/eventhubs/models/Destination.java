@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.DestinationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Capture storage details for capture description. */
+/**
+ * Capture storage details for capture description.
+ */
 @Fluent
 public final class Destination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Destination.class);
-
     /*
      * Name for capture destination
      */
@@ -23,11 +21,16 @@ public final class Destination {
     private String name;
 
     /*
-     * Properties describing the storage account, blob container and archive
-     * name format for capture destination
+     * Properties describing the storage account, blob container and archive name format for capture destination
      */
     @JsonProperty(value = "properties")
     private DestinationProperties innerProperties;
+
+    /**
+     * Creates an instance of Destination class.
+     */
+    public Destination() {
+    }
 
     /**
      * Get the name property: Name for capture destination.

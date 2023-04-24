@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters GetByResourceGroup. */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterGet.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ClusterGet.json
      */
     /**
      * Sample code: ClusterGet.
@@ -22,6 +20,6 @@ public final class ClustersGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getClusters()
-            .getByResourceGroupWithResponse("myResourceGroup", "testCluster", Context.NONE);
+            .getByResourceGroupWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
     }
 }

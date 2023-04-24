@@ -7,18 +7,16 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ConnectionState;
 import com.azure.resourcemanager.eventhubs.models.EndPointProvisioningState;
 import com.azure.resourcemanager.eventhubs.models.PrivateEndpoint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the PrivateEndpointConnection. */
+/**
+ * Properties of the PrivateEndpointConnection.
+ */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
-
     /*
      * Properties of the PrivateEndpointConnection.
      */
@@ -36,6 +34,12 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /**
+     * Creates an instance of PrivateEndpointConnectionInner class.
+     */
+    public PrivateEndpointConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the PrivateEndpointConnection.
@@ -102,8 +106,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        ConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(ConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionProperties();
         }
