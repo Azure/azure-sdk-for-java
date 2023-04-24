@@ -70,6 +70,8 @@ public final class ThroughputControlGroupConfig {
      *
      * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
      *
+     * Refer to https://aka.ms/CosmosDB/PriorityBasedExecution for more details.
+     *
      * @return the priority level of the throughput control group.
      */
     public PriorityLevel getPriorityLevel() { return this.priorityLevel; }

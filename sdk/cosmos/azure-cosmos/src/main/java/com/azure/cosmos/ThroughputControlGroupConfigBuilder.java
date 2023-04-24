@@ -119,6 +119,8 @@ public class ThroughputControlGroupConfigBuilder {
      *
      * By Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
      *
+     * Refer to https://aka.ms/CosmosDB/PriorityBasedExecution for more details.
+     *
      * @param priorityLevel The priority level for the control group.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */

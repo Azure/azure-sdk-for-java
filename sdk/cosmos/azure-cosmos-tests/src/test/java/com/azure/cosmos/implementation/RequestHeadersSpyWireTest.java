@@ -26,7 +26,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
     private static final String DOCUMENT_ID = UUID.randomUUID().toString();
-    private static final String STORED_PROC_ID = UUID.randomUUID().toString();
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -39,10 +38,6 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
     public String getDocumentLink() {
         return TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), DOCUMENT_ID);
-    }
-
-    public String getStoredProcLink() {
-        return TestUtils.getStoredProcedureNameLink(createdDatabase.getId(), createdCollection.getId(), STORED_PROC_ID);
     }
 
     @Factory(dataProvider = "clientBuilders")
@@ -245,12 +240,6 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.createDocument(getCollectionLink(createdCollection),
             getDocumentDefinition(), null, false).block();
-
-        StoredProcedure storedProcedure = new StoredProcedure();
-        storedProcedure.setId(STORED_PROC_ID);
-        storedProcedure.setBody("function() {var x = 10;}");
-
-        client.createStoredProcedure(getCollectionLink(createdCollection), storedProcedure, null).block();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

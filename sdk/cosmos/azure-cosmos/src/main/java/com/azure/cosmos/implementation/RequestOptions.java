@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.HashMap;
@@ -45,7 +44,6 @@ public class RequestOptions {
 
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
-    private PriorityLevel priorityLevel;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -442,33 +440,5 @@ public class RequestOptions {
 
     public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
-    }
-
-    /**
-     * Gets the priority level of the request.
-     *
-     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
-     * low priority requests are throttled before high priority requests start getting throttled.
-     *
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * @return enum representing priority level
-     */
-    public PriorityLevel getPriorityLevel() {
-        return this.priorityLevel;
-    }
-
-    /**
-     * Sets the priority level of the request.
-     *
-     * When Priority Based Throttling is enabled, once the user has exhausted their provisioned throughput,
-     * low priority requests are throttled before high priority requests start getting throttled.
-     *
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * @param priorityLevel priority level of the request
-     */
-    public void setPriorityLevel(PriorityLevel priorityLevel) {
-        this.priorityLevel = priorityLevel;
     }
 }
