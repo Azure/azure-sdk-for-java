@@ -613,9 +613,7 @@ public final class CosmosAsyncClient implements Closeable {
         try {
             voidFlux.blockLast();
         } catch (Exception e) {
-
             // swallow exceptions here
-
         }
     }
 
