@@ -48,7 +48,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
             RecordingState.ACTIVE);
 
         validateOperation(callRecording.stopRecording(RECORDING_ID));
-        assertThrows(HttpResponseException.class, () -> callRecording.getRecordingState(RECORDING_ID).block()  );
+        assertThrows(HttpResponseException.class, () -> callRecording.getRecordingState(RECORDING_ID).block());
     }
 
     private void validateRecordingState(Publisher<RecordingStateResult> publisher, RecordingState status) {
