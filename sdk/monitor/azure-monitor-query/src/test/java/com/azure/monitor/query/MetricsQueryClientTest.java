@@ -5,12 +5,10 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -44,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Unit tests for {@link MetricsQueryClient}.
  */
-public class MetricsQueryClientTest extends TestProxyTestBase {
+public class MetricsQueryClientTest extends TestBase {
     private static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_METRICS_RESOURCE_URI",
                     "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics");
@@ -91,7 +89,7 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
                 .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+                .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
@@ -101,13 +99,6 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
         }
         this.client = clientBuilder
                 .buildClient();
-    }
-
-    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .skipRequest((request, context) -> false)
-            .build();
     }
 
     private TokenCredential getCredential() {

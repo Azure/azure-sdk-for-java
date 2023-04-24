@@ -1,43 +1,31 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/indexes(\u0027index\u0027)?api-version=2021-04-30-Preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
-        "Content-Length": "0",
-        "Date": "Thu, 09 Mar 2023 19:53:25 GMT",
-        "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
-        "x-ms-client-request-id": "8af6ff6d-d717-49c1-aa00-72cc637134c3"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "client-request-id": "8af6ff6d-d717-49c1-aa00-72cc637134c3",
-        "Content-Language": "en",
-        "Content-Length": "119",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 09 Mar 2023 19:53:24 GMT",
-        "elapsed-time": "18",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
-        "request-id": "8af6ff6d-d717-49c1-aa00-72cc637134c3",
-        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "x-ms-client-request-id": "8af6ff6d-d717-49c1-aa00-72cc637134c3"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "",
-          "message": "No index with the name \u0027index\u0027 was found in the service \u0027azs-java-alzimmertestproxy\u0027."
-        }
-      }
-    }
-  ],
-  "Variables": {
-    "0": "8af6ff6d-d717-49c1-aa00-72cc637134c3"
-  }
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315"
+    },
+    "Response" : {
+      "content-length" : "106",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315",
+      "StatusCode" : "404",
+      "Date" : "Thu, 27 May 2021 21:06:59 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315",
+      "elapsed-time" : "16",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No index with the name 'index' was found in the service 'alzimmer-test'.\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "d7fc90de-3a75-4f3e-b3f2-680ec4e4e315" ]
 }

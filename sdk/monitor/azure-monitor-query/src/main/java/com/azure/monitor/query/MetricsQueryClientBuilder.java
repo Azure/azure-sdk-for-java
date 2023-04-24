@@ -201,8 +201,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return A synchronous {@link MetricsQueryClient}.
      */
     public MetricsQueryClient buildClient() {
-        return new MetricsQueryClient(innerMetricsBuilder.buildClient(),
-            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+        return new MetricsQueryClient(buildAsyncClient());
     }
 
     /**

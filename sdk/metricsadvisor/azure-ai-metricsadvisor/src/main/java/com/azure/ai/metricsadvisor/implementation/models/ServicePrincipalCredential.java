@@ -20,9 +20,6 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
     @JsonProperty(value = "parameters", required = true)
     private ServicePrincipalParam parameters;
 
-    /** Creates an instance of ServicePrincipalCredential class. */
-    public ServicePrincipalCredential() {}
-
     /**
      * Get the parameters property: The parameters property.
      *
@@ -40,20 +37,6 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
      */
     public ServicePrincipalCredential setParameters(ServicePrincipalParam parameters) {
         this.parameters = parameters;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ServicePrincipalCredential setDataSourceCredentialName(String dataSourceCredentialName) {
-        super.setDataSourceCredentialName(dataSourceCredentialName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ServicePrincipalCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
-        super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
     }
 }

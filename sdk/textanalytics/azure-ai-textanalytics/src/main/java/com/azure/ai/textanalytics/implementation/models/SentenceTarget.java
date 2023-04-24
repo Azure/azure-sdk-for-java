@@ -47,9 +47,6 @@ public final class SentenceTarget {
     @JsonProperty(value = "relations", required = true)
     private List<TargetRelation> relations;
 
-    /** Creates an instance of SentenceTarget class. */
-    public SentenceTarget() {}
-
     /**
      * Get the sentiment property: Targeted sentiment in the sentence.
      *

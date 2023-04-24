@@ -21,9 +21,6 @@ public final class KeyPhraseExtractionLROResult extends AnalyzeTextLROResult {
     @JsonProperty(value = "results", required = true)
     private KeyPhraseResult results;
 
-    /** Creates an instance of KeyPhraseExtractionLROResult class. */
-    public KeyPhraseExtractionLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

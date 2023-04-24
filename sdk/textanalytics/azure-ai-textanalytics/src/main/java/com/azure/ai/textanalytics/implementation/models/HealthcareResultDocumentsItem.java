@@ -5,42 +5,11 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /** The HealthcareResultDocumentsItem model. */
 @Fluent
 public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocumentResult {
-    /*
-     * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
-     * representation of the language detected for this document.
-     */
-    @JsonProperty(value = "detectedLanguage")
-    private DetectedLanguage detectedLanguage;
-
-    /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
-     */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
-    }
-
-    /**
-     * Set the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @param detectedLanguage the detectedLanguage value to set.
-     * @return the HealthcareResultDocumentsItem object itself.
-     */
-    public HealthcareResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public HealthcareResultDocumentsItem setEntities(List<HealthcareEntity> entities) {
@@ -52,13 +21,6 @@ public final class HealthcareResultDocumentsItem extends HealthcareEntitiesDocum
     @Override
     public HealthcareResultDocumentsItem setRelations(List<HealthcareRelation> relations) {
         super.setRelations(relations);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HealthcareResultDocumentsItem setFhirBundle(Map<String, Object> fhirBundle) {
-        super.setFhirBundle(fhirBundle);
         return this;
     }
 

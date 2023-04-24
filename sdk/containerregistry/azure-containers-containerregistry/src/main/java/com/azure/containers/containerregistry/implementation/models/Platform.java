@@ -5,11 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -17,42 +13,47 @@ import java.util.List;
  * system and architecture values are listed in the Go language documentation for $GOOS and $GOARCH.
  */
 @Fluent
-public final class Platform implements JsonSerializable<Platform> {
+public final class Platform {
     /*
      * Specifies the CPU architecture, for example amd64 or ppc64le.
      */
+    @JsonProperty(value = "architecture")
     private String architecture;
 
     /*
-     * The os field specifies the operating system, for example linux or windows.
+     * The os field specifies the operating system, for example linux or
+     * windows.
      */
+    @JsonProperty(value = "os")
     private String os;
 
     /*
-     * The optional os.version field specifies the operating system version, for example 10.0.10586.
+     * The optional os.version field specifies the operating system version,
+     * for example 10.0.10586.
      */
+    @JsonProperty(value = "os.version")
     private String osVersion;
 
     /*
-     * The optional os.features field specifies an array of strings, each listing a required OS feature (for example on
-     * Windows win32k
+     * The optional os.features field specifies an array of strings, each
+     * listing a required OS feature (for example on Windows win32k
      */
+    @JsonProperty(value = "os.features")
     private List<String> osFeatures;
 
     /*
-     * The optional variant field specifies a variant of the CPU, for example armv6l to specify a particular CPU
-     * variant of the ARM CPU.
+     * The optional variant field specifies a variant of the CPU, for example
+     * armv6l to specify a particular CPU variant of the ARM CPU.
      */
+    @JsonProperty(value = "variant")
     private String variant;
 
     /*
-     * The optional features field specifies an array of strings, each listing a required CPU feature (for example sse4
-     * or aes
+     * The optional features field specifies an array of strings, each listing
+     * a required CPU feature (for example sse4 or aes
      */
+    @JsonProperty(value = "features")
     private List<String> features;
-
-    /** Creates an instance of Platform class. */
-    public Platform() {}
 
     /**
      * Get the architecture property: Specifies the CPU architecture, for example amd64 or ppc64le.
@@ -180,56 +181,5 @@ public final class Platform implements JsonSerializable<Platform> {
     public Platform setFeatures(List<String> features) {
         this.features = features;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("architecture", this.architecture);
-        jsonWriter.writeStringField("os", this.os);
-        jsonWriter.writeStringField("os.version", this.osVersion);
-        jsonWriter.writeArrayField("os.features", this.osFeatures, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("variant", this.variant);
-        jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Platform from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Platform if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
-     * @throws IOException If an error occurs while reading the Platform.
-     */
-    public static Platform fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Platform deserializedPlatform = new Platform();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("architecture".equals(fieldName)) {
-                            deserializedPlatform.architecture = reader.getString();
-                        } else if ("os".equals(fieldName)) {
-                            deserializedPlatform.os = reader.getString();
-                        } else if ("os.version".equals(fieldName)) {
-                            deserializedPlatform.osVersion = reader.getString();
-                        } else if ("os.features".equals(fieldName)) {
-                            List<String> osFeatures = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPlatform.osFeatures = osFeatures;
-                        } else if ("variant".equals(fieldName)) {
-                            deserializedPlatform.variant = reader.getString();
-                        } else if ("features".equals(fieldName)) {
-                            List<String> features = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPlatform.features = features;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedPlatform;
-                });
     }
 }

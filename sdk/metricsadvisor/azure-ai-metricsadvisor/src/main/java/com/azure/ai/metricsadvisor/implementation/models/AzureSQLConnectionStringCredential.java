@@ -20,9 +20,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
     @JsonProperty(value = "parameters", required = true)
     private AzureSQLConnectionStringParam parameters;
 
-    /** Creates an instance of AzureSQLConnectionStringCredential class. */
-    public AzureSQLConnectionStringCredential() {}
-
     /**
      * Get the parameters property: The parameters property.
      *
@@ -40,21 +37,6 @@ public final class AzureSQLConnectionStringCredential extends DataSourceCredenti
      */
     public AzureSQLConnectionStringCredential setParameters(AzureSQLConnectionStringParam parameters) {
         this.parameters = parameters;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureSQLConnectionStringCredential setDataSourceCredentialName(String dataSourceCredentialName) {
-        super.setDataSourceCredentialName(dataSourceCredentialName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureSQLConnectionStringCredential setDataSourceCredentialDescription(
-            String dataSourceCredentialDescription) {
-        super.setDataSourceCredentialDescription(dataSourceCredentialDescription);
         return this;
     }
 }

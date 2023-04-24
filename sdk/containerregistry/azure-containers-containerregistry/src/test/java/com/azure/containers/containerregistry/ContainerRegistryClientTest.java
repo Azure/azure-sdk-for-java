@@ -5,9 +5,9 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ import java.util.Collections;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
-import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -33,25 +32,12 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     private HttpClient httpClient;
     private final String repositoryName = HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 
-    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
-            .assertSync()
-            .build();
-    }
-
-    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
-            .assertAsync()
-            .build();
-    }
     private ContainerRegistryClient getContainerRegistryClient(HttpClient client) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(client == null ? interceptorManager.getPlaybackClient() : client)).buildClient();
+        return getContainerRegistryBuilder(client).buildClient();
     }
 
     private ContainerRegistryAsyncClient getContainerRegistryAsyncClient(HttpClient client) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(client == null ? interceptorManager.getPlaybackClient() : client)).buildAsyncClient();
+        return getContainerRegistryBuilder(client).buildAsyncClient();
     }
 
     @BeforeEach
@@ -60,7 +46,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {
-            httpClient = HttpClient.createDefault();
+            httpClient = new NettyAsyncHttpClientBuilder().build();
         }
 
         registryClient = getContainerRegistryClient(httpClient);

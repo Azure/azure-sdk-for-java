@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.EntityDataSource;
-import com.azure.ai.textanalytics.models.FhirVersion;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
@@ -22,7 +21,6 @@ import com.azure.core.http.rest.PagedResponse;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,7 +49,6 @@ public class AnalyzeHealthcareEntitiesAsync {
                     + "if diarrhea worsen."));
 
         AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
-                                                       .setFhirVersion(FhirVersion.V4_0_1)
                                                        .setIncludeStatistics(true);
 
         client.beginAnalyzeHealthcareEntities(documents, options)
@@ -87,8 +84,8 @@ public class AnalyzeHealthcareEntitiesAsync {
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
-            System.out.printf("Documents statistics: document count = %d, erroneous document count = %d,"
-                                  + " transaction count = %d, valid document count = %d.%n",
+            System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
+                                  + " transaction count = %s, valid document count = %s.%n",
                 batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
             // Healthcare entities results
@@ -120,12 +117,6 @@ public class AnalyzeHealthcareEntitiesAsync {
                         HealthcareEntity entity = role.getEntity();
                         System.out.printf("\tEntity text: %s, category: %s, role: %s.%n",
                             entity.getText(), entity.getCategory(), role.getName());
-                    }
-                    System.out.printf("Relation confidence score: %f.%n", entityRelation.getConfidenceScore());
-                    // FHIR bundle in JSON format
-                    final Map<String, Object> fhirBundle = healthcareEntitiesResult.getFhirBundle();
-                    if (fhirBundle != null) {
-                        System.out.printf("FHIR bundle: %s%n", fhirBundle);
                     }
                 }
             }

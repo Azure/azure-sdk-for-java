@@ -1,53 +1,25 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Content-Length": "143",
-        "Content-Type": "application/json",
-        "Date": "Wed, 05 Apr 2023 18:42:48 GMT",
-        "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
-        "x-ms-client-request-id": "db26492b-29a7-4c2b-8df0-20b49b3fe524"
-      },
-      "RequestBody": {
-        "kind": "LanguageDetection",
-        "analysisInput": {
-          "documents": [
-            {
-              "id": "",
-              "text": "This is written in English"
-            }
-          ]
-        },
-        "parameters": {
-          "loggingOptOut": false
-        }
-      },
-      "StatusCode": 400,
-      "ResponseHeaders": {
-        "apim-request-id": "d64a5a96-d0ec-4a23-a2a3-2e142fe360da",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 18:42:47 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "7",
-        "x-ms-region": "West US 2"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "InvalidRequest",
-          "message": "Invalid Document in request.",
-          "innererror": {
-            "code": "InvalidDocument",
-            "message": "At least one input is missing an Id attribute."
-          }
-        }
-      }
-    }
-  ],
-  "Variables": {}
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-05-01&showStats=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.4 (11.0.10; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "52f6132a-5d56-4bbc-95e7-b564dc67f99e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-envoy-upstream-service-time" : "7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8f40f2c7-792d-4719-8465-d7e5d6071ee0",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"At least one input is missing an Id attribute.\"}}}",
+      "Date" : "Fri, 05 Aug 2022 20:37:56 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
 }

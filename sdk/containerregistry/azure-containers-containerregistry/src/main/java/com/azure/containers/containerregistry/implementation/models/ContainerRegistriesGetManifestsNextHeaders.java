@@ -5,8 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistriesGetManifestsNextHeaders model. */
 @Fluent
@@ -14,17 +13,8 @@ public final class ContainerRegistriesGetManifestsNextHeaders {
     /*
      * The Link property.
      */
+    @JsonProperty(value = "Link")
     private String link;
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of ContainerRegistriesGetManifestsNextHeaders class.
-     *
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public ContainerRegistriesGetManifestsNextHeaders(HttpHeaders rawHeaders) {
-        this.link = rawHeaders.getValue(HttpHeaderName.LINK);
-    }
 
     /**
      * Get the link property: The Link property.

@@ -8,10 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
- * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
- */
+/** Defines values for StringIndexType. */
 public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
     /** Static value TextElements_v8 for StringIndexType. */
     public static final StringIndexType TEXT_ELEMENTS_V8 = fromString("TextElements_v8");

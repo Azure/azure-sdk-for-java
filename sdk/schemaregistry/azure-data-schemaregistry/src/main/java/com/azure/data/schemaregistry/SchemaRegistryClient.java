@@ -9,31 +9,12 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
-import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
-import com.azure.data.schemaregistry.implementation.models.ErrorException;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
-import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
-import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -76,16 +57,10 @@ import java.util.Objects;
  */
 @ServiceClient(builder = SchemaRegistryClientBuilder.class)
 public final class SchemaRegistryClient {
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryClient.class);
-    private final AzureSchemaRegistryImpl restService;
+    private final SchemaRegistryAsyncClient asyncClient;
 
-
-    SchemaRegistryClient(AzureSchemaRegistryImpl restService) {
-        this.restService = restService;
-
-        // So the accessor is initialised because there were NullPointerExceptions before.
-        new SchemaProperties("", SchemaFormat.AVRO);
+    SchemaRegistryClient(SchemaRegistryAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -94,7 +69,7 @@ public final class SchemaRegistryClient {
      * @return The fully qualified namespace of the Schema Registry instance.
      */
     public String getFullyQualifiedNamespace() {
-        return this.restService.getEndpoint();
+        return asyncClient.getFullyQualifiedNamespace();
     }
 
     /**
@@ -120,7 +95,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties registerSchema(String groupName, String name, String schemaDefinition,
         SchemaFormat format) {
-        return registerSchemaWithResponse(groupName, name, schemaDefinition, format, Context.NONE).getValue();
+        return this.asyncClient.registerSchema(groupName, name, schemaDefinition, format).block();
     }
 
     /**
@@ -147,28 +122,8 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
         SchemaFormat format, Context context) {
-        if (Objects.isNull(groupName)) {
-            throw logger.logExceptionAsError(new NullPointerException("'groupName' should not be null."));
-        } else if (Objects.isNull(name)) {
-            throw logger.logExceptionAsError(new NullPointerException("'name' should not be null."));
-        } else if (Objects.isNull(schemaDefinition)) {
-            throw logger.logExceptionAsError(new NullPointerException("'schemaDefinition' should not be null."));
-        } else if (Objects.isNull(format)) {
-            throw logger.logExceptionAsError(new NullPointerException("'format' should not be null."));
-        }
-
-        logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
-            groupName, name, format, schemaDefinition);
-
-        context = enableSyncRestProxy(context);
-        final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
-
-        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName, name, contentType.toString(), binaryData, binaryData.getLength(), context);
-        final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
-        return new SimpleResponse<>(
-            response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), registered);
+        return this.asyncClient.registerSchemaWithResponse(groupName, name, schemaDefinition, format,
+            context).block();
     }
 
     /**
@@ -185,7 +140,7 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistrySchema getSchema(String schemaId) {
-        return getSchemaWithResponse(schemaId, Context.NONE).getValue();
+        return this.asyncClient.getSchema(schemaId).block();
     }
 
     /**
@@ -205,7 +160,7 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion) {
-        return getSchemaWithResponse(groupName, schemaName, schemaVersion, Context.NONE).getValue();
+        return this.asyncClient.getSchema(groupName, schemaName, schemaVersion).block();
     }
 
     /**
@@ -223,19 +178,7 @@ public final class SchemaRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistrySchema> getSchemaWithResponse(String schemaId, Context context) {
-        if (Objects.isNull(schemaId)) {
-            throw logger.logExceptionAsError(new NullPointerException("'schemaId' should not be null."));
-        }
-        context = enableSyncRestProxy(context);
-        try {
-            ResponseBase<SchemasGetByIdHeaders, BinaryData> response = this.restService.getSchemas().getByIdWithResponse(schemaId, context);
-            final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
-            final String schema = convertToString(response.getValue().toStream());
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
-        } catch (ErrorException ex) {
-            throw logger.logExceptionAsError(SchemaRegistryAsyncClient.remapError(ex));
-        }
+        return this.asyncClient.getSchemaWithResponse(schemaId, context).block();
     }
 
     /**
@@ -257,26 +200,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName,
         int schemaVersion, Context context) {
-        if (Objects.isNull(groupName)) {
-            throw logger.logExceptionAsError(new NullPointerException("'groupName' should not be null."));
-        }
-        context = enableSyncRestProxy(context);
-
-        ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response = this.restService.getSchemas().getSchemaVersionWithResponse(groupName, schemaName, schemaVersion,
-            context);
-        final InputStream schemaInputStream = response.getValue().toStream();
-        final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
-        final String schema;
-
-        if (schemaInputStream == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
-                groupName, schemaName, schemaVersion)));
-        }
-        schema = convertToString(schemaInputStream);
-        return new SimpleResponse<>(
-            response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
+        return this.asyncClient.getSchemaWithResponse(groupName, schemaName, schemaVersion, context).block();
     }
 
     /**
@@ -298,7 +222,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaProperties getSchemaProperties(String groupName, String name, String schemaDefinition,
         SchemaFormat format) {
-        return getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, format, Context.NONE).getValue();
+        return this.asyncClient.getSchemaProperties(groupName, name, schemaDefinition, format).block();
     }
 
     /**
@@ -321,61 +245,7 @@ public final class SchemaRegistryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SchemaProperties> getSchemaPropertiesWithResponse(String groupName, String name,
         String schemaDefinition, SchemaFormat format, Context context) {
-        if (Objects.isNull(groupName)) {
-            throw logger.logExceptionAsError(new NullPointerException("'groupName' cannot be null."));
-        } else if (Objects.isNull(name)) {
-            throw logger.logExceptionAsError(new NullPointerException("'name' cannot be null."));
-        } else if (Objects.isNull(schemaDefinition)) {
-            throw logger.logExceptionAsError(new NullPointerException("'schemaDefinition' cannot be null."));
-        } else if (Objects.isNull(format)) {
-            throw logger.logExceptionAsError(new NullPointerException("'format' cannot be null."));
-        }
-
-        if (context == null) {
-            context = Context.NONE;
-        }
-        context = enableSyncRestProxy(context);
-
-        final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
-
-        try {
-            ResponseBase<SchemasQueryIdByContentHeaders, Void>  response = restService.getSchemas()
-                .queryIdByContentWithResponse(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()), binaryData, binaryData.getLength(), context);
-            final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
-            return new SimpleResponse<>(
-                response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), properties);
-        } catch (ErrorException ex) {
-            throw logger.logExceptionAsError(SchemaRegistryAsyncClient.remapError(ex));
-        }
-    }
-
-    private Context enableSyncRestProxy(Context context) {
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-
-    /**
-     * Converts an input stream into its string representation.
-     *
-     * @param inputStream Input stream.
-     *
-     * @return A string representation.
-     *
-     * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
-     */
-    static String convertToString(InputStream inputStream) {
-        final StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            String str;
-            while ((str = reader.readLine()) != null) {
-                builder.append(str);
-            }
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
-        }
-
-        return builder.toString();
+        return this.asyncClient.getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, format, context)
+            .block();
     }
 }

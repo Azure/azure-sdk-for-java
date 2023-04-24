@@ -66,7 +66,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * &#47;&#47;   ]
  * &#47;&#47; &#125;
  * Person person = Person.newBuilder&#40;&#41;
- *     .setName&#40;&quot;Chase&quot;&#41;
+ *     .setName&#40;&quot;Alina&quot;&#41;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
  *     .build&#40;&#41;;
  *
@@ -107,7 +107,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * &#47;&#47;   ]
  * &#47;&#47; &#125;
  * Person person = Person.newBuilder&#40;&#41;
- *     .setName&#40;&quot;Chase&quot;&#41;
+ *     .setName&#40;&quot;Alina&quot;&#41;
  *     .setFavouriteColour&#40;&quot;Turquoise&quot;&#41;
  *     .build&#40;&#41;;
  *

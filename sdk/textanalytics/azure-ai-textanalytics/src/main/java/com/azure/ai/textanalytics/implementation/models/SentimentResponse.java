@@ -17,9 +17,6 @@ public final class SentimentResponse extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<SentimentResponseDocumentsItem> documents;
 
-    /** Creates an instance of SentimentResponse class. */
-    public SentimentResponse() {}
-
     /**
      * Get the documents property: Sentiment analysis per document.
      *
@@ -42,7 +39,7 @@ public final class SentimentResponse extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public SentimentResponse setErrors(List<InputError> errors) {
+    public SentimentResponse setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Human-readable error code. */
+/** Defines values for ErrorCode. */
 public final class ErrorCode extends ExpandableStringEnum<ErrorCode> {
     /** Static value InvalidRequest for ErrorCode. */
     public static final ErrorCode INVALID_REQUEST = fromString("InvalidRequest");

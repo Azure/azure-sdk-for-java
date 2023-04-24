@@ -1,14 +1,14 @@
 # Release History
 
-## 1.1.13 (2023-04-12)
+## 1.1.13 (2023-04-21)
 
 ### Other Changes
-- Integrated sync stack workflow for synchronous APIs
 
 #### Dependency Updates
 
 - Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
 - Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
 
 ## 1.1.12 (2023-03-16)
 
@@ -19,6 +19,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
 - Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
+
 ## 1.1.11 (2023-02-16)
 
 ### Other Changes
@@ -27,6 +28,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
 - Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
 
 ## 1.1.10 (2023-01-09)
 

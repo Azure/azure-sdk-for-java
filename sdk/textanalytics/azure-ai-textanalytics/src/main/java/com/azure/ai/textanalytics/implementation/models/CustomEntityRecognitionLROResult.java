@@ -21,9 +21,6 @@ public final class CustomEntityRecognitionLROResult extends AnalyzeTextLROResult
     @JsonProperty(value = "results", required = true)
     private CustomEntitiesResult results;
 
-    /** Creates an instance of CustomEntityRecognitionLROResult class. */
-    public CustomEntityRecognitionLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

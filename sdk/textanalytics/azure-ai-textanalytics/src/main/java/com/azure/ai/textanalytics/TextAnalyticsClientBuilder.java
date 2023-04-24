@@ -38,12 +38,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -126,7 +123,7 @@ public final class TextAnalyticsClientBuilder implements
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
     private static final HttpHeaders DEFAULT_HTTP_HEADERS = new HttpHeaders();
-    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
+
     private final ClientLogger logger = new ClientLogger(TextAnalyticsClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -249,19 +246,10 @@ public final class TextAnalyticsClientBuilder implements
 
             policies.add(new HttpLoggingPolicy(buildLogOptions));
 
-            TracingOptions tracingOptions = null;
-            if (clientOptions != null) {
-                tracingOptions = clientOptions.getTracingOptions();
-            }
-            
-            Tracer tracer = TracerProvider.getDefaultProvider()
-                .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
-
             pipeline = new HttpPipelineBuilder()
                 .clientOptions(buildClientOptions)
                 .httpClient(httpClient)
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .tracer(tracer)
                 .build();
         }
 

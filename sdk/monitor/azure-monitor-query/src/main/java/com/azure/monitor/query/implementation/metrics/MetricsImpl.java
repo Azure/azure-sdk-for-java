@@ -68,25 +68,6 @@ public final class MetricsImpl {
                 @QueryParam("metricnamespace") String metricnamespace,
                 @HeaderParam("Accept") String accept,
                 Context context);
-
-        @Get("/{resourceUri}/providers/Microsoft.Insights/metrics")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<MetricsResponse> listSync(
-                @HostParam("$host") String host,
-                @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-                @QueryParam("timespan") String timespan,
-                @QueryParam("interval") Duration interval,
-                @QueryParam("metricnames") String metricnames,
-                @QueryParam("aggregation") String aggregation,
-                @QueryParam("top") Integer top,
-                @QueryParam("orderby") String orderBy,
-                @QueryParam("$filter") String filter,
-                @QueryParam("resultType") ResultType resultType,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("metricnamespace") String metricnamespace,
-                @HeaderParam("Accept") String accept,
-                Context context);
     }
 
     /**
@@ -133,10 +114,11 @@ public final class MetricsImpl {
             ResultType resultType,
             String metricnamespace) {
         if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -204,10 +186,11 @@ public final class MetricsImpl {
             String metricnamespace,
             Context context) {
         if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
         }
         if (resourceUri == null) {
-            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.list(
@@ -389,28 +372,19 @@ public final class MetricsImpl {
             ResultType resultType,
             String metricnamespace,
             Context context) {
-        if (this.client.getHost() == null) {
-            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
-        }
-        if (resourceUri == null) {
-            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
-        }
-        final String accept = "application/json";
-        return service.listSync(
-                this.client.getHost(),
-                resourceUri,
-                timespan,
-                interval,
-                metricnames,
-                aggregation,
-                top,
-                orderBy,
-                filter,
-                resultType,
-                this.client.getApiVersion(),
-                metricnamespace,
-                accept,
-                context);
+        return listWithResponseAsync(
+                        resourceUri,
+                        timespan,
+                        interval,
+                        metricnames,
+                        aggregation,
+                        top,
+                        orderBy,
+                        filter,
+                        resultType,
+                        metricnamespace,
+                        context)
+                .block();
     }
 
     /**

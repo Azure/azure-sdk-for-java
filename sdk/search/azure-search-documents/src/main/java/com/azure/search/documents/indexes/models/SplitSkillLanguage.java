@@ -7,44 +7,37 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by SplitSkill. */
+/** Defines values for SplitSkillLanguage. */
 public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLanguage> {
-    /** Danish. */
+    /** Static value da for SplitSkillLanguage. */
     public static final SplitSkillLanguage DA = fromString("da");
 
-    /** German. */
+    /** Static value de for SplitSkillLanguage. */
     public static final SplitSkillLanguage DE = fromString("de");
 
-    /** English. */
+    /** Static value en for SplitSkillLanguage. */
     public static final SplitSkillLanguage EN = fromString("en");
 
-    /** Spanish. */
+    /** Static value es for SplitSkillLanguage. */
     public static final SplitSkillLanguage ES = fromString("es");
 
-    /** Finnish. */
+    /** Static value fi for SplitSkillLanguage. */
     public static final SplitSkillLanguage FI = fromString("fi");
 
-    /** French. */
+    /** Static value fr for SplitSkillLanguage. */
     public static final SplitSkillLanguage FR = fromString("fr");
 
-    /** Italian. */
+    /** Static value it for SplitSkillLanguage. */
     public static final SplitSkillLanguage IT = fromString("it");
 
-    /** Korean. */
+    /** Static value ko for SplitSkillLanguage. */
     public static final SplitSkillLanguage KO = fromString("ko");
 
-    /** Portuguese. */
+    /** Static value pt for SplitSkillLanguage. */
     public static final SplitSkillLanguage PT = fromString("pt");
-
-    /**
-     * Creates a new instance of SplitSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public SplitSkillLanguage() {}
 
     /**
      * Creates or finds a SplitSkillLanguage from its string representation.
@@ -52,6 +45,7 @@ public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLan
      * @param name a name to look for.
      * @return the corresponding SplitSkillLanguage.
      */
+    @JsonCreator
     public static SplitSkillLanguage fromString(String name) {
         return fromString(name, SplitSkillLanguage.class);
     }

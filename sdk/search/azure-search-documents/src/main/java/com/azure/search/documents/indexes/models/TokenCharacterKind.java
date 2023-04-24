@@ -6,21 +6,24 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Represents classes of characters on which a token filter can operate. */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Defines values for TokenCharacterKind. */
 public enum TokenCharacterKind {
-    /** Keeps letters in tokens. */
+    /** Enum value letter. */
     LETTER("letter"),
 
-    /** Keeps digits in tokens. */
+    /** Enum value digit. */
     DIGIT("digit"),
 
-    /** Keeps whitespace in tokens. */
+    /** Enum value whitespace. */
     WHITESPACE("whitespace"),
 
-    /** Keeps punctuation in tokens. */
+    /** Enum value punctuation. */
     PUNCTUATION("punctuation"),
 
-    /** Keeps symbols in tokens. */
+    /** Enum value symbol. */
     SYMBOL("symbol");
 
     /** The actual serialized value for a TokenCharacterKind instance. */
@@ -36,6 +39,7 @@ public enum TokenCharacterKind {
      * @param value the serialized value to parse.
      * @return the parsed TokenCharacterKind object, or null if unable to parse.
      */
+    @JsonCreator
     public static TokenCharacterKind fromString(String value) {
         if (value == null) {
             return null;
@@ -49,7 +53,7 @@ public enum TokenCharacterKind {
         return null;
     }
 
-    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
