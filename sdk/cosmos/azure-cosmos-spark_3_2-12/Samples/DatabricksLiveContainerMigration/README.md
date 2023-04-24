@@ -48,6 +48,17 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
     ![image](./media/streaming-o.jpg)
 
+
+## Synthetic partition key
+
+* The `CosmosDBLiveSingleContainerMigration` notebook contains code which will map existing field(s) to a different partition key in the target container, or create a new [synthetic partition key](https://learn.microsoft.com/azure/cosmos-db/nosql/synthetic-partition-keys). To enable this, first locate the following cell.
+
+    ![image](./media/synthetic-pk.jpg)
+
+* Edit the `syntheticPKValue` variable so it concatenates values from the existing document as required. Change `_syntheticPK` to be the name of target partition key (this can be an existing field, or a new field in the case of synthetic partition key). Then, enable the transformation by un-commenting the code in the following cell:
+
+    ![image](./media/synthetic-pk-enable.jpg)
+
 ## Validation
 
 * Open the `CosmosDBLiveSingleContainerMigrationValidation` notebook, and attach the same cluster. Replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as appropriate that are contained within each cell (see comments in each cell for guidance). 
