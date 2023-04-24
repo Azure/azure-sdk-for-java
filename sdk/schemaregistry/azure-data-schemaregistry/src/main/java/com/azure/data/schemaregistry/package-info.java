@@ -11,7 +11,14 @@
  *
  * <p>Service clients are the point of interaction for developers to use Azure Schema Registry.
  * {@link com.azure.data.schemaregistry.SchemaRegistryClient} is the synchronous service client and
- * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient} is the asynchronous service client.</p>
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient} is the asynchronous service client.  The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
  *
  * <p><strong>Sample: Construct a service client</strong></p>
  *
