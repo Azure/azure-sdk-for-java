@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobStorageException;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
 
         cc.create();
         bc = cc.getBlobClient(generateBlobName());
-        bc.uploadFromFile(sourceFile.getPath());
+        bc.upload(DATA.getDefaultBinaryData());
         fs = createFS(initializeConfigMap());
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
 
@@ -55,6 +56,16 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
         }
     }
 
+    private void resetForLargeSource() {
+        // Base setup only uploads a small source to reduce size of session record.
+        BlobClient blobClient = getNonRecordingServiceClient()
+            .getBlobContainerClient(bc.getContainerName())
+            .getBlobClient(bc.getBlobName());
+        blobClient.upload(BinaryData.fromBytes(fileBytes), true);
+        AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
+        nioStream = new NioBlobInputStream(bc.openInputStream(), path);
+    }
+
     @Override
     protected void afterTest() {
         super.afterTest();
@@ -63,11 +74,13 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
 
     @Test
     public void readWholeFile() throws IOException {
+        resetForLargeSource();
         compareInputStreams(nioStream, fileStream, Files.size(sourceFile.toPath()));
     }
 
     @Test
     public void readMin() throws IOException {
+        resetForLargeSource();
         for (int i = 0; i < 100; i++) {
             assertEquals(fileStream.read(), nioStream.read());
         }
@@ -76,6 +89,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @ParameterizedTest
     @ValueSource(ints = {0, 100, 9 * 1024 * 1024})
     public void readBuff(int size) throws IOException {
+        resetForLargeSource();
         byte[] nioBytes = new byte[size];
         nioStream.read(nioBytes);
 
@@ -84,6 +98,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
 
     @Test
     public void readBuffOffsetLen() throws IOException {
+        resetForLargeSource();
         byte[] nioBytes = new byte[100];
         nioStream.read(nioBytes, 5, 50);
 
@@ -101,6 +116,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @ParameterizedTest
     @MethodSource("readFailSupplier")
     public void readFail(Function<NioBlobInputStream, Executable> methodCall) throws IOException {
+        resetForLargeSource();
         bc.delete();
         nioStream.read(new byte[4 * 1024 * 1024]); // Must read through the initial download to trigger failed response
 
@@ -126,6 +142,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @ParameterizedTest
     @CsvSource(value = {"0,0", "0,50", "50,0", "50,50", "50,5242880", "5242880,50"})
     public void markAndReset(int markAfter, int resetAfter) throws IOException {
+        resetForLargeSource();
         byte[] b = new byte[markAfter];
         nioStream.read(b);
         fileStream.skip(markAfter); // Position the file stream where we expect to be after resetting.
@@ -173,6 +190,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @ParameterizedTest
     @ValueSource(ints = {0, 10, 5 * 1024 * 1024, (10 * 1024 * 1024) - 1})
     public void skip(int skip) throws IOException {
+        resetForLargeSource();
         nioStream.skip(skip);
         fileStream.skip(skip);
 
@@ -205,6 +223,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @ParameterizedTest
     @CsvSource(value = {"0,4194304", "5,4194299", "5242880,3145728"})
     public void available(int readAmount, int available) throws IOException {
+        resetForLargeSource();
         nioStream.read(new byte[readAmount]);
 
         assertEquals(available, nioStream.available());

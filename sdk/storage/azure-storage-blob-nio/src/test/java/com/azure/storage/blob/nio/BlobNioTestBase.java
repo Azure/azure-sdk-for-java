@@ -125,17 +125,21 @@ public class BlobNioTestBase extends TestProxyTestBase {
             return;
         }
 
-        BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-            .httpClient(getHttpClient())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(ENV.getPrimaryAccount().getBlobEndpoint())
-            .buildClient();
+        BlobServiceClient cleanupClient = getNonRecordingServiceClient();
         ListBlobContainersOptions options = new ListBlobContainersOptions().setPrefix(prefix);
         for (BlobContainerItem container : cleanupClient.listBlobContainers(options, Duration.ofSeconds(120))) {
             BlobContainerClient containerClient = cleanupClient.getBlobContainerClient(container.getName());
 
             containerClient.delete();
         }
+    }
+
+    protected BlobServiceClient getNonRecordingServiceClient() {
+        return new BlobServiceClientBuilder()
+            .httpClient(getHttpClient())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(ENV.getPrimaryAccount().getBlobEndpoint())
+            .buildClient();
     }
 
     protected BlobServiceClient getServiceClient(TestAccount account) {
