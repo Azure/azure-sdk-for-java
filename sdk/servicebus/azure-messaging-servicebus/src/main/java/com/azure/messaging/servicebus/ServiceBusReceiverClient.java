@@ -396,10 +396,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         }
 
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sessionId)
-            .timeout(operationTimeout);
+            .timeout(operationTimeout)
+            .cache();
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
 
+        // Subscribe to message flux so we can kick off this operation
+        // this works because all messages come in batched messages from management node, which is deserialized as a list and
+        // then returned as Flux.fromIterable.
+        tracedMessages.subscribe();
         return new IterableStream<>(tracedMessages);
     }
 
@@ -448,6 +453,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
+
+        // Subscribe to message flux so we can kick off this operation
+        // this works because all messages come in batched messages from management node, which is deserialized as a list and
+        // then returned as Flux.fromIterable.
+        tracedMessages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }
@@ -535,6 +545,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final Flux<ServiceBusReceivedMessage> messagesFlux = emitter.asFlux();
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveMessages", messagesFlux);
 
+        // Subscribe to message flux so we can kick off this operation
+        tracedMessages.subscribe();
+
         return new IterableStream<>(tracedMessages);
     }
 
@@ -607,6 +620,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch", messages);
+
+        // Subscribe to message flux so we can kick off this operation
+        // this works because all messages come in batched messages from management node, which is deserialized as a list and
+        // then returned as Flux.fromIterable.
+        tracedMessages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }

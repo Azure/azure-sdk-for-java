@@ -457,7 +457,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
-
         // Arrange
         setSender(entityType, USE_CASE_PEEK_BATCH, isSessionEnabled);
         final byte[] payload = "peek-message".getBytes(Charset.defaultCharset());

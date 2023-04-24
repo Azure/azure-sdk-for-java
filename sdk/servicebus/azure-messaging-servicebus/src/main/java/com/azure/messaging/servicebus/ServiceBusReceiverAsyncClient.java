@@ -726,28 +726,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 final long nextSequenceNumber = lastPeekedSequenceNumber.get() + 1;
                 LOGGER.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, nextSequenceNumber).log("Peek batch.");
 
-                final Flux<ServiceBusReceivedMessage> messages =
-                    node.peek(nextSequenceNumber, sessionId, getLinkName(sessionId), maxMessages);
-
-                // To prevent it from throwing NoSuchElementException in .last(), we produce an empty message with
-                // the same sequence number.
-                final Mono<ServiceBusReceivedMessage> handle = messages
-                    .switchIfEmpty(Mono.fromCallable(() -> {
-                        ServiceBusReceivedMessage emptyMessage = new ServiceBusReceivedMessage(BinaryData
-                            .fromBytes(new byte[0]));
-                        emptyMessage.setSequenceNumber(lastPeekedSequenceNumber.get());
-                        return emptyMessage;
-                    }))
-                    .last()
-                    .handle((last, sink) -> {
+                return node
+                    .peek(nextSequenceNumber, sessionId, getLinkName(sessionId), maxMessages)
+                    .doOnNext(next -> {
                         final long current = lastPeekedSequenceNumber
-                            .updateAndGet(value -> Math.max(value, last.getSequenceNumber()));
+                            .updateAndGet(value -> Math.max(value, next.getSequenceNumber()));
 
-                        LOGGER.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, current).log("Last peeked sequence number in batch.");
-                        sink.complete();
+                        LOGGER.atVerbose()
+                            .addKeyValue(SEQUENCE_NUMBER_KEY, current)
+                            .log("Last peeked sequence number in batch.");
                     });
-
-                return Flux.merge(messages, handle);
             })
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
