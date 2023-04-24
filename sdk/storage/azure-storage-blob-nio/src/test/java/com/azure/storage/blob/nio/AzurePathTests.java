@@ -5,11 +5,10 @@ package com.azure.storage.blob.nio;
 
 import com.azure.storage.blob.BlobClient;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import spock.lang.ResourceLock;
-import spock.lang.Unroll;
 
 import java.io.IOException;
 import java.net.URI;
@@ -64,7 +63,7 @@ public class AzurePathTests extends BlobNioTestBase {
     @ParameterizedTest
     @CsvSource(value = {"root:/,null,null,0", "root:/foo,foo,root:,1", "root:/foo/bar,bar,root:/foo,2",
         "foo,foo,null,1", "foo/,foo,null,1", "/foo,foo,null,1", "foo/bar,bar,foo,2", "foo/bar/baz,baz,foo/bar,3",
-        "foo/../bar/baz,baz,foo/../bar/,4", "foo/..,..,foo/,2","foo/./bar,bar,foo/./,3","foo/bar/.,.,foo/bar/,3",
+        "foo/../bar/baz,baz,foo/../bar/,4", "foo/..,..,foo/,2", "foo/./bar,bar,foo/./,3", "foo/bar/.,.,foo/bar/,3",
         ",,null,1"}, nullValues = "null")
     public void getFileNameGetParentGetNameCount(String path, String fileName, String parent, int nameCount) {
         assertEquals((fileName == null ? null : fs.getPath(fileName)), fs.getPath(path).getFileName());
@@ -88,214 +87,95 @@ public class AzurePathTests extends BlobNioTestBase {
         assertThrows(IllegalArgumentException.class, () -> fs.getPath("root:/").getName(0));
     }
 
-    @Unroll
-    def "SubPath"()
-
-    {
-        setup:
-        def rootPath = "root:/foo/bar/fizz/buzz/dir"
-        def path = "foo/bar/fizz/buzz/dir"
-
-        expect:
-        fs.getPath(rootPath).subpath(begin, end) == fs.getPath(resultPath)
-        fs.getPath(path).subpath(begin, end) == fs.getPath(resultPath)
-
-        where:
-        begin | end || resultPath
-        0 | 1 || "foo"
-        0 | 3 || "foo/bar/fizz"
-        0 | 5 || "foo/bar/fizz/buzz/dir"
-        1 | 2 || "bar"
-        1 | 4 || "bar/fizz/buzz"
-        1 | 5 || "bar/fizz/buzz/dir"
-        4 | 5 || "dir"
+    @ParameterizedTest
+    @CsvSource(value = {"0,1,foo", "0,3,foo/bar/fizz", "0,5,foo/bar/fizz/buzz/dir", "1,2,bar", "1,4,bar/fizz/buzz",
+        "1,5,bar/fizz/buzz/dir", "4,5,dir"})
+    public void subPath(int begin, int end, String resultPath) {
+        assertEquals(fs.getPath(resultPath), fs.getPath("root:/foo/bar/fizz/buzz/dir").subpath(begin, end));
+        assertEquals(fs.getPath(resultPath), fs.getPath("foo/bar/fizz/buzz/dir").subpath(begin, end));
     }
 
     // The javadocs define an equivalence between these two methods in special cases.
-    def "SubPath getParent"()
+    @Test
+    public void subPathGetParent() {
+        Path path = fs.getPath("foo/bar/fizz/buzz");
 
-    {
-        setup:
-        def path = fs.getPath("foo/bar/fizz/buzz")
-
-        expect:
-        path.subpath(0, path.getNameCount() - 1) == path.getParent()
+        assertEquals(path.getParent(), path.subpath(0, path.getNameCount() - 1));
     }
 
-    def "SubPath fail"()
-
-    {
-        when:
-        fs.getPath("foo/bar/fizz/buzz/dir").subpath(begin, end)
-
-        then:
-        thrown(IllegalArgumentException)
-
-        where:
-        begin | end
-            - 1 | 1
-        5 | 5
-        3 | 3
-        3 | 1
-        3 | 6
+    @ParameterizedTest
+    @CsvSource(value = {"-1,1", "5,5", "3,3", "3,1", "3,6"})
+    public void subPathFail(int begin, int end) {
+        assertThrows(IllegalArgumentException.class, () -> fs.getPath("foo/bar/fizz/buzz/dir").subpath(begin, end));
     }
 
-    @Unroll
-    def "StartsWith"()
-
-    {
-        expect:
-        fs.getPath(path).startsWith(fs.getPath(otherPath)) == startsWith
-        fs.getPath(path).startsWith(otherPath) == startsWith
+    @ParameterizedTest
+    @CsvSource(value = {"root:/foo,foo,false", "foo,root:/foo,false", "foo,foo,true", "root:/foo,root:/foo,true",
+        "root2:/foo,root:/foo,false", "root:/foo,root2:/foo,false", "foo/bar,foo,true", "foo/bar,foo/bar,true",
+        "foo/bar/fizz,foo,true", "foo/bar/fizz,f,false", "foo/bar/fizz,foo/bar/f,false", "foo,foo/bar,false",
+        ",foo,false", "foo,,false"})
+    public void startsWith(String path, String otherPath, boolean startsWith) {
+        assertEquals(startsWith, fs.getPath(path).startsWith(fs.getPath(otherPath)));
+        assertEquals(startsWith, fs.getPath(path).startsWith(otherPath));
 
         // If the paths are not from the same file system, false is always returned
-        !fs.getPath("foo/bar").startsWith(FileSystems.
-        default.getPath("foo/bar"))
-
-            where:
-            path | otherPath || startsWith
-            "root:/foo" | "foo" || false
-            "foo" | "root:/foo" || false
-            "foo" | "foo" || true
-            "root:/foo" | "root:/foo" || true
-            "root2:/foo" | "root:/foo" || false
-            "root:/foo" | "root2:/foo" || false
-            "foo/bar" | "foo" || true
-            "foo/bar" | "foo/bar" || true
-            "foo/bar/fizz" | "foo" || true
-            "foo/bar/fizz" | "f" || false
-            "foo/bar/fizz" | "foo/bar/f" || false
-            "foo" | "foo/bar" || false
-            "" | "foo" || false
-            "foo" | "" || false
+        assertFalse(fs.getPath("foo/bar").startsWith(FileSystems.getDefault().getPath("foo/bar")));
     }
 
-    @Unroll
-    def "EndsWith"()
-
-    {
-        expect:
-        fs.getPath(path).endsWith(fs.getPath(otherPath)) == endsWith
-        fs.getPath(path).endsWith(otherPath) == endsWith
+    @ParameterizedTest
+    @CsvSource(value = {"root:/foo,foo,true", "foo,root:/foo,false", "foo,foo,true", "root:/foo,root:/foo,true",
+        "root2:/foo,root:/foo,false", "root:/foo,root2:/foo,false", "foo/bar,bar,true", "foo/bar,foo/bar,true",
+        "foo/bar/fizz,fizz,true", "foo/bar/fizz,z,false", "foo/bar/fizz,r/fizz,false", "foo,foo/bar,false",
+        ",foo,false", "foo,,false"})
+    public void endsWith(String path, String otherPath, boolean endsWith) {
+        assertEquals(endsWith, fs.getPath(path).endsWith(fs.getPath(otherPath)));
+        assertEquals(endsWith, fs.getPath(path).endsWith(otherPath));
 
         // If the paths are not from the same file system, false is always returned
-        !fs.getPath("foo/bar").endsWith(FileSystems.
-        default.getPath("foo/bar"))
-
-            where:
-            path | otherPath || endsWith
-            "root:/foo" | "foo" || true
-            "foo" | "root:/foo" || false
-            "foo" | "foo" || true
-            "root:/foo" | "root:/foo" || true
-            "root2:/foo" | "root:/foo" || false
-            "root:/foo" | "root2:/foo" || false
-            "foo/bar" | "bar" || true
-            "foo/bar" | "foo/bar" || true
-            "foo/bar/fizz" | "fizz" || true
-            "foo/bar/fizz" | "z" || false
-            "foo/bar/fizz" | "r/fizz" || false
-            "foo" | "foo/bar" || false
-            "" | "foo" || false
-            "foo" | "" || false
+        assertFalse(fs.getPath("foo/bar").endsWith(FileSystems.getDefault().getPath("foo/bar")));
     }
 
-    @Unroll
-    def "Normalize"()
-
-    {
-        expect:
-        fs.getPath(path).normalize() == fs.getPath(resultPath)
-
-        where:
-        path || resultPath
-        "foo/bar" || "foo/bar"
-        "." || ""
-        ".." || ".."
-        "foo/.." || ""
-        "foo/bar/.." || "foo"
-        "foo/../bar" || "bar"
-        "foo/./bar" || "foo/bar"
-        "foo/bar/." || "foo/bar"
-        "foo/bar/fizz/../.." || "foo"
-        "foo/bar/../fizz/." || "foo/fizz"
-        "foo/../.." || ".."
-        "foo/../../bar" || "../bar"
-        "root:/foo/bar" || "root:/foo/bar"
-        "root:/." || "root:/"
-        "root:/.." || "root:/"
-        "root:/../../.." || "root:/"
-        "root:/foo/.." || "root:"
-        "" || ""
+    @ParameterizedTest
+    @CsvSource(value = {"foo/bar,foo/bar", ".,", "..,..", "foo/..,", "foo/bar/..,foo", "foo/../bar,bar",
+        "foo/./bar,foo/bar", "foo/bar/.,foo/bar", "foo/bar/fizz/../..,foo", "foo/bar/../fizz/.,foo/fizz",
+        "foo/../..,..", "foo/../../bar,../bar", "root:/foo/bar,root:/foo/bar", "root:/.,root:/", "root:/..,root:/",
+        "root:/../../..,root:/", "root:/foo/..,root:", ","})
+    public void normalize(String path, String resultPath) {
+        assertEquals(fs.getPath(resultPath), fs.getPath(path).normalize());
     }
 
-    @Unroll
-    def "Resolve"()
-
-    {
-        expect:
-        fs.getPath(path).resolve(fs.getPath(other)) == fs.getPath(resultPath)
-        fs.getPath(path).resolve(other) == fs.getPath(resultPath)
-
-        where:
-        path | other || resultPath
-        "foo/bar" | "root:/fizz/buzz" || "root:/fizz/buzz"
-        "root:/foo/bar" | "root:/fizz/buzz" || "root:/fizz/buzz"
-        "foo/bar" | "" || "foo/bar"
-        "foo/bar" | "fizz/buzz" || "foo/bar/fizz/buzz"
-        "foo/bar/.." | "../../fizz/buzz" || "foo/bar/../../../fizz/buzz"
-        "root:/../foo/./" | "fizz/../buzz" || "root:/../foo/./fizz/../buzz"
-        "" | "foo/bar" || "foo/bar"
+    @ParameterizedTest
+    @CsvSource(value = {"foo/bar,root:/fizz/buzz,root:/fizz/buzz", "root:/foo/bar,root:/fizz/buzz,root:/fizz/buzz",
+        "foo/bar,,foo/bar", "foo/bar,fizz/buzz,foo/bar/fizz/buzz",
+        "foo/bar/..,../../fizz/buzz,foo/bar/../../../fizz/buzz",
+        "root:/../foo/./,fizz/../buzz,root:/../foo/./fizz/../buzz", ",foo/bar,foo/bar"})
+    public void resolve(String path, String other, String resultPath) {
+        assertEquals(fs.getPath(resultPath), fs.getPath(path).resolve(fs.getPath(other)));
+        assertEquals(fs.getPath(resultPath), fs.getPath(path).resolve(other));
     }
 
-    @Unroll
-    def "ResolveSibling"()
-
-    {
-        expect:
-        fs.getPath(path).resolveSibling(fs.getPath(other)) == fs.getPath(resultPath)
-        fs.getPath(path).resolveSibling(other) == fs.getPath(resultPath)
-
-        where:
-        path | other || resultPath
-        "foo" | "fizz" || "fizz"
-        "foo/bar" | "root:/fizz" || "root:/fizz"
-        "foo/bar" | "" || "foo"
-        "foo" | "" || ""
-        "" | "foo" || "foo"
-        "foo/bar" | "fizz" || "foo/fizz"
-        "foo/bar/fizz" | "buzz/dir" || "foo/bar/buzz/dir"
-        "root:/foo/bar" | "fizz" || "root:/foo/fizz"
-        "root:/foo" | "fizz" || "root:/fizz"
-        "root:/" | "fizz" || "fizz"
+    @ParameterizedTest
+    @CsvSource(value = {"foo,fizz,fizz", "foo/bar,root:/fizz,root:/fizz", "foo/bar,,foo", "foo,,", ",foo,foo",
+        "foo/bar,fizz,foo/fizz", "foo/bar/fizz,buzz/dir,foo/bar/buzz/dir", "root:/foo/bar,fizz,root:/foo/fizz",
+        "root:/foo,fizz,root:/fizz", "root:/,fizz,fizz"})
+    public void resolveSibling(String path, String other, String resultPath) {
+        assertEquals(fs.getPath(resultPath), fs.getPath(path).resolveSibling(fs.getPath(other)));
+        assertEquals(fs.getPath(resultPath), fs.getPath(path).resolveSibling(other));
     }
 
-    @Unroll
-    def "Relativize"()
+    @ParameterizedTest
+    @CsvSource(value = {"foo/bar,foo/bar/fizz/buzz/,fizz/buzz,true", "foo/bar,foo/bar,,true",
+        "root:/foo/bar,root:/foo/bar/fizz,fizz,false", "foo/dir,foo/fizz/buzz,../fizz/buzz,true",
+        "foo/bar/a/b/c,foo/bar/fizz,../../../fizz,true", "a/b/c,foo/bar/fizz,../../../foo/bar/fizz,true",
+        "foo/../bar,bar/./fizz,fizz,false", "root:,root:/foo/bar,foo/bar,false", ",foo,foo,true", "foo,,..,true"})
+    public void relativize(String path, String other, String result, boolean equivalence) {
+        Path p = fs.getPath(path);
+        Path otherP = fs.getPath(other);
 
-    {
-        setup:
-        def p = fs.getPath(path)
-        def otherP = fs.getPath(other)
-
-        expect:
-        p.relativize(otherP) == fs.getPath(result)
+        assertEquals(fs.getPath(result), p.relativize(otherP));
         if (equivalence) { // Only applies when neither path has a root and both are normalized.
-            assert p.relativize(p.resolve(otherP)) == otherP
+            assertEquals(otherP, p.relativize(p.resolve(otherP)));
         }
-
-        where:
-        path | other || result | equivalence
-        "foo/bar" | "foo/bar/fizz/buzz/" || "fizz/buzz" | true
-        "foo/bar" | "foo/bar" || "" | true
-        "root:/foo/bar" | "root:/foo/bar/fizz" || "fizz" | false
-        "foo/dir" | "foo/fizz/buzz" || "../fizz/buzz" | true
-        "foo/bar/a/b/c" | "foo/bar/fizz" || "../../../fizz" | true
-        "a/b/c" | "foo/bar/fizz" || "../../../foo/bar/fizz" | true
-        "foo/../bar" | "bar/./fizz" || "fizz" | false
-        "root:" | "root:/foo/bar" || "foo/bar" | false
-        "" | "foo" || "foo" | true
-        "foo" | "" || ".." | true
     }
 
     @ParameterizedTest
@@ -400,6 +280,6 @@ public class AzurePathTests extends BlobNioTestBase {
     @Test
     public void fromBlobUrlNoOpenFileSystem() {
         assertThrows(FileSystemNotFoundException.class, () -> AzurePath.fromBlobUrl(new AzureFileSystemProvider(),
-                "http://myaccount.blob.core.windows.net/container/blob"));
+            "http://myaccount.blob.core.windows.net/container/blob"));
     }
 }
