@@ -40,6 +40,12 @@ public final class LedgerProperties {
     private String ledgerInternalNamespace;
 
     /*
+     * Object representing RunningState for Ledger.
+     */
+    @JsonProperty(value = "runningState")
+    private RunningState runningState;
+
+    /*
      * Type of Confidential Ledger
      */
     @JsonProperty(value = "ledgerType")
@@ -101,6 +107,26 @@ public final class LedgerProperties {
      */
     public String ledgerInternalNamespace() {
         return this.ledgerInternalNamespace;
+    }
+
+    /**
+     * Get the runningState property: Object representing RunningState for Ledger.
+     *
+     * @return the runningState value.
+     */
+    public RunningState runningState() {
+        return this.runningState;
+    }
+
+    /**
+     * Set the runningState property: Object representing RunningState for Ledger.
+     *
+     * @param runningState the runningState value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withRunningState(RunningState runningState) {
+        this.runningState = runningState;
+        return this;
     }
 
     /**

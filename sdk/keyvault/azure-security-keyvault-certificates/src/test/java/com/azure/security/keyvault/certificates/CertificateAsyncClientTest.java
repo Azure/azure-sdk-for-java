@@ -64,8 +64,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     private void createCertificateAsyncClient(HttpClient httpClient, CertificateServiceVersion serviceVersion,
                                               String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         CertificateClientImpl implClient = spy(new CertificateClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {

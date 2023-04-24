@@ -108,6 +108,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1990,6 +1991,11 @@ class VirtualMachineImpl
     public boolean isVTpmEnabled() {
         return securityType() != null && this.innerModel().securityProfile().uefiSettings() != null
             && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().securityProfile().uefiSettings().vTpmEnabled());
+    }
+
+    @Override
+    public OffsetDateTime timeCreated() {
+        return innerModel().timeCreated();
     }
 
     @Override
