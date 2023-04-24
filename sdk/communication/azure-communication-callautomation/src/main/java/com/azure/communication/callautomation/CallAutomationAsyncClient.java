@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.implementation.CallConnectionsImpl
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
@@ -18,7 +17,6 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
@@ -37,13 +35,13 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
@@ -101,7 +99,7 @@ public final class CallAutomationAsyncClient {
      *
      * @param targetParticipant Call invitee's information
      * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
@@ -117,7 +115,7 @@ public final class CallAutomationAsyncClient {
      *
      * @param targetParticipants The list of targetParticipants.
      * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
@@ -132,7 +130,7 @@ public final class CallAutomationAsyncClient {
      * Create a call connection request from a source identity to a target identity.
      *
      * @param createCallOptions Options for creating a new call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of creating the call.
      */
@@ -145,7 +143,7 @@ public final class CallAutomationAsyncClient {
      * Create a group call connection request from a source identity to multiple identities.
      *
      * @param createGroupCallOptions Options for creating a new group call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of creating the call.
      */
@@ -161,7 +159,6 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
                     context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
@@ -185,7 +182,6 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
                     context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
@@ -287,7 +283,7 @@ public final class CallAutomationAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUrl The call back url.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of answering the call.
      */
@@ -301,7 +297,7 @@ public final class CallAutomationAsyncClient {
      * Create a call connection request from a source identity to a target identity.
      *
      * @param answerCallOptions The options of answering the call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of answering the call.
      */
@@ -332,7 +328,6 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
@@ -353,7 +348,7 @@ public final class CallAutomationAsyncClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param targetParticipant {@link CallInvite} represent redirect targetParticipant
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void
      */
@@ -367,7 +362,7 @@ public final class CallAutomationAsyncClient {
      * Redirect a call
      *
      * @param redirectCallOptions Options for redirecting a call.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
@@ -393,8 +388,7 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
-                    context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -404,7 +398,7 @@ public final class CallAutomationAsyncClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void
      */
@@ -418,7 +412,7 @@ public final class CallAutomationAsyncClient {
      * Reject a call
      *
      * @param rejectCallOptions the options of rejecting the call
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
@@ -438,8 +432,7 @@ public final class CallAutomationAsyncClient {
             }
 
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
-                    context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

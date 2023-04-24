@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
@@ -13,6 +12,7 @@ import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.exception.HttpResponseException;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -34,7 +34,7 @@ public final class CallRecording {
      *
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result for a successful start recording request.
      */
@@ -49,7 +49,7 @@ public final class CallRecording {
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result for a successful start recording request.
      */
@@ -62,7 +62,7 @@ public final class CallRecording {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -75,7 +75,7 @@ public final class CallRecording {
      *
      * @param recordingId Recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
@@ -88,7 +88,7 @@ public final class CallRecording {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -101,7 +101,7 @@ public final class CallRecording {
      *
      * @param recordingId Recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
@@ -114,7 +114,7 @@ public final class CallRecording {
      * Resume recording of the call.
      *
      * @param recordingId The recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -127,7 +127,7 @@ public final class CallRecording {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful resume recording request.
      */
@@ -140,7 +140,7 @@ public final class CallRecording {
      * Get the current recording state by recording id.
      *
      * @param recordingId The recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
@@ -154,7 +154,7 @@ public final class CallRecording {
      *
      * @param recordingId The recording id to stop.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */

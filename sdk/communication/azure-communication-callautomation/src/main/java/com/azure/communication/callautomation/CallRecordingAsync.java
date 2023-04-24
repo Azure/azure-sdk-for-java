@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.BlobStorageInternal;
@@ -20,7 +19,6 @@ import com.azure.communication.callautomation.implementation.models.StartCallRec
 import com.azure.communication.callautomation.models.BlobStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
@@ -29,7 +27,6 @@ import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
@@ -60,6 +57,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.core.exception.HttpResponseException;
 
 /**
  * CallRecordingAsync.
@@ -85,7 +83,7 @@ public final class CallRecordingAsync {
      *
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
@@ -100,7 +98,7 @@ public final class CallRecordingAsync {
      *
      * @param options A {@link StartRecordingOptions} object containing different options for recording.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
@@ -121,7 +119,6 @@ public final class CallRecordingAsync {
                     .startRecordingWithResponseAsync(
                         request,
                         contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
                     );
@@ -183,7 +180,7 @@ public final class CallRecordingAsync {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
@@ -196,7 +193,7 @@ public final class CallRecordingAsync {
      * Stop recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful stop recording request.
      */
@@ -210,8 +207,7 @@ public final class CallRecordingAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
-                    .stopRecordingWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .stopRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -222,7 +218,7 @@ public final class CallRecordingAsync {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
@@ -235,7 +231,7 @@ public final class CallRecordingAsync {
      * Pause recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful pause recording request.
      */
@@ -249,8 +245,7 @@ public final class CallRecordingAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
-                    .pauseRecordingWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .pauseRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -261,7 +256,7 @@ public final class CallRecordingAsync {
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
@@ -274,7 +269,7 @@ public final class CallRecordingAsync {
      * Resume recording of the call.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for a successful resume recording request.
      */
@@ -288,8 +283,7 @@ public final class CallRecordingAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
-                    .resumeRecordingWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                    .resumeRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -300,7 +294,7 @@ public final class CallRecordingAsync {
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
@@ -313,7 +307,7 @@ public final class CallRecordingAsync {
      * Get current recording state by recording id.
      *
      * @param recordingId Recording id to stop.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get recording state request.
      */
@@ -328,7 +322,6 @@ public final class CallRecordingAsync {
                 contextValue = context == null ? contextValue : context;
                 return callRecordingsInternal
                     .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue())));
             });
@@ -506,7 +499,7 @@ public final class CallRecordingAsync {
 
         return Mono.just(fileChannel).flatMap(
                 c -> contentDownloader.downloadToFileWithResponse(sourceUrl, c, finalParallelDownloadOptions, context))
-            .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+
             .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType))
             .then();
     }
@@ -514,16 +507,14 @@ public final class CallRecordingAsync {
     /**
      * Delete the content located at the deleteUrl
      * @param deleteUrl - ACS URL where the content is located.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRecording(String deleteUrl) {
         try {
-            return deleteRecordingWithResponseInternal(deleteUrl, null)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .then();
+            return deleteRecordingWithResponseInternal(deleteUrl, null).then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -533,7 +524,7 @@ public final class CallRecordingAsync {
      * Delete the content located at the deleteUrl
      * Recording deletion will be done using parallel workers.
      * @param deleteUrl - ACS URL where the content is located.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -550,7 +541,6 @@ public final class CallRecordingAsync {
                 contextValue = contextValue.addData("hmacSignatureURL", urlToSignWith);
                 return httpPipelineInternal
                     .send(request, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
             });
         } catch (RuntimeException ex) {

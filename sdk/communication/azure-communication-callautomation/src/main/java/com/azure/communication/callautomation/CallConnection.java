@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
@@ -24,6 +23,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.exception.HttpResponseException;
 
 /**
  * CallConnection for mid-call actions
@@ -38,7 +38,7 @@ public final class CallConnection {
     /**
      * Get call connection properties.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -51,7 +51,7 @@ public final class CallConnection {
      * Get call connection properties.
      *
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -64,7 +64,7 @@ public final class CallConnection {
      * Hangup a call.
      *
      * @param isForEveryone determine if the call is handed up for all participants.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -77,7 +77,7 @@ public final class CallConnection {
      *
      * @param hangUpOptions options to hang up
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
@@ -90,7 +90,7 @@ public final class CallConnection {
      * Get a specific participant.
      *
      * @param targetParticipant The participant to retrieve.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return The desired call participant.
      */
@@ -104,7 +104,7 @@ public final class CallConnection {
      *
      * @param targetParticipant The participant to retrieve.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with the desired call participant.
      */
@@ -116,7 +116,7 @@ public final class CallConnection {
     /**
      * Get all participants.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A list of all participants in the call.
      */
@@ -129,7 +129,7 @@ public final class CallConnection {
      * Get all participants.
      *
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with a list of all participants in the call.
      */
@@ -142,7 +142,7 @@ public final class CallConnection {
      * Transfer the call to a participant.
      *
      * @param targetParticipant A {@link CallInvite} representing the targetParticipant participant of this transfer.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
@@ -156,7 +156,7 @@ public final class CallConnection {
      *
      * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of transferring the call to a designated participant.
      */
@@ -170,7 +170,7 @@ public final class CallConnection {
      * Add a participant to the call.
      *
      * @param participant participant to invite.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of adding a participant.
      */
@@ -184,7 +184,7 @@ public final class CallConnection {
      *
      * @param addParticipantOptions Options bag for addParticipant
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of adding a participant.
      */
@@ -198,7 +198,7 @@ public final class CallConnection {
      * Remove a participant from the call.
      *
      * @param participantToRemove participant to be removed.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of removing a participant from the call
      */
@@ -212,7 +212,7 @@ public final class CallConnection {
      *
      * @param removeParticipantOptions The options for removing participant.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of removing a participant from the call.
      */

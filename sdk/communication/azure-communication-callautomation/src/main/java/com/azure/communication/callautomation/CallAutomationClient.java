@@ -7,7 +7,6 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
@@ -20,6 +19,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public final class CallAutomationClient {
      *
      * @param targetParticipant call invitee's information
      * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
@@ -69,7 +69,7 @@ public final class CallAutomationClient {
      *
      * @param targetParticipants The list of targetParticipants.
      * @param callbackUrl The call back url for receiving events.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of creating the call.
      */
@@ -84,7 +84,7 @@ public final class CallAutomationClient {
      *
      * @param createCallOptions Options bag for creating a new call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of creating the call.
      */
@@ -98,7 +98,7 @@ public final class CallAutomationClient {
      *
      * @param createGroupCallOptions Options bag for creating a new group call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of creating the call.
      */
@@ -112,7 +112,7 @@ public final class CallAutomationClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param callbackUrl The call back url.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of answering the call.
      */
@@ -126,7 +126,7 @@ public final class CallAutomationClient {
      *
      * @param answerCallOptions The options of answering the call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of answering the call.
      */
@@ -140,7 +140,7 @@ public final class CallAutomationClient {
      *
      * @param incomingCallContext The incoming call context.
      * @param targetParticipant {@link CallInvite} represent redirect targetParticipant
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -153,7 +153,7 @@ public final class CallAutomationClient {
      *
      * @param redirectCallOptions options of redirecting a call
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
@@ -166,7 +166,7 @@ public final class CallAutomationClient {
      * Reject a call
      *
      * @param incomingCallContext The incoming call context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -179,7 +179,7 @@ public final class CallAutomationClient {
      *
      * @param rejectCallOptions The options of rejecting the call.
      * @param context The context to associate with this operation.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */

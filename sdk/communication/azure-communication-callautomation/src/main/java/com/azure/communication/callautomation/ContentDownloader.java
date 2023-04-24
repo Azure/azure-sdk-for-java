@@ -3,8 +3,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.Constants;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
@@ -112,8 +110,8 @@ class ContentDownloader {
         return FluxUtil.createRetriableDownloadFlux(
             () -> getResponseBody(httpResponse),
             (Throwable throwable, Long aLong) -> {
-                if (throwable instanceof CallingServerErrorException) {
-                    CallingServerErrorException exception = (CallingServerErrorException) throwable;
+                if (throwable instanceof HttpResponseException) {
+                    HttpResponseException exception = (HttpResponseException) throwable;
                     if (exception.getResponse().getStatusCode() == 416) {
                         return  makeDownloadRequest(sourceUrl, null, context)
                             .map(this::getResponseBody)
@@ -143,13 +141,11 @@ class ContentDownloader {
             case 200:
             case 206:
                 return response.getBody();
-            case 416:   // Retriable with new HttpRange, potentially bytes=0-
-                return FluxUtil.fluxError(logger,
-                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
-                );
+            case 416:   // Retrievable with new HttpRange, potentially bytes=0-
+                return FluxUtil.fluxError(logger, new HttpResponseException(formatExceptionMessage(response), response));
             default:
                 throw logger.logExceptionAsError(
-                    ErrorConstructorProxy.create(new HttpResponseException(formatExceptionMessage(response), response))
+                    new HttpResponseException(formatExceptionMessage(response), response)
                 );
         }
     }

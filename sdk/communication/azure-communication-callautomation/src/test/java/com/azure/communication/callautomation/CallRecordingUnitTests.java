@@ -3,13 +3,13 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,7 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
         );
 
         callRecording.stopRecording(RECORDING_ID);
-        assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(RECORDING_ID));
+        assertThrows(HttpResponseException.class, () -> callRecording.getRecordingState(RECORDING_ID));
     }
 
     private void verifyOperationWithRecordingState(Runnable operation, RecordingState expectedStatus) {

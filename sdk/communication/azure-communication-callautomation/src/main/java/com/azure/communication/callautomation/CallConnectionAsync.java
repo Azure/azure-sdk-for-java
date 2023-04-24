@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.implementation.CallConnectionsImpl
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ListParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
@@ -27,7 +26,6 @@ import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
@@ -41,13 +39,13 @@ import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+import com.azure.core.exception.HttpResponseException;
 
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -78,7 +76,7 @@ public final class CallConnectionAsync {
     /**
      * Get call connection properties.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -90,7 +88,7 @@ public final class CallConnectionAsync {
     /**
      * Get call connection properties.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -104,7 +102,6 @@ public final class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return callConnectionInternal.getCallWithResponseAsync(callConnectionId, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
                         return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
@@ -121,7 +118,7 @@ public final class CallConnectionAsync {
      * Hangup a call.
      *
      * @param isForEveryone determine if the call is handed up for all participants.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void.
      */
@@ -135,7 +132,7 @@ public final class CallConnectionAsync {
      * Hangup a call.
      *
      * @param hangUpOptions options to hang up
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
@@ -149,8 +146,7 @@ public final class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
-                : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -160,7 +156,7 @@ public final class CallConnectionAsync {
      * Get a specific participant.
      *
      * @param targetParticipant The participant to retrieve.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of getting a desired participant in the call.
      */
@@ -173,7 +169,7 @@ public final class CallConnectionAsync {
      * Get a specific participant.
      *
      * @param targetParticipant The participant to retrieve.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with the result of getting a desired participant in the call.
      */
@@ -198,7 +194,7 @@ public final class CallConnectionAsync {
     /**
      * Get all participants.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of getting all participants in the call.
      */
@@ -210,7 +206,7 @@ public final class CallConnectionAsync {
     /**
      * Get all participants.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of getting all participants in the call.
      */
@@ -224,7 +220,6 @@ public final class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response,
                     ListParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -236,7 +231,7 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param targetParticipant A {@link CallInvite} representing the targetParticipant participant of this transfer.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
@@ -249,7 +244,7 @@ public final class CallConnectionAsync {
      * Transfer the call to a participant.
      *
      * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of transferring the call to a designated participant.
      */
@@ -277,9 +272,7 @@ public final class CallConnectionAsync {
             }
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-            context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response ->
+            context).map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -290,7 +283,7 @@ public final class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param participant participant to invite.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of adding a participant to the call.
      */
@@ -303,7 +296,7 @@ public final class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param addParticipantOptions Options bag for addParticipant
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of adding a participant to the call.
      */
@@ -335,9 +328,7 @@ public final class CallConnectionAsync {
             }
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-            context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
+            context).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -347,7 +338,7 @@ public final class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param participantToRemove participant to remove.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of removing a participant from the call.
      */
@@ -360,7 +351,7 @@ public final class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param removeParticipantOptions Options bag for removeParticipant
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of removing a participant from the call.
      */
@@ -378,9 +369,7 @@ public final class CallConnectionAsync {
                 .setOperationContext(removeParticipantOptions.getOperationContext());
 
             return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, request,
-            context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
+            context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -421,9 +410,7 @@ public final class CallConnectionAsync {
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
-                    context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+                    context).map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -464,9 +451,7 @@ public final class CallConnectionAsync {
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
-                    context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+                    context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
