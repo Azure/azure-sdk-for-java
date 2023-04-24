@@ -16,6 +16,7 @@ import com.azure.core.exception.HttpResponseException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     private CallRecordingAsync callRecording;
@@ -47,7 +48,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
             RecordingState.ACTIVE);
 
         validateOperation(callRecording.stopRecording(RECORDING_ID));
-        validateError(HttpResponseException.class, callRecording.getRecordingState(RECORDING_ID));
+        assertThrows(HttpResponseException.class, () -> callRecording.getRecordingState(RECORDING_ID).block()  );
     }
 
     private void validateRecordingState(Publisher<RecordingStateResult> publisher, RecordingState status) {
@@ -66,13 +67,6 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
 
     private void validateOperation(Publisher<Void> operation) {
         StepVerifier.create(operation).verifyComplete();
-    }
-
-    private <T, U> void validateError(Class<T> exception, Publisher<U> publisher) {
-        StepVerifier.create(publisher)
-            .consumeErrorWith(error -> assertEquals(error.getClass().toString(),
-                exception.toString()))
-            .verify();
     }
 
     private void validateRecording(RecordingStateResult recordingState, RecordingState expectedStatus) {
