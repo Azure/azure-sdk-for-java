@@ -6,8 +6,10 @@ package com.azure.storage.blob.nio;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobStorageException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
@@ -16,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.ClosedFileSystemException;
 import java.nio.file.Files;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NioBlobInputStreamTests extends BlobNioTestBase {
+    private byte[] fileBytes;
     private File sourceFile;
     private BlobClient bc;
     private NioBlobInputStream nioStream;
@@ -33,7 +38,8 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        sourceFile = getRandomFile(10 * 1024 * 1024);
+        fileBytes = getRandomByteArray(10 * 1024 * 1024);
+        sourceFile = getRandomFile(fileBytes);
 
         cc.create();
         bc = cc.getBlobClient(generateBlobName());
@@ -71,23 +77,17 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @ValueSource(ints = {0, 100, 9 * 1024 * 1024})
     public void readBuff(int size) throws IOException {
         byte[] nioBytes = new byte[size];
-        byte[] fileBytes = new byte[size];
-
         nioStream.read(nioBytes);
-        fileStream.read(fileBytes);
 
-        assertArraysEqual(fileBytes, nioBytes);
+        assertArraysEqual(fileBytes, 0, nioBytes, 0, size);
     }
 
     @Test
     public void readBuffOffsetLen() throws IOException {
         byte[] nioBytes = new byte[100];
-        byte[] fileBytes = new byte[100];
-
         nioStream.read(nioBytes, 5, 50);
-        fileStream.read(fileBytes, 5, 50);
 
-        assertArraysEqual(fileBytes, nioBytes);
+        assertArraysEqual(fileBytes, 0, nioBytes, 5, 50);
     }
 
     @ParameterizedTest
@@ -98,20 +98,19 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
         assertThrows(IndexOutOfBoundsException.class, () -> nioStream.read(b, off, len));
     }
 
-    @Test
-    public void readFail() throws IOException {
+    @ParameterizedTest
+    @MethodSource("readFailSupplier")
+    public void readFail(Function<NioBlobInputStream, Executable> methodCall) throws IOException {
         bc.delete();
         nioStream.read(new byte[4 * 1024 * 1024]); // Must read through the initial download to trigger failed response
 
-        IOException e = assertThrows(IOException.class, nioStream::read);
+        IOException e = assertThrows(IOException.class, methodCall.apply(nioStream));
         assertInstanceOf(BlobStorageException.class, e.getCause());
+    }
 
-        e = assertThrows(IOException.class, () -> nioStream.read(new byte[5]));
-        assertInstanceOf(BlobStorageException.class, e.getCause());
-
-
-        e = assertThrows(IOException.class, () -> nioStream.read(new byte[5], 0, 4));
-        assertInstanceOf(BlobStorageException.class, e.getCause());
+    private static Stream<Function<NioBlobInputStream, Executable>> readFailSupplier() {
+        return Stream.of(nioStream -> nioStream::read, nioStream -> () -> nioStream.read(new byte[5]),
+            nioStream -> () -> nioStream.read(new byte[5], 0, 4));
     }
 
     @Test

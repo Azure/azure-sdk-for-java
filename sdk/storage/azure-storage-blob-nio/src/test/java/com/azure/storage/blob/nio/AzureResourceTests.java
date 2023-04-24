@@ -205,16 +205,16 @@ public class AzureResourceTests extends BlobNioTestBase {
         byte[] contentMd5 = MessageDigest.getInstance("MD5").digest(new byte[0]);
         List<FileAttribute<?>> attributes = new ArrayList<>();
         if (metadata) {
-            attributes.add(new APISpec.TestFileAttribute<>("fizz", "buzz"));
-            attributes.add(new APISpec.TestFileAttribute<>("foo", "bar"));
+            attributes.add(new TestFileAttribute<>("fizz", "buzz"));
+            attributes.add(new TestFileAttribute<>("foo", "bar"));
         }
         if (properties) {
-            attributes.add(new APISpec.TestFileAttribute<>("Content-Type", "myType"));
-            attributes.add(new APISpec.TestFileAttribute<>("Content-Disposition", "myDisposition"));
-            attributes.add(new APISpec.TestFileAttribute<>("Content-Language", "myLanguage"));
-            attributes.add(new APISpec.TestFileAttribute<>("Content-Encoding", "myEncoding"));
-            attributes.add(new APISpec.TestFileAttribute<>("Cache-Control", "myControl"));
-            attributes.add(new APISpec.TestFileAttribute<>("Content-MD5", contentMd5));
+            attributes.add(new TestFileAttribute<>("Content-Type", "myType"));
+            attributes.add(new TestFileAttribute<>("Content-Disposition", "myDisposition"));
+            attributes.add(new TestFileAttribute<>("Content-Language", "myLanguage"));
+            attributes.add(new TestFileAttribute<>("Content-Encoding", "myEncoding"));
+            attributes.add(new TestFileAttribute<>("Cache-Control", "myControl"));
+            attributes.add(new TestFileAttribute<>("Content-MD5", contentMd5));
         }
 
         if (metadata || properties) {
@@ -280,8 +280,8 @@ public class AzureResourceTests extends BlobNioTestBase {
             .setIfUnmodifiedSince(unmodified);
 
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> resource.putDirectoryBlob(bac));
-        assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET ||
-            e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+        assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
+            || e.getErrorCode() == BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
     }
 
     private static Stream<Arguments> putDirectoryBlobACFailSupplier() {

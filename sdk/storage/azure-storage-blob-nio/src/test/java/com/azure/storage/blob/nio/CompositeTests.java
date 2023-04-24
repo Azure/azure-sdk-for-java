@@ -180,9 +180,8 @@ public class CompositeTests extends BlobNioTestBase {
     }
 
     static class TestFileVisitor<Path> extends SimpleFileVisitor<Path> {
-
-        public int fileCount = 0;
-        public int directoryCount = 0;
+        private int fileCount = 0;
+        private int directoryCount = 0;
 
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {

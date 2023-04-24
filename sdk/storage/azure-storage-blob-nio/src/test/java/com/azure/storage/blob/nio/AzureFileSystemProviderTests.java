@@ -264,14 +264,14 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             .getAppendBlobClient();
         byte[] contentMd5 = MessageDigest.getInstance("MD5").digest(new byte[0]);
         FileAttribute<?>[] attributes = new FileAttribute<?>[]{
-            new APISpec.TestFileAttribute<>("fizz", "buzz"),
-            new APISpec.TestFileAttribute<>("foo", "bar"),
-            new APISpec.TestFileAttribute<>("Content-Type", "myType"),
-            new APISpec.TestFileAttribute<>("Content-Disposition", "myDisposition"),
-            new APISpec.TestFileAttribute<>("Content-Language", "myLanguage"),
-            new APISpec.TestFileAttribute<>("Content-Encoding", "myEncoding"),
-            new APISpec.TestFileAttribute<>("Cache-Control", "myControl"),
-            new APISpec.TestFileAttribute<>("Content-MD5", contentMd5)
+            new TestFileAttribute<>("fizz", "buzz"),
+            new TestFileAttribute<>("foo", "bar"),
+            new TestFileAttribute<>("Content-Type", "myType"),
+            new TestFileAttribute<>("Content-Disposition", "myDisposition"),
+            new TestFileAttribute<>("Content-Language", "myLanguage"),
+            new TestFileAttribute<>("Content-Encoding", "myEncoding"),
+            new TestFileAttribute<>("Cache-Control", "myControl"),
+            new TestFileAttribute<>("Content-MD5", contentMd5)
         };
 
         fs.provider().createDirectory(fs.getPath(fileName), attributes);
@@ -779,13 +779,13 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
         assertThrows(IllegalArgumentException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
             StandardOpenOption.WRITE));
 
-        // Missing TRUNCATE_EXISTING
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
-            StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW));
+        // Missing only TRUNCATE_EXISTING
+        assertDoesNotThrow(() -> fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE_NEW));
 
-        // Missing CREATE_NEW
-        assertThrows(IllegalArgumentException.class, () -> fs.provider().newOutputStream(fs.getPath(generateBlobName()),
-            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE));
+        // Missing only CREATE_NEW
+        assertDoesNotThrow(() -> fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE));
     }
 
     @ParameterizedTest
@@ -944,14 +944,14 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
             .getBlockBlobClient();
         byte[] contentMd5 = MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes());
         FileAttribute<?>[] attributes = new FileAttribute<?>[]{
-            new APISpec.TestFileAttribute<>("fizz", "buzz"),
-            new APISpec.TestFileAttribute<>("foo", "bar"),
-            new APISpec.TestFileAttribute<>("Content-Type", "myType"),
-            new APISpec.TestFileAttribute<>("Content-Disposition", "myDisposition"),
-            new APISpec.TestFileAttribute<>("Content-Language", "myLanguage"),
-            new APISpec.TestFileAttribute<>("Content-Encoding", "myEncoding"),
-            new APISpec.TestFileAttribute<>("Cache-Control", "myControl"),
-            new APISpec.TestFileAttribute<>("Content-MD5", contentMd5)
+            new TestFileAttribute<>("fizz", "buzz"),
+            new TestFileAttribute<>("foo", "bar"),
+            new TestFileAttribute<>("Content-Type", "myType"),
+            new TestFileAttribute<>("Content-Disposition", "myDisposition"),
+            new TestFileAttribute<>("Content-Language", "myLanguage"),
+            new TestFileAttribute<>("Content-Encoding", "myEncoding"),
+            new TestFileAttribute<>("Cache-Control", "myControl"),
+            new TestFileAttribute<>("Content-MD5", contentMd5)
         };
 
         SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
@@ -979,22 +979,18 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("byteChannelFileAttrNullEmptySupplier")
-    public void byteChannelFileAttrNullEmpty(FileAttribute<?>[] attributes) throws IOException {
+    @ValueSource(booleans = {true, false})
+    public void byteChannelFileAttrNullEmpty(boolean isNull) throws IOException {
         AzureFileSystem fs = createFS(config);
         BlockBlobClient bc = rootNameToContainerClient(getDefaultDir(fs)).getBlobClient(generateBlobName())
             .getBlockBlobClient();
         ByteBuffer data = DATA.getDefaultData().duplicate();
 
         SeekableByteChannel nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
-            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
-                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes);
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING)), isNull ? null : new FileAttribute<?>[0]);
         assertDoesNotThrow(() -> nioChannel.write(data));
         assertDoesNotThrow(nioChannel::close);
-    }
-
-    private static Stream<FileAttribute<?>[]> byteChannelFileAttrNullEmptySupplier() {
-        return Stream.of(null, new FileAttribute<?>[0]);
     }
 
     @Test

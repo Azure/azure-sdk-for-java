@@ -128,9 +128,9 @@ public class AzureDirectoryStreamTests extends BlobNioTestBase {
         AzureResource virtualDirChildPath = new AzureResource(virtualDirPath.getPath().resolve(generateBlobName()));
         virtualDirChildPath.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
 
-        List<String> expectedListResults = Arrays.asList(filePath.getPath().toString(),
+        List<String> expectedListResults = new ArrayList<>(Arrays.asList(filePath.getPath().toString(),
             concreteDirEmptyPath.getPath().toString(), concreteDirNonEmptyPath.getPath().toString(),
-            virtualDirPath.getPath().toString());
+            virtualDirPath.getPath().toString()));
 
         for (Path path : new AzureDirectoryStream(listingPath, path -> true)) {
             assertTrue(expectedListResults.remove(path.toString()));
@@ -151,10 +151,9 @@ public class AzureDirectoryStreamTests extends BlobNioTestBase {
     public void nextHasNextFailAfterClose() throws IOException {
         String rootName = getNonDefaultRootDir(fs);
         String dirName = generateBlobName();
-        List<AzureResource> resources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            resources.add(new AzureResource(fs.getPath(rootName, dirName, generateBlobName())));
-            resources.get(0).getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
+            new AzureResource(fs.getPath(rootName, dirName, generateBlobName()))
+                .getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
         }
 
         DirectoryStream<Path> stream = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName),
@@ -183,10 +182,9 @@ public class AzureDirectoryStreamTests extends BlobNioTestBase {
     public void filter() throws IOException {
         String rootName = getNonDefaultRootDir(fs);
         String dirName = generateBlobName();
-        List<AzureResource> resources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            resources.add(new AzureResource(fs.getPath(rootName, dirName, i + generateBlobName())));
-            resources.get(0).getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
+            new AzureResource(fs.getPath(rootName, dirName, i + generateBlobName()))
+                .getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
         }
 
         Iterator<Path> iterator = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName),
@@ -201,10 +199,9 @@ public class AzureDirectoryStreamTests extends BlobNioTestBase {
     public void filterException() throws IOException {
         String rootName = getNonDefaultRootDir(fs);
         String dirName = generateBlobName();
-        List<AzureResource> resources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            resources.add(new AzureResource(fs.getPath(rootName, dirName, i + generateBlobName())));
-            resources.get(0).getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
+            new AzureResource(fs.getPath(rootName, dirName, i + generateBlobName()))
+                .getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList());
         }
         AzureDirectoryStream stream = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName),
             entry -> {

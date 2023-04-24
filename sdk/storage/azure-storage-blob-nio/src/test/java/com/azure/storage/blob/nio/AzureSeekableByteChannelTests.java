@@ -19,6 +19,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.SeekableByteChannel;
@@ -37,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     private int sourceFileSize;
+    private byte[] fileBytes;
     private File sourceFile;
     private BlobClient bc;
     private BlobClient writeBc;
@@ -49,7 +51,8 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     protected void beforeTest() {
         super.beforeTest();
         sourceFileSize = 10 * 1024 * 1024;
-        sourceFile = getRandomFile(sourceFileSize);
+        fileBytes = getRandomByteArray(sourceFileSize);
+        sourceFile = getRandomFile(fileBytes);
 
         cc.create();
         bc = cc.getBlobClient(generateBlobName());
@@ -72,8 +75,6 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void read() throws IOException {
-        byte[] fileContent = new byte[sourceFileSize];
-        fileStream.read(fileContent);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         int count = 0;
         Random rand = new Random();
@@ -85,14 +86,12 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
             count += readAmount;
         }
 
-        assertArrayEquals(fileContent, os.toByteArray());
+        assertArrayEquals(fileBytes, os.toByteArray());
     }
 
     @Test
     @Timeout(value = 60, unit = TimeUnit.SECONDS) // fail if test runs >= 1 minute
     public void readLoopUntilEof() throws IOException {
-        byte[] fileContent = new byte[sourceFileSize];
-        fileStream.read(fileContent);
         ByteArrayOutputStream os = new ByteArrayOutputStream(sourceFileSize);
         Random rand = new Random();
 
@@ -105,14 +104,11 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
             os.write(buffer.array(), 0, readAmount); // limit the write in case we allocated more than we needed
         }
 
-        assertArrayEquals(fileContent, os.toByteArray());
+        assertArrayEquals(fileBytes, os.toByteArray());
     }
 
     @Test
     public void readRespectDestBufferPos() throws IOException {
-        byte[] fileContent = new byte[sourceFileSize];
-        fileStream.read(fileContent);
-
         Random rand = new Random();
         int initialOffset = rand.nextInt(512) + 1; // always > 0
         byte[] randArray = new byte[2 * initialOffset + sourceFileSize];
@@ -132,7 +128,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
         assertEquals(initialOffset + sourceFileSize, dest.position());
         // destination content should match file content at initial read position
-        assertArraysEqual(fileContent, 0, destArray, initialOffset, sourceFileSize);
+        assertArraysEqual(fileBytes, 0, destArray, initialOffset, sourceFileSize);
         // destination content should be untouched prior to initial position
         assertArraysEqual(randArray, 0, destArray, 0, initialOffset);
         // destination content should be untouched past end of read
@@ -149,11 +145,9 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void write() throws IOException {
-        byte[] fileContent = new byte[sourceFileSize];
-        fileStream.read(fileContent);
         int count = 0;
         Random rand = new Random();
-        writeByteChannel.write(ByteBuffer.wrap(fileContent));
+        writeByteChannel.write(ByteBuffer.wrap(fileBytes));
 
         while (count < sourceFileSize) {
             int writeAmount = Math.min(rand.nextInt(1024 * 1024), sourceFileSize - count);
@@ -164,7 +158,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         }
 
         writeByteChannel.close();
-        compareInputStreams(writeBc.openInputStream(), new ByteArrayInputStream(fileContent), sourceFileSize);
+        compareInputStreams(writeBc.openInputStream(), new ByteArrayInputStream(fileBytes), sourceFileSize);
     }
 
     @Test
@@ -174,11 +168,8 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         byte[] srcBufferContent = new byte[2 * initialOffset + sourceFileSize];
         rand.nextBytes(srcBufferContent); // fill with random bytes
 
-        byte[] fileContent = new byte[sourceFileSize];
-        fileStream.read(fileContent);
-
         // place expected file content into source buffer at random location, retain other random bytes
-        System.arraycopy(fileContent, 0, srcBufferContent, initialOffset, sourceFileSize);
+        System.arraycopy(fileBytes, 0, srcBufferContent, initialOffset, sourceFileSize);
         ByteBuffer srcBuffer = ByteBuffer.wrap(srcBufferContent);
         srcBuffer.position(initialOffset);
         srcBuffer.limit(initialOffset + sourceFileSize);
@@ -200,7 +191,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
             return null;
         }).when(blobOutputStream).write(Mockito.anyInt());
         Mockito.doAnswer(invoked -> {
-            actualOutput.writeBytes(invoked.getArgument(0));
+            actualOutput.write(invoked.getArgument(0));
             return null;
         }).when(blobOutputStream).write(Mockito.any(byte[].class));
         Mockito.doAnswer(invoked -> {
@@ -219,7 +210,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         assertEquals(initialOffset + sourceFileSize, srcBuffer.position()); // src buffer position SHOULD be updated
         assertEquals(srcBuffer.position(), srcBuffer.limit()); // limit SHOULD be unchanged (still at end of content)
         // the above report back to the caller, but this verifies the correct bytes are going to the blob:
-        assertArraysEqual(fileContent, 0, actualOutput.toByteArray(), 0, sourceFileSize);
+        assertArraysEqual(fileBytes, 0, actualOutput.toByteArray(), 0, sourceFileSize);
     }
 
     @Test
@@ -346,12 +337,12 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         readByteChannel.close();
         writeByteChannel.close();
 
-        assertThrows(ClosedFileSystemException.class, () -> readByteChannel.read(ByteBuffer.allocate(1)));
-        assertThrows(ClosedFileSystemException.class, readByteChannel::size);
-        assertThrows(ClosedFileSystemException.class, readByteChannel::position);
-        assertThrows(ClosedFileSystemException.class, () -> writeByteChannel.write(ByteBuffer.allocate(1)));
-        assertThrows(ClosedFileSystemException.class, writeByteChannel::size);
-        assertThrows(ClosedFileSystemException.class, writeByteChannel::position);
+        assertThrows(ClosedChannelException.class, () -> readByteChannel.read(ByteBuffer.allocate(1)));
+        assertThrows(ClosedChannelException.class, readByteChannel::size);
+        assertThrows(ClosedChannelException.class, readByteChannel::position);
+        assertThrows(ClosedChannelException.class, () -> writeByteChannel.write(ByteBuffer.allocate(1)));
+        assertThrows(ClosedChannelException.class, writeByteChannel::size);
+        assertThrows(ClosedChannelException.class, writeByteChannel::position);
     }
 
     @Test

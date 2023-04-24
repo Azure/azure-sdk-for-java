@@ -11,6 +11,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.ServiceVersion;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -35,7 +38,6 @@ import okhttp3.ConnectionPool;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -45,6 +47,7 @@ import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
 import java.time.Duration;
@@ -106,6 +109,12 @@ public class BlobNioTestBase extends TestProxyTestBase {
         containerName = generateContainerName();
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName);
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
+
+        if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.addSanitizers(
+                Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+        }
     }
 
     @Override
@@ -246,22 +255,12 @@ public class BlobNioTestBase extends TestProxyTestBase {
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
-    protected File getRandomFile(int size) {
+    protected File getRandomFile(byte[] bytes) {
         try {
             File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
             file.deleteOnExit();
-            FileOutputStream fos = new FileOutputStream(file);
+            Files.write(file.toPath(), bytes);
 
-            if (size > Constants.MB) {
-                for (int i = 0; i < size / Constants.MB; i++) {
-                    int dataSize = Math.min(Constants.MB, size - i * Constants.MB);
-                    fos.write(getRandomByteArray(dataSize));
-                }
-            } else {
-                fos.write(getRandomByteArray(size));
-            }
-
-            fos.close();
             return file;
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
@@ -291,7 +290,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
     protected static void compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         long pos = 0L;
         int defaultReadBuffer = 128 * Constants.KB;
-        try (stream1; stream2) {
+        try (InputStream s1 = stream1; InputStream s2 = stream2) {
             // If the amount we are going to read is smaller than the default buffer size use that instead.
             int bufferSize = (int) Math.min(defaultReadBuffer, count);
 
@@ -301,8 +300,8 @@ public class BlobNioTestBase extends TestProxyTestBase {
                 byte[] buffer1 = new byte[expectedReadCount];
                 byte[] buffer2 = new byte[expectedReadCount];
 
-                int readCount1 = stream1.read(buffer1);
-                int readCount2 = stream2.read(buffer2);
+                int readCount1 = s1.read(buffer1);
+                int readCount2 = s2.read(buffer2);
 
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
                 assertEquals(readCount1, readCount2);
@@ -311,7 +310,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
                 pos += expectedReadCount;
             }
 
-            int verificationRead = stream2.read();
+            int verificationRead = s2.read();
             assertEquals(count, pos);
             assertEquals(-1, verificationRead);
         } catch (IOException ex) {
