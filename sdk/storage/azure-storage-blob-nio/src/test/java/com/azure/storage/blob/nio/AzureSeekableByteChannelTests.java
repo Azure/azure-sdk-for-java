@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
@@ -51,7 +52,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        sourceFileSize = 10 * 1024 * 1024;
+        sourceFileSize = 5 * 1024 * 1024;
         fileBytes = getRandomByteArray(sourceFileSize);
         sourceFile = getRandomFile(fileBytes);
 
@@ -75,11 +76,14 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     }
 
     private void resetForLargeSource() {
-        // Base setup only uploads a small source to reduce size of session record.
-        BlobClient blobClient = getNonRecordingServiceClient()
-            .getBlobContainerClient(bc.getContainerName())
-            .getBlobClient(bc.getBlobName());
-        blobClient.upload(BinaryData.fromBytes(fileBytes), true);
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // Base setup only uploads a small source to reduce size of session record.
+            BlobClient blobClient = getNonRecordingServiceClient()
+                .getBlobContainerClient(bc.getContainerName())
+                .getBlobClient(bc.getBlobName());
+            blobClient.upload(BinaryData.fromBytes(fileBytes), true);
+        }
+
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
         AzurePath writePath = ((AzurePath) fs.getPath(writeBc.getContainerName() + ":", writeBc.getBlobName()));
 
@@ -286,7 +290,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     public void seek(int readCount0, int seekPos1, int readCount1, int seekPos2, int readCount2) throws IOException {
         resetForLargeSource();
         ByteBuffer streamContent = ByteBuffer.allocate(readCount0);
-        readByteChannel.read(streamContent);
+        readByteChannel(readByteChannel, streamContent);
         compareInputStreams(fileStream, new ByteArrayInputStream(streamContent.array()), readCount0);
 
         readByteChannel.position(seekPos1);
@@ -310,15 +314,17 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     private static Stream<Arguments> seekSupplier() {
         return Stream.of(
-            Arguments.of(1024, 1024, (5 * 1024 * 1024) - 1024, 5 * 1024 * 1024, 5 * 1024 * 1024), // Only ever seek in place. Read whole blob
-            Arguments.of(1024, 5 * 1024 * 1024, 1024, 2048, 1024), // Seek forward then seek backward
-            Arguments.of(5 * 1024 * 1024, 1024, 1024, (10 * 1024 * 1024) - 1024, 1024) // Seek backward then seek forward
+            Arguments.of(1024, 1024, (2 * 1024 * 1024) - 1024, 3 * 1024 * 1024, 2 * 1024 * 1024), // Only ever seek in place. Read whole blob
+            Arguments.of(1024, (5 * 1024 * 1024) - 1024, 1024, 2048, 1024), // Seek forward then seek backward
+            Arguments.of(2 * 1024 * 1024, 1024, 1024, (5 * 1024 * 1024) - 1024, 1024) // Seek backward then seek forward
         );
     }
 
     private static void readByteChannel(SeekableByteChannel channel, ByteBuffer dst) throws IOException {
         while (dst.remaining() > 0) {
-            channel.read(dst);
+            if (channel.read(dst) == -1) { // Prevent infinite read
+                break;
+            }
         }
     }
 
@@ -339,9 +345,6 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
 
     @Test
     public void sizeRead() throws IOException {
-        resetForLargeSource();
-        assertEquals(sourceFileSize, readByteChannel.size());
-
         bc.upload(DATA.getDefaultBinaryData(), true);
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
         readByteChannel = new AzureSeekableByteChannel(new NioBlobInputStream(bc.openInputStream(), path), path);

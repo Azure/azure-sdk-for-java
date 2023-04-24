@@ -11,15 +11,13 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.ServiceVersion;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -37,7 +35,6 @@ import com.azure.storage.common.test.shared.TestEnvironment;
 import okhttp3.ConnectionPool;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -113,7 +110,10 @@ public class BlobNioTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(
                 Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
-            interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+                .setComparingBodies(false)
+                .setExcludedHeaders(Arrays.asList("x-ms-copy-source", "If-Match", "x-ms-range", "If-Modified-Since",
+                    "If-Unmodified-Since"))));
         }
     }
 
@@ -174,35 +174,13 @@ public class BlobNioTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected BlobContainerClient getContainerClient(String sasToken, String endpoint) {
-        return getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient();
-    }
-
-    protected BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
-        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
-            .endpoint(endpoint);
-
-        instrument(builder);
-
-        return builder;
-    }
-
-    protected BlobClient getBlobClient(String sasToken, String endpoint, String blobName, String snapshotId) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint)
-            .blobName(blobName)
-            .snapshot(snapshotId);
-
-        instrument(builder);
-
-        return builder.sasToken(sasToken).buildClient();
-    }
-
     protected Map<String, Object> initializeConfigMap(HttpPipelinePolicy... policies) {
         Map<String, Object> config = new HashMap<>();
         config.put(AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT, getHttpClient());
         List<HttpPipelinePolicy> policyList = new ArrayList<>(Arrays.asList(policies));
-        policyList.add(interceptorManager.getRecordPolicy());
+        if (getTestMode() == TestMode.RECORD) {
+            policyList.add(interceptorManager.getRecordPolicy());
+        }
         config.put(AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES, policyList.toArray(new HttpPipelinePolicy[0]));
 
         return config;
@@ -266,26 +244,6 @@ public class BlobNioTestBase extends TestProxyTestBase {
             Files.write(file.toPath(), bytes);
 
             return file;
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
-        }
-    }
-
-    /**
-     * Compares two files for having equivalent content.
-     *
-     * @param file1 File used to upload data to the service
-     * @param file2 File used to download data from the service
-     * @param offset Write offset from the upload file
-     * @param count Size of the download from the service
-     */
-    protected static void compareFiles(File file1, File file2, long offset, long count) {
-        try {
-            InputStream stream1 = new FileInputStream(file1);
-            stream1.skip(offset);
-            InputStream stream2 = new FileInputStream(file2);
-
-            compareInputStreams(stream1, stream2, count);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }

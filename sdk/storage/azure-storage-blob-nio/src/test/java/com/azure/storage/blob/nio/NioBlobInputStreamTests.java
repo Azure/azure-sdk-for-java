@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -57,11 +58,15 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     }
 
     private void resetForLargeSource() {
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // Base setup only uploads a small source to reduce size of session record.
+            BlobClient blobClient = getNonRecordingServiceClient()
+                .getBlobContainerClient(bc.getContainerName())
+                .getBlobClient(bc.getBlobName());
+            blobClient.upload(BinaryData.fromBytes(fileBytes), true);
+        }
+
         // Base setup only uploads a small source to reduce size of session record.
-        BlobClient blobClient = getNonRecordingServiceClient()
-            .getBlobContainerClient(bc.getContainerName())
-            .getBlobClient(bc.getBlobName());
-        blobClient.upload(BinaryData.fromBytes(fileBytes), true);
         AzurePath path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()));
         nioStream = new NioBlobInputStream(bc.openInputStream(), path);
     }
