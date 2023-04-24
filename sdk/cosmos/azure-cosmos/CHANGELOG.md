@@ -1,16 +1,10 @@
 ## Release History
 
-### 4.44.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.44.0 (2023-04-21)
 
 #### Bugs Fixed
 * Fixed an issue where throughput control is not triggered properly when target throughput is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
 * Fixed an issue where `IllegalStateException` being thrown during replica validation - See [PR 34538](https://github.com/Azure/azure-sdk-for-java/pull/34538)
-
-#### Other Changes
 
 ### 4.43.0 (2023-04-06)
 
