@@ -258,7 +258,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private class SerializedEmitFailureHandler implements Sinks.EmitFailureHandler {
+    private static class SerializedEmitFailureHandler implements Sinks.EmitFailureHandler {
 
         @Override
         public boolean onEmitFailure(SignalType signalType, Sinks.EmitResult emitResult) {
