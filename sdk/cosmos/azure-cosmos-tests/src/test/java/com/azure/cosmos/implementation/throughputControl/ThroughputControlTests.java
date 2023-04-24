@@ -221,6 +221,9 @@ public class ThroughputControlTests extends TestSuiteBase {
         requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
 
         CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+
+        performDocumentOperation(container, operationType, createdItem, groupConfig.getGroupName());
 
         assertThat(createItemResponse.getStatusCode()).isEqualTo(201);
     }
