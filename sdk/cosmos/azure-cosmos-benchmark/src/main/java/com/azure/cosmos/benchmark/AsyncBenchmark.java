@@ -367,17 +367,17 @@ abstract class AsyncBenchmark<T> {
                     CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
                     .setProactiveConnectionRegionsCount(configuration.getProactiveConnectionRegionsCount());
 
-            if (configuration.getAggressiveProactiveConnectionEstablishmentDuration() == Duration.ZERO) {
+            if (configuration.getAggressiveWarmupDuration() == Duration.ZERO) {
 
                 cosmosClientBuilder = cosmosClientBuilder
                         .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())
                         .endpointDiscoveryEnabled(true);
             } else {
 
-                logger.info("Setting an aggressive proactive connection establishment duration of {}", configuration.getAggressiveProactiveConnectionEstablishmentDuration());
+                logger.info("Setting an aggressive proactive connection establishment duration of {}", configuration.getAggressiveWarmupDuration());
 
                 cosmosContainerProactiveInitConfigBuilder = cosmosContainerProactiveInitConfigBuilder
-                        .setAggressiveWarmupDuration(configuration.getAggressiveProactiveConnectionEstablishmentDuration());
+                        .setAggressiveWarmupDuration(configuration.getAggressiveWarmupDuration());
 
                 cosmosClientBuilder = cosmosClientBuilder
                         .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())

@@ -152,7 +152,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                             Arrays.asList(addressUri),
                             this,
                             minConnectionsForEndpoint));
-                }, false, concurrencyConfiguration.openConnectionExecutionConcurrency)
+                }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
                 .flatMap(openConnectionTaskToResponse -> {
                     OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
@@ -273,7 +273,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private static enum OpenConnectionAggressivenessHint {
+    private enum OpenConnectionAggressivenessHint {
         AGGRESSIVE, DEFENSIVE
     }
 }

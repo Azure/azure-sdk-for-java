@@ -129,8 +129,8 @@ public class Configuration {
     @Parameter(names = "-minConnectionPoolSizePerEndpoint", description = "Minimum number of connections to establish per endpoint for proactive connection management")
     private int minConnectionPoolSizePerEndpoint = 0;
 
-    @Parameter(names = "-aggressiveProactiveConnectionEstablishmentDuration", description = "The duration for which proactive connections are aggressively established", converter = DurationConverter.class)
-    private Duration aggressiveProactiveConnectionEstablishmentDuration = Duration.ZERO;
+    @Parameter(names = "-aggressiveWarmupDuration", description = "The duration for which proactive connections are aggressively established", converter = DurationConverter.class)
+    private Duration aggressiveWarmupDuration = Duration.ZERO;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -587,8 +587,8 @@ public class Configuration {
         return proactiveConnectionRegionsCount;
     }
 
-    public Duration getAggressiveProactiveConnectionEstablishmentDuration() {
-        return aggressiveProactiveConnectionEstablishmentDuration;
+    public Duration getAggressiveWarmupDuration() {
+        return aggressiveWarmupDuration;
     }
 
     public Integer getMinConnectionPoolSizePerEndpoint() {

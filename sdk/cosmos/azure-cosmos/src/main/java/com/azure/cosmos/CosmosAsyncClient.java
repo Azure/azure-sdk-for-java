@@ -596,21 +596,15 @@ public final class CosmosAsyncClient implements Closeable {
         blockVoidFlux(asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig));
     }
 
-    void openConnectionsAndInitCaches(Duration aggressiveProactiveConnectionEstablishmentDuration) {
+    void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
         Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
 
-        wrapSourceFluxAndSoftCompleteAfterTimeout(
-                submitOpenConnectionTasksFlux,
-                aggressiveProactiveConnectionEstablishmentDuration,
-                CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .blockLast();
+        wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration).blockLast();
     }
 
-    private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout, Scheduler executionContext) {
+    private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout) {
         return Flux.<Void>create(sink -> {
-                    source
-                            .subscribeOn(executionContext)
-                            .subscribe(t -> sink.next(t));
+                    source.subscribe(t -> sink.next(t));
                 })
                 .take(timeout);
     }
@@ -619,13 +613,9 @@ public final class CosmosAsyncClient implements Closeable {
         try {
             voidFlux.blockLast();
         } catch (Exception e) {
-            final Throwable throwable = Exceptions.unwrap(e);
 
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw Exceptions.propagate(throwable);
-            }
+            // swallow exceptions here
+
         }
     }
 

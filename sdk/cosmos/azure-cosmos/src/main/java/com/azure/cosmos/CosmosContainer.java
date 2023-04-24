@@ -819,12 +819,7 @@ public class CosmosContainer {
         try {
             voidMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw Exceptions.propagate(ex);
-            }
+            // swallow exceptions here
         }
     }
 }
