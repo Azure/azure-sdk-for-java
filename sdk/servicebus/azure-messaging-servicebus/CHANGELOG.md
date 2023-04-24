@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Fixed issue where receiving messages from `ServiceBusSessionReceiverAsyncClient` would never complete.
+- Fixed issue where receiving messages from `ServiceBusSessionReceiverAsyncClient` would never complete. ([#34597](https://github.com/Azure/azure-sdk-for-java/issues/34597))
 
 ### Other Changes
 
@@ -16,7 +16,7 @@
 
 ### Bugs Fixed
 
-- Added a warning log message to indicate the use of Processor _start_ API after the _stop_ is not recommended. ([34464](https://github.com/Azure/azure-sdk-for-java/issues/34464))
+- Added a warning log message to indicate the use of Processor _start_ API after the _stop_ is not recommended. ([#34464](https://github.com/Azure/azure-sdk-for-java/issues/34464))
 - Fixed the issue of not retrying for a new session after the last acquire-session timeout. ([#34314](https://github.com/Azure/azure-sdk-for-java/issues/34314))
 - Replay the terminal error to backing work of sync receive calls that arrive after the inner async client termination. ([#34332](https://github.com/Azure/azure-sdk-for-java/issues/34332))
 
