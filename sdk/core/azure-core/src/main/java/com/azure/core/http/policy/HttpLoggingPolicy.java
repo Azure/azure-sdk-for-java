@@ -339,7 +339,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
         UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
-        ImplUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+        CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
             if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
                 urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
             } else {

@@ -8,14 +8,9 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.ChallengeHolder;
-import com.azure.core.http.netty.implementation.HttpProxyHandler;
+import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
-import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
-import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
-import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
-import com.azure.core.http.netty.implementation.WriteTimeoutHandler;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -23,7 +18,6 @@ import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
-import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -46,21 +40,16 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.NettyPipeline;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.transport.AddressUtils;
 import reactor.util.retry.Retry;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
-import java.util.regex.Pattern;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 
@@ -84,15 +73,8 @@ class NettyAsyncHttpClient implements HttpClient {
     private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     final boolean disableBufferCopy;
-    final long readTimeout;
-    final long writeTimeout;
-    final long responseTimeout;
 
     final boolean addProxyHandler;
-    final ProxyOptions proxyOptions;
-    final Pattern nonProxyHostsPattern;
-    final AuthorizationChallengeHandler handler;
-    final AtomicReference<ChallengeHolder> proxyChallengeHolder;
 
     final reactor.netty.http.client.HttpClient nettyClient;
 
@@ -103,19 +85,10 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
     NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-        long readTimeout, long writeTimeout, long responseTimeout, boolean addProxyHandler, ProxyOptions proxyOptions,
-        Pattern nonProxyHostsPattern, AuthorizationChallengeHandler handler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
+        boolean addProxyHandler) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
-        this.readTimeout = readTimeout;
-        this.writeTimeout = writeTimeout;
-        this.responseTimeout = responseTimeout;
         this.addProxyHandler = addProxyHandler;
-        this.proxyOptions = proxyOptions;
-        this.nonProxyHostsPattern = nonProxyHostsPattern;
-        this.handler = handler;
-        this.proxyChallengeHolder = proxyChallengeHolder;
     }
 
     /**
@@ -135,38 +108,24 @@ class NettyAsyncHttpClient implements HttpClient {
         boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
         boolean headersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
-        long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
+        Long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
-            .orElse(this.responseTimeout);
+            .orElse(null);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        reactor.netty.http.client.HttpClient configuredClient = nettyClient;
-        if (addProxyHandler) {
-            configuredClient = configuredClient.doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
-                /*
-                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the
-                 * first operation in the pipeline as it needs to handle sending a CONNECT request to the proxy
-                 * before any request data is sent.
-                 *
-                 * And in addition to adding the ProxyHandler update the Bootstrap resolver for proxy support.
-                 */
-                if (shouldApplyProxy(remoteAddress, nonProxyHostsPattern)) {
-                    channel.pipeline().addFirst(NettyPipeline.ProxyHandler, new HttpProxyHandler(
-                        AddressUtils.replaceWithResolved(proxyOptions.getAddress()), handler, proxyChallengeHolder));
-                }
-            });
-        }
-
-        return configuredClient.doOnRequest((r, connection) -> addRequestHandlers(connection, context))
-            .doAfterRequest((r, connection) -> doAfterRequest(connection, responseTimeout))
-            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
-            .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
-            .request(toReactorNettyHttpMethod(request.getHttpMethod()))
+        Flux<HttpResponse> nettyRequest = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
-                headersEagerlyConverted))
-            .single()
+                headersEagerlyConverted));
+
+        if (responseTimeout != null || progressReporter != null) {
+            nettyRequest = nettyRequest.contextWrite(ctx -> ctx.put(AzureNettyHttpClientContext.KEY,
+                new AzureNettyHttpClientContext(responseTimeout, progressReporter)));
+        }
+
+        return nettyRequest.single()
             .flatMap(response -> {
                 if (addProxyHandler && response.getStatusCode() == 407) {
                     return Mono.error(new ProxyConnectException("First attempt to connect to proxy failed."));
@@ -351,63 +310,6 @@ class NettyAsyncHttpClient implements HttpClient {
                     disableBufferCopy, headersEagerlyConverted));
             }
         };
-    }
-
-    /*
-     * Adds request handlers:
-     * - write timeout handler once the request is ready to begin sending.
-     * - progress handler if progress tracking has been requested.
-     */
-    private void addRequestHandlers(Connection connection, Context context) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-        if (progressReporter != null) {
-            connection.addHandlerLast(
-                RequestProgressReportingHandler.HANDLER_NAME, new RequestProgressReportingHandler(progressReporter));
-        }
-    }
-
-    /*
-     * After request has been sent:
-     * - Remove Progress Handler
-     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
-     * handler.
-     */
-    private static void doAfterRequest(Connection connection, long responseTimeoutMillis) {
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeoutMillis));
-    }
-
-    /*
-     * Remove response timeout handler from the connection as the response has been received, then add read timeout
-     * handler.
-     */
-    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
-    }
-
-    /*
-     * Remove read timeout handler as the complete response has been received.
-     */
-    private static void removeReadTimeoutHandler(Connection connection) {
-        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
-    }
-
-    private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {
-        if (nonProxyHostsPattern == null) {
-            return true;
-        }
-
-        if (!(socketAddress instanceof InetSocketAddress)) {
-            return true;
-        }
-
-        InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
-
-        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
     }
 
     private static HttpMethod toReactorNettyHttpMethod(com.azure.core.http.HttpMethod azureHttpMethod) {

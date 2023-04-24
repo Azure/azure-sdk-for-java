@@ -45,10 +45,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
          * 6. hang up the call.
          * 7. once call is hung up, verify disconnected event
          */
-        CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("recordingOperations", next))
-            .buildClient();
-
         CommunicationIdentityClient communicationIdentityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .buildClient();
 
@@ -58,12 +54,23 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             CommunicationUserIdentifier source = communicationIdentityClient.createUser();
             CommunicationUserIdentifier target = communicationIdentityClient.createUser();
 
+            // Create call automation client and use source as the caller.
+            CallAutomationClient callerClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .sourceIdentity(source)
+                .buildClient();
+
+            // Create call automation client for receivers.
+            CallAutomationClient receiverClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .buildClient();
+
             // setup service bus
             String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId));
-            CreateCallResult createCallResult = client.createCallWithResponse(createCallOptions, null).getValue();
+            CreateCallResult createCallResult = callerClient.createCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 
@@ -73,7 +80,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK);
-            AnswerCallResult answerCallResult = client.answerCallWithResponse(answerCallOptions, null).getValue();
+            AnswerCallResult answerCallResult = receiverClient.answerCallWithResponse(answerCallOptions, null).getValue();
             assertNotNull(answerCallResult);
 
             // wait for callConnected
@@ -85,7 +92,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
             // start recording
-            RecordingStateResult recordingStateResult = client.getCallRecording().startRecording(
+            RecordingStateResult recordingStateResult = callerClient.getCallRecording().startRecording(
                 new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
                     .setRecordingChannel(RecordingChannel.UNMIXED)
                     .setRecordingContent(RecordingContent.AUDIO)
@@ -96,11 +103,11 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(recordingStateResult.getRecordingId());
 
             // stop recording
-            client.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
+            callerClient.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
 
             // hangup
             if (!callConnectionId.isEmpty()) {
-                CallConnection callConnection = client.getCallConnection(callConnectionId);
+                CallConnection callConnection = callerClient.getCallConnection(callConnectionId);
                 callConnection.hangUp(true);
                 CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnectedEvent);
@@ -122,10 +129,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
          * 6. hang up the call.
          * 7. once call is hung up, verify disconnected event
          */
-        CallAutomationClient client = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("recordingOperations", next))
-            .buildClient();
-
         CommunicationIdentityClient communicationIdentityClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
             .buildClient();
 
@@ -135,12 +138,23 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             CommunicationUserIdentifier source = communicationIdentityClient.createUser();
             CommunicationUserIdentifier target = communicationIdentityClient.createUser();
 
+            // Create call automation client and use source as the caller.
+            CallAutomationClient callerClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .sourceIdentity(source)
+                .buildClient();
+
+            // Create call automation client for receivers.
+            CallAutomationClient receiverClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("recordingOperations", next))
+                .buildClient();
+
             // setup service bus
             String uniqueId = serviceBusWithNewCall(source, target);
 
             // create call and assert response
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(Arrays.asList(target), String.format("%s?q=%s", DISPATCHER_CALLBACK, uniqueId));
-            CreateCallResult createCallResult = client.createCallWithResponse(createCallOptions, null).getValue();
+            CreateCallResult createCallResult = callerClient.createCallWithResponse(createCallOptions, null).getValue();
             callConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
             assertNotNull(callConnectionId);
 
@@ -150,7 +164,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK);
-            AnswerCallResult answerCallResult = client.answerCallWithResponse(answerCallOptions, null).getValue();
+            AnswerCallResult answerCallResult = receiverClient.answerCallWithResponse(answerCallOptions, null).getValue();
             assertNotNull(answerCallResult);
 
             // wait for callConnected
@@ -162,7 +176,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
             // start recording
-            RecordingStateResult recordingStateResult = client.getCallRecording().startRecording(
+            RecordingStateResult recordingStateResult = callerClient.getCallRecording().startRecording(
                 new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
                     .setRecordingChannel(RecordingChannel.UNMIXED)
                     .setRecordingContent(RecordingContent.AUDIO)
@@ -179,11 +193,11 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(recordingStateResult.getRecordingId());
 
             // stop recording
-            client.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
+            callerClient.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
 
             // hangup
             if (!callConnectionId.isEmpty()) {
-                CallConnection callConnection = client.getCallConnection(callConnectionId);
+                CallConnection callConnection = callerClient.getCallConnection(callConnectionId);
                 callConnection.hangUpWithResponse(new HangUpOptions(true), null);
                 CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnectedEvent);
