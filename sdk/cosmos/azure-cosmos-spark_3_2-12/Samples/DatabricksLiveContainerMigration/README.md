@@ -40,7 +40,7 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
     ![image](./media/attach-cluster-o.jpg)
 
-* In the `CosmosDBLiveSingleContainerMigration` notebook, replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
+* Locate the below, and enter/replace the highlighted fields for Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate. Then you are ready to click "Run all":
 
     ![image](./media/run-notebook-o.jpg)
 
