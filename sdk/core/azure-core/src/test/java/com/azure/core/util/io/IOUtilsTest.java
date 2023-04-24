@@ -152,7 +152,7 @@ public class IOUtilsTest {
         assertArraysEqual(data, written);
         // check that all responses are closed
         assertEquals(4, responses.size());
-        Thread.sleep(10); // Give all responses a chance to close
+        Thread.sleep(100); // Give all responses a chance to close
         responses.forEach(r -> assertTrue(r.isClosed()));
     }
 
