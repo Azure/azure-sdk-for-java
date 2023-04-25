@@ -19,6 +19,7 @@ import java.util.Base64;
  * @see com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy
  * @see com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy
  */
+@Deprecated
 public final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
     private final WebAppBase webApp;
     private static final String HEADER_NAME = "Authorization";
