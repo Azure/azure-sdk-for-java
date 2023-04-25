@@ -602,6 +602,12 @@ public final class CosmosAsyncClient implements Closeable {
         wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration).blockLast();
     }
 
+    // this method is currently used to open connections when the client is being built
+    // the goal is to switch b/w a blocking flow to non-blocking flow when it comes
+    // to opening connections and at the same time to only block for some specified duration
+    // the below method allows the original flux to continue opening connections
+    // by not issuing a cancel on it, instead we wrap around the original flux
+    // with a sink and block on the wrapping flux for the specified duration
     private Flux<Void> wrapSourceFluxAndSoftCompleteAfterTimeout(Flux<Void> source, Duration timeout) {
         return Flux.<Void>create(sink -> {
                     source.subscribe(t -> sink.next(t));

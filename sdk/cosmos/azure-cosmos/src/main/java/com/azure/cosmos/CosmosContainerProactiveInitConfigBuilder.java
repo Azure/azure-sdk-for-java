@@ -22,7 +22,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private int numProactiveConnectionRegions;
-    private Duration aggressiveProactiveConnectionEstablishmentDuration;
+    private Duration aggressiveWarmupDuration;
 
     /**
      * Instantiates {@link CosmosContainerProactiveInitConfigBuilder}
@@ -75,7 +75,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
                 "aggressiveWarmupDuration cannot be a null value");
         checkArgument(aggressiveWarmupDuration.compareTo(Duration.ZERO) > 0,
                 "aggressiveWarmupDuration should be greater than Duration.ZERO");
-        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveWarmupDuration;
+        this.aggressiveWarmupDuration = aggressiveWarmupDuration;
         return this;
     }
 
@@ -113,7 +113,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
                 this.cosmosContainerIdentities,
                 this.numProactiveConnectionRegions,
                 this.containerLinkToMinConnectionsMap,
-                this.aggressiveProactiveConnectionEstablishmentDuration
+                this.aggressiveWarmupDuration
         );
     }
 }

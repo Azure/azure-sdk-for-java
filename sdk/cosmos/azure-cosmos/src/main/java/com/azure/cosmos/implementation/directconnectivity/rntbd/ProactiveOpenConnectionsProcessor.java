@@ -34,8 +34,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final AtomicReference<OpenConnectionAggressivenessHint> aggressivenessHint;
-    private static final Map<OpenConnectionAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
+    private final AtomicReference<WarmupFlowAggressivenessHint> aggressivenessHint;
+    private static final Map<WarmupFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
     private Disposable openConnectionBackgroundTask;
@@ -44,8 +44,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 1024;
 
     static {
-        concurrencySettings.put(OpenConnectionAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
-        concurrencySettings.put(OpenConnectionAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
+        concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
+        concurrencySettings.put(WarmupFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
     }
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
@@ -55,7 +55,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveConnectionEstablishmentDuration) {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        this.aggressivenessHint = new AtomicReference<>(OpenConnectionAggressivenessHint.AGGRESSIVE);
+        this.aggressivenessHint = new AtomicReference<>(WarmupFlowAggressivenessHint.AGGRESSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
@@ -147,12 +147,17 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     String collectionRid = openConnectionTask.getCollectionRid();
 
                     return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
-                            collectionRid,
-                            serviceEndpoint,
-                            Arrays.asList(addressUri),
-                            this,
-                            minConnectionsForEndpoint));
+                                    collectionRid,
+                                    serviceEndpoint,
+                                    Arrays.asList(addressUri),
+                                    this,
+                                    minConnectionsForEndpoint))
+                            .onErrorResume(throwable -> {
+                                logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
+                                return Flux.empty();
+                            });
                 }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
+                .doOnError(throwable -> logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable))
                 .flatMap(openConnectionTaskToResponse -> {
                     OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
@@ -175,14 +180,19 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                             .shouldRetry((Exception) openConnectionResponse.getException())
                             .flatMap(shouldRetryResult -> {
                                 if (shouldRetryResult.shouldRetry) {
-                                    return enqueueOpenConnectionOpsForRetry(openConnectionTask, shouldRetryResult);
+                                    return enqueueOpenConnectionOpsForRetry(openConnectionTask, shouldRetryResult)
+                                            .onErrorResume(throwable -> {
+                                                logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
+                                                return Mono.empty();
+                                            });
                                 }
 
                                 // TODO: response should reflect all previous opened connection
                                 this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
                                 return Mono.just(openConnectionResponse);
                             });
-                })
+                }, true)
+                .doOnError(throwable -> logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable))
                 .subscribe();
     }
 
@@ -230,8 +240,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void forceDefensiveOpenConnections() {
-        if (aggressivenessHint.get() == OpenConnectionAggressivenessHint.AGGRESSIVE) {
-            aggressivenessHint.set(OpenConnectionAggressivenessHint.DEFENSIVE);
+        if (aggressivenessHint.get() == WarmupFlowAggressivenessHint.AGGRESSIVE) {
+            aggressivenessHint.set(WarmupFlowAggressivenessHint.DEFENSIVE);
         }
     }
 
@@ -273,7 +283,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private enum OpenConnectionAggressivenessHint {
+    private enum WarmupFlowAggressivenessHint {
         AGGRESSIVE, DEFENSIVE
     }
 }
