@@ -117,12 +117,11 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     /**
      * Initializes a CallMediaRecognizeSpeechOptions object.
      *
-     * @param recognizeInputType Recognition type of continuous speech recognition.
      * @param targetParticipant Target participant of continuous speech recognition.
      * @param endSilenceTimeoutInMs the endSilenceTimeoutInMs value to set.
      */
-    public CallMediaRecognizeSpeechOptions(RecognizeInputType recognizeInputType, CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
-        super(recognizeInputType, targetParticipant);
+    public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeoutInMs) {
+        super(RecognizeInputType.SPEECH, targetParticipant);
         this.endSilenceTimeoutInMs = endSilenceTimeoutInMs;
     }
 }

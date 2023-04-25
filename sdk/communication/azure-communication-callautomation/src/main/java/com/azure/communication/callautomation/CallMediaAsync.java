@@ -31,6 +31,7 @@ import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -150,6 +151,9 @@ public final class CallMediaAsync {
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechConfiguration(recognizeOptions);
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+            } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOrDtmfOptions) {
+                RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechOrDtmfConfiguration(recognizeOptions);
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else {
                 return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
@@ -385,6 +389,45 @@ public final class CallMediaAsync {
         RecognizeRequest recognizeRequest = new RecognizeRequest()
             .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(speechRecognizeOptions.isInterruptCallMediaOperation())
+            .setPlayPrompt(playSourceInternal)
+            .setRecognizeOptions(recognizeOptionsInternal)
+            .setOperationContext(recognizeOptions.getOperationContext());
+
+        return recognizeRequest;
+    }
+
+    private RecognizeRequest getRecognizeRequestFromSpeechOrDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
+        CallMediaRecognizeSpeechOrDtmfOptions speechOrDtmfRecognizeOptions = (CallMediaRecognizeSpeechOrDtmfOptions) recognizeOptions;
+
+        DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
+        dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInterToneTimeout().getSeconds());
+
+        if (speechOrDtmfRecognizeOptions.getMaxTonesToCollect() != null) {
+            dtmfOptionsInternal.setMaxTonesToCollect(speechOrDtmfRecognizeOptions.getMaxTonesToCollect());
+        }
+
+        if (speechOrDtmfRecognizeOptions.getStopTones() != null) {
+            List<DtmfToneInternal> dtmfTones = speechOrDtmfRecognizeOptions.getStopTones().stream()
+                                        .map(this::convertDtmfToneInternal)
+                                        .collect(Collectors.toList());
+            dtmfOptionsInternal.setStopTones(dtmfTones);
+        }
+
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+
+        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
+            .setSpeechOptions(speechOptionsInternal)
+            .setDtmfOptions(dtmfOptionsInternal)
+            .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
+            .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
+
+        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+        PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
+
+        RecognizeRequest recognizeRequest = new RecognizeRequest()
+            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechOrDtmfRecognizeOptions.getRecognizeInputType().toString()))
+            .setInterruptCallMediaOperation(speechOrDtmfRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext());

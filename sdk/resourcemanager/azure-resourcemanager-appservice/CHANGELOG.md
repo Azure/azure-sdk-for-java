@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.26.1 (2023-04-25)
+
+### Breaking Changes
+
+- Changed to use AAD Auth for Kudu deployment.
+
 ## 2.26.0 (2023-04-21)
 
 ### Other Changes
