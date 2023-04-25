@@ -76,7 +76,7 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 
   //when running this notebook is stopped (or if a problem causes a crash) change feed processing will be picked up from last processed document
   //if you want to start from beginning, delete this folder or change checkpointLocation value
-  val checkpointLocation = "/tmp/LiveMigration_checkpoint13"
+  val checkpointLocation = "/tmp/LiveMigration_checkpoint"
 
   val writeCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.accountKey" -> cosmosMasterKey,
