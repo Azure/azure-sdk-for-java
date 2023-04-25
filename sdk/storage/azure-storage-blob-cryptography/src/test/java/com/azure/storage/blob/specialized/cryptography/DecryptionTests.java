@@ -37,7 +37,8 @@ public class DecryptionTests extends BlobCryptographyTestBase {
     public void decryption(int testCase) throws InvalidKeyException, JsonProcessingException, MalformedURLException {
         EncryptedFlux flow = new EncryptedFlux(testCase, fakeKey, this);
         String encryptionDataString = MAPPER.writeValueAsString(flow.getEncryptionData());
-        ByteBuffer desiredOutput = flow.getPlainText().position(EncryptedFlux.DATA_OFFSET);
+        ByteBuffer desiredOutput = flow.getPlainText();
+        desiredOutput.position(EncryptedFlux.DATA_OFFSET);
         desiredOutput.limit(EncryptedFlux.DATA_OFFSET + EncryptedFlux.DATA_COUNT);
 
         // This BlobRange will result in an EncryptedBlobRange of 0-64. This will allow us ample room to setup

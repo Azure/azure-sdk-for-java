@@ -18,6 +18,8 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.ServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -38,7 +40,6 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import okhttp3.ConnectionPool;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -67,6 +68,8 @@ import java.util.zip.CRC32;
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class BlobCryptographyTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENV = TestEnvironment.getInstance();
@@ -88,12 +91,19 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         .getBytes(StandardCharsets.UTF_8);
 
     private int entityNo = 0; // Used to generate stable container names for recording tests requiring multiple containers.
-    private String prefix;
+    protected String prefix;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
         prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
+
+        if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.addSanitizers(Arrays.asList(
+                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-encryption-key-sha256", ".*", "REDACTED", TestProxySanitizerType.HEADER)
+            ));
+        }
     }
 
     @Override
@@ -438,7 +448,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
      * RECORD testing modes only.
      */
     protected static EncryptedBlobAsyncClient mockAesKey(EncryptedBlobAsyncClient encryptedClient) {
-        if (ENV.getTestMode() != TestMode.LIVE) {
+        if (ENV.getTestMode() == TestMode.PLAYBACK) {
             SecretKey mockAesKey = new SecretKey() {
                 @Override
                 public String getAlgorithm() {
@@ -457,8 +467,8 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             };
 
             try {
-                encryptedClient = Mockito.spy(encryptedClient);
-                Mockito.when(encryptedClient.generateSecretKey()).thenReturn(mockAesKey);
+                encryptedClient = spy(encryptedClient);
+                when(encryptedClient.generateSecretKey()).thenReturn(mockAesKey);
             } catch (NoSuchAlgorithmException ex) {
                 throw new RuntimeException(ex);
             }

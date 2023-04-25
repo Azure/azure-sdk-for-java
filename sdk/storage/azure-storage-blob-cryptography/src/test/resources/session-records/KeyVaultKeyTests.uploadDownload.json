@@ -1,0 +1,350 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/keys/80fe537euploaddownload2e363949384b908c21/create?api-version=7.2",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "81",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (17.0.5; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "RSA",
+        "key_size": 2048,
+        "attributes": {
+          "exp": 1714080271
+        },
+        "public_exponent": 0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "726",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Apr 2023 21:24:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=74.98.200.37;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "eastus2",
+        "x-ms-keyvault-service-version": "1.9.787.1",
+        "x-ms-request-id": "7d0786a0-b9d0-45a9-a9de-45b61674b872"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "u7BntxF2Cuu9BeAIun3vaJvKjBLZZwlzCvQgk02kyC4em7phJKHa2PIzkbZIkRGJjM0u_0sflfk6wwsdCzMnuGrJXx6eR9QsQpc8698h0oX2GQdWSXcyeuHGj5Aq7NU_7Fn12Ic1A4NRPFu0fImgfANZHB4Lxrygu2dZOTRXCThsd1CfhiyM15RY833LHFoZWscQT718bcb5ejJIj_0J7PIBioZZ02t_sAAsXCnRuIP78BKDpzxvWwgPhFSFbVfER40i9HPvJ6XClfbJe51WOKn9Y1zrL5Fd10eNIc6b6zzev55I1HKSigbQH4_I_9F7Jgo4BrK_cgxVsfFYAB89JQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 1714080271,
+          "created": 1682457871,
+          "updated": 1682457871,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/80fe537e0uploaddownload2e346413ba5699bb27db4f40?restype=container",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9c476df2-ee38-454d-9b09-e7a708688022",
+        "x-ms-version": "2022-11-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "ETag": "\u00220x8DB45D375CD0360\u0022",
+        "Last-Modified": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "9c476df2-ee38-454d-9b09-e7a708688022",
+        "x-ms-request-id": "dd3dd638-001e-0026-41bc-77e62b000000",
+        "x-ms-version": "2022-11-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (17.0.5; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "726",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=74.98.200.37;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "eastus2",
+        "x-ms-keyvault-service-version": "1.9.787.1",
+        "x-ms-request-id": "6d84b4b1-d6ca-48b9-ad34-938db957eafc"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "u7BntxF2Cuu9BeAIun3vaJvKjBLZZwlzCvQgk02kyC4em7phJKHa2PIzkbZIkRGJjM0u_0sflfk6wwsdCzMnuGrJXx6eR9QsQpc8698h0oX2GQdWSXcyeuHGj5Aq7NU_7Fn12Ic1A4NRPFu0fImgfANZHB4Lxrygu2dZOTRXCThsd1CfhiyM15RY833LHFoZWscQT718bcb5ejJIj_0J7PIBioZZ02t_sAAsXCnRuIP78BKDpzxvWwgPhFSFbVfER40i9HPvJ6XClfbJe51WOKn9Y1zrL5Fd10eNIc6b6zzev55I1HKSigbQH4_I_9F7Jgo4BrK_cgxVsfFYAB89JQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 1714080271,
+          "created": 1682457871,
+          "updated": 1682457871,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698/wrapkey?api-version=7.2",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "76",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (17.0.5; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "alg": "RSA-OAEP-256",
+        "value": "OlICVzIRGojG_5kVDQV4KIzj0O9dwjmOvluRlrvjxnQ"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "479",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=74.98.200.37;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "eastus2",
+        "x-ms-keyvault-service-version": "1.9.787.1",
+        "x-ms-request-id": "3aa20e9a-5376-4571-8bf7-a3dd750141ef"
+      },
+      "ResponseBody": {
+        "kid": "https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698",
+        "value": "sU7lKK7G1fbY3sjQoBDIWaCgzqy3bjQkH5E3lYYR3t9pjcN7_zI3eCzLy7eIwApuY0iVIRsvQDJG2o6LwAQQDXWlt07KNHEYxz6yYv-F5g1zfgjH8FXumMEKZMQLRZfrx-uBj7BSeuzK6hplBkRMLIp080e8P03dTuuu4pCurF_Hol4d02QxedW8OZcPWxncTe4psv6xZJEIDde8tyzfAP7fLG18h1DM1WdGVdJqJCuOtbWbjinGEjdV_8CaW-7smSHiTX_efZZe2olVyH15eg_DP6GEVvFtXEH0sZgkpmMgeAjZ2U_t6KkGOxp4Jkw80qo94Q9VrV2qe1QuywQ2FA"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/80fe537e0uploaddownload2e346413ba5699bb27db4f40/80fe537e1uploaddownload2e383912207e971b3df24d8d",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "1040",
+        "Content-Type": "application/octet-stream",
+        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 azsdk-java-azure-storage-blob-cryptography/12.22.0-beta.1 (17.0.5; Windows 11; 10.0)",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-client-request-id": "eb64771c-021d-4de3-9b4b-e20d8625ce67",
+        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698\u0022,\u0022EncryptedKey\u0022:\u0022sU7lKK7G1fbY3sjQoBDIWaCgzqy3bjQkH5E3lYYR3t9pjcN7/zI3eCzLy7eIwApuY0iVIRsvQDJG2o6LwAQQDXWlt07KNHEYxz6yYv\u002BF5g1zfgjH8FXumMEKZMQLRZfrx\u002BuBj7BSeuzK6hplBkRMLIp080e8P03dTuuu4pCurF/Hol4d02QxedW8OZcPWxncTe4psv6xZJEIDde8tyzfAP7fLG18h1DM1WdGVdJqJCuOtbWbjinGEjdV/8CaW\u002B7smSHiTX/efZZe2olVyH15eg/DP6GEVvFtXEH0sZgkpmMgeAjZ2U/t6KkGOxp4Jkw80qo94Q9VrV2qe1QuywQ2FA==\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u0022zUQ3tmFdz08NK2JXFuDg4g==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
+        "x-ms-version": "2022-11-02"
+      },
+      "RequestBody": "CIMKpbkOV5E0702j\u002Bxc2Q9EoZIshZXwnZ79kjWO0cscR8SrVjLmc9RzAbF/dJHk8AD7BRW2JrbBhX0QIsyezDte6BQykaUbyeuJR9FNkfKrTPYKzk5Y4rqrYPlAV2L4l1UnfCVwBC9xw600zvM5dP2HN0WA/4CUrEFa02eVcGReTcUo5OVg1AdzKuzWKFAsux0LdhNk4eGY7PyT8g9kEiVhdnmCzl0Si1bpuDzE4VcxwJu6IVeTFShQx9q5iMlIwSM3bG7PShcUgXOMXfq4bsb3JIS/KpRuHBl5zmyiRH2zqbdljp27KjF3q011bynz7C7vCAXvCWk0R3fiU3Mp3Y2PVPCw9Px/uPjTCcV7nR\u002Bj/FJxcv4DSEji8Vcn859HXy//8Amx4O7fiYXjF4QqHMUE5VU3ibD6YRmUMScRexZ\u002Bn\u002BpkkszedFYqnbckyjrhYRXkhS0USjQsyyWWNbs48xdHM5lvhMw22nXj8C/idKsJ40E4hbxzA2Fre9R5KJXQzfmy6CrVQaToC67neYXsanGS4VFjt1PI\u002B1RalmVwv90Jgjoo1B7QdemJoQoDmYti8IdWtSAprWkxVmRNN7ax\u002BnT2sxtdpXkam69Oi5YHmQE9SGZwgaeM3wFtBqNnag1e4hmYsrNkcijsfvCUnFRzGATdj5NmRgPjcmBpcho6ctk0xvR486gjiKH0lk3UO/46q4KMVUyiYVWPAwuH6AejZxZ2a0bhid/4Z/I0kSAImm6C13kAfus2VUHRFdbL6PYjTtr/s7bvj0O7HlKDHKHUmppGsHtQiIwNW4yvnlcTOg02MV/aG8KzGH7y6ET6WDfGAsQKkAI1tmf5wQ6ARsRbAwxXMo8Dn/y53xSe/i6liY2jSzGY/PYIeyE2bTU0kSHtS\u002B9l9VaNAZtqGslcKsYfkwAX815Xp8tCkNHpszO1chhdTW4NN\u002BAW0R9AFtsDCPCWPtAS8VzihYERU5m\u002BW9PoTgMpPFaCVsIisyoZNrwEOYvV/cWza7tckNygII3t0Q1\u002BH5Dyp6\u002BQDQWYiWihlrNp\u002BmtjXcKesTJeikLbtimvZzKI0lDsEpkfhEvIWh6fpzo6GT0OB3Hk11\u002BPM3CDEB1EHbrik8HJl0kCrZQ4e8XmQDnPGByRj7gaAmxD/wEbeYm6ZwbrdrMSgNlU2vt\u002BsjujTLRzixpxZpRctCBbYiNiQ/OztGEskjJN9fuCYO3ZUecHgdO6hBbDILjzSwTmZMYlmQUsPc1OQNPc0bNgM/1ctGnVGNDdXOypRTTVdsPwSjOwM0PmwZg3y9VtIZq8GJtFSxGRlLsDZ3VBPhKaLr03JFRlhjJEW0\u002BVu6OioNx5oOb0tCHIRwxzNxBvSFFXjXqgdNkZQmO7IsZdjwuqAM9t5CIs=",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Content-MD5": "8hr6rn97rFbdKJ7fNMG6gg==",
+        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "ETag": "\u00220x8DB45D375EC111E\u0022",
+        "Last-Modified": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-client-request-id": "eb64771c-021d-4de3-9b4b-e20d8625ce67",
+        "x-ms-content-crc64": "SFdeAzHVXiE=",
+        "x-ms-request-id": "bbd79671-b01e-001c-63bc-77fc53000000",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2022-11-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/80fe537e0uploaddownload2e346413ba5699bb27db4f40/80fe537e1uploaddownload2e383912207e971b3df24d8d",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 azsdk-java-azure-storage-blob-cryptography/12.22.0-beta.1 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e83f2e8b-2b76-4d11-9e5c-e20280b5f8d3",
+        "x-ms-version": "2022-11-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept-Ranges": "bytes",
+        "Content-Length": "1040",
+        "Content-MD5": "8hr6rn97rFbdKJ7fNMG6gg==",
+        "Content-Type": "application/octet-stream",
+        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "ETag": "\u00220x8DB45D375EC111E\u0022",
+        "Last-Modified": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-client-request-id": "e83f2e8b-2b76-4d11-9e5c-e20280b5f8d3",
+        "x-ms-creation-time": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "x-ms-lease-state": "available",
+        "x-ms-lease-status": "unlocked",
+        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698\u0022,\u0022EncryptedKey\u0022:\u0022sU7lKK7G1fbY3sjQoBDIWaCgzqy3bjQkH5E3lYYR3t9pjcN7/zI3eCzLy7eIwApuY0iVIRsvQDJG2o6LwAQQDXWlt07KNHEYxz6yYv\u002BF5g1zfgjH8FXumMEKZMQLRZfrx\u002BuBj7BSeuzK6hplBkRMLIp080e8P03dTuuu4pCurF/Hol4d02QxedW8OZcPWxncTe4psv6xZJEIDde8tyzfAP7fLG18h1DM1WdGVdJqJCuOtbWbjinGEjdV/8CaW\u002B7smSHiTX/efZZe2olVyH15eg/DP6GEVvFtXEH0sZgkpmMgeAjZ2U/t6KkGOxp4Jkw80qo94Q9VrV2qe1QuywQ2FA==\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u0022zUQ3tmFdz08NK2JXFuDg4g==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
+        "x-ms-request-id": "a1c21d5f-e01e-005c-19bc-77fb6b000000",
+        "x-ms-server-encrypted": "true",
+        "x-ms-version": "2022-11-02"
+      },
+      "ResponseBody": "CIMKpbkOV5E0702j\u002Bxc2Q9EoZIshZXwnZ79kjWO0cscR8SrVjLmc9RzAbF/dJHk8AD7BRW2JrbBhX0QIsyezDte6BQykaUbyeuJR9FNkfKrTPYKzk5Y4rqrYPlAV2L4l1UnfCVwBC9xw600zvM5dP2HN0WA/4CUrEFa02eVcGReTcUo5OVg1AdzKuzWKFAsux0LdhNk4eGY7PyT8g9kEiVhdnmCzl0Si1bpuDzE4VcxwJu6IVeTFShQx9q5iMlIwSM3bG7PShcUgXOMXfq4bsb3JIS/KpRuHBl5zmyiRH2zqbdljp27KjF3q011bynz7C7vCAXvCWk0R3fiU3Mp3Y2PVPCw9Px/uPjTCcV7nR\u002Bj/FJxcv4DSEji8Vcn859HXy//8Amx4O7fiYXjF4QqHMUE5VU3ibD6YRmUMScRexZ\u002Bn\u002BpkkszedFYqnbckyjrhYRXkhS0USjQsyyWWNbs48xdHM5lvhMw22nXj8C/idKsJ40E4hbxzA2Fre9R5KJXQzfmy6CrVQaToC67neYXsanGS4VFjt1PI\u002B1RalmVwv90Jgjoo1B7QdemJoQoDmYti8IdWtSAprWkxVmRNN7ax\u002BnT2sxtdpXkam69Oi5YHmQE9SGZwgaeM3wFtBqNnag1e4hmYsrNkcijsfvCUnFRzGATdj5NmRgPjcmBpcho6ctk0xvR486gjiKH0lk3UO/46q4KMVUyiYVWPAwuH6AejZxZ2a0bhid/4Z/I0kSAImm6C13kAfus2VUHRFdbL6PYjTtr/s7bvj0O7HlKDHKHUmppGsHtQiIwNW4yvnlcTOg02MV/aG8KzGH7y6ET6WDfGAsQKkAI1tmf5wQ6ARsRbAwxXMo8Dn/y53xSe/i6liY2jSzGY/PYIeyE2bTU0kSHtS\u002B9l9VaNAZtqGslcKsYfkwAX815Xp8tCkNHpszO1chhdTW4NN\u002BAW0R9AFtsDCPCWPtAS8VzihYERU5m\u002BW9PoTgMpPFaCVsIisyoZNrwEOYvV/cWza7tckNygII3t0Q1\u002BH5Dyp6\u002BQDQWYiWihlrNp\u002BmtjXcKesTJeikLbtimvZzKI0lDsEpkfhEvIWh6fpzo6GT0OB3Hk11\u002BPM3CDEB1EHbrik8HJl0kCrZQ4e8XmQDnPGByRj7gaAmxD/wEbeYm6ZwbrdrMSgNlU2vt\u002BsjujTLRzixpxZpRctCBbYiNiQ/OztGEskjJN9fuCYO3ZUecHgdO6hBbDILjzSwTmZMYlmQUsPc1OQNPc0bNgM/1ctGnVGNDdXOypRTTVdsPwSjOwM0PmwZg3y9VtIZq8GJtFSxGRlLsDZ3VBPhKaLr03JFRlhjJEW0\u002BVu6OioNx5oOb0tCHIRwxzNxBvSFFXjXqgdNkZQmO7IsZdjwuqAM9t5CIs="
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698/unwrapkey?api-version=7.2",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "375",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (17.0.5; Windows 11; 10.0)"
+      },
+      "RequestBody": {
+        "alg": "RSA-OAEP-256",
+        "value": "sU7lKK7G1fbY3sjQoBDIWaCgzqy3bjQkH5E3lYYR3t9pjcN7_zI3eCzLy7eIwApuY0iVIRsvQDJG2o6LwAQQDXWlt07KNHEYxz6yYv-F5g1zfgjH8FXumMEKZMQLRZfrx-uBj7BSeuzK6hplBkRMLIp080e8P03dTuuu4pCurF_Hol4d02QxedW8OZcPWxncTe4psv6xZJEIDde8tyzfAP7fLG18h1DM1WdGVdJqJCuOtbWbjinGEjdV_8CaW-7smSHiTX_efZZe2olVyH15eg_DP6GEVvFtXEH0sZgkpmMgeAjZ2U_t6KkGOxp4Jkw80qo94Q9VrV2qe1QuywQ2FA"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "180",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=74.98.200.37;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "eastus2",
+        "x-ms-keyvault-service-version": "1.9.787.1",
+        "x-ms-request-id": "4a2f9c13-dcb7-4b21-ac8b-aabc2955a189"
+      },
+      "ResponseBody": {
+        "kid": "https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698",
+        "value": "OlICVzIRGojG_5kVDQV4KIzj0O9dwjmOvluRlrvjxnQ"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/80fe537euploaddownload2e363949384b908c21?api-version=7.2",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (17.0.5; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "889",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=74.98.200.37;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "eastus2",
+        "x-ms-keyvault-service-version": "1.9.787.1",
+        "x-ms-request-id": "43a1c65e-3f18-4de1-9172-56c72965175b"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://testproxykvlt.vault.azure.net/deletedkeys/80fe537euploaddownload2e363949384b908c21",
+        "deletedDate": 1682457872,
+        "scheduledPurgeDate": 1690233872,
+        "key": {
+          "kid": "https://testproxykvlt.vault.azure.net/keys/80fe537euploaddownload2e363949384b908c21/532fc406f00a4df08530813a56f79698",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "u7BntxF2Cuu9BeAIun3vaJvKjBLZZwlzCvQgk02kyC4em7phJKHa2PIzkbZIkRGJjM0u_0sflfk6wwsdCzMnuGrJXx6eR9QsQpc8698h0oX2GQdWSXcyeuHGj5Aq7NU_7Fn12Ic1A4NRPFu0fImgfANZHB4Lxrygu2dZOTRXCThsd1CfhiyM15RY833LHFoZWscQT718bcb5ejJIj_0J7PIBioZZ02t_sAAsXCnRuIP78BKDpzxvWwgPhFSFbVfER40i9HPvJ6XClfbJe51WOKn9Y1zrL5Fd10eNIc6b6zzev55I1HKSigbQH4_I_9F7Jgo4BrK_cgxVsfFYAB89JQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 1714080271,
+          "created": 1682457871,
+          "updated": 1682457871,
+          "recoveryLevel": "Recoverable\u002BPurgeable",
+          "recoverableDays": 90
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "80fe537euploaddownload2e363949384b908c21",
+    "1": "2023-04-25T21:24:31.739723900Z",
+    "2": "80fe537e0uploaddownload2e346413ba5699bb27db4f40",
+    "3": "80fe537e1uploaddownload2e383912207e971b3df24d8d",
+    "4": "cb1ca88e-7bbb-4587-87b5-51291a68350c"
+  }
+}

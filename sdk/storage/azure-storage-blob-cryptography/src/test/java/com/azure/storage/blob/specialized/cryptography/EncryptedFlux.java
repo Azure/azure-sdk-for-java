@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobServiceVersion;
 import org.reactivestreams.Subscriber;
 import reactor.core.CoreSubscriber;
@@ -103,7 +104,8 @@ class EncryptedFlux extends Flux<ByteBuffer> {
             BlobServiceVersion.getLatest(), null, null, null, null, null, null, key, "keyWrapAlgorithm", null,
             EncryptionVersion.V1, false)
             .encryptBlob(just(this.plainText)).block();
-        this.cipherText = APISpec.collectBytesInBuffer(encryptedBlob.getCiphertextFlux()).block();
+        this.cipherText = FluxUtil.collectBytesInByteBufferStream(encryptedBlob.getCiphertextFlux())
+            .map(ByteBuffer::wrap).block();
         this.encryptionData = encryptedBlob.getEncryptionData();
     }
 

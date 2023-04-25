@@ -4,6 +4,8 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.storage.blob.BlobClient;
@@ -19,6 +21,8 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -29,20 +33,18 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
+    private static final String KEY_ID = "keyId";
     private EncryptedBlobAsyncClient beac;
     private BlobClient bc;
     private BlobContainerClient cc;
     private FakeKey fakeKey;
-    private AsyncKeyEncryptionKeyResolver fakeKeyResolver;
-    private String keyId;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        keyId = "keyId";
 
-        fakeKey = new FakeKey(keyId, (getTestMode() == TestMode.LIVE) ? getRandomByteArray(256) : MOCK_RANDOM_DATA);
-        fakeKeyResolver = new FakeKeyResolver(fakeKey);
+        fakeKey = new FakeKey(KEY_ID, (getTestMode() == TestMode.LIVE) ? getRandomByteArray(256) : MOCK_RANDOM_DATA);
+        AsyncKeyEncryptionKeyResolver fakeKeyResolver = new FakeKeyResolver(fakeKey);
 
         BlobServiceClient sc = getServiceClientBuilder(ENV.getPrimaryAccount()).buildClient();
         cc = sc.getBlobContainerClient(generateContainerName());
@@ -63,10 +65,22 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
         assertEquals(bc.getHttpPipeline().getPolicyCount() + 2, beac.getHttpPipeline().getPolicyCount());
         assertEquals(bc.getBlobUrl(), beac.getBlobUrl());
 
-        // Compare all policies
-        for (int i = 0; i < bc.getHttpPipeline().getPolicyCount(); i++) {
-            assertEquals(bc.getHttpPipeline().getPolicy(i), beac.getHttpPipeline().getPolicy(i + 1));
+        List<HttpPipelinePolicy> originalPolicies = getAllPolicies(bc.getHttpPipeline());
+        List<HttpPipelinePolicy> encryptionPolicies = getAllPolicies(beac.getHttpPipeline());
+
+        assertTrue(encryptionPolicies.removeAll(originalPolicies));
+        assertEquals(2, encryptionPolicies.size());
+        assertTrue(encryptionPolicies.stream().anyMatch(policy -> policy instanceof BlobDecryptionPolicy));
+        assertTrue(encryptionPolicies.stream().anyMatch(policy -> policy instanceof BlobUserAgentModificationPolicy));
+    }
+
+    private static List<HttpPipelinePolicy> getAllPolicies(HttpPipeline pipeline) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>(pipeline.getPolicyCount());
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            policies.add(pipeline.getPolicy(i));
         }
+
+        return policies;
     }
 
     @Test
@@ -199,6 +213,7 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
 
         EncryptedBlobClient newClient = client.getEncryptionScopeClient(newEncryptionScope);
 
-        assertNotEquals(client.getEncryptionScope(), newClient.getEncryptionScope());
+        assertNotEquals(client.encryptedBlobAsyncClient.getEncryptionScopeInternal().getEncryptionScope(),
+            newClient.encryptedBlobAsyncClient.getEncryptionScopeInternal().getEncryptionScope());
     }
 }
