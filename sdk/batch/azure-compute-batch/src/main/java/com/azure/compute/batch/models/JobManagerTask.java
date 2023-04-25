@@ -29,8 +29,8 @@ import java.util.List;
 @Fluent
 public final class JobManagerTask {
     /*
-     * The ID can contain any combination of alphanumeric characters including hyphens
-     * and underscores and cannot contain more than 64 characters.
+     * The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot
+     * contain more than 64 characters.
      */
     @JsonProperty(value = "id", required = true)
     private String id;

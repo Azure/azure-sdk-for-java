@@ -15,7 +15,7 @@ public final class Application {
     /*
      * A string that uniquely identifies the application within the Account.
      */
-    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
@@ -33,13 +33,16 @@ public final class Application {
     /**
      * Creates an instance of Application class.
      *
+     * @param id the id value to set.
      * @param displayName the displayName value to set.
      * @param versions the versions value to set.
      */
     @JsonCreator
     private Application(
+            @JsonProperty(value = "id", required = true) String id,
             @JsonProperty(value = "displayName", required = true) String displayName,
             @JsonProperty(value = "versions", required = true) List<String> versions) {
+        this.id = id;
         this.displayName = displayName;
         this.versions = versions;
     }

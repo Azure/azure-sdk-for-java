@@ -144,7 +144,7 @@ public final class JobSchedulesImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobScheduleId") String jobScheduleId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobScheduleUpdate,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedulePatchParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -166,7 +166,7 @@ public final class JobSchedulesImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobScheduleId") String jobScheduleId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobScheduleUpdateParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -247,7 +247,7 @@ public final class JobSchedulesImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobSchedule,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData cloudJobSchedule,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1858,7 +1858,7 @@ public final class JobSchedulesImpl {
      * }</pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobScheduleUpdate The parameters for the request.
+     * @param jobSchedulePatchParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1868,7 +1868,7 @@ public final class JobSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
-            String jobScheduleId, BinaryData jobScheduleUpdate, RequestOptions requestOptions) {
+            String jobScheduleId, BinaryData jobSchedulePatchParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1879,7 +1879,7 @@ public final class JobSchedulesImpl {
                                 contentType,
                                 jobScheduleId,
                                 accept,
-                                jobScheduleUpdate,
+                                jobSchedulePatchParameter,
                                 requestOptions,
                                 context));
     }
@@ -2316,7 +2316,7 @@ public final class JobSchedulesImpl {
      * }</pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobScheduleUpdate The parameters for the request.
+     * @param jobSchedulePatchParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2326,8 +2326,8 @@ public final class JobSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> patchWithResponse(
-            String jobScheduleId, BinaryData jobScheduleUpdate, RequestOptions requestOptions) {
-        return patchWithResponseAsync(jobScheduleId, jobScheduleUpdate, requestOptions).block();
+            String jobScheduleId, BinaryData jobSchedulePatchParameter, RequestOptions requestOptions) {
+        return patchWithResponseAsync(jobScheduleId, jobSchedulePatchParameter, requestOptions).block();
     }
 
     /**
@@ -2762,7 +2762,7 @@ public final class JobSchedulesImpl {
      * }</pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule The parameters for the request.
+     * @param jobScheduleUpdateParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2772,7 +2772,7 @@ public final class JobSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(
-            String jobScheduleId, BinaryData jobSchedule, RequestOptions requestOptions) {
+            String jobScheduleId, BinaryData jobScheduleUpdateParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2783,7 +2783,7 @@ public final class JobSchedulesImpl {
                                 contentType,
                                 jobScheduleId,
                                 accept,
-                                jobSchedule,
+                                jobScheduleUpdateParameter,
                                 requestOptions,
                                 context));
     }
@@ -3220,7 +3220,7 @@ public final class JobSchedulesImpl {
      * }</pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedule The parameters for the request.
+     * @param jobScheduleUpdateParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3230,8 +3230,8 @@ public final class JobSchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(
-            String jobScheduleId, BinaryData jobSchedule, RequestOptions requestOptions) {
-        return updateWithResponseAsync(jobScheduleId, jobSchedule, requestOptions).block();
+            String jobScheduleId, BinaryData jobScheduleUpdateParameter, RequestOptions requestOptions) {
+        return updateWithResponseAsync(jobScheduleId, jobScheduleUpdateParameter, requestOptions).block();
     }
 
     /**
@@ -4003,7 +4003,7 @@ public final class JobSchedulesImpl {
      * }
      * }</pre>
      *
-     * @param jobSchedule The Job Schedule to be added.
+     * @param cloudJobSchedule The Job Schedule to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4012,7 +4012,7 @@ public final class JobSchedulesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addWithResponseAsync(BinaryData jobSchedule, RequestOptions requestOptions) {
+    public Mono<Response<Void>> addWithResponseAsync(BinaryData cloudJobSchedule, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4022,7 +4022,7 @@ public final class JobSchedulesImpl {
                                 this.client.getServiceVersion().getVersion(),
                                 contentType,
                                 accept,
-                                jobSchedule,
+                                cloudJobSchedule,
                                 requestOptions,
                                 context));
     }
@@ -4441,7 +4441,7 @@ public final class JobSchedulesImpl {
      * }
      * }</pre>
      *
-     * @param jobSchedule The Job Schedule to be added.
+     * @param cloudJobSchedule The Job Schedule to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4450,8 +4450,8 @@ public final class JobSchedulesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
-        return addWithResponseAsync(jobSchedule, requestOptions).block();
+    public Response<Void> addWithResponse(BinaryData cloudJobSchedule, RequestOptions requestOptions) {
+        return addWithResponseAsync(cloudJobSchedule, requestOptions).block();
     }
 
     /**

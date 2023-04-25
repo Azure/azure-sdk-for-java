@@ -21,9 +21,8 @@ public final class ExitOptions {
     private JobAction jobAction;
 
     /*
-     * Possible values are 'satisfy' (allowing dependent tasks to progress) and
-     * 'block' (dependent tasks continue to wait). Batch does not yet support
-     * cancellation of dependent tasks.
+     * Possible values are 'satisfy' (allowing dependent tasks to progress) and 'block' (dependent tasks continue to
+     * wait). Batch does not yet support cancellation of dependent tasks.
      */
     @JsonProperty(value = "dependencyAction")
     private DependencyAction dependencyAction;

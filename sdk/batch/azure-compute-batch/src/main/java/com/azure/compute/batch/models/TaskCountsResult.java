@@ -14,7 +14,7 @@ public final class TaskCountsResult {
     /*
      * The Task counts for a Job.
      */
-    @JsonProperty(value = "taskCounts", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "taskCounts", required = true)
     private TaskCounts taskCounts;
 
     /*
@@ -26,10 +26,14 @@ public final class TaskCountsResult {
     /**
      * Creates an instance of TaskCountsResult class.
      *
+     * @param taskCounts the taskCounts value to set.
      * @param taskSlotCounts the taskSlotCounts value to set.
      */
     @JsonCreator
-    private TaskCountsResult(@JsonProperty(value = "taskSlotCounts", required = true) TaskSlotCounts taskSlotCounts) {
+    private TaskCountsResult(
+            @JsonProperty(value = "taskCounts", required = true) TaskCounts taskCounts,
+            @JsonProperty(value = "taskSlotCounts", required = true) TaskSlotCounts taskSlotCounts) {
+        this.taskCounts = taskCounts;
         this.taskSlotCounts = taskSlotCounts;
     }
 

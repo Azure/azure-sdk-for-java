@@ -11,12 +11,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DiffDiskSettings {
     /*
-     * This property can be used by user in the request to choose the location e.g.,
-     * cache disk space for Ephemeral OS disk provisioning. For more information on
-     * Ephemeral OS disk size requirements, please refer to Ephemeral OS disk size
-     * requirements for Windows VMs at
-     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements
-     * and Linux VMs at
+     * This property can be used by user in the request to choose the location e.g., cache disk space for Ephemeral OS
+     * disk provisioning. For more information on Ephemeral OS disk size requirements, please refer to Ephemeral OS
+     * disk size requirements for Windows VMs at
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/ephemeral-os-disks#size-requirements and Linux
+     * VMs at
      * https://docs.microsoft.com/en-us/azure/virtual-machines/linux/ephemeral-os-disks#size-requirements.
      */
     @JsonProperty(value = "placement")

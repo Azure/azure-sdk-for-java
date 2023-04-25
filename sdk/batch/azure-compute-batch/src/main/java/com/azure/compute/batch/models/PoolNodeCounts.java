@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The number of Compute Nodes in each state for a Pool. */
@@ -13,7 +14,7 @@ public final class PoolNodeCounts {
     /*
      * The ID of the Pool.
      */
-    @JsonProperty(value = "poolId", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "poolId", required = true)
     private String poolId;
 
     /*
@@ -28,8 +29,15 @@ public final class PoolNodeCounts {
     @JsonProperty(value = "lowPriority")
     private NodeCounts lowPriority;
 
-    /** Creates an instance of PoolNodeCounts class. */
-    private PoolNodeCounts() {}
+    /**
+     * Creates an instance of PoolNodeCounts class.
+     *
+     * @param poolId the poolId value to set.
+     */
+    @JsonCreator
+    private PoolNodeCounts(@JsonProperty(value = "poolId", required = true) String poolId) {
+        this.poolId = poolId;
+    }
 
     /**
      * Get the poolId property: The ID of the Pool.

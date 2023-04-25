@@ -97,6 +97,12 @@
     <version>2.7.0</version>
 	</dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->

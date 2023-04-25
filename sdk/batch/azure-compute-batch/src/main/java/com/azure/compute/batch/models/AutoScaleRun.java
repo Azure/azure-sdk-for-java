@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -14,7 +15,7 @@ public final class AutoScaleRun {
     /*
      * The time at which the autoscale formula was last evaluated.
      */
-    @JsonProperty(value = "timestamp", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timestamp", required = true)
     private OffsetDateTime timestamp;
 
     /*
@@ -30,8 +31,15 @@ public final class AutoScaleRun {
     @JsonProperty(value = "error")
     private AutoScaleRunError error;
 
-    /** Creates an instance of AutoScaleRun class. */
-    public AutoScaleRun() {}
+    /**
+     * Creates an instance of AutoScaleRun class.
+     *
+     * @param timestamp the timestamp value to set.
+     */
+    @JsonCreator
+    public AutoScaleRun(@JsonProperty(value = "timestamp", required = true) OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
 
     /**
      * Get the timestamp property: The time at which the autoscale formula was last evaluated.

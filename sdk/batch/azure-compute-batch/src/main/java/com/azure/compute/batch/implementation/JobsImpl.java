@@ -141,7 +141,7 @@ public final class JobsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobUpdate,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobPatchParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -163,7 +163,7 @@ public final class JobsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData job,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobUpdateParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -185,7 +185,7 @@ public final class JobsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("jobId") String jobId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData jobDisableParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1970,7 +1970,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobUpdate The parameters for the request.
+     * @param jobPatchParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1980,7 +1980,7 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
-            String jobId, BinaryData jobUpdate, RequestOptions requestOptions) {
+            String jobId, BinaryData jobPatchParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1991,7 +1991,7 @@ public final class JobsImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                jobUpdate,
+                                jobPatchParameter,
                                 requestOptions,
                                 context));
     }
@@ -2423,7 +2423,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param jobUpdate The parameters for the request.
+     * @param jobPatchParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2432,8 +2432,8 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(String jobId, BinaryData jobUpdate, RequestOptions requestOptions) {
-        return patchWithResponseAsync(jobId, jobUpdate, requestOptions).block();
+    public Response<Void> patchWithResponse(String jobId, BinaryData jobPatchParameter, RequestOptions requestOptions) {
+        return patchWithResponseAsync(jobId, jobPatchParameter, requestOptions).block();
     }
 
     /**
@@ -2864,7 +2864,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param job The parameters for the request.
+     * @param jobUpdateParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2873,7 +2873,8 @@ public final class JobsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String jobId, BinaryData job, RequestOptions requestOptions) {
+    public Mono<Response<Void>> updateWithResponseAsync(
+            String jobId, BinaryData jobUpdateParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2884,7 +2885,7 @@ public final class JobsImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                job,
+                                jobUpdateParameter,
                                 requestOptions,
                                 context));
     }
@@ -3317,7 +3318,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
-     * @param job The parameters for the request.
+     * @param jobUpdateParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3326,8 +3327,9 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
-        return updateWithResponseAsync(jobId, job, requestOptions).block();
+    public Response<Void> updateWithResponse(
+            String jobId, BinaryData jobUpdateParameter, RequestOptions requestOptions) {
+        return updateWithResponseAsync(jobId, jobUpdateParameter, requestOptions).block();
     }
 
     /**
@@ -3387,7 +3389,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job to disable.
-     * @param parameters The parameters for the request.
+     * @param jobDisableParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3397,7 +3399,7 @@ public final class JobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableWithResponseAsync(
-            String jobId, BinaryData parameters, RequestOptions requestOptions) {
+            String jobId, BinaryData jobDisableParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3408,7 +3410,7 @@ public final class JobsImpl {
                                 contentType,
                                 jobId,
                                 accept,
-                                parameters,
+                                jobDisableParameter,
                                 requestOptions,
                                 context));
     }
@@ -3470,7 +3472,7 @@ public final class JobsImpl {
      * }</pre>
      *
      * @param jobId The ID of the Job to disable.
-     * @param parameters The parameters for the request.
+     * @param jobDisableParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3479,8 +3481,9 @@ public final class JobsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
-        return disableWithResponseAsync(jobId, parameters, requestOptions).block();
+    public Response<Void> disableWithResponse(
+            String jobId, BinaryData jobDisableParameter, RequestOptions requestOptions) {
+        return disableWithResponseAsync(jobId, jobDisableParameter, requestOptions).block();
     }
 
     /**

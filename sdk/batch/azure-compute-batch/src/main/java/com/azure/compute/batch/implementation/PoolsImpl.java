@@ -220,7 +220,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolUpdate,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolPatchParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -284,7 +284,7 @@ public final class PoolsImpl {
                 @HeaderParam("content-type") String contentType,
                 @PathParam("poolId") String poolId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolEvaluateAutoScaleParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -306,7 +306,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData poolResizeParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -370,7 +370,7 @@ public final class PoolsImpl {
                 @PathParam("poolId") String poolId,
                 @HeaderParam("content-type") String contentType,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData nodeRemoveParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -421,6 +421,42 @@ public final class PoolsImpl {
      * a startTime or endTime these filters default to the start and end times of the last aggregation interval
      * currently available; that is, only the last aggregation interval is returned.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>starttime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This must be at least two and
+     * a half hours before the current time. If not specified this defaults to the
+     * start time of the last aggregation interval currently available.</td></tr>
+     *     <tr><td>endtime</td><td>OffsetDateTime</td><td>No</td><td>The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -438,8 +474,8 @@ public final class PoolsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of PoolUsageMetrics items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listUsageMetricsSinglePageAsync(RequestOptions requestOptions) {
@@ -459,7 +495,7 @@ public final class PoolsImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
+                                        getNextLink(res.getValue(), "odata.nextLink"),
                                         null));
     }
 
@@ -470,6 +506,42 @@ public final class PoolsImpl {
      * Account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including
      * a startTime or endTime these filters default to the start and end times of the last aggregation interval
      * currently available; that is, only the last aggregation interval is returned.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>starttime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This must be at least two and
+     * a half hours before the current time. If not specified this defaults to the
+     * start time of the last aggregation interval currently available.</td></tr>
+     *     <tr><td>endtime</td><td>OffsetDateTime</td><td>No</td><td>The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -488,7 +560,7 @@ public final class PoolsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of PoolUsageMetrics items as paginated response with {@link PagedFlux}.
+     * @return the result of a listing the usage metrics for an Account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listUsageMetricsAsync(RequestOptions requestOptions) {
@@ -510,6 +582,42 @@ public final class PoolsImpl {
      * a startTime or endTime these filters default to the start and end times of the last aggregation interval
      * currently available; that is, only the last aggregation interval is returned.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     *     <tr><td>starttime</td><td>OffsetDateTime</td><td>No</td><td>The earliest time from which to include metrics. This must be at least two and
+     * a half hours before the current time. If not specified this defaults to the
+     * start time of the last aggregation interval currently available.</td></tr>
+     *     <tr><td>endtime</td><td>OffsetDateTime</td><td>No</td><td>The latest time from which to include metrics. This must be at least two hours
+     * before the current time. If not specified this defaults to the end time of the
+     * last aggregation interval currently available.</td></tr>
+     *     <tr><td>$filter</td><td>String</td><td>No</td><td>An OData $filter clause. For more information on constructing this filter, see
+     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-account-usage-metrics.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -527,7 +635,8 @@ public final class PoolsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of PoolUsageMetrics items as paginated response with {@link PagedIterable}.
+     * @return the result of a listing the usage metrics for an Account as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listUsageMetrics(RequestOptions requestOptions) {
@@ -3781,7 +3890,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolUpdate The parameters for the request.
+     * @param poolPatchParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3791,7 +3900,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(
-            String poolId, BinaryData poolUpdate, RequestOptions requestOptions) {
+            String poolId, BinaryData poolPatchParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -3802,7 +3911,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                poolUpdate,
+                                poolPatchParameter,
                                 requestOptions,
                                 context));
     }
@@ -4153,7 +4262,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param poolUpdate The parameters for the request.
+     * @param poolPatchParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4162,8 +4271,9 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(String poolId, BinaryData poolUpdate, RequestOptions requestOptions) {
-        return patchWithResponseAsync(poolId, poolUpdate, requestOptions).block();
+    public Response<Void> patchWithResponse(
+            String poolId, BinaryData poolPatchParameter, RequestOptions requestOptions) {
+        return patchWithResponseAsync(poolId, poolPatchParameter, requestOptions).block();
     }
 
     /**
@@ -4471,7 +4581,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param parameters The parameters for the request.
+     * @param poolEvaluateAutoScaleParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4482,7 +4592,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> evaluateAutoScaleWithResponseAsync(
-            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+            String poolId, BinaryData poolEvaluateAutoScaleParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4493,7 +4603,7 @@ public final class PoolsImpl {
                                 contentType,
                                 poolId,
                                 accept,
-                                parameters,
+                                poolEvaluateAutoScaleParameter,
                                 requestOptions,
                                 context));
     }
@@ -4558,7 +4668,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param parameters The parameters for the request.
+     * @param poolEvaluateAutoScaleParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4568,8 +4678,8 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> evaluateAutoScaleWithResponse(
-            String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return evaluateAutoScaleWithResponseAsync(poolId, parameters, requestOptions).block();
+            String poolId, BinaryData poolEvaluateAutoScaleParameter, RequestOptions requestOptions) {
+        return evaluateAutoScaleWithResponseAsync(poolId, poolEvaluateAutoScaleParameter, requestOptions).block();
     }
 
     /**
@@ -4631,7 +4741,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param parameters The parameters for the request.
+     * @param poolResizeParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4641,7 +4751,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resizeWithResponseAsync(
-            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+            String poolId, BinaryData poolResizeParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -4652,7 +4762,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                parameters,
+                                poolResizeParameter,
                                 requestOptions,
                                 context));
     }
@@ -4716,7 +4826,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param parameters The parameters for the request.
+     * @param poolResizeParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4725,8 +4835,9 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizeWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return resizeWithResponseAsync(poolId, parameters, requestOptions).block();
+    public Response<Void> resizeWithResponse(
+            String poolId, BinaryData poolResizeParameter, RequestOptions requestOptions) {
+        return resizeWithResponseAsync(poolId, poolResizeParameter, requestOptions).block();
     }
 
     /**
@@ -5623,7 +5734,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param parameters The parameters for the request.
+     * @param nodeRemoveParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5633,7 +5744,7 @@ public final class PoolsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeNodesWithResponseAsync(
-            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+            String poolId, BinaryData nodeRemoveParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -5644,7 +5755,7 @@ public final class PoolsImpl {
                                 poolId,
                                 contentType,
                                 accept,
-                                parameters,
+                                nodeRemoveParameter,
                                 requestOptions,
                                 context));
     }
@@ -5706,7 +5817,7 @@ public final class PoolsImpl {
      * }</pre>
      *
      * @param poolId The ID of the Pool to get.
-     * @param parameters The parameters for the request.
+     * @param nodeRemoveParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5715,14 +5826,30 @@ public final class PoolsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
-        return removeNodesWithResponseAsync(poolId, parameters, requestOptions).block();
+    public Response<Void> removeNodesWithResponse(
+            String poolId, BinaryData nodeRemoveParameter, RequestOptions requestOptions) {
+        return removeNodesWithResponseAsync(poolId, nodeRemoveParameter, requestOptions).block();
     }
 
     /**
      * Lists the usage metrics, aggregated by Pool across individual time intervals, for the specified Account.
      *
      * <p>Get the next page of items.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -5743,8 +5870,8 @@ public final class PoolsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of PoolUsageMetrics items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return the result of a listing the usage metrics for an Account along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listUsageMetricsNextSinglePageAsync(
@@ -5761,7 +5888,7 @@ public final class PoolsImpl {
                                         res.getStatusCode(),
                                         res.getHeaders(),
                                         getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
+                                        getNextLink(res.getValue(), "odata.nextLink"),
                                         null));
     }
 
