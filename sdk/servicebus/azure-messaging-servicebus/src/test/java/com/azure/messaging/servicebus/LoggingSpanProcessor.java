@@ -57,7 +57,7 @@ class LoggingSpanProcessor implements SpanProcessor {
         });
 
         List<LinkData> links = data.getLinks();
-        for (int l = 0; l < data.getLinks().size(); l ++) {
+        for (int l = 0; l < data.getLinks().size(); l++) {
             log.addKeyValue("link[" + l + "].traceId", links.get(l).getSpanContext().getTraceId());
             log.addKeyValue("link[" + l + "].spanId", links.get(l).getSpanContext().getSpanId());
             log.addKeyValue("link[" + l + "].attributeCount", links.get(l).getTotalAttributeCount());
