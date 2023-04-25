@@ -11,7 +11,7 @@ import java.util.Collection;
 /** Defines values for TaskAddStatus. */
 public final class TaskAddStatus extends ExpandableStringEnum<TaskAddStatus> {
     /** The Task was added successfully. */
-    public static final TaskAddStatus SUCCESS = fromString("Success");
+    public static final TaskAddStatus SUCCESS = fromString("success");
 
     /**
      * The Task failed to add due to a client error and should not be retried without modifying the request as

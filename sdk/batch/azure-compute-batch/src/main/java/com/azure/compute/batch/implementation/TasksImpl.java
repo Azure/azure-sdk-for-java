@@ -188,7 +188,7 @@ public final class TasksImpl {
                 @PathParam("jobId") String jobId,
                 @PathParam("taskId") String taskId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData task,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData taskUpdateParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -1700,7 +1700,7 @@ public final class TasksImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             status: String(Success/clienterror/servererror) (Required)
+     *             status: String(success/clienterror/servererror) (Required)
      *             taskId: String (Required)
      *             eTag: String (Optional)
      *             lastModified: OffsetDateTime (Optional)
@@ -1983,7 +1983,7 @@ public final class TasksImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             status: String(Success/clienterror/servererror) (Required)
+     *             status: String(success/clienterror/servererror) (Required)
      *             taskId: String (Required)
      *             eTag: String (Optional)
      *             lastModified: OffsetDateTime (Optional)
@@ -2874,7 +2874,7 @@ public final class TasksImpl {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
-     * @param task The parameters for the request.
+     * @param taskUpdateParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2884,7 +2884,7 @@ public final class TasksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(
-            String jobId, String taskId, BinaryData task, RequestOptions requestOptions) {
+            String jobId, String taskId, BinaryData taskUpdateParameter, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2896,7 +2896,7 @@ public final class TasksImpl {
                                 jobId,
                                 taskId,
                                 accept,
-                                task,
+                                taskUpdateParameter,
                                 requestOptions,
                                 context));
     }
@@ -3126,7 +3126,7 @@ public final class TasksImpl {
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
-     * @param task The parameters for the request.
+     * @param taskUpdateParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3136,8 +3136,8 @@ public final class TasksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateWithResponse(
-            String jobId, String taskId, BinaryData task, RequestOptions requestOptions) {
-        return updateWithResponseAsync(jobId, taskId, task, requestOptions).block();
+            String jobId, String taskId, BinaryData taskUpdateParameter, RequestOptions requestOptions) {
+        return updateWithResponseAsync(jobId, taskId, taskUpdateParameter, requestOptions).block();
     }
 
     /**

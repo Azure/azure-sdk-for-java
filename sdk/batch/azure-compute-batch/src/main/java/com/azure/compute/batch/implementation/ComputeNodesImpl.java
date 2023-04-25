@@ -129,7 +129,7 @@ public final class ComputeNodesImpl {
                 @PathParam("nodeId") String nodeId,
                 @PathParam("userName") String userName,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters,
+                @BodyParam("application/json; odata=minimalmetadata") BinaryData nodeUpdateUserParameter,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -627,7 +627,7 @@ public final class ComputeNodesImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param parameters The parameters for the request.
+     * @param nodeUpdateUserParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -637,7 +637,11 @@ public final class ComputeNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateUserWithResponseAsync(
-            String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions) {
+            String poolId,
+            String nodeId,
+            String userName,
+            BinaryData nodeUpdateUserParameter,
+            RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -650,7 +654,7 @@ public final class ComputeNodesImpl {
                                 nodeId,
                                 userName,
                                 accept,
-                                parameters,
+                                nodeUpdateUserParameter,
                                 requestOptions,
                                 context));
     }
@@ -701,7 +705,7 @@ public final class ComputeNodesImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param parameters The parameters for the request.
+     * @param nodeUpdateUserParameter The parameters for the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -711,8 +715,12 @@ public final class ComputeNodesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateUserWithResponse(
-            String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions) {
-        return updateUserWithResponseAsync(poolId, nodeId, userName, parameters, requestOptions).block();
+            String poolId,
+            String nodeId,
+            String userName,
+            BinaryData nodeUpdateUserParameter,
+            RequestOptions requestOptions) {
+        return updateUserWithResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter, requestOptions).block();
     }
 
     /**

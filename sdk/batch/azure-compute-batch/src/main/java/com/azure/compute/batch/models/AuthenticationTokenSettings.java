@@ -12,10 +12,9 @@ import java.util.List;
 @Fluent
 public final class AuthenticationTokenSettings {
     /*
-     * The authentication token grants access to a limited set of Batch service
-     * operations. Currently the only supported value for the access property is
-     * 'job', which grants access to all operations related to the Job which contains
-     * the Task.
+     * The authentication token grants access to a limited set of Batch service operations. Currently the only
+     * supported value for the access property is 'job', which grants access to all operations related to the Job which
+     * contains the Task.
      */
     @JsonProperty(value = "access")
     private List<AccessScope> access;

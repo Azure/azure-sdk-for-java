@@ -237,7 +237,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -318,7 +318,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -393,7 +393,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -485,7 +485,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -566,7 +566,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -860,7 +860,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -944,7 +944,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }
@@ -1007,7 +1007,7 @@ public final class CertificatesImpl {
      *             }
      *         ]
      *     }
-     *     data: String (Optional)
+     *     data: String (Required)
      *     certificateFormat: String(pfx/cer) (Optional)
      *     password: String (Optional)
      * }

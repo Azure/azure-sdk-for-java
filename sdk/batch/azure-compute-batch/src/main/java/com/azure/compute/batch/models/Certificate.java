@@ -5,6 +5,7 @@
 package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -69,7 +70,7 @@ public final class Certificate {
     /*
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
      */
-    @JsonProperty(value = "data")
+    @JsonProperty(value = "data", required = true)
     private String data;
 
     /*
@@ -84,8 +85,15 @@ public final class Certificate {
     @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of Certificate class. */
-    public Certificate() {}
+    /**
+     * Creates an instance of Certificate class.
+     *
+     * @param data the data value to set.
+     */
+    @JsonCreator
+    public Certificate(@JsonProperty(value = "data", required = true) String data) {
+        this.data = data;
+    }
 
     /**
      * Get the thumbprint property: The X.509 thumbprint of the Certificate. This is a sequence of up to 40 hex digits.
@@ -199,17 +207,6 @@ public final class Certificate {
      */
     public String getData() {
         return this.data;
-    }
-
-    /**
-     * Set the data property: The base64-encoded contents of the Certificate. The maximum size is 10KB.
-     *
-     * @param data the data value to set.
-     * @return the Certificate object itself.
-     */
-    public Certificate setData(String data) {
-        this.data = data;
-        return this;
     }
 
     /**

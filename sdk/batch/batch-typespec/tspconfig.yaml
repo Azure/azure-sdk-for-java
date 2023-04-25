@@ -1,5 +1,6 @@
 emit:
   - "@azure-tools/typespec-java"
+  - "@azure-tools/typespec-autorest"
 options:
   "@azure-tools/typespec-java":
     emitter-output-dir: "{project-root}/../azure-compute-batch"
@@ -11,3 +12,7 @@ options:
     namer: false
     generate-samples: false
     generate-tests: false
+  "@azure-tools/typespec-autorest":
+    "output-file": "BatchService.json"
+
+

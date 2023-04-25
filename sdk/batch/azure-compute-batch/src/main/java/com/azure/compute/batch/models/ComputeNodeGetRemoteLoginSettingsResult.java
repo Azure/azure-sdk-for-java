@@ -14,7 +14,7 @@ public final class ComputeNodeGetRemoteLoginSettingsResult {
     /*
      * The IP address used for remote login to the Compute Node.
      */
-    @JsonProperty(value = "remoteLoginIPAddress", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "remoteLoginIPAddress", required = true)
     private String remoteLoginIPAddress;
 
     /*
@@ -26,11 +26,14 @@ public final class ComputeNodeGetRemoteLoginSettingsResult {
     /**
      * Creates an instance of ComputeNodeGetRemoteLoginSettingsResult class.
      *
+     * @param remoteLoginIPAddress the remoteLoginIPAddress value to set.
      * @param remoteLoginPort the remoteLoginPort value to set.
      */
     @JsonCreator
     private ComputeNodeGetRemoteLoginSettingsResult(
+            @JsonProperty(value = "remoteLoginIPAddress", required = true) String remoteLoginIPAddress,
             @JsonProperty(value = "remoteLoginPort", required = true) int remoteLoginPort) {
+        this.remoteLoginIPAddress = remoteLoginIPAddress;
         this.remoteLoginPort = remoteLoginPort;
     }
 
