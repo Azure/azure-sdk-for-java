@@ -31,7 +31,7 @@ public final class ExternalSecuritySolutionsListByHomeRegionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"at\",\"id\":\"izexroqsqj\",\"name\":\"hrmt\",\"type\":\"splwsttxs\"}]}";
+            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"i\",\"id\":\"moxrezsvavlrxi\",\"name\":\"jmoywlunpipcwybs\",\"type\":\"fncn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class ExternalSecuritySolutionsListByHomeRegionMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ExternalSecuritySolution> response =
-            manager.externalSecuritySolutions().listByHomeRegion("wtxzuisam", com.azure.core.util.Context.NONE);
+            manager.externalSecuritySolutions().listByHomeRegion("ujx", com.azure.core.util.Context.NONE);
     }
 }

@@ -35,7 +35,7 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"alertType\":\"wjzebecuvlb\",\"lastModifiedUtc\":\"2021-07-23T18:20:37Z\",\"expirationDateUtc\":\"2021-07-04T12:46:10Z\",\"reason\":\"ljkxpylrwoxz\",\"state\":\"Enabled\",\"comment\":\"syxjijeyp\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"rbkerdkd\",\"name\":\"gaw\",\"type\":\"wjxildfkcefeyg\"}";
+            "{\"properties\":{\"alertType\":\"kgd\",\"lastModifiedUtc\":\"2021-11-26T23:11:17Z\",\"expirationDateUtc\":\"2021-10-12T17:44:39Z\",\"reason\":\"k\",\"state\":\"Disabled\",\"comment\":\"hgsqtnqsktxq\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"jbqggweeiwdhdm\",\"name\":\"cgbfzuscstun\",\"type\":\"lhxd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,21 +67,21 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
             manager
                 .alertsSuppressionRules()
                 .updateWithResponse(
-                    "qimlda",
+                    "lfmsibzoyrfg",
                     new AlertsSuppressionRuleInner()
-                        .withAlertType("fx")
-                        .withExpirationDateUtc(OffsetDateTime.parse("2021-01-13T16:49:18Z"))
-                        .withReason("muadjnfsncski")
+                        .withAlertType("ydpmypgfqvmt")
+                        .withExpirationDateUtc(OffsetDateTime.parse("2021-08-23T13:21:07Z"))
+                        .withReason("kxp")
                         .withState(RuleState.ENABLED)
-                        .withComment("hjgczetyb")
+                        .withComment("ewp")
                         .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(Arrays.asList())),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("wjzebecuvlb", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T12:46:10Z"), response.expirationDateUtc());
-        Assertions.assertEquals("ljkxpylrwoxz", response.reason());
-        Assertions.assertEquals(RuleState.ENABLED, response.state());
-        Assertions.assertEquals("syxjijeyp", response.comment());
+        Assertions.assertEquals("kgd", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T17:44:39Z"), response.expirationDateUtc());
+        Assertions.assertEquals("k", response.reason());
+        Assertions.assertEquals(RuleState.DISABLED, response.state());
+        Assertions.assertEquals("hgsqtnqsktxq", response.comment());
     }
 }

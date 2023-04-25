@@ -34,7 +34,7 @@ public final class ConnectorsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"hybridComputeSettings\":{\"hybridComputeProvisioningState\":\"Valid\",\"autoProvision\":\"Off\",\"resourceGroupName\":\"sdixchwkibmg\",\"region\":\"mncj\"},\"authenticationDetails\":{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Invalid\",\"grantedPermissions\":[]}},\"id\":\"cqzoofjnqjsve\",\"name\":\"fbhtleberp\",\"type\":\"ljekn\"}";
+            "{\"properties\":{\"hybridComputeSettings\":{\"hybridComputeProvisioningState\":\"Invalid\",\"autoProvision\":\"On\",\"resourceGroupName\":\"rwtrdgscnvqeonsg\",\"region\":\"xlw\"},\"authenticationDetails\":{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Expired\",\"grantedPermissions\":[]}},\"id\":\"pthceopvkv\",\"name\":\"wfvesobpbok\",\"type\":\"mmlcdyarng\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,17 @@ public final class ConnectorsCreateOrUpdateWithResponseMockTests {
         ConnectorSetting response =
             manager
                 .connectors()
-                .define("xfkjqutibh")
+                .define("jermhzic")
                 .withHybridComputeSettings(
                     new HybridComputeSettingsProperties()
-                        .withAutoProvision(AutoProvision.ON)
-                        .withResourceGroupName("rkp")
-                        .withRegion("bduxvzmlghnys"))
+                        .withAutoProvision(AutoProvision.OFF)
+                        .withResourceGroupName("aaknyukibxig")
+                        .withRegion("phzwxqte"))
                 .withAuthenticationDetails(new AuthenticationDetailsProperties())
                 .create();
 
-        Assertions.assertEquals(AutoProvision.OFF, response.hybridComputeSettings().autoProvision());
-        Assertions.assertEquals("sdixchwkibmg", response.hybridComputeSettings().resourceGroupName());
-        Assertions.assertEquals("mncj", response.hybridComputeSettings().region());
+        Assertions.assertEquals(AutoProvision.ON, response.hybridComputeSettings().autoProvision());
+        Assertions.assertEquals("rwtrdgscnvqeonsg", response.hybridComputeSettings().resourceGroupName());
+        Assertions.assertEquals("xlw", response.hybridComputeSettings().region());
     }
 }

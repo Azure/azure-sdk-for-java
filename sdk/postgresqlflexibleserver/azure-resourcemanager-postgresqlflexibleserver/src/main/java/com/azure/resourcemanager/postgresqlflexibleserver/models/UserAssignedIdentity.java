@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** Information describing the identities associated with this application. */
 @Fluent
-public class UserAssignedIdentity {
+public final class UserAssignedIdentity {
     /*
      * represents user assigned identities map.
      */

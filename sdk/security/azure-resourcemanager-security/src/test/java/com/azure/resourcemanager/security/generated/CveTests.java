@@ -10,7 +10,7 @@ import com.azure.resourcemanager.security.models.Cve;
 public final class CveTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Cve model = BinaryData.fromString("{\"title\":\"koszu\",\"link\":\"lnsntrpc\"}").toObject(Cve.class);
+        Cve model = BinaryData.fromString("{\"title\":\"rclsso\",\"link\":\"omevtfycn\"}").toObject(Cve.class);
     }
 
     @org.junit.jupiter.api.Test

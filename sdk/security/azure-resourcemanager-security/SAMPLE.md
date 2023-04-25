@@ -303,6 +303,13 @@
 - [Get](#securitycontacts_get)
 - [List](#securitycontacts_list)
 
+## SecurityOperators
+
+- [CreateOrUpdate](#securityoperators_createorupdate)
+- [Delete](#securityoperators_delete)
+- [Get](#securityoperators_get)
+- [List](#securityoperators_list)
+
 ## SecuritySolutions
 
 - [Get](#securitysolutions_get)
@@ -4525,14 +4532,66 @@ public final class MdeOnboardingsListSamples {
 /** Samples for Pricings Get. */
 public final class PricingsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-03-01/examples/Pricings/GetPricingByName_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameCloudPosture_example.json
      */
     /**
-     * Sample code: Get pricings on subscription.
+     * Sample code: Get pricings on subscription - CloudPosture plan.
      *
      * @param manager Entry point to SecurityManager.
      */
-    public static void getPricingsOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
+    public static void getPricingsOnSubscriptionCloudPosturePlan(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.pricings().getWithResponse("CloudPosture", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameDns_example.json
+     */
+    /**
+     * Sample code: Get pricings on subscription - Dns plan.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getPricingsOnSubscriptionDnsPlan(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.pricings().getWithResponse("Dns", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameContainers_example.json
+     */
+    /**
+     * Sample code: Get pricings on subscription - Containers plan.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getPricingsOnSubscriptionContainersPlan(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.pricings().getWithResponse("Containers", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameStorageAccounts_example.json
+     */
+    /**
+     * Sample code: Get pricings on subscription - StorageAccounts plan.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getPricingsOnSubscriptionStorageAccountsPlan(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.pricings().getWithResponse("StorageAccounts", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/GetPricingByNameVirtualMachines_example.json
+     */
+    /**
+     * Sample code: Get pricings on subscription - VirtualMachines plan.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getPricingsOnSubscriptionVirtualMachinesPlan(
+        com.azure.resourcemanager.security.SecurityManager manager) {
         manager.pricings().getWithResponse("VirtualMachines", com.azure.core.util.Context.NONE);
     }
 }
@@ -4544,7 +4603,7 @@ public final class PricingsGetSamples {
 /** Samples for Pricings List. */
 public final class PricingsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-03-01/examples/Pricings/ListPricings_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/ListPricings_example.json
      */
     /**
      * Sample code: Get pricings on subscription.
@@ -4566,7 +4625,25 @@ import com.azure.resourcemanager.security.models.PricingTier;
 /** Samples for Pricings Update. */
 public final class PricingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-03-01/examples/Pricings/PutPricingByName_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/PutPricingByNamePartialSuccess_example.json
+     */
+    /**
+     * Sample code: Update pricing on subscription - partial success.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void updatePricingOnSubscriptionPartialSuccess(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager
+            .pricings()
+            .updateWithResponse(
+                "CloudPosture",
+                new PricingInner().withPricingTier(PricingTier.STANDARD),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-01-01/examples/Pricings/PutPricingByName_example.json
      */
     /**
      * Sample code: Update pricing on subscription.
@@ -4577,8 +4654,8 @@ public final class PricingsUpdateSamples {
         manager
             .pricings()
             .updateWithResponse(
-                "VirtualMachines",
-                new PricingInner().withPricingTier(PricingTier.STANDARD).withSubPlan("P2"),
+                "CloudPosture",
+                new PricingInner().withPricingTier(PricingTier.STANDARD),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -4974,7 +5051,7 @@ import java.util.Map;
 /** Samples for SecurityConnectors CreateOrUpdate. */
 public final class SecurityConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/PutSecurityConnector_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/PutSecurityConnector_example.json
      */
     /**
      * Sample code: Create or update a security connector.
@@ -5020,7 +5097,7 @@ public final class SecurityConnectorsCreateOrUpdateSamples {
 /** Samples for SecurityConnectors Delete. */
 public final class SecurityConnectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/DeleteSecurityConnector_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/DeleteSecurityConnector_example.json
      */
     /**
      * Sample code: Delete a security connector.
@@ -5041,7 +5118,7 @@ public final class SecurityConnectorsDeleteSamples {
 /** Samples for SecurityConnectors GetByResourceGroup. */
 public final class SecurityConnectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/GetSecurityConnectorSingleResource_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorSingleResource_example.json
      */
     /**
      * Sample code: Retrieve a security connector.
@@ -5063,7 +5140,7 @@ public final class SecurityConnectorsGetByResourceGroupSamples {
 /** Samples for SecurityConnectors List. */
 public final class SecurityConnectorsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
      */
     /**
      * Sample code: List all security connectors of a specified subscription.
@@ -5083,7 +5160,7 @@ public final class SecurityConnectorsListSamples {
 /** Samples for SecurityConnectors ListByResourceGroup. */
 public final class SecurityConnectorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/GetSecurityConnectorsResourceGroup_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorsResourceGroup_example.json
      */
     /**
      * Sample code: List all security connectors of a specified resource group.
@@ -5112,7 +5189,7 @@ import java.util.Map;
 /** Samples for SecurityConnectors Update. */
 public final class SecurityConnectorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/PatchSecurityConnector_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/PatchSecurityConnector_example.json
      */
     /**
      * Sample code: Update a security connector.
@@ -5247,6 +5324,93 @@ public final class SecurityContactsListSamples {
      */
     public static void listSecurityContactData(com.azure.resourcemanager.security.SecurityManager manager) {
         manager.securityContacts().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityOperators_CreateOrUpdate
+
+```java
+/** Samples for SecurityOperators CreateOrUpdate. */
+public final class SecurityOperatorsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/PutSecurityOperatorByName_example.json
+     */
+    /**
+     * Sample code: Create a security operator on the given scope.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void createASecurityOperatorOnTheGivenScope(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager
+            .securityOperators()
+            .createOrUpdateWithResponse(
+                "CloudPosture", "DefenderCSPMSecurityOperator", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityOperators_Delete
+
+```java
+/** Samples for SecurityOperators Delete. */
+public final class SecurityOperatorsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/DeleteSecurityOperatorByName_example.json
+     */
+    /**
+     * Sample code: Delete SecurityOperator on subscription.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void deleteSecurityOperatorOnSubscription(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager
+            .securityOperators()
+            .deleteByResourceGroupWithResponse(
+                "CloudPosture", "DefenderCSPMSecurityOperator", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityOperators_Get
+
+```java
+/** Samples for SecurityOperators Get. */
+public final class SecurityOperatorsGetSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/GetSecurityOperatorByName_example.json
+     */
+    /**
+     * Sample code: Get a specific security operator by scope and securityOperatorName.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void getASpecificSecurityOperatorByScopeAndSecurityOperatorName(
+        com.azure.resourcemanager.security.SecurityManager manager) {
+        manager
+            .securityOperators()
+            .getWithResponse("CloudPosture", "DefenderCSPMSecurityOperator", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityOperators_List
+
+```java
+/** Samples for SecurityOperators List. */
+public final class SecurityOperatorsListSamples {
+    /*
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/ListSecurityOperators_example.json
+     */
+    /**
+     * Sample code: List SecurityOperators.
+     *
+     * @param manager Entry point to SecurityManager.
+     */
+    public static void listSecurityOperators(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityOperators().listWithResponse("CloudPosture", com.azure.core.util.Context.NONE);
     }
 }
 ```

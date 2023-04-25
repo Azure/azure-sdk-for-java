@@ -33,7 +33,7 @@ public final class ConnectorsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"hybridComputeSettings\":{\"hybridComputeProvisioningState\":\"Invalid\",\"autoProvision\":\"On\",\"resourceGroupName\":\"npipcwybszfncn\",\"region\":\"tpf\"},\"authenticationDetails\":{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Valid\",\"grantedPermissions\":[]}},\"id\":\"whxorpwaltz\",\"name\":\"ugexojfccylht\",\"type\":\"hthvazjpwex\"}]}";
+            "{\"value\":[{\"properties\":{\"hybridComputeSettings\":{\"hybridComputeProvisioningState\":\"Invalid\",\"autoProvision\":\"Off\",\"resourceGroupName\":\"hwynct\",\"region\":\"zcnjfmbbfnvjxit\"},\"authenticationDetails\":{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"IncorrectPolicy\",\"grantedPermissions\":[]}},\"id\":\"iklsmni\",\"name\":\"qlcoqksyiibhyx\",\"type\":\"bgbudav\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,8 @@ public final class ConnectorsListMockTests {
 
         PagedIterable<ConnectorSetting> response = manager.connectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AutoProvision.ON, response.iterator().next().hybridComputeSettings().autoProvision());
-        Assertions
-            .assertEquals("npipcwybszfncn", response.iterator().next().hybridComputeSettings().resourceGroupName());
-        Assertions.assertEquals("tpf", response.iterator().next().hybridComputeSettings().region());
+        Assertions.assertEquals(AutoProvision.OFF, response.iterator().next().hybridComputeSettings().autoProvision());
+        Assertions.assertEquals("hwynct", response.iterator().next().hybridComputeSettings().resourceGroupName());
+        Assertions.assertEquals("zcnjfmbbfnvjxit", response.iterator().next().hybridComputeSettings().region());
     }
 }

@@ -58,6 +58,6 @@ public final class JitNetworkAccessPoliciesDeleteWithResponseMockTests {
 
         manager
             .jitNetworkAccessPolicies()
-            .deleteWithResponse("qs", "eiihfymko", "ihyeseu", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("jsumxpezcoio", "jrmfqzwqd", "xkeedcnwmy", com.azure.core.util.Context.NONE);
     }
 }

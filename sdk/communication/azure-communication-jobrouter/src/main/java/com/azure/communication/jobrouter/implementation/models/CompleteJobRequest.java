@@ -18,7 +18,7 @@ public final class CompleteJobRequest {
 
     /*
      * (Optional) A note that will be appended to the jobs' Notes collection
-     * with th current timestamp.
+     * with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
@@ -44,7 +44,7 @@ public final class CompleteJobRequest {
     }
 
     /**
-     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @return the note value.
@@ -54,7 +54,7 @@ public final class CompleteJobRequest {
     }
 
     /**
-     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @param note the note value to set.

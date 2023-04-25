@@ -6,17 +6,16 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.ExternalUserCreationResponseInner;
-import org.junit.jupiter.api.Test;
 
 public final class ExternalUserCreationResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ExternalUserCreationResponseInner model =
-            BinaryData.fromString("{\"created\":false}").toObject(ExternalUserCreationResponseInner.class);
+            BinaryData.fromString("{\"created\":true}").toObject(ExternalUserCreationResponseInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ExternalUserCreationResponseInner model = new ExternalUserCreationResponseInner();
         model = BinaryData.fromObject(model).toObject(ExternalUserCreationResponseInner.class);
     }

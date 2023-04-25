@@ -7,10 +7,7 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Specifies the billing related details of a Azure Spot VM or VMSS. &lt;br&gt;&lt;br&gt;Minimum api-version:
- * 2019-03-01.
- */
+/** Specifies the billing related details of a Azure Spot VM or VMSS. Minimum api-version: 2019-03-01. */
 @Fluent
 public final class BillingProfile {
     /*

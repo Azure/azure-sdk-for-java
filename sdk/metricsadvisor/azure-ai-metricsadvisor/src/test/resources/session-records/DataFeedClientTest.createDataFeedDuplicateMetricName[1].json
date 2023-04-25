@@ -1,26 +1,56 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6d731ccc-9473-4eb3-96b6-3b2ab0e3e39d",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "449fa1d3-7313-48f3-93c4-c49bb89e3d6b",
-      "content-length" : "92",
-      "x-envoy-upstream-service-time" : "107",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "449fa1d3-7313-48f3-93c4-c49bb89e3d6b",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"code\":\"ERROR_DUP_NAME\",\"message\":\"The metric name 'cost' is duplicate,please remove one.\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:31 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/dataFeeds",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "403",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:29 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "d8dbd7c1-a85c-436d-97b4-981ececeab13",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "dataSourceType": "SqlServer",
+        "dataFeedName": "java_create_data_feed_test_sample82411933-7ae3-4fa4-8f3b-f71db4cf4610",
+        "granularityName": "Daily",
+        "metrics": [
+          {
+            "metricName": "cost"
+          },
+          {
+            "metricName": "cost"
+          }
+        ],
+        "dataStartFrom": "2019-10-01T00:00:00Z",
+        "maxConcurrency": 0,
+        "authenticationType": "Basic",
+        "dataSourceParameter": {
+          "connectionString": "REDACTED",
+          "query": "select * from adsample2 where Timestamp = @StartTime"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "8e2c836f-3a6f-4de4-a84a-795b91646e5f",
+        "Content-Length": "92",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:29 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "137",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "8e2c836f-3a6f-4de4-a84a-795b91646e5f"
+      },
+      "ResponseBody": {
+        "code": "ERROR_DUP_NAME",
+        "message": "The metric name \u0027cost\u0027 is duplicate,please remove one."
+      }
+    }
+  ],
+  "Variables": {}
 }
