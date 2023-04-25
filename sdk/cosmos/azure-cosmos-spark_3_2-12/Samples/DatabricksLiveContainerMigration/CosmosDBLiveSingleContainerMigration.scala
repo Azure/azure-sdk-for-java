@@ -17,7 +17,7 @@ dbutils.widgets.text("cosmosSourceContainerThroughputControl", "0.95") // target
 dbutils.widgets.text("cosmosTargetDatabaseName", "") // enter the name of your target database
 dbutils.widgets.text("cosmosTargetContainerName", "") // enter the name of the target container
 dbutils.widgets.text("cosmosTargetContainerPartitionKey", "/pk") // enter the partition key used in the target container with forward slash "/" at start
-dbutils.widgets.text("cosmosTargetContainerProvisionedThroughput", "10000") // enter the partition key for how data is stored in the target container
+dbutils.widgets.text("cosmosTargetContainerProvisionedThroughput", "10000") // target container provisioned throughput
 
 // COMMAND ----------
 
@@ -51,7 +51,6 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
 // MAGIC 
 // MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`$cosmosTargetDatabaseName`.`$cosmosTargetContainerName` -- reference target database and container - it will be created here
 // MAGIC USING cosmos.oltp 
-// MAGIC -- replace /customerId with the name of the field that you want to be used as the partition key in the new version of the container
 // MAGIC TBLPROPERTIES(partitionKeyPath = '$cosmosTargetContainerPartitionKey', autoScaleMaxThroughput = $cosmosTargetContainerProvisionedThroughput, indexingPolicy = 'OnlySystemProperties');
 
 // COMMAND ----------
@@ -69,9 +68,9 @@ spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmos
     "spark.cosmos.throughputControl.enabled" -> "true",
     "spark.cosmos.throughputControl.name" -> "SourceContainerThroughputControl",
     "spark.cosmos.throughputControl.targetThroughputThreshold" -> cosmosSourceContainerThroughputControl, 
-    "spark.cosmos.throughputControl.globalControl.database" -> cosmosSourceDatabaseName, //replace database-v4 with the name of your source database
+    "spark.cosmos.throughputControl.globalControl.database" -> cosmosSourceDatabaseName,
     "spark.cosmos.throughputControl.globalControl.container" -> "ThroughputControl",
-    "spark.cosmos.preferredRegionsList" -> cosmosRegion //replace this with comma separate list of regions appropriate for your source container
+    "spark.cosmos.preferredRegionsList" -> cosmosRegion
   )
 
   //when running this notebook is stopped (or if a problem causes a crash) change feed processing will be picked up from last processed document
