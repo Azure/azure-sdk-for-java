@@ -139,11 +139,21 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken) {
+        return this.createLeaseIfNotExist(feedRange, continuationToken, null);
+    }
+
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken, Map<String, String> properties) {
         throw new UnsupportedOperationException("FeedRangeEpkImpl based leases are not supported for Change Feed V0 wire format");
     }
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
+        return this.createLeaseIfNotExist(leaseToken, continuationToken, null);
+    }
+
+    @Override
+    public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken, Map<String, String> properties) {
         if (leaseToken == null) {
             throw new IllegalArgumentException("leaseToken");
         }
@@ -152,7 +162,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         ServiceItemLease documentServiceLease = new ServiceItemLease()
             .withId(leaseDocId)
             .withLeaseToken(leaseToken)
-            .withContinuationToken(continuationToken);
+            .withContinuationToken(continuationToken)
+            .withProperties(properties);
 
         return this.leaseDocumentClient.createItem(this.settings.getLeaseCollectionLink(), documentServiceLease, null, false)
             .onErrorResume( ex -> {
@@ -172,8 +183,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 }
 
                 InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
-
-//                logger.info("Created lease for partition {}.", leaseToken);
 
                 return documentServiceLease
                     .withId(document.getId())
