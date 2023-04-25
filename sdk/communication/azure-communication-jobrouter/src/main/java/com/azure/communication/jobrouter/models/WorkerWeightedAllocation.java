@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** Contains the weight percentage and label selectors to be applied if selected for weighted distributions. */

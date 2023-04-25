@@ -21,6 +21,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "wait-time", value = WaitTimeExceptionTrigger.class)
 })
 @Immutable
-public class JobExceptionTrigger {
-
-}
+public class JobExceptionTrigger {}

@@ -40,8 +40,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to VoiceservicesManager. */
-public final class VoiceservicesManager {
+/** Entry point to VoiceServicesManager. */
+public final class VoiceServicesManager {
     private Operations operations;
 
     private CommunicationsGateways communicationsGateways;
@@ -52,7 +52,7 @@ public final class VoiceservicesManager {
 
     private final MicrosoftVoiceServices clientObject;
 
-    private VoiceservicesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private VoiceServicesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject =
@@ -65,38 +65,38 @@ public final class VoiceservicesManager {
     }
 
     /**
-     * Creates an instance of voiceservices service API entry point.
+     * Creates an instance of Voice Services service API entry point.
      *
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
-     * @return the voiceservices service API instance.
+     * @return the Voice Services service API instance.
      */
-    public static VoiceservicesManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static VoiceServicesManager authenticate(TokenCredential credential, AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
     }
 
     /**
-     * Creates an instance of voiceservices service API entry point.
+     * Creates an instance of Voice Services service API entry point.
      *
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
-     * @return the voiceservices service API instance.
+     * @return the Voice Services service API instance.
      */
-    public static VoiceservicesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static VoiceServicesManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        return new VoiceservicesManager(httpPipeline, profile, null);
+        return new VoiceServicesManager(httpPipeline, profile, null);
     }
 
     /**
-     * Gets a Configurable instance that can be used to create VoiceservicesManager with optional configuration.
+     * Gets a Configurable instance that can be used to create VoiceServicesManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
-        return new VoiceservicesManager.Configurable();
+        return new VoiceServicesManager.Configurable();
     }
 
     /** The Configurable allowing configurations to be set. */
@@ -199,13 +199,13 @@ public final class VoiceservicesManager {
         }
 
         /**
-         * Creates an instance of voiceservices service API entry point.
+         * Creates an instance of Voice Services service API entry point.
          *
          * @param credential the credential to use.
          * @param profile the Azure profile for client.
-         * @return the voiceservices service API instance.
+         * @return the Voice Services service API instance.
          */
-        public VoiceservicesManager authenticate(TokenCredential credential, AzureProfile profile) {
+        public VoiceServicesManager authenticate(TokenCredential credential, AzureProfile profile) {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
@@ -215,7 +215,7 @@ public final class VoiceservicesManager {
                 .append("-")
                 .append("com.azure.resourcemanager.voiceservices")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -268,7 +268,7 @@ public final class VoiceservicesManager {
                     .httpClient(httpClient)
                     .policies(policies.toArray(new HttpPipelinePolicy[0]))
                     .build();
-            return new VoiceservicesManager(httpPipeline, profile, defaultPollInterval);
+            return new VoiceServicesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
