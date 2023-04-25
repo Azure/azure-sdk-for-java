@@ -35,7 +35,7 @@ public final class UserAssignedIdentity {
      * @param resourceId the resourceId value to set.
      */
     @JsonCreator
-    public UserAssignedIdentity(@JsonProperty(value = "resourceId", required = true) String resourceId) {
+    private UserAssignedIdentity(@JsonProperty(value = "resourceId", required = true) String resourceId) {
         this.resourceId = resourceId;
     }
 

@@ -4,11 +4,11 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a name-value pair. */
-@Fluent
+@Immutable
 public final class NameValuePair {
     /*
      * The name in the name-value pair.
@@ -23,7 +23,7 @@ public final class NameValuePair {
     private String value;
 
     /** Creates an instance of NameValuePair class. */
-    public NameValuePair() {}
+    private NameValuePair() {}
 
     /**
      * Get the name property: The name in the name-value pair.
@@ -35,33 +35,11 @@ public final class NameValuePair {
     }
 
     /**
-     * Set the name property: The name in the name-value pair.
-     *
-     * @param name the name value to set.
-     * @return the NameValuePair object itself.
-     */
-    public NameValuePair setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the value property: The value in the name-value pair.
      *
      * @return the value value.
      */
     public String getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value in the name-value pair.
-     *
-     * @param value the value value to set.
-     * @return the NameValuePair object itself.
-     */
-    public NameValuePair setValue(String value) {
-        this.value = value;
-        return this;
     }
 }

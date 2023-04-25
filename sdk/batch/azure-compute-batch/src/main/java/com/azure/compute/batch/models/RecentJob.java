@@ -4,11 +4,11 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the most recent Job to run under the Job Schedule. */
-@Fluent
+@Immutable
 public final class RecentJob {
     /*
      * The ID of the Job.
@@ -23,7 +23,7 @@ public final class RecentJob {
     private String url;
 
     /** Creates an instance of RecentJob class. */
-    public RecentJob() {}
+    private RecentJob() {}
 
     /**
      * Get the id property: The ID of the Job.
@@ -35,33 +35,11 @@ public final class RecentJob {
     }
 
     /**
-     * Set the id property: The ID of the Job.
-     *
-     * @param id the id value to set.
-     * @return the RecentJob object itself.
-     */
-    public RecentJob setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the url property: The URL of the Job.
      *
      * @return the url value.
      */
     public String getUrl() {
         return this.url;
-    }
-
-    /**
-     * Set the url property: The URL of the Job.
-     *
-     * @param url the url value to set.
-     * @return the RecentJob object itself.
-     */
-    public RecentJob setUrl(String url) {
-        this.url = url;
-        return this;
     }
 }

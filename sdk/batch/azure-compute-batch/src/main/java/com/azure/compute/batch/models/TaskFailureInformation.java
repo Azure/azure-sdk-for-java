@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about a Task failure. */
-@Fluent
+@Immutable
 public final class TaskFailureInformation {
     /*
      * The category of the error.
@@ -44,7 +44,7 @@ public final class TaskFailureInformation {
      * @param category the category value to set.
      */
     @JsonCreator
-    public TaskFailureInformation(@JsonProperty(value = "category", required = true) ErrorCategory category) {
+    private TaskFailureInformation(@JsonProperty(value = "category", required = true) ErrorCategory category) {
         this.category = category;
     }
 
@@ -68,18 +68,6 @@ public final class TaskFailureInformation {
     }
 
     /**
-     * Set the code property: An identifier for the Task error. Codes are invariant and are intended to be consumed
-     * programmatically.
-     *
-     * @param code the code value to set.
-     * @return the TaskFailureInformation object itself.
-     */
-    public TaskFailureInformation setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: A message describing the Task error, intended to be suitable for display in a user
      * interface.
      *
@@ -90,34 +78,11 @@ public final class TaskFailureInformation {
     }
 
     /**
-     * Set the message property: A message describing the Task error, intended to be suitable for display in a user
-     * interface.
-     *
-     * @param message the message value to set.
-     * @return the TaskFailureInformation object itself.
-     */
-    public TaskFailureInformation setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the details property: A list of additional details related to the error.
      *
      * @return the details value.
      */
     public List<NameValuePair> getDetails() {
         return this.details;
-    }
-
-    /**
-     * Set the details property: A list of additional details related to the error.
-     *
-     * @param details the details value to set.
-     * @return the TaskFailureInformation object itself.
-     */
-    public TaskFailureInformation setDetails(List<NameValuePair> details) {
-        this.details = details;
-        return this;
     }
 }

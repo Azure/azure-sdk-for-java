@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The results and errors from an execution of a Pool autoscale formula. */
-@Fluent
+@Immutable
 public final class AutoScaleRun {
     /*
      * The time at which the autoscale formula was last evaluated.
@@ -37,7 +37,7 @@ public final class AutoScaleRun {
      * @param timestamp the timestamp value to set.
      */
     @JsonCreator
-    public AutoScaleRun(@JsonProperty(value = "timestamp", required = true) OffsetDateTime timestamp) {
+    private AutoScaleRun(@JsonProperty(value = "timestamp", required = true) OffsetDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -61,34 +61,11 @@ public final class AutoScaleRun {
     }
 
     /**
-     * Set the results property: Each variable value is returned in the form $variable=value, and variables are
-     * separated by semicolons.
-     *
-     * @param results the results value to set.
-     * @return the AutoScaleRun object itself.
-     */
-    public AutoScaleRun setResults(String results) {
-        this.results = results;
-        return this;
-    }
-
-    /**
      * Get the error property: An error that occurred when executing or evaluating a Pool autoscale formula.
      *
      * @return the error value.
      */
     public AutoScaleRunError getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: An error that occurred when executing or evaluating a Pool autoscale formula.
-     *
-     * @param error the error value to set.
-     * @return the AutoScaleRun object itself.
-     */
-    public AutoScaleRun setError(AutoScaleRunError error) {
-        this.error = error;
-        return this;
     }
 }

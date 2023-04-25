@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Contains utilization and resource usage statistics for the lifetime of a Pool. */
-@Fluent
+@Immutable
 public final class PoolStatistics {
     /*
      * The URL for the statistics.
@@ -51,7 +51,7 @@ public final class PoolStatistics {
      * @param lastUpdateTime the lastUpdateTime value to set.
      */
     @JsonCreator
-    public PoolStatistics(
+    private PoolStatistics(
             @JsonProperty(value = "url", required = true) String url,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime) {
@@ -98,33 +98,11 @@ public final class PoolStatistics {
     }
 
     /**
-     * Set the usageStats property: Statistics related to Pool usage information.
-     *
-     * @param usageStats the usageStats value to set.
-     * @return the PoolStatistics object itself.
-     */
-    public PoolStatistics setUsageStats(UsageStatistics usageStats) {
-        this.usageStats = usageStats;
-        return this;
-    }
-
-    /**
      * Get the resourceStats property: Statistics related to resource consumption by Compute Nodes in a Pool.
      *
      * @return the resourceStats value.
      */
     public ResourceStatistics getResourceStats() {
         return this.resourceStats;
-    }
-
-    /**
-     * Set the resourceStats property: Statistics related to resource consumption by Compute Nodes in a Pool.
-     *
-     * @param resourceStats the resourceStats value to set.
-     * @return the PoolStatistics object itself.
-     */
-    public PoolStatistics setResourceStats(ResourceStatistics resourceStats) {
-        this.resourceStats = resourceStats;
-        return this;
     }
 }

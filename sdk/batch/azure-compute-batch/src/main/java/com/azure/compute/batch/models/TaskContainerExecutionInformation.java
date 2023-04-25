@@ -4,11 +4,11 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about the container which a Task is executing. */
-@Fluent
+@Immutable
 public final class TaskContainerExecutionInformation {
     /*
      * The ID of the container.
@@ -31,7 +31,7 @@ public final class TaskContainerExecutionInformation {
     private String error;
 
     /** Creates an instance of TaskContainerExecutionInformation class. */
-    public TaskContainerExecutionInformation() {}
+    private TaskContainerExecutionInformation() {}
 
     /**
      * Get the containerId property: The ID of the container.
@@ -40,17 +40,6 @@ public final class TaskContainerExecutionInformation {
      */
     public String getContainerId() {
         return this.containerId;
-    }
-
-    /**
-     * Set the containerId property: The ID of the container.
-     *
-     * @param containerId the containerId value to set.
-     * @return the TaskContainerExecutionInformation object itself.
-     */
-    public TaskContainerExecutionInformation setContainerId(String containerId) {
-        this.containerId = containerId;
-        return this;
     }
 
     /**
@@ -64,18 +53,6 @@ public final class TaskContainerExecutionInformation {
     }
 
     /**
-     * Set the state property: This is the state of the container according to the Docker service. It is equivalent to
-     * the status field returned by "docker inspect".
-     *
-     * @param state the state value to set.
-     * @return the TaskContainerExecutionInformation object itself.
-     */
-    public TaskContainerExecutionInformation setState(String state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
      * Get the error property: This is the detailed error string from the Docker service, if available. It is equivalent
      * to the error field returned by "docker inspect".
      *
@@ -83,17 +60,5 @@ public final class TaskContainerExecutionInformation {
      */
     public String getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: This is the detailed error string from the Docker service, if available. It is equivalent
-     * to the error field returned by "docker inspect".
-     *
-     * @param error the error value to set.
-     * @return the TaskContainerExecutionInformation object itself.
-     */
-    public TaskContainerExecutionInformation setError(String error) {
-        this.error = error;
-        return this;
     }
 }

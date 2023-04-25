@@ -114,7 +114,7 @@ public final class ResourceStatistics {
      * @param networkWriteGiB the networkWriteGiB value to set.
      */
     @JsonCreator
-    public ResourceStatistics(
+    private ResourceStatistics(
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime,
             @JsonProperty(value = "avgCPUPercentage", required = true) double avgCPUPercentage,

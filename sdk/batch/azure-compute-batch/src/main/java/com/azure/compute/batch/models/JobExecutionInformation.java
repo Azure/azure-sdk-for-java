@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Contains information about the execution of a Job in the Azure Batch service. */
-@Fluent
+@Immutable
 public final class JobExecutionInformation {
     /*
      * This is the time at which the Job was created.
@@ -63,7 +63,7 @@ public final class JobExecutionInformation {
      * @param startTime the startTime value to set.
      */
     @JsonCreator
-    public JobExecutionInformation(@JsonProperty(value = "startTime", required = true) OffsetDateTime startTime) {
+    private JobExecutionInformation(@JsonProperty(value = "startTime", required = true) OffsetDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -86,17 +86,6 @@ public final class JobExecutionInformation {
     }
 
     /**
-     * Set the endTime property: This property is set only if the Job is in the completed state.
-     *
-     * @param endTime the endTime value to set.
-     * @return the JobExecutionInformation object itself.
-     */
-    public JobExecutionInformation setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    /**
      * Get the poolId property: This element contains the actual Pool where the Job is assigned. When you get Job
      * details from the service, they also contain a poolInfo element, which contains the Pool configuration data from
      * when the Job was added or updated. That poolInfo element may also contain a poolId element. If it does, the two
@@ -110,38 +99,12 @@ public final class JobExecutionInformation {
     }
 
     /**
-     * Set the poolId property: This element contains the actual Pool where the Job is assigned. When you get Job
-     * details from the service, they also contain a poolInfo element, which contains the Pool configuration data from
-     * when the Job was added or updated. That poolInfo element may also contain a poolId element. If it does, the two
-     * IDs are the same. If it does not, it means the Job ran on an auto Pool, and this property contains the ID of that
-     * auto Pool.
-     *
-     * @param poolId the poolId value to set.
-     * @return the JobExecutionInformation object itself.
-     */
-    public JobExecutionInformation setPoolId(String poolId) {
-        this.poolId = poolId;
-        return this;
-    }
-
-    /**
      * Get the schedulingError property: This property is not set if there was no error starting the Job.
      *
      * @return the schedulingError value.
      */
     public JobSchedulingError getSchedulingError() {
         return this.schedulingError;
-    }
-
-    /**
-     * Set the schedulingError property: This property is not set if there was no error starting the Job.
-     *
-     * @param schedulingError the schedulingError value to set.
-     * @return the JobExecutionInformation object itself.
-     */
-    public JobExecutionInformation setSchedulingError(JobSchedulingError schedulingError) {
-        this.schedulingError = schedulingError;
-        return this;
     }
 
     /**
@@ -158,23 +121,5 @@ public final class JobExecutionInformation {
      */
     public String getTerminateReason() {
         return this.terminateReason;
-    }
-
-    /**
-     * Set the terminateReason property: This property is set only if the Job is in the completed state. If the Batch
-     * service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task completed, and
-     * killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its maxWallClockTime constraint.
-     * TerminateJobSchedule - the Job ran as part of a schedule, and the schedule terminated. AllTasksComplete - the
-     * Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in the Job are complete. TaskFailed -
-     * the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and a Task in the Job failed with an
-     * exit condition that specified a jobAction of terminatejob. Any other string is a user-defined reason specified in
-     * a call to the 'Terminate a Job' operation.
-     *
-     * @param terminateReason the terminateReason value to set.
-     * @return the JobExecutionInformation object itself.
-     */
-    public JobExecutionInformation setTerminateReason(String terminateReason) {
-        this.terminateReason = terminateReason;
-        return this;
     }
 }

@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The identity of the Batch pool, if configured. */
-@Fluent
+@Immutable
 public final class BatchPoolIdentity {
     /*
      * The list of user identities associated with the Batch pool. The user identity
@@ -34,7 +34,7 @@ public final class BatchPoolIdentity {
      * @param type the type value to set.
      */
     @JsonCreator
-    public BatchPoolIdentity(@JsonProperty(value = "type", required = true) PoolIdentityType type) {
+    private BatchPoolIdentity(@JsonProperty(value = "type", required = true) PoolIdentityType type) {
         this.type = type;
     }
 
@@ -58,18 +58,5 @@ public final class BatchPoolIdentity {
      */
     public List<UserAssignedIdentity> getUserAssignedIdentities() {
         return this.userAssignedIdentities;
-    }
-
-    /**
-     * Set the userAssignedIdentities property: The user identity dictionary key references will be ARM resource ids in
-     * the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
-     * @param userAssignedIdentities the userAssignedIdentities value to set.
-     * @return the BatchPoolIdentity object itself.
-     */
-    public BatchPoolIdentity setUserAssignedIdentities(List<UserAssignedIdentity> userAssignedIdentities) {
-        this.userAssignedIdentities = userAssignedIdentities;
-        return this;
     }
 }

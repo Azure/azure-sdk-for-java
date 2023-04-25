@@ -4,12 +4,12 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error that occurred when resizing a Pool. */
-@Fluent
+@Immutable
 public final class ResizeError {
     /*
      * An identifier for the Pool resize error. Codes are invariant and are intended
@@ -32,7 +32,7 @@ public final class ResizeError {
     private List<NameValuePair> values;
 
     /** Creates an instance of ResizeError class. */
-    public ResizeError() {}
+    private ResizeError() {}
 
     /**
      * Get the code property: An identifier for the Pool resize error. Codes are invariant and are intended to be
@@ -42,18 +42,6 @@ public final class ResizeError {
      */
     public String getCode() {
         return this.code;
-    }
-
-    /**
-     * Set the code property: An identifier for the Pool resize error. Codes are invariant and are intended to be
-     * consumed programmatically.
-     *
-     * @param code the code value to set.
-     * @return the ResizeError object itself.
-     */
-    public ResizeError setCode(String code) {
-        this.code = code;
-        return this;
     }
 
     /**
@@ -67,34 +55,11 @@ public final class ResizeError {
     }
 
     /**
-     * Set the message property: A message describing the Pool resize error, intended to be suitable for display in a
-     * user interface.
-     *
-     * @param message the message value to set.
-     * @return the ResizeError object itself.
-     */
-    public ResizeError setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the values property: A list of additional error details related to the Pool resize error.
      *
      * @return the values value.
      */
     public List<NameValuePair> getValues() {
         return this.values;
-    }
-
-    /**
-     * Set the values property: A list of additional error details related to the Pool resize error.
-     *
-     * @param values the values value to set.
-     * @return the ResizeError object itself.
-     */
-    public ResizeError setValues(List<NameValuePair> values) {
-        this.values = values;
-        return this;
     }
 }

@@ -2718,6 +2718,8 @@ maximum length of 20.
 """)
   name: string;
 
+  @secret
+  @visibility("create")
   @doc("The password for the user Account.")
   password: string;
 

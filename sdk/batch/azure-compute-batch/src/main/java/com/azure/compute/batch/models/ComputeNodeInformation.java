@@ -4,11 +4,11 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the Compute Node on which a Task ran. */
-@Fluent
+@Immutable
 public final class ComputeNodeInformation {
     /*
      * An identifier for the Node on which the Task ran, which can be passed when
@@ -48,7 +48,7 @@ public final class ComputeNodeInformation {
     private String taskRootDirectoryUrl;
 
     /** Creates an instance of ComputeNodeInformation class. */
-    public ComputeNodeInformation() {}
+    private ComputeNodeInformation() {}
 
     /**
      * Get the affinityId property: An identifier for the Node on which the Task ran, which can be passed when adding a
@@ -61,35 +61,12 @@ public final class ComputeNodeInformation {
     }
 
     /**
-     * Set the affinityId property: An identifier for the Node on which the Task ran, which can be passed when adding a
-     * Task to request that the Task be scheduled on this Compute Node.
-     *
-     * @param affinityId the affinityId value to set.
-     * @return the ComputeNodeInformation object itself.
-     */
-    public ComputeNodeInformation setAffinityId(String affinityId) {
-        this.affinityId = affinityId;
-        return this;
-    }
-
-    /**
      * Get the nodeUrl property: The URL of the Compute Node on which the Task ran.
      *
      * @return the nodeUrl value.
      */
     public String getNodeUrl() {
         return this.nodeUrl;
-    }
-
-    /**
-     * Set the nodeUrl property: The URL of the Compute Node on which the Task ran.
-     *
-     * @param nodeUrl the nodeUrl value to set.
-     * @return the ComputeNodeInformation object itself.
-     */
-    public ComputeNodeInformation setNodeUrl(String nodeUrl) {
-        this.nodeUrl = nodeUrl;
-        return this;
     }
 
     /**
@@ -102,34 +79,12 @@ public final class ComputeNodeInformation {
     }
 
     /**
-     * Set the poolId property: The ID of the Pool on which the Task ran.
-     *
-     * @param poolId the poolId value to set.
-     * @return the ComputeNodeInformation object itself.
-     */
-    public ComputeNodeInformation setPoolId(String poolId) {
-        this.poolId = poolId;
-        return this;
-    }
-
-    /**
      * Get the nodeId property: The ID of the Compute Node on which the Task ran.
      *
      * @return the nodeId value.
      */
     public String getNodeId() {
         return this.nodeId;
-    }
-
-    /**
-     * Set the nodeId property: The ID of the Compute Node on which the Task ran.
-     *
-     * @param nodeId the nodeId value to set.
-     * @return the ComputeNodeInformation object itself.
-     */
-    public ComputeNodeInformation setNodeId(String nodeId) {
-        this.nodeId = nodeId;
-        return this;
     }
 
     /**
@@ -142,33 +97,11 @@ public final class ComputeNodeInformation {
     }
 
     /**
-     * Set the taskRootDirectory property: The root directory of the Task on the Compute Node.
-     *
-     * @param taskRootDirectory the taskRootDirectory value to set.
-     * @return the ComputeNodeInformation object itself.
-     */
-    public ComputeNodeInformation setTaskRootDirectory(String taskRootDirectory) {
-        this.taskRootDirectory = taskRootDirectory;
-        return this;
-    }
-
-    /**
      * Get the taskRootDirectoryUrl property: The URL to the root directory of the Task on the Compute Node.
      *
      * @return the taskRootDirectoryUrl value.
      */
     public String getTaskRootDirectoryUrl() {
         return this.taskRootDirectoryUrl;
-    }
-
-    /**
-     * Set the taskRootDirectoryUrl property: The URL to the root directory of the Task on the Compute Node.
-     *
-     * @param taskRootDirectoryUrl the taskRootDirectoryUrl value to set.
-     * @return the ComputeNodeInformation object itself.
-     */
-    public ComputeNodeInformation setTaskRootDirectoryUrl(String taskRootDirectoryUrl) {
-        this.taskRootDirectoryUrl = taskRootDirectoryUrl;
-        return this;
     }
 }

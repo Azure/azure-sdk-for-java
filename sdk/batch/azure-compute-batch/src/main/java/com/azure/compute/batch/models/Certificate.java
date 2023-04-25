@@ -70,7 +70,7 @@ public final class Certificate {
     /*
      * The base64-encoded contents of the Certificate. The maximum size is 10KB.
      */
-    @JsonProperty(value = "data", required = true)
+    @JsonProperty(value = "data")
     private String data;
 
     /*
@@ -91,7 +91,7 @@ public final class Certificate {
      * @param data the data value to set.
      */
     @JsonCreator
-    public Certificate(@JsonProperty(value = "data", required = true) String data) {
+    public Certificate(@JsonProperty(value = "data") String data) {
         this.data = data;
     }
 
