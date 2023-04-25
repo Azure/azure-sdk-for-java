@@ -32,7 +32,7 @@ public class HelloWorld {
         RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required
             .withPort(6380) // Port is Required
             .withSsl(true) // SSL Connections are required.
-            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", defaultAzureCredential))) // Username and Token Credential are required.
+            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("<USERNAME>", defaultAzureCredential))) // Username and Token Credential are required.
             .withClientName("LettuceClient")
             .build();
 
@@ -62,7 +62,7 @@ public class HelloWorld {
     public static class AzureRedisCredentials implements RedisCredentials {
         // Note: The Scopes value will change as the Azure AD Authentication support hits public preview and eventually GA's.
         private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+            .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         private TokenCredential tokenCredential;
         private final String username;
 

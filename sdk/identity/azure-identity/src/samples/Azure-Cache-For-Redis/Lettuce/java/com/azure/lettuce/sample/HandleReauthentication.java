@@ -26,12 +26,14 @@ public class HandleReauthentication {
 
         // Fetch an AAD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
         // Host Name, Port, Username and Azure AD Token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-        RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, "<USERNAME>", accessToken);
+        String hostName = "<HOST_NAME>";
+        String userName = "<USER_NAME>";
+        RedisClient client = createLettuceRedisClient(hostName, 6380, userName, accessToken);
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
         int maxTries = 3;
@@ -52,7 +54,7 @@ public class HandleReauthentication {
 
                 if (!connection.isOpen()) {
                     // Recreate the client with a fresh token non-expired token as password for authentication.
-                    client = createLettuceRedisClient("<HOST_NAME>", 6380, "USERNAME", getAccessToken(defaultAzureCredential, trc));
+                    client = createLettuceRedisClient(hostName, 6380, userName, getAccessToken(defaultAzureCredential, trc));
                     connection = client.connect(StringCodec.UTF8);
                     sync = connection.sync();
                 }

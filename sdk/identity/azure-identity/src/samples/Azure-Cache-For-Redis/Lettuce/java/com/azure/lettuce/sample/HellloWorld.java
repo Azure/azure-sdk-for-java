@@ -27,14 +27,14 @@ public class HellloWorld {
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
-                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
 
         // Build Redis URI with host and authentication details.
         // TODO: Replace Host Name with Azure Cache for Redis Host Name.
-        RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required.
+        RedisURI redisURI = RedisURI.Builder.redis("azsdktest.redis.cache.windows.net") // Host Name is Required.
             .withPort(6380) //Port is Required.
             .withSsl(true) // SSL Connection is Required.
-            .withAuthentication("<USERNAME>", token) // Username is Required.
+            .withAuthentication("c21a53bd-e8d7-412c-b60f-19e9f7fb0c7e", token) // Username is Required.
             .withClientName("LettuceClient")
             .build();
 

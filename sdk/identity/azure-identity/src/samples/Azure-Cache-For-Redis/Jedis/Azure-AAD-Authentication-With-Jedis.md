@@ -18,13 +18,13 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.5.0</version>
+        <version>1.8.2</version>
     </dependency>
     
     <dependency>
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
-        <version>4.0.1</version>
+        <version>4.3.2</version>
     </dependency>
     ```
 
@@ -103,7 +103,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // SSL connection is required.
@@ -169,8 +169,8 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));;
+TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
 // SSL connection is required.
@@ -225,19 +225,18 @@ public static class TokenRefreshCache {
     private final TokenRequestContext tokenRequestContext;
     private final Timer timer;
     private volatile AccessToken accessToken;
-    private final Duration refreshOffset;
+    private final Duration maxRefreshOffset = Duration.ofMinutes(5);
+    private final Duration baseRefreshOffset = Duration.ofMinutes(2);
 
     /**
      * Creates an instance of TokenRefreshCache
      * @param tokenCredential the token credential to be used for authentication.
      * @param tokenRequestContext the token request context to be used for authentication.
-     * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
      */
-    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+    public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
         this.tokenCredential = tokenCredential;
         this.tokenRequestContext = tokenRequestContext;
         this.timer = new Timer();
-        this.refreshOffset = refreshOffset;
     }
 
     /**
@@ -266,8 +265,8 @@ public static class TokenRefreshCache {
 
     private long getTokenRefreshDelay() {
         return ((accessToken.getExpiresAt()
-            .minusSeconds(refreshOffset.getSeconds()))
-            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+            .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
+            .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
     }
 }
 ```
@@ -330,6 +329,7 @@ Jedis jedisClient = new AzureJedisClientBuilder()
 
 // Set a value against your key in the Redis cache.
 jedisClient.set("Az:key", "sample");
+System.out.println(jedisClient.get("Az:key"));
 
 // Close the Jedis Client
 jedisClient.close();
@@ -340,12 +340,12 @@ jedisClient.close();
 ##### Invalid Username Password Pair Error
 In this error scenario, the username provided and the access token used as password are not compatible.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
-* In **RBAC Rules**, you've assigned the required role to your user/service principal identity.
+* In **Data Access Configuration**, you've assigned the required role to your user/service principal identity.
 * In **Advanced settings**, the **AAD access authorization** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
-* In **RBAC Rules**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
+* In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
 

@@ -66,7 +66,7 @@ public class HandleReauthentication {
         RedisURI redisURI = RedisURI.Builder.redis(hostName)
             .withPort(port)
             .withSsl(true) // Targeting SSL Based 6380 port.
-            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("USERNAME", tokenCredential)))
+            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(username, tokenCredential)))
             .withClientName("LettuceClient")
             .build();
 
@@ -89,7 +89,7 @@ public class HandleReauthentication {
      */
     public static class AzureRedisCredentials implements RedisCredentials {
         private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+            .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
         private TokenCredential tokenCredential;
         private final String username;
 
