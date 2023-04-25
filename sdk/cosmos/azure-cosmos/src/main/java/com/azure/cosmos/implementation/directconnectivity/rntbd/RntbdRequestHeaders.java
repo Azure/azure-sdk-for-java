@@ -756,26 +756,28 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     {
         final String value = headers.get(HttpHeaders.PRIORITY_LEVEL);
 
-        final PriorityLevel priorityLevel = EnumUtils.getEnumIgnoreCase(
-            PriorityLevel.class,
-            value);
-
-        if (priorityLevel == null) {
-            final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
-                HttpHeaders.PRIORITY_LEVEL,
+        if (StringUtils.isNotEmpty(value)) {
+            final PriorityLevel priorityLevel = EnumUtils.getEnumIgnoreCase(
+                PriorityLevel.class,
                 value);
-            throw new IllegalStateException(reason);
-        }
 
-        switch (priorityLevel) {
-            case High:
-                this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.High.id());
-                break;
-            case Low:
-                this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.Low.id());
-                break;
-            default:
-                assert false;
+            if (priorityLevel == null) {
+                final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,
+                    HttpHeaders.PRIORITY_LEVEL,
+                    value);
+                throw new IllegalStateException(reason);
+            }
+
+            switch (priorityLevel) {
+                case High:
+                    this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.High.id());
+                    break;
+                case Low:
+                    this.getPriorityLevel().setValue(RntbdConstants.RntbdPriorityLevel.Low.id());
+                    break;
+                default:
+                    assert false;
+            }
         }
     }
 

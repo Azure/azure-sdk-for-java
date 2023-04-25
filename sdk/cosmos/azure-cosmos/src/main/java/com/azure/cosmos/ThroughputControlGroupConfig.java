@@ -110,7 +110,7 @@ public final class ThroughputControlGroupConfig {
      *
      * @param groupName throughput control group name.
      * @param priorityLevel throughput control group priority level.
-     * @return
+     * @return the throughput control group configuration.
      */
     public static ThroughputControlGroupConfig priorityGroupConfig(String groupName, PriorityLevel priorityLevel) {
         return new ThroughputControlGroupConfig(
