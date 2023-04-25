@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 /** Samples for EventHubs CreateOrUpdateAuthorizationRule. */
 public final class EventHubsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleCreate.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleCreate.json
      */
     /**
      * Sample code: EventHubAuthorizationRuleCreate.
@@ -31,6 +30,6 @@ public final class EventHubsCreateOrUpdateAuthorizationRuleSamples {
                 "sdk-EventHub-532",
                 "sdk-Authrules-2513",
                 new AuthorizationRuleInner().withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

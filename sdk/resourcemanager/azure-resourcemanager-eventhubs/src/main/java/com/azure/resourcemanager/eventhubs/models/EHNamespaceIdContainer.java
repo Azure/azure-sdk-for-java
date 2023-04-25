@@ -5,20 +5,24 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The full ARM ID of an Event Hubs Namespace. */
+/**
+ * The full ARM ID of an Event Hubs Namespace.
+ */
 @Fluent
 public final class EHNamespaceIdContainer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceIdContainer.class);
-
     /*
      * id parameter
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Creates an instance of EHNamespaceIdContainer class.
+     */
+    public EHNamespaceIdContainer() {
+    }
 
     /**
      * Get the id property: id parameter.

@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ConnectionState information. */
+/**
+ * ConnectionState information.
+ */
 @Fluent
 public final class ConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionState.class);
-
     /*
      * Status of the connection.
      */
@@ -25,6 +23,12 @@ public final class ConnectionState {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /**
+     * Creates an instance of ConnectionState class.
+     */
+    public ConnectionState() {
+    }
 
     /**
      * Get the status property: Status of the connection.

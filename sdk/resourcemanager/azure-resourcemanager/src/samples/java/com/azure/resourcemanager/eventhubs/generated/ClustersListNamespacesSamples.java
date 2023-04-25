@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters ListNamespaces. */
 public final class ClustersListNamespacesSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ListNamespacesInClusterGet.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ListNamespacesInClusterGet.json
      */
     /**
      * Sample code: ListNamespacesInCluster.
@@ -22,6 +20,6 @@ public final class ClustersListNamespacesSamples {
             .manager()
             .serviceClient()
             .getClusters()
-            .listNamespacesWithResponse("myResourceGroup", "testCluster", Context.NONE);
+            .listNamespacesWithResponse("myResourceGroup", "testCluster", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,19 +7,18 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.EntityStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Single item in List or Get Event Hub operation. */
+/**
+ * Single item in List or Get Event Hub operation.
+ */
 @Fluent
 public final class EventhubInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventhubInner.class);
-
     /*
      * Properties supplied to the Create Or Update Event Hub operation.
      */
@@ -37,6 +36,12 @@ public final class EventhubInner extends ProxyResource {
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /**
+     * Creates an instance of EventhubInner class.
+     */
+    public EventhubInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties supplied to the Create Or Update Event Hub operation.
@@ -185,6 +190,29 @@ public final class EventhubInner extends ProxyResource {
             this.innerProperties = new EventhubProperties();
         }
         this.innerProperties().withCaptureDescription(captureDescription);
+        return this;
+    }
+
+    /**
+     * Get the retentionDescription property: Event Hub retention settings.
+     *
+     * @return the retentionDescription value.
+     */
+    public RetentionDescription retentionDescription() {
+        return this.innerProperties() == null ? null : this.innerProperties().retentionDescription();
+    }
+
+    /**
+     * Set the retentionDescription property: Event Hub retention settings.
+     *
+     * @param retentionDescription the retentionDescription value to set.
+     * @return the EventhubInner object itself.
+     */
+    public EventhubInner withRetentionDescription(RetentionDescription retentionDescription) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventhubProperties();
+        }
+        this.innerProperties().withRetentionDescription(retentionDescription);
         return this;
     }
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SchemaRegistry Get. */
 public final class SchemaRegistryGetSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryGet.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/SchemaRegistry/SchemaRegistryGet.json
      */
     /**
      * Sample code: SchemaRegistryGet.
@@ -22,6 +20,7 @@ public final class SchemaRegistryGetSamples {
             .manager()
             .serviceClient()
             .getSchemaRegistries()
-            .getWithResponse("alitest", "ali-ua-test-eh-system-1", "testSchemaGroup1", Context.NONE);
+            .getWithResponse(
+                "alitest", "ali-ua-test-eh-system-1", "testSchemaGroup1", com.azure.core.util.Context.NONE);
     }
 }

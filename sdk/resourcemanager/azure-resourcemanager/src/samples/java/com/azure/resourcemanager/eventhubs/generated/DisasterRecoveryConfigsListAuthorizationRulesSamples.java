@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DisasterRecoveryConfigs ListAuthorizationRules. */
 public final class DisasterRecoveryConfigsListAuthorizationRulesSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
      */
     /**
      * Sample code: ListAuthorizationRules.
@@ -23,6 +21,9 @@ public final class DisasterRecoveryConfigsListAuthorizationRulesSamples {
             .serviceClient()
             .getDisasterRecoveryConfigs()
             .listAuthorizationRules(
-                "exampleResourceGroup", "sdk-Namespace-9080", "sdk-DisasterRecovery-4047", Context.NONE);
+                "exampleResourceGroup",
+                "sdk-Namespace-9080",
+                "sdk-DisasterRecovery-4047",
+                com.azure.core.util.Context.NONE);
     }
 }

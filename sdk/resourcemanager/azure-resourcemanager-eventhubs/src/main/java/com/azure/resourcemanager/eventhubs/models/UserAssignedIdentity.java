@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recognized Dictionary value. */
+/**
+ * Recognized Dictionary value.
+ */
 @Immutable
-public class UserAssignedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
-
+public final class UserAssignedIdentity {
     /*
      * Principal Id of user assigned identity
      */
@@ -25,6 +23,12 @@ public class UserAssignedIdentity {
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
+
+    /**
+     * Creates an instance of UserAssignedIdentity class.
+     */
+    public UserAssignedIdentity() {
+    }
 
     /**
      * Get the principalId property: Principal Id of user assigned identity.

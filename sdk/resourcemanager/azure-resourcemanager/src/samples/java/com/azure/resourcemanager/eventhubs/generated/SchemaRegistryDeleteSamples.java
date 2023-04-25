@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SchemaRegistry Delete. */
 public final class SchemaRegistryDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/SchemaRegistry/SchemaRegistryDelete.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/SchemaRegistry/SchemaRegistryDelete.json
      */
     /**
      * Sample code: SchemaRegistryDelete.
@@ -22,6 +20,7 @@ public final class SchemaRegistryDeleteSamples {
             .manager()
             .serviceClient()
             .getSchemaRegistries()
-            .deleteWithResponse("alitest", "ali-ua-test-eh-system-1", "testSchemaGroup1", Context.NONE);
+            .deleteWithResponse(
+                "alitest", "ali-ua-test-eh-system-1", "testSchemaGroup1", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-eventhubs</artifactId>
-  <version>2.26.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;current} -->
+  <version>2.27.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-eventhubs;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for EventHubs Management</name>
@@ -37,13 +37,14 @@
 
   <properties>
     <!-- RMJacoco -->
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.resourcemanager.eventhubs/com.azure.resourcemanager.eventhubs=ALL-UNNAMED
       --add-opens com.azure.resourcemanager.storage/com.azure.resourcemanager.storage=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

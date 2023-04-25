@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.eventhubs.models.ClusterSku;
 import com.azure.resourcemanager.eventhubs.models.ClusterSkuName;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/Clusters/ClusterPut.json
+     * x-ms-original-file: specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/Clusters/ClusterPut.json
      */
     /**
      * Sample code: ClusterPut.
@@ -34,7 +33,7 @@ public final class ClustersCreateOrUpdateSamples {
                     .withLocation("South Central US")
                     .withTags(mapOf("tag1", "value1", "tag2", "value2"))
                     .withSku(new ClusterSku().withName(ClusterSkuName.DEDICATED).withCapacity(1)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

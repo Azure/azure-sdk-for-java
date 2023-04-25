@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Namespace/EventHub Connection String. */
+/**
+ * Namespace/EventHub Connection String.
+ */
 @Immutable
 public final class AccessKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessKeysInner.class);
-
     /*
      * Primary connection string of the created namespace AuthorizationRule.
      */
@@ -39,15 +37,13 @@ public final class AccessKeysInner {
     private String aliasSecondaryConnectionString;
 
     /*
-     * A base64-encoded 256-bit primary key for signing and validating the SAS
-     * token.
+     * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
     @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
-     * A base64-encoded 256-bit primary key for signing and validating the SAS
-     * token.
+     * A base64-encoded 256-bit primary key for signing and validating the SAS token.
      */
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
@@ -57,6 +53,12 @@ public final class AccessKeysInner {
      */
     @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
+
+    /**
+     * Creates an instance of AccessKeysInner class.
+     */
+    public AccessKeysInner() {
+    }
 
     /**
      * Get the primaryConnectionString property: Primary connection string of the created namespace AuthorizationRule.
@@ -87,7 +89,7 @@ public final class AccessKeysInner {
     }
 
     /**
-     * Get the aliasSecondaryConnectionString property: Secondary connection string of the alias if GEO DR is enabled.
+     * Get the aliasSecondaryConnectionString property: Secondary  connection string of the alias if GEO DR is enabled.
      *
      * @return the aliasSecondaryConnectionString value.
      */

@@ -6,14 +6,13 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU parameters particular to a cluster instance. */
+/**
+ * SKU parameters particular to a cluster instance.
+ */
 @Fluent
 public final class ClusterSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterSku.class);
-
     /*
      * Name of this SKU.
      */
@@ -21,11 +20,16 @@ public final class ClusterSku {
     private ClusterSkuName name;
 
     /*
-     * The quantity of Event Hubs Cluster Capacity Units contained in this
-     * cluster.
+     * The quantity of Event Hubs Cluster Capacity Units contained in this cluster.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /**
+     * Creates an instance of ClusterSku class.
+     */
+    public ClusterSku() {
+    }
 
     /**
      * Get the name property: Name of this SKU.
@@ -74,9 +78,9 @@ public final class ClusterSku {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ClusterSku"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model ClusterSku"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterSku.class);
 }
