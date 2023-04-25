@@ -12,20 +12,24 @@
 
 // COMMAND ----------
 
-spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint_cf)
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey_cf)
+spark.conf.set("spark.sql.catalog.cosmosCatalogSrc", "com.azure.cosmos.spark.CosmosCatalog")
+spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.accountEndpoint", cosmosEndpoint_cf)
+spark.conf.set("spark.sql.catalog.cosmosCatalogSrc.spark.cosmos.accountKey", cosmosMasterKey_cf)
+
+spark.conf.set("spark.sql.catalog.cosmosCatalogTgt", "com.azure.cosmos.spark.CosmosCatalog")
+spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.accountEndpoint", cosmosEndpoint_write)
+spark.conf.set("spark.sql.catalog.cosmosCatalogTgt.spark.cosmos.accountKey", cosmosMasterKey_write)
 
 // COMMAND ----------
 
 // MAGIC %sql
 // MAGIC /* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
-// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.ThroughputControl -- replace database-v4 with source database name - ThroughputControl table will be created there
+// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalogSrc.`database-v4`.ThroughputControl -- replace database-v4 with source database name - ThroughputControl table will be created there
 // MAGIC USING cosmos.oltp
 // MAGIC OPTIONS(spark.cosmos.database = 'database-v4') -- replace database-v4 with the name of your source database. Do NOT change value partitionKeyPath = '/groupId' below - it must be named '/groupId' for Throughput control feature to work
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
 // MAGIC 
-// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.customer_v2 -- replace database-v4 with the name of your source database, and customer_v2 with what you want to name your target container - it will be created here
+// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalogTgt.`database-v4`.customer_v2 -- replace database-v4 with the name of your source database, and customer_v2 with what you want to name your target container - it will be created here
 // MAGIC USING cosmos.oltp 
 // MAGIC -- replace /customerId with the name of the field that you want to be used as the partition key in the new version of the container
 // MAGIC TBLPROPERTIES(partitionKeyPath = '/customerId', autoScaleMaxThroughput = '100000', indexingPolicy = 'OnlySystemProperties');
