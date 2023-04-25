@@ -1,8 +1,22 @@
 # Release History
 
-## 5.1.0-beta.1 (Unreleased)
-Upgrade Spring Boot dependencies version to 3.0.5 and Spring Cloud dependencies version to 2022.0.2
-Upgrade Spring Boot dependencies version to 3.0.2 and Spring Cloud dependencies version to 2022.0.1.
+## 5.1.0 (2023-04-26)
+- This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.2. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.11.
+- Upgrade `azure-resourcemanager` to 2.25.0.
+
+#### Features Added
+- Added the following artifacts into current bom file:
+    - spring-cloud-azure-starter-appconfiguration-config
+    - spring-cloud-azure-appconfiguration-config
+    - spring-cloud-azure-appconfiguration-config-web
+    - spring-cloud-azure-feature-management
+    - spring-cloud-azure-feature-management-web
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
