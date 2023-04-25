@@ -64,12 +64,12 @@ public class InterceptorManager implements AutoCloseable {
     private final TestMode testMode;
     private final boolean allowedToReadRecordedValues;
     private final boolean allowedToRecordValues;
-    private final boolean skipRecordingRequestBody;
 
     // Stores a map of all the HTTP properties in a session
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
     private final boolean testProxyEnabled;
+    private final boolean skipRecordingRequestBody;
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
@@ -121,12 +121,11 @@ public class InterceptorManager implements AutoCloseable {
      */
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
-            testContextManager.getTestMode(), testContextManager.doNotRecordTest(), testContextManager.isTestProxyEnabled(),
-            testContextManager.skipRecordingRequestBody());
+            testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord,
-        boolean enableTestProxy, boolean skipRecordingRequestBody) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -137,7 +136,7 @@ public class InterceptorManager implements AutoCloseable {
         this.skipRecordingRequestBody = skipRecordingRequestBody;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
-        this.allowedToRecordValues = (testMode == TestMode.RECORD && doNotRecord && skipRecordingRequestBody);
+        this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
         if (!enableTestProxy && allowedToReadRecordedValues) {
             this.recordedData = readDataFromFile();
         } else if (!enableTestProxy && allowedToRecordValues) {

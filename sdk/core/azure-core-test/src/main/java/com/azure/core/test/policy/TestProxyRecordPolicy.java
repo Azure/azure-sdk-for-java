@@ -41,14 +41,13 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
-    public static final String RECORD_MODE = "record";
     private final HttpClient client;
     private final URL proxyUrl;
     private final boolean skipRecordingRequestBody;
     private String xRecordingId;
-
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
+    public static final String RECORD_MODE = "record";
 
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
@@ -176,7 +175,5 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private boolean isRecording() {
         return xRecordingId != null;
     }
-
-
 }
 

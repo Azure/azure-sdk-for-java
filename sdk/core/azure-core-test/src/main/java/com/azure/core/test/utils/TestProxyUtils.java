@@ -34,7 +34,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
-import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_SKIP;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
 import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 
@@ -43,6 +42,7 @@ import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
  */
 public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
+    private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
 
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<String>(
