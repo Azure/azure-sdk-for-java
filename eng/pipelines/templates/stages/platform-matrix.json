@@ -60,7 +60,7 @@
         "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
       "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "jdk",
+      "AZURE_TEST_HTTP_CLIENTS": "jdk-httpclient",
       "TestFromSource": true,
       "RunAggregateReports": false,
       "TestGoals": "verify",
@@ -71,7 +71,7 @@
         "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" }
       },
       "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "jdk",
+      "AZURE_TEST_HTTP_CLIENTS": "jdk-httpclient",
       "TestFromSource": false,
       "RunAggregateReports": true,
       "TestGoals": "verify",
@@ -82,7 +82,7 @@
         "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
       "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "jdk",
+      "AZURE_TEST_HTTP_CLIENTS": "jdk-httpclient",
       "TestFromSource": false,
       "RunAggregateReports": false,
       "TestGoals": "surefire:test",
