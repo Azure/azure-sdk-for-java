@@ -13,6 +13,7 @@ import com.azure.resourcemanager.iothub.models.FeedbackProperties;
 import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSku;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
+import com.azure.resourcemanager.iothub.models.IpVersion;
 import com.azure.resourcemanager.iothub.models.MessagingEndpointProperties;
 import com.azure.resourcemanager.iothub.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.iothub.models.NetworkRuleSetIpRule;
@@ -30,7 +31,7 @@ import java.util.Map;
 /** Samples for IotHubResource CreateOrUpdate. */
 public final class IotHubResourceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_createOrUpdate.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_createOrUpdate.json
      */
     /**
      * Sample code: IotHubResource_CreateOrUpdate.
@@ -109,7 +110,8 @@ public final class IotHubResourceCreateOrUpdateSamples {
                                     .withMaxDeliveryCount(10)))
                     .withFeatures(Capabilities.NONE)
                     .withEnableDataResidency(true)
-                    .withRootCertificate(new RootCertificateProperties().withEnableRootCertificateV2(true)))
+                    .withRootCertificate(new RootCertificateProperties().withEnableRootCertificateV2(true))
+                    .withIpVersion(IpVersion.IPV4IPV6))
             .create();
     }
 

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.MonitoredResource;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
@@ -33,8 +32,7 @@ public final class MonitoredResourcesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"cnjbkcnxdhbt\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"ywpnvjt\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"y\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"e\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +61,10 @@ public final class MonitoredResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<MonitoredResource> response =
-            manager.monitoredResources().list("nmic", "kvceoveilovnotyf", Context.NONE);
+            manager.monitoredResources().list("imjm", "xieduugidyjrr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cnjbkcnxdhbt", response.iterator().next().id());
-        Assertions.assertEquals(SendingLogs.TRUE, response.iterator().next().sendingLogs());
-        Assertions.assertEquals("ywpnvjt", response.iterator().next().reasonForLogsStatus());
+        Assertions.assertEquals("y", response.iterator().next().id());
+        Assertions.assertEquals(SendingLogs.FALSE, response.iterator().next().sendingLogs());
+        Assertions.assertEquals("e", response.iterator().next().reasonForLogsStatus());
     }
 }

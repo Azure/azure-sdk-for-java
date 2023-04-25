@@ -1,26 +1,43 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/anomalies/dimension/query?$maxpagesize=10",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1d8ee91b-44b7-4b02-80a1-b4d23d00074f",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "79ae02f2-2d49-4cb2-8d72-d2737cfd30e3",
-      "content-length" : "27",
-      "x-envoy-upstream-service-time" : "244",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "79ae02f2-2d49-4cb2-8d72-d2737cfd30e3",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[\"__SUM__\",\"JPN\"]}",
-      "Date" : "Fri, 08 Apr 2022 23:50:07 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7/anomalies/dimension/query?$maxpagesize=10",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "92",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:01 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "b3018dc2-04ef-488a-bd57-b411529c1489",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "startTime": "2022-01-01T00:00:00Z",
+        "endTime": "2022-03-22T00:00:00Z",
+        "dimensionName": "Dim1"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "3ed5693e-db96-490f-8048-b0f30a2c3e78",
+        "Content-Length": "27",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:02 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "228",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "3ed5693e-db96-490f-8048-b0f30a2c3e78"
+      },
+      "ResponseBody": {
+        "value": [
+          "__SUM__",
+          "JPN"
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

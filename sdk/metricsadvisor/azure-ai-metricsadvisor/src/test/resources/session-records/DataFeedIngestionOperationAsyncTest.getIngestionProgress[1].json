@@ -1,25 +1,36 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionProgress",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "14756f83-914b-4d97-a663-c28a69c5de8b"
-    },
-    "Response" : {
-      "x-request-id" : "c1264101-426d-45ea-9fa1-b898998009dc",
-      "content-length" : "96",
-      "x-envoy-upstream-service-time" : "251",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c1264101-426d-45ea-9fa1-b898998009dc",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"latestSuccessTimestamp\":\"2022-04-07T00:00:00Z\",\"latestActiveTimestamp\":\"2022-04-07T00:00:00Z\"}",
-      "Date" : "Fri, 08 Apr 2022 23:50:29 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/dataFeeds/6e48e476-33e6-4113-a299-a5740bc0db47/ingestionProgress",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Mon, 17 Apr 2023 23:00:20 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "79e22bc2-bff0-4de8-9c01-26afbb7d9b55",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "5ac4aa66-da08-43ec-8a3f-480a164dce48",
+        "Content-Length": "96",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:19 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "233",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "5ac4aa66-da08-43ec-8a3f-480a164dce48"
+      },
+      "ResponseBody": {
+        "latestSuccessTimestamp": "2023-04-16T00:00:00Z",
+        "latestActiveTimestamp": "2023-04-16T00:00:00Z"
+      }
+    }
+  ],
+  "Variables": {}
 }

@@ -14,8 +14,8 @@ import java.util.Map;
 
 /**
  * Specifies information about the capacity reservation group that the capacity reservations should be assigned to.
- * &lt;br&gt;&lt;br&gt; Currently, a capacity reservation can only be added to a capacity reservation group at creation
- * time. An existing capacity reservation cannot be added or moved to another capacity reservation group.
+ * Currently, a capacity reservation can only be added to a capacity reservation group at creation time. An existing
+ * capacity reservation cannot be added or moved to another capacity reservation group.
  */
 @Fluent
 public final class CapacityReservationGroupInner extends Resource {

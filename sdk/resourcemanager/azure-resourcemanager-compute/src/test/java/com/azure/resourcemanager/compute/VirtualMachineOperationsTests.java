@@ -205,6 +205,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotNull(foundVM);
         Assertions.assertEquals(region, foundVM.region());
         Assertions.assertEquals("Windows_Server", foundVM.licenseType());
+        Assertions.assertNotNull(foundVM.timeCreated());
 
         // Fetch instance view
         PowerState powerState = foundVM.powerState();
@@ -1371,8 +1372,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         flexibleVMSS.refresh();
         Assertions.assertEquals(flexibleVMSS.id(), regularVM.virtualMachineScaleSetId());
         Assertions.assertEquals(2, flexibleVMSS.capacity());
-        // Flexible vmss vm instance ids are all null, which means VMs in flexible vmss can only be operated by individual `VirtualMachine` APIs.
-        Assertions.assertTrue(flexibleVMSS.virtualMachines().list().stream().allMatch(vm -> vm.instanceId() == null));
+//        // Flexible vmss vm instance ids are all null, which means VMs in flexible vmss can only be operated by individual `VirtualMachine` APIs.
+//        Assertions.assertTrue(flexibleVMSS.virtualMachines().list().stream().allMatch(vm -> vm.instanceId() == null));
+        // as 2023-03-01, instanceId is not null for FlexibleOrchestrationMode
 
         regularVM.deallocate();
         Assertions.assertEquals(regularVM.powerState(), PowerState.DEALLOCATED);

@@ -17,7 +17,7 @@ public final class RestorePointSourceMetadata {
     /*
      * Gets the hardware profile.
      */
-    @JsonProperty(value = "hardwareProfile")
+    @JsonProperty(value = "hardwareProfile", access = JsonProperty.Access.WRITE_ONLY)
     private HardwareProfile hardwareProfile;
 
     /*
@@ -29,44 +29,50 @@ public final class RestorePointSourceMetadata {
     /*
      * Gets the OS profile.
      */
-    @JsonProperty(value = "osProfile")
+    @JsonProperty(value = "osProfile", access = JsonProperty.Access.WRITE_ONLY)
     private OSProfile osProfile;
 
     /*
      * Gets the diagnostics profile.
      */
-    @JsonProperty(value = "diagnosticsProfile")
+    @JsonProperty(value = "diagnosticsProfile", access = JsonProperty.Access.WRITE_ONLY)
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
      * Gets the license type, which is for bring your own license scenario.
      */
-    @JsonProperty(value = "licenseType")
+    @JsonProperty(value = "licenseType", access = JsonProperty.Access.WRITE_ONLY)
     private String licenseType;
 
     /*
      * Gets the virtual machine unique id.
      */
-    @JsonProperty(value = "vmId")
+    @JsonProperty(value = "vmId", access = JsonProperty.Access.WRITE_ONLY)
     private String vmId;
 
     /*
      * Gets the security profile.
      */
-    @JsonProperty(value = "securityProfile")
+    @JsonProperty(value = "securityProfile", access = JsonProperty.Access.WRITE_ONLY)
     private SecurityProfile securityProfile;
 
     /*
      * Location of the VM from which the restore point was created.
      */
-    @JsonProperty(value = "location")
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * UserData associated with the source VM for which restore point is captured, which is a base-64 encoded value.
      */
-    @JsonProperty(value = "userData")
+    @JsonProperty(value = "userData", access = JsonProperty.Access.WRITE_ONLY)
     private String userData;
+
+    /*
+     * HyperVGeneration of the source VM for which restore point is captured.
+     */
+    @JsonProperty(value = "hyperVGeneration", access = JsonProperty.Access.WRITE_ONLY)
+    private HyperVGenerationTypes hyperVGeneration;
 
     /** Creates an instance of RestorePointSourceMetadata class. */
     public RestorePointSourceMetadata() {
@@ -79,17 +85,6 @@ public final class RestorePointSourceMetadata {
      */
     public HardwareProfile hardwareProfile() {
         return this.hardwareProfile;
-    }
-
-    /**
-     * Set the hardwareProfile property: Gets the hardware profile.
-     *
-     * @param hardwareProfile the hardwareProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withHardwareProfile(HardwareProfile hardwareProfile) {
-        this.hardwareProfile = hardwareProfile;
-        return this;
     }
 
     /**
@@ -122,34 +117,12 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the osProfile property: Gets the OS profile.
-     *
-     * @param osProfile the osProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withOsProfile(OSProfile osProfile) {
-        this.osProfile = osProfile;
-        return this;
-    }
-
-    /**
      * Get the diagnosticsProfile property: Gets the diagnostics profile.
      *
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
         return this.diagnosticsProfile;
-    }
-
-    /**
-     * Set the diagnosticsProfile property: Gets the diagnostics profile.
-     *
-     * @param diagnosticsProfile the diagnosticsProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
-        this.diagnosticsProfile = diagnosticsProfile;
-        return this;
     }
 
     /**
@@ -162,34 +135,12 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the licenseType property: Gets the license type, which is for bring your own license scenario.
-     *
-     * @param licenseType the licenseType value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withLicenseType(String licenseType) {
-        this.licenseType = licenseType;
-        return this;
-    }
-
-    /**
      * Get the vmId property: Gets the virtual machine unique id.
      *
      * @return the vmId value.
      */
     public String vmId() {
         return this.vmId;
-    }
-
-    /**
-     * Set the vmId property: Gets the virtual machine unique id.
-     *
-     * @param vmId the vmId value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withVmId(String vmId) {
-        this.vmId = vmId;
-        return this;
     }
 
     /**
@@ -202,34 +153,12 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the securityProfile property: Gets the security profile.
-     *
-     * @param securityProfile the securityProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withSecurityProfile(SecurityProfile securityProfile) {
-        this.securityProfile = securityProfile;
-        return this;
-    }
-
-    /**
      * Get the location property: Location of the VM from which the restore point was created.
      *
      * @return the location value.
      */
     public String location() {
         return this.location;
-    }
-
-    /**
-     * Set the location property: Location of the VM from which the restore point was created.
-     *
-     * @param location the location value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withLocation(String location) {
-        this.location = location;
-        return this;
     }
 
     /**
@@ -243,15 +172,12 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the userData property: UserData associated with the source VM for which restore point is captured, which is a
-     * base-64 encoded value.
+     * Get the hyperVGeneration property: HyperVGeneration of the source VM for which restore point is captured.
      *
-     * @param userData the userData value to set.
-     * @return the RestorePointSourceMetadata object itself.
+     * @return the hyperVGeneration value.
      */
-    public RestorePointSourceMetadata withUserData(String userData) {
-        this.userData = userData;
-        return this;
+    public HyperVGenerationTypes hyperVGeneration() {
+        return this.hyperVGeneration;
     }
 
     /**

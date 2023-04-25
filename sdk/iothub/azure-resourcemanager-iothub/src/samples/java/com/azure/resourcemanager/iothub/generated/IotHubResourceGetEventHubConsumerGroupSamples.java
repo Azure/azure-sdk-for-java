@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotHubResource GetEventHubConsumerGroup. */
 public final class IotHubResourceGetEventHubConsumerGroupSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_getconsumergroup.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getconsumergroup.json
      */
     /**
      * Sample code: IotHubResource_ListEventHubConsumerGroups.
@@ -20,6 +18,7 @@ public final class IotHubResourceGetEventHubConsumerGroupSamples {
         com.azure.resourcemanager.iothub.IotHubManager manager) {
         manager
             .iotHubResources()
-            .getEventHubConsumerGroupWithResponse("myResourceGroup", "testHub", "events", "test", Context.NONE);
+            .getEventHubConsumerGroupWithResponse(
+                "myResourceGroup", "testHub", "events", "test", com.azure.core.util.Context.NONE);
     }
 }
