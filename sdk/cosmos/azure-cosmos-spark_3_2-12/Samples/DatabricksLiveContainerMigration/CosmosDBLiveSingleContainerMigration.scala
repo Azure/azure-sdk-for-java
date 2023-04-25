@@ -16,8 +16,8 @@ dbutils.widgets.text("cosmosSourceContainerThroughputControl", "0.95") // target
 // target config
 dbutils.widgets.text("cosmosTargetDatabaseName", "") // enter the name of your target database
 dbutils.widgets.text("cosmosTargetContainerName", "") // enter the name of the target container
-dbutils.widgets.text("cosmosTargetContainerPartitionKey", "/pk") // enter the partition key used in the target container with forward slash "/" at start
-dbutils.widgets.text("cosmosTargetContainerProvisionedThroughput", "10000") // target container provisioned throughput
+dbutils.widgets.text("cosmosTargetContainerPartitionKey", "/pk") // replace "pk" with partition key field used by the target container (keep forward slash "/" at start)
+dbutils.widgets.text("cosmosTargetContainerProvisionedThroughput", "10000") // enter the provisioned throughput for the target container
 
 // COMMAND ----------
 
@@ -36,22 +36,30 @@ val cosmosTargetContainerProvisionedThroughput = dbutils.widgets.get("cosmosTarg
 
 // COMMAND ----------
 
-spark.conf.set("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
-spark.conf.set("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
+import org.apache.spark.sql.SparkSession
+val spark = SparkSession
+  .builder()
+  .config("spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
+  .config("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
+  .config("spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
+  .getOrCreate()
 
 // COMMAND ----------
 
-// MAGIC %sql
-// MAGIC /* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
-// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`$cosmosSourceDatabaseName`.ThroughputControl -- source database name - ThroughputControl table will be created there
-// MAGIC USING cosmos.oltp
-// MAGIC OPTIONS(spark.cosmos.database = '$cosmosSourceDatabaseName') -- reference source database. Do NOT change value partitionKeyPath = '/groupId' below - it must be named '/groupId' for Throughput control feature to work
-// MAGIC TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1');
-// MAGIC 
-// MAGIC CREATE TABLE IF NOT EXISTS cosmosCatalog.`$cosmosTargetDatabaseName`.`$cosmosTargetContainerName` -- reference target database and container - it will be created here
-// MAGIC USING cosmos.oltp 
-// MAGIC TBLPROPERTIES(partitionKeyPath = '$cosmosTargetContainerPartitionKey', autoScaleMaxThroughput = $cosmosTargetContainerProvisionedThroughput, indexingPolicy = 'OnlySystemProperties');
+var createThroughputControl = s"""
+/* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
+CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosSourceDatabaseName}.ThroughputControl -- source database name - ThroughputControl table will be created there
+USING cosmos.oltp
+OPTIONS(spark.cosmos.database = '${cosmosSourceDatabaseName}') -- reference source database. Do NOT change value partitionKeyPath = '/groupId' below - it must be named '/groupId' for Throughput control feature to work
+TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1')
+"""
+var createTargetResources= s"""
+CREATE TABLE IF NOT EXISTS cosmosCatalog.$cosmosTargetDatabaseName.$cosmosTargetContainerName -- reference target database and container - it will be created here
+USING cosmos.oltp 
+TBLPROPERTIES(partitionKeyPath = '$cosmosTargetContainerPartitionKey', autoScaleMaxThroughput = $cosmosTargetContainerProvisionedThroughput, indexingPolicy = 'OnlySystemProperties')
+"""
+spark.sql(createThroughputControl)
+spark.sql(createTargetResources)
 
 // COMMAND ----------
 
