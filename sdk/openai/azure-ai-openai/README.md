@@ -38,7 +38,7 @@ Various documentation is available to help you get started
 
 ## Examples
 
-```java azure.ai.openai.readme
+```java com.azure.ai.openai.readme
 ```
 
 ## Troubleshooting
