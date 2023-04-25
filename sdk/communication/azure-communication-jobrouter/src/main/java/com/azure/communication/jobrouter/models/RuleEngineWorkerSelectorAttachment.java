@@ -23,6 +23,8 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
      * ExpressionRule: A rule providing inline expression rules.
      * AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure
      * Function.
+     * WebhookRule: A rule providing a binding to a webserver following
+     * OAuth2.0 authentication protocol.
      */
     @JsonProperty(value = "rule", required = true)
     private RouterRule rule;
@@ -32,7 +34,8 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @return the rule value.
      */
@@ -45,7 +48,8 @@ public final class RuleEngineWorkerSelectorAttachment extends WorkerSelectorAtta
      *
      * <p>StaticRule: A rule providing static rules that always return the same result, regardless of input.
      * DirectMapRule: A rule that return the same labels as the input labels. ExpressionRule: A rule providing inline
-     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
+     * expression rules. AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function. WebhookRule:
+     * A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
      *
      * @param rule the rule value to set.
      * @return the RuleEngineWorkerSelectorAttachment object itself.

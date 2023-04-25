@@ -38,12 +38,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** A builder for creating a new instance of the AzureCommunicationRoutingService type. */
-@ServiceClientBuilder(serviceClients = {AzureCommunicationRoutingServiceImpl.class})
-public final class AzureCommunicationRoutingServiceImplBuilder
-        implements HttpTrait<AzureCommunicationRoutingServiceImplBuilder>,
-                ConfigurationTrait<AzureCommunicationRoutingServiceImplBuilder>,
-                EndpointTrait<AzureCommunicationRoutingServiceImplBuilder> {
+/** A builder for creating a new instance of the AzureCommunicationServices type. */
+@ServiceClientBuilder(serviceClients = {AzureCommunicationServicesImpl.class})
+public final class AzureCommunicationServicesImplBuilder
+        implements HttpTrait<AzureCommunicationServicesImplBuilder>,
+                ConfigurationTrait<AzureCommunicationServicesImplBuilder>,
+                EndpointTrait<AzureCommunicationServicesImplBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
@@ -52,9 +52,9 @@ public final class AzureCommunicationRoutingServiceImplBuilder
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the AzureCommunicationRoutingServiceImplBuilder. */
+    /** Create an instance of the AzureCommunicationServicesImplBuilder. */
     @Generated
-    public AzureCommunicationRoutingServiceImplBuilder() {
+    public AzureCommunicationServicesImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -66,7 +66,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder pipeline(HttpPipeline pipeline) {
+    public AzureCommunicationServicesImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -79,7 +79,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder httpClient(HttpClient httpClient) {
+    public AzureCommunicationServicesImplBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -92,7 +92,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public AzureCommunicationServicesImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -106,7 +106,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder clientOptions(ClientOptions clientOptions) {
+    public AzureCommunicationServicesImplBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -119,7 +119,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder retryOptions(RetryOptions retryOptions) {
+    public AzureCommunicationServicesImplBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -127,7 +127,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public AzureCommunicationServicesImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         pipelinePolicies.add(customPolicy);
         return this;
     }
@@ -141,7 +141,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder configuration(Configuration configuration) {
+    public AzureCommunicationServicesImplBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -154,7 +154,7 @@ public final class AzureCommunicationRoutingServiceImplBuilder
     /** {@inheritDoc}. */
     @Generated
     @Override
-    public AzureCommunicationRoutingServiceImplBuilder endpoint(String endpoint) {
+    public AzureCommunicationServicesImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -168,10 +168,10 @@ public final class AzureCommunicationRoutingServiceImplBuilder
      * Sets Api Version.
      *
      * @param apiVersion the apiVersion value.
-     * @return the AzureCommunicationRoutingServiceImplBuilder.
+     * @return the AzureCommunicationServicesImplBuilder.
      */
     @Generated
-    public AzureCommunicationRoutingServiceImplBuilder apiVersion(String apiVersion) {
+    public AzureCommunicationServicesImplBuilder apiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -185,10 +185,10 @@ public final class AzureCommunicationRoutingServiceImplBuilder
      * Sets The serializer to serialize an object into a string.
      *
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AzureCommunicationRoutingServiceImplBuilder.
+     * @return the AzureCommunicationServicesImplBuilder.
      */
     @Generated
-    public AzureCommunicationRoutingServiceImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AzureCommunicationServicesImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
@@ -203,21 +203,21 @@ public final class AzureCommunicationRoutingServiceImplBuilder
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the AzureCommunicationRoutingServiceImplBuilder.
+     * @return the AzureCommunicationServicesImplBuilder.
      */
     @Generated
-    public AzureCommunicationRoutingServiceImplBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public AzureCommunicationServicesImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of AzureCommunicationRoutingServiceImpl with the provided parameters.
+     * Builds an instance of AzureCommunicationServicesImpl with the provided parameters.
      *
-     * @return an instance of AzureCommunicationRoutingServiceImpl.
+     * @return an instance of AzureCommunicationServicesImpl.
      */
     @Generated
-    public AzureCommunicationRoutingServiceImpl buildClient() {
+    public AzureCommunicationServicesImpl buildClient() {
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
@@ -227,8 +227,8 @@ public final class AzureCommunicationRoutingServiceImplBuilder
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureCommunicationRoutingServiceImpl client =
-                new AzureCommunicationRoutingServiceImpl(pipeline, serializerAdapter, endpoint, apiVersion);
+        AzureCommunicationServicesImpl client =
+                new AzureCommunicationServicesImpl(pipeline, serializerAdapter, endpoint, apiVersion);
         return client;
     }
 

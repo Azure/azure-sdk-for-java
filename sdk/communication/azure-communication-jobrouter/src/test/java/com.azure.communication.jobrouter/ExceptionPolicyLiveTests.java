@@ -9,6 +9,7 @@ import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.options.CreateExceptionPolicyOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -20,18 +21,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ExceptionPolicyLiveTests extends JobRouterTestBase {
     private RouterAdministrationClient routerAdminClient;
 
-    @Override
-    protected void beforeTest() {
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createExceptionPolicy() {
+    public void createExceptionPolicy(HttpClient httpClient) {
         // Setup
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String exceptionPolicyId = String.format("%s-CreateExceptionPolicy-ExceptionPolicy", JAVA_LIVE_TESTS);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
