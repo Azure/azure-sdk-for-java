@@ -1,5 +1,11 @@
 # Release History
 
+## 2.26.1 (2023-04-25)
+
+### Breaking Changes
+
+- Kudu deployment is now using AAD Auth instead of Basic Auth.
+
 ## 2.26.0 (2023-04-21)
 
 ### Other Changes
