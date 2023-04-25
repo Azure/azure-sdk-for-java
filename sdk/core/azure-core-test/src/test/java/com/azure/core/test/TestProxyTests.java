@@ -59,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
 @DisabledIfSystemProperty(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
 public class TestProxyTests extends TestProxyTestBase {
+    public static final String TEST_DATA = "{\"test\":\"Proxy\"}";
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -131,6 +132,13 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
+    @DoNotRecord(skipRecordingRequestBody = true)
+    public void testDoNotPlaybackSkipRequestBody() {
+        testResourceNamer.now();
+    }
+
+    @Test
+    @Tag("Playback")
     public void testMismatch() {
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
@@ -146,6 +154,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    @DoNotRecord(skipRecordingRequestBody = true)
     public void testRecordWithPath() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -159,7 +168,9 @@ public class TestProxyTests extends TestProxyTestBase {
         }
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url).setBody(TEST_DATA)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(TEST_DATA.length()));
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());

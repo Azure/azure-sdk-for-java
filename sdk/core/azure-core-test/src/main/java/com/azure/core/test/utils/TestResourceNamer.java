@@ -38,6 +38,7 @@ public class TestResourceNamer extends ResourceNamer {
         this(name,
             testMode,
             false,
+            false,
             null,
             null,
             storage);
@@ -57,12 +58,13 @@ public class TestResourceNamer extends ResourceNamer {
         this(testContextManager.getTestName(),
             testContextManager.getTestMode(),
             testContextManager.doNotRecordTest(),
+            testContextManager.skipRecordingRequestBody(),
             null,
             null,
             storage
         );
         // Only need recordedData if the test is running in playback or record.
-        if (testContextManager.getTestMode() != TestMode.LIVE && !testContextManager.doNotRecordTest() && !testContextManager.isTestProxyEnabled()) {
+        if (testContextManager.getTestMode() != TestMode.LIVE && !testContextManager.doNotRecordTest() && !testContextManager.skipRecordingRequestBody() && !testContextManager.isTestProxyEnabled()) {
             Objects.requireNonNull(storage, "'recordedData' cannot be null.");
         }
 
@@ -80,6 +82,7 @@ public class TestResourceNamer extends ResourceNamer {
         this(testContextManager.getTestName(),
             testContextManager.getTestMode(),
             testContextManager.doNotRecordTest(),
+            testContextManager.skipRecordingRequestBody(),
             storeVariable,
             getVariable,
             null
@@ -89,13 +92,14 @@ public class TestResourceNamer extends ResourceNamer {
     private TestResourceNamer(String name,
                               TestMode testMode,
                               boolean doNotRecord,
+                              boolean skipRecordingRequestBody,
                               Consumer<String> storeVariable,
                               Supplier<String> getVariable,
                               RecordedData storage) {
         super(name);
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
-        this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
+        this.allowedToRecordValues = (testMode == TestMode.RECORD && doNotRecord && skipRecordingRequestBody);
 
         if (this.allowedToReadRecordedValues || this.allowedToRecordValues) {
             if (storage != null) {

@@ -21,6 +21,8 @@ public class TestContextManager {
     private final boolean testRan;
 
     private Integer testIteration;
+    private final boolean skipRecordingRequestBody;
+
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -49,9 +51,11 @@ public class TestContextManager {
         boolean skipInPlayback;
         if (doNotRecordAnnotation != null) {
             this.doNotRecord = true;
+            this.skipRecordingRequestBody = doNotRecordAnnotation.skipRecordingRequestBody();
             skipInPlayback = doNotRecordAnnotation.skipInPlayback();
         } else {
             this.doNotRecord = false;
+            this.skipRecordingRequestBody = false;
             skipInPlayback = false;
         }
 
@@ -113,6 +117,14 @@ public class TestContextManager {
      */
     public boolean doNotRecordTest() {
         return doNotRecord;
+    }
+
+    /**
+     * Returns whether the test should record the request bodies when ran in {@link TestMode#RECORD}.
+     * @return Flag indicating whether to record request bodies.
+     */
+    public boolean skipRecordingRequestBody() {
+        return skipRecordingRequestBody;
     }
 
     /**

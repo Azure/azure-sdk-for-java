@@ -18,6 +18,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Pass {@code true} for {@link #skipInPlayback() skipInPlayback} to indicate that the test shouldn't run when tests are
  * ran in {@link TestMode#PLAYBACK}. A common case for setting this to {@code true} is when the test has either
  * sensitive content that cannot be redacted or calls into code that cannot be mocked.
+ *
+ * <p>
+ * Pass {@code true} fpr {@link #skipRecordingRequestBody() skipRecordingRequestBody} to indicate the test to
+ * disable storing the request body for a specific request.
+ * <p/>
  */
 @Retention(RUNTIME)
 @Target({METHOD})
@@ -29,4 +34,11 @@ public @interface DoNotRecord {
      * @return Flag indicating if the test will be ignored during a playback test run.
      */
     boolean skipInPlayback() default false;
+
+    /**
+     * Returns whether the test will skip recording request bodies when test run in Record mode.
+     *
+     * @return Flag indicating if the test skip recording request bodies when test run in Record mode.
+     */
+    boolean skipRecordingRequestBody() default false;
 }
