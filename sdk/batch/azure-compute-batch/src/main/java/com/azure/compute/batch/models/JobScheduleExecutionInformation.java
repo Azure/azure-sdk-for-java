@@ -4,12 +4,12 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Contains information about Jobs that have been and will be run under a Job Schedule. */
-@Fluent
+@Immutable
 public final class JobScheduleExecutionInformation {
     /*
      * This property is meaningful only if the schedule is in the active state when
@@ -33,7 +33,7 @@ public final class JobScheduleExecutionInformation {
     private OffsetDateTime endTime;
 
     /** Creates an instance of JobScheduleExecutionInformation class. */
-    public JobScheduleExecutionInformation() {}
+    private JobScheduleExecutionInformation() {}
 
     /**
      * Get the nextRunTime property: This property is meaningful only if the schedule is in the active state when the
@@ -47,19 +47,6 @@ public final class JobScheduleExecutionInformation {
     }
 
     /**
-     * Set the nextRunTime property: This property is meaningful only if the schedule is in the active state when the
-     * time comes around. For example, if the schedule is disabled, no Job will be created at nextRunTime unless the Job
-     * is enabled before then.
-     *
-     * @param nextRunTime the nextRunTime value to set.
-     * @return the JobScheduleExecutionInformation object itself.
-     */
-    public JobScheduleExecutionInformation setNextRunTime(OffsetDateTime nextRunTime) {
-        this.nextRunTime = nextRunTime;
-        return this;
-    }
-
-    /**
      * Get the recentJob property: This property is present only if the at least one Job has run under the schedule.
      *
      * @return the recentJob value.
@@ -69,33 +56,11 @@ public final class JobScheduleExecutionInformation {
     }
 
     /**
-     * Set the recentJob property: This property is present only if the at least one Job has run under the schedule.
-     *
-     * @param recentJob the recentJob value to set.
-     * @return the JobScheduleExecutionInformation object itself.
-     */
-    public JobScheduleExecutionInformation setRecentJob(RecentJob recentJob) {
-        this.recentJob = recentJob;
-        return this;
-    }
-
-    /**
      * Get the endTime property: This property is set only if the Job Schedule is in the completed state.
      *
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: This property is set only if the Job Schedule is in the completed state.
-     *
-     * @param endTime the endTime value to set.
-     * @return the JobScheduleExecutionInformation object itself.
-     */
-    public JobScheduleExecutionInformation setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
     }
 }

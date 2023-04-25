@@ -21,7 +21,7 @@ public final class UserAccount {
     /*
      * The password for the user Account.
      */
-    @JsonProperty(value = "password", required = true)
+    @JsonProperty(value = "password")
     private String password;
 
     /*
@@ -44,7 +44,6 @@ public final class UserAccount {
     @JsonProperty(value = "windowsUserConfiguration")
     private WindowsUserConfiguration windowsUserConfiguration;
 
-    //TODO: Changing password required to false is temporary
     /**
      * Creates an instance of UserAccount class.
      *
@@ -54,7 +53,7 @@ public final class UserAccount {
     @JsonCreator
     public UserAccount(
             @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "password", required = false) String password) {
+            @JsonProperty(value = "password") String password) {
         this.name = name;
         this.password = password;
     }

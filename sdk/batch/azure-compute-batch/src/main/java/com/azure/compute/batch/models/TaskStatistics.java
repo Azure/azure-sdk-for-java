@@ -104,7 +104,7 @@ public final class TaskStatistics {
      * @param waitTime the waitTime value to set.
      */
     @JsonCreator
-    public TaskStatistics(
+    private TaskStatistics(
             @JsonProperty(value = "url", required = true) String url,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime,

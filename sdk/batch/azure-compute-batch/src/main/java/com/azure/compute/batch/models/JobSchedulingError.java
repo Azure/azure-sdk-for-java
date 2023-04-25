@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error encountered by the Batch service when scheduling a Job. */
-@Fluent
+@Immutable
 public final class JobSchedulingError {
     /*
      * The category of the error.
@@ -44,7 +44,7 @@ public final class JobSchedulingError {
      * @param category the category value to set.
      */
     @JsonCreator
-    public JobSchedulingError(@JsonProperty(value = "category", required = true) ErrorCategory category) {
+    private JobSchedulingError(@JsonProperty(value = "category", required = true) ErrorCategory category) {
         this.category = category;
     }
 
@@ -68,18 +68,6 @@ public final class JobSchedulingError {
     }
 
     /**
-     * Set the code property: An identifier for the Job scheduling error. Codes are invariant and are intended to be
-     * consumed programmatically.
-     *
-     * @param code the code value to set.
-     * @return the JobSchedulingError object itself.
-     */
-    public JobSchedulingError setCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message property: A message describing the Job scheduling error, intended to be suitable for display in a
      * user interface.
      *
@@ -90,34 +78,11 @@ public final class JobSchedulingError {
     }
 
     /**
-     * Set the message property: A message describing the Job scheduling error, intended to be suitable for display in a
-     * user interface.
-     *
-     * @param message the message value to set.
-     * @return the JobSchedulingError object itself.
-     */
-    public JobSchedulingError setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the details property: A list of additional error details related to the scheduling error.
      *
      * @return the details value.
      */
     public List<NameValuePair> getDetails() {
         return this.details;
-    }
-
-    /**
-     * Set the details property: A list of additional error details related to the scheduling error.
-     *
-     * @param details the details value to set.
-     * @return the JobSchedulingError object itself.
-     */
-    public JobSchedulingError setDetails(List<NameValuePair> details) {
-        this.details = details;
-        return this;
     }
 }

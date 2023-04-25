@@ -41,7 +41,7 @@ public final class UsageStatistics {
      * @param dedicatedCoreTime the dedicatedCoreTime value to set.
      */
     @JsonCreator
-    public UsageStatistics(
+    private UsageStatistics(
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime,
             @JsonProperty(value = "dedicatedCoreTime", required = true) Duration dedicatedCoreTime) {

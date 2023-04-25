@@ -128,7 +128,7 @@ public final class JobStatistics {
      * @param waitTime the waitTime value to set.
      */
     @JsonCreator
-    public JobStatistics(
+    private JobStatistics(
             @JsonProperty(value = "url", required = true) String url,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime,

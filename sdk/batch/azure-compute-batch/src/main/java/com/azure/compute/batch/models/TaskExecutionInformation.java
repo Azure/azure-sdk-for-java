@@ -4,13 +4,13 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Information about the execution of a Task. */
-@Fluent
+@Immutable
 public final class TaskExecutionInformation {
     /*
      * 'Running' corresponds to the running state, so if the Task specifies resource
@@ -100,7 +100,7 @@ public final class TaskExecutionInformation {
      * @param requeueCount the requeueCount value to set.
      */
     @JsonCreator
-    public TaskExecutionInformation(
+    private TaskExecutionInformation(
             @JsonProperty(value = "retryCount", required = true) int retryCount,
             @JsonProperty(value = "requeueCount", required = true) int requeueCount) {
         this.retryCount = retryCount;
@@ -120,37 +120,12 @@ public final class TaskExecutionInformation {
     }
 
     /**
-     * Set the startTime property: 'Running' corresponds to the running state, so if the Task specifies resource files
-     * or Packages, then the start time reflects the time at which the Task started downloading or deploying these. If
-     * the Task has been restarted or retried, this is the most recent time at which the Task started running. This
-     * property is present only for Tasks that are in the running or completed state.
-     *
-     * @param startTime the startTime value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
      * Get the endTime property: This property is set only if the Task is in the Completed state.
      *
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: This property is set only if the Task is in the Completed state.
-     *
-     * @param endTime the endTime value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -167,38 +142,12 @@ public final class TaskExecutionInformation {
     }
 
     /**
-     * Set the exitCode property: This property is set only if the Task is in the completed state. In general, the exit
-     * code for a process reflects the specific convention implemented by the application developer for that process. If
-     * you use the exit code value to make decisions in your code, be sure that you know the exit code convention used
-     * by the application process. However, if the Batch service terminates the Task (due to timeout, or user
-     * termination via the API) you may see an operating system-defined exit code.
-     *
-     * @param exitCode the exitCode value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setExitCode(Integer exitCode) {
-        this.exitCode = exitCode;
-        return this;
-    }
-
-    /**
      * Get the containerInfo property: This property is set only if the Task runs in a container context.
      *
      * @return the containerInfo value.
      */
     public TaskContainerExecutionInformation getContainerInfo() {
         return this.containerInfo;
-    }
-
-    /**
-     * Set the containerInfo property: This property is set only if the Task runs in a container context.
-     *
-     * @param containerInfo the containerInfo value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setContainerInfo(TaskContainerExecutionInformation containerInfo) {
-        this.containerInfo = containerInfo;
-        return this;
     }
 
     /**
@@ -209,18 +158,6 @@ public final class TaskExecutionInformation {
      */
     public TaskFailureInformation getFailureInfo() {
         return this.failureInfo;
-    }
-
-    /**
-     * Set the failureInfo property: This property is set only if the Task is in the completed state and encountered a
-     * failure.
-     *
-     * @param failureInfo the failureInfo value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setFailureInfo(TaskFailureInformation failureInfo) {
-        this.failureInfo = failureInfo;
-        return this;
     }
 
     /**
@@ -247,20 +184,6 @@ public final class TaskExecutionInformation {
     }
 
     /**
-     * Set the lastRetryTime property: This element is present only if the Task was retried (i.e. retryCount is
-     * nonzero). If present, this is typically the same as startTime, but may be different if the Task has been
-     * restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the
-     * startTime is updated but the lastRetryTime is not.
-     *
-     * @param lastRetryTime the lastRetryTime value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setLastRetryTime(OffsetDateTime lastRetryTime) {
-        this.lastRetryTime = lastRetryTime;
-        return this;
-    }
-
-    /**
      * Get the requeueCount property: When the user removes Compute Nodes from a Pool (by resizing/shrinking the pool)
      * or when the Job is being disabled, the user can specify that running Tasks on the Compute Nodes be requeued for
      * execution. This count tracks how many times the Task has been requeued for these reasons.
@@ -281,17 +204,6 @@ public final class TaskExecutionInformation {
     }
 
     /**
-     * Set the lastRequeueTime property: This property is set only if the requeueCount is nonzero.
-     *
-     * @param lastRequeueTime the lastRequeueTime value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setLastRequeueTime(OffsetDateTime lastRequeueTime) {
-        this.lastRequeueTime = lastRequeueTime;
-        return this;
-    }
-
-    /**
      * Get the result property: If the value is 'failed', then the details of the failure can be found in the
      * failureInfo property.
      *
@@ -299,17 +211,5 @@ public final class TaskExecutionInformation {
      */
     public TaskExecutionResult getResult() {
         return this.result;
-    }
-
-    /**
-     * Set the result property: If the value is 'failed', then the details of the failure can be found in the
-     * failureInfo property.
-     *
-     * @param result the result value to set.
-     * @return the TaskExecutionInformation object itself.
-     */
-    public TaskExecutionInformation setResult(TaskExecutionResult result) {
-        this.result = result;
-        return this;
     }
 }
