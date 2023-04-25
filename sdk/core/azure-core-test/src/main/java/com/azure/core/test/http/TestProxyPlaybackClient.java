@@ -118,7 +118,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @param request The request context.
      * @throws RuntimeException if playback was started before request is sent.
      */
-    protected void beforeSendingRequest(HttpRequest request) {
+    private void beforeSendingRequest(HttpRequest request) {
         if (xRecordingId == null) {
             throw new RuntimeException("Playback was not started before a request was sent.");
         }
@@ -131,7 +131,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @param response The response received.
      * @return The transformed response.
      */
-    protected HttpResponse afterReceivedResponse(HttpResponse response) {
+    private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.revertUrl(response);
     }

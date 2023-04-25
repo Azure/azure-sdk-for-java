@@ -122,18 +122,17 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      *
      * @param context The request context.
      */
-    protected void beforeSendingRequest(HttpPipelineCallContext context) {
+    private void beforeSendingRequest(HttpPipelineCallContext context) {
         TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE, skipRecordingRequestBody);
     }
 
     /**
      * Method is invoked after the response is received.
      *
-     * @param context The request context.
      * @param response The response received.
      * @return The transformed response.
      */
-    protected HttpResponse afterReceivedResponse(HttpPipelineCallContext context, HttpResponse response) {
+    private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.revertUrl(response);
     }
@@ -142,7 +141,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         beforeSendingRequest(context);
         HttpResponse response = next.processSync();
-        return afterReceivedResponse(context, response);
+        return afterReceivedResponse(response);
     }
 
     @Override
@@ -153,7 +152,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                     return next;
                 })
             .flatMap(ignored -> next.process())
-            .map(response -> afterReceivedResponse(context, response));
+            .map(this::afterReceivedResponse);
     }
 
     /**

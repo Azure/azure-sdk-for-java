@@ -3,10 +3,10 @@
 
 package com.azure.core.test.annotation;
 
+import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
@@ -16,6 +16,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </p>
  */
 @Retention(RUNTIME)
-@Target({METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD})
 public @interface RecordWithoutRequestBody {
 }
