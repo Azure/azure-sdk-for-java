@@ -14,6 +14,10 @@ import java.util.Base64;
 
 /**
  * Kudu web app authentication via basic auth
+ *
+ * @deprecated Kudu deployment has switched to use AAD Auth. This policy is no longer needed.
+ * @see com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy
+ * @see com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy
  */
 public final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
     private final WebAppBase webApp;
