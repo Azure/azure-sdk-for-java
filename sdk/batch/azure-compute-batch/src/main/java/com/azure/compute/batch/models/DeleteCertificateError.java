@@ -4,12 +4,12 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error encountered by the Batch service when deleting a Certificate. */
-@Fluent
+@Immutable
 public final class DeleteCertificateError {
     /*
      * An identifier for the Certificate deletion error. Codes are invariant and are
@@ -34,7 +34,7 @@ public final class DeleteCertificateError {
     private List<NameValuePair> values;
 
     /** Creates an instance of DeleteCertificateError class. */
-    public DeleteCertificateError() {}
+    private DeleteCertificateError() {}
 
     /**
      * Get the code property: An identifier for the Certificate deletion error. Codes are invariant and are intended to
@@ -44,18 +44,6 @@ public final class DeleteCertificateError {
      */
     public String getCode() {
         return this.code;
-    }
-
-    /**
-     * Set the code property: An identifier for the Certificate deletion error. Codes are invariant and are intended to
-     * be consumed programmatically.
-     *
-     * @param code the code value to set.
-     * @return the DeleteCertificateError object itself.
-     */
-    public DeleteCertificateError setCode(String code) {
-        this.code = code;
-        return this;
     }
 
     /**
@@ -69,18 +57,6 @@ public final class DeleteCertificateError {
     }
 
     /**
-     * Set the message property: A message describing the Certificate deletion error, intended to be suitable for
-     * display in a user interface.
-     *
-     * @param message the message value to set.
-     * @return the DeleteCertificateError object itself.
-     */
-    public DeleteCertificateError setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the values property: This list includes details such as the active Pools and Compute Nodes referencing this
      * Certificate. However, if a large number of resources reference the Certificate, the list contains only about the
      * first hundred.
@@ -89,18 +65,5 @@ public final class DeleteCertificateError {
      */
     public List<NameValuePair> getValues() {
         return this.values;
-    }
-
-    /**
-     * Set the values property: This list includes details such as the active Pools and Compute Nodes referencing this
-     * Certificate. However, if a large number of resources reference the Certificate, the list contains only about the
-     * first hundred.
-     *
-     * @param values the values value to set.
-     * @return the DeleteCertificateError object itself.
-     */
-    public DeleteCertificateError setValues(List<NameValuePair> values) {
-        this.values = values;
-        return this;
     }
 }

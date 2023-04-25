@@ -4,12 +4,12 @@
 
 package com.azure.compute.batch.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error that occurred when executing or evaluating a Pool autoscale formula. */
-@Fluent
+@Immutable
 public final class AutoScaleRunError {
     /*
      * An identifier for the autoscale error. Codes are invariant and are intended to
@@ -32,7 +32,7 @@ public final class AutoScaleRunError {
     private List<NameValuePair> values;
 
     /** Creates an instance of AutoScaleRunError class. */
-    public AutoScaleRunError() {}
+    private AutoScaleRunError() {}
 
     /**
      * Get the code property: An identifier for the autoscale error. Codes are invariant and are intended to be consumed
@@ -42,18 +42,6 @@ public final class AutoScaleRunError {
      */
     public String getCode() {
         return this.code;
-    }
-
-    /**
-     * Set the code property: An identifier for the autoscale error. Codes are invariant and are intended to be consumed
-     * programmatically.
-     *
-     * @param code the code value to set.
-     * @return the AutoScaleRunError object itself.
-     */
-    public AutoScaleRunError setCode(String code) {
-        this.code = code;
-        return this;
     }
 
     /**
@@ -67,34 +55,11 @@ public final class AutoScaleRunError {
     }
 
     /**
-     * Set the message property: A message describing the autoscale error, intended to be suitable for display in a user
-     * interface.
-     *
-     * @param message the message value to set.
-     * @return the AutoScaleRunError object itself.
-     */
-    public AutoScaleRunError setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Get the values property: A list of additional error details related to the autoscale error.
      *
      * @return the values value.
      */
     public List<NameValuePair> getValues() {
         return this.values;
-    }
-
-    /**
-     * Set the values property: A list of additional error details related to the autoscale error.
-     *
-     * @param values the values value to set.
-     * @return the AutoScaleRunError object itself.
-     */
-    public AutoScaleRunError setValues(List<NameValuePair> values) {
-        this.values = values;
-        return this;
     }
 }
