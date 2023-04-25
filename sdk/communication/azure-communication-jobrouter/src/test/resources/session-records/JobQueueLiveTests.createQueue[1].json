@@ -1,0 +1,80 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "ecd44d2a-dc43-4b84-ad2b-3d07a15053cc",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "cc822703-0068-9f53-b3de-3282d17a71b1",
+      "ETag" : "\"9100b1aa-0000-0700-0000-64432dea0000\"",
+      "Last-Modified" : "Sat, 22 Apr 2023 00:44:26 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06i1DZAAAAADs4NB0+v6DQLl79+FM7Tp2WVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"longest-idle\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Date" : "Sat, 22 Apr 2023 00:44:26 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/queues/JAVA_LIVE_TESTS-CreateQueue-Queue?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "1783e4df-2540-41a0-bc86-9fd2c292cfbf",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "ad509f53-aad7-01e3-f5eb-64990ac62e00",
+      "ETag" : "\"17005839-0000-0700-0000-64432dea0000\"",
+      "Last-Modified" : "Sat, 22 Apr 2023 00:44:26 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06i1DZAAAAAAoW+zKEddlSarO7QmMQx0mWVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-CreateQueue-Queue\",\"name\":\"JAVA_LIVE_TESTS-CreateQueue-Queue-Name\",\"distributionPolicyId\":\"JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy\",\"labels\":{\"Label_1\":\"Value_1\",\"Id\":\"JAVA_LIVE_TESTS-CreateQueue-Queue\"}}",
+      "Date" : "Sat, 22 Apr 2023 00:44:26 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/queues/JAVA_LIVE_TESTS-CreateQueue-Queue?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "0635ec5e-118b-464d-82c1-7884d888e6c1"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "caf00527-d3ac-8d81-6de5-d36b4614bf96",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06y1DZAAAAAC0EIP4bqR3T4GiA+rQYU8YWVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "204",
+      "Date" : "Sat, 22 Apr 2023 00:44:27 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "23b21c5e-ccde-46bf-8be3-057d882124d9"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "3de1e244-b0c1-b8a1-79a1-a368c74e6207",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06y1DZAAAAACx1nC5SbmRSbyGQXuEnlDmWVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "204",
+      "Date" : "Sat, 22 Apr 2023 00:44:27 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
