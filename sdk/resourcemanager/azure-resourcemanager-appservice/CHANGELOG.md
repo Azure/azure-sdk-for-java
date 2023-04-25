@@ -14,7 +14,7 @@
 
 ### Breaking Changes
 
-- Kudu deployment is now using AAD Auth instead of Basic Auth.
+- Changed to use AAD Auth for Kudu deployment.
 
 ## 2.26.0 (2023-04-21)
 
