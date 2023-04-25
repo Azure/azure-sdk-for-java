@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AuthenticateWithTokenCache {
 
@@ -25,8 +26,8 @@ public class AuthenticateWithTokenCache {
 
         // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
-        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));
+        TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
         // SSL connection is required.
@@ -83,19 +84,18 @@ public class AuthenticateWithTokenCache {
         private final TokenRequestContext tokenRequestContext;
         private final Timer timer;
         private volatile AccessToken accessToken;
-        private final Duration refreshOffset;
+        private final Duration maxRefreshOffset = Duration.ofMinutes(5);
+        private final Duration baseRefreshOffset = Duration.ofMinutes(2);
 
         /**
          * Creates an instance of TokenRefreshCache
          * @param tokenCredential the token credential to be used for authentication.
          * @param tokenRequestContext the token request context to be used for authentication.
-         * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
          */
-        public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+        public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
             this.tokenCredential = tokenCredential;
             this.tokenRequestContext = tokenRequestContext;
             this.timer = new Timer();
-            this.refreshOffset = refreshOffset;
         }
 
         /**
@@ -124,8 +124,8 @@ public class AuthenticateWithTokenCache {
 
         private long getTokenRefreshDelay() {
             return ((accessToken.getExpiresAt()
-                .minusSeconds(refreshOffset.getSeconds()))
-                .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+                .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
+                .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
         }
     }
 }
