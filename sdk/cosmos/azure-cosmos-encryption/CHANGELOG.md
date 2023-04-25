@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.0.0-beta.1 (2023-04-25)
+### 2.0.0 (2023-04-25)
 
 #### Features Added
 * Added support for allowing partition key path and id to be part of client encryption policy - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
