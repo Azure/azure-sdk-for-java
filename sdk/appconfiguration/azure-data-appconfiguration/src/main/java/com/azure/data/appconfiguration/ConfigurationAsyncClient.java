@@ -1010,6 +1010,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSettingSnapshot>> archiveSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
+        Objects.requireNonNull(snapshot);
         // validate name and snapshot.getName can be null. Has to be one of
         return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
                 new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
@@ -1051,6 +1052,7 @@ public final class ConfigurationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ConfigurationSettingSnapshot>> recoverSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
+        Objects.requireNonNull(snapshot);
         return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
                 new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
                 getEtagSnapshot(ifUnchanged, snapshot), null)
@@ -1073,8 +1075,12 @@ public final class ConfigurationAsyncClient {
         try {
             return new PagedFlux<>(
                 () -> withContext(
-                    context -> serviceClient.getSnapshotsSinglePageAsync(selector.getName(), null, null,
-                        selector.getSnapshotStatus(), addTracingNamespace(context))),
+                    context -> serviceClient.getSnapshotsSinglePageAsync(
+                        selector == null ? null : selector.getName(),
+                        null,
+                        null,
+                        selector == null ? null : selector.getSnapshotStatus(),
+                        addTracingNamespace(context))),
                 nextLink -> withContext(
                     context -> serviceClient.getSnapshotsNextSinglePageAsync(nextLink, addTracingNamespace(context)))
             );

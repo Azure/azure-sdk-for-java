@@ -59,6 +59,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
 
     static final Duration DEFAULT_RETENTION_PERIOD = Duration.ofSeconds(2592000);
+    static final Duration MINIMUM_RETENTION_PERIOD = Duration.ofHours(1);
 
     static String connectionString;
 
@@ -555,19 +556,12 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     void createSnapshotRunner(BiConsumer<String, List<SnapshotSettingFilter>> testRunner) {
         String snapshotName = getKey();
         List<SnapshotSettingFilter> filters = new ArrayList<>();
-        filters.add(new SnapshotSettingFilter(snapshotName));
+        filters.add(new SnapshotSettingFilter(snapshotName + "-*"));
         testRunner.accept(snapshotName, filters);
     }
 
     @Test
     public abstract void createSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-
-
-
-
-
-
-
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.

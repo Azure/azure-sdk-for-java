@@ -1143,7 +1143,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         });
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {

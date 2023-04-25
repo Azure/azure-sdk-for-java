@@ -40,6 +40,7 @@ import com.azure.data.appconfiguration.models.SnapshotStatus;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithResponse;
@@ -1110,6 +1111,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> archiveSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
                                                                               boolean ifUnchanged, Context context) {
+        Objects.requireNonNull(snapshot);
         final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshot.getName(),
                 new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
@@ -1152,6 +1154,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSettingSnapshot> recoverSnapshotWithResponse(ConfigurationSettingSnapshot snapshot,
                                                                               boolean ifUnchanged, Context context) {
+        Objects.requireNonNull(snapshot);
         final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
             serviceClient.updateSnapshotWithResponse(snapshot.getName(),
                 new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
@@ -1191,10 +1194,10 @@ public final class ConfigurationClient {
     public PagedIterable<ConfigurationSettingSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
         return new PagedIterable<>(
             () -> serviceClient.getSnapshotsSinglePage(
-                selector.getName(),
+                selector == null ? null : selector.getName(),
                 null,
                 null,
-                selector.getSnapshotStatus(),
+                selector == null ? null : selector.getSnapshotStatus(),
                 enableSyncRestProxy(addTracingNamespace(context))),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
                 enableSyncRestProxy(addTracingNamespace(context))));

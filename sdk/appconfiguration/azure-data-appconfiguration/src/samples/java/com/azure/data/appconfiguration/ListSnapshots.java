@@ -1,5 +1,6 @@
 package com.azure.data.appconfiguration;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
@@ -23,7 +24,7 @@ public class ListSnapshots {
     public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
 
         // Instantiate a client that will be used to call the service.
         final ConfigurationClient client = new ConfigurationClientBuilder()
@@ -74,10 +75,10 @@ public class ListSnapshots {
         System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
             productSnapshot.getName(), productSnapshot.getCreatedAt(), productSnapshot.getStatus());
 
-        // List only the snapshot with name = snapshotNameProduct
+        // List only the snapshot with name = snapshotNameInProduct
         client.listSnapshots(new SnapshotSelector().setName(snapshotNameProduct))
             .forEach(snapshotResult -> {
-                System.out.printf("Snapshot name=%s is created at %s, snapshot status is %s.%n",
+                System.out.printf("Listed Snapshot name = %s is created at %s, snapshot status is %s.%n",
                     snapshotResult.getName(), snapshotResult.getCreatedAt(), snapshotResult.getStatus());
             });
 
