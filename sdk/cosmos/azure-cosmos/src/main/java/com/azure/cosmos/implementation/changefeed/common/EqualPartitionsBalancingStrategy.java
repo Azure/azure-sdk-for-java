@@ -78,9 +78,9 @@ public class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingS
                 }
             }
 
-            // If we reach here with partitionsNeededForMe < 0, then it means the change feed processor instances has owned leases more than the maxScaleCount.
+            // If we reach here with partitionsNeededForMe < 0, then it means the change feed processor instances has owned leases >= the maxScaleCount.
             // Then in this case, the change feed processor instance will not pick up any new leases.
-            if (partitionsNeededForMe < 0)
+            if (partitionsNeededForMe <= 0)
             {
                 return new ArrayList<>();
             }
