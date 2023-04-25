@@ -6,11 +6,13 @@ package com.azure.monitor.ingestion;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -147,10 +149,12 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
 
     @Test
     public void testUploadLargeLogsProtocolMethod() {
-        List<Object> logs = getObjects(500000);
+        List<Object> logs = getObjects(375000);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
         StepVerifier.create(client.uploadWithResponse(dataCollectionRuleId, streamName,
-                BinaryData.fromObject(logs), new RequestOptions()))
+                BinaryData.fromObject(logs),
+                // reading the large protocol recording file exceeds default response timeout of 60 seconds
+                new RequestOptions().setContext(new Context("azure-response-timeout", Duration.ofSeconds(120)))))
             .verifyErrorMatches(responseException -> (responseException instanceof HttpResponseException)
                 && ((HttpResponseException) responseException).getResponse().getStatusCode() == 413);
     }
