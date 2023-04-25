@@ -512,9 +512,9 @@ public final class CallRecordingAsync {
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRecording(String deleteUrl) {
+    public Mono<Void> delete(String deleteUrl) {
         try {
-            return deleteRecordingWithResponseInternal(deleteUrl, null).then();
+            return deleteWithResponseInternal(deleteUrl, null).then();
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -528,11 +528,11 @@ public final class CallRecordingAsync {
      * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRecordingWithResponse(String deleteUrl) {
-        return deleteRecordingWithResponseInternal(deleteUrl, null);
+    public Mono<Response<Void>> deleteWithResponse(String deleteUrl) {
+        return deleteWithResponseInternal(deleteUrl, null);
     }
 
-    Mono<Response<Void>> deleteRecordingWithResponseInternal(String deleteUrl, Context context) {
+    Mono<Response<Void>> deleteWithResponseInternal(String deleteUrl, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteUrl);
         URL urlToSignWith = getUrlToSignRequestWith(deleteUrl);
         try {

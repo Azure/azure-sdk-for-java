@@ -260,8 +260,8 @@ public final class CallRecording {
      * @param deleteUrl - ACS URL where the content is located.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRecording(String deleteUrl) {
-        deleteRecordingWithResponse(deleteUrl, null);
+    public void delete(String deleteUrl) {
+        deleteWithResponse(deleteUrl, null);
     }
 
     /**
@@ -272,8 +272,8 @@ public final class CallRecording {
      * @return Response for successful delete request..
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteRecordingWithResponse(String deleteUrl, Context context) {
-        return callRecordingAsync.deleteRecordingWithResponseInternal(deleteUrl, context).block();
+    public Response<Void> deleteWithResponse(String deleteUrl, Context context) {
+        return callRecordingAsync.deleteWithResponseInternal(deleteUrl, context).block();
     }
 
 }
