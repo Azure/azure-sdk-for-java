@@ -7,6 +7,7 @@
 * Added `CosmosContainerProactiveInitConfigBuilder:setAggressiveWarmupDuration(Duration aggressiveWarmupDuration)` public API to switch between aggressively opening connections
   in a blocking manner to defensively opening connections in a non-blocking manner after `aggressiveProactiveConnectionEstablishmentDuration` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
 
+
 ### 4.44.0 (2023-04-21)
 
 #### Bugs Fixed
