@@ -25,13 +25,11 @@ import java.util.List;
 @Fluent
 public final class JobReleaseTask {
     /*
-     * The ID can contain any combination of alphanumeric characters including hyphens
-     * and underscores and cannot contain more than 64 characters. If you do not
-     * specify this property, the Batch service assigns a default value of
-     * 'jobrelease'. No other Task in the Job can have the same ID as the Job Release
-     * Task. If you try to submit a Task with the same id, the Batch service rejects
-     * the request with error code TaskIdSameAsJobReleaseTask; if you are calling the
-     * REST API directly, the HTTP status code is 409 (Conflict).
+     * The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot
+     * contain more than 64 characters. If you do not specify this property, the Batch service assigns a default value
+     * of 'jobrelease'. No other Task in the Job can have the same ID as the Job Release Task. If you try to submit a
+     * Task with the same id, the Batch service rejects the request with error code TaskIdSameAsJobReleaseTask; if you
+     * are calling the REST API directly, the HTTP status code is 409 (Conflict).
      */
     @JsonProperty(value = "id")
     private String id;

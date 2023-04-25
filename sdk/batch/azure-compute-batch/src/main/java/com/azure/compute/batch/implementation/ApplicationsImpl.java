@@ -330,6 +330,32 @@ public final class ApplicationsImpl {
      * that can be used in an Package reference. For administrator information about Applications and versions that are
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -342,7 +368,7 @@ public final class ApplicationsImpl {
      * }
      * }</pre>
      *
-     * @param applicationId A string that uniquely identifies the application within the Account.
+     * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -372,6 +398,32 @@ public final class ApplicationsImpl {
      * that can be used in an Package reference. For administrator information about Applications and versions that are
      * not yet available to Compute Nodes, use the Azure portal or the Azure Resource Manager API.
      *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A maximum of 1000
+     * applications can be returned.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
+     * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
+     *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
+     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     * current system clock time; set it explicitly if you are calling the REST API
+     * directly.</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -384,7 +436,7 @@ public final class ApplicationsImpl {
      * }
      * }</pre>
      *
-     * @param applicationId A string that uniquely identifies the application within the Account.
+     * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

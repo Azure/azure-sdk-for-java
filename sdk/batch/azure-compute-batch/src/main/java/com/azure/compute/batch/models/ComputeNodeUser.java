@@ -32,9 +32,8 @@ public final class ComputeNodeUser {
     private OffsetDateTime expiryTime;
 
     /*
-     * The password is required for Windows Compute Nodes (those created with
-     * 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration'
-     * using a Windows Image reference). For Linux Compute Nodes, the password can
+     * The password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created
+     * with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can
      * optionally be specified along with the sshPublicKey property.
      */
     @JsonProperty(value = "password")

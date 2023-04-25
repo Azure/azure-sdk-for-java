@@ -15,7 +15,7 @@ public final class PoolUsageMetrics {
     /*
      * The ID of the Pool whose metrics are aggregated in this entry.
      */
-    @JsonProperty(value = "poolId", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "poolId", required = true)
     private String poolId;
 
     /*
@@ -47,6 +47,7 @@ public final class PoolUsageMetrics {
     /**
      * Creates an instance of PoolUsageMetrics class.
      *
+     * @param poolId the poolId value to set.
      * @param startTime the startTime value to set.
      * @param endTime the endTime value to set.
      * @param vmSize the vmSize value to set.
@@ -54,10 +55,12 @@ public final class PoolUsageMetrics {
      */
     @JsonCreator
     private PoolUsageMetrics(
+            @JsonProperty(value = "poolId", required = true) String poolId,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "endTime", required = true) OffsetDateTime endTime,
             @JsonProperty(value = "vmSize", required = true) String vmSize,
             @JsonProperty(value = "totalCoreHours", required = true) double totalCoreHours) {
+        this.poolId = poolId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.vmSize = vmSize;

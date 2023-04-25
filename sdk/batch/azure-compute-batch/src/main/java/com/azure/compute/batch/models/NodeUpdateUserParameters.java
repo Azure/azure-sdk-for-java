@@ -12,11 +12,9 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class NodeUpdateUserParameters {
     /*
-     * The password is required for Windows Compute Nodes (those created with
-     * 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration'
-     * using a Windows Image reference). For Linux Compute Nodes, the password can
-     * optionally be specified along with the sshPublicKey property. If omitted, any
-     * existing password is removed.
+     * The password is required for Windows Compute Nodes (those created with 'cloudServiceConfiguration', or created
+     * with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can
+     * optionally be specified along with the sshPublicKey property. If omitted, any existing password is removed.
      */
     @JsonProperty(value = "password")
     private String password;

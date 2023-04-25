@@ -14,10 +14,9 @@ import java.util.List;
 @Fluent
 public final class BatchPool {
     /*
-     * The ID can contain any combination of alphanumeric characters including hyphens
-     * and underscores, and cannot contain more than 64 characters. The ID is
-     * case-preserving and case-insensitive (that is, you may not have two IDs within
-     * an Account that differ only by case).
+     * The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot
+     * contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two
+     * IDs within an Account that differ only by case).
      */
     @JsonProperty(value = "id")
     private String id;
@@ -91,10 +90,9 @@ public final class BatchPool {
     private String vmSize;
 
     /*
-     * This property and virtualMachineConfiguration are mutually exclusive and one of
-     * the properties must be specified. This property cannot be specified if the
-     * Batch Account was created with its poolAllocationMode property set to
-     * 'UserSubscription'.
+     * This property and virtualMachineConfiguration are mutually exclusive and one of the properties must be
+     * specified. This property cannot be specified if the Batch Account was created with its poolAllocationMode
+     * property set to 'UserSubscription'.
      */
     @JsonProperty(value = "cloudServiceConfiguration")
     private CloudServiceConfiguration cloudServiceConfiguration;
@@ -227,9 +225,8 @@ public final class BatchPool {
     private List<ApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The list of application licenses must be a subset of available Batch service
-     * application licenses. If a license is requested which is not supported, Pool
-     * creation will fail.
+     * The list of application licenses must be a subset of available Batch service application licenses. If a license
+     * is requested which is not supported, Pool creation will fail.
      */
     @JsonProperty(value = "applicationLicenses")
     private List<String> applicationLicenses;
@@ -289,7 +286,7 @@ public final class BatchPool {
     private NodeCommunicationMode targetNodeCommunicationMode;
 
     /*
-     * Determines how a pool communicates with the Batch service.
+     * The current state of the pool communication mode.
      */
     @JsonProperty(value = "currentNodeCommunicationMode", access = JsonProperty.Access.WRITE_ONLY)
     private NodeCommunicationMode currentNodeCommunicationMode;
@@ -955,7 +952,7 @@ public final class BatchPool {
     }
 
     /**
-     * Get the currentNodeCommunicationMode property: Determines how a pool communicates with the Batch service.
+     * Get the currentNodeCommunicationMode property: The current state of the pool communication mode.
      *
      * @return the currentNodeCommunicationMode value.
      */

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BatchJobTerminateParameters {
     /*
-     * The text you want to appear as the Job's TerminateReason. The default is
-     * 'UserTerminate'.
+     * The text you want to appear as the Job's TerminateReason. The default is 'UserTerminate'.
      */
     @JsonProperty(value = "terminateReason")
     private String terminateReason;

@@ -16,7 +16,7 @@ public final class JobStatistics {
     /*
      * The URL of the statistics.
      */
-    @JsonProperty(value = "url", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
@@ -112,6 +112,7 @@ public final class JobStatistics {
     /**
      * Creates an instance of JobStatistics class.
      *
+     * @param url the url value to set.
      * @param startTime the startTime value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
      * @param userCPUTime the userCPUTime value to set.
@@ -128,6 +129,7 @@ public final class JobStatistics {
      */
     @JsonCreator
     public JobStatistics(
+            @JsonProperty(value = "url", required = true) String url,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime,
             @JsonProperty(value = "userCPUTime", required = true) Duration userCPUTime,
@@ -141,6 +143,7 @@ public final class JobStatistics {
             @JsonProperty(value = "numFailedTasks", required = true) int numFailedTasks,
             @JsonProperty(value = "numTaskRetries", required = true) int numTaskRetries,
             @JsonProperty(value = "waitTime", required = true) Duration waitTime) {
+        this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
         this.userCPUTime = userCPUTime;

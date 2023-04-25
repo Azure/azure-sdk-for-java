@@ -15,7 +15,7 @@ public final class PoolStatistics {
     /*
      * The URL for the statistics.
      */
-    @JsonProperty(value = "url", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
@@ -46,13 +46,16 @@ public final class PoolStatistics {
     /**
      * Creates an instance of PoolStatistics class.
      *
+     * @param url the url value to set.
      * @param startTime the startTime value to set.
      * @param lastUpdateTime the lastUpdateTime value to set.
      */
     @JsonCreator
     public PoolStatistics(
+            @JsonProperty(value = "url", required = true) String url,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
             @JsonProperty(value = "lastUpdateTime", required = true) OffsetDateTime lastUpdateTime) {
+        this.url = url;
         this.startTime = startTime;
         this.lastUpdateTime = lastUpdateTime;
     }

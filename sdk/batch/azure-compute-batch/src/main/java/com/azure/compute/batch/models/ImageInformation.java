@@ -16,7 +16,7 @@ public final class ImageInformation {
     /*
      * The ID of the Compute Node agent SKU which the Image supports.
      */
-    @JsonProperty(value = "nodeAgentSKUId", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nodeAgentSKUId", required = true)
     private String nodeAgentSKUId;
 
     /*
@@ -58,15 +58,18 @@ public final class ImageInformation {
     /**
      * Creates an instance of ImageInformation class.
      *
+     * @param nodeAgentSKUId the nodeAgentSKUId value to set.
      * @param imageReference the imageReference value to set.
      * @param osType the osType value to set.
      * @param verificationType the verificationType value to set.
      */
     @JsonCreator
     private ImageInformation(
+            @JsonProperty(value = "nodeAgentSKUId", required = true) String nodeAgentSKUId,
             @JsonProperty(value = "imageReference", required = true) ImageReference imageReference,
             @JsonProperty(value = "osType", required = true) OSType osType,
             @JsonProperty(value = "verificationType", required = true) VerificationType verificationType) {
+        this.nodeAgentSKUId = nodeAgentSKUId;
         this.imageReference = imageReference;
         this.osType = osType;
         this.verificationType = verificationType;

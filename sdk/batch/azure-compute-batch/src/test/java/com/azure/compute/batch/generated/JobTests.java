@@ -67,7 +67,7 @@ public class JobTests extends BatchServiceClientTestBase {
         
         try {
         	BatchJob getJob = jobClient.get(jobId);
-        	jobToAdd.setPriority(500);
+        	getJob.setPriority(500);
         	jobClient.update(jobId, getJob);
         }
         finally {

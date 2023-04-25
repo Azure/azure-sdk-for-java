@@ -6,28 +6,37 @@ package com.azure.compute.batch.generated;
 
 import com.azure.compute.batch.BatchServiceClientBuilder;
 import com.azure.compute.batch.PoolClient;
-import com.azure.compute.batch.models.AllocationState;
-import com.azure.compute.batch.models.BatchPool;
-import com.azure.compute.batch.models.ElevationLevel;
-import com.azure.compute.batch.models.ImageReference;
-import com.azure.compute.batch.models.LinuxUserConfiguration;
-import com.azure.compute.batch.models.NetworkConfiguration;
-import com.azure.compute.batch.models.VirtualMachineConfiguration;
-import com.azure.compute.batch.models.UserAccount;
+import com.azure.compute.batch.TaskClient;
+import com.azure.compute.batch.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
+
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.sas.BlobSasPermission;
+
 import reactor.core.publisher.Mono;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import java.util.*;
+
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -230,5 +239,97 @@ class BatchServiceClientTestBase extends TestBase {
     		}
         	return false;
         }
+    }
+
+    public static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
+                                                  String containerName) throws BlobStorageException  {
+        // Create storage credential from name and key
+        String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", storageAccountName);
+        StorageSharedKeyCredential credentials = new StorageSharedKeyCredential(storageAccountName, storageAccountKey);
+        BlobContainerClient containerClient = new BlobContainerClientBuilder().credential(credentials).containerName(containerName).endpoint(endPoint).buildClient();
+
+        return containerClient;
+    }
+
+    /**
+     * Upload file to blob container and return sas key
+     *
+     * @param container
+     *            blob container
+     * @param fileName
+     *            the file name of blob
+     * @param filePath
+     *            the local file path
+     * @return SAS key for the uploaded file
+     * @throws URISyntaxException
+     * @throws IOException
+     * @throws InvalidKeyException
+     * @throws BlobStorageException
+     */
+    public static String uploadFileToCloud(BlobContainerClient container, String fileName, String filePath)
+            throws BlobStorageException {
+        // Create the container if it does not exist.
+        container.createIfNotExists();
+        BlobClient blobClient = container.getBlobClient(fileName);
+
+        //Upload file
+        File source = new File(filePath);
+        blobClient.uploadFromFile(source.getPath());
+
+        // Create policy with 1 day read permission
+        BlobSasPermission permissions = new BlobSasPermission()
+                .setReadPermission(true);
+
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+
+        // Create SAS key
+        BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
+        String sas = blobClient.generateSas(sasSignatureValues);
+        return blobClient.getBlobUrl() + "?" + sas;
+    }
+
+    public static String generateContainerSasToken(BlobContainerClient container) throws InvalidKeyException {
+        container.createIfNotExists();
+
+        // Create policy with 1 day read permission
+        BlobSasPermission permissions = new BlobSasPermission()
+                .setReadPermission(true);
+
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+
+        // Create SAS key
+        BlobServiceSasSignatureValues sasSignatureValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
+        String sas = container.generateSas(sasSignatureValues);
+        return container.getBlobContainerUrl() + "?" + sas;
+    }
+
+    public static boolean waitForTasksToComplete(TaskClient taskClient, String jobId, int expiryTimeInSeconds)
+            throws IOException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+
+        while (elapsedTime < expiryTimeInSeconds * 1000) {
+            PagedIterable<BatchTask> taskIterator = taskClient.list(jobId, null, null, null, null, null, null, "id, state", null);
+
+            boolean allComplete = true;
+            for (BatchTask task : taskIterator) {
+                if (task.getState() != TaskState.COMPLETED) {
+                    allComplete = false;
+                    break;
+                }
+            }
+
+            if (allComplete) {
+                // All tasks completed
+                return true;
+            }
+
+            // Check again after 10 seconds
+            Thread.sleep(10 * 1000);
+            elapsedTime = (new Date()).getTime() - startTime;
+        }
+
+        // Timeout, return false
+        return false;
     }
 }
