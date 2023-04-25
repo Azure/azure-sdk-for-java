@@ -84,35 +84,33 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     public CosmosEntityInformation(Class<T> domainType) {
         super(domainType);
 
-        CosmosEntityInformationHelper helper = new CosmosEntityInformationHelper();
-
-        this.id = helper.getIdField(domainType, getJavaType());
+        this.id = CosmosEntityInformationHelper.getIdField(domainType, getJavaType());
         ReflectionUtils.makeAccessible(this.id);
 
-        this.autoGenerateId = helper.isIdFieldAnnotatedWithGeneratedValue(this.id);
+        this.autoGenerateId = CosmosEntityInformationHelper.isIdFieldAnnotatedWithGeneratedValue(this.id);
 
-        this.containerName = helper.getContainerName(domainType);
-        this.partitionKeyPath = helper.getPartitionKeyPathAnnotationValue(domainType);
+        this.containerName = CosmosEntityInformationHelper.getContainerName(domainType);
+        this.partitionKeyPath = CosmosEntityInformationHelper.getPartitionKeyPathAnnotationValue(domainType);
 
-        this.partitionKeyField = helper.getPartitionKeyField(domainType);
+        this.partitionKeyField = CosmosEntityInformationHelper.getPartitionKeyField(domainType);
         if (this.partitionKeyField != null) {
             ReflectionUtils.makeAccessible(this.partitionKeyField);
         }
 
-        this.versionField = helper.getVersionedField(domainType);
+        this.versionField = CosmosEntityInformationHelper.getVersionedField(domainType);
         if (this.versionField != null) {
             ReflectionUtils.makeAccessible(this.versionField);
         }
 
-        this.requestUnit = helper.getRequestUnit(domainType);
-        this.timeToLive = helper.getTimeToLive(domainType);
-        this.indexingPolicy = helper.getIndexingPolicy(domainType);
-        this.uniqueKeyPolicy = helper.getUniqueKeyPolicy(domainType);
-        this.autoCreateContainer = helper.getIsAutoCreateContainer(domainType);
+        this.requestUnit = CosmosEntityInformationHelper.getRequestUnit(domainType);
+        this.timeToLive = CosmosEntityInformationHelper.getTimeToLive(domainType);
+        this.indexingPolicy = CosmosEntityInformationHelper.getIndexingPolicy(domainType);
+        this.uniqueKeyPolicy = CosmosEntityInformationHelper.getUniqueKeyPolicy(domainType);
+        this.autoCreateContainer = CosmosEntityInformationHelper.getIsAutoCreateContainer(domainType);
         this.persitable = Persistable.class.isAssignableFrom(domainType);
-        this.autoScale = helper.getIsAutoScale(domainType);
-        this.isIndexingPolicySpecified = helper.isIndexingPolicySpecified(domainType);
-        this.overwriteIndexingPolicy = helper.getIndexingPolicyOverwritePolicy(domainType);
+        this.autoScale = CosmosEntityInformationHelper.getIsAutoScale(domainType);
+        this.isIndexingPolicySpecified = CosmosEntityInformationHelper.isIndexingPolicySpecified(domainType);
+        this.overwriteIndexingPolicy = CosmosEntityInformationHelper.getIndexingPolicyOverwritePolicy(domainType);
     }
 
     @Override
