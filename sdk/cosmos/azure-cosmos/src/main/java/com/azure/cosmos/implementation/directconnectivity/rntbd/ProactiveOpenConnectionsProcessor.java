@@ -285,7 +285,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 return true;
             }
 
-            logger.error("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
+            logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
             return false;
         }
     }
