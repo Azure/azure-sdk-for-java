@@ -88,8 +88,8 @@ public final class CallRecordingAsync {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResult> startRecording(StartRecordingOptions options) {
-        return startRecordingWithResponse(options)
+    public Mono<RecordingStateResult> start(StartRecordingOptions options) {
+        return startWithResponse(options)
             .flatMap(response -> Mono.just(response.getValue()));
     }
 
@@ -103,13 +103,13 @@ public final class CallRecordingAsync {
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResult>> startRecordingWithResponse(StartRecordingOptions options) {
+    public Mono<Response<RecordingStateResult>> startWithResponse(StartRecordingOptions options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return startRecordingWithResponseInternal(options, null);
+        return startWithResponseInternal(options, null);
     }
 
-    Mono<Response<RecordingStateResult>> startRecordingWithResponseInternal(StartRecordingOptions options, Context context) {
+    Mono<Response<RecordingStateResult>> startWithResponseInternal(StartRecordingOptions options, Context context) {
         try {
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
@@ -185,8 +185,8 @@ public final class CallRecordingAsync {
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopRecording(String recordingId) {
-        return stopRecordingWithResponse(recordingId).then();
+    public Mono<Void> stop(String recordingId) {
+        return stopWithResponse(recordingId).then();
     }
 
     /**
@@ -198,11 +198,11 @@ public final class CallRecordingAsync {
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopRecordingWithResponse(String recordingId) {
-        return stopRecordingWithResponseInternal(recordingId, null);
+    public Mono<Response<Void>> stopWithResponse(String recordingId) {
+        return stopWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<Void>> stopRecordingWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<Void>> stopWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -223,8 +223,8 @@ public final class CallRecordingAsync {
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> pauseRecording(String recordingId) {
-        return pauseRecordingWithResponse(recordingId).then();
+    public Mono<Void> pause(String recordingId) {
+        return pauseWithResponse(recordingId).then();
     }
 
     /**
@@ -236,11 +236,11 @@ public final class CallRecordingAsync {
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> pauseRecordingWithResponse(String recordingId) {
-        return pauseRecordingWithResponseInternal(recordingId, null);
+    public Mono<Response<Void>> pauseWithResponse(String recordingId) {
+        return pauseWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<Void>> pauseRecordingWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<Void>> pauseWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -261,8 +261,8 @@ public final class CallRecordingAsync {
      * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resumeRecording(String recordingId) {
-        return resumeRecordingWithResponse(recordingId).then();
+    public Mono<Void> resume(String recordingId) {
+        return resumeWithResponse(recordingId).then();
     }
 
     /**
@@ -274,11 +274,11 @@ public final class CallRecordingAsync {
      * @return response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resumeRecordingWithResponse(String recordingId) {
-        return resumeRecordingWithResponseInternal(recordingId, null);
+    public Mono<Response<Void>> resumeWithResponse(String recordingId) {
+        return resumeWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<Void>> resumeRecordingWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<Void>> resumeWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -299,8 +299,8 @@ public final class CallRecordingAsync {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingStateResult> getRecordingState(String recordingId) {
-        return getRecordingStateWithResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
+    public Mono<RecordingStateResult> getState(String recordingId) {
+        return getStateWithResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
@@ -312,11 +312,11 @@ public final class CallRecordingAsync {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingStateResult>> getRecordingStateWithResponse(String recordingId) {
-        return getRecordingStateWithResponseInternal(recordingId, null);
+    public Mono<Response<RecordingStateResult>> getStateWithResponse(String recordingId) {
+        return getStateWithResponseInternal(recordingId, null);
     }
 
-    Mono<Response<RecordingStateResult>> getRecordingStateWithResponseInternal(String recordingId, Context context) {
+    Mono<Response<RecordingStateResult>> getStateWithResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;

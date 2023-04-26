@@ -35,20 +35,20 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
         callRecording = callingServerClient.getCallRecordingAsync();
 
         validateRecordingState(
-            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
                     .setRecordingStateCallbackUrl("https://localhost/")),
             RecordingState.ACTIVE
         );
 
-        validateOperationWithRecordingState(callRecording.pauseRecording(RECORDING_ID),
+        validateOperationWithRecordingState(callRecording.pause(RECORDING_ID),
             RecordingState.INACTIVE
         );
 
-        validateOperationWithRecordingState(callRecording.resumeRecording(RECORDING_ID),
+        validateOperationWithRecordingState(callRecording.resume(RECORDING_ID),
             RecordingState.ACTIVE);
 
-        validateOperation(callRecording.stopRecording(RECORDING_ID));
-        assertThrows(HttpResponseException.class, () -> callRecording.getRecordingState(RECORDING_ID).block());
+        validateOperation(callRecording.stop(RECORDING_ID));
+        assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID).block());
     }
 
     private void validateRecordingState(Publisher<RecordingStateResult> publisher, RecordingState status) {
@@ -60,7 +60,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     private void validateOperationWithRecordingState(Publisher<Void> operation, RecordingState expectedRecordingState) {
         validateOperation(operation);
         validateRecordingState(
-            callRecording.getRecordingState(RECORDING_ID),
+            callRecording.getState(RECORDING_ID),
             expectedRecordingState
         );
     }

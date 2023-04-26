@@ -92,7 +92,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
             // start recording
-            RecordingStateResult recordingStateResult = callerClient.getCallRecording().startRecording(
+            RecordingStateResult recordingStateResult = callerClient.getCallRecording().start(
                 new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
                     .setRecordingChannel(RecordingChannel.UNMIXED)
                     .setRecordingContent(RecordingContent.AUDIO)
@@ -103,7 +103,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(recordingStateResult.getRecordingId());
 
             // stop recording
-            callerClient.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
+            callerClient.getCallRecording().stop(recordingStateResult.getRecordingId());
 
             // hangup
             if (!callConnectionId.isEmpty()) {
@@ -176,7 +176,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
             // start recording
-            RecordingStateResult recordingStateResult = callerClient.getCallRecording().startRecording(
+            RecordingStateResult recordingStateResult = callerClient.getCallRecording().start(
                 new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
                     .setRecordingChannel(RecordingChannel.UNMIXED)
                     .setRecordingContent(RecordingContent.AUDIO)
@@ -193,7 +193,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(recordingStateResult.getRecordingId());
 
             // stop recording
-            callerClient.getCallRecording().stopRecording(recordingStateResult.getRecordingId());
+            callerClient.getCallRecording().stop(recordingStateResult.getRecordingId());
 
             // hangup
             if (!callConnectionId.isEmpty()) {

@@ -39,8 +39,8 @@ public final class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResult startRecording(StartRecordingOptions options) {
-        return callRecordingAsync.startRecording(options).block();
+    public RecordingStateResult start(StartRecordingOptions options) {
+        return callRecordingAsync.start(options).block();
     }
 
     /**
@@ -54,8 +54,8 @@ public final class CallRecording {
      * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResult> startRecordingWithResponse(StartRecordingOptions options, Context context) {
-        return callRecordingAsync.startRecordingWithResponseInternal(options, context).block();
+    public Response<RecordingStateResult> startWithResponse(StartRecordingOptions options, Context context) {
+        return callRecordingAsync.startWithResponseInternal(options, context).block();
     }
 
     /**
@@ -66,8 +66,8 @@ public final class CallRecording {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopRecording(String recordingId) {
-        callRecordingAsync.stopRecording(recordingId).block();
+    public void stop(String recordingId) {
+        callRecordingAsync.stop(recordingId).block();
     }
 
     /**
@@ -80,8 +80,8 @@ public final class CallRecording {
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
-        return callRecordingAsync.stopRecordingWithResponseInternal(recordingId, context).block();
+    public Response<Void> stopWithResponse(String recordingId, Context context) {
+        return callRecordingAsync.stopWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -92,8 +92,8 @@ public final class CallRecording {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void pauseRecording(String recordingId) {
-        callRecordingAsync.pauseRecording(recordingId).block();
+    public void pause(String recordingId) {
+        callRecordingAsync.pause(recordingId).block();
     }
 
     /**
@@ -106,8 +106,8 @@ public final class CallRecording {
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
-        return callRecordingAsync.pauseRecordingWithResponseInternal(recordingId, context).block();
+    public Response<Void> pauseWithResponse(String recordingId, Context context) {
+        return callRecordingAsync.pauseWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -118,8 +118,8 @@ public final class CallRecording {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resumeRecording(String recordingId) {
-        callRecordingAsync.resumeRecording(recordingId).block();
+    public void resume(String recordingId) {
+        callRecordingAsync.resume(recordingId).block();
     }
 
     /**
@@ -132,8 +132,8 @@ public final class CallRecording {
      * @return Response for a successful resume recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resumeRecordingWithResponse(String recordingId, final Context context) {
-        return callRecordingAsync.resumeRecordingWithResponseInternal(recordingId, context).block();
+    public Response<Void> resumeWithResponse(String recordingId, final Context context) {
+        return callRecordingAsync.resumeWithResponseInternal(recordingId, context).block();
     }
 
     /**
@@ -145,8 +145,8 @@ public final class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResult getRecordingState(String recordingId) {
-        return callRecordingAsync.getRecordingState(recordingId).block();
+    public RecordingStateResult getState(String recordingId) {
+        return callRecordingAsync.getState(recordingId).block();
     }
 
     /**
@@ -159,8 +159,8 @@ public final class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingStateResult> getRecordingStateWithResponse(String recordingId, Context context) {
-        return callRecordingAsync.getRecordingStateWithResponseInternal(recordingId, context).block();
+    public Response<RecordingStateResult> getStateWithResponse(String recordingId, Context context) {
+        return callRecordingAsync.getStateWithResponseInternal(recordingId, context).block();
     }
 
     /**

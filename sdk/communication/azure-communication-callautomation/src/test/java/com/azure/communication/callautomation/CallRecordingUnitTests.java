@@ -34,28 +34,28 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
         callRecording = callAutomationClient.getCallRecording();
 
         validateRecording(
-            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
                 .setRecordingStateCallbackUrl("https://localhost/")),
             RecordingState.ACTIVE
         );
 
         verifyOperationWithRecordingState(
-            () -> callRecording.pauseRecording(RECORDING_ID),
+            () -> callRecording.pause(RECORDING_ID),
             RecordingState.INACTIVE
         );
 
         verifyOperationWithRecordingState(
-            () -> callRecording.resumeRecording(RECORDING_ID),
+            () -> callRecording.resume(RECORDING_ID),
             RecordingState.ACTIVE
         );
 
-        callRecording.stopRecording(RECORDING_ID);
-        assertThrows(HttpResponseException.class, () -> callRecording.getRecordingState(RECORDING_ID));
+        callRecording.stop(RECORDING_ID);
+        assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID));
     }
 
     private void verifyOperationWithRecordingState(Runnable operation, RecordingState expectedStatus) {
         operation.run();
-        RecordingStateResult recordingState = callRecording.getRecordingState(RECORDING_ID);
+        RecordingStateResult recordingState = callRecording.getState(RECORDING_ID);
         validateRecording(recordingState, expectedStatus);
     }
 
