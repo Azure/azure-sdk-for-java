@@ -9,12 +9,12 @@ import com.azure.core.annotation.Fluent;
  * The options for adding participants.
  */
 @Fluent
-public class TransferToParticipantCallOptions {
-    
+public final class TransferCallToParticipantOptions {
+
     /**
      * Iformation for TranferTarget
      */
-    private final CallInvite targetCallInvite;
+    private final CallInvite targetParticipant;
 
     /**
      * The operational context
@@ -25,10 +25,10 @@ public class TransferToParticipantCallOptions {
     /**
      * Constructor
      *
-     * @param targetCallInvite {@link CallInvite}contains information for TranferTarget.
+     * @param targetParticipant {@link CallInvite}contains information for TranferTarget.
      */
-    public TransferToParticipantCallOptions(CallInvite targetCallInvite) {
-        this.targetCallInvite = targetCallInvite;
+    public TransferCallToParticipantOptions(CallInvite targetParticipant) {
+        this.targetParticipant = targetParticipant;
     }
 
 
@@ -45,19 +45,19 @@ public class TransferToParticipantCallOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the TransferToParticipantCallOptions object itself.
+     * @return the TransferCallToParticipantOptions object itself.
      */
-    public TransferToParticipantCallOptions setOperationContext(String operationContext) {
+    public TransferCallToParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
-    
+
     /**
      * Get the call information to transfer target
      * @return a {@link CallInvite} with information to transfer target
      */
-    public CallInvite getTargetCallInvite() {
-        return targetCallInvite;
+    public CallInvite getTargetParticipant() {
+        return targetParticipant;
     }
-    
+
 }

@@ -6,16 +6,16 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallTransferFailed model. */
+/** The CallTransferFailedEventData model. */
 @Immutable
-public final class CallTransferFailed extends CallAutomationEventBase {
+public final class CallTransferFailedEventData extends CallAutomationEventData {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    private CallTransferFailed() {
+    private CallTransferFailedEventData() {
         this.resultInformation = null;
     }
 

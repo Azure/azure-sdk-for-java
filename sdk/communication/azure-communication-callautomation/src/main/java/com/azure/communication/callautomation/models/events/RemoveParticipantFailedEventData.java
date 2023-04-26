@@ -16,9 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
-/** The RemoveParticipantFailed model. */
+/** The RemoveParticipantFailedEventData model. */
 @Immutable
-public final class RemoveParticipantFailed extends CallAutomationEventBase {
+public final class RemoveParticipantFailedEventData extends CallAutomationEventData {
     /*
      * Participant removed
      */
@@ -32,7 +32,7 @@ public final class RemoveParticipantFailed extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     @JsonCreator
-    private RemoveParticipantFailed(@JsonProperty("participant") Map<String, Object> participant) {
+    private RemoveParticipantFailedEventData(@JsonProperty("participant") Map<String, Object> participant) {
         this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
