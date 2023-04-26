@@ -47,6 +47,11 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 ### Spring Cloud Azure Native Reachability
 This library is deprecated, and all the reachability metadata have been incorporated into each Spring Cloud Azure library's source code directly.
 
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Breaking Changes
+- Deprecated `CloudType.AZURE_GERMANY` and remove `AzureEnvironmentProperties.AZURE_GERMANY` [#34663](https://github.com/Azure/azure-sdk-for-java/pull/34663).
 
 ## 5.0.0 (2023-01-17)
 - This release is compatible with Spring Boot 3.0.0-3.0.1. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
