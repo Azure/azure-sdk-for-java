@@ -4,12 +4,12 @@
 package com.azure.core.experimental.util.polling;
 
 import com.azure.core.exception.AzureException;
-import com.azure.core.experimental.util.polling.implementation.ImplUtils;
 import com.azure.core.experimental.util.polling.implementation.PostPollResult;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
