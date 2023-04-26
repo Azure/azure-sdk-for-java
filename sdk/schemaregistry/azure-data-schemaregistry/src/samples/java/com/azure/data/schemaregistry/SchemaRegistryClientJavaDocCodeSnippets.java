@@ -126,7 +126,8 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         SchemaRegistryClient client = buildClient();
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
-        Response<SchemaRegistrySchema> response = client.getSchemaWithResponse("{group-name}", "{schema-name}", 1, Context.NONE);
+        Response<SchemaRegistrySchema> response = client.getSchemaWithResponse("{group-name}",
+            "{schema-name}", 1, Context.NONE);
 
         System.out.println("Headers in HTTP response: ");
         response.getHeaders().forEach(header -> System.out.printf("%s: %s%n", header.getName(), header.getValue()));
