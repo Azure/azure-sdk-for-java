@@ -231,8 +231,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
-     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     * Disables the setting which determines whether or not instance discovery is performed when attempting to
+     * authenticate. This will completely disable both instance discovery and authority validation.
+     * This functionality is intended for use in scenarios where the metadata endpoint cannot be reached, such as in
+     * private clouds or Azure Stack. The process of instance discovery entails retrieving authority metadata from
+     * https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the authority
+     * is disabled. As a result, it is crucial to ensure that the configured authority host is valid and trustworthy.
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */
