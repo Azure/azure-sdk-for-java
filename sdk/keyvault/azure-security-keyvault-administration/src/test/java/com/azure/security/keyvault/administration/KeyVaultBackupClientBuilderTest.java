@@ -35,7 +35,7 @@ public class KeyVaultBackupClientBuilderTest {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         blobStorageUrl = "https://testaccount.blob.core.windows.net/backup";
         sasToken = "someSasToken";
-        serviceVersion = KeyVaultAdministrationServiceVersion.V7_3;
+        serviceVersion = KeyVaultAdministrationServiceVersion.getLatest();
     }
 
     @Test

@@ -32,8 +32,9 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     private KeyVaultBackupAsyncClient asyncClient;
 
     private void getAsyncClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = spy(getClientBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildAsyncClient());
+        asyncClient = spy(getClientBuilder(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildAsyncClient());
         if (interceptorManager.isPlaybackMode()) {
             when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
         }
