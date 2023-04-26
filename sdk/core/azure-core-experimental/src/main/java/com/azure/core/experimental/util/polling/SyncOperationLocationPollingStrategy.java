@@ -85,8 +85,7 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
                 // if it is Response<T>, PollingUtils.serializeResponse would miss read-only properties
                 BinaryData initialResponseBody = PollingUtils.serializeResponseSync(response.getValue(), serializer);
                 pollingContext.setData(
-                    com.azure.core.experimental.util.polling.implementation.PollingConstants.
-                        INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
+                    PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter);
             } else {
                 // same as OperationResourcePollingStrategy
@@ -114,10 +113,8 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
             || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             // take the initial response body from PollingContext, and de-serialize as final result
-            BinaryData initialResponseBody =
-                BinaryData.fromString(pollingContext.getData(
-                    com.azure.core.experimental.util.polling.implementation.PollingConstants.
-                        INITIAL_RESOURCE_RESPONSE_BODY));
+            BinaryData initialResponseBody = BinaryData.fromString(pollingContext.getData(
+                PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
             return PollingUtils.deserializeResponseSync(initialResponseBody, serializer, resultType);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             // take the last poll response body from PollingContext,

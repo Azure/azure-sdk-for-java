@@ -88,8 +88,7 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                 pollResponseMono = PollingUtils.serializeResponse(response.getValue(), serializer)
                     .map(initialResponseBody -> {
                         pollingContext.setData(
-                            com.azure.core.experimental.util.polling.implementation.PollingConstants.
-                                INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
+                            PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
                         return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter);
                     });
             } else {
@@ -120,10 +119,8 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
         if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
             || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             // take the initial response body from PollingContext, and de-serialize as final result
-            BinaryData initialResponseBody =
-                BinaryData.fromString(pollingContext.getData(
-                    com.azure.core.experimental.util.polling.implementation.PollingConstants.
-                        INITIAL_RESOURCE_RESPONSE_BODY));
+            BinaryData initialResponseBody = BinaryData.fromString(pollingContext.getData(
+                PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
             return PollingUtils.deserializeResponse(initialResponseBody, serializer, resultType);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             // take the last poll response body from PollingContext,

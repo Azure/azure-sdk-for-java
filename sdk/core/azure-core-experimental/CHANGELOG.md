@@ -5,7 +5,7 @@
 ### Features Added
 
 - Added `OperationLocationPollingStrategy` and `SyncOperationLocationPollingStrategy` for the new polling strategy.
-- Added `PollResult` which represents a general poll result for new polling strategy.
+- Added `PollResult` which represents a general poll result for the new polling strategy.
 
 ### Breaking Changes
 
