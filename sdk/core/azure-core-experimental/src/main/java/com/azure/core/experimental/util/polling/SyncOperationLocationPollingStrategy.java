@@ -4,10 +4,7 @@
 package com.azure.core.experimental.util.polling;
 
 import com.azure.core.exception.AzureException;
-import com.azure.core.experimental.util.polling.implementation.DefaultJsonSerializer;
 import com.azure.core.experimental.util.polling.implementation.ImplUtils;
-import com.azure.core.experimental.util.polling.implementation.PollingConstants;
-import com.azure.core.experimental.util.polling.implementation.PollingUtils;
 import com.azure.core.experimental.util.polling.implementation.PostPollResult;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
@@ -20,6 +17,9 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncOperationResourcePollingStrategy;
+import com.azure.core.util.polling.implementation.PollingConstants;
+import com.azure.core.util.polling.implementation.PollingUtils;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 
@@ -56,7 +56,7 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
         super(OPERATION_LOCATION_HEADER, pollingStrategyOptions);
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null
-            ? pollingStrategyOptions.getSerializer() : new DefaultJsonSerializer();
+            ? pollingStrategyOptions.getSerializer() : JsonSerializerProviders.createInstance(true);
     }
 
     /**
@@ -84,7 +84,9 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
                 // we expect Response<?> be either Response<BinaryData> or Response<U>
                 // if it is Response<T>, PollingUtils.serializeResponse would miss read-only properties
                 BinaryData initialResponseBody = PollingUtils.serializeResponseSync(response.getValue(), serializer);
-                pollingContext.setData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
+                pollingContext.setData(
+                    com.azure.core.experimental.util.polling.implementation.PollingConstants.
+                        INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());
                 return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter);
             } else {
                 // same as OperationResourcePollingStrategy
@@ -113,7 +115,9 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
             || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             // take the initial response body from PollingContext, and de-serialize as final result
             BinaryData initialResponseBody =
-                BinaryData.fromString(pollingContext.getData(PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY));
+                BinaryData.fromString(pollingContext.getData(
+                    com.azure.core.experimental.util.polling.implementation.PollingConstants.
+                        INITIAL_RESOURCE_RESPONSE_BODY));
             return PollingUtils.deserializeResponseSync(initialResponseBody, serializer, resultType);
         } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)) {
             // take the last poll response body from PollingContext,
