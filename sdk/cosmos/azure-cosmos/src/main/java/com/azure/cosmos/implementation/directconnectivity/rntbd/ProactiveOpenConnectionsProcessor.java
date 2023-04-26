@@ -41,7 +41,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Disposable openConnectionBackgroundTask;
     private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
-    private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 1024;
+    private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 2048;
 
     static {
         concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
