@@ -31,7 +31,7 @@ public class TestContextManager {
      * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
-        this(testMethod, testMode, false);
+        this(testMethod, testMode, false, false);
     }
 
     /**
@@ -40,15 +40,17 @@ public class TestContextManager {
      * @param testMethod Test method being ran.
      * @param testMode The {@link TestMode} the test is running in.
      * @param enableTestProxy True if the external test proxy is in use.
+     * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
+     * present on test class.
      */
-    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy) {
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
         this.enableTestProxy = enableTestProxy;
 
         RecordWithoutRequestBody recordWithoutRequestBody = testMethod.getAnnotation(RecordWithoutRequestBody.class);
-        this.skipRecordingRequestBody = recordWithoutRequestBody != null;
+        this.skipRecordingRequestBody = recordWithoutRequestBody != null || recordWithoutRequestBodyClassAnnotation;
 
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         boolean skipInPlayback;
