@@ -8,7 +8,6 @@ module com.azure.core.experimental {
     requires java.xml;
 
     exports com.azure.core.experimental.serializer;
-    exports com.azure.core.experimental.implementation;
     exports com.azure.core.experimental.http;
     exports com.azure.core.experimental.models;
     exports com.azure.core.experimental.util.polling;
