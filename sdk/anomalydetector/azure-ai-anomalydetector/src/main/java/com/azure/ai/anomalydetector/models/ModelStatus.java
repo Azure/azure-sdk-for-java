@@ -4,54 +4,49 @@
 
 package com.azure.ai.anomalydetector.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ModelStatus. */
-public enum ModelStatus {
-    /** Enum value CREATED. */
-    CREATED("CREATED"),
+public final class ModelStatus extends ExpandableStringEnum<ModelStatus> {
+    /** Static value CREATED for ModelStatus. */
+    public static final ModelStatus CREATED = fromString("CREATED");
 
-    /** Enum value RUNNING. */
-    RUNNING("RUNNING"),
+    /** Static value RUNNING for ModelStatus. */
+    public static final ModelStatus RUNNING = fromString("RUNNING");
 
-    /** Enum value READY. */
-    READY("READY"),
+    /** Static value READY for ModelStatus. */
+    public static final ModelStatus READY = fromString("READY");
 
-    /** Enum value FAILED. */
-    FAILED("FAILED");
+    /** Static value FAILED for ModelStatus. */
+    public static final ModelStatus FAILED = fromString("FAILED");
 
-    /** The actual serialized value for a ModelStatus instance. */
-    private final String value;
+    /**
+     * Creates a new instance of ModelStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ModelStatus() {}
 
-    ModelStatus(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ModelStatus from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding ModelStatus.
+     */
+    @JsonCreator
+    public static ModelStatus fromString(String name) {
+        return fromString(name, ModelStatus.class);
     }
 
     /**
-     * Parses a serialized value to a ModelStatus instance.
+     * Gets known ModelStatus values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ModelStatus object, or null if unable to parse.
+     * @return known ModelStatus values.
      */
-    @JsonCreator
-    public static ModelStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ModelStatus[] items = ModelStatus.values();
-        for (ModelStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ModelStatus> values() {
+        return values(ModelStatus.class);
     }
 }

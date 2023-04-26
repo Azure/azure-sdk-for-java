@@ -4,12 +4,12 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Variable Status. */
-@Fluent
+/** Variable status. */
+@Immutable
 public final class VariableState {
     /*
      * Variable name in variable states.
@@ -24,25 +24,25 @@ public final class VariableState {
     private Double filledNARatio;
 
     /*
-     * Number of effective data points before applying fillNAMethod.
+     * Number of effective data points before fillNAMethod is applied.
      */
     @JsonProperty(value = "effectiveCount")
     private Integer effectiveCount;
 
     /*
-     * First valid timestamp with value of input data.
+     * First valid time stamp with a value of input data.
      */
     @JsonProperty(value = "firstTimestamp")
     private OffsetDateTime firstTimestamp;
 
     /*
-     * Last valid timestamp with value of input data.
+     * Last valid time stamp with a value of input data.
      */
     @JsonProperty(value = "lastTimestamp")
     private OffsetDateTime lastTimestamp;
 
     /** Creates an instance of VariableState class. */
-    public VariableState() {}
+    private VariableState() {}
 
     /**
      * Get the variable property: Variable name in variable states.
@@ -51,17 +51,6 @@ public final class VariableState {
      */
     public String getVariable() {
         return this.variable;
-    }
-
-    /**
-     * Set the variable property: Variable name in variable states.
-     *
-     * @param variable the variable value to set.
-     * @return the VariableState object itself.
-     */
-    public VariableState setVariable(String variable) {
-        this.variable = variable;
-        return this;
     }
 
     /**
@@ -74,18 +63,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the filledNARatio property: Proportion of missing values that need to be filled by fillNAMethod.
-     *
-     * @param filledNARatio the filledNARatio value to set.
-     * @return the VariableState object itself.
-     */
-    public VariableState setFilledNARatio(Double filledNARatio) {
-        this.filledNARatio = filledNARatio;
-        return this;
-    }
-
-    /**
-     * Get the effectiveCount property: Number of effective data points before applying fillNAMethod.
+     * Get the effectiveCount property: Number of effective data points before fillNAMethod is applied.
      *
      * @return the effectiveCount value.
      */
@@ -94,18 +72,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the effectiveCount property: Number of effective data points before applying fillNAMethod.
-     *
-     * @param effectiveCount the effectiveCount value to set.
-     * @return the VariableState object itself.
-     */
-    public VariableState setEffectiveCount(Integer effectiveCount) {
-        this.effectiveCount = effectiveCount;
-        return this;
-    }
-
-    /**
-     * Get the firstTimestamp property: First valid timestamp with value of input data.
+     * Get the firstTimestamp property: First valid time stamp with a value of input data.
      *
      * @return the firstTimestamp value.
      */
@@ -114,33 +81,11 @@ public final class VariableState {
     }
 
     /**
-     * Set the firstTimestamp property: First valid timestamp with value of input data.
-     *
-     * @param firstTimestamp the firstTimestamp value to set.
-     * @return the VariableState object itself.
-     */
-    public VariableState setFirstTimestamp(OffsetDateTime firstTimestamp) {
-        this.firstTimestamp = firstTimestamp;
-        return this;
-    }
-
-    /**
-     * Get the lastTimestamp property: Last valid timestamp with value of input data.
+     * Get the lastTimestamp property: Last valid time stamp with a value of input data.
      *
      * @return the lastTimestamp value.
      */
     public OffsetDateTime getLastTimestamp() {
         return this.lastTimestamp;
-    }
-
-    /**
-     * Set the lastTimestamp property: Last valid timestamp with value of input data.
-     *
-     * @param lastTimestamp the lastTimestamp value to set.
-     * @return the VariableState object itself.
-     */
-    public VariableState setLastTimestamp(OffsetDateTime lastTimestamp) {
-        this.lastTimestamp = lastTimestamp;
-        return this;
     }
 }

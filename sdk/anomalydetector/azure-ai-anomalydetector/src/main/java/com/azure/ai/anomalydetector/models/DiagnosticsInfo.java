@@ -4,12 +4,12 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Diagnostics information to help inspect the states of model or variable. */
-@Fluent
+/** Diagnostics information to help inspect the states of a model or variable. */
+@Immutable
 public final class DiagnosticsInfo {
     /*
      * Model status.
@@ -18,13 +18,13 @@ public final class DiagnosticsInfo {
     private ModelState modelState;
 
     /*
-     * Variable Status.
+     * Variable status.
      */
     @JsonProperty(value = "variableStates")
     private List<VariableState> variableStates;
 
     /** Creates an instance of DiagnosticsInfo class. */
-    public DiagnosticsInfo() {}
+    private DiagnosticsInfo() {}
 
     /**
      * Get the modelState property: Model status.
@@ -36,33 +36,11 @@ public final class DiagnosticsInfo {
     }
 
     /**
-     * Set the modelState property: Model status.
-     *
-     * @param modelState the modelState value to set.
-     * @return the DiagnosticsInfo object itself.
-     */
-    public DiagnosticsInfo setModelState(ModelState modelState) {
-        this.modelState = modelState;
-        return this;
-    }
-
-    /**
-     * Get the variableStates property: Variable Status.
+     * Get the variableStates property: Variable status.
      *
      * @return the variableStates value.
      */
     public List<VariableState> getVariableStates() {
         return this.variableStates;
-    }
-
-    /**
-     * Set the variableStates property: Variable Status.
-     *
-     * @param variableStates the variableStates value to set.
-     * @return the DiagnosticsInfo object itself.
-     */
-    public DiagnosticsInfo setVariableStates(List<VariableState> variableStates) {
-        this.variableStates = variableStates;
-        return this;
     }
 }

@@ -7,25 +7,24 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An optional field, indicating the manner to align multiple variables. */
+/** Manner of aligning multiple variables. */
 @Fluent
 public final class AlignPolicy {
     /*
-     * An optional field, indicating how to align different variables to the same
-     * time-range. Either Inner or Outer.
+     * Field that indicates how to align different variables to the same
+     * time range.
      */
     @JsonProperty(value = "alignMode")
     private AlignMode alignMode;
 
     /*
-     * An optional field, indicating how missing values will be filled. One of
-     * Previous, Subsequent, Linear, Zero, Fixed.
+     * Field that indicates how missing values will be filled.
      */
     @JsonProperty(value = "fillNAMethod")
     private FillNAMethod fillNAMethod;
 
     /*
-     * An optional field. Required when fillNAMethod is Fixed.
+     * Field that's required when fillNAMethod is Fixed.
      */
     @JsonProperty(value = "paddingValue")
     private Double paddingValue;
@@ -34,8 +33,7 @@ public final class AlignPolicy {
     public AlignPolicy() {}
 
     /**
-     * Get the alignMode property: An optional field, indicating how to align different variables to the same
-     * time-range. Either Inner or Outer.
+     * Get the alignMode property: Field that indicates how to align different variables to the same time range.
      *
      * @return the alignMode value.
      */
@@ -44,8 +42,7 @@ public final class AlignPolicy {
     }
 
     /**
-     * Set the alignMode property: An optional field, indicating how to align different variables to the same
-     * time-range. Either Inner or Outer.
+     * Set the alignMode property: Field that indicates how to align different variables to the same time range.
      *
      * @param alignMode the alignMode value to set.
      * @return the AlignPolicy object itself.
@@ -56,8 +53,7 @@ public final class AlignPolicy {
     }
 
     /**
-     * Get the fillNAMethod property: An optional field, indicating how missing values will be filled. One of Previous,
-     * Subsequent, Linear, Zero, Fixed.
+     * Get the fillNAMethod property: Field that indicates how missing values will be filled.
      *
      * @return the fillNAMethod value.
      */
@@ -66,8 +62,7 @@ public final class AlignPolicy {
     }
 
     /**
-     * Set the fillNAMethod property: An optional field, indicating how missing values will be filled. One of Previous,
-     * Subsequent, Linear, Zero, Fixed.
+     * Set the fillNAMethod property: Field that indicates how missing values will be filled.
      *
      * @param fillNAMethod the fillNAMethod value to set.
      * @return the AlignPolicy object itself.
@@ -78,7 +73,7 @@ public final class AlignPolicy {
     }
 
     /**
-     * Get the paddingValue property: An optional field. Required when fillNAMethod is Fixed.
+     * Get the paddingValue property: Field that's required when fillNAMethod is Fixed.
      *
      * @return the paddingValue value.
      */
@@ -87,7 +82,7 @@ public final class AlignPolicy {
     }
 
     /**
-     * Set the paddingValue property: An optional field. Required when fillNAMethod is Fixed.
+     * Set the paddingValue property: Field that's required when fillNAMethod is Fixed.
      *
      * @param paddingValue the paddingValue value to set.
      * @return the AlignPolicy object itself.

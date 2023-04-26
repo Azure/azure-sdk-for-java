@@ -8,26 +8,26 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of change point detection. */
+/** Response of change point detection. */
 @Immutable
 public final class UnivariateChangePointDetectionResult {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has been
+     * Frequency extracted from the series. Zero means no recurrent pattern has been
      * found.
      */
     @JsonProperty(value = "period", access = JsonProperty.Access.WRITE_ONLY)
     private Integer period;
 
     /*
-     * isChangePoint contains change point properties for each input point. True means
-     * an anomaly either negative or positive has been detected. The index of the
+     * Change point properties for each input point. True means
+     * an anomaly (either negative or positive) has been detected. The index of the
      * array is consistent with the input series.
      */
     @JsonProperty(value = "isChangePoint")
     private List<Boolean> isChangePoint;
 
     /*
-     * the change point confidence of each point
+     * Change point confidence of each point.
      */
     @JsonProperty(value = "confidenceScores")
     private List<Double> confidenceScores;
@@ -36,7 +36,7 @@ public final class UnivariateChangePointDetectionResult {
     private UnivariateChangePointDetectionResult() {}
 
     /**
-     * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
+     * Get the period property: Frequency extracted from the series. Zero means no recurrent pattern has been found.
      *
      * @return the period value.
      */
@@ -45,9 +45,8 @@ public final class UnivariateChangePointDetectionResult {
     }
 
     /**
-     * Get the isChangePoint property: isChangePoint contains change point properties for each input point. True means
-     * an anomaly either negative or positive has been detected. The index of the array is consistent with the input
-     * series.
+     * Get the isChangePoint property: Change point properties for each input point. True means an anomaly (either
+     * negative or positive) has been detected. The index of the array is consistent with the input series.
      *
      * @return the isChangePoint value.
      */
@@ -56,7 +55,7 @@ public final class UnivariateChangePointDetectionResult {
     }
 
     /**
-     * Get the confidenceScores property: the change point confidence of each point.
+     * Get the confidenceScores property: Change point confidence of each point.
      *
      * @return the confidenceScores value.
      */

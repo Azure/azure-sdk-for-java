@@ -20,10 +20,13 @@ public class DetectMultivariateBatchAnomaly {
                         .endpoint("{Endpoint}")
                         .buildClient();
         // BEGIN:com.azure.ai.anomalydetector.generated.detectmultivariatebatchanomaly.detectmultivariatebatchanomaly
+        BinaryData options =
+                BinaryData.fromString(
+                        "{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"topContributorCount\":10,\"startTime\":\"2019-04-01T00:15:00Z\",\"endTime\":\"2019-04-01T00:40:00Z\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 anomalyDetectorClient.detectMultivariateBatchAnomalyWithResponse(
-                        "45aad126-aafd-11ea-b8fb-d89ef3400c5f", null, requestOptions);
+                        "45aad126-aafd-11ea-b8fb-d89ef3400c5f", options, requestOptions);
         // END:com.azure.ai.anomalydetector.generated.detectmultivariatebatchanomaly.detectmultivariatebatchanomaly
     }
 }

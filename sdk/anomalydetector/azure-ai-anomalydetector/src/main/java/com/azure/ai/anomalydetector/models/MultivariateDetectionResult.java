@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Detection results for the given resultId. */
+/** Detection results for the resultId value. */
 @Immutable
 public final class MultivariateDetectionResult {
     /*
-     * Result identifier, which is used to fetch the results of an inference call.
+     * Result identifier that's used to fetch the results of an inference call.
      */
     @JsonProperty(value = "resultId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String resultId;
@@ -25,7 +25,7 @@ public final class MultivariateDetectionResult {
     private MultivariateBatchDetectionResultSummary summary;
 
     /*
-     * Detection result for each timestamp.
+     * Detection result for each time stamp.
      */
     @JsonProperty(value = "results", required = true)
     private List<AnomalyState> results;
@@ -45,7 +45,7 @@ public final class MultivariateDetectionResult {
     }
 
     /**
-     * Get the resultId property: Result identifier, which is used to fetch the results of an inference call.
+     * Get the resultId property: Result identifier that's used to fetch the results of an inference call.
      *
      * @return the resultId value.
      */
@@ -63,7 +63,7 @@ public final class MultivariateDetectionResult {
     }
 
     /**
-     * Get the results property: Detection result for each timestamp.
+     * Get the results property: Detection result for each time stamp.
      *
      * @return the results value.
      */

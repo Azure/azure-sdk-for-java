@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Detailed information of the anomalous timestamp. */
+/** Detailed information of the anomalous time stamp. */
 @Immutable
 public final class AnomalyValue {
     /*
-     * True if an anomaly is detected at the current timestamp.
+     * True if an anomaly is detected at the current time stamp.
      */
     @JsonProperty(value = "isAnomaly", required = true)
     private boolean isAnomaly;
@@ -26,14 +26,13 @@ public final class AnomalyValue {
     private double severity;
 
     /*
-     * Raw anomaly score of severity, will help indicate the degree of abnormality as
-     * well.
+     * Raw anomaly score of severity, to help indicate the degree of abnormality.
      */
     @JsonProperty(value = "score", required = true)
     private double score;
 
     /*
-     * Interpretation of this anomalous timestamp.
+     * Interpretation of this anomalous time stamp.
      */
     @JsonProperty(value = "interpretation")
     private List<AnomalyInterpretation> interpretation;
@@ -56,7 +55,7 @@ public final class AnomalyValue {
     }
 
     /**
-     * Get the isAnomaly property: True if an anomaly is detected at the current timestamp.
+     * Get the isAnomaly property: True if an anomaly is detected at the current time stamp.
      *
      * @return the isAnomaly value.
      */
@@ -75,7 +74,7 @@ public final class AnomalyValue {
     }
 
     /**
-     * Get the score property: Raw anomaly score of severity, will help indicate the degree of abnormality as well.
+     * Get the score property: Raw anomaly score of severity, to help indicate the degree of abnormality.
      *
      * @return the score value.
      */
@@ -84,7 +83,7 @@ public final class AnomalyValue {
     }
 
     /**
-     * Get the interpretation property: Interpretation of this anomalous timestamp.
+     * Get the interpretation property: Interpretation of this anomalous time stamp.
      *
      * @return the interpretation value.
      */

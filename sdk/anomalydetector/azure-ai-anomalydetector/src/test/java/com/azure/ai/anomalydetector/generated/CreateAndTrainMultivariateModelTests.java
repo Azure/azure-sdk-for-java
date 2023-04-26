@@ -15,8 +15,12 @@ public final class CreateAndTrainMultivariateModelTests extends AnomalyDetectorC
     @Test
     @Disabled
     public void testCreateAndTrainMultivariateModelTests() {
+        BinaryData modelInfo =
+                BinaryData.fromString(
+                        "{\"slidingWindow\":20,\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"dataSchema\":\"OneTable\",\"startTime\":\"2019-04-01T00:00:00Z\",\"endTime\":\"2019-04-02T00:00:00Z\",\"displayName\":\"Devops-MultiAD\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.trainMultivariateModelWithResponse(null, requestOptions);
+        Response<BinaryData> response =
+                anomalyDetectorClient.trainMultivariateModelWithResponse(modelInfo, requestOptions);
         Assertions.assertEquals(201, response.getStatusCode());
         Assertions.assertEquals(
                 "{Endpoint}/anomalydetector/v1.1/multivariate/models/{modelId}",

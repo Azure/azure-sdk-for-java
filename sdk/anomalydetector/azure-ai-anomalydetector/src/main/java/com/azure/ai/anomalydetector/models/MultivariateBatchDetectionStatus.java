@@ -4,54 +4,49 @@
 
 package com.azure.ai.anomalydetector.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for MultivariateBatchDetectionStatus. */
-public enum MultivariateBatchDetectionStatus {
-    /** Enum value CREATED. */
-    CREATED("CREATED"),
+public final class MultivariateBatchDetectionStatus extends ExpandableStringEnum<MultivariateBatchDetectionStatus> {
+    /** Static value CREATED for MultivariateBatchDetectionStatus. */
+    public static final MultivariateBatchDetectionStatus CREATED = fromString("CREATED");
 
-    /** Enum value RUNNING. */
-    RUNNING("RUNNING"),
+    /** Static value RUNNING for MultivariateBatchDetectionStatus. */
+    public static final MultivariateBatchDetectionStatus RUNNING = fromString("RUNNING");
 
-    /** Enum value READY. */
-    READY("READY"),
+    /** Static value READY for MultivariateBatchDetectionStatus. */
+    public static final MultivariateBatchDetectionStatus READY = fromString("READY");
 
-    /** Enum value FAILED. */
-    FAILED("FAILED");
+    /** Static value FAILED for MultivariateBatchDetectionStatus. */
+    public static final MultivariateBatchDetectionStatus FAILED = fromString("FAILED");
 
-    /** The actual serialized value for a MultivariateBatchDetectionStatus instance. */
-    private final String value;
+    /**
+     * Creates a new instance of MultivariateBatchDetectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MultivariateBatchDetectionStatus() {}
 
-    MultivariateBatchDetectionStatus(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a MultivariateBatchDetectionStatus from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding MultivariateBatchDetectionStatus.
+     */
+    @JsonCreator
+    public static MultivariateBatchDetectionStatus fromString(String name) {
+        return fromString(name, MultivariateBatchDetectionStatus.class);
     }
 
     /**
-     * Parses a serialized value to a MultivariateBatchDetectionStatus instance.
+     * Gets known MultivariateBatchDetectionStatus values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed MultivariateBatchDetectionStatus object, or null if unable to parse.
+     * @return known MultivariateBatchDetectionStatus values.
      */
-    @JsonCreator
-    public static MultivariateBatchDetectionStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        MultivariateBatchDetectionStatus[] items = MultivariateBatchDetectionStatus.values();
-        for (MultivariateBatchDetectionStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<MultivariateBatchDetectionStatus> values() {
+        return values(MultivariateBatchDetectionStatus.class);
     }
 }

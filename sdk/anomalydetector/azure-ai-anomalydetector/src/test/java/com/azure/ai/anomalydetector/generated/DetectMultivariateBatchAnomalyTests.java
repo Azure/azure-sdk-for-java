@@ -15,10 +15,13 @@ public final class DetectMultivariateBatchAnomalyTests extends AnomalyDetectorCl
     @Test
     @Disabled
     public void testDetectMultivariateBatchAnomalyTests() {
+        BinaryData options =
+                BinaryData.fromString(
+                        "{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"topContributorCount\":10,\"startTime\":\"2019-04-01T00:15:00Z\",\"endTime\":\"2019-04-01T00:40:00Z\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 anomalyDetectorClient.detectMultivariateBatchAnomalyWithResponse(
-                        "45aad126-aafd-11ea-b8fb-d89ef3400c5f", null, requestOptions);
+                        "45aad126-aafd-11ea-b8fb-d89ef3400c5f", options, requestOptions);
         Assertions.assertEquals(202, response.getStatusCode());
         Assertions.assertEquals(
                 "{Endpoint}/anomalydetector/v1.1/multivariate/detect-batch/",

@@ -4,48 +4,43 @@
 
 package com.azure.ai.anomalydetector.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for AlignMode. */
-public enum AlignMode {
-    /** Enum value Inner. */
-    INNER("Inner"),
+public final class AlignMode extends ExpandableStringEnum<AlignMode> {
+    /** Static value Inner for AlignMode. */
+    public static final AlignMode INNER = fromString("Inner");
 
-    /** Enum value Outer. */
-    OUTER("Outer");
+    /** Static value Outer for AlignMode. */
+    public static final AlignMode OUTER = fromString("Outer");
 
-    /** The actual serialized value for a AlignMode instance. */
-    private final String value;
+    /**
+     * Creates a new instance of AlignMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlignMode() {}
 
-    AlignMode(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a AlignMode from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding AlignMode.
+     */
+    @JsonCreator
+    public static AlignMode fromString(String name) {
+        return fromString(name, AlignMode.class);
     }
 
     /**
-     * Parses a serialized value to a AlignMode instance.
+     * Gets known AlignMode values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AlignMode object, or null if unable to parse.
+     * @return known AlignMode values.
      */
-    @JsonCreator
-    public static AlignMode fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AlignMode[] items = AlignMode.values();
-        for (AlignMode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AlignMode> values() {
+        return values(AlignMode.class);
     }
 }
