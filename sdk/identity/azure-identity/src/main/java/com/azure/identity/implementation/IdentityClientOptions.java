@@ -70,7 +70,7 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
 
-    private Duration processTimeout = Duration.ofSeconds(10);
+    private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -696,16 +696,16 @@ public final class IdentityClientOptions implements Cloneable {
      * Gets the timeout to apply to developer credential operations.
      * @return The timeout value for developer credential operations.
      */
-    public Duration getProcessTimeout() {
-        return processTimeout;
+    public Duration getCredentialProcessTimeout() {
+        return credentialProcessTimeout;
     }
 
     /**
      * Sets the timeout for developer credential operations.
-     * @param processTimeout The timeout value for developer credential operations.
+     * @param credentialProcessTimeout The timeout value for developer credential operations.
      */
-    public void setProcessTimeout(Duration processTimeout) {
-        this.processTimeout = processTimeout;
+    public void setCredentialProcessTimeout(Duration credentialProcessTimeout) {
+        this.credentialProcessTimeout = credentialProcessTimeout;
     }
 
     public IdentityClientOptions clone() {

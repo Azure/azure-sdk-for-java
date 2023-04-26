@@ -111,8 +111,11 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     }
 
     /**
-     * Disables instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
-     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     * Disables instance discovery. The functionality to disable instance discovery is limited to Azure Stack
+     * and private cloud situations. The process of instance discovery entails retrieving authority metadata
+     * from https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the
+     * authority is disabled. As a result, it is crucial for you to confirm that the configured authority host is
+     * valid and untampered.
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */

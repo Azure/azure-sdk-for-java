@@ -65,7 +65,7 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
      */
     public AzureDeveloperCliCredentialBuilder processTimeout(Duration processTimeout) {
         Objects.requireNonNull(processTimeout);
-        this.identityClientOptions.setProcessTimeout(processTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(processTimeout);
         return this;
     }
 
