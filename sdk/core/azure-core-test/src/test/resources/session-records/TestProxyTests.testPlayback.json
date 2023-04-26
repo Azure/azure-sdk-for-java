@@ -4,7 +4,7 @@
       "RequestUri": "http://REDACTED/first/path",
       "RequestMethod": "GET",
       "RequestHeaders": {
-        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Accept": "*/*",
         "Connection": "keep-alive",
         "User-Agent": "Java/11.0.9"
       },

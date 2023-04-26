@@ -126,6 +126,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
             .repositoryName(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .addAllowedHeaderName("Docker-Content-Digest")
                 .addAllowedHeaderName("Range")
                 .addAllowedHeaderName("Content-Range"))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))

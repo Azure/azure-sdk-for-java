@@ -17,6 +17,10 @@ public final class Sku {
     @JsonProperty(value = "name", required = true)
     private String name;
 
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
+
     /**
      * Get the name property: The SKU name of the configuration store.
      *

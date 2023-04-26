@@ -7,6 +7,8 @@ import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciImageManifest;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -16,19 +18,20 @@ import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,6 +52,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -61,6 +65,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.DO
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -86,6 +91,7 @@ public class ContainerRegistryContentClientTests {
     }
 
     private MessageDigest sha256;
+    private Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
     @BeforeEach
     void beforeEach() {
@@ -239,7 +245,6 @@ public class ContainerRegistryContentClientTests {
     public void uploadBlobSmall() {
         BinaryData content = getDataSync((int) (CHUNK_SIZE * 0.1), sha256);
 
-        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
         ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
         SyncAsyncExtension.execute(
@@ -249,26 +254,27 @@ public class ContainerRegistryContentClientTests {
 
     @SyncAsyncTest
     public void uploadBlobSmallChunks() {
-        Flux<ByteBuffer> content = getDataAsync(CHUNK_SIZE * 2, CHUNK_SIZE / 10, sha256);
-
-        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
+        long length = CHUNK_SIZE * 2;
+        Flux<ByteBuffer> content = getDataAsync(length, CHUNK_SIZE / 10, sha256);
+        BinaryData data = BinaryData.fromFlux(content, length, true).block();
         ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
         SyncAsyncExtension.execute(
-            () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
-            () -> asyncClient.uploadBlob(content));
+            () -> client.uploadBlob(data),
+            () -> asyncClient.uploadBlob(data));
     }
 
     @SyncAsyncTest
     public void uploadBlobBigChunks() {
+        long length = CHUNK_SIZE * 2;
         Flux<ByteBuffer> content = getDataAsync(CHUNK_SIZE * 2, (int) (CHUNK_SIZE * 1.5), sha256);
-        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
+        BinaryData data = BinaryData.fromFlux(content, length, true).block();
 
         ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
         SyncAsyncExtension.execute(
-            () -> client.uploadBlob(BinaryData.fromFlux(content).block()),
-            () -> asyncClient.uploadBlob(content));
+            () -> client.uploadBlob(data),
+            () -> asyncClient.uploadBlob(data));
     }
 
     private ByteBuffer slice(ByteBuffer buffer, int offset, int length) {
@@ -289,10 +295,9 @@ public class ContainerRegistryContentClientTests {
 
         ByteBuffer full = slice(buf, 0, 1101);
         sha256.update(full.asReadOnlyBuffer());
-        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
 
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
-        StepVerifier.create(asyncClient.uploadBlob(content))
+        StepVerifier.create(BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -311,7 +316,7 @@ public class ContainerRegistryContentClientTests {
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(() -> "foo"));
         assertThrows(IllegalStateException.class, () -> client.uploadBlob(BinaryData.fromFlux(content).block()));
 
-        StepVerifier.create(asyncClient.uploadBlob(content))
+        StepVerifier.create(BinaryData.fromFlux(content).flatMap(c -> asyncClient.uploadBlob(c)))
             .expectError(IllegalStateException.class)
             .verify();
     }
@@ -326,8 +331,6 @@ public class ContainerRegistryContentClientTests {
         Files.write(input.toPath(), secondChunk, StandardOpenOption.APPEND);
         sha256.update(secondChunk);
 
-        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
-
         ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
 
         StepVerifier.create(asyncClient.uploadBlob(BinaryData.fromFile(input.toPath())))
@@ -337,17 +340,108 @@ public class ContainerRegistryContentClientTests {
 
     @SyncAsyncTest
     public void uploadFromStream() throws IOException {
-        ByteBuffer data = slice(ByteBuffer.wrap(CHUNK), 0, 1024 * 100);
-        sha256.update(data.asReadOnlyBuffer());
-        try (ByteBufferBackedInputStream stream = new ByteBufferBackedInputStream(data)) {
-            Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
+        byte[] data = Arrays.copyOfRange(CHUNK, 0, 1024 * 100);
+        sha256.update(data);
+
+        try (ByteArrayInputStream stream = new ByteArrayInputStream(data)) {
+            BinaryData content = BinaryData.fromStream(stream, (long) data.length);
 
             ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
             ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
             SyncAsyncExtension.execute(
-                () -> client.uploadBlob(BinaryData.fromStream(stream)),
-                () -> asyncClient.uploadBlob(BinaryData.fromStream(stream)));
+                () -> client.uploadBlob(content),
+                () -> asyncClient.uploadBlob(content));
         }
+    }
+
+    @SyncAsyncTest
+    public void uploadFails() {
+        Flux<ByteBuffer> flux = Flux.create(sink -> {
+            sha256.update(CHUNK);
+            sink.next(ByteBuffer.wrap(CHUNK));
+
+            sha256.update(CHUNK);
+            sink.next(ByteBuffer.wrap(CHUNK));
+
+            sink.complete();
+        });
+
+        BiFunction<HttpRequest, Integer, HttpResponse> onChunk = (r, c) -> {
+            if (c == 3) {
+                HttpHeaders responseHeaders = new HttpHeaders().add("Content-Type", String.valueOf("application/json"));
+                String error = "{\"errors\":[{\"code\":\"BLOB_UPLOAD_INVALID\",\"message\":\"blob upload invalid\"}, {\"code\":\"BLOB_UPLOAD_FOO\",\"message\":\"blob upload foo\"}]}";
+                return new MockHttpResponse(r, 404, responseHeaders, error.getBytes(StandardCharsets.UTF_8));
+            }
+            return null;
+        };
+        Supplier<String> calculateDigest = () -> "sha256:" + bytesToHexString(sha256.digest());
+        BinaryData content = BinaryData.fromFlux(flux, (long) CHUNK_SIZE * 2, false).block();
+
+        ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest, onChunk));
+        ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest, onChunk));
+
+        ResourceNotFoundException ex = assertThrows(ResourceNotFoundException.class, () -> SyncAsyncExtension.execute(
+            () -> client.uploadBlob(content),
+            () -> asyncClient.uploadBlob(content)));
+
+        assertAcrException(ex, "BLOB_UPLOAD_INVALID");
+    }
+
+    private void assertAcrException(HttpResponseException ex, String code) {
+        assertInstanceOf(ResponseError.class, ex.getValue());
+        ResponseError error = (ResponseError) ex.getValue();
+        assertEquals(code, error.getCode());
+    }
+
+    public void uploadFromFlux() {
+        byte[] data = Arrays.copyOfRange(CHUNK, 0, 1024 * 100);
+        sha256.update(data);
+        Flux<ByteBuffer> flux = Flux.create(sink -> {
+            sink.next(ByteBuffer.wrap(data));
+            sink.complete();
+        });
+
+        BinaryData content = BinaryData.fromFlux(flux).block();
+
+        ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
+        ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
+        SyncAsyncExtension.execute(
+            () -> client.uploadBlob(content),
+            () -> asyncClient.uploadBlob(content));
+    }
+
+    @SyncAsyncTest
+    public void uploadFromStreamNotReplayable() throws IOException {
+        byte[] data = Arrays.copyOfRange(CHUNK, 0, 1024 * 100);
+        sha256.update(data);
+
+        try (ByteArrayInputStream stream = new ByteArrayInputStream(data)) {
+            BinaryData content = BinaryData.fromStream(stream, null);
+
+            ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
+            ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
+            SyncAsyncExtension.execute(
+                () -> client.uploadBlob(content),
+                () -> asyncClient.uploadBlob(content));
+        }
+    }
+
+    @SyncAsyncTest
+    public void uploadFromFluxNotReplayable() {
+        byte[] data = Arrays.copyOfRange(CHUNK, 0, 1024 * 100);
+        sha256.update(data);
+        Flux<ByteBuffer> flux = Flux.create(sink -> {
+            sink.next(ByteBuffer.wrap(data));
+            sink.complete();
+        });
+
+        BinaryData content = BinaryData.fromFlux(flux, (long) data.length, false).block();
+
+        ContainerRegistryContentClient client = createSyncClient(createUploadContentClient(calculateDigest));
+        ContainerRegistryContentAsyncClient asyncClient = createAsyncClient(createUploadContentClient(calculateDigest));
+        SyncAsyncExtension.execute(
+            () -> client.uploadBlob(content),
+            () -> asyncClient.uploadBlob(content));
     }
 
     @Test
@@ -410,17 +504,22 @@ public class ContainerRegistryContentClientTests {
         });
     }
 
-    public static HttpClient createUploadContentClient(Supplier<String> calculateDigest) {
-        AtomicInteger chunkNumber = new AtomicInteger();
+    public static HttpClient createUploadContentClient(Supplier<String> calculateDigest, BiFunction<HttpRequest, Integer, HttpResponse> onChunk) {
+        AtomicInteger callNumber = new AtomicInteger();
         return new MockHttpClient(request -> {
-            String expectedReceivedLocation =  String.valueOf(chunkNumber.getAndIncrement());
-            HttpHeaders responseHeaders = new HttpHeaders().add("Location", String.valueOf(chunkNumber.get()));
+            String expectedReceivedLocation =  String.valueOf(callNumber.getAndIncrement());
+            HttpHeaders responseHeaders = new HttpHeaders().add("Location", String.valueOf(callNumber.get()));
             if (request.getHttpMethod() == HttpMethod.POST) { // start upload
-                assertEquals(0, chunkNumber.get() - 1);
+                assertEquals(0, callNumber.get() - 1);
                 return new MockHttpResponse(request, 202, responseHeaders);
             } else if (request.getHttpMethod() == HttpMethod.PATCH) { // upload chunk
                 assertEquals("/" + expectedReceivedLocation, request.getUrl().getPath());
-                return new MockHttpResponse(request, 202, responseHeaders);
+                HttpResponse response = onChunk.apply(request, callNumber.get());
+                if (response == null) {
+                    response = new MockHttpResponse(request, 202, responseHeaders);
+                }
+
+                return response;
             } else if (request.getHttpMethod() == HttpMethod.PUT) { // complete upload
                 String expectedDigest = calculateDigest.get();
                 try {
@@ -436,6 +535,10 @@ public class ContainerRegistryContentClientTests {
             }
             return new MockHttpResponse(request, 404);
         });
+    }
+
+    public static HttpClient createUploadContentClient(Supplier<String> calculateDigest) {
+        return createUploadContentClient(calculateDigest, (r, c) -> null);
     }
 
     private BinaryData getDataSync(int size, MessageDigest sha256) {

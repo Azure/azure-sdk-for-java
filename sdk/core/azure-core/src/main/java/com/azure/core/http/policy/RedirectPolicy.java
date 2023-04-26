@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -72,7 +73,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
                     // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
                     // causing it to leak your authorization token to.
-                    httpResponse.getHeaders().remove("Authorization");
+                    httpResponse.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
 
                     return httpResponse
                         .getBody()

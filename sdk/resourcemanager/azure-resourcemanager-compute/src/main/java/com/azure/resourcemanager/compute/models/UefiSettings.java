@@ -8,19 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
- * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
+ * Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum
+ * api-version: 2020-12-01.
  */
 @Fluent
 public final class UefiSettings {
     /*
-     * Specifies whether secure boot should be enabled on the virtual machine. <br><br>Minimum api-version: 2020-12-01
+     * Specifies whether secure boot should be enabled on the virtual machine. Minimum api-version: 2020-12-01.
      */
     @JsonProperty(value = "secureBootEnabled")
     private Boolean secureBootEnabled;
 
     /*
-     * Specifies whether vTPM should be enabled on the virtual machine. <br><br>Minimum api-version: 2020-12-01
+     * Specifies whether vTPM should be enabled on the virtual machine. Minimum api-version: 2020-12-01.
      */
     @JsonProperty(value = "vTpmEnabled")
     private Boolean vTpmEnabled;
@@ -31,7 +31,7 @@ public final class UefiSettings {
 
     /**
      * Get the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
+     * Minimum api-version: 2020-12-01.
      *
      * @return the secureBootEnabled value.
      */
@@ -41,7 +41,7 @@ public final class UefiSettings {
 
     /**
      * Set the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
+     * Minimum api-version: 2020-12-01.
      *
      * @param secureBootEnabled the secureBootEnabled value to set.
      * @return the UefiSettings object itself.
@@ -52,8 +52,8 @@ public final class UefiSettings {
     }
 
     /**
-     * Get the vTpmEnabled property: Specifies whether vTPM should be enabled on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
+     * Get the vTpmEnabled property: Specifies whether vTPM should be enabled on the virtual machine. Minimum
+     * api-version: 2020-12-01.
      *
      * @return the vTpmEnabled value.
      */
@@ -62,8 +62,8 @@ public final class UefiSettings {
     }
 
     /**
-     * Set the vTpmEnabled property: Specifies whether vTPM should be enabled on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.
+     * Set the vTpmEnabled property: Specifies whether vTPM should be enabled on the virtual machine. Minimum
+     * api-version: 2020-12-01.
      *
      * @param vTpmEnabled the vTpmEnabled value to set.
      * @return the UefiSettings object itself.

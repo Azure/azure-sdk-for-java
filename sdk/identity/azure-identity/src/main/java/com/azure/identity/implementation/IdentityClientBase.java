@@ -344,10 +344,6 @@ public abstract class IdentityClientBase {
                 result.setAccessToken(accessToken.getToken());
                 result.setTenantId(trc.getTenantId());
                 result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                if (accessToken.getClass().isInstance(MSIToken.class)) {
-                    MSIToken msiToken = (MSIToken) accessToken;
-                    result.setRefreshInSeconds(msiToken.getRefreshAtEpochSeconds());
-                }
                 return result;
             }).toFuture();
         });
@@ -478,7 +474,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -563,7 +559,7 @@ public abstract class IdentityClientBase {
                                                 +
                                                 "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                                                 +
-                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                                                "https://aka.ms/azsdk/java/identity/azdevclicredential/troubleshoot"));
                     }
                     output.append(line);
                 }
@@ -571,18 +567,18 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(10, TimeUnit.SECONDS);
+            process.waitFor(this.options.getProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
-                    if (redactedOutput.contains("azd login") || redactedOutput.contains("not logged in")) {
+                    if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         throw LoggingUtil.logCredentialUnavailableException(
                                 LOGGER,
                                 options,
                                 new CredentialUnavailableException(
                                         "AzureDeveloperCliCredential authentication unavailable."
-                                        + " Please run 'azd login' to set up account."));
+                                        + " Please run 'azd auth login' to set up account."));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {

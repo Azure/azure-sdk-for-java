@@ -13,7 +13,9 @@ import com.azure.resourcemanager.confidentialledger.fluent.models.ResourceProvid
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * Retrieves a list of available API operations.
+     * Retrieves a list of available API operations under this Resource Provider.
+     *
+     * <p>Retrieves a list of available API operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,7 +26,9 @@ public interface OperationsClient {
     PagedIterable<ResourceProviderOperationDefinitionInner> list();
 
     /**
-     * Retrieves a list of available API operations.
+     * Retrieves a list of available API operations under this Resource Provider.
+     *
+     * <p>Retrieves a list of available API operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

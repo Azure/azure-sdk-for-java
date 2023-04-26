@@ -1,31 +1,385 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fabb78ca-c735-4390-9c30-840d0f23ba3f",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "fabb78ca-c735-4390-9c30-840d0f23ba3f",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:32:24 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "fabb78ca-c735-4390-9c30-840d0f23ba3f",
-      "elapsed-time" : "5",
-      "Expires" : "-1",
-      "Content-Length" : "329",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.analyzers[0].flags : Values of property \\\"flags\\\" must belong to the set of allowed values (case-sensitive) or be in the pipe form of them (e.g. value1|value2|...): CANON_EQ, CASE_INSENSITIVE, COMMENTS, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNIX_LINES.\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "fabb78ca-c735-4390-9c30-840d0f23ba3f",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "hotelscanuseallregexflagsemptyflagsanalyzerasynca5a841790774", "azsmnet701464c2d0f" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "4791",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:05:07 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "cf666019-94f4-4ec3-b07f-4b1609dc574c"
+      },
+      "RequestBody": {
+        "name": "hotelscanuseallregexflagsemptyflagsanalyzerasync53c57373d6e1",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "en.lucene"
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "fr.lucene"
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "searchAnalyzer": "stop",
+            "indexAnalyzer": "stop"
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "facetable": true
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "analyzer": "en.lucene"
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "analyzer": "fr.lucene"
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "key": false,
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double"
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 2.0,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                }
+              },
+              {
+                "type": "distance",
+                "fieldName": "Location",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                }
+              },
+              {
+                "type": "freshness",
+                "fieldName": "LastRenovationDate",
+                "boost": 1.1,
+                "interpolation": "logarithmic",
+                "freshness": {
+                  "boostingDuration": "PT8760H"
+                }
+              }
+            ],
+            "functionAggregation": "average"
+          },
+          {
+            "name": "ProfileTwo",
+            "functions": [
+              {
+                "type": "tag",
+                "fieldName": "Tags",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "tag": {
+                  "tagsParameter": "MyTags"
+                }
+              }
+            ],
+            "functionAggregation": "maximum"
+          },
+          {
+            "name": "ProfileThree",
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 3.0,
+                "interpolation": "quadratic",
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                }
+              }
+            ],
+            "functionAggregation": "minimum"
+          },
+          {
+            "name": "ProfileFour",
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 3.25,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                }
+              }
+            ],
+            "functionAggregation": "firstMatching"
+          }
+        ],
+        "defaultScoringProfile": "MyProfile",
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "sourceFields": [
+              "HotelName"
+            ],
+            "searchMode": "analyzingInfixMatching"
+          }
+        ],
+        "analyzers": [
+          {
+            "@odata.type": "#Microsoft.Azure.Search.PatternAnalyzer",
+            "name": "azsmnet456813ac9db",
+            "flags": ""
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "cf666019-94f4-4ec3-b07f-4b1609dc574c",
+        "Content-Language": "en",
+        "Content-Length": "329",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:05:07 GMT",
+        "elapsed-time": "6",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "cf666019-94f4-4ec3-b07f-4b1609dc574c",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "cf666019-94f4-4ec3-b07f-4b1609dc574c"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "The request is invalid. Details: index.analyzers[0].flags : Values of property \u0022flags\u0022 must belong to the set of allowed values (case-sensitive) or be in the pipe form of them (e.g. value1|value2|...): CANON_EQ, CASE_INSENSITIVE, COMMENTS, DOTALL, LITERAL, MULTILINE, UNICODE_CASE, UNIX_LINES."
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "hotelscanuseallregexflagsemptyflagsanalyzerasync53c57373d6e1",
+    "1": "azsmnet456813ac9db"
+  }
 }

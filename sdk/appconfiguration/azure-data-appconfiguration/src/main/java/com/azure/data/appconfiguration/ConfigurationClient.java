@@ -19,11 +19,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.DeleteLockHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
-import com.azure.data.appconfiguration.implementation.models.PutLockHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -38,7 +36,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.addTracingN
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
@@ -350,7 +348,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
      * <pre>
      * ConfigurationSetting resultNoDateTime =
-     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;;
+     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultNoDateTime.getKey&#40;&#41;, resultNoDateTime.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
@@ -379,7 +377,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime -->
      * <pre>
      * ConfigurationSetting result =
-     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null, null&#41;;
+     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, null&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime -->
@@ -414,7 +412,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
      * <pre>
      * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
@@ -499,7 +497,7 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string -->
      * <pre>
-     * ConfigurationSetting result = configurationClient.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;;
+     * ConfigurationSetting result = configurationClient.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string -->
@@ -532,7 +530,7 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
      * <pre>
      * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
@@ -737,15 +735,10 @@ public final class ConfigurationClient {
         final String key = setting.getKey();
         final String label = setting.getLabel();
         context = enableSyncRestProxy(addTracingNamespace(context));
-        if (isReadOnly) {
-            final ResponseBase<PutLockHeaders, KeyValue> response =
-                serviceClient.putLockWithResponse(key, label, null, null, context);
-            return toConfigurationSettingWithResponse(response);
-        } else {
-            final ResponseBase<DeleteLockHeaders, KeyValue> response =
-                serviceClient.deleteLockWithResponse(key, label, null, null, context);
-            return toConfigurationSettingWithResponse(response);
-        }
+
+        return isReadOnly
+            ? toConfigurationSettingWithResponse(serviceClient.putLockWithResponse(key, label, null, null, context))
+            : toConfigurationSettingWithResponse(serviceClient.deleteLockWithResponse(key, label, null, null, context));
     }
 
     /**
@@ -808,7 +801,7 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getLabelFilter(),
                     null,
                     selector == null ? null : selector.getAcceptDateTime(),
-                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
                     null,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
@@ -895,7 +888,7 @@ public final class ConfigurationClient {
                     selector == null ? null : selector.getLabelFilter(),
                     null,
                     acceptDateTime,
-                    selector == null ? null : toKeyValueFieldsList(selector.getFields()),
+                    selector == null ? null : toSettingFieldsList(selector.getFields()),
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },

@@ -98,9 +98,10 @@ public final class SearchIndexStatistics implements JsonSerializable<SearchIndex
                         }
                     }
                     if (documentCountFound && storageSizeFound) {
-                        SearchIndexStatistics deserializedValue = new SearchIndexStatistics(documentCount, storageSize);
+                        SearchIndexStatistics deserializedSearchIndexStatistics =
+                                new SearchIndexStatistics(documentCount, storageSize);
 
-                        return deserializedValue;
+                        return deserializedSearchIndexStatistics;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!documentCountFound) {

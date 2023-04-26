@@ -220,15 +220,15 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        SentimentSkillV3 deserializedValue = new SentimentSkillV3(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.includeOpinionMining = includeOpinionMining;
-                        deserializedValue.modelVersion = modelVersion;
+                        SentimentSkillV3 deserializedSentimentSkillV3 = new SentimentSkillV3(inputs, outputs);
+                        deserializedSentimentSkillV3.setName(name);
+                        deserializedSentimentSkillV3.setDescription(description);
+                        deserializedSentimentSkillV3.setContext(context);
+                        deserializedSentimentSkillV3.defaultLanguageCode = defaultLanguageCode;
+                        deserializedSentimentSkillV3.includeOpinionMining = includeOpinionMining;
+                        deserializedSentimentSkillV3.modelVersion = modelVersion;
 
-                        return deserializedValue;
+                        return deserializedSentimentSkillV3;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

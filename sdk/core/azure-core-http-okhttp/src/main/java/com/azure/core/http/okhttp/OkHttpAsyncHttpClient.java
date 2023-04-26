@@ -5,6 +5,7 @@ package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -18,6 +19,7 @@ import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestB
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
@@ -162,14 +164,15 @@ class OkHttpAsyncHttpClient implements HttpClient {
             return EMPTY_REQUEST_BODY;
         }
 
-        String contentType = headers.getValue("Content-Type");
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
         BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
         if (content instanceof ByteArrayContent
             || content instanceof StringContent
-            || content instanceof SerializableContent) {
+            || content instanceof SerializableContent
+            || content instanceof ByteBufferContent) {
             return RequestBody.create(content.toBytes(), mediaType);
         } else {
             long effectiveContentLength = getRequestContentLength(content, headers);
@@ -191,7 +194,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static long getRequestContentLength(BinaryDataContent content, HttpHeaders headers) {
         Long contentLength = content.getLength();
         if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue("Content-Length");
+            String contentLengthHeaderValue = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
             if (contentLengthHeaderValue != null) {
                 contentLength = Long.parseLong(contentLengthHeaderValue);
             } else {

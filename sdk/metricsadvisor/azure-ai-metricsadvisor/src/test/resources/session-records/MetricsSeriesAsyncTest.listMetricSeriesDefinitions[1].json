@@ -1,26 +1,88 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/series/query",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6f5d0aee-f953-4a19-ae7d-3a0a91af6dca",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "fd4de017-8e45-4aa6-bc5e-54969d6b0370",
-      "content-length" : "675",
-      "x-envoy-upstream-service-time" : "119",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "fd4de017-8e45-4aa6-bc5e-54969d6b0370",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"__SUM__\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"JPN\",\"Dim2\":\"JP\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"JP\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"USD\",\"Dim2\":\"US\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"US\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"USD\",\"Dim2\":\"__SUM__\"}},{\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}}]}",
-      "Date" : "Fri, 08 Apr 2022 23:50:16 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/series/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "38",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:11 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "721bf2a7-f68a-4d28-b74f-ab258b74a0b0",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "activeSince": "2022-01-01T00:00:00Z"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "a66097c9-8247-4e30-aaa3-780bda9da78f",
+        "Content-Length": "675",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:10 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "96",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "a66097c9-8247-4e30-aaa3-780bda9da78f"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "JPN",
+              "Dim2": "__SUM__"
+            }
+          },
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "JPN",
+              "Dim2": "JP"
+            }
+          },
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "__SUM__",
+              "Dim2": "JP"
+            }
+          },
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "USD",
+              "Dim2": "US"
+            }
+          },
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "__SUM__",
+              "Dim2": "US"
+            }
+          },
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "USD",
+              "Dim2": "__SUM__"
+            }
+          },
+          {
+            "metricId": "b6c0649c-0c51-4aa6-82b6-3c3b0aa55066",
+            "dimension": {
+              "Dim1": "__SUM__",
+              "Dim2": "__SUM__"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

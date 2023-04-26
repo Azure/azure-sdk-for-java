@@ -309,18 +309,20 @@ public final class CustomEntityLookupSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        CustomEntityLookupSkill deserializedValue = new CustomEntityLookupSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.entitiesDefinitionUri = entitiesDefinitionUri;
-                        deserializedValue.inlineEntitiesDefinition = inlineEntitiesDefinition;
-                        deserializedValue.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
-                        deserializedValue.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
-                        deserializedValue.globalDefaultFuzzyEditDistance = globalDefaultFuzzyEditDistance;
+                        CustomEntityLookupSkill deserializedCustomEntityLookupSkill =
+                                new CustomEntityLookupSkill(inputs, outputs);
+                        deserializedCustomEntityLookupSkill.setName(name);
+                        deserializedCustomEntityLookupSkill.setDescription(description);
+                        deserializedCustomEntityLookupSkill.setContext(context);
+                        deserializedCustomEntityLookupSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedCustomEntityLookupSkill.entitiesDefinitionUri = entitiesDefinitionUri;
+                        deserializedCustomEntityLookupSkill.inlineEntitiesDefinition = inlineEntitiesDefinition;
+                        deserializedCustomEntityLookupSkill.globalDefaultCaseSensitive = globalDefaultCaseSensitive;
+                        deserializedCustomEntityLookupSkill.globalDefaultAccentSensitive = globalDefaultAccentSensitive;
+                        deserializedCustomEntityLookupSkill.globalDefaultFuzzyEditDistance =
+                                globalDefaultFuzzyEditDistance;
 
-                        return deserializedValue;
+                        return deserializedCustomEntityLookupSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

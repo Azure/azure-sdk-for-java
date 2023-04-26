@@ -118,11 +118,11 @@ public final class FreshnessScoringFunction extends ScoringFunction {
                         }
                     }
                     if (fieldNameFound && boostFound && parametersFound) {
-                        FreshnessScoringFunction deserializedValue =
+                        FreshnessScoringFunction deserializedFreshnessScoringFunction =
                                 new FreshnessScoringFunction(fieldName, boost, parameters);
-                        deserializedValue.setInterpolation(interpolation);
+                        deserializedFreshnessScoringFunction.setInterpolation(interpolation);
 
-                        return deserializedValue;
+                        return deserializedFreshnessScoringFunction;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!fieldNameFound) {

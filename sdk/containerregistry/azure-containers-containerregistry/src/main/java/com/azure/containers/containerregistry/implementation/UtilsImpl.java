@@ -6,6 +6,8 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorInfo;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ArtifactManifestPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ArtifactTagPropertiesInternal;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
@@ -44,6 +46,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -103,6 +106,7 @@ public final class UtilsImpl {
      * @param retryPolicy retry policy
      * @param retryOptions retry options
      * @param credential credentials.
+     * @param audience the audience.
      * @param perCallPolicies per call policies.
      * @param perRetryPolicies per retry policies.
      * @param httpClient http client
@@ -110,7 +114,7 @@ public final class UtilsImpl {
      * @param serviceVersion the service api version being targeted by the client.
      * @return returns the httpPipeline to be consumed by the builders.
      */
-    public static HttpPipeline buildHttpPipeline(
+    public static HttpPipeline buildClientPipeline(
         ClientOptions clientOptions,
         HttpLogOptions logOptions,
         Configuration configuration,
@@ -125,57 +129,78 @@ public final class UtilsImpl {
         ContainerRegistryServiceVersion serviceVersion,
         Tracer tracer) {
 
+        if (credential == null) {
+            LOGGER.verbose("Credentials are null, enabling anonymous access");
+        }
+        if (audience == null)  {
+            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
+            audience = ACR_ACCESS_TOKEN_AUDIENCE;
+        }
+
+        if (serviceVersion == null) {
+            serviceVersion = ContainerRegistryServiceVersion.getLatest();
+        }
+
+        HttpPipeline credentialsPipeline = buildPipeline(clientOptions, logOptions, configuration, retryPolicy, retryOptions, null, null, perCallPolicies, perRetryPolicies, httpClient, tracer);
+
+        return buildPipeline(clientOptions,
+            logOptions,
+            configuration,
+            retryPolicy,
+            retryOptions,
+            buildCredentialsPolicy(credentialsPipeline, credential, audience, endpoint, serviceVersion),
+            new ContainerRegistryRedirectPolicy(),
+            perCallPolicies,
+            perRetryPolicies,
+            httpClient,
+            tracer);
+    }
+
+    private static ContainerRegistryCredentialsPolicy buildCredentialsPolicy(HttpPipeline credentialPipeline, TokenCredential credential, ContainerRegistryAudience audience, String endpoint, ContainerRegistryServiceVersion serviceVersion) {
+        AzureContainerRegistryImpl acrClient = new AzureContainerRegistryImpl(
+            credentialPipeline,
+            endpoint,
+            serviceVersion.getVersion());
+
+        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(credential, audience, acrClient);
+        return new ContainerRegistryCredentialsPolicy(tokenService, audience + "/.default");
+    }
+
+    private static HttpPipeline buildPipeline(ClientOptions clientOptions,
+                                              HttpLogOptions logOptions,
+                                              Configuration configuration,
+                                              RetryPolicy retryPolicy,
+                                              RetryOptions retryOptions,
+                                              ContainerRegistryCredentialsPolicy credentialPolicy,
+                                              ContainerRegistryRedirectPolicy redirectPolicy,
+                                              List<HttpPipelinePolicy> perCallPolicies,
+                                              List<HttpPipelinePolicy> perRetryPolicies,
+                                              HttpClient httpClient,
+                                              Tracer tracer) {
+
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(
             new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
-        policies.add(new RequestIdPolicy());
 
+        policies.add(new RequestIdPolicy());
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new ContainerRegistryRedirectPolicy());
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
+        }
+        if (redirectPolicy != null) {
+            policies.add(redirectPolicy);
+        }
 
         policies.addAll(perRetryPolicies);
-
-        // We generally put credential policy between BeforeRetry and AfterRetry policies and put Logging policy in the end.
-        // However since ACR uses the rest endpoints of the service in the credential policy,
-        // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
-        // pipelines across all ACR endpoints.
-        if (credential == null) {
-            LOGGER.verbose("Credentials are null, enabling anonymous access");
-        }
-
-        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
-        ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
-        HttpPolicyProviders.addAfterRetryPolicies(credentialPolicies);
-        credentialPolicies.add(loggingPolicy);
-
-        if (audience == null)  {
-            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
-            audience = ACR_ACCESS_TOKEN_AUDIENCE;
-        }
-
-        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
-            credential,
-            audience,
-            endpoint,
-            serviceVersion,
-            new HttpPipelineBuilder()
-                .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .clientOptions(clientOptions)
-                .tracer(tracer)
-                .build());
-
-        ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
-
-        policies.add(credentialsPolicy);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(loggingPolicy);
+        policies.add(new HttpLoggingPolicy(logOptions));
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -183,11 +208,6 @@ public final class UtilsImpl {
             .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
-        return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
     public static Tracer createTracer(ClientOptions clientOptions) {
@@ -264,7 +284,7 @@ public final class UtilsImpl {
     }
 
     private static <T> Response<Void> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return new SimpleResponse<Void>(
+        return new SimpleResponse<>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
@@ -272,47 +292,31 @@ public final class UtilsImpl {
     }
 
     /**
-     * This method converts the API response codes into well known exceptions.
-     * @param exception The exception returned by the rest client.
-     * @return The exception returned by the public methods.
+     * This method converts AcrErrors inside AcrErrorsException into {@link HttpResponseException}
+     * with {@link ResponseError}
      */
-    public static Throwable mapException(Throwable exception) {
-        HttpResponseException acrException = null;
+    public static HttpResponseException mapAcrErrorsException(AcrErrorsException acrException) {
+        final HttpResponse errorHttpResponse = acrException.getResponse();
 
-        if (exception instanceof HttpResponseException) {
-            acrException = ((HttpResponseException) exception);
-        } else if (exception instanceof RuntimeException) {
-            RuntimeException runtimeException = (RuntimeException) exception;
-            Throwable throwable = runtimeException.getCause();
-            if (throwable instanceof HttpResponseException) {
-                acrException = (HttpResponseException) throwable;
+        if (acrException.getValue() != null && !CoreUtils.isNullOrEmpty(acrException.getValue().getErrors())) {
+            AcrErrorInfo first = acrException.getValue().getErrors().get(0);
+            ResponseError error = new ResponseError(first.getCode(), first.getMessage());
+
+            switch (errorHttpResponse.getStatusCode()) {
+                case 401:
+                    throw  new ClientAuthenticationException(acrException.getMessage(), acrException.getResponse(), error);
+                case 404:
+                    return new ResourceNotFoundException(acrException.getMessage(), acrException.getResponse(), error);
+                case 409:
+                    return new ResourceExistsException(acrException.getMessage(), acrException.getResponse(), error);
+                case 412:
+                    return new ResourceModifiedException(acrException.getMessage(), acrException.getResponse(), error);
+                default:
+                    return new HttpResponseException(acrException.getMessage(), acrException.getResponse(), error);
             }
         }
 
-        if (acrException == null) {
-            return exception;
-        }
-
-        return mapAcrErrorsException(acrException);
-    }
-
-    public static HttpResponseException mapAcrErrorsException(HttpResponseException acrException) {
-        final HttpResponse errorHttpResponse = acrException.getResponse();
-        final int statusCode = errorHttpResponse.getStatusCode();
-        final String errorDetail = acrException.getMessage();
-
-        switch (statusCode) {
-            case 401:
-                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), acrException);
-            case 404:
-                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), acrException);
-            case 409:
-                return new ResourceExistsException(errorDetail, acrException.getResponse(), acrException);
-            case 412:
-                return new ResourceModifiedException(errorDetail, acrException.getResponse(), acrException);
-            default:
-                return new HttpResponseException(errorDetail, acrException.getResponse(), acrException);
-        }
+        return acrException;
     }
 
     /**

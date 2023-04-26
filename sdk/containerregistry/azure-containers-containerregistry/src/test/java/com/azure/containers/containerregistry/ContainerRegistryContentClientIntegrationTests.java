@@ -9,9 +9,9 @@ import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
@@ -241,14 +241,14 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException {
+    public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException, InterruptedException {
         assumeTrue(super.getTestMode() == TestMode.LIVE);
 
         client = getContentClient("oci-artifact", httpClient);
 
-        long size = CHUNK_SIZE * 20;
-        TestInputStream input = new TestInputStream(size);
-        UploadRegistryBlobResult result = client.uploadBlob(Channels.newChannel(input), Context.NONE);
+        long size = CHUNK_SIZE * 50;
+        BinaryData data = BinaryData.fromStream(new TestInputStream(size), size);
+        UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
 
         TestOutputStream output = new TestOutputStream();
         client.downloadStream(result.getDigest(), Channels.newChannel(output));
@@ -265,11 +265,13 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
         long size = CHUNK_SIZE * 50;
+        Mono<BinaryData> data = BinaryData.fromFlux(generateAsyncStream(size), size, false);
         AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        StepVerifier.create(asyncClient.uploadBlob(generateAsyncStream(size))
+        StepVerifier.create(data
+                .flatMap(content -> asyncClient.uploadBlob(content))
                 .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
-                .flatMapMany(bd -> bd.toFluxByteBuffer())
+                .flatMapMany(BinaryData::toFluxByteBuffer)
                 .doOnNext(bb -> download.addAndGet(bb.remaining()))
                 .then())
             .verifyComplete();
@@ -542,9 +544,10 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         });
     }
 
-    private class TestInputStream extends InputStream {
+    private static class TestInputStream extends InputStream {
         private final long size;
         private long position = 0;
+        private long mark = 0;
 
         TestInputStream(long size) {
             this.size = size;
@@ -579,9 +582,24 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         public int available() {
             return (int) Math.min(Integer.MAX_VALUE, size - position);
         }
+
+        @Override
+        public synchronized void mark(int readlimit) {
+            mark = position;
+        }
+
+        @Override
+        public synchronized void reset() {
+            position = mark;
+        }
+
+        @Override
+        public boolean markSupported() {
+            return true;
+        }
     }
 
-    private class TestOutputStream extends OutputStream {
+    private static class TestOutputStream extends OutputStream {
         private long position = 0;
 
         @Override

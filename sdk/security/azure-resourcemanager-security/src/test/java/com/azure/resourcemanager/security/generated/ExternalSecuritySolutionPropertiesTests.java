@@ -17,25 +17,25 @@ public final class ExternalSecuritySolutionPropertiesTests {
         ExternalSecuritySolutionProperties model =
             BinaryData
                 .fromString(
-                    "{\"deviceVendor\":\"jc\",\"deviceType\":\"a\",\"workspace\":{\"id\":\"z\"},\"\":{\"qjf\":\"datakbnrzorpdltbqc\"}}")
+                    "{\"deviceVendor\":\"rbzg\",\"deviceType\":\"oxqmjeajc\",\"workspace\":{\"id\":\"qg\"},\"\":{\"simjceagbjqvlsu\":\"datausrvx\",\"gon\":\"dataywzash\"}}")
                 .toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("jc", model.deviceVendor());
-        Assertions.assertEquals("a", model.deviceType());
-        Assertions.assertEquals("z", model.workspace().id());
+        Assertions.assertEquals("rbzg", model.deviceVendor());
+        Assertions.assertEquals("oxqmjeajc", model.deviceType());
+        Assertions.assertEquals("qg", model.workspace().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalSecuritySolutionProperties model =
             new ExternalSecuritySolutionProperties()
-                .withDeviceVendor("jc")
-                .withDeviceType("a")
-                .withWorkspace(new ConnectedWorkspace().withId("z"))
+                .withDeviceVendor("rbzg")
+                .withDeviceType("oxqmjeajc")
+                .withWorkspace(new ConnectedWorkspace().withId("qg"))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("jc", model.deviceVendor());
-        Assertions.assertEquals("a", model.deviceType());
-        Assertions.assertEquals("z", model.workspace().id());
+        Assertions.assertEquals("rbzg", model.deviceVendor());
+        Assertions.assertEquals("oxqmjeajc", model.deviceType());
+        Assertions.assertEquals("qg", model.workspace().id());
     }
 
     @SuppressWarnings("unchecked")

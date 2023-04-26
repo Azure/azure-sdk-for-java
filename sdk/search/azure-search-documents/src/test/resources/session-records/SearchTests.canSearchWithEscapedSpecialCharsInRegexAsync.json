@@ -1,31 +1,42 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-search-shared-hotel-instance')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "5671ff8e-00e2-4835-b715-63075f87c448",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "5671ff8e-00e2-4835-b715-63075f87c448",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:28:52 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "5671ff8e-00e2-4835-b715-63075f87c448",
-      "elapsed-time" : "17",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "12",
-      "Body" : "{\"value\":[]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "5671ff8e-00e2-4835-b715-63075f87c448",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-search-shared-hotel-instance\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "80",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:01:25 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "235dbd26-a4d7-4dc8-9921-138f5f881951"
+      },
+      "RequestBody": {
+        "queryType": "full",
+        "search": "\\\u002B\\-\\\u0026\\|\\!\\(\\)\\{\\}\\[\\]\\^\\~\\*\\?\\:"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "235dbd26-a4d7-4dc8-9921-138f5f881951",
+        "Content-Length": "12",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 20:01:24 GMT",
+        "elapsed-time": "18",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "235dbd26-a4d7-4dc8-9921-138f5f881951",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "235dbd26-a4d7-4dc8-9921-138f5f881951"
+      },
+      "ResponseBody": {
+        "value": []
+      }
+    }
+  ],
+  "Variables": {}
 }

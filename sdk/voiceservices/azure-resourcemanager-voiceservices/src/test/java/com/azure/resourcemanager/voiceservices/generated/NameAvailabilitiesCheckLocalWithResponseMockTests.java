@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.voiceservices.VoiceservicesManager;
+import com.azure.resourcemanager.voiceservices.VoiceServicesManager;
 import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityReason;
 import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityResponse;
@@ -52,8 +52,8 @@ public final class NameAvailabilitiesCheckLocalWithResponseMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        VoiceservicesManager manager =
-            VoiceservicesManager
+        VoiceServicesManager manager =
+            VoiceServicesManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

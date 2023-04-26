@@ -6,15 +6,16 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.PricingTier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier available
- * with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic
- * security features.
+ * Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced
+ * security capabilities, while the free tier offers basic security features.
  */
 @Fluent
 public final class PricingInner extends ProxyResource {
@@ -39,8 +40,8 @@ public final class PricingInner extends ProxyResource {
 
     /**
      * Get the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
-     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
-     * security capabilities, while the free tier offers basic security features.
+     * tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
+     * basic security features.
      *
      * @return the pricingTier value.
      */
@@ -50,8 +51,8 @@ public final class PricingInner extends ProxyResource {
 
     /**
      * Set the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
-     * tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced
-     * security capabilities, while the free tier offers basic security features.
+     * tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
+     * basic security features.
      *
      * @param pricingTier the pricingTier value to set.
      * @return the PricingInner object itself.
@@ -100,6 +101,16 @@ public final class PricingInner extends ProxyResource {
     }
 
     /**
+     * Get the enablementTime property: Optional. If `pricingTier` is `Standard` then this property holds the date of
+     * the last time the `pricingTier` was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
+     *
+     * @return the enablementTime value.
+     */
+    public OffsetDateTime enablementTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablementTime();
+    }
+
+    /**
      * Get the deprecated property: Optional. True if the plan is deprecated. If there are replacing plans they will
      * appear in `replacedBy` property.
      *
@@ -117,6 +128,29 @@ public final class PricingInner extends ProxyResource {
      */
     public List<String> replacedBy() {
         return this.innerProperties() == null ? null : this.innerProperties().replacedBy();
+    }
+
+    /**
+     * Get the extensions property: Optional. List of extensions offered under a plan.
+     *
+     * @return the extensions value.
+     */
+    public List<Extension> extensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().extensions();
+    }
+
+    /**
+     * Set the extensions property: Optional. List of extensions offered under a plan.
+     *
+     * @param extensions the extensions value to set.
+     * @return the PricingInner object itself.
+     */
+    public PricingInner withExtensions(List<Extension> extensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PricingProperties();
+        }
+        this.innerProperties().withExtensions(extensions);
+        return this;
     }
 
     /**

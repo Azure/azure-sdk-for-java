@@ -20,6 +20,7 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.context.Context;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
@@ -426,6 +427,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @SuppressWarnings("try")
     public void sendNotInstrumentedAndProcess() throws InterruptedException {
         EventHubProducerAsyncClient notInstrumentedProducer = toClose(new EventHubClientBuilder()
             .connectionString(getConnectionString())
@@ -437,33 +439,44 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         EventData message2 = new EventData(CONTENTS_BYTES);
         List<EventData> received = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(2);
-        spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.process"));
+        spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.process") && !span.getParentSpanContext().isValid());
         StepVerifier.create(notInstrumentedProducer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
 
         assertNull(message1.getProperties().get("traceparent"));
         assertNull(message2.getProperties().get("traceparent"));
-        processor = new EventProcessorClientBuilder()
-            .connectionString(getConnectionString())
-            .eventHubName(getEventHubName())
-            .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
-            .consumerGroup("$Default")
-            .checkpointStore(new SampleCheckpointStore())
-            .processEvent(ec -> {
-                received.add(ec.getEventData());
-                ec.updateCheckpoint();
-            })
-            .processError(e -> fail("unexpected error", e.getThrowable()))
-            .buildEventProcessorClient();
 
-        toClose((Closeable) () -> processor.stop());
-        processor.start();
+        Span test = GlobalOpenTelemetry.getTracer("test")
+            .spanBuilder("test")
+            .startSpan();
 
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
-        processor.stop();
+        try (Scope scope = test.makeCurrent()) {
+            processor = new EventProcessorClientBuilder()
+                .connectionString(getConnectionString())
+                .eventHubName(getEventHubName())
+                .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
+                .consumerGroup("$Default")
+                .checkpointStore(new SampleCheckpointStore())
+                .processEvent(ec -> {
+                    if (!ec.getEventData().getProperties().containsKey("traceparent")) {
+                        received.add(ec.getEventData());
+                    }
+                    ec.updateCheckpoint();
+                })
+                .processError(e -> fail("unexpected error", e.getThrowable()))
+                .buildEventProcessorClient();
+
+            toClose((Closeable) () -> processor.stop());
+            processor.start();
+
+            assertTrue(latch.await(10, TimeUnit.SECONDS));
+            processor.stop();
+        }
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
-        List<ReadableSpan> processed = findSpans(spans, "EventHubs.process");
+        List<ReadableSpan> processed = findSpans(spans, "EventHubs.process").stream()
+            .filter(s -> !s.getParentSpanContext().isValid())
+            .collect(toList());
         assertTrue(processed.size() >= 2);
         assertConsumerSpan(processed.get(0), received.get(0), "EventHubs.process");
 

@@ -20,18 +20,18 @@ public final class DefenderForContainersAwsOfferingTests {
         DefenderForContainersAwsOffering model =
             BinaryData
                 .fromString(
-                    "{\"offeringType\":\"DefenderForContainersAws\",\"kubernetesService\":{\"cloudRoleArn\":\"qqlmgnlqxsjxte\"},\"kubernetesScubaReader\":{\"cloudRoleArn\":\"hvuqbo\"},\"cloudWatchToKinesis\":{\"cloudRoleArn\":\"lzqocark\"},\"kinesisToS3\":{\"cloudRoleArn\":\"bc\"},\"containerVulnerabilityAssessment\":{\"cloudRoleArn\":\"t\"},\"containerVulnerabilityAssessmentTask\":{\"cloudRoleArn\":\"awqytllhdyzm\"},\"enableContainerVulnerabilityAssessment\":false,\"autoProvisioning\":false,\"kubeAuditRetentionTime\":8696466832626634358,\"scubaExternalId\":\"kck\",\"description\":\"ymx\"}")
+                    "{\"offeringType\":\"DefenderForContainersAws\",\"kubernetesService\":{\"cloudRoleArn\":\"tkbtnqlrngl\"},\"kubernetesScubaReader\":{\"cloudRoleArn\":\"iipsnawwlqkz\"},\"cloudWatchToKinesis\":{\"cloudRoleArn\":\"hllxricctkw\"},\"kinesisToS3\":{\"cloudRoleArn\":\"qoajxeiyglesrwva\"},\"containerVulnerabilityAssessment\":{\"cloudRoleArn\":\"dctrceqnkbrupobe\"},\"containerVulnerabilityAssessmentTask\":{\"cloudRoleArn\":\"lj\"},\"enableContainerVulnerabilityAssessment\":true,\"autoProvisioning\":true,\"kubeAuditRetentionTime\":2313519110456203073,\"scubaExternalId\":\"pbibn\",\"description\":\"phepifexleqirc\"}")
                 .toObject(DefenderForContainersAwsOffering.class);
-        Assertions.assertEquals("qqlmgnlqxsjxte", model.kubernetesService().cloudRoleArn());
-        Assertions.assertEquals("hvuqbo", model.kubernetesScubaReader().cloudRoleArn());
-        Assertions.assertEquals("lzqocark", model.cloudWatchToKinesis().cloudRoleArn());
-        Assertions.assertEquals("bc", model.kinesisToS3().cloudRoleArn());
-        Assertions.assertEquals("t", model.containerVulnerabilityAssessment().cloudRoleArn());
-        Assertions.assertEquals("awqytllhdyzm", model.containerVulnerabilityAssessmentTask().cloudRoleArn());
-        Assertions.assertEquals(false, model.enableContainerVulnerabilityAssessment());
-        Assertions.assertEquals(false, model.autoProvisioning());
-        Assertions.assertEquals(8696466832626634358L, model.kubeAuditRetentionTime());
-        Assertions.assertEquals("kck", model.scubaExternalId());
+        Assertions.assertEquals("tkbtnqlrngl", model.kubernetesService().cloudRoleArn());
+        Assertions.assertEquals("iipsnawwlqkz", model.kubernetesScubaReader().cloudRoleArn());
+        Assertions.assertEquals("hllxricctkw", model.cloudWatchToKinesis().cloudRoleArn());
+        Assertions.assertEquals("qoajxeiyglesrwva", model.kinesisToS3().cloudRoleArn());
+        Assertions.assertEquals("dctrceqnkbrupobe", model.containerVulnerabilityAssessment().cloudRoleArn());
+        Assertions.assertEquals("lj", model.containerVulnerabilityAssessmentTask().cloudRoleArn());
+        Assertions.assertEquals(true, model.enableContainerVulnerabilityAssessment());
+        Assertions.assertEquals(true, model.autoProvisioning());
+        Assertions.assertEquals(2313519110456203073L, model.kubeAuditRetentionTime());
+        Assertions.assertEquals("pbibn", model.scubaExternalId());
     }
 
     @org.junit.jupiter.api.Test
@@ -39,31 +39,31 @@ public final class DefenderForContainersAwsOfferingTests {
         DefenderForContainersAwsOffering model =
             new DefenderForContainersAwsOffering()
                 .withKubernetesService(
-                    new DefenderForContainersAwsOfferingKubernetesService().withCloudRoleArn("qqlmgnlqxsjxte"))
+                    new DefenderForContainersAwsOfferingKubernetesService().withCloudRoleArn("tkbtnqlrngl"))
                 .withKubernetesScubaReader(
-                    new DefenderForContainersAwsOfferingKubernetesScubaReader().withCloudRoleArn("hvuqbo"))
+                    new DefenderForContainersAwsOfferingKubernetesScubaReader().withCloudRoleArn("iipsnawwlqkz"))
                 .withCloudWatchToKinesis(
-                    new DefenderForContainersAwsOfferingCloudWatchToKinesis().withCloudRoleArn("lzqocark"))
-                .withKinesisToS3(new DefenderForContainersAwsOfferingKinesisToS3().withCloudRoleArn("bc"))
+                    new DefenderForContainersAwsOfferingCloudWatchToKinesis().withCloudRoleArn("hllxricctkw"))
+                .withKinesisToS3(new DefenderForContainersAwsOfferingKinesisToS3().withCloudRoleArn("qoajxeiyglesrwva"))
                 .withContainerVulnerabilityAssessment(
-                    new DefenderForContainersAwsOfferingContainerVulnerabilityAssessment().withCloudRoleArn("t"))
+                    new DefenderForContainersAwsOfferingContainerVulnerabilityAssessment()
+                        .withCloudRoleArn("dctrceqnkbrupobe"))
                 .withContainerVulnerabilityAssessmentTask(
-                    new DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask()
-                        .withCloudRoleArn("awqytllhdyzm"))
-                .withEnableContainerVulnerabilityAssessment(false)
-                .withAutoProvisioning(false)
-                .withKubeAuditRetentionTime(8696466832626634358L)
-                .withScubaExternalId("kck");
+                    new DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask().withCloudRoleArn("lj"))
+                .withEnableContainerVulnerabilityAssessment(true)
+                .withAutoProvisioning(true)
+                .withKubeAuditRetentionTime(2313519110456203073L)
+                .withScubaExternalId("pbibn");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersAwsOffering.class);
-        Assertions.assertEquals("qqlmgnlqxsjxte", model.kubernetesService().cloudRoleArn());
-        Assertions.assertEquals("hvuqbo", model.kubernetesScubaReader().cloudRoleArn());
-        Assertions.assertEquals("lzqocark", model.cloudWatchToKinesis().cloudRoleArn());
-        Assertions.assertEquals("bc", model.kinesisToS3().cloudRoleArn());
-        Assertions.assertEquals("t", model.containerVulnerabilityAssessment().cloudRoleArn());
-        Assertions.assertEquals("awqytllhdyzm", model.containerVulnerabilityAssessmentTask().cloudRoleArn());
-        Assertions.assertEquals(false, model.enableContainerVulnerabilityAssessment());
-        Assertions.assertEquals(false, model.autoProvisioning());
-        Assertions.assertEquals(8696466832626634358L, model.kubeAuditRetentionTime());
-        Assertions.assertEquals("kck", model.scubaExternalId());
+        Assertions.assertEquals("tkbtnqlrngl", model.kubernetesService().cloudRoleArn());
+        Assertions.assertEquals("iipsnawwlqkz", model.kubernetesScubaReader().cloudRoleArn());
+        Assertions.assertEquals("hllxricctkw", model.cloudWatchToKinesis().cloudRoleArn());
+        Assertions.assertEquals("qoajxeiyglesrwva", model.kinesisToS3().cloudRoleArn());
+        Assertions.assertEquals("dctrceqnkbrupobe", model.containerVulnerabilityAssessment().cloudRoleArn());
+        Assertions.assertEquals("lj", model.containerVulnerabilityAssessmentTask().cloudRoleArn());
+        Assertions.assertEquals(true, model.enableContainerVulnerabilityAssessment());
+        Assertions.assertEquals(true, model.autoProvisioning());
+        Assertions.assertEquals(2313519110456203073L, model.kubeAuditRetentionTime());
+        Assertions.assertEquals("pbibn", model.scubaExternalId());
     }
 }
