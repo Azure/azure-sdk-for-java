@@ -98,7 +98,8 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER)
+                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
+                new TestProxySanitizer("x-ms-encryption-key-sha256", ".*", "REDACTED", TestProxySanitizerType.HEADER)
             ));
         }
 

@@ -5,6 +5,9 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -17,6 +20,7 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -117,6 +121,11 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName());
+        if (getTestMode() == TestMode.PLAYBACK) {
+            // Needed to solve echo header validation.
+            builder.addPolicy(new PlaybackKeySha256Policy());
+        }
+
         EncryptedBlobAsyncClient encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient());
         EncryptedBlobClient encryptedClient = new EncryptedBlobClient(mockAesKey(
             builder.buildEncryptedBlobAsyncClient()));
@@ -128,7 +137,8 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
 
         assertEquals(201, uploadResponse.getStatusCode());
         assertTrue(uploadResponse.getValue().isServerEncrypted());
-        assertEquals(key.getKeySha256(), uploadResponse.getValue().getEncryptionKeySha256());
+        assertEquals((getTestMode() == TestMode.PLAYBACK) ? "REDACTEDREDACTED" : key.getKeySha256(),
+            uploadResponse.getValue().getEncryptionKeySha256());
         assertArraysEqual(DATA.getDefaultBytes(), downloadResult.toByteArray());
     }
 
@@ -140,6 +150,11 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .blobName(generateBlobName());
+        if (getTestMode() == TestMode.PLAYBACK) {
+            // Needed to solve echo header validation.
+            builder.addPolicy(new PlaybackKeySha256Policy());
+        }
+
         EncryptedBlobAsyncClient encryptedAsyncClientWithCpk = mockAesKey(builder.buildEncryptedBlobAsyncClient());
         EncryptedBlobClient encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(
             builder.customerProvidedKey(null).buildEncryptedBlobAsyncClient()));
@@ -216,5 +231,16 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
 
         assertNotEquals(client.encryptedBlobAsyncClient.getEncryptionScopeInternal().getEncryptionScope(),
             newClient.encryptedBlobAsyncClient.getEncryptionScopeInternal().getEncryptionScope());
+    }
+
+    private static final class PlaybackKeySha256Policy implements HttpPipelinePolicy {
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            // Needed to solve echo header validation.
+            if (context.getHttpRequest().getHeaders().get("x-ms-encryption-key-sha256") != null) {
+                context.getHttpRequest().setHeader("x-ms-encryption-key-sha256", "REDACTEDREDACTED");
+            }
+            return next.process();
+        }
     }
 }
