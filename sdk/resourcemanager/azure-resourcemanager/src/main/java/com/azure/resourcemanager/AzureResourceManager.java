@@ -133,7 +133,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
  * <pre>
- * AzureProfile profile = new AzureProfile&#40;AzureEnvironment.AZURE&#41;;
+ * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
  *     .build&#40;&#41;;
@@ -177,7 +177,7 @@ public final class AzureResourceManager {
      *
      * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
      * <pre>
-     * AzureProfile profile = new AzureProfile&#40;AzureEnvironment.AZURE&#41;;
+     * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
      * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
      *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
      *     .build&#40;&#41;;
@@ -502,7 +502,7 @@ public final class AzureResourceManager {
      * <p><strong>Code Samples</strong></p>
      *
      * <p>Create an Azure Storage Account</p>
-     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccountAsync -->
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount -->
      * <pre>
      * azure.storageAccounts&#40;&#41;.define&#40;&quot;&lt;storage-account-name&gt;&quot;&#41;
      *     .withRegion&#40;Region.US_EAST&#41;
@@ -510,10 +510,10 @@ public final class AzureResourceManager {
      *     .withSku&#40;StorageAccountSkuType.STANDARD_LRS&#41;
      *     .withGeneralPurposeAccountKindV2&#40;&#41;
      *     .withOnlyHttpsTraffic&#40;&#41;
-     *     .createAsync&#40;&#41;
      *     &#47;&#47;...
+     *     .create&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccountAsync -->
+     * <!-- end com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount -->
      *
      * @return entry point to managing storage accounts
      */
@@ -614,16 +614,16 @@ public final class AzureResourceManager {
      * <p>Create a Virtual Machine instance.</p>
      * <!-- src_embed com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine -->
      * <pre>
-     * VirtualMachine windowsVM = azure.virtualMachines&#40;&#41;
+     * VirtualMachine linuxVM = azure.virtualMachines&#40;&#41;
      *     .define&#40;windowsVMName&#41;
      *     .withRegion&#40;region&#41;
      *     .withNewResourceGroup&#40;resourceGroupName&#41;
      *     .withNewPrimaryNetwork&#40;&quot;10.0.0.0&#47;28&quot;&#41;
      *     .withPrimaryPrivateIPAddressDynamic&#40;&#41;
      *     .withoutPrimaryPublicIPAddress&#40;&#41;
-     *     .withPopularWindowsImage&#40;KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER&#41;
-     *     .withAdminUsername&#40;userName&#41;
-     *     .withAdminPassword&#40;password&#41;
+     *     .withPopularLinuxImage&#40;KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2&#41;
+     *     .withRootUsername&#40;userName&#41;
+     *     .withSsh&#40;sshPublicKey&#41;
      *     .withNewDataDisk&#40;10&#41;
      *     .withExistingDataDisk&#40;dataDisk&#41;
      *     .withSize&#40;VirtualMachineSizeTypes.STANDARD_DS1_V2&#41;
@@ -935,16 +935,16 @@ public final class AzureResourceManager {
      *
      * <p>Create a Blob Container</p>
      *
-     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainerAsync -->
+     * <!-- src_embed com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer -->
      * <pre>
      * azure.storageBlobContainers&#40;&#41;
      *     .defineContainer&#40;&quot;container&quot;&#41;
      *     .withExistingStorageAccount&#40;storageAccount&#41;
      *     .withPublicAccess&#40;PublicAccess.NONE&#41;
-     *     .createAsync&#40;&#41;
      *     &#47;&#47;...
+     *     .create&#40;&#41;;
      * </pre>
-     * <!-- end com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainerAsync -->
+     * <!-- end com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer -->
      *
      * @return the blob container management API entry point
      */

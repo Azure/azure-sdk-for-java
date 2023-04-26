@@ -18,6 +18,7 @@ import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.compute.models.Disk;
+import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
@@ -27,9 +28,9 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 
 public class AzureResourceManagerJavaDocSamples {
-    public void authenticateUsingTokenCredentialAndAzureProfile() {
+    public void authenticateUsingTokenCredentialAndAzureProfile(String tenantId, String subscriptionId) {
         // BEGIN: com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile
-        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+        AzureProfile profile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
@@ -63,18 +64,18 @@ public class AzureResourceManagerJavaDocSamples {
                                      Disk dataDisk,
                                      String windowsVMName,
                                      String userName,
-                                     String password) {
+                                     String sshPublicKey) {
         // BEGIN: com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine
-        VirtualMachine windowsVM = azure.virtualMachines()
+        VirtualMachine linuxVM = azure.virtualMachines()
             .define(windowsVMName)
             .withRegion(region)
             .withNewResourceGroup(resourceGroupName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-            .withAdminUsername(userName)
-            .withAdminPassword(password)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS_GEN2)
+            .withRootUsername(userName)
+            .withSsh(sshPublicKey)
             .withNewDataDisk(10)
             .withExistingDataDisk(dataDisk)
             .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
@@ -82,32 +83,30 @@ public class AzureResourceManagerJavaDocSamples {
         // END: com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine
     }
 
-    public void createStorageAccountAsync(AzureResourceManager azure,
+    public void createStorageAccount(AzureResourceManager azure,
                                           String resourceGroupName) {
-        // BEGIN: com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccountAsync
+        // BEGIN: com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount
         azure.storageAccounts().define("<storage-account-name>")
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(resourceGroupName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .withGeneralPurposeAccountKindV2()
             .withOnlyHttpsTraffic()
-            .createAsync()
             //...
-            // END: com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccountAsync
-            .block();
+            .create();
+            // END: com.azure.resourcemanager.azureResourceManager.storageAccounts.createStorageAccount
     }
 
-    public void createBlobContainerAsync(AzureResourceManager azure,
+    public void createBlobContainer(AzureResourceManager azure,
                                          StorageAccount storageAccount) {
-        // BEGIN: com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainerAsync
+        // BEGIN: com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer
         azure.storageBlobContainers()
             .defineContainer("container")
             .withExistingStorageAccount(storageAccount)
             .withPublicAccess(PublicAccess.NONE)
-            .createAsync()
             //...
-            // END: com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainerAsync
-            .block();
+            .create();
+        // END: com.azure.resourcemanager.azureResourceManager.storageBlobContainers.createBlobContainer
     }
 
     public void restartVirtualMachineAsync(AzureResourceManager azure,
