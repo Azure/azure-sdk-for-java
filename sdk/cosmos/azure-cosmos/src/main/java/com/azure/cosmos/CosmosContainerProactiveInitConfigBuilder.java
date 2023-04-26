@@ -19,6 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosContainerProactiveInitConfigBuilder {
 
     private static final int MAX_NO_OF_PROACTIVE_CONNECTION_REGIONS = 5;
+    private static final int MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 10;
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private int numProactiveConnectionRegions;
@@ -89,7 +90,10 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      *
      * @return Current {@link CosmosContainerProactiveInitConfigBuilder}
      * */
-    CosmosContainerProactiveInitConfigBuilder withMinConnectionsPerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
+    CosmosContainerProactiveInitConfigBuilder setMinConnectionsPerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
+        checkArgument(minConnectionsPerEndpoint >= 0 && minConnectionsPerEndpoint <= MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT,
+                "minConnectionsPerEndpoint cannot be negative or greater than {}", MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
+
         String containerLink = ImplementationBridgeHelpers.CosmosContainerIdentityHelper
                 .getCosmosContainerIdentityAccessor()
                 .getContainerLink(cosmosContainerIdentity);

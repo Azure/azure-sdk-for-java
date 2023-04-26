@@ -358,7 +358,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 0; i < cosmosContainerIdentities.size(); i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
-                        .withMinConnectionsPerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
+                        .setMinConnectionsPerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder
@@ -477,7 +477,7 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             for (int i = 0; i < numContainers; i++) {
                 proactiveContainerInitConfigBuilder = proactiveContainerInitConfigBuilder
-                        .withMinConnectionsPerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
+                        .setMinConnectionsPerEndpointForContainer(cosmosContainerIdentities.get(i), minConnectionPoolSizePerEndpoint);
             }
 
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig = proactiveContainerInitConfigBuilder

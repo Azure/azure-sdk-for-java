@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
@@ -68,17 +67,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -723,7 +718,7 @@ public class CosmosAsyncContainer {
             CosmosContainerProactiveInitConfig proactiveContainerInitConfig =
                 new CosmosContainerProactiveInitConfigBuilder(Collections.singletonList(cosmosContainerIdentity))
                     .setProactiveConnectionRegionsCount(1)
-                    .withMinConnectionsPerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
+                    .setMinConnectionsPerEndpointForContainer(cosmosContainerIdentity, Configs.getMinConnectionPoolSizePerEndpoint())
                     .build();
 
             return withContext(context -> openConnectionsAndInitCachesInternal(

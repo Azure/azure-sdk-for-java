@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -41,12 +42,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Disposable openConnectionBackgroundTask;
     private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
-    private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 2048;
-
-    static {
-        concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
-        concurrencySettings.put(WarmupFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
-    }
+    private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
         this(endpointProvider, null);
@@ -61,6 +57,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.endpointProvider = endpointProvider;
         this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
+        concurrencySettings.put(WarmupFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
+        concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
     }
 
     public void init() {
@@ -73,7 +71,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         if (aggressiveConnectionEstablishmentDuration != null && aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
             backgroundOpenConnectionsSinkReInstantiationTask
-                    .doOnComplete(() -> reInstantiateOpenConnectionsPublisherAndSubscribe())
+                    .doOnComplete(() -> reInstantiateOpenConnectionsPublisherAndSubscribe(true))
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
@@ -157,7 +155,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Flux.empty();
                             });
                 }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
-                .doOnError(throwable -> logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable))
+                .doOnError(throwable -> {
+                    logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
+                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+                })
                 .flatMap(openConnectionTaskToResponse -> {
                     OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
@@ -192,7 +193,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Mono.just(openConnectionResponse);
                             });
                 }, true)
-                .doOnError(throwable -> logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable))
+                .doOnError(throwable -> {
+                    logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
+                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+                })
                 .subscribe();
     }
 
@@ -206,9 +210,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private void reInstantiateOpenConnectionsPublisherAndSubscribe() {
-        logger.debug("In open connections task sink and concurrency reduction flow");
-        this.forceDefensiveOpenConnections();
+    private void reInstantiateOpenConnectionsPublisherAndSubscribe(boolean shouldForceDefensiveOpenConnections) {
+        if (shouldForceDefensiveOpenConnections) {
+            logger.debug("Force defensive opening of connections");
+            this.forceDefensiveOpenConnections();
+        }
+        logger.debug("Re-instantiation openConnectionsTaskSink");
         this.instantiateOpenConnectionsPublisher();
         this.openConnectionBackgroundTask.dispose();
         this.openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
@@ -236,7 +243,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private void instantiateOpenConnectionsPublisher() {
         logger.debug("Re-instantiate open connections task sink");
         openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
-        openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer();
+        openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
     }
 
     private void forceDefensiveOpenConnections() {
