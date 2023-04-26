@@ -3,10 +3,7 @@
 
 package com.azure.communication.rooms;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
-import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.rooms.models.*;
 import com.azure.core.credential.AccessToken;
@@ -22,7 +19,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -44,28 +40,6 @@ public class RoomsTestBase extends TestBase {
 
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
     protected static final OffsetDateTime VALID_UNTIL = VALID_FROM.plusDays(30);
-
-    protected List<RoomParticipant> participant1;
-    protected List<RoomParticipant> participants2;
-    protected List<RoomParticipant> participants3;
-    protected List<RoomParticipant> badParticipant;
-    protected List<RoomParticipant> participantsWithRoleUpdates;
-
-    protected List<CommunicationIdentifier> participantsIdentifiersForParticipants2;
-
-    private CommunicationIdentityClient communicationClient;
-
-    protected CommunicationUserIdentifier firstParticipantId;
-    protected CommunicationUserIdentifier secondParticipantId;
-    protected CommunicationUserIdentifier thirdParticipantId;
-
-    protected RoomParticipant firstParticipant;
-    protected RoomParticipant secondParticipant;
-    protected RoomParticipant thirdParticipant;
-    protected RoomParticipant firstChangeParticipant;
-    protected RoomParticipant secondChangeParticipant;
-
-    protected static final String NONEXIST_ROOM_ID = "NotExistingRoomID";
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("roomId");
@@ -156,35 +130,6 @@ public class RoomsTestBase extends TestBase {
         }
     }
 
-    protected void createUsers(HttpClient httpClient) {
-        communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
-        firstParticipantId = communicationClient.createUser();
-        secondParticipantId = communicationClient.createUser();
-        thirdParticipantId = communicationClient.createUser();
-
-        firstParticipant = new RoomParticipant(firstParticipantId);
-        secondParticipant = new RoomParticipant(secondParticipantId);
-        thirdParticipant = new RoomParticipant(thirdParticipantId).setRole(ParticipantRole.CONSUMER);
-
-        firstChangeParticipant = new RoomParticipant(firstParticipantId).setRole(ParticipantRole.CONSUMER);
-        secondChangeParticipant = new RoomParticipant(secondParticipantId).setRole(ParticipantRole.CONSUMER);
-
-        participant1 = Arrays.asList(firstParticipant);
-        participants2 = Arrays.asList(firstParticipant, secondParticipant);
-        participants3 = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
-
-        participantsIdentifiersForParticipants2 = getparticipantsIdentifiers(participants2);
-        participantsWithRoleUpdates = Arrays.asList(firstChangeParticipant, secondChangeParticipant);
-
-        badParticipant = Arrays.asList(new RoomParticipant(new CommunicationUserIdentifier("Dummy_Mri")));
-    }
-
-    protected void cleanUpUsers() {
-        // communicationClient.deleteUser(firstParticipantId);
-        // communicationClient.deleteUser(secondParticipantId);
-        // communicationClient.deleteUser(thirdParticipantId);
-    }
-
     protected RoomsClientBuilder addLoggingPolicy(RoomsClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
@@ -238,11 +183,4 @@ public class RoomsTestBase extends TestBase {
                 && participant1.getRole().toString().equals(participant2.getRole().toString());
     }
 
-    protected List<CommunicationIdentifier> getparticipantsIdentifiers(List<RoomParticipant> participants) {
-        List<CommunicationIdentifier> identifiers = new ArrayList<>();
-        for (RoomParticipant participant : participants) {
-            identifiers.add(participant.getCommunicationIdentifier());
-        }
-        return identifiers;
-    }
 }

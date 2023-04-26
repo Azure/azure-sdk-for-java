@@ -39,7 +39,11 @@ public final class RoomParticipant {
      * @return the RoomParticipant object itself.
      */
     public RoomParticipant setRole(ParticipantRole role) {
-        this.role = role;
+        if (role == null) {
+            this.role = ParticipantRole.ATTENDEE;
+        } else {
+            this.role = role;
+        }
         return this;
     }
 

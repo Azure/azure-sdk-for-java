@@ -25,6 +25,7 @@ public class ReadmeSamples {
     RoomParticipant participant1;
     RoomParticipant participant2;
 
+    // BEGIN: readme-sample-createRoomsClientUsingAzureKeyCredential
     public RoomsClient createRoomsClientUsingAzureKeyCredential() {
         // You can find your endpoint and access key from your resource in the Azure
         // Portal
@@ -36,7 +37,10 @@ public class ReadmeSamples {
 
         return roomsClient;
     }
+    // END: readme-sample-createRoomsClientUsingAzureKeyCredential
 
+
+    // BEGIN: readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
     public RoomsAsyncClient createRoomsAsyncClientUsingAzureKeyCredential() {
         // You can find your endpoint and access key from your resource in the Azure
         // Portal
@@ -48,6 +52,8 @@ public class ReadmeSamples {
 
         return roomsClient;
     }
+    // END: readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
+
 
     // BEGIN: readme-sample-createRoomsClientWithConnectionString
     public RoomsClient createRoomsClientWithConnectionString() {

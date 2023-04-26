@@ -61,8 +61,8 @@ public RoomsClient createRoomsClientWithConnectionString() {
 - List all rooms
 
 ### Participants
-- Add or Update Participants
-- Remove Participants
+- Add or update participants
+- Remove participants
 - List all participants
 
 ## Examples
@@ -151,7 +151,7 @@ public void deleteRoomWithRoomId() {
 }
 ```
 
-### Upsert participants an existing room
+### Add or Update participants an existing room
 Use the `addOrUpdateParticipants` function to add or update participants in an existing Room on Azure Communication Service.
 
 ```java readme-sample-addOrUpdateRoomParticipantsWithRoomId

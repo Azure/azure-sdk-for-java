@@ -300,11 +300,11 @@ public final class RoomsAsyncClient {
     }
 
     /**
-     * addOrUpdate participants to an existing Room.
+     * Add or update participants to an existing Room.
      *
      * @param roomId The room id.
      * @param participants The participants list.
-     * @return response for a successful addOrUpdate participants room request.
+     * @return response for a successful add or update participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddOrUpdateParticipantsResult> addOrUpdateParticipants(String roomId, Iterable<RoomParticipant> participants) {
@@ -318,11 +318,12 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
-            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForaddOrUpdate(participants);
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
 
             ObjectMapper mapper = new ObjectMapper();
 
             String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
 
             return this.participantsClient
                     .updateAsync(roomId, updateRequest, context)
@@ -339,11 +340,11 @@ public final class RoomsAsyncClient {
     }
 
     /**
-     * addOrUpdate participants to an existing Room with response
+     * Add or update participants to an existing Room with response
      *
      * @param roomId The room id.
      * @param participants The participants list.
-     * @return response for a successful addOrUpdate participants room request.
+     * @return response for a successful add or update participants room request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddOrUpdateParticipantsResult>> addOrUpdateParticipantsWithResponse(String roomId,
@@ -358,7 +359,7 @@ public final class RoomsAsyncClient {
             Objects.requireNonNull(participants, "'participants' cannot be null.");
             Objects.requireNonNull(roomId, "'roomId' cannot be null.");
 
-            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForaddOrUpdate(participants);
+            Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
 
             ObjectMapper mapper = new ObjectMapper();
 
@@ -531,7 +532,7 @@ public final class RoomsAsyncClient {
         Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
 
         if (participants != null) {
-            roomParticipants = convertRoomParticipantsToMapForaddOrUpdate(participants);
+            roomParticipants = convertRoomParticipantsToMapForAddOrUpdate(participants);
         }
 
         if (participants != null) {
@@ -561,11 +562,11 @@ public final class RoomsAsyncClient {
     }
 
     /**
-     * Translate to map for addOrUpdate participants.
+     * Translate to map for add or update participants.
      *
      * @return Map of participants.
      */
-    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForaddOrUpdate(
+    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForAddOrUpdate(
             Iterable<RoomParticipant> participants) {
         Map<String, ParticipantProperties> participantMap = new HashMap<>();
 
