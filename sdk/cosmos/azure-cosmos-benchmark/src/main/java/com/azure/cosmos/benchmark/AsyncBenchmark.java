@@ -66,10 +66,8 @@ abstract class AsyncBenchmark<T> {
     final Logger logger;
     final CosmosAsyncClient cosmosClient;
     CosmosAsyncContainer cosmosAsyncContainer;
+    CosmosAsyncContainer containerToUse;
     CosmosAsyncDatabase cosmosAsyncDatabase;
-    CosmosAsyncContainer cosmosAsyncContainerWithConnectionsEstablished;
-    CosmosAsyncContainer cosmosAsyncContainerWithConnectionsUnestablished;
-
     final String partitionKey;
     final Configuration configuration;
     final List<PojoizedJson> docsToRead;
@@ -151,7 +149,7 @@ abstract class AsyncBenchmark<T> {
 
         try {
             cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
-
+            containerToUse = cosmosAsyncContainer;
             cosmosAsyncContainer.read().block();
 
         } catch (CosmosException e) {
@@ -163,6 +161,7 @@ abstract class AsyncBenchmark<T> {
                 ).block();
 
                 cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+                containerToUse = cosmosAsyncContainer;
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
@@ -393,7 +392,7 @@ abstract class AsyncBenchmark<T> {
             openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
             CosmosAsyncDatabase databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
             databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
-            cosmosAsyncContainerWithConnectionsEstablished = databaseForProactiveConnectionManagement.getContainer(configuration.getCollectionId());
+            containerToUse = databaseForProactiveConnectionManagement.getContainer(configuration.getCollectionId());
         }
 
         if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
@@ -410,7 +409,7 @@ abstract class AsyncBenchmark<T> {
             clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
             CosmosAsyncDatabase databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
             databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
-            cosmosAsyncContainerWithConnectionsUnestablished = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
+            containerToUse = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
         }
 
         initializeMeter();

@@ -37,14 +37,6 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
     @Override
     protected void performWorkload(BaseSubscriber<FeedResponse<PojoizedJson>> baseSubscriber, long i) throws InterruptedException {
 
-        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
-
-        if (configuration.isProactiveConnectionManagementEnabled()) {
-            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
-        } else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
-            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
-        }
-
         CosmosPagedFlux<PojoizedJson> obs = containerToUse.queryItems(SQL_QUERY, options, PojoizedJson.class);
 
         concurrencyControlSemaphore.acquire();

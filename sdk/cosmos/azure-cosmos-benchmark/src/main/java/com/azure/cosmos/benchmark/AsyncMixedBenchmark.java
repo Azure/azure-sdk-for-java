@@ -32,15 +32,6 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
     protected void performWorkload(BaseSubscriber<Object> documentBaseSubscriber, long i) throws InterruptedException {
         Flux<? extends Object> obs;
 
-        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
-
-        if (configuration.isProactiveConnectionManagementEnabled()) {
-            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
-        } else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
-            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
-        }
-
-
         if (i % 10 == 0 && i % 100 != 0) {
 
             PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i,

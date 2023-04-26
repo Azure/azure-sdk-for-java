@@ -63,15 +63,6 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
 
-        CosmosAsyncContainer containerToUse = cosmosAsyncContainer;
-
-        if (configuration.isProactiveConnectionManagementEnabled()) {
-            containerToUse = cosmosAsyncContainerWithConnectionsEstablished;
-        }
-        else if (!configuration.isProactiveConnectionManagementEnabled() && configuration.isUseUnWarmedUpContainer()) {
-            containerToUse = cosmosAsyncContainerWithConnectionsUnestablished;
-        }
-
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             obs = containerToUse.createItem(BenchmarkHelper.generateDocument(id,
