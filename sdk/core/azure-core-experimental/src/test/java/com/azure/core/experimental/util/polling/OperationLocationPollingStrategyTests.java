@@ -84,10 +84,10 @@ public class OperationLocationPollingStrategyTests {
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
-                    && operationId.equals(asyncPollResponse.getValue().getId()))
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-                    && operationId.equals(asyncPollResponse.getValue().getId()))
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .verifyComplete();
 
         pollCount[0] = 0;
@@ -146,11 +146,11 @@ public class OperationLocationPollingStrategyTests {
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
-                    && operationId.equals(asyncPollResponse.getValue().getId())
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId())
                     && asyncPollResponse.getValue().getError() == null)
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.FAILED
-                    && operationId.equals(asyncPollResponse.getValue().getId())
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId())
                     && "mock-error".equals(asyncPollResponse.getValue().getError().getCode())
                     && "mock error message".equals(asyncPollResponse.getValue().getError().getMessage()))
             .verifyComplete();
@@ -204,10 +204,10 @@ public class OperationLocationPollingStrategyTests {
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
-                    && operationId.equals(asyncPollResponse.getValue().getId()))
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-                    && operationId.equals(asyncPollResponse.getValue().getId()))
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .verifyComplete();
 
         pollCount[0] = 0;
@@ -266,10 +266,10 @@ public class OperationLocationPollingStrategyTests {
             .expectSubscription()
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
-                    && operationId.equals(asyncPollResponse.getValue().getId()))
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .expectNextMatches(asyncPollResponse ->
                 asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-                    && operationId.equals(asyncPollResponse.getValue().getId()))
+                    && operationId.equals(asyncPollResponse.getValue().getOperationId()))
             .verifyComplete();
 
         pollCount[0] = 0;

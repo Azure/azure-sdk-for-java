@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class PollResult {
     @JsonProperty(value = "id", required = true)
-    private final String id;
+    private final String operationId;
 
     @JsonProperty(value = "error")
     private ResponseError error;
@@ -20,11 +20,11 @@ public final class PollResult {
     /**
      * Creates an instance of ResourceOperationStatusUserError class.
      *
-     * @param id the unique ID of the operation.
+     * @param operationId the unique ID of the operation.
      */
     @JsonCreator
-    private PollResult(@JsonProperty(value = "id", required = true) String id) {
-        this.id = id;
+    private PollResult(@JsonProperty(value = "id", required = true) String operationId) {
+        this.operationId = operationId;
     }
 
     /**
@@ -32,8 +32,8 @@ public final class PollResult {
      *
      * @return the unique ID of the operation.
      */
-    public String getId() {
-        return this.id;
+    public String getOperationId() {
+        return this.operationId;
     }
 
     /**

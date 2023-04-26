@@ -81,10 +81,10 @@ public class SyncOperationLocationPollingStrategyTests {
         // verify poll result
         PollResponse<PollResult> pollResponse = syncPoller.poll();
         Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS, pollResponse.getStatus());
-        Assertions.assertEquals(operationId, pollResponse.getValue().getId());
+        Assertions.assertEquals(operationId, pollResponse.getValue().getOperationId());
         pollResponse = syncPoller.poll();
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
-        Assertions.assertEquals(operationId, pollResponse.getValue().getId());
+        Assertions.assertEquals(operationId, pollResponse.getValue().getOperationId());
 
         // verify final result
         TestResource result = syncPoller.getFinalResult();
@@ -138,10 +138,10 @@ public class SyncOperationLocationPollingStrategyTests {
         // verify poll result
         PollResponse<PollResult> pollResponse = syncPoller.poll();
         Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS, pollResponse.getStatus());
-        Assertions.assertEquals(operationId, pollResponse.getValue().getId());
+        Assertions.assertEquals(operationId, pollResponse.getValue().getOperationId());
         pollResponse = syncPoller.poll();
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
-        Assertions.assertEquals(operationId, pollResponse.getValue().getId());
+        Assertions.assertEquals(operationId, pollResponse.getValue().getOperationId());
 
         // verify final result
         TestActionResult result = syncPoller.getFinalResult();
