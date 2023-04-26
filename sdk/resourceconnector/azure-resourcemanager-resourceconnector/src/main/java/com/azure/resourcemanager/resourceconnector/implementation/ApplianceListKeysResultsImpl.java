@@ -4,25 +4,34 @@
 
 package com.azure.resourcemanager.resourceconnector.implementation;
 
-import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceListClusterCustomerUserCredentialResultsInner;
+import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceListKeysResultsInner;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceCredentialKubeconfig;
-import com.azure.resourcemanager.resourceconnector.models.ApplianceListClusterCustomerUserCredentialResults;
+import com.azure.resourcemanager.resourceconnector.models.ApplianceListKeysResults;
+import com.azure.resourcemanager.resourceconnector.models.ArtifactProfile;
 import com.azure.resourcemanager.resourceconnector.models.SshKey;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class ApplianceListClusterCustomerUserCredentialResultsImpl
-    implements ApplianceListClusterCustomerUserCredentialResults {
-    private ApplianceListClusterCustomerUserCredentialResultsInner innerObject;
+public final class ApplianceListKeysResultsImpl implements ApplianceListKeysResults {
+    private ApplianceListKeysResultsInner innerObject;
 
     private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
 
-    ApplianceListClusterCustomerUserCredentialResultsImpl(
-        ApplianceListClusterCustomerUserCredentialResultsInner innerObject,
+    ApplianceListKeysResultsImpl(
+        ApplianceListKeysResultsInner innerObject,
         com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public Map<String, ArtifactProfile> artifactProfiles() {
+        Map<String, ArtifactProfile> inner = this.innerModel().artifactProfiles();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public List<ApplianceCredentialKubeconfig> kubeconfigs() {
@@ -43,7 +52,7 @@ public final class ApplianceListClusterCustomerUserCredentialResultsImpl
         }
     }
 
-    public ApplianceListClusterCustomerUserCredentialResultsInner innerModel() {
+    public ApplianceListKeysResultsInner innerModel() {
         return this.innerObject;
     }
 
