@@ -615,7 +615,7 @@ public final class AzureResourceManager {
      * <!-- src_embed com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine -->
      * <pre>
      * VirtualMachine linuxVM = azure.virtualMachines&#40;&#41;
-     *     .define&#40;windowsVMName&#41;
+     *     .define&#40;linuxVMName&#41;
      *     .withRegion&#40;region&#41;
      *     .withNewResourceGroup&#40;resourceGroupName&#41;
      *     .withNewPrimaryNetwork&#40;&quot;10.0.0.0&#47;28&quot;&#41;

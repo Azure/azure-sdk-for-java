@@ -19,7 +19,6 @@ import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
-import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -62,12 +61,12 @@ public class AzureResourceManagerJavaDocSamples {
                                      Region region,
                                      String resourceGroupName,
                                      Disk dataDisk,
-                                     String windowsVMName,
+                                     String linuxVMName,
                                      String userName,
                                      String sshPublicKey) {
         // BEGIN: com.azure.resourcemanager.azureResourceManager.virtualMachines.createVirtualMachine
         VirtualMachine linuxVM = azure.virtualMachines()
-            .define(windowsVMName)
+            .define(linuxVMName)
             .withRegion(region)
             .withNewResourceGroup(resourceGroupName)
             .withNewPrimaryNetwork("10.0.0.0/28")
