@@ -8,11 +8,11 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response of last anomaly detection. */
+/** Response of the last anomaly detection. */
 @Immutable
 public final class UnivariateLastDetectionResult {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has been
+     * Frequency extracted from the series. Zero means no recurrent pattern has been
      * found.
      */
     @JsonProperty(value = "period", required = true)
@@ -32,46 +32,45 @@ public final class UnivariateLastDetectionResult {
 
     /*
      * Upper margin of the latest point. UpperMargin is used to calculate
-     * upperBoundary, which equals to expectedValue + (100 - marginScale)*upperMargin.
+     * upperBoundary, which is equal to expectedValue + (100 - marginScale)*upperMargin.
      * If the value of latest point is between upperBoundary and lowerBoundary, it
-     * should be treated as normal value. By adjusting marginScale value, anomaly
-     * status of latest point can be changed.
+     * should be treated as a normal value. Adjusting the marginScale value enables the anomaly
+     * status of the latest point to be changed.
      */
     @JsonProperty(value = "upperMargin", required = true)
     private double upperMargin;
 
     /*
      * Lower margin of the latest point. LowerMargin is used to calculate
-     * lowerBoundary, which equals to expectedValue - (100 - marginScale)*lowerMargin.
-     *
+     * lowerBoundary, which is equal to expectedValue - (100 - marginScale)*lowerMargin.
      */
     @JsonProperty(value = "lowerMargin", required = true)
     private double lowerMargin;
 
     /*
-     * Anomaly status of the latest point, true means the latest point is an anomaly
-     * either in negative direction or positive direction.
+     * Anomaly status of the latest point. True means the latest point is an anomaly,
+     * either in the negative direction or in the positive direction.
      */
     @JsonProperty(value = "isAnomaly", required = true)
     private boolean isAnomaly;
 
     /*
-     * Anomaly status in negative direction of the latest point. True means the latest
+     * Anomaly status of the latest point in a negative direction. True means the latest
      * point is an anomaly and its real value is smaller than the expected one.
      */
     @JsonProperty(value = "isNegativeAnomaly", required = true)
     private boolean isNegativeAnomaly;
 
     /*
-     * Anomaly status in positive direction of the latest point. True means the latest
+     * Anomaly status of the latest point in a positive direction. True means the latest
      * point is an anomaly and its real value is larger than the expected one.
      */
     @JsonProperty(value = "isPositiveAnomaly", required = true)
     private boolean isPositiveAnomaly;
 
     /*
-     * The severity score for the last input point. The larger the value is, the more
-     * sever the anomaly is. For normal points, the "severity" is always 0.
+     * Severity score for the last input point. The larger the value is, the more
+     * severe the anomaly is. For normal points, the severity is always 0.
      */
     @JsonProperty(value = "severity")
     private Double severity;
@@ -109,7 +108,7 @@ public final class UnivariateLastDetectionResult {
     }
 
     /**
-     * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
+     * Get the period property: Frequency extracted from the series. Zero means no recurrent pattern has been found.
      *
      * @return the period value.
      */
@@ -137,9 +136,9 @@ public final class UnivariateLastDetectionResult {
 
     /**
      * Get the upperMargin property: Upper margin of the latest point. UpperMargin is used to calculate upperBoundary,
-     * which equals to expectedValue + (100 - marginScale)*upperMargin. If the value of latest point is between
-     * upperBoundary and lowerBoundary, it should be treated as normal value. By adjusting marginScale value, anomaly
-     * status of latest point can be changed.
+     * which is equal to expectedValue + (100 - marginScale)*upperMargin. If the value of latest point is between
+     * upperBoundary and lowerBoundary, it should be treated as a normal value. Adjusting the marginScale value enables
+     * the anomaly status of the latest point to be changed.
      *
      * @return the upperMargin value.
      */
@@ -149,7 +148,7 @@ public final class UnivariateLastDetectionResult {
 
     /**
      * Get the lowerMargin property: Lower margin of the latest point. LowerMargin is used to calculate lowerBoundary,
-     * which equals to expectedValue - (100 - marginScale)*lowerMargin.
+     * which is equal to expectedValue - (100 - marginScale)*lowerMargin.
      *
      * @return the lowerMargin value.
      */
@@ -158,8 +157,8 @@ public final class UnivariateLastDetectionResult {
     }
 
     /**
-     * Get the isAnomaly property: Anomaly status of the latest point, true means the latest point is an anomaly either
-     * in negative direction or positive direction.
+     * Get the isAnomaly property: Anomaly status of the latest point. True means the latest point is an anomaly, either
+     * in the negative direction or in the positive direction.
      *
      * @return the isAnomaly value.
      */
@@ -168,7 +167,7 @@ public final class UnivariateLastDetectionResult {
     }
 
     /**
-     * Get the isNegativeAnomaly property: Anomaly status in negative direction of the latest point. True means the
+     * Get the isNegativeAnomaly property: Anomaly status of the latest point in a negative direction. True means the
      * latest point is an anomaly and its real value is smaller than the expected one.
      *
      * @return the isNegativeAnomaly value.
@@ -178,7 +177,7 @@ public final class UnivariateLastDetectionResult {
     }
 
     /**
-     * Get the isPositiveAnomaly property: Anomaly status in positive direction of the latest point. True means the
+     * Get the isPositiveAnomaly property: Anomaly status of the latest point in a positive direction. True means the
      * latest point is an anomaly and its real value is larger than the expected one.
      *
      * @return the isPositiveAnomaly value.
@@ -188,8 +187,8 @@ public final class UnivariateLastDetectionResult {
     }
 
     /**
-     * Get the severity property: The severity score for the last input point. The larger the value is, the more sever
-     * the anomaly is. For normal points, the "severity" is always 0.
+     * Get the severity property: Severity score for the last input point. The larger the value is, the more severe the
+     * anomaly is. For normal points, the severity is always 0.
      *
      * @return the severity value.
      */

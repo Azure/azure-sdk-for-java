@@ -9,65 +9,64 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request of entire or last anomaly detection. */
+/** Request of the entire or last anomaly detection. */
 @Fluent
 public final class UnivariateDetectionOptions {
     /*
-     * Time series data points. Points should be sorted by timestamp in ascending
+     * Time series data points. Points should be sorted by time stamp in ascending
      * order to match the anomaly detection result. If the data is not sorted
-     * correctly or there is duplicated timestamp, the API will not work. In such
-     * case, an error message will be returned.
+     * correctly or there's a duplicated time stamp, the API won't work. In such
+     * a case, an error message is returned.
      */
     @JsonProperty(value = "series", required = true)
     private List<TimeSeriesPoint> series;
 
     /*
-     * Optional argument, can be one of yearly, monthly, weekly, daily, hourly,
-     * minutely, secondly, microsecond or none. If granularity is not present, it will
-     * be none by default. If granularity is none, the timestamp property in time
+     * Argument that indicates time granularity. If granularity is not present, the value
+     * is none by default. If granularity is none, the time stamp property in the time
      * series point can be absent.
      */
     @JsonProperty(value = "granularity")
     private TimeGranularity granularity;
 
     /*
-     * Custom Interval is used to set non-standard time interval, for example, if the
-     * series is 5 minutes, request can be set as {"granularity":"minutely",
+     * A custom interval is used to set a nonstandard time interval. For example, if the
+     * series is 5 minutes, the request can be set as {"granularity":"minutely",
      * "customInterval":5}.
      */
     @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /*
-     * Optional argument, periodic value of a time series. If the value is null or
-     * does not present, the API will determine the period automatically.
+     * Argument that indicates the periodic value of a time series. If the value is null or
+     * is not present, the API determines the period automatically.
      */
     @JsonProperty(value = "period")
     private Integer period;
 
     /*
-     * Optional argument, advanced model parameter, max anomaly ratio in a time series.
+     * Argument that indicates an advanced model parameter. It's the maximum anomaly ratio in a time series.
      */
     @JsonProperty(value = "maxAnomalyRatio")
     private Double maxAnomalyRatio;
 
     /*
-     * Optional argument, advanced model parameter, between 0-99, the lower the value
-     * is, the larger the margin value will be which means less anomalies will be
+     * Argument that indicates an advanced model parameter between 0 and 99. The lower the value
+     * is, the larger the margin value is, which means fewer anomalies will be
      * accepted.
      */
     @JsonProperty(value = "sensitivity")
     private Integer sensitivity;
 
     /*
-     * Used to specify how to deal with missing values in the input series, it's used
+     * Specifies how to deal with missing values in the input series. It's used
      * when granularity is not "none".
      */
     @JsonProperty(value = "imputeMode")
     private ImputeMode imputeMode;
 
     /*
-     * Used to specify the value to fill, it's used when granularity is not "none"
+     * Specifies the value to fill. It's used when granularity is not "none"
      * and imputeMode is "fixed".
      */
     @JsonProperty(value = "imputeFixedValue")
@@ -84,9 +83,9 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to
-     * match the anomaly detection result. If the data is not sorted correctly or there is duplicated timestamp, the API
-     * will not work. In such case, an error message will be returned.
+     * Get the series property: Time series data points. Points should be sorted by time stamp in ascending order to
+     * match the anomaly detection result. If the data is not sorted correctly or there's a duplicated time stamp, the
+     * API won't work. In such a case, an error message is returned.
      *
      * @return the series value.
      */
@@ -95,9 +94,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the granularity property: Optional argument, can be one of yearly, monthly, weekly, daily, hourly, minutely,
-     * secondly, microsecond or none. If granularity is not present, it will be none by default. If granularity is none,
-     * the timestamp property in time series point can be absent.
+     * Get the granularity property: Argument that indicates time granularity. If granularity is not present, the value
+     * is none by default. If granularity is none, the time stamp property in the time series point can be absent.
      *
      * @return the granularity value.
      */
@@ -106,9 +104,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the granularity property: Optional argument, can be one of yearly, monthly, weekly, daily, hourly, minutely,
-     * secondly, microsecond or none. If granularity is not present, it will be none by default. If granularity is none,
-     * the timestamp property in time series point can be absent.
+     * Set the granularity property: Argument that indicates time granularity. If granularity is not present, the value
+     * is none by default. If granularity is none, the time stamp property in the time series point can be absent.
      *
      * @param granularity the granularity value to set.
      * @return the UnivariateDetectionOptions object itself.
@@ -119,8 +116,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the customInterval property: Custom Interval is used to set non-standard time interval, for example, if the
-     * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
+     * Get the customInterval property: A custom interval is used to set a nonstandard time interval. For example, if
+     * the series is 5 minutes, the request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @return the customInterval value.
      */
@@ -129,8 +126,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the customInterval property: Custom Interval is used to set non-standard time interval, for example, if the
-     * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
+     * Set the customInterval property: A custom interval is used to set a nonstandard time interval. For example, if
+     * the series is 5 minutes, the request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
      * @return the UnivariateDetectionOptions object itself.
@@ -141,8 +138,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the period property: Optional argument, periodic value of a time series. If the value is null or does not
-     * present, the API will determine the period automatically.
+     * Get the period property: Argument that indicates the periodic value of a time series. If the value is null or is
+     * not present, the API determines the period automatically.
      *
      * @return the period value.
      */
@@ -151,8 +148,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the period property: Optional argument, periodic value of a time series. If the value is null or does not
-     * present, the API will determine the period automatically.
+     * Set the period property: Argument that indicates the periodic value of a time series. If the value is null or is
+     * not present, the API determines the period automatically.
      *
      * @param period the period value to set.
      * @return the UnivariateDetectionOptions object itself.
@@ -163,8 +160,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the maxAnomalyRatio property: Optional argument, advanced model parameter, max anomaly ratio in a time
-     * series.
+     * Get the maxAnomalyRatio property: Argument that indicates an advanced model parameter. It's the maximum anomaly
+     * ratio in a time series.
      *
      * @return the maxAnomalyRatio value.
      */
@@ -173,8 +170,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the maxAnomalyRatio property: Optional argument, advanced model parameter, max anomaly ratio in a time
-     * series.
+     * Set the maxAnomalyRatio property: Argument that indicates an advanced model parameter. It's the maximum anomaly
+     * ratio in a time series.
      *
      * @param maxAnomalyRatio the maxAnomalyRatio value to set.
      * @return the UnivariateDetectionOptions object itself.
@@ -185,8 +182,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the sensitivity property: Optional argument, advanced model parameter, between 0-99, the lower the value is,
-     * the larger the margin value will be which means less anomalies will be accepted.
+     * Get the sensitivity property: Argument that indicates an advanced model parameter between 0 and 99. The lower the
+     * value is, the larger the margin value is, which means fewer anomalies will be accepted.
      *
      * @return the sensitivity value.
      */
@@ -195,8 +192,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the sensitivity property: Optional argument, advanced model parameter, between 0-99, the lower the value is,
-     * the larger the margin value will be which means less anomalies will be accepted.
+     * Set the sensitivity property: Argument that indicates an advanced model parameter between 0 and 99. The lower the
+     * value is, the larger the margin value is, which means fewer anomalies will be accepted.
      *
      * @param sensitivity the sensitivity value to set.
      * @return the UnivariateDetectionOptions object itself.
@@ -207,7 +204,7 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the imputeMode property: Used to specify how to deal with missing values in the input series, it's used when
+     * Get the imputeMode property: Specifies how to deal with missing values in the input series. It's used when
      * granularity is not "none".
      *
      * @return the imputeMode value.
@@ -217,7 +214,7 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the imputeMode property: Used to specify how to deal with missing values in the input series, it's used when
+     * Set the imputeMode property: Specifies how to deal with missing values in the input series. It's used when
      * granularity is not "none".
      *
      * @param imputeMode the imputeMode value to set.
@@ -229,8 +226,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Get the imputeFixedValue property: Used to specify the value to fill, it's used when granularity is not "none"
-     * and imputeMode is "fixed".
+     * Get the imputeFixedValue property: Specifies the value to fill. It's used when granularity is not "none" and
+     * imputeMode is "fixed".
      *
      * @return the imputeFixedValue value.
      */
@@ -239,8 +236,8 @@ public final class UnivariateDetectionOptions {
     }
 
     /**
-     * Set the imputeFixedValue property: Used to specify the value to fill, it's used when granularity is not "none"
-     * and imputeMode is "fixed".
+     * Set the imputeFixedValue property: Specifies the value to fill. It's used when granularity is not "none" and
+     * imputeMode is "fixed".
      *
      * @param imputeFixedValue the imputeFixedValue value to set.
      * @return the UnivariateDetectionOptions object itself.

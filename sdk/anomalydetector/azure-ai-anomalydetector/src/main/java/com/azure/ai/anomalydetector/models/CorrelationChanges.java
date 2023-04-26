@@ -12,7 +12,7 @@ import java.util.List;
 @Immutable
 public final class CorrelationChanges {
     /*
-     * The correlated variables that have correlation changes under an anomaly.
+     * Correlated variables that have correlation changes under an anomaly.
      */
     @JsonProperty(value = "changedVariables")
     private List<String> changedVariables;
@@ -21,7 +21,7 @@ public final class CorrelationChanges {
     private CorrelationChanges() {}
 
     /**
-     * Get the changedVariables property: The correlated variables that have correlation changes under an anomaly.
+     * Get the changedVariables property: Correlated variables that have correlation changes under an anomaly.
      *
      * @return the changedVariables value.
      */

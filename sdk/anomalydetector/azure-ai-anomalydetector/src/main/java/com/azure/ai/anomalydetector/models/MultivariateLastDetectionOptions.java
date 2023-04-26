@@ -4,45 +4,42 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request of last detection. */
-@Immutable
+/** Request of the last detection. */
+@Fluent
 public final class MultivariateLastDetectionOptions {
     /*
-     * This contains the inference data, including the name, timestamps(ISO 8601) and
+     * Contains the inference data, including the name, time stamps (ISO 8601), and
      * values of variables.
      */
     @JsonProperty(value = "variables", required = true)
     private List<VariableValues> variables;
 
     /*
-     * An optional field, which is used to specify the number of top contributed
-     * variables for one anomalous timestamp in the response. The default number is
+     * Number of top contributed
+     * variables for one anomalous time stamp in the response. The default is
      * 10.
      */
-    @JsonProperty(value = "topContributorCount", required = true)
-    private int topContributorCount;
+    @JsonProperty(value = "topContributorCount")
+    private Integer topContributorCount;
 
     /**
      * Creates an instance of MultivariateLastDetectionOptions class.
      *
      * @param variables the variables value to set.
-     * @param topContributorCount the topContributorCount value to set.
      */
     @JsonCreator
     public MultivariateLastDetectionOptions(
-            @JsonProperty(value = "variables", required = true) List<VariableValues> variables,
-            @JsonProperty(value = "topContributorCount", required = true) int topContributorCount) {
+            @JsonProperty(value = "variables", required = true) List<VariableValues> variables) {
         this.variables = variables;
-        this.topContributorCount = topContributorCount;
     }
 
     /**
-     * Get the variables property: This contains the inference data, including the name, timestamps(ISO 8601) and values
+     * Get the variables property: Contains the inference data, including the name, time stamps (ISO 8601), and values
      * of variables.
      *
      * @return the variables value.
@@ -52,12 +49,24 @@ public final class MultivariateLastDetectionOptions {
     }
 
     /**
-     * Get the topContributorCount property: An optional field, which is used to specify the number of top contributed
-     * variables for one anomalous timestamp in the response. The default number is 10.
+     * Get the topContributorCount property: Number of top contributed variables for one anomalous time stamp in the
+     * response. The default is 10.
      *
      * @return the topContributorCount value.
      */
-    public int getTopContributorCount() {
+    public Integer getTopContributorCount() {
         return this.topContributorCount;
+    }
+
+    /**
+     * Set the topContributorCount property: Number of top contributed variables for one anomalous time stamp in the
+     * response. The default is 10.
+     *
+     * @param topContributorCount the topContributorCount value to set.
+     * @return the MultivariateLastDetectionOptions object itself.
+     */
+    public MultivariateLastDetectionOptions setTopContributorCount(Integer topContributorCount) {
+        this.topContributorCount = topContributorCount;
+        return this;
     }
 }
