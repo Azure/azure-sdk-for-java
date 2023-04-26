@@ -3,23 +3,23 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
-import com.azure.communication.callautomation.models.events.PlayCanceled;
-import com.azure.communication.callautomation.models.events.PlayCompleted;
-import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.CallAutomationEventData;
+import com.azure.communication.callautomation.models.events.CallConnectedEventData;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEventData;
+import com.azure.communication.callautomation.models.events.PlayCanceledEventData;
+import com.azure.communication.callautomation.models.events.PlayCompletedEventData;
+import com.azure.communication.callautomation.models.events.PlayFailedEventData;
 import com.azure.communication.callautomation.models.events.ReasonCode;
-import com.azure.communication.callautomation.models.events.RecognizeCanceled;
-import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeCanceledEventData;
+import com.azure.communication.callautomation.models.events.RecognizeCompletedEventData;
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnected;
-import com.azure.communication.callautomation.models.events.RecognizeFailed;
-import com.azure.communication.callautomation.models.events.RecordingStateChanged;
-import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
-import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.RecognizeFailedEventData;
+import com.azure.communication.callautomation.models.events.RecordingStateChangedEventData;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailedEventData;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceededEventData;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
 
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-public class EventHandlerUnitTests {
+public class CallAutomationEventParserUnitTests {
     static final String EVENT_PARTICIPANT_UPDATED = "{\"id\":\"61069ef9-5ca9-457f-ac36-e2bb5e8400ca\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\",\"type\":\"Microsoft.Communication.ParticipantsUpdated\",\"data\":{\"participants\":[{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\"}}, \"isMuted\": false},{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\"}}, \"isMuted\": false}],\"type\":\"participantsUpdated\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.9129474+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\"}";
     static final String EVENT_CALL_CONNECTED = "{\"id\":\"46116fb7-27e0-4a99-9478-a659c8fd4815\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\",\"type\":\"Microsoft.Communication.CallConnected\",\"data\":{\"type\":\"callConnected\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.8174402+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/CallConnected\"}";
     static final String EVENT_RECOGNIZE_DTMF = "[{\"id\":\"ac2cb537-2d62-48bf-909e-cc93534c4258\",\"source\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"type\":\"Microsoft.Communication.RecognizeCompleted\",\"data\":{\"eventSource\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"operationContext\":\"OperationalContextValue-1118-1049\",\"resultInformation\":{\"code\":200,\"subCode\":8533,\"message\":\"Action completed, DTMF option matched.\"},\"recognitionType\":\"dtmf\",\"dtmfResult\":{\"tones\":[\"five\", \"six\", \"pound\"]},\"choiceResult\":{\"label\":\"Marketing\"},\"callConnectionId\":\"401f7000-c1c0-41e2-962d-85d0dc1d6f01\",\"serverCallId\":\"serverCallId\",\"correlationId\":\"d4f4c1be-59d8-4850-b9bf-ee564c15839d\"},\"time\":\"2022-11-22T01:41:44.5582769+00:00\",\"specversion\":\"1.0\",\"subject\":\"calling/callConnections/401f7000-c1c0-41e2-962d-85d0dc1d6f01\"}]";
@@ -39,13 +39,13 @@ public class EventHandlerUnitTests {
 
     @Test
     public void parseEvent() {
-        CallAutomationEventBase callAutomationEventBase = EventHandler.parseEvent(EVENT_PARTICIPANT_UPDATED);
+        CallAutomationEventData callAutomationEventData = CallAutomationEventParser.parseEvents(EVENT_PARTICIPANT_UPDATED).get(0);
 
-        assertNotNull(callAutomationEventBase);
-        assertEquals(callAutomationEventBase.getClass(), ParticipantsUpdated.class);
-        ParticipantsUpdated participantsUpdatedEvent = (ParticipantsUpdated) callAutomationEventBase;
-        assertNotNull((participantsUpdatedEvent).getParticipants());
-        participantsUpdatedEvent.getParticipants().forEach(participant -> {
+        assertNotNull(callAutomationEventData);
+        assertEquals(callAutomationEventData.getClass(), ParticipantsUpdatedEventData.class);
+        ParticipantsUpdatedEventData participantsUpdatedEventData = (ParticipantsUpdatedEventData) callAutomationEventData;
+        assertNotNull((participantsUpdatedEventData).getParticipants());
+        participantsUpdatedEventData.getParticipants().forEach(participant -> {
             assertNotNull(participant);
             assertNotNull(participant.getIdentifier());
             assertNotNull(participant.isMuted());
@@ -54,13 +54,13 @@ public class EventHandlerUnitTests {
 
     @Test
     public void parseEventList() {
-        List<CallAutomationEventBase> callAutomationEventBaseList = EventHandler.parseEventList("["
+        List<CallAutomationEventData> callAutomationEventDataList = CallAutomationEventParser.parseEvents("["
             + EVENT_CALL_CONNECTED + "," + EVENT_PARTICIPANT_UPDATED + "]");
 
-        assertNotNull(callAutomationEventBaseList);
-        assertEquals(callAutomationEventBaseList.get(0).getClass(), CallConnected.class);
-        assertEquals(callAutomationEventBaseList.get(1).getClass(), ParticipantsUpdated.class);
-        assertNotNull(callAutomationEventBaseList.get(0).getCallConnectionId());
+        assertNotNull(callAutomationEventDataList);
+        assertEquals(callAutomationEventDataList.get(0).getClass(), CallConnectedEventData.class);
+        assertEquals(callAutomationEventDataList.get(1).getClass(), ParticipantsUpdatedEventData.class);
+        assertNotNull(callAutomationEventDataList.get(0).getCallConnectionId());
     }
 
     @Test
@@ -85,9 +85,9 @@ public class EventHandlerUnitTests {
             + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
             + "    }\n"
             + "]";
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
-        RecordingStateChanged recordingEvent = (RecordingStateChanged) event;
+        RecordingStateChangedEventData recordingEvent = (RecordingStateChangedEventData) event;
         assertNotNull(recordingEvent);
         assertEquals("serverCallId", recordingEvent.getServerCallId());
         assertEquals("recordingId", recordingEvent.getRecordingId());
@@ -106,7 +106,7 @@ public class EventHandlerUnitTests {
             + "\"subCode\": 0,\n"
             + "\"message\": \"Action completed successfully.\"\n"
             + "},\n"
-            + "\"type\": \"playCompletedEvent\",\n"
+            + "\"type\": \"playCompleted\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -116,13 +116,13 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
-        PlayCompleted playCompletedEvent = (PlayCompleted) event;
-        assertNotNull(playCompletedEvent);
-        assertEquals("serverCallId", playCompletedEvent.getServerCallId());
-        assertEquals(200, playCompletedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, playCompletedEvent.getReasonCode());
+        PlayCompletedEventData playCompletedEventData = (PlayCompletedEventData) event;
+        assertNotNull(playCompletedEventData);
+        assertEquals("serverCallId", playCompletedEventData.getServerCallId());
+        assertEquals(200, playCompletedEventData.getResultInformation().getCode());
+        assertEquals(ReasonCode.COMPLETED_SUCCESSFULLY, playCompletedEventData.getReasonCode());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class EventHandlerUnitTests {
             + "\"subCode\": 8536,\n"
             + "\"message\": \"Action failed, file could not be downloaded.\"\n"
             + "},\n"
-            + "\"type\": \"playFailedEvent\",\n"
+            + "\"type\": \"playFailed\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -147,13 +147,13 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
-        PlayFailed playFailedEvent = (PlayFailed) event;
-        assertNotNull(playFailedEvent);
-        assertEquals("serverCallId", playFailedEvent.getServerCallId());
-        assertEquals(400, playFailedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEvent.getReasonCode());
+        PlayFailedEventData playFailedEventData = (PlayFailedEventData) event;
+        assertNotNull(playFailedEventData);
+        assertEquals("serverCallId", playFailedEventData.getServerCallId());
+        assertEquals(400, playFailedEventData.getResultInformation().getCode());
+        assertEquals(ReasonCode.Play.DOWNLOAD_FAILED, playFailedEventData.getReasonCode());
     }
 
     @Test
@@ -163,7 +163,7 @@ public class EventHandlerUnitTests {
             + "\"source\": \"calling/callConnections/callConnectionId/PlayCanceled\",\n"
             + "\"type\": \"Microsoft.Communication.PlayCanceled\",\n"
             + "\"data\": {\n"
-            + "\"type\": \"playCanceledEvent\",\n"
+            + "\"type\": \"playCanceled\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -173,39 +173,39 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
-        PlayCanceled playCanceledEvent = (PlayCanceled) event;
-        assertNotNull(playCanceledEvent);
-        assertEquals("serverCallId", playCanceledEvent.getServerCallId());
+        PlayCanceledEventData playCanceledEventData = (PlayCanceledEventData) event;
+        assertNotNull(playCanceledEventData);
+        assertEquals("serverCallId", playCanceledEventData.getServerCallId());
     }
     @Test
     public void parseRecognizeCompletedWithChoiceEvent() {
-        CallAutomationEventBase event = EventHandler.parseEvent(EVENT_RECOGNIZE_CHOICE);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_CHOICE).get(0);
         assertNotNull(event);
-        RecognizeCompleted recognizeCompletedEvent = (RecognizeCompleted) event;
-        assertNotNull(recognizeCompletedEvent);
-        Optional<RecognizeResult> choiceResult = recognizeCompletedEvent.getRecognizeResult();
+        RecognizeCompletedEventData recognizeCompletedEventData = (RecognizeCompletedEventData) event;
+        assertNotNull(recognizeCompletedEventData);
+        Optional<RecognizeResult> choiceResult = recognizeCompletedEventData.getRecognizeResult();
         assertInstanceOf(ChoiceResult.class, choiceResult.get());
-        assertEquals("serverCallId", recognizeCompletedEvent.getServerCallId());
-        assertEquals(200, recognizeCompletedEvent.getResultInformation().getCode());
-        assertEquals(Recognize.SPEECH_OPTION_MATCHED, recognizeCompletedEvent.getReasonCode());
+        assertEquals("serverCallId", recognizeCompletedEventData.getServerCallId());
+        assertEquals(200, recognizeCompletedEventData.getResultInformation().getCode());
+        assertEquals(Recognize.SPEECH_OPTION_MATCHED, recognizeCompletedEventData.getReasonCode());
     }
 
     @Test
     public void parseRecognizeCompletedWithDtmfEvent() {
-        CallAutomationEventBase event = EventHandler.parseEvent(EVENT_RECOGNIZE_DTMF);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_DTMF).get(0);
         assertNotNull(event);
-        RecognizeCompleted recognizeCompletedEvent = (RecognizeCompleted) event;
-        Optional<RecognizeResult> dtmfResult = recognizeCompletedEvent.getRecognizeResult();
+        RecognizeCompletedEventData recognizeCompletedEventData = (RecognizeCompletedEventData) event;
+        Optional<RecognizeResult> dtmfResult = recognizeCompletedEventData.getRecognizeResult();
         DtmfResult tonesResult = (DtmfResult) dtmfResult.get();
         assertInstanceOf(DtmfResult.class, dtmfResult.get());
         String tonesInString = tonesResult.convertToString();
         assertEquals(tonesInString, "56#");
-        assertNotNull(recognizeCompletedEvent);
-        assertEquals("serverCallId", recognizeCompletedEvent.getServerCallId());
-        assertEquals(200, recognizeCompletedEvent.getResultInformation().getCode());
-        assertEquals(Recognize.DMTF_OPTION_MATCHED, recognizeCompletedEvent.getReasonCode());
+        assertNotNull(recognizeCompletedEventData);
+        assertEquals("serverCallId", recognizeCompletedEventData.getServerCallId());
+        assertEquals(200, recognizeCompletedEventData.getResultInformation().getCode());
+        assertEquals(Recognize.DMTF_OPTION_MATCHED, recognizeCompletedEventData.getReasonCode());
     }
 
     @Test
@@ -220,7 +220,7 @@ public class EventHandlerUnitTests {
             + "\"subCode\": 8510,\n"
             + "\"message\": \"Action failed, initial silence timeout reached.\"\n"
             + "},\n"
-            + "\"type\": \"recognizeFailedEvent\",\n"
+            + "\"type\": \"recognizeFailed\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -230,13 +230,13 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
-        RecognizeFailed recognizeFailedEvent = (RecognizeFailed) event;
-        assertNotNull(recognizeFailedEvent);
-        assertEquals("serverCallId", recognizeFailedEvent.getServerCallId());
-        assertEquals(400, recognizeFailedEvent.getResultInformation().getCode());
-        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailedEvent.getReasonCode());
+        RecognizeFailedEventData recognizeFailedEventData = (RecognizeFailedEventData) event;
+        assertNotNull(recognizeFailedEventData);
+        assertEquals("serverCallId", recognizeFailedEventData.getServerCallId());
+        assertEquals(400, recognizeFailedEventData.getResultInformation().getCode());
+        assertEquals(ReasonCode.Recognize.INITIAL_SILENCE_TIMEOUT, recognizeFailedEventData.getReasonCode());
     }
 
     @Test
@@ -246,7 +246,7 @@ public class EventHandlerUnitTests {
             + "\"source\": \"calling/callConnections/callConnectionId/RecognizeCanceled\",\n"
             + "\"type\": \"Microsoft.Communication.RecognizeCanceled\",\n"
             + "\"data\": {\n"
-            + "\"type\": \"recognizeCanceledEvent\",\n"
+            + "\"type\": \"recognizeCanceled\",\n"
             + "\"callConnectionId\": \"callConnectionId\",\n"
             + "\"serverCallId\": \"serverCallId\",\n"
             + "\"correlationId\": \"correlationId\"\n"
@@ -256,11 +256,11 @@ public class EventHandlerUnitTests {
             + "\"datacontenttype\": \"application/json\",\n"
             + "\"subject\": \"calling/callConnections/callConnectionId\"\n"
             + "}]";
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
-        RecognizeCanceled recognizeCanceledEvent = (RecognizeCanceled) event;
-        assertNotNull(recognizeCanceledEvent);
-        assertEquals("serverCallId", recognizeCanceledEvent.getServerCallId());
+        RecognizeCanceledEventData recognizeCanceledEventData = (RecognizeCanceledEventData) event;
+        assertNotNull(recognizeCanceledEventData);
+        assertEquals("serverCallId", recognizeCanceledEventData.getServerCallId());
     }
 
     @Test
@@ -287,16 +287,15 @@ public class EventHandlerUnitTests {
                 + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
                 + "}]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
-
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
 
-        RemoveParticipantSucceeded removeParticipantSucceededEvent = (RemoveParticipantSucceeded) event;
+        RemoveParticipantSucceededEventData removeParticipantSucceededEventData = (RemoveParticipantSucceededEventData) event;
 
-        assertNotNull(removeParticipantSucceededEvent);
-        assertEquals("serverCallId", removeParticipantSucceededEvent.getServerCallId());
-        assertEquals("callConnectionId", removeParticipantSucceededEvent.getCallConnectionId());
-        assertEquals("rawId", removeParticipantSucceededEvent.getParticipant().getRawId());
+        assertNotNull(removeParticipantSucceededEventData);
+        assertEquals("serverCallId", removeParticipantSucceededEventData.getServerCallId());
+        assertEquals("callConnectionId", removeParticipantSucceededEventData.getCallConnectionId());
+        assertEquals("rawId", removeParticipantSucceededEventData.getParticipant().getRawId());
     }
 
     @Test
@@ -323,15 +322,15 @@ public class EventHandlerUnitTests {
                 + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
                 + "}]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
-        RemoveParticipantFailed removeParticipantFailedEvent = (RemoveParticipantFailed) event;
+        RemoveParticipantFailedEventData removeParticipantFailedEventData = (RemoveParticipantFailedEventData) event;
 
-        assertNotNull(removeParticipantFailedEvent);
-        assertEquals("serverCallId", removeParticipantFailedEvent.getServerCallId());
-        assertEquals("callConnectionId", removeParticipantFailedEvent.getCallConnectionId());
-        assertEquals("rawId", removeParticipantFailedEvent.getParticipant().getRawId());
+        assertNotNull(removeParticipantFailedEventData);
+        assertEquals("serverCallId", removeParticipantFailedEventData.getServerCallId());
+        assertEquals("callConnectionId", removeParticipantFailedEventData.getCallConnectionId());
+        assertEquals("rawId", removeParticipantFailedEventData.getParticipant().getRawId());
     }
 }

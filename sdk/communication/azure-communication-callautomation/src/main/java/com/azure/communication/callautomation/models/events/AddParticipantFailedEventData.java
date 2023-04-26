@@ -16,9 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
-/** The AddParticipantFailed model. */
+/** The AddParticipantFailedEventData model. */
 @Immutable
-public final class AddParticipantFailed extends CallAutomationEventBase {
+public final class AddParticipantFailedEventData extends CallAutomationEventData {
     /*
      * Participant added
      */
@@ -32,7 +32,7 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
     private final ResultInformation resultInformation;
 
     @JsonCreator
-    private AddParticipantFailed(@JsonProperty("participant") Map<String, Object> participant) {
+    private AddParticipantFailedEventData(@JsonProperty("participant") Map<String, Object> participant) {
         this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

@@ -8,23 +8,15 @@ import com.azure.core.util.ServiceVersion;
 /**
  * Versions of CallingServer service supported by this client library.
  */
-public enum CallingServerServiceVersion implements ServiceVersion {
+public enum CallAutomationServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2023-01-15-preview}.
      */
-    V2023_01_15_PREVIEW("2023-01-15-preview"),
-    /**
-     * Service version {@code 2022-04-07-preview}.
-     */
-    V2022_04_07_PREVIEW("2022-04-07-preview"),
-    /**
-     * Service version {@code 2021-11-15-preview}.
-     */
-    V2021_11_15_PREVIEW("2021-11-15-preview");
+    V2023_01_15_PREVIEW("2023-01-15-preview");
 
     private final String version;
 
-    CallingServerServiceVersion(String version) {
+    CallAutomationServiceVersion(String version) {
         this.version = version;
     }
 
@@ -39,9 +31,9 @@ public enum CallingServerServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return The latest {@link CallingServerServiceVersion} object.
+     * @return The latest {@link CallAutomationServiceVersion} object.
      */
-    public static CallingServerServiceVersion getLatest() {
-        return V2022_04_07_PREVIEW;
+    public static CallAutomationServiceVersion getLatest() {
+        return V2023_01_15_PREVIEW;
     }
 }

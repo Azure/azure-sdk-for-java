@@ -3,13 +3,13 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.ArrayList;
 
@@ -34,28 +34,28 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
         callRecording = callAutomationClient.getCallRecording();
 
         validateRecording(
-            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
                 .setRecordingStateCallbackUrl("https://localhost/")),
             RecordingState.ACTIVE
         );
 
         verifyOperationWithRecordingState(
-            () -> callRecording.pauseRecording(RECORDING_ID),
+            () -> callRecording.pause(RECORDING_ID),
             RecordingState.INACTIVE
         );
 
         verifyOperationWithRecordingState(
-            () -> callRecording.resumeRecording(RECORDING_ID),
+            () -> callRecording.resume(RECORDING_ID),
             RecordingState.ACTIVE
         );
 
-        callRecording.stopRecording(RECORDING_ID);
-        assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(RECORDING_ID));
+        callRecording.stop(RECORDING_ID);
+        assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID));
     }
 
     private void verifyOperationWithRecordingState(Runnable operation, RecordingState expectedStatus) {
         operation.run();
-        RecordingStateResult recordingState = callRecording.getRecordingState(RECORDING_ID);
+        RecordingStateResult recordingState = callRecording.getState(RECORDING_ID);
         validateRecording(recordingState, expectedStatus);
     }
 

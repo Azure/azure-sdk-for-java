@@ -3,19 +3,19 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallTransferAccepted model. */
-@Immutable
-public final class CallTransferAccepted extends CallAutomationEventBase {
+/**
+ * The base event interface with ReasonCode added.
+ */
+public abstract class CallAutomationEventDataWithReasonCode extends CallAutomationEventData {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    private CallTransferAccepted() {
+    CallAutomationEventDataWithReasonCode() {
         this.resultInformation = null;
     }
 
@@ -26,5 +26,13 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
      */
     public ResultInformation getResultInformation() {
         return this.resultInformation;
+    }
+
+    /**
+     * Returns the reason code of the event
+     * @return a ReasonCode object.
+     * */
+    public ReasonCode getReasonCode() {
+        return getResultInformation() != null ? ReasonCode.fromReasonCode(getResultInformation().getSubCode()) : null;
     }
 }
