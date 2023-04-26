@@ -4,8 +4,8 @@ dbutils.widgets.removeAll()
 // COMMAND ----------
 
 // global config
-dbutils.widgets.text("cosmosEndpoint", "") // enter the Cosmos DB Account URI of the source account
-dbutils.widgets.text("cosmosMasterKey", "") // enter the Cosmos DB Account PRIMARY KEY of the source account
+dbutils.widgets.text("cosmosEndpoint", "") // enter the Cosmos DB Account URI
+dbutils.widgets.text("cosmosMasterKey", "") // enter the Cosmos DB Account PRIMARY KEY
 dbutils.widgets.text("cosmosRegion", "[UK South]") // enter the Cosmos DB Region
 
 // source config
