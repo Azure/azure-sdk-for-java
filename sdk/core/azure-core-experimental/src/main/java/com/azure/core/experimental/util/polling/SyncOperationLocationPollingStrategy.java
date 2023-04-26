@@ -82,7 +82,7 @@ public class SyncOperationLocationPollingStrategy<T, U> extends SyncOperationRes
                 || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 // PUT has initial response body as resultType
                 // we expect Response<?> be either Response<BinaryData> or Response<U>
-                // if it is Response<T>, PollingUtils.serializeResponse would miss read-only properties
+                // if it is not Response<BinaryData>, PollingUtils.serializeResponse would miss read-only properties
                 BinaryData initialResponseBody = PollingUtils.serializeResponseSync(response.getValue(), serializer);
                 pollingContext.setData(
                     PollingConstants.INITIAL_RESOURCE_RESPONSE_BODY, initialResponseBody.toString());

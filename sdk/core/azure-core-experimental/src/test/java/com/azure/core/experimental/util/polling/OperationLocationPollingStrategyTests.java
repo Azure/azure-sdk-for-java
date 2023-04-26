@@ -229,7 +229,6 @@ public class OperationLocationPollingStrategyTests {
         String pollUrl = "http://localhost/operation";
         int[] pollCount = new int[] {0};
 
-        String actionResultName = "result1";
         String operationId = "operation1";
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {

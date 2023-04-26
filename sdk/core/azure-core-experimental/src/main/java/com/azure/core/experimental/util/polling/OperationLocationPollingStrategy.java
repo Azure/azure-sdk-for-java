@@ -84,7 +84,7 @@ public class OperationLocationPollingStrategy<T, U> extends OperationResourcePol
                 || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
                 // PUT has initial response body as resultType
                 // we expect Response<?> be either Response<BinaryData> or Response<U>
-                // if it is Response<T>, PollingUtils.serializeResponse would miss read-only properties
+                // if it is not Response<BinaryData>, PollingUtils.serializeResponse would miss read-only properties
                 pollResponseMono = PollingUtils.serializeResponse(response.getValue(), serializer)
                     .map(initialResponseBody -> {
                         pollingContext.setData(
