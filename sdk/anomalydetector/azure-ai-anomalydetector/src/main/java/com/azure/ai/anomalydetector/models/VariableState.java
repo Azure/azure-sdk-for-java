@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Variable Status. */
+/** Variable status. */
 @Fluent
 public final class VariableState {
     /*
@@ -24,19 +24,19 @@ public final class VariableState {
     private Double filledNARatio;
 
     /*
-     * Number of effective data points before applying fillNAMethod.
+     * Number of effective data points before fillNAMethod is applied.
      */
     @JsonProperty(value = "effectiveCount")
     private Integer effectiveCount;
 
     /*
-     * First valid timestamp with value of input data.
+     * First valid time stamp with a value of input data.
      */
     @JsonProperty(value = "firstTimestamp")
     private OffsetDateTime firstTimestamp;
 
     /*
-     * Last valid timestamp with value of input data.
+     * Last valid time stamp with a value of input data.
      */
     @JsonProperty(value = "lastTimestamp")
     private OffsetDateTime lastTimestamp;
@@ -85,7 +85,7 @@ public final class VariableState {
     }
 
     /**
-     * Get the effectiveCount property: Number of effective data points before applying fillNAMethod.
+     * Get the effectiveCount property: Number of effective data points before fillNAMethod is applied.
      *
      * @return the effectiveCount value.
      */
@@ -94,7 +94,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the effectiveCount property: Number of effective data points before applying fillNAMethod.
+     * Set the effectiveCount property: Number of effective data points before fillNAMethod is applied.
      *
      * @param effectiveCount the effectiveCount value to set.
      * @return the VariableState object itself.
@@ -105,7 +105,7 @@ public final class VariableState {
     }
 
     /**
-     * Get the firstTimestamp property: First valid timestamp with value of input data.
+     * Get the firstTimestamp property: First valid time stamp with a value of input data.
      *
      * @return the firstTimestamp value.
      */
@@ -114,7 +114,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the firstTimestamp property: First valid timestamp with value of input data.
+     * Set the firstTimestamp property: First valid time stamp with a value of input data.
      *
      * @param firstTimestamp the firstTimestamp value to set.
      * @return the VariableState object itself.
@@ -125,7 +125,7 @@ public final class VariableState {
     }
 
     /**
-     * Get the lastTimestamp property: Last valid timestamp with value of input data.
+     * Get the lastTimestamp property: Last valid time stamp with a value of input data.
      *
      * @return the lastTimestamp value.
      */
@@ -134,7 +134,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the lastTimestamp property: Last valid timestamp with value of input data.
+     * Set the lastTimestamp property: Last valid time stamp with a value of input data.
      *
      * @param lastTimestamp the lastTimestamp value to set.
      * @return the VariableState object itself.

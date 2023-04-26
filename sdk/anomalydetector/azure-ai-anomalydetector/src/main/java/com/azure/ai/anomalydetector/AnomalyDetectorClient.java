@@ -12,7 +12,6 @@ import com.azure.ai.anomalydetector.models.MultivariateLastDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
 import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
-import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
 import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -46,9 +45,9 @@ public final class AnomalyDetectorClient {
     /**
      * Detect anomalies for the entire series in batch.
      *
-     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
-     * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
-     * detection can give user an overall status of the time series.
+     * <p>This operation generates a model with an entire series. Each point is detected with the same model. With this
+     * method, points before and after a certain point are used to determine whether it's an anomaly. The entire
+     * detection can give the user an overall status of the time series.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -105,7 +104,7 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of entire anomaly detection along with {@link Response}.
+     * @return response of the entire anomaly detection along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -117,7 +116,7 @@ public final class AnomalyDetectorClient {
     /**
      * Detect anomaly status of the latest point in time series.
      *
-     * <p>This operation generates a model using the points that you sent into the API, and based on all data to
+     * <p>This operation generates a model by using the points that you sent in to the API and based on all data to
      * determine whether the last point is anomalous.
      *
      * <p><strong>Request Body Schema</strong>
@@ -162,7 +161,7 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of last anomaly detection along with {@link Response}.
+     * @return response of the last anomaly detection along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -174,7 +173,7 @@ public final class AnomalyDetectorClient {
     /**
      * Detect change point for the entire series
      *
-     * <p>Evaluate change point score of every series point.
+     * <p>Evaluate the change point score of every series point.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -214,7 +213,7 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of change point detection along with {@link Response}.
+     * @return response of change point detection along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -226,8 +225,8 @@ public final class AnomalyDetectorClient {
     /**
      * Get Multivariate Anomaly Detection Result
      *
-     * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
-     * BatchDetectAnomaly api.
+     * <p>For asynchronous inference, get a multivariate anomaly detection result based on the resultId value that the
+     * BatchDetectAnomaly API returns.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -291,7 +290,7 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the given resultId along with {@link Response}.
+     * @return detection results for the resultId value along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -304,10 +303,10 @@ public final class AnomalyDetectorClient {
      * Train a Multivariate Anomaly Detection Model
      *
      * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
-     * indicate an externally accessible Azure blob storage URI.There are two types of data input: An URI pointed to an
-     * Azure blob storage folder which contains multiple CSV files, and each CSV file contains two columns, timestamp
-     * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
-     * variables and a timestamp column.
+     * indicate an Azure Blob Storage URI that's accessible to the service. There are two types of data input. The Blob
+     * Storage URI can point to an Azure Blob Storage folder that contains multiple CSV files, where each CSV file has
+     * two columns, time stamp and variable. Or the Blob Storage URI can point to a single blob that contains a CSV file
+     * that has all the variables and a time stamp column.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -439,8 +438,8 @@ public final class AnomalyDetectorClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>Skip indicates how many models will be skipped.</td></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>Top indicates how many models will be fetched.</td></tr>
+     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -516,7 +515,7 @@ public final class AnomalyDetectorClient {
     /**
      * Delete Multivariate Model
      *
-     * <p>Delete an existing multivariate model according to the modelId.
+     * <p>Delete an existing multivariate model according to the modelId value.
      *
      * @param modelId Model identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -535,7 +534,8 @@ public final class AnomalyDetectorClient {
     /**
      * Get Multivariate Model
      *
-     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
+     * <p>Get detailed information about the multivariate model, including the training status and variables used in the
+     * model.
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -598,8 +598,8 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information of multivariate model, including the training status and variables used in the model
-     *     along with {@link Response}.
+     * @return detailed information about the multivariate model, including the training status and variables used in
+     *     the model along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -610,11 +610,11 @@ public final class AnomalyDetectorClient {
     /**
      * Detect Multivariate Anomaly
      *
-     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
-     * schema should be the same with the training request. The request will complete asynchronously and return a
-     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
-     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
-     * storage.
+     * <p>Submit a multivariate anomaly detection task with the modelId value of a trained model and inference data. The
+     * input schema should be the same with the training request. The request will finish asynchronously and return a
+     * resultId value to query the detection result. The request should be a source link to indicate an externally
+     * accessible Azure Storage URI that either points to an Azure Blob Storage folder or points to a CSV file in Azure
+     * Blob Storage.
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -690,7 +690,7 @@ public final class AnomalyDetectorClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the given resultId along with {@link Response}.
+     * @return detection results for the resultId value along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -702,8 +702,8 @@ public final class AnomalyDetectorClient {
     /**
      * Detect anomalies in the last point of the request body
      *
-     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, and the
-     * inference data should be put into request body in a JSON format. The request will complete synchronously and
+     * <p>Submit a multivariate anomaly detection task with the modelId value of a trained model and inference data. The
+     * inference data should be put into the request body in JSON format. The request will finish synchronously and
      * return the detection immediately in the response body.
      *
      * <p><strong>Request Body Schema</strong>
@@ -721,7 +721,7 @@ public final class AnomalyDetectorClient {
      *             ]
      *         }
      *     ]
-     *     topContributorCount: int (Required)
+     *     topContributorCount: Integer (Optional)
      * }
      * }</pre>
      *
@@ -769,13 +769,13 @@ public final class AnomalyDetectorClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param options Request of last detection.
+     * @param options Request of the last detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of last detection along with {@link Response}.
+     * @return results of the last detection along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -785,35 +785,9 @@ public final class AnomalyDetectorClient {
     }
 
     /**
-     * Detect anomalies for the entire series in batch.
-     *
-     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
-     * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
-     * detection can give user an overall status of the time series.
-     *
-     * @param options Method of univariate anomaly detection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnivariateEntireDetectionResult detectUnivariateEntireSeries(UnivariateDetectionOptions options) {
-        // Generated convenience method for detectUnivariateEntireSeriesWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return detectUnivariateEntireSeriesWithResponse(BinaryData.fromObject(options), requestOptions)
-                .getValue()
-                .toObject(UnivariateEntireDetectionResult.class);
-    }
-
-    /**
      * Detect anomaly status of the latest point in time series.
      *
-     * <p>This operation generates a model using the points that you sent into the API, and based on all data to
+     * <p>This operation generates a model by using the points that you sent in to the API and based on all data to
      * determine whether the last point is anomalous.
      *
      * @param options Method of univariate anomaly detection.
@@ -823,7 +797,7 @@ public final class AnomalyDetectorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection.
+     * @return response of the last anomaly detection.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -838,7 +812,7 @@ public final class AnomalyDetectorClient {
     /**
      * Detect change point for the entire series
      *
-     * <p>Evaluate change point score of every series point.
+     * <p>Evaluate the change point score of every series point.
      *
      * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -847,7 +821,7 @@ public final class AnomalyDetectorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection.
+     * @return response of change point detection.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -863,8 +837,8 @@ public final class AnomalyDetectorClient {
     /**
      * Get Multivariate Anomaly Detection Result
      *
-     * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
-     * BatchDetectAnomaly api.
+     * <p>For asynchronous inference, get a multivariate anomaly detection result based on the resultId value that the
+     * BatchDetectAnomaly API returns.
      *
      * @param resultId ID of a batch detection result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -873,7 +847,7 @@ public final class AnomalyDetectorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detection results for the given resultId.
+     * @return detection results for the resultId value.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -889,10 +863,10 @@ public final class AnomalyDetectorClient {
      * Train a Multivariate Anomaly Detection Model
      *
      * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
-     * indicate an externally accessible Azure blob storage URI.There are two types of data input: An URI pointed to an
-     * Azure blob storage folder which contains multiple CSV files, and each CSV file contains two columns, timestamp
-     * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
-     * variables and a timestamp column.
+     * indicate an Azure Blob Storage URI that's accessible to the service. There are two types of data input. The Blob
+     * Storage URI can point to an Azure Blob Storage folder that contains multiple CSV files, where each CSV file has
+     * two columns, time stamp and variable. Or the Blob Storage URI can point to a single blob that contains a CSV file
+     * that has all the variables and a time stamp column.
      *
      * @param modelInfo Model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -950,13 +924,14 @@ public final class AnomalyDetectorClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnomalyDetectionModel> listMultivariateModels() {
         // Generated convenience method for listMultivariateModels
+        RequestOptions requestOptions = new RequestOptions();
         return new PagedIterable<>(client.listMultivariateModels());
     }
 
     /**
      * Delete Multivariate Model
      *
-     * <p>Delete an existing multivariate model according to the modelId.
+     * <p>Delete an existing multivariate model according to the modelId value.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,7 +952,8 @@ public final class AnomalyDetectorClient {
     /**
      * Get Multivariate Model
      *
-     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
+     * <p>Get detailed information about the multivariate model, including the training status and variables used in the
+     * model.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,8 +962,8 @@ public final class AnomalyDetectorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the
-     *     model.
+     * @return detailed information about the multivariate model, including the training status and variables used in
+     *     the model.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1002,11 +978,11 @@ public final class AnomalyDetectorClient {
     /**
      * Detect Multivariate Anomaly
      *
-     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, the input
-     * schema should be the same with the training request. The request will complete asynchronously and return a
-     * resultId to query the detection result.The request should be a source link to indicate an externally accessible
-     * Azure storage Uri, either pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob
-     * storage.
+     * <p>Submit a multivariate anomaly detection task with the modelId value of a trained model and inference data. The
+     * input schema should be the same with the training request. The request will finish asynchronously and return a
+     * resultId value to query the detection result. The request should be a source link to indicate an externally
+     * accessible Azure Storage URI that either points to an Azure Blob Storage folder or points to a CSV file in Azure
+     * Blob Storage.
      *
      * @param modelId Model identifier.
      * @param options Request of multivariate anomaly detection.
@@ -1016,7 +992,7 @@ public final class AnomalyDetectorClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detection results for the given resultId.
+     * @return detection results for the resultId value.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1032,19 +1008,19 @@ public final class AnomalyDetectorClient {
     /**
      * Detect anomalies in the last point of the request body
      *
-     * <p>Submit multivariate anomaly detection task with the modelId of trained model and inference data, and the
-     * inference data should be put into request body in a JSON format. The request will complete synchronously and
+     * <p>Submit a multivariate anomaly detection task with the modelId value of a trained model and inference data. The
+     * inference data should be put into the request body in JSON format. The request will finish synchronously and
      * return the detection immediately in the response body.
      *
      * @param modelId Model identifier.
-     * @param options Request of last detection.
+     * @param options Request of the last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of last detection.
+     * @return results of the last detection.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

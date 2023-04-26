@@ -8,9 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * An optional field, indicating how missing values will be filled. One of Previous, Subsequent, Linear, Zero, Fixed.
- */
+/** Field that indicates how missing values will be filled. */
 public final class FillNAMethod extends ExpandableStringEnum<FillNAMethod> {
     /** Static value Previous for FillNAMethod. */
     public static final FillNAMethod PREVIOUS = fromString("Previous");

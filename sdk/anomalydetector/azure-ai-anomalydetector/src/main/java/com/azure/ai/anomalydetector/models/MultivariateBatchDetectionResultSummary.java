@@ -13,25 +13,25 @@ import java.util.List;
 @Immutable
 public final class MultivariateBatchDetectionResultSummary {
     /*
-     * Status of detection results. One of CREATED, RUNNING, READY, and FAILED.
+     * Status of detection results.
      */
     @JsonProperty(value = "status", required = true)
     private MultivariateBatchDetectionStatus status;
 
     /*
-     * Error message when detection is failed.
+     * Error message when detection fails.
      */
     @JsonProperty(value = "errors")
     private List<ErrorResponse> errors;
 
     /*
-     * Variable Status.
+     * Variable status.
      */
     @JsonProperty(value = "variableStates")
     private List<VariableState> variableStates;
 
     /*
-     * Detection request for batch inference. This is an asynchronous inference which
+     * Detection request for batch inference. This is an asynchronous inference that
      * will need another API to get detection results.
      */
     @JsonProperty(value = "setupInfo", required = true)
@@ -52,7 +52,7 @@ public final class MultivariateBatchDetectionResultSummary {
     }
 
     /**
-     * Get the status property: Status of detection results. One of CREATED, RUNNING, READY, and FAILED.
+     * Get the status property: Status of detection results.
      *
      * @return the status value.
      */
@@ -61,7 +61,7 @@ public final class MultivariateBatchDetectionResultSummary {
     }
 
     /**
-     * Get the errors property: Error message when detection is failed.
+     * Get the errors property: Error message when detection fails.
      *
      * @return the errors value.
      */
@@ -70,7 +70,7 @@ public final class MultivariateBatchDetectionResultSummary {
     }
 
     /**
-     * Get the variableStates property: Variable Status.
+     * Get the variableStates property: Variable status.
      *
      * @return the variableStates value.
      */
@@ -79,7 +79,7 @@ public final class MultivariateBatchDetectionResultSummary {
     }
 
     /**
-     * Get the setupInfo property: Detection request for batch inference. This is an asynchronous inference which will
+     * Get the setupInfo property: Detection request for batch inference. This is an asynchronous inference that will
      * need another API to get detection results.
      *
      * @return the setupInfo value.

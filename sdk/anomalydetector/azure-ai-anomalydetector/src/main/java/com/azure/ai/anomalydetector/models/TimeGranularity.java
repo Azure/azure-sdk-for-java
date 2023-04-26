@@ -4,69 +4,64 @@
 
 package com.azure.ai.anomalydetector.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for TimeGranularity. */
-public enum TimeGranularity {
-    /** Enum value yearly. */
-    YEARLY("yearly"),
+public final class TimeGranularity extends ExpandableStringEnum<TimeGranularity> {
+    /** Static value yearly for TimeGranularity. */
+    public static final TimeGranularity YEARLY = fromString("yearly");
 
-    /** Enum value monthly. */
-    MONTHLY("monthly"),
+    /** Static value monthly for TimeGranularity. */
+    public static final TimeGranularity MONTHLY = fromString("monthly");
 
-    /** Enum value weekly. */
-    WEEKLY("weekly"),
+    /** Static value weekly for TimeGranularity. */
+    public static final TimeGranularity WEEKLY = fromString("weekly");
 
-    /** Enum value daily. */
-    DAILY("daily"),
+    /** Static value daily for TimeGranularity. */
+    public static final TimeGranularity DAILY = fromString("daily");
 
-    /** Enum value hourly. */
-    HOURLY("hourly"),
+    /** Static value hourly for TimeGranularity. */
+    public static final TimeGranularity HOURLY = fromString("hourly");
 
-    /** Enum value minutely. */
-    PER_MINUTE("minutely"),
+    /** Static value minutely for TimeGranularity. */
+    public static final TimeGranularity PER_MINUTE = fromString("minutely");
 
-    /** Enum value secondly. */
-    PER_SECOND("secondly"),
+    /** Static value secondly for TimeGranularity. */
+    public static final TimeGranularity PER_SECOND = fromString("secondly");
 
-    /** Enum value microsecond. */
-    MICROSECOND("microsecond"),
+    /** Static value microsecond for TimeGranularity. */
+    public static final TimeGranularity MICROSECOND = fromString("microsecond");
 
-    /** Enum value none. */
-    NONE("none");
+    /** Static value none for TimeGranularity. */
+    public static final TimeGranularity NONE = fromString("none");
 
-    /** The actual serialized value for a TimeGranularity instance. */
-    private final String value;
+    /**
+     * Creates a new instance of TimeGranularity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TimeGranularity() {}
 
-    TimeGranularity(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a TimeGranularity from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding TimeGranularity.
+     */
+    @JsonCreator
+    public static TimeGranularity fromString(String name) {
+        return fromString(name, TimeGranularity.class);
     }
 
     /**
-     * Parses a serialized value to a TimeGranularity instance.
+     * Gets known TimeGranularity values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed TimeGranularity object, or null if unable to parse.
+     * @return known TimeGranularity values.
      */
-    @JsonCreator
-    public static TimeGranularity fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        TimeGranularity[] items = TimeGranularity.values();
-        for (TimeGranularity item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<TimeGranularity> values() {
+        return values(TimeGranularity.class);
     }
 }

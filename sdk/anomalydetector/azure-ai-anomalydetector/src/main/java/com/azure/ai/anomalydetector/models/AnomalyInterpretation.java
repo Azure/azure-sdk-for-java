@@ -7,7 +7,7 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Interpretation of the anomalous timestamp. */
+/** Interpretation of the anomalous time stamp. */
 @Immutable
 public final class AnomalyInterpretation {
     /*
@@ -17,14 +17,14 @@ public final class AnomalyInterpretation {
     private String variable;
 
     /*
-     * This score shows the percentage contributing to the anomalous timestamp. A
+     * This score shows the percentage that contributes to the anomalous time stamp. It's a
      * number between 0 and 1.
      */
     @JsonProperty(value = "contributionScore")
     private Double contributionScore;
 
     /*
-     * Correlation changes among the anomalous variables
+     * Correlation changes among the anomalous variables.
      */
     @JsonProperty(value = "correlationChanges")
     private CorrelationChanges correlationChanges;
@@ -42,8 +42,8 @@ public final class AnomalyInterpretation {
     }
 
     /**
-     * Get the contributionScore property: This score shows the percentage contributing to the anomalous timestamp. A
-     * number between 0 and 1.
+     * Get the contributionScore property: This score shows the percentage that contributes to the anomalous time stamp.
+     * It's a number between 0 and 1.
      *
      * @return the contributionScore value.
      */

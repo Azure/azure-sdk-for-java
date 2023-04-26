@@ -9,48 +9,47 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request of change point detection. */
+/** Request of change point detection. */
 @Fluent
 public final class UnivariateChangePointDetectionOptions {
     /*
-     * Time series data points. Points should be sorted by timestamp in ascending
+     * Time series data points. Points should be sorted by time stamp in ascending
      * order to match the change point detection result.
      */
     @JsonProperty(value = "series", required = true)
     private List<TimeSeriesPoint> series;
 
     /*
-     * Can only be one of yearly, monthly, weekly, daily, hourly, minutely or
-     * secondly. Granularity is used for verify whether input series is valid.
+     * Granularity is used to verify whether the input series is valid.
      */
     @JsonProperty(value = "granularity", required = true)
     private TimeGranularity granularity;
 
     /*
-     * Custom Interval is used to set non-standard time interval, for example, if the
-     * series is 5 minutes, request can be set as {"granularity":"minutely",
+     * A custom interval is used to set a nonstandard time interval. For example, if the
+     * series is 5 minutes, the request can be set as {"granularity":"minutely",
      * "customInterval":5}.
      */
     @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /*
-     * Optional argument, periodic value of a time series. If the value is null or
-     * does not present, the API will determine the period automatically.
+     * Argument that indicates the periodic value of a time series. If the value is null or
+     * not present, the API will determine the period automatically.
      */
     @JsonProperty(value = "period")
     private Integer period;
 
     /*
-     * Optional argument, advanced model parameter, a default stableTrendWindow will
+     * Argument that indicates an advanced model parameter. A default stableTrendWindow value will
      * be used in detection.
      */
     @JsonProperty(value = "stableTrendWindow")
     private Integer stableTrendWindow;
 
     /*
-     * Optional argument, advanced model parameter, between 0.0-1.0, the lower the
-     * value is, the larger the trend error will be which means less change point will
+     * Argument that indicates an advanced model parameter between 0.0 and 1.0. The lower the
+     * value is, the larger the trend error is, which means less change point will
      * be accepted.
      */
     @JsonProperty(value = "threshold")
@@ -71,7 +70,7 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to
+     * Get the series property: Time series data points. Points should be sorted by time stamp in ascending order to
      * match the change point detection result.
      *
      * @return the series value.
@@ -81,8 +80,7 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Get the granularity property: Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly.
-     * Granularity is used for verify whether input series is valid.
+     * Get the granularity property: Granularity is used to verify whether the input series is valid.
      *
      * @return the granularity value.
      */
@@ -91,8 +89,8 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Get the customInterval property: Custom Interval is used to set non-standard time interval, for example, if the
-     * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
+     * Get the customInterval property: A custom interval is used to set a nonstandard time interval. For example, if
+     * the series is 5 minutes, the request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @return the customInterval value.
      */
@@ -101,8 +99,8 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Set the customInterval property: Custom Interval is used to set non-standard time interval, for example, if the
-     * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
+     * Set the customInterval property: A custom interval is used to set a nonstandard time interval. For example, if
+     * the series is 5 minutes, the request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
      * @return the UnivariateChangePointDetectionOptions object itself.
@@ -113,7 +111,7 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Get the period property: Optional argument, periodic value of a time series. If the value is null or does not
+     * Get the period property: Argument that indicates the periodic value of a time series. If the value is null or not
      * present, the API will determine the period automatically.
      *
      * @return the period value.
@@ -123,7 +121,7 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Set the period property: Optional argument, periodic value of a time series. If the value is null or does not
+     * Set the period property: Argument that indicates the periodic value of a time series. If the value is null or not
      * present, the API will determine the period automatically.
      *
      * @param period the period value to set.
@@ -135,8 +133,8 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Get the stableTrendWindow property: Optional argument, advanced model parameter, a default stableTrendWindow will
-     * be used in detection.
+     * Get the stableTrendWindow property: Argument that indicates an advanced model parameter. A default
+     * stableTrendWindow value will be used in detection.
      *
      * @return the stableTrendWindow value.
      */
@@ -145,8 +143,8 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Set the stableTrendWindow property: Optional argument, advanced model parameter, a default stableTrendWindow will
-     * be used in detection.
+     * Set the stableTrendWindow property: Argument that indicates an advanced model parameter. A default
+     * stableTrendWindow value will be used in detection.
      *
      * @param stableTrendWindow the stableTrendWindow value to set.
      * @return the UnivariateChangePointDetectionOptions object itself.
@@ -157,8 +155,8 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Get the threshold property: Optional argument, advanced model parameter, between 0.0-1.0, the lower the value is,
-     * the larger the trend error will be which means less change point will be accepted.
+     * Get the threshold property: Argument that indicates an advanced model parameter between 0.0 and 1.0. The lower
+     * the value is, the larger the trend error is, which means less change point will be accepted.
      *
      * @return the threshold value.
      */
@@ -167,8 +165,8 @@ public final class UnivariateChangePointDetectionOptions {
     }
 
     /**
-     * Set the threshold property: Optional argument, advanced model parameter, between 0.0-1.0, the lower the value is,
-     * the larger the trend error will be which means less change point will be accepted.
+     * Set the threshold property: Argument that indicates an advanced model parameter between 0.0 and 1.0. The lower
+     * the value is, the larger the trend error is, which means less change point will be accepted.
      *
      * @param threshold the threshold value to set.
      * @return the UnivariateChangePointDetectionOptions object itself.
