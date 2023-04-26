@@ -7,9 +7,21 @@ import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
 
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -89,8 +101,82 @@ public class PollingUtilsTests {
 
         Resource convertOrigin = new Resource().setName("name").setStatus(status);
 
-        BinaryData jsonAsBinaryData = PollingUtils.serializeResponseSync(convertOrigin,
-            new DefaultJsonSerializer());
+        JsonSerializer customizedJsonSerializer = new JsonSerializer() {
+            private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonSerializer.class);
+
+            private final static SerializerAdapter JACKSON_ADAPTER = new JacksonAdapter((outerMapper, innerMapper) -> {
+                JacksonAnnotationIntrospector annotationIntrospector =
+                    new JacksonAnnotationIntrospector() {
+                        @Override
+                        public JsonProperty.Access findPropertyAccess(Annotated annotated) {
+                            JsonProperty.Access access = super.findPropertyAccess(annotated);
+                            if (access == JsonProperty.Access.WRITE_ONLY) {
+                                return JsonProperty.Access.AUTO;
+                            }
+                            return access;
+                        }
+                    };
+                outerMapper.setAnnotationIntrospector(annotationIntrospector);
+            });
+
+            @Override
+            public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+                try {
+                    return JACKSON_ADAPTER.deserialize(data, typeReference.getJavaType(), SerializerEncoding.JSON);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }
+
+            @Override
+            public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+                try {
+                    return JACKSON_ADAPTER.deserialize(stream, typeReference.getJavaType(), SerializerEncoding.JSON);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }
+
+            @Override
+            public <T> Mono<T> deserializeFromBytesAsync(byte[] data, TypeReference<T> typeReference) {
+                return Mono.fromCallable(() -> deserializeFromBytes(data, typeReference));
+            }
+
+            @Override
+            public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+                return Mono.fromCallable(() -> deserialize(stream, typeReference));
+            }
+
+            @Override
+            public byte[] serializeToBytes(Object value) {
+                try {
+                    return JACKSON_ADAPTER.serializeToBytes(value, SerializerEncoding.JSON);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }
+
+            @Override
+            public void serialize(OutputStream stream, Object value) {
+                try {
+                    JACKSON_ADAPTER.serialize(value, SerializerEncoding.JSON, stream);
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+                }
+            }
+
+            @Override
+            public Mono<byte[]> serializeToBytesAsync(Object value) {
+                return Mono.fromCallable(() -> serializeToBytes(value));
+            }
+
+            @Override
+            public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+                return Mono.fromRunnable(() -> serialize(stream, value));
+            }
+        };
+
+        BinaryData jsonAsBinaryData = PollingUtils.serializeResponseSync(convertOrigin, customizedJsonSerializer);
 
         assertTrue(jsonAsBinaryData.toString().contains(status));
     }
