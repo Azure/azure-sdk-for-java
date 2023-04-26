@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.ServiceVersion;
@@ -53,7 +54,6 @@ import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -68,8 +68,6 @@ import java.util.zip.CRC32;
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 public class BlobCryptographyTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENV = TestEnvironment.getInstance();
@@ -100,10 +98,15 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-encryption-key-sha256", ".*", "REDACTED", TestProxySanitizerType.HEADER)
+                new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER)
             ));
         }
+
+        // Ignore some portions of the request as they contain random data for cryptography.
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+            .setComparingBodies(false)
+            .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-meta-encryptiondata", "x-ms-encryption-key-sha256",
+                "x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since", "If-Unmodified-Since"))));
     }
 
     @Override
@@ -448,34 +451,27 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
      * RECORD testing modes only.
      */
     protected static EncryptedBlobAsyncClient mockAesKey(EncryptedBlobAsyncClient encryptedClient) {
-        if (ENV.getTestMode() == TestMode.PLAYBACK) {
-            SecretKey mockAesKey = new SecretKey() {
-                @Override
-                public String getAlgorithm() {
-                    return CryptographyConstants.AES;
-                }
+        return  (ENV.getTestMode() == TestMode.PLAYBACK)
+            ? new EncryptedBlobAsyncClientSpy(encryptedClient)
+            : encryptedClient;
+    }
 
-                @Override
-                public String getFormat() {
-                    return "RAW";
-                }
-
-                @Override
-                public byte[] getEncoded() {
-                    return MOCK_KEY;
-                }
-            };
-
-            try {
-                encryptedClient = spy(encryptedClient);
-                when(encryptedClient.generateSecretKey()).thenReturn(mockAesKey);
-            } catch (NoSuchAlgorithmException ex) {
-                throw new RuntimeException(ex);
-            }
+    static final SecretKey MOCK_AES_KEY = new SecretKey() {
+        @Override
+        public String getAlgorithm() {
+            return CryptographyConstants.AES;
         }
 
-        return encryptedClient;
-    }
+        @Override
+        public String getFormat() {
+            return "RAW";
+        }
+
+        @Override
+        public byte[] getEncoded() {
+            return MOCK_KEY;
+        }
+    };
 
     private static String getCrc32(String input) {
         CRC32 crc32 = new CRC32();

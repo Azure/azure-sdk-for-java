@@ -15,6 +15,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
@@ -117,7 +118,7 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
 
     private HttpPipeline getHttpPipeline(KeyServiceVersion serviceVersion) {
         Configuration global = Configuration.getGlobalConfiguration().clone();
-        TokenCredential credential = null;
+        TokenCredential credential;
 
         if (getTestMode() != TestMode.PLAYBACK) {
             credential = new ClientSecretCredentialBuilder()
@@ -125,6 +126,8 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
                 .clientId(global.get("AZURE_CLIENT_ID"))
                 .tenantId(global.get("AZURE_TENANT_ID"))
                 .build();
+        } else {
+            credential = new MockTokenCredential();
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -133,9 +136,7 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
         policies.add(new RetryPolicy(strategy));
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, "https://vault.azure.net/.default"));
-        }
+        policies.add(new BearerTokenAuthenticationPolicy(credential, "https://vault.azure.net/.default"));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         if (getTestMode() == TestMode.RECORD) {

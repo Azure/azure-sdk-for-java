@@ -1,107 +1,107 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions41b797133a5b1d194?restype=container",
+      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions60659951b179c4ec7?restype=container",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/xml",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
         "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 (17.0.5; Windows 11; 10.0)",
-        "x-ms-client-request-id": "e31212c6-f552-4048-a671-040e2a511f2b",
+        "x-ms-client-request-id": "cc42a194-c3fd-45ef-a011-d2bf7c8e7130",
         "x-ms-version": "2022-11-02"
       },
       "RequestBody": null,
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Date": "Tue, 25 Apr 2023 21:24:30 GMT",
-        "ETag": "\u00220x8DB45D3758B2BC5\u0022",
-        "Last-Modified": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
+        "ETag": "\u00220x8DB466E32D6A8AE\u0022",
+        "Last-Modified": "Wed, 26 Apr 2023 15:52:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-client-request-id": "e31212c6-f552-4048-a671-040e2a511f2b",
-        "x-ms-request-id": "dc9a1db3-a01e-0000-3cbc-77ae33000000",
+        "x-ms-client-request-id": "cc42a194-c3fd-45ef-a011-d2bf7c8e7130",
+        "x-ms-request-id": "ee768e00-b01e-0033-1e57-78f198000000",
         "x-ms-version": "2022-11-02"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions41b797133a5b1d194/c88de8853downloadfileexistopenoptions41b166746c5cbd992",
+      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions60659951b179c4ec7/c88de8853downloadfileexistopenoptions60681393bfa564d94",
       "RequestMethod": "HEAD",
       "RequestHeaders": {
         "Accept": "application/xml",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
         "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 azsdk-java-azure-storage-blob-cryptography/12.22.0-beta.1 (17.0.5; Windows 11; 10.0)",
-        "x-ms-client-request-id": "a38caf1d-3392-4a37-94da-f13556d14b04",
+        "x-ms-client-request-id": "1b1c24fa-a7c8-4d40-a487-9dc60da2018a",
         "x-ms-version": "2022-11-02"
       },
       "RequestBody": null,
       "StatusCode": 404,
       "ResponseHeaders": {
-        "Date": "Tue, 25 Apr 2023 21:24:30 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "a38caf1d-3392-4a37-94da-f13556d14b04",
+        "x-ms-client-request-id": "1b1c24fa-a7c8-4d40-a487-9dc60da2018a",
         "x-ms-error-code": "BlobNotFound",
-        "x-ms-request-id": "dc9a1dbe-a01e-0000-44bc-77ae33000000",
+        "x-ms-request-id": "cdc197b7-e01e-004c-6e57-783e03000000",
         "x-ms-version": "2022-11-02"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions41b797133a5b1d194/c88de8853downloadfileexistopenoptions41b166746c5cbd992",
+      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions60659951b179c4ec7/c88de8853downloadfileexistopenoptions60681393bfa564d94",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/xml",
         "Authorization": "Sanitized",
         "Content-Length": "16",
         "Content-Type": "application/octet-stream",
-        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
         "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 azsdk-java-azure-storage-blob-cryptography/12.22.0-beta.1 (17.0.5; Windows 11; 10.0)",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-client-request-id": "f7a33cf1-bbbe-4fb1-ac33-a472eb16bf48",
-        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022keyId\u0022,\u0022EncryptedKey\u0022:\u0022/CJpq6JTX97Du4GKTQQsl5Mc6kd156e1wKoP4PjTx9Y=\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u00222F5PWUdxJMqaRQRe2Ifdeg==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
+        "x-ms-client-request-id": "3b15af9a-f11a-4dde-adb7-46eab835bde6",
+        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022keyId\u0022,\u0022EncryptedKey\u0022:\u0022kHhOJW6lk9fZoMAwm7boh/0iSuXDMO4lZMTQIxSLalU=\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u0022Qh4rtoTtlApGBlUSUmMo9A==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
         "x-ms-version": "2022-11-02"
       },
-      "RequestBody": "pWOBhqac3t1Sk3LA\u002BAx6Ww==",
+      "RequestBody": "b5fmmG4zo3Rf2PROVFayiQ==",
       "StatusCode": 201,
       "ResponseHeaders": {
         "Content-Length": "0",
-        "Content-MD5": "jm8tk9ZGdO8NtsXtkcRcBw==",
-        "Date": "Tue, 25 Apr 2023 21:24:30 GMT",
-        "ETag": "\u00220x8DB45D37596838C\u0022",
-        "Last-Modified": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Content-MD5": "Klwf3i2ETpxmkFNX0rNpvg==",
+        "Date": "Wed, 26 Apr 2023 15:52:10 GMT",
+        "ETag": "\u00220x8DB466E32DDDB49\u0022",
+        "Last-Modified": "Wed, 26 Apr 2023 15:52:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-client-request-id": "f7a33cf1-bbbe-4fb1-ac33-a472eb16bf48",
-        "x-ms-content-crc64": "V\u002BYXZadTncM=",
-        "x-ms-request-id": "d9727ebd-501e-0004-7cbc-772334000000",
+        "x-ms-client-request-id": "3b15af9a-f11a-4dde-adb7-46eab835bde6",
+        "x-ms-content-crc64": "yQ5gNneSb\u002Bw=",
+        "x-ms-request-id": "96789088-e01e-003e-7d57-78394c000000",
         "x-ms-request-server-encrypted": "true",
         "x-ms-version": "2022-11-02"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions41b797133a5b1d194/c88de8853downloadfileexistopenoptions41b166746c5cbd992",
+      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions60659951b179c4ec7/c88de8853downloadfileexistopenoptions60681393bfa564d94",
       "RequestMethod": "HEAD",
       "RequestHeaders": {
         "Accept": "application/xml",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
         "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 azsdk-java-azure-storage-blob-cryptography/12.22.0-beta.1 (17.0.5; Windows 11; 10.0)",
-        "x-ms-client-request-id": "ae2bfd5e-a7cf-48b1-9c49-7b6da54ac6ec",
+        "x-ms-client-request-id": "2dbe1775-2f9c-45c8-b148-d03eeb1f5447",
         "x-ms-version": "2022-11-02"
       },
       "RequestBody": null,
@@ -109,11 +109,11 @@
       "ResponseHeaders": {
         "Accept-Ranges": "bytes",
         "Content-Length": "16",
-        "Content-MD5": "jm8tk9ZGdO8NtsXtkcRcBw==",
+        "Content-MD5": "Klwf3i2ETpxmkFNX0rNpvg==",
         "Content-Type": "application/octet-stream",
-        "Date": "Tue, 25 Apr 2023 21:24:31 GMT",
-        "ETag": "\u00220x8DB45D37596838C\u0022",
-        "Last-Modified": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:10 GMT",
+        "ETag": "\u00220x8DB466E32DDDB49\u0022",
+        "Last-Modified": "Wed, 26 Apr 2023 15:52:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
@@ -121,28 +121,28 @@
         "x-ms-access-tier": "Hot",
         "x-ms-access-tier-inferred": "true",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-client-request-id": "ae2bfd5e-a7cf-48b1-9c49-7b6da54ac6ec",
-        "x-ms-creation-time": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "x-ms-client-request-id": "2dbe1775-2f9c-45c8-b148-d03eeb1f5447",
+        "x-ms-creation-time": "Wed, 26 Apr 2023 15:52:11 GMT",
         "x-ms-lease-state": "available",
         "x-ms-lease-status": "unlocked",
-        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022keyId\u0022,\u0022EncryptedKey\u0022:\u0022/CJpq6JTX97Du4GKTQQsl5Mc6kd156e1wKoP4PjTx9Y=\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u00222F5PWUdxJMqaRQRe2Ifdeg==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
-        "x-ms-request-id": "5e444f47-401e-0008-5cbc-77b43c000000",
+        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022keyId\u0022,\u0022EncryptedKey\u0022:\u0022kHhOJW6lk9fZoMAwm7boh/0iSuXDMO4lZMTQIxSLalU=\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u0022Qh4rtoTtlApGBlUSUmMo9A==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
+        "x-ms-request-id": "9177090d-701e-0013-5957-788a3f000000",
         "x-ms-server-encrypted": "true",
         "x-ms-version": "2022-11-02"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions41b797133a5b1d194/c88de8853downloadfileexistopenoptions41b166746c5cbd992",
+      "RequestUri": "https://REDACTED/c88de8850downloadfileexistopenoptions60659951b179c4ec7/c88de8853downloadfileexistopenoptions60681393bfa564d94",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/xml",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Tue, 25 Apr 2023 21:24:32 GMT",
-        "If-Match": "0x8DB45D37596838C",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
+        "If-Match": "0x8DB466E32DDDB49",
         "User-Agent": "azsdk-java-azure-storage-blob/12.23.0-beta.1 azsdk-java-azure-storage-blob-cryptography/12.22.0-beta.1 (17.0.5; Windows 11; 10.0)",
-        "x-ms-client-request-id": "105ebef4-0599-4e35-b6c4-1f826d8a1c16",
+        "x-ms-client-request-id": "bbec3777-e2cc-4343-9f0e-0cc0fb2ba6e4",
         "x-ms-range": "bytes=0-4194319",
         "x-ms-version": "2022-11-02"
       },
@@ -153,31 +153,31 @@
         "Content-Length": "16",
         "Content-Range": "bytes 0-15/16",
         "Content-Type": "application/octet-stream",
-        "Date": "Tue, 25 Apr 2023 21:24:30 GMT",
-        "ETag": "\u00220x8DB45D37596838C\u0022",
-        "Last-Modified": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "Date": "Wed, 26 Apr 2023 15:52:11 GMT",
+        "ETag": "\u00220x8DB466E32DDDB49\u0022",
+        "Last-Modified": "Wed, 26 Apr 2023 15:52:11 GMT",
         "Server": [
           "Windows-Azure-Blob/1.0",
           "Microsoft-HTTPAPI/2.0"
         ],
-        "x-ms-blob-content-md5": "jm8tk9ZGdO8NtsXtkcRcBw==",
+        "x-ms-blob-content-md5": "Klwf3i2ETpxmkFNX0rNpvg==",
         "x-ms-blob-type": "BlockBlob",
-        "x-ms-client-request-id": "105ebef4-0599-4e35-b6c4-1f826d8a1c16",
-        "x-ms-creation-time": "Tue, 25 Apr 2023 21:24:31 GMT",
+        "x-ms-client-request-id": "bbec3777-e2cc-4343-9f0e-0cc0fb2ba6e4",
+        "x-ms-creation-time": "Wed, 26 Apr 2023 15:52:11 GMT",
         "x-ms-lease-state": "available",
         "x-ms-lease-status": "unlocked",
-        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022keyId\u0022,\u0022EncryptedKey\u0022:\u0022/CJpq6JTX97Du4GKTQQsl5Mc6kd156e1wKoP4PjTx9Y=\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u00222F5PWUdxJMqaRQRe2Ifdeg==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
-        "x-ms-request-id": "dd3dd5be-001e-0026-53bc-77e62b000000",
+        "x-ms-meta-encryptiondata": "{\u0022EncryptionMode\u0022:\u0022FullBlob\u0022,\u0022WrappedContentKey\u0022:{\u0022KeyId\u0022:\u0022keyId\u0022,\u0022EncryptedKey\u0022:\u0022kHhOJW6lk9fZoMAwm7boh/0iSuXDMO4lZMTQIxSLalU=\u0022,\u0022Algorithm\u0022:\u0022RSA-OAEP-256\u0022},\u0022EncryptionAgent\u0022:{\u0022Protocol\u0022:\u00221.0\u0022,\u0022EncryptionAlgorithm\u0022:\u0022AES_CBC_256\u0022},\u0022ContentEncryptionIV\u0022:\u0022Qh4rtoTtlApGBlUSUmMo9A==\u0022,\u0022KeyWrappingMetadata\u0022:{\u0022EncryptionLibrary\u0022:\u0022JavaTrack212.23.0-beta.1\u0022}}",
+        "x-ms-request-id": "441cca62-c01e-0080-3957-785135000000",
         "x-ms-server-encrypted": "true",
         "x-ms-version": "2022-11-02"
       },
-      "ResponseBody": "pWOBhqac3t1Sk3LA\u002BAx6Ww=="
+      "ResponseBody": "b5fmmG4zo3Rf2PROVFayiQ=="
     }
   ],
   "Variables": {
-    "0": "c88de8850downloadfileexistopenoptions41b797133a5b1d194",
-    "1": "c88de8851downloadfileexistopenoptions41b465120a3a3ad72",
-    "2": "c88de8852downloadfileexistopenoptions41b22973a0ec329c2",
-    "3": "c88de8853downloadfileexistopenoptions41b166746c5cbd992"
+    "0": "c88de8850downloadfileexistopenoptions60659951b179c4ec7",
+    "1": "c88de8851downloadfileexistopenoptions60659702bf60dbe51",
+    "2": "c88de8852downloadfileexistopenoptions60637380636762807",
+    "3": "c88de8853downloadfileexistopenoptions60681393bfa564d94"
   }
 }

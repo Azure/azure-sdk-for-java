@@ -177,7 +177,9 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
 
     @Test
     public void conflictingEncryptionInfo() {
-        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder().blobAsyncClient(beac)
+        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder()
+            .blobAsyncClient(beac)
+            .blobName("blob")
             .key(fakeKey, "keywrapalgorithm").buildEncryptedBlobAsyncClient());
     }
 

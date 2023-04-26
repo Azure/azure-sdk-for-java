@@ -112,6 +112,22 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         return encryptionScope;
     }
 
+    AsyncKeyEncryptionKey getKeyWrapper() {
+        return keyWrapper;
+    }
+
+    String getKeyWrapAlgorithm() {
+        return keyWrapAlgorithm;
+    }
+
+    EncryptionVersion getEncryptionVersion() {
+        return encryptionVersion;
+    }
+
+    boolean isRequiresEncryption() {
+        return requiresEncryption;
+    }
+
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
      *
