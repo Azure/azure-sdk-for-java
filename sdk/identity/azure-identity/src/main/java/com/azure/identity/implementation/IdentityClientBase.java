@@ -572,13 +572,13 @@ public abstract class IdentityClientBase {
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
-                    if (redactedOutput.contains("azd login") || redactedOutput.contains("not logged in")) {
+                    if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         throw LoggingUtil.logCredentialUnavailableException(
                                 LOGGER,
                                 options,
                                 new CredentialUnavailableException(
                                         "AzureDeveloperCliCredential authentication unavailable."
-                                        + " Please run 'azd login' to set up account."));
+                                        + " Please run 'azd auth login' to set up account."));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {

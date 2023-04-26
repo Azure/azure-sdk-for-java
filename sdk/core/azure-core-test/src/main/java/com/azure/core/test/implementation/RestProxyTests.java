@@ -1845,7 +1845,7 @@ public abstract class RestProxyTests {
     }
 
     @Host("http://localhost")
-    @ServiceInterface(name = "FluxUploadService")
+    @ServiceInterface(name = "BinaryDataUploadService")
     interface BinaryDataUploadService {
         @Put("/put")
         Response<HttpBinJSON> put(@BodyParam("text/plain") BinaryData content,

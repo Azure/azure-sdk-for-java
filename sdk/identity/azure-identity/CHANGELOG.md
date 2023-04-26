@@ -12,6 +12,7 @@
 
 #### Dependency Updates
 - Upgraded `msal4j` from `1.13.7` to version `1.13.8`.
+- Upgraded `msal4j-persistence-extension` from `1.1.0` to `1.2.0`
 
 
 ## 1.9.0-beta.3 (2023-04-13)
