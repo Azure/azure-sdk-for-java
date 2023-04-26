@@ -6,20 +6,19 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.ElasticCloudUser;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticCloudUserTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticCloudUser model =
             BinaryData
                 .fromString(
-                    "{\"emailAddress\":\"qktapspwgcuert\",\"id\":\"kdosvqw\",\"elasticCloudSsoDefaultUrl\":\"mdgbbjfdd\"}")
+                    "{\"emailAddress\":\"jaeq\",\"id\":\"qjbasvms\",\"elasticCloudSsoDefaultUrl\":\"qulngsntnbybkzgc\"}")
                 .toObject(ElasticCloudUser.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticCloudUser model = new ElasticCloudUser();
         model = BinaryData.fromObject(model).toObject(ElasticCloudUser.class);
     }

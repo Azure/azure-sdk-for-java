@@ -5,8 +5,8 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
@@ -55,11 +55,16 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // create caller and receiver
             CommunicationUserIdentifier caller = identityAsyncClient.createUser().block();
             CommunicationIdentifier receiver = identityAsyncClient.createUser().block();
-            
-            CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+
+            CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
                     .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
                     .sourceIdentity(caller)
                     .buildAsyncClient();
+
+            // Create call automation client for receivers.
+            CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders("playMediaInACallAutomatedTest", next))
+                .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);
 
@@ -67,7 +72,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -82,7 +87,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // answer the call
             AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());

@@ -257,7 +257,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
-                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                     return Mono.just(new LoggingHttpResponse(response, logBuilder, logger,
@@ -286,7 +286,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void logContentLength(HttpResponse response, LoggingEventBuilder logBuilder) {
-            String contentLengthString = response.getHeaderValue("Content-Length");
+            String contentLengthString = response.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
                 logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
@@ -309,7 +309,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
-                String contentTypeHeader = response.getHeaderValue("Content-Type");
+                String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
                     return new LoggingHttpResponse(response, logBuilder, logger,
@@ -339,7 +339,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
         UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
-        ImplUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+        CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
             if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
                 urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
             } else {
@@ -502,8 +502,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
             return actualResponse.getHeaderValue(name);
+        }
+
+        @Override
+        public String getHeaderValue(HttpHeaderName headerName) {
+            return actualResponse.getHeaderValue(headerName);
         }
 
         @Override

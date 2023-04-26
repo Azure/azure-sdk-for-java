@@ -13,23 +13,27 @@ import com.azure.resourcemanager.quota.fluent.models.OperationResponseInner;
 /** An instance of this class provides access to all the operations defined in QuotaOperationsClient. */
 public interface QuotaOperationsClient {
     /**
-     * List all the operations supported by the Microsoft.Quota resource provider.
+     * GET quota operations.
+     *
+     * <p>List all the operations supported by the Microsoft.Quota resource provider.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationResponseInner> list();
 
     /**
-     * List all the operations supported by the Microsoft.Quota resource provider.
+     * GET quota operations.
+     *
+     * <p>List all the operations supported by the Microsoft.Quota resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationResponseInner> list(Context context);

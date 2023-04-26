@@ -241,7 +241,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException {
+    public void canUploadHugeBlobInChunks(HttpClient httpClient) throws IOException, InterruptedException {
         assumeTrue(super.getTestMode() == TestMode.LIVE);
 
         client = getContentClient("oci-artifact", httpClient);

@@ -64,62 +64,22 @@ public final class AdaptiveNetworkHardeningsEnforceMockTests {
         manager
             .adaptiveNetworkHardenings()
             .enforce(
-                "mgm",
-                "dorgmynltw",
-                "p",
-                "tmfoeajogsyxwet",
-                "mfd",
+                "qs",
+                "eiihfymko",
+                "ihyeseu",
+                "gcigzh",
+                "gsmgb",
                 new AdaptiveNetworkHardeningEnforceRequest()
                     .withRules(
                         Arrays
                             .asList(
                                 new Rule()
-                                    .withName("lkpzwbhnrecchd")
+                                    .withName("dwrqbeb")
                                     .withDirection(Direction.OUTBOUND)
-                                    .withDestinationPort(1565024992)
-                                    .withProtocols(
-                                        Arrays
-                                            .asList(
-                                                TransportProtocol.UDP,
-                                                TransportProtocol.UDP,
-                                                TransportProtocol.TCP,
-                                                TransportProtocol.TCP))
-                                    .withIpAddresses(Arrays.asList("biuc", "khhwmj", "jbweunxcqr", "ihufoihp")),
-                                new Rule()
-                                    .withName("ybxvgn")
-                                    .withDirection(Direction.INBOUND)
-                                    .withDestinationPort(588866023)
-                                    .withProtocols(
-                                        Arrays
-                                            .asList(
-                                                TransportProtocol.TCP,
-                                                TransportProtocol.UDP,
-                                                TransportProtocol.TCP,
-                                                TransportProtocol.TCP))
-                                    .withIpAddresses(Arrays.asList("uzvkunhdimjuk", "irzkaugpucdo", "fq", "lwgofm")),
-                                new Rule()
-                                    .withName("wrjlvzkl")
-                                    .withDirection(Direction.OUTBOUND)
-                                    .withDestinationPort(679903472)
-                                    .withProtocols(
-                                        Arrays
-                                            .asList(
-                                                TransportProtocol.TCP, TransportProtocol.TCP, TransportProtocol.UDP))
-                                    .withIpAddresses(
-                                        Arrays.asList("vlbishjvpzapt", "oskaoizji", "wfgcdiykkcxwn", "jvqynvavitmdm")),
-                                new Rule()
-                                    .withName("ohhihraxqud")
-                                    .withDirection(Direction.INBOUND)
-                                    .withDestinationPort(1198903362)
-                                    .withProtocols(
-                                        Arrays
-                                            .asList(
-                                                TransportProtocol.UDP,
-                                                TransportProtocol.UDP,
-                                                TransportProtocol.UDP,
-                                                TransportProtocol.TCP))
-                                    .withIpAddresses(Arrays.asList("vzadbwenn"))))
-                    .withNetworkSecurityGroups(Arrays.asList("afhxrzfrmvztiuc", "viqlluk", "krcqx")),
+                                    .withDestinationPort(2023900183)
+                                    .withProtocols(Arrays.asList(TransportProtocol.TCP))
+                                    .withIpAddresses(Arrays.asList("vkbiw", "nhtfgfi", "udy"))))
+                    .withNetworkSecurityGroups(Arrays.asList("zpacz", "uhbcak")),
                 com.azure.core.util.Context.NONE);
     }
 }

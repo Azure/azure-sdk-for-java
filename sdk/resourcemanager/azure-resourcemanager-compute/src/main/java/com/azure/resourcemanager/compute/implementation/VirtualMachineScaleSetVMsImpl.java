@@ -97,7 +97,7 @@ class VirtualMachineScaleSetVMsImpl
     @Override
     public Mono<Void> deallocateInstancesAsync(Collection<String> instanceIds) {
         return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().deallocateAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            this.scaleSet.resourceGroupName(), this.scaleSet.name(), null,
             new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 

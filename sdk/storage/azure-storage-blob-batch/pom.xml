@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.18.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
+  <version>12.19.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-batch;current} -->
 
   <name>Microsoft Azure client library for Blob Storage batching</name>
   <description>This module contains client library for Microsoft Azure Blob Storage batching.</description>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.22.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
@@ -100,7 +100,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.21.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
@@ -108,13 +108,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -150,7 +150,7 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>2.3-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
+      <version>2.4-M1-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

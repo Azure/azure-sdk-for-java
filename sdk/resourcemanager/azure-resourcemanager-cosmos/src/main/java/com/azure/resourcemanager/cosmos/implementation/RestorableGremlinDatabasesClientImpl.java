@@ -60,8 +60,7 @@ public final class RestorableGremlinDatabasesClientImpl implements RestorableGre
     public interface RestorableGremlinDatabasesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
-                + "/restorableDatabaseAccounts/{instanceId}/restorableGremlinDatabases")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGremlinDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableGremlinDatabasesListResult>> list(

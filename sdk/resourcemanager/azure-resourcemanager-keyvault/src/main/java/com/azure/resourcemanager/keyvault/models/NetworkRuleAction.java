@@ -20,6 +20,15 @@ public final class NetworkRuleAction extends ExpandableStringEnum<NetworkRuleAct
     public static final NetworkRuleAction DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of NetworkRuleAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkRuleAction() {
+    }
+
+    /**
      * Creates or finds a NetworkRuleAction from its string representation.
      *
      * @param name a name to look for.

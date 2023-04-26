@@ -33,7 +33,7 @@ public final class SecurityConnectorsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"fhsdpzouhkt\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-17T06:20:43Z\",\"environmentName\":\"Github\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"xrdfddtu\",\"tags\":{\"yf\":\"gtavczcxdfwea\"},\"id\":\"lxrljphraspifl\",\"name\":\"imixlmdbgice\",\"type\":\"fgsmdrjuqb\"}]}";
+            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"pgarpfctw\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-18T04:03Z\",\"environmentName\":\"GCP\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"qyvzesipiysnjq\",\"tags\":{\"ewkaupwhl\":\"aadcndazabundt\",\"sirxxhyr\":\"yckremgjlmsvdo\"},\"id\":\"qakofajf\",\"name\":\"epr\",\"type\":\"vmkinwtey\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class SecurityConnectorsListMockTests {
 
         PagedIterable<SecurityConnector> response = manager.securityConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xrdfddtu", response.iterator().next().location());
-        Assertions.assertEquals("gtavczcxdfwea", response.iterator().next().tags().get("yf"));
-        Assertions.assertEquals("fhsdpzouhkt", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
+        Assertions.assertEquals("qyvzesipiysnjq", response.iterator().next().location());
+        Assertions.assertEquals("aadcndazabundt", response.iterator().next().tags().get("ewkaupwhl"));
+        Assertions.assertEquals("pgarpfctw", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GCP, response.iterator().next().environmentName());
     }
 }

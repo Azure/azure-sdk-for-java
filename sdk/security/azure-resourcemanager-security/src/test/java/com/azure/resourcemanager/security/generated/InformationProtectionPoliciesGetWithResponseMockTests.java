@@ -31,7 +31,7 @@ public final class InformationProtectionPoliciesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"lastModifiedUtc\":\"2021-05-02T16:14:50Z\",\"version\":\"cpihtd\",\"labels\":{},\"informationTypes\":{}},\"id\":\"kpty\",\"name\":\"aydb\",\"type\":\"zcqymlcfn\"}";
+            "{\"properties\":{\"lastModifiedUtc\":\"2021-04-24T13:47:51Z\",\"version\":\"xnxmlbmuoswkj\",\"labels\":{},\"informationTypes\":{}},\"id\":\"cy\",\"name\":\"yzlwhbwzjnufzrf\",\"type\":\"m\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,7 @@ public final class InformationProtectionPoliciesGetWithResponseMockTests {
         InformationProtectionPolicy response =
             manager
                 .informationProtectionPolicies()
-                .getWithResponse(
-                    "lugdybnhrxlelf", InformationProtectionPolicyName.EFFECTIVE, com.azure.core.util.Context.NONE)
+                .getWithResponse("rf", InformationProtectionPolicyName.CUSTOM, com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

@@ -31,7 +31,7 @@ public final class InformationProtectionPoliciesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"lastModifiedUtc\":\"2021-02-19T23:14:25Z\",\"version\":\"auolawiu\",\"labels\":{},\"informationTypes\":{}},\"id\":\"gvvjhvvlr\",\"name\":\"ohewjj\",\"type\":\"ajnkdflqionswae\"}]}";
+            "{\"value\":[{\"properties\":{\"lastModifiedUtc\":\"2021-01-14T00:19:35Z\",\"version\":\"dzuubjtvgjsxm\",\"labels\":{},\"informationTypes\":{}},\"id\":\"avdpwwobtdphtits\",\"name\":\"fofwan\",\"type\":\"hks\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class InformationProtectionPoliciesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<InformationProtectionPolicy> response =
-            manager.informationProtectionPolicies().list("hmhsurlgwqkpm", com.azure.core.util.Context.NONE);
+            manager.informationProtectionPolicies().list("qgnnbz", com.azure.core.util.Context.NONE);
     }
 }

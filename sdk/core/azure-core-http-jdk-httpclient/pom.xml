@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-jdk-httpclient</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
 
   <name>Microsoft Azure JDK HTTP Client Library</name>
   <description>This package contains the Azure HTTP client library using the JDK HttpClient API.</description>
@@ -131,7 +131,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.11.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -148,7 +148,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <configuration>
               <skip>true</skip>
             </configuration>

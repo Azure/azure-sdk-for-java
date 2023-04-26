@@ -1,64 +1,358 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "baafae60-3234-454a-99cd-348161b58c4d",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "318",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:30:54 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f2932b8f-503f-4fc9-8cc0-4bfa44e55457"
+      },
+      "RequestBody": {
+        "displayName": "Test1",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "1",
+              "text": "Microsoft employee with ssn 859-98-0987 is using our awesome API\u0027s."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "EntityRecognition",
+            "parameters": {
+              "loggingOptOut": false,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "apim-request-id": "fdaaf893-beb4-49d2-90df-dd43b72705ac",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:30:53 GMT",
+        "operation-location": "https://REDACTED/language/analyze-text/jobs/7b0c9f7d-86c4-45e8-b191-575dddb12a3c?api-version=2022-10-01-preview",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "343",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-envoy-upstream-service-time" : "353",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "operation-location" : "https://language-dogfood.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/4725ce8b-04c0-4d6f-ac48-11558899b888?api-version=2022-10-01-preview",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "346ae1bc-d47f-4fbc-a6b6-09e4f7a144b3",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "Date" : "Tue, 11 Oct 2022 19:56:11 GMT"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/7b0c9f7d-86c4-45e8-b191-575dddb12a3c?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:30:54 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "886b6524-06aa-4834-9144-f6c6d90a69f0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "7cdf39fb-2c9d-46db-9009-2c285baba842",
+        "Content-Length": "305",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:30:53 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "11",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "7b0c9f7d-86c4-45e8-b191-575dddb12a3c",
+        "lastUpdatedDateTime": "2023-04-05T18:30:54Z",
+        "createdDateTime": "2023-04-05T18:30:53Z",
+        "expirationDateTime": "2023-04-06T18:30:53Z",
+        "status": "notStarted",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 0,
+          "failed": 0,
+          "inProgress": 1,
+          "total": 1,
+          "items": []
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/4725ce8b-04c0-4d6f-ac48-11558899b888?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "31214540-dba6-4116-a73e-384b533cba22"
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/7b0c9f7d-86c4-45e8-b191-575dddb12a3c?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:31:24 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b751f7e0-67d2-4f48-b9a9-e52e2c3cd096"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "e8dd03af-d3ea-436b-acf3-831050f2172b",
+        "Content-Length": "1437",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:31:24 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "63",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "7b0c9f7d-86c4-45e8-b191-575dddb12a3c",
+        "lastUpdatedDateTime": "2023-04-05T18:30:56Z",
+        "createdDateTime": "2023-04-05T18:30:53Z",
+        "expirationDateTime": "2023-04-06T18:30:53Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "EntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:30:56.4699945Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "trip",
+                        "category": "Event",
+                        "offset": 18,
+                        "length": 4,
+                        "confidenceScore": 0.74
+                      },
+                      {
+                        "text": "Seattle",
+                        "category": "Location",
+                        "subcategory": "GPE",
+                        "offset": 26,
+                        "length": 7,
+                        "confidenceScore": 1.0
+                      },
+                      {
+                        "text": "last week",
+                        "category": "DateTime",
+                        "subcategory": "DateRange",
+                        "offset": 34,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.98
+                      },
+                      {
+                        "text": "employee",
+                        "category": "PersonType",
+                        "offset": 10,
+                        "length": 8,
+                        "confidenceScore": 0.96
+                      },
+                      {
+                        "text": "859",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 28,
+                        "length": 3,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "98",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 32,
+                        "length": 2,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "0987",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 35,
+                        "length": 4,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "API\u0027s",
+                        "category": "Skill",
+                        "offset": 61,
+                        "length": 5,
+                        "confidenceScore": 0.71
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            }
+          ]
+        }
+      }
     },
-    "Response" : {
-      "content-length" : "1436",
-      "x-envoy-upstream-service-time" : "43",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e0a59bb6-1478-482f-8bb6-81cedbce2c61",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"4725ce8b-04c0-4d6f-ac48-11558899b888\",\"lastUpdateDateTime\":\"2022-10-11T19:56:15Z\",\"createdDateTime\":\"2022-10-11T19:56:11Z\",\"expirationDateTime\":\"2022-10-12T19:56:11Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:56:15.0751066Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.98},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.96},{\"text\":\"859\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":28,\"length\":3,\"confidenceScore\":0.8},{\"text\":\"98\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":32,\"length\":2,\"confidenceScore\":0.8},{\"text\":\"0987\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":35,\"length\":4,\"confidenceScore\":0.8},{\"text\":\"API's\",\"category\":\"Skill\",\"offset\":61,\"length\":5,\"confidenceScore\":0.71}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 19:56:42 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/analyze-text/jobs/4725ce8b-04c0-4d6f-ac48-11558899b888?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f6ac25f0-854d-45c3-92f1-f3c571f11f08"
-    },
-    "Response" : {
-      "content-length" : "1436",
-      "x-envoy-upstream-service-time" : "143",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "f4aee24c-4130-40d0-92e1-25e4e9beb787",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"jobId\":\"4725ce8b-04c0-4d6f-ac48-11558899b888\",\"lastUpdateDateTime\":\"2022-10-11T19:56:15Z\",\"createdDateTime\":\"2022-10-11T19:56:11Z\",\"expirationDateTime\":\"2022-10-12T19:56:11Z\",\"status\":\"succeeded\",\"errors\":[],\"displayName\":\"Test1\",\"tasks\":{\"completed\":1,\"failed\":0,\"inProgress\":0,\"total\":1,\"items\":[{\"kind\":\"EntityRecognitionLROResults\",\"lastUpdateDateTime\":\"2022-10-11T19:56:15.0751066Z\",\"status\":\"succeeded\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"trip\",\"category\":\"Event\",\"offset\":18,\"length\":4,\"confidenceScore\":0.74},{\"text\":\"Seattle\",\"category\":\"Location\",\"subcategory\":\"GPE\",\"offset\":26,\"length\":7,\"confidenceScore\":1.0},{\"text\":\"last week\",\"category\":\"DateTime\",\"subcategory\":\"DateRange\",\"offset\":34,\"length\":9,\"confidenceScore\":0.8}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":0,\"length\":9,\"confidenceScore\":0.98},{\"text\":\"employee\",\"category\":\"PersonType\",\"offset\":10,\"length\":8,\"confidenceScore\":0.96},{\"text\":\"859\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":28,\"length\":3,\"confidenceScore\":0.8},{\"text\":\"98\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":32,\"length\":2,\"confidenceScore\":0.8},{\"text\":\"0987\",\"category\":\"Quantity\",\"subcategory\":\"Number\",\"offset\":35,\"length\":4,\"confidenceScore\":0.8},{\"text\":\"API's\",\"category\":\"Skill\",\"offset\":61,\"length\":5,\"confidenceScore\":0.71}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}]}}",
-      "Date" : "Tue, 11 Oct 2022 19:56:42 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs/7b0c9f7d-86c4-45e8-b191-575dddb12a3c?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "Date": "Wed, 05 Apr 2023 18:31:24 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "214f01ab-a2a2-4528-bf71-5d023e470958"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6465b04f-2179-45d1-860b-8ea7d8d5645d",
+        "Content-Length": "1437",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:31:24 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "65",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "jobId": "7b0c9f7d-86c4-45e8-b191-575dddb12a3c",
+        "lastUpdatedDateTime": "2023-04-05T18:30:56Z",
+        "createdDateTime": "2023-04-05T18:30:53Z",
+        "expirationDateTime": "2023-04-06T18:30:53Z",
+        "status": "succeeded",
+        "errors": [],
+        "displayName": "Test1",
+        "tasks": {
+          "completed": 1,
+          "failed": 0,
+          "inProgress": 0,
+          "total": 1,
+          "items": [
+            {
+              "kind": "EntityRecognitionLROResults",
+              "lastUpdateDateTime": "2023-04-05T18:30:56.4699945Z",
+              "status": "succeeded",
+              "results": {
+                "documents": [
+                  {
+                    "id": "0",
+                    "entities": [
+                      {
+                        "text": "trip",
+                        "category": "Event",
+                        "offset": 18,
+                        "length": 4,
+                        "confidenceScore": 0.74
+                      },
+                      {
+                        "text": "Seattle",
+                        "category": "Location",
+                        "subcategory": "GPE",
+                        "offset": 26,
+                        "length": 7,
+                        "confidenceScore": 1.0
+                      },
+                      {
+                        "text": "last week",
+                        "category": "DateTime",
+                        "subcategory": "DateRange",
+                        "offset": 34,
+                        "length": 9,
+                        "confidenceScore": 0.8
+                      }
+                    ],
+                    "warnings": []
+                  },
+                  {
+                    "id": "1",
+                    "entities": [
+                      {
+                        "text": "Microsoft",
+                        "category": "Organization",
+                        "offset": 0,
+                        "length": 9,
+                        "confidenceScore": 0.98
+                      },
+                      {
+                        "text": "employee",
+                        "category": "PersonType",
+                        "offset": 10,
+                        "length": 8,
+                        "confidenceScore": 0.96
+                      },
+                      {
+                        "text": "859",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 28,
+                        "length": 3,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "98",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 32,
+                        "length": 2,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "0987",
+                        "category": "Quantity",
+                        "subcategory": "Number",
+                        "offset": 35,
+                        "length": 4,
+                        "confidenceScore": 0.8
+                      },
+                      {
+                        "text": "API\u0027s",
+                        "category": "Skill",
+                        "offset": 61,
+                        "length": 5,
+                        "confidenceScore": 0.71
+                      }
+                    ],
+                    "warnings": []
+                  }
+                ],
+                "errors": [],
+                "modelVersion": "2021-06-01"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

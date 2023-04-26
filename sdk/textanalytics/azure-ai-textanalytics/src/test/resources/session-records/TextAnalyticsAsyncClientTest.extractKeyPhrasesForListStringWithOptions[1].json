@@ -1,28 +1,87 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=true",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a0191d0a-00e0-4ce3-a6d3-cefa37edb8fb",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "442",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "13",
-      "apim-request-id" : "aaf469ca-b54b-44e7-901f-dc0f4c4d60e0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Mon, 14 Nov 2022 20:06:30 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2,CognitiveServices.TextAnalytics.TextRecords=2",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"statistics\":{\"documentsCount\":2,\"validDocumentsCount\":2,\"erroneousDocumentsCount\":0,\"transactionsCount\":2},\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Hello world\",\"input text\"],\"statistics\":{\"charactersCount\":49,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"keyPhrases\":[\"monde\"],\"statistics\":{\"charactersCount\":21,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2022-10-01\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=true",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "211",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:56:17 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f78baab6-5540-4d47-871c-034de26acf93"
+      },
+      "RequestBody": {
+        "kind": "KeyPhraseExtraction",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "Hello world. This is some input text that I love."
+            },
+            {
+              "id": "1",
+              "text": "Bonjour tout le monde"
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6ff4c70a-f1f4-46bb-ac16-93e83d60f015",
+        "Content-Length": "442",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.KeyPhraseExtraction=2,CognitiveServices.TextAnalytics.TextRecords=2",
+        "Date": "Wed, 05 Apr 2023 18:56:17 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "12",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "KeyPhraseExtractionResults",
+        "results": {
+          "statistics": {
+            "documentsCount": 2,
+            "validDocumentsCount": 2,
+            "erroneousDocumentsCount": 0,
+            "transactionsCount": 2
+          },
+          "documents": [
+            {
+              "id": "0",
+              "keyPhrases": [
+                "Hello world",
+                "input text"
+              ],
+              "statistics": {
+                "charactersCount": 49,
+                "transactionsCount": 1
+              },
+              "warnings": []
+            },
+            {
+              "id": "1",
+              "keyPhrases": [
+                "monde"
+              ],
+              "statistics": {
+                "charactersCount": 21,
+                "transactionsCount": 1
+              },
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2022-10-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

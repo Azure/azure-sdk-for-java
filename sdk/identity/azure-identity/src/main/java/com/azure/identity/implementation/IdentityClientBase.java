@@ -474,7 +474,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
+            process.waitFor(this.options.getProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -559,7 +559,7 @@ public abstract class IdentityClientBase {
                                                 +
                                                 "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                                                 +
-                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                                                "https://aka.ms/azsdk/java/identity/azdevclicredential/troubleshoot"));
                     }
                     output.append(line);
                 }
@@ -567,7 +567,7 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
+            process.waitFor(this.options.getProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {

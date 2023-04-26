@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationResponse model. */
 @Fluent
 public final class OperationResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResponseInner.class);
-
     /*
      * The name property.
      */
@@ -32,6 +28,10 @@ public final class OperationResponseInner {
      */
     @JsonProperty(value = "origin")
     private String origin;
+
+    /** Creates an instance of OperationResponseInner class. */
+    public OperationResponseInner() {
+    }
 
     /**
      * Get the name property: The name property.

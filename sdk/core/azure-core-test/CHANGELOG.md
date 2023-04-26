@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 1.16.2 (2023-04-19)
+
+### Bugs fixed
+- Refactored startup of test-proxy instances to properly work in multi-threaded situations.
+
+## 1.16.1 (2023-04-13)
+
+### Bugs Fixed
+
+- Updated timeout values for waiting for test proxy initialization.
+
 ## 1.16.0 (2023-04-07)
 
 ### Features Added

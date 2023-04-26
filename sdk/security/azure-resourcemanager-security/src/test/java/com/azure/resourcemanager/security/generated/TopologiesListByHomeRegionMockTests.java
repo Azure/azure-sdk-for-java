@@ -31,7 +31,7 @@ public final class TopologiesListByHomeRegionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-11-24T13:56:06Z\",\"topologyResources\":[]},\"location\":\"ahwkxjjm\",\"id\":\"tnlmsoodtmvecdhd\",\"name\":\"swcrptveaj\",\"type\":\"zxvlgsrgkrfizrp\"}]}";
+            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-06T20:42:46Z\",\"topologyResources\":[]},\"location\":\"henigbeqngubab\",\"id\":\"jdeayscse\",\"name\":\"d\",\"type\":\"jemexmnv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class TopologiesListByHomeRegionMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TopologyResource> response =
-            manager.topologies().listByHomeRegion("wnk", com.azure.core.util.Context.NONE);
+            manager.topologies().listByHomeRegion("ptgongruat", com.azure.core.util.Context.NONE);
     }
 }

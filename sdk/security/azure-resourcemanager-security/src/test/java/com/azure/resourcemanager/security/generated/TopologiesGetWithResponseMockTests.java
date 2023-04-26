@@ -30,7 +30,7 @@ public final class TopologiesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"calculatedDateTime\":\"2021-04-12T21:32:56Z\",\"topologyResources\":[]},\"location\":\"c\",\"id\":\"pcfykkpy\",\"name\":\"cpawmp\",\"type\":\"prdpwrpc\"}";
+            "{\"properties\":{\"calculatedDateTime\":\"2021-08-30T18:57:53Z\",\"topologyResources\":[]},\"location\":\"dclacroczfmun\",\"id\":\"rkeluxzshxzezbzu\",\"name\":\"udl\",\"type\":\"vzske\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,9 @@ public final class TopologiesGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TopologyResource response =
-            manager.topologies().getWithResponse("wlp", "yuqh", "lmcskyk", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .topologies()
+                .getWithResponse("vmuw", "xlniwmcpm", "rdlhvdvmiphbe", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

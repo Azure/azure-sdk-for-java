@@ -46,6 +46,10 @@ public final class Capabilities {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilitiesCapabilities capabilities;
 
+    /** Creates an instance of Capabilities class. */
+    public Capabilities() {
+    }
+
     /**
      * Get the resourceType property: The resource type that this capability describes.
      *

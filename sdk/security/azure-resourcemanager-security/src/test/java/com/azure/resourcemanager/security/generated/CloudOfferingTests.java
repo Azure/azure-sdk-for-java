@@ -12,7 +12,7 @@ public final class CloudOfferingTests {
     public void testDeserialize() throws Exception {
         CloudOffering model =
             BinaryData
-                .fromString("{\"offeringType\":\"CloudOffering\",\"description\":\"opwbeonrlkwzd\"}")
+                .fromString("{\"offeringType\":\"CloudOffering\",\"description\":\"ivjreuyk\"}")
                 .toObject(CloudOffering.class);
     }
 
