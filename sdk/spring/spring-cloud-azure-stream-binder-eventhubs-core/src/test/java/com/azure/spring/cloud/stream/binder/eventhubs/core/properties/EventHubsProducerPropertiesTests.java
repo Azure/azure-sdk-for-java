@@ -62,8 +62,8 @@ class EventHubsProducerPropertiesTests {
     @Test
     void customDomainNameShouldSet() {
         producerProperties.setDomainName("new.servicebus.windows.net");
-        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, producerProperties.getProfile().getCloudType());
+        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, producerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", producerProperties.getDomainName());
     }
 

@@ -119,9 +119,9 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void customDomainNameShouldSet() {
-        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         consumerProperties.setDomainName("new.servicebus.windows.net");
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, consumerProperties.getProfile().getCloudType());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, consumerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
     }
 

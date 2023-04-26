@@ -69,11 +69,6 @@ public interface AzureProfileOptionsProvider {
         AZURE_CHINA,
 
         /**
-         * Azure Germany
-         */
-        AZURE_GERMANY,
-
-        /**
          * Azure US government
          */
         AZURE_US_GOVERNMENT,

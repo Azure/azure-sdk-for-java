@@ -31,9 +31,9 @@ public class NamespacePropertiesTests {
     void domainNameOverrideCloud() {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.setDomainName("servicebus.chinacloudapi.cn");
-        namespaceProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        namespaceProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, namespaceProperties.getProfile().getCloudType());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, namespaceProperties.getProfile().getCloudType());
         assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(), namespaceProperties.getDomainName());
     }
 }
