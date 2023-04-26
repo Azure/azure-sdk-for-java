@@ -14,5 +14,6 @@
   <modules>
       <module>azure-data-schemaregistry</module>
       <module>azure-data-schemaregistry-apacheavro</module>
+      <module>azure-data-schemaregistry-jsonschemavalidator</module>
   </modules>
 </project>
