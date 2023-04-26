@@ -1152,6 +1152,8 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public void setPriorityLevel(PriorityLevel priorityLevel) {
-        this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.name());
+        if (priorityLevel != null) {
+            this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.name());
+        }
     }
 }
