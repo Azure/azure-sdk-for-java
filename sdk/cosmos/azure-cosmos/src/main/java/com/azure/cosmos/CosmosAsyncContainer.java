@@ -726,7 +726,7 @@ public class CosmosAsyncContainer {
             )
             .collectList() // TODO: need a way to get the open result
             .flatMap(openResult -> {
-                logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                logger.debug("OpenConnectionsAndInitCaches: {}", openResult);
                 return Mono.empty();
             }));
         } else {
