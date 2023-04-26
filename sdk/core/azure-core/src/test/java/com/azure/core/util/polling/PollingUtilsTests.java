@@ -4,6 +4,7 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollingUtils;
 import com.azure.core.util.serializer.TypeReference;
@@ -75,11 +76,23 @@ public class PollingUtilsTests {
 
         Resource convertOrigin = new Resource().setName("name").setStatus(status);
 
-        PollResult convertResult = PollingUtils.convertResponse(convertOrigin,
+        PollResult convertResult = PollingUtils.convertResponseSync(convertOrigin,
             new DefaultJsonSerializer(),
-            TypeReference.createInstance(PollResult.class)).block();
+            TypeReference.createInstance(PollResult.class));
 
         assertEquals(status, convertResult.getStatus());
+    }
+
+    @Test
+    public void testSerializeResponse() {
+        String status = "Succeeded";
+
+        Resource convertOrigin = new Resource().setName("name").setStatus(status);
+
+        BinaryData jsonAsBinaryData = PollingUtils.serializeResponseSync(convertOrigin,
+            new DefaultJsonSerializer());
+
+        assertTrue(jsonAsBinaryData.toString().contains(status));
     }
 
     private static class PollResult {
