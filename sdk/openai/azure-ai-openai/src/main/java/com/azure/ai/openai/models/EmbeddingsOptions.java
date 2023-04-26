@@ -8,23 +8,23 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema to create a prompt completion from a deployment. */
+/**
+ * The configuration information for an embeddings request. Embeddings measure the relatedness of text strings and are
+ * commonly used for search, clustering, recommendations, and other similar scenarios.
+ */
 @Fluent
 public final class EmbeddingsOptions {
     /*
-     * The ID of the end-user, for use in tracking and rate-limiting.
+     * An identifier for the caller or end user of the operation. This may be used for tracking
+     * or rate-limiting purposes.
      */
     @JsonProperty(value = "user")
     private String user;
 
     /*
-     * input type of embedding search to use
-     */
-    @JsonProperty(value = "input_type")
-    private String inputType;
-
-    /*
-     * ID of the model to use
+     * The model name to provide as part of this embeddings request.
+     * Not applicable to Azure OpenAI, where deployment information should be included in the Azure
+     * resource URI that's connected to.
      */
     @JsonProperty(value = "model")
     private String model;
@@ -51,7 +51,8 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Get the user property: The ID of the end-user, for use in tracking and rate-limiting.
+     * Get the user property: An identifier for the caller or end user of the operation. This may be used for tracking
+     * or rate-limiting purposes.
      *
      * @return the user value.
      */
@@ -60,7 +61,8 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Set the user property: The ID of the end-user, for use in tracking and rate-limiting.
+     * Set the user property: An identifier for the caller or end user of the operation. This may be used for tracking
+     * or rate-limiting purposes.
      *
      * @param user the user value to set.
      * @return the EmbeddingsOptions object itself.
@@ -71,27 +73,8 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Get the inputType property: input type of embedding search to use.
-     *
-     * @return the inputType value.
-     */
-    public String getInputType() {
-        return this.inputType;
-    }
-
-    /**
-     * Set the inputType property: input type of embedding search to use.
-     *
-     * @param inputType the inputType value to set.
-     * @return the EmbeddingsOptions object itself.
-     */
-    public EmbeddingsOptions setInputType(String inputType) {
-        this.inputType = inputType;
-        return this;
-    }
-
-    /**
-     * Get the model property: ID of the model to use.
+     * Get the model property: The model name to provide as part of this embeddings request. Not applicable to Azure
+     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
      *
      * @return the model value.
      */
@@ -100,7 +83,8 @@ public final class EmbeddingsOptions {
     }
 
     /**
-     * Set the model property: ID of the model to use.
+     * Set the model property: The model name to provide as part of this embeddings request. Not applicable to Azure
+     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
      *
      * @param model the model value to set.
      * @return the EmbeddingsOptions object itself.

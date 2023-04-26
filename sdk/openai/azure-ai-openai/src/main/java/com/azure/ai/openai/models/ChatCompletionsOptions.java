@@ -11,16 +11,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The configuration information for a completions request. Completions support a wide variety of tasks and generate
- * text that continues from or "completes" provided prompt data.
+ * The configuration information for a chat completions request. Completions support a wide variety of tasks and
+ * generate text that continues from or "completes" provided prompt data.
  */
 @Fluent
-public final class CompletionsOptions {
+public final class ChatCompletionsOptions {
     /*
-     * The prompts to generate completions from.
+     * The collection of context messages associated with this chat completions request.
+     * Typical usage begins with a chat message for the System role that provides instructions for
+     * the behavior of the assistant, followed by alternating messages between the User and
+     * Assistant roles.
      */
-    @JsonProperty(value = "prompt", required = true)
-    private List<String> prompt;
+    @JsonProperty(value = "messages", required = true)
+    private List<ChatMessage> messages;
 
     /*
      * The maximum number of tokens to generate.
@@ -67,27 +70,13 @@ public final class CompletionsOptions {
     private String user;
 
     /*
-     * The number of completions choices that should be generated per provided prompt as part of an
-     * overall completions response.
+     * The number of chat completions choices that should be generated for a chat completions
+     * response.
      * Because this setting can generate many completions, it may quickly consume your token quota.
      * Use carefully and ensure reasonable settings for max_tokens and stop.
      */
     @JsonProperty(value = "n")
     private Integer n;
-
-    /*
-     * A value that controls the emission of log probabilities for the provided number of most likely
-     * tokens within a completions response.
-     */
-    @JsonProperty(value = "logprobs")
-    private Integer logprobs;
-
-    /*
-     * A value specifying whether completions responses should include input prompts as prefixes to
-     * their generated output.
-     */
-    @JsonProperty(value = "echo")
-    private Boolean echo;
 
     /*
      * A collection of textual sequences that will end completions generation.
@@ -114,17 +103,6 @@ public final class CompletionsOptions {
     private Double frequencyPenalty;
 
     /*
-     * A value that controls how many completions will be internally generated prior to response
-     * formulation.
-     * When used together with n, best_of controls the number of candidate completions and must be
-     * greater than n.
-     * Because this setting can generate many completions, it may quickly consume your token quota.
-     * Use carefully and ensure reasonable settings for max_tokens and stop.
-     */
-    @JsonProperty(value = "best_of")
-    private Integer bestOf;
-
-    /*
      * A value indicating whether chat completions should be streamed for this request.
      */
     @JsonProperty(value = "stream")
@@ -139,22 +117,24 @@ public final class CompletionsOptions {
     private String model;
 
     /**
-     * Creates an instance of CompletionsOptions class.
+     * Creates an instance of ChatCompletionsOptions class.
      *
-     * @param prompt the prompt value to set.
+     * @param messages the messages value to set.
      */
     @JsonCreator
-    public CompletionsOptions(@JsonProperty(value = "prompt", required = true) List<String> prompt) {
-        this.prompt = prompt;
+    public ChatCompletionsOptions(@JsonProperty(value = "messages", required = true) List<ChatMessage> messages) {
+        this.messages = messages;
     }
 
     /**
-     * Get the prompt property: The prompts to generate completions from.
+     * Get the messages property: The collection of context messages associated with this chat completions request.
+     * Typical usage begins with a chat message for the System role that provides instructions for the behavior of the
+     * assistant, followed by alternating messages between the User and Assistant roles.
      *
-     * @return the prompt value.
+     * @return the messages value.
      */
-    public List<String> getPrompt() {
-        return this.prompt;
+    public List<ChatMessage> getMessages() {
+        return this.messages;
     }
 
     /**
@@ -170,9 +150,9 @@ public final class CompletionsOptions {
      * Set the maxTokens property: The maximum number of tokens to generate.
      *
      * @param maxTokens the maxTokens value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setMaxTokens(Integer maxTokens) {
+    public ChatCompletionsOptions setMaxTokens(Integer maxTokens) {
         this.maxTokens = maxTokens;
         return this;
     }
@@ -196,9 +176,9 @@ public final class CompletionsOptions {
      * interaction of these two settings is difficult to predict.
      *
      * @param temperature the temperature value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setTemperature(Double temperature) {
+    public ChatCompletionsOptions setTemperature(Double temperature) {
         this.temperature = temperature;
         return this;
     }
@@ -224,9 +204,9 @@ public final class CompletionsOptions {
      * difficult to predict.
      *
      * @param topP the topP value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setTopP(Double topP) {
+    public ChatCompletionsOptions setTopP(Double topP) {
         this.topP = topP;
         return this;
     }
@@ -250,9 +230,9 @@ public final class CompletionsOptions {
      * exclusive selection of a token, respectively. The exact behavior of a given bias score varies by model.
      *
      * @param logitBias the logitBias value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setLogitBias(Map<String, Integer> logitBias) {
+    public ChatCompletionsOptions setLogitBias(Map<String, Integer> logitBias) {
         this.logitBias = logitBias;
         return this;
     }
@@ -272,17 +252,17 @@ public final class CompletionsOptions {
      * or rate-limiting purposes.
      *
      * @param user the user value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setUser(String user) {
+    public ChatCompletionsOptions setUser(String user) {
         this.user = user;
         return this;
     }
 
     /**
-     * Get the n property: The number of completions choices that should be generated per provided prompt as part of an
-     * overall completions response. Because this setting can generate many completions, it may quickly consume your
-     * token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+     * Get the n property: The number of chat completions choices that should be generated for a chat completions
+     * response. Because this setting can generate many completions, it may quickly consume your token quota. Use
+     * carefully and ensure reasonable settings for max_tokens and stop.
      *
      * @return the n value.
      */
@@ -291,59 +271,15 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the n property: The number of completions choices that should be generated per provided prompt as part of an
-     * overall completions response. Because this setting can generate many completions, it may quickly consume your
-     * token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+     * Set the n property: The number of chat completions choices that should be generated for a chat completions
+     * response. Because this setting can generate many completions, it may quickly consume your token quota. Use
+     * carefully and ensure reasonable settings for max_tokens and stop.
      *
      * @param n the n value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setN(Integer n) {
+    public ChatCompletionsOptions setN(Integer n) {
         this.n = n;
-        return this;
-    }
-
-    /**
-     * Get the logprobs property: A value that controls the emission of log probabilities for the provided number of
-     * most likely tokens within a completions response.
-     *
-     * @return the logprobs value.
-     */
-    public Integer getLogprobs() {
-        return this.logprobs;
-    }
-
-    /**
-     * Set the logprobs property: A value that controls the emission of log probabilities for the provided number of
-     * most likely tokens within a completions response.
-     *
-     * @param logprobs the logprobs value to set.
-     * @return the CompletionsOptions object itself.
-     */
-    public CompletionsOptions setLogprobs(Integer logprobs) {
-        this.logprobs = logprobs;
-        return this;
-    }
-
-    /**
-     * Get the echo property: A value specifying whether completions responses should include input prompts as prefixes
-     * to their generated output.
-     *
-     * @return the echo value.
-     */
-    public Boolean isEcho() {
-        return this.echo;
-    }
-
-    /**
-     * Set the echo property: A value specifying whether completions responses should include input prompts as prefixes
-     * to their generated output.
-     *
-     * @param echo the echo value to set.
-     * @return the CompletionsOptions object itself.
-     */
-    public CompletionsOptions setEcho(Boolean echo) {
-        this.echo = echo;
         return this;
     }
 
@@ -360,9 +296,9 @@ public final class CompletionsOptions {
      * Set the stop property: A collection of textual sequences that will end completions generation.
      *
      * @param stop the stop value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setStop(List<String> stop) {
+    public ChatCompletionsOptions setStop(List<String> stop) {
         this.stop = stop;
         return this;
     }
@@ -384,9 +320,9 @@ public final class CompletionsOptions {
      * already exist and increase the model's likelihood to output new topics.
      *
      * @param presencePenalty the presencePenalty value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setPresencePenalty(Double presencePenalty) {
+    public ChatCompletionsOptions setPresencePenalty(Double presencePenalty) {
         this.presencePenalty = presencePenalty;
         return this;
     }
@@ -408,36 +344,10 @@ public final class CompletionsOptions {
      * frequency increases and decrease the likelihood of the model repeating the same statements verbatim.
      *
      * @param frequencyPenalty the frequencyPenalty value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setFrequencyPenalty(Double frequencyPenalty) {
+    public ChatCompletionsOptions setFrequencyPenalty(Double frequencyPenalty) {
         this.frequencyPenalty = frequencyPenalty;
-        return this;
-    }
-
-    /**
-     * Get the bestOf property: A value that controls how many completions will be internally generated prior to
-     * response formulation. When used together with n, best_of controls the number of candidate completions and must be
-     * greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use
-     * carefully and ensure reasonable settings for max_tokens and stop.
-     *
-     * @return the bestOf value.
-     */
-    public Integer getBestOf() {
-        return this.bestOf;
-    }
-
-    /**
-     * Set the bestOf property: A value that controls how many completions will be internally generated prior to
-     * response formulation. When used together with n, best_of controls the number of candidate completions and must be
-     * greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use
-     * carefully and ensure reasonable settings for max_tokens and stop.
-     *
-     * @param bestOf the bestOf value to set.
-     * @return the CompletionsOptions object itself.
-     */
-    public CompletionsOptions setBestOf(Integer bestOf) {
-        this.bestOf = bestOf;
         return this;
     }
 
@@ -454,9 +364,9 @@ public final class CompletionsOptions {
      * Set the stream property: A value indicating whether chat completions should be streamed for this request.
      *
      * @param stream the stream value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setStream(Boolean stream) {
+    public ChatCompletionsOptions setStream(Boolean stream) {
         this.stream = stream;
         return this;
     }
@@ -476,9 +386,9 @@ public final class CompletionsOptions {
      * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
      *
      * @param model the model value to set.
-     * @return the CompletionsOptions object itself.
+     * @return the ChatCompletionsOptions object itself.
      */
-    public CompletionsOptions setModel(String model) {
+    public ChatCompletionsOptions setModel(String model) {
         this.model = model;
         return this;
     }

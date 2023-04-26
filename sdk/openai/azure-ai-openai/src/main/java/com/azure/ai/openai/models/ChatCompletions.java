@@ -10,13 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Representation of the response data from a completions request. Completions support a wide variety of tasks and
+ * Representation of the response data from a chat completions request. Completions support a wide variety of tasks and
  * generate text that continues from or "completes" provided prompt data.
  */
 @Immutable
-public final class Completions {
+public final class ChatCompletions {
     /*
-     * A unique identifier associated with this completions response.
+     * A unique identifier associated with this chat completions response.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
@@ -34,7 +34,7 @@ public final class Completions {
      * Token limits and other settings may limit the number of choices generated.
      */
     @JsonProperty(value = "choices", required = true)
-    private List<Choice> choices;
+    private List<ChatChoice> choices;
 
     /*
      * Usage information for tokens processed and generated as part of this completions operation.
@@ -43,7 +43,7 @@ public final class Completions {
     private CompletionsUsage usage;
 
     /**
-     * Creates an instance of Completions class.
+     * Creates an instance of ChatCompletions class.
      *
      * @param id the id value to set.
      * @param created the created value to set.
@@ -51,10 +51,10 @@ public final class Completions {
      * @param usage the usage value to set.
      */
     @JsonCreator
-    private Completions(
+    private ChatCompletions(
             @JsonProperty(value = "id", required = true) String id,
             @JsonProperty(value = "created", required = true) int created,
-            @JsonProperty(value = "choices", required = true) List<Choice> choices,
+            @JsonProperty(value = "choices", required = true) List<ChatChoice> choices,
             @JsonProperty(value = "usage", required = true) CompletionsUsage usage) {
         this.id = id;
         this.created = created;
@@ -63,7 +63,7 @@ public final class Completions {
     }
 
     /**
-     * Get the id property: A unique identifier associated with this completions response.
+     * Get the id property: A unique identifier associated with this chat completions response.
      *
      * @return the id value.
      */
@@ -88,7 +88,7 @@ public final class Completions {
      *
      * @return the choices value.
      */
-    public List<Choice> getChoices() {
+    public List<ChatChoice> getChoices() {
         return this.choices;
     }
 

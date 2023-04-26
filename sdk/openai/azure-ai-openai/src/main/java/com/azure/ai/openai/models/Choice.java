@@ -5,40 +5,62 @@
 package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Choice model within completion response. */
+/**
+ * The representation of a single prompt completion as part of an overall completions request. Generally, `n` choices
+ * are generated per provided prompt with a default value of 1. Token limits and other settings may limit the number of
+ * choices generated.
+ */
 @Immutable
 public final class Choice {
     /*
-     * Generated text for given completion prompt
+     * The generated text for a given completions prompt.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
-     * Index
+     * The ordered index associated with this completions choice.
      */
-    @JsonProperty(value = "index")
-    private Integer index;
+    @JsonProperty(value = "index", required = true)
+    private int index;
 
     /*
-     * Log Prob Model
+     * The log probabilities model for tokens associated with this completions choice.
      */
-    @JsonProperty(value = "logprobs")
-    private CompletionsLogProbs logprobs;
+    @JsonProperty(value = "logprobs", required = true)
+    private CompletionsLogProbabilityModel logprobs;
 
     /*
      * Reason for finishing
      */
-    @JsonProperty(value = "finish_reason")
-    private String finishReason;
-
-    /** Creates an instance of Choice class. */
-    private Choice() {}
+    @JsonProperty(value = "finish_reason", required = true)
+    private CompletionsFinishReason finishReason;
 
     /**
-     * Get the text property: Generated text for given completion prompt.
+     * Creates an instance of Choice class.
+     *
+     * @param text the text value to set.
+     * @param index the index value to set.
+     * @param logprobs the logprobs value to set.
+     * @param finishReason the finishReason value to set.
+     */
+    @JsonCreator
+    private Choice(
+            @JsonProperty(value = "text", required = true) String text,
+            @JsonProperty(value = "index", required = true) int index,
+            @JsonProperty(value = "logprobs", required = true) CompletionsLogProbabilityModel logprobs,
+            @JsonProperty(value = "finish_reason", required = true) CompletionsFinishReason finishReason) {
+        this.text = text;
+        this.index = index;
+        this.logprobs = logprobs;
+        this.finishReason = finishReason;
+    }
+
+    /**
+     * Get the text property: The generated text for a given completions prompt.
      *
      * @return the text value.
      */
@@ -47,20 +69,20 @@ public final class Choice {
     }
 
     /**
-     * Get the index property: Index.
+     * Get the index property: The ordered index associated with this completions choice.
      *
      * @return the index value.
      */
-    public Integer getIndex() {
+    public int getIndex() {
         return this.index;
     }
 
     /**
-     * Get the logprobs property: Log Prob Model.
+     * Get the logprobs property: The log probabilities model for tokens associated with this completions choice.
      *
      * @return the logprobs value.
      */
-    public CompletionsLogProbs getLogprobs() {
+    public CompletionsLogProbabilityModel getLogprobs() {
         return this.logprobs;
     }
 
@@ -69,7 +91,7 @@ public final class Choice {
      *
      * @return the finishReason value.
      */
-    public String getFinishReason() {
+    public CompletionsFinishReason getFinishReason() {
         return this.finishReason;
     }
 }

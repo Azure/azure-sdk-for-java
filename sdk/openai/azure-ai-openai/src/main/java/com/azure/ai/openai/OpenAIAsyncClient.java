@@ -5,6 +5,8 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
+import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
@@ -46,7 +48,6 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     user: String (Optional)
-     *     input_type: String (Optional)
      *     model: String (Optional)
      *     input: InputModelBase (Required)
      * }
@@ -56,17 +57,14 @@ public final class OpenAIAsyncClient {
      *
      * <pre>{@code
      * {
-     *     object: String (Required)
      *     data (Required): [
      *          (Required){
-     *             object: String (Required)
      *             embedding (Required): [
      *                 double (Required)
      *             ]
      *             index: int (Required)
      *         }
      *     ]
-     *     model: String (Optional)
      *     usage (Required): {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
@@ -75,14 +73,17 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param embeddingsOptions Schema to create a prompt completion from a deployment.
+     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
+     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     *     scenarios.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return expected response schema to embeddings request along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
+     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -92,14 +93,15 @@ public final class OpenAIAsyncClient {
     }
 
     /**
-     * Return the completions for a given prompt.
+     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     prompt (Optional): [
-     *         String (Optional)
+     *     prompt (Required): [
+     *         String (Required)
      *     ]
      *     max_tokens: Integer (Optional)
      *     temperature: Double (Optional)
@@ -110,16 +112,15 @@ public final class OpenAIAsyncClient {
      *     user: String (Optional)
      *     n: Integer (Optional)
      *     logprobs: Integer (Optional)
-     *     model: String (Optional)
      *     echo: Boolean (Optional)
      *     stop (Optional): [
      *         String (Optional)
      *     ]
-     *     completion_config: String (Optional)
-     *     cache_level: Integer (Optional)
      *     presence_penalty: Double (Optional)
      *     frequency_penalty: Double (Optional)
      *     best_of: Integer (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
      * }
      * }</pre>
      *
@@ -127,31 +128,29 @@ public final class OpenAIAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String (Optional)
-     *     object: String (Required)
-     *     created: Integer (Optional)
-     *     model: String (Optional)
-     *     choices (Optional): [
-     *          (Optional){
-     *             text: String (Optional)
-     *             index: Integer (Optional)
-     *             logprobs (Optional): {
-     *                 tokens (Optional): [
-     *                     String (Optional)
+     *     id: String (Required)
+     *     created: int (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             text: String (Required)
+     *             index: int (Required)
+     *             logprobs (Required): {
+     *                 tokens (Required): [
+     *                     String (Required)
      *                 ]
-     *                 token_logprobs (Optional): [
-     *                     double (Optional)
+     *                 token_logprobs (Required): [
+     *                     double (Required)
      *                 ]
-     *                 top_logprobs (Optional): [
-     *                      (Optional){
-     *                         String: double (Optional)
+     *                 top_logprobs (Required): [
+     *                      (Required){
+     *                         String: double (Required)
      *                     }
      *                 ]
-     *                 text_offset (Optional): [
-     *                     int (Optional)
+     *                 text_offset (Required): [
+     *                     int (Required)
      *                 ]
      *             }
-     *             finish_reason: String (Optional)
+     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -163,14 +162,16 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param completionsOptions Post body schema to create a prompt completion from a deployment.
+     * @param completionsOptions The configuration information for a completions request. Completions support a wide
+     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return expected response schema to completion request along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     *     that continues from or "completes" provided prompt data along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -180,17 +181,98 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     * text that continues from or "completes" provided prompt data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messages (Required): [
+     *          (Required){
+     *             role: String(system/assistant/user) (Required)
+     *             content: String (Optional)
+     *         }
+     *     ]
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: int (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             message (Optional): {
+     *                 role: String(system/assistant/user) (Required)
+     *                 content: String (Optional)
+     *             }
+     *             index: int (Required)
+     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *             delta (Optional): (recursive schema, see delta above)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     *     text that continues from or "completes" provided prompt data along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getChatCompletionsWithResponse(
+            String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getChatCompletionsWithResponseAsync(
+                deploymentId, chatCompletionsOptions, requestOptions);
+    }
+
+    /**
      * Return the embeddings for a given prompt.
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param embeddingsOptions Schema to create a prompt completion from a deployment.
+     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
+     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     *     scenarios.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expected response schema to embeddings request on successful completion of {@link Mono}.
+     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
+     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios on
+     *     successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -203,17 +285,20 @@ public final class OpenAIAsyncClient {
     }
 
     /**
-     * Return the completions for a given prompt.
+     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param completionsOptions Post body schema to create a prompt completion from a deployment.
+     * @param completionsOptions The configuration information for a completions request. Completions support a wide
+     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expected response schema to completion request on successful completion of {@link Mono}.
+     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -223,5 +308,33 @@ public final class OpenAIAsyncClient {
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     * text that continues from or "completes" provided prompt data.
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
+     *     text that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ChatCompletions> getChatCompletions(
+            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+        // Generated convenience method for getChatCompletionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getChatCompletionsWithResponse(
+                        deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                .flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
     }
 }

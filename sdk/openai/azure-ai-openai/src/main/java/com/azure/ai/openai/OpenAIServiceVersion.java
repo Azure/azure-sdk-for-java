@@ -9,7 +9,10 @@ import com.azure.core.util.ServiceVersion;
 /** Service version of OpenAIClient. */
 public enum OpenAIServiceVersion implements ServiceVersion {
     /** Enum value 2022-12-01. */
-    V2022_12_01("2022-12-01");
+    V2022_12_01("2022-12-01"),
+
+    /** Enum value 2023-03-15-preview. */
+    V2023_03_15_PREVIEW("2023-03-15-preview");
 
     private final String version;
 
@@ -29,6 +32,6 @@ public enum OpenAIServiceVersion implements ServiceVersion {
      * @return The latest {@link OpenAIServiceVersion}.
      */
     public static OpenAIServiceVersion getLatest() {
-        return V2022_12_01;
+        return V2023_03_15_PREVIEW;
     }
 }

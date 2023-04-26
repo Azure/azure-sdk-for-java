@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class CompletionsUsage {
     /*
-     * Number of tokens received in the completion
+     * The number of tokens generated across all completions emissions.
      */
     @JsonProperty(value = "completion_tokens", required = true)
     private int completionTokens;
 
     /*
-     * Number of tokens sent in the original request
+     * The number of tokens in the provided prompts for the completions request.
      */
     @JsonProperty(value = "prompt_tokens", required = true)
     private int promptTokens;
 
     /*
-     * Total number of tokens transacted in this request/response
+     * The total number of tokens processed for the completions request and response.
      */
     @JsonProperty(value = "total_tokens", required = true)
     private int totalTokens;
@@ -50,7 +50,7 @@ public final class CompletionsUsage {
     }
 
     /**
-     * Get the completionTokens property: Number of tokens received in the completion.
+     * Get the completionTokens property: The number of tokens generated across all completions emissions.
      *
      * @return the completionTokens value.
      */
@@ -59,7 +59,7 @@ public final class CompletionsUsage {
     }
 
     /**
-     * Get the promptTokens property: Number of tokens sent in the original request.
+     * Get the promptTokens property: The number of tokens in the provided prompts for the completions request.
      *
      * @return the promptTokens value.
      */
@@ -68,7 +68,7 @@ public final class CompletionsUsage {
     }
 
     /**
-     * Get the totalTokens property: Total number of tokens transacted in this request/response.
+     * Get the totalTokens property: The total number of tokens processed for the completions request and response.
      *
      * @return the totalTokens value.
      */

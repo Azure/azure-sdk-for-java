@@ -9,23 +9,18 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Expected response schema to embeddings object list item request. */
+/** Representation of a single embeddings relatedness comparison. */
 @Immutable
 public final class EmbeddingItem {
     /*
-     * Name of the field in which the embedding is contained
-     */
-    @JsonProperty(value = "object", required = true)
-    private String object = "embedding";
-
-    /*
-     * List of embeddings value for the input prompt. These represents a measurement of releated of text strings
+     * List of embeddings value for the input prompt. These represent a measurement of the
+     * vector-based relatedness of the provided input.
      */
     @JsonProperty(value = "embedding", required = true)
     private List<Double> embedding;
 
     /*
-     * Index of the prompt to which the EmbeddingItem corresponds
+     * Index of the prompt to which the EmbeddingItem corresponds.
      */
     @JsonProperty(value = "index", required = true)
     private int index;
@@ -40,23 +35,13 @@ public final class EmbeddingItem {
     private EmbeddingItem(
             @JsonProperty(value = "embedding", required = true) List<Double> embedding,
             @JsonProperty(value = "index", required = true) int index) {
-        object = "embedding";
         this.embedding = embedding;
         this.index = index;
     }
 
     /**
-     * Get the object property: Name of the field in which the embedding is contained.
-     *
-     * @return the object value.
-     */
-    public String getObject() {
-        return this.object;
-    }
-
-    /**
-     * Get the embedding property: List of embeddings value for the input prompt. These represents a measurement of
-     * releated of text strings.
+     * Get the embedding property: List of embeddings value for the input prompt. These represent a measurement of the
+     * vector-based relatedness of the provided input.
      *
      * @return the embedding value.
      */

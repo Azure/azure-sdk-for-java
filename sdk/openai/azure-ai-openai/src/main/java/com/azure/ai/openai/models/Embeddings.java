@@ -9,29 +9,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Expected response schema to embeddings request. */
+/**
+ * Representation of the response data from an embeddings request. Embeddings measure the relatedness of text strings
+ * and are commonly used for search, clustering, recommendations, and other similar scenarios.
+ */
 @Immutable
 public final class Embeddings {
     /*
-     * Type of the data field
-     */
-    @JsonProperty(value = "object", required = true)
-    private String object = "list";
-
-    /*
-     * Embedding values for the prompts submitted in the request
+     * Embedding values for the prompts submitted in the request.
      */
     @JsonProperty(value = "data", required = true)
     private List<EmbeddingItem> data;
 
     /*
-     * ID of the model to use
-     */
-    @JsonProperty(value = "model")
-    private String model;
-
-    /*
-     * Usage counts for tokens input using the embeddings API
+     * Usage counts for tokens input using the embeddings API.
      */
     @JsonProperty(value = "usage", required = true)
     private EmbeddingsUsage usage;
@@ -46,18 +37,8 @@ public final class Embeddings {
     private Embeddings(
             @JsonProperty(value = "data", required = true) List<EmbeddingItem> data,
             @JsonProperty(value = "usage", required = true) EmbeddingsUsage usage) {
-        object = "list";
         this.data = data;
         this.usage = usage;
-    }
-
-    /**
-     * Get the object property: Type of the data field.
-     *
-     * @return the object value.
-     */
-    public String getObject() {
-        return this.object;
     }
 
     /**
@@ -67,15 +48,6 @@ public final class Embeddings {
      */
     public List<EmbeddingItem> getData() {
         return this.data;
-    }
-
-    /**
-     * Get the model property: ID of the model to use.
-     *
-     * @return the model value.
-     */
-    public String getModel() {
-        return this.model;
     }
 
     /**
