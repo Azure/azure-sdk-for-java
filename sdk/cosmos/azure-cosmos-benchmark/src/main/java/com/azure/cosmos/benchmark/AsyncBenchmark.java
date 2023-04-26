@@ -476,8 +476,6 @@ abstract class AsyncBenchmark<T> {
             performWorkload(baseSubscriber, i);
         }
 
-        System.clearProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT");
-
         synchronized (count) {
             while (count.get() < i) {
                 count.wait();
