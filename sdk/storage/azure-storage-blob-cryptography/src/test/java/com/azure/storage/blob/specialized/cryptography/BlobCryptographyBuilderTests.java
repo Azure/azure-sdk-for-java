@@ -136,16 +136,15 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     public void customerProvidedKeyNotANoop() {
         cc.create();
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey(null));
-        EncryptedBlobAsyncClient encryptedClientWithCpk = mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+        EncryptedBlobClientBuilder builder = getEncryptedClientBuilder(fakeKey, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
             .customerProvidedKey(key)
-            .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient());
-        EncryptedBlobClient encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey,
-            null, ENV.getPrimaryAccount().getCredential(), encryptedClientWithCpk.getBlobUrl())
-            .buildEncryptedBlobAsyncClient()));
+            .blobName(generateBlobName());
+        EncryptedBlobAsyncClient encryptedAsyncClientWithCpk = mockAesKey(builder.buildEncryptedBlobAsyncClient());
+        EncryptedBlobClient encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(
+            builder.customerProvidedKey(null).buildEncryptedBlobAsyncClient()));
 
-        encryptedClientWithCpk.uploadWithResponse(DATA.getDefaultFlux(), null, null, null, null, null).block();
+        encryptedAsyncClientWithCpk.uploadWithResponse(DATA.getDefaultFlux(), null, null, null, null, null).block();
         ByteArrayOutputStream datastream = new ByteArrayOutputStream();
 
         BlobStorageException e = assertThrows(BlobStorageException.class,
