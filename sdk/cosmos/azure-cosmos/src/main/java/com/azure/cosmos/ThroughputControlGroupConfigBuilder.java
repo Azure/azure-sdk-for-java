@@ -176,8 +176,11 @@ public class ThroughputControlGroupConfigBuilder {
         if (StringUtils.isEmpty(this.groupName)) {
             throw new IllegalArgumentException("Group name cannot be null nor empty");
         }
+        if (this.targetThroughput == null && this.targetThroughputThreshold == null && this.priorityLevel == null) {
+            throw new IllegalArgumentException("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
+        }
         if (this.targetThroughput == null && this.targetThroughputThreshold == null) {
-            throw new IllegalArgumentException("Neither targetThroughput nor targetThroughputThreshold is defined.");
+            this.targetThroughputThreshold = 1.0;
         }
 
         return new ThroughputControlGroupConfig(

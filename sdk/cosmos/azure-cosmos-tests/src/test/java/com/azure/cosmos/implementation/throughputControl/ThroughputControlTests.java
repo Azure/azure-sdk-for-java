@@ -212,7 +212,10 @@ public class ThroughputControlTests extends TestSuiteBase {
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControlPriorityLevel(OperationType operationType) {
         ThroughputControlGroupConfig groupConfig =
-            ThroughputControlGroupConfig.PriorityGroupConfig("group-" + UUID.randomUUID(), PriorityLevel.Low);
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-" + UUID.randomUUID())
+                .priorityLevel(PriorityLevel.Low)
+                .build();
 
         container.enableLocalThroughputControlGroup(groupConfig);
 

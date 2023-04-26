@@ -99,26 +99,4 @@ public final class ThroughputControlGroupConfig {
     public boolean continueOnInitError() {
         return continueOnInitError;
     }
-
-    /**
-     * Create a throughput control group configuration with PriorityLevel.
-     *
-     * PriorityLevel is used to determine which group will be throttled first when the total throughput of all groups exceeds the max throughput.
-     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
-     *
-     * Refer to https://aka.ms/CosmosDB/PriorityBasedExecution for more details.
-     *
-     * @param groupName throughput control group name.
-     * @param priorityLevel throughput control group priority level.
-     * @return the throughput control group configuration.
-     */
-    public static ThroughputControlGroupConfig priorityGroupConfig(String groupName, PriorityLevel priorityLevel) {
-        return new ThroughputControlGroupConfig(
-            groupName,
-            null,
-            1.0,
-            priorityLevel,
-            false,
-            false);
-    }
 }
