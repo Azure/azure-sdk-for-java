@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** Encapsulates all options that can be passed as parameters for scoring rule with BestWorkerMode. */

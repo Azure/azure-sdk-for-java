@@ -38,6 +38,7 @@
       --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
 
       --add-reads com.azure.core.test=ALL-UNNAMED
+      --add-opens com.azure.core.test/com.azure.core.test.http=org.junit.platform.commons
       --add-opens com.azure.core.test/com.azure.core.test.models=ALL-UNNAMED
       --add-opens com.azure.core.test/com.azure.core.test.implementation=org.junit.platform.commons
     </javaModulesSurefireArgLine>
@@ -51,6 +52,7 @@
      <javadoc.excludePackageNames>com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+    <surefireXmx>4g</surefireXmx>
   </properties>
 
   <dependencies>
