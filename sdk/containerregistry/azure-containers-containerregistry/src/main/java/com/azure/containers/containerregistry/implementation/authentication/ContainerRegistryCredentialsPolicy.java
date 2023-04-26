@@ -3,15 +3,11 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /**
@@ -34,22 +30,19 @@ import reactor.core.publisher.Mono;
  * Request Header: {Bearer acrTokenAccess}</p>
  */
 public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthenticationPolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryCredentialsPolicy.class);
-    private static final String BEARER = "Bearer";
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     public static final String SCOPES_PARAMETER = "scope";
     public static final String SERVICE_PARAMETER = "service";
-
-    private final ContainerRegistryTokenService tokenService;
+    private final ContainerRegistryTokenService acrCredential;
 
     /**
      * Creates an instance of ContainerRegistryCredentialsPolicy.
      *
      * @param tokenService the token generation service.
      */
-    public ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService) {
-        super(tokenService);
-        this.tokenService = tokenService;
+    public ContainerRegistryCredentialsPolicy(ContainerRegistryTokenService tokenService, String scope) {
+        super(tokenService, scope);
+        this.acrCredential = tokenService;
     }
 
     /**
@@ -60,59 +53,8 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
+        authorizeRequestSync(context);
         return Mono.empty();
-    }
-
-    /**
-     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
-     *
-     * @param context the HTTP pipeline context.
-     * @param tokenRequestContext the token request conext to be used for token acquisition.
-     * @return a {@link Mono} containing {@link Void}
-     */
-    @Override
-    public Mono<Void> setAuthorizationHeader(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
-        return tokenService.getToken(tokenRequestContext)
-            .doOnNext(token -> context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken())).then();
-    }
-
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
-        }
-
-        // Since we will need to replay this call, adding duplicate to make this replayable.
-        if (context.getHttpRequest().getBody() != null) {
-            context.getHttpRequest().setBody(context.getHttpRequest().getBody().map(buffer -> buffer.duplicate()));
-        }
-
-        HttpPipelineNextPolicy nextPolicy = next.clone();
-        return authorizeRequest(context)
-            .then(next.process())
-            .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                    return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
-                        if (retry) {
-                            return nextPolicy.process()
-                                .doFinally(ignored -> {
-                                    // Both Netty and OkHttp expect the requestBody to be closed after the connection is closed.
-                                    // Failure to do so results in memory leak.
-                                    // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                                    // we let the client close the connection after the stream read.
-                                    // This can cause potential leaks in the scenarios like above, where the policy
-                                    // may intercept the response and prevent it from reaching the client.
-                                    // Hence, the policy needs to ensure that the connection is closed.
-                                    httpResponse.close();
-                                });
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    });
-                }
-                return Mono.just(httpResponse);
-            });
     }
 
     /**
@@ -149,53 +91,10 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
      */
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-    }
-
-    /**
-     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
-     *
-     * @param context the HTTP pipeline context.
-     * @param tokenRequestContext the token request context to be used for token acquisition.
-     * @return a {@link Mono} containing {@link Void}
-     */
-    @Override
-    public void setAuthorizationHeaderSync(HttpPipelineCallContext context, TokenRequestContext tokenRequestContext) {
-        AccessToken token = tokenService.getTokenSync(tokenRequestContext);
-        context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token.getToken());
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw LOGGER.logExceptionAsError(
-                new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
+        String lastToken = acrCredential.getLastToken();
+        if (lastToken != null) {
+            context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + lastToken);
         }
-
-        // Since we will need to replay this call, adding duplicate to make this replayable.
-        if (context.getHttpRequest().getBody() != null) {
-            context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
-        }
-
-        HttpPipelineNextSyncPolicy nextPolicy = next.clone();
-        authorizeRequestSync(context);
-        HttpResponse httpResponse = next.processSync();
-        String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
-        if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-            if (authorizeRequestOnChallengeSync(context, httpResponse)) {
-                // Both Netty and OkHttp expect the requestBody to be closed after the connection is closed.
-                // Failure to do so results in memory leak.
-                // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                // we let the client close the connection after the stream read.
-                // This can cause potential leaks in the scenarios like above, where the policy
-                // may intercept the response and prevent it from reaching the client.
-                // Hence, the policy needs to ensure that the connection is closed.
-                httpResponse.close();
-                return nextPolicy.processSync();
-            } else {
-                return httpResponse;
-            }
-        }
-        return httpResponse;
     }
 
     /**

@@ -12,8 +12,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the AzureCommunicationRoutingService type. */
-public final class AzureCommunicationRoutingServiceImpl {
+/** Initializes a new instance of the AzureCommunicationServices type. */
+public final class AzureCommunicationServicesImpl {
     /** The endpoint of the Azure Communication resource. */
     private final String endpoint;
 
@@ -87,12 +87,12 @@ public final class AzureCommunicationRoutingServiceImpl {
     }
 
     /**
-     * Initializes an instance of AzureCommunicationRoutingService client.
+     * Initializes an instance of AzureCommunicationServices client.
      *
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoutingServiceImpl(String endpoint, String apiVersion) {
+    AzureCommunicationServicesImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -103,25 +103,25 @@ public final class AzureCommunicationRoutingServiceImpl {
     }
 
     /**
-     * Initializes an instance of AzureCommunicationRoutingService client.
+     * Initializes an instance of AzureCommunicationServices client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoutingServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+    AzureCommunicationServicesImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
-     * Initializes an instance of AzureCommunicationRoutingService client.
+     * Initializes an instance of AzureCommunicationServices client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoutingServiceImpl(
+    AzureCommunicationServicesImpl(
             HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

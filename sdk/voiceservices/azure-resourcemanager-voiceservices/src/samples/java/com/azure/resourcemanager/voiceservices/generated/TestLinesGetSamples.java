@@ -12,9 +12,9 @@ public final class TestLinesGetSamples {
     /**
      * Sample code: GetTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void getTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void getTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.testLines().getWithResponse("testrg", "myname", "myline", com.azure.core.util.Context.NONE);
     }
 }

@@ -3,10 +3,10 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
-import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImplBuilder;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
+import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImpl;
+import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImplBuilder;
 import com.azure.communication.jobrouter.implementation.utils.BuilderHelper;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -284,11 +284,11 @@ public final class RouterAdministrationClientBuilder implements ConfigurationTra
      * @return RouterAdministrationAsyncClient instance
      */
     public RouterAdministrationAsyncClient buildAsyncClient() {
-        AzureCommunicationRoutingServiceImpl internalClient = createInternalClient();
+        AzureCommunicationServicesImpl internalClient = createInternalClient();
         return new RouterAdministrationAsyncClient(internalClient);
     }
 
-    private AzureCommunicationRoutingServiceImpl createInternalClient() {
+    private AzureCommunicationServicesImpl createInternalClient() {
         HttpPipeline pipeline;
         if (httpPipeline != null) {
             pipeline = httpPipeline;
@@ -308,7 +308,7 @@ public final class RouterAdministrationClientBuilder implements ConfigurationTra
                 LOGGER);
         }
 
-        AzureCommunicationRoutingServiceImplBuilder clientBuilder = new AzureCommunicationRoutingServiceImplBuilder()
+        AzureCommunicationServicesImplBuilder clientBuilder = new AzureCommunicationServicesImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline);
 
