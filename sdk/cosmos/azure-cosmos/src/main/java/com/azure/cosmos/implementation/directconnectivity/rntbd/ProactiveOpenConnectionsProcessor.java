@@ -157,6 +157,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
                 .doOnError(throwable -> {
                     logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
+                    // continue opening connections
                     this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
                 })
                 .flatMap(openConnectionTaskToResponse -> {
@@ -195,6 +196,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 }, true)
                 .doOnError(throwable -> {
                     logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
+                    // continue opening connections
                     this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
                 })
                 .subscribe();
