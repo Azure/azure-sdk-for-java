@@ -27,10 +27,14 @@ import java.util.List;
  */
 @ServiceClient(builder = BlobBatchClientBuilder.class)
 public final class BlobBatchClient {
-    final BlobBatchAsyncClient client;
+    private final BlobBatchAsyncClient client;
 
     BlobBatchClient(BlobBatchAsyncClient client) {
         this.client = client;
+    }
+
+    BlobBatchAsyncClient getClient() {
+        return client;
     }
 
     /**

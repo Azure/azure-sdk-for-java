@@ -50,7 +50,7 @@ public class BuilderTests {
             .buildClient();
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(serviceClient).buildClient();
-        HttpPipeline pipeline = batchClient.client.client.getHttpPipeline();
+        HttpPipeline pipeline = batchClient.getClient().getClient().getHttpPipeline();
 
         assertPipelineAndRequest(pipeline, request(serviceClient.getAccountUrl()));
     }
@@ -65,7 +65,7 @@ public class BuilderTests {
             .buildClient();
 
         BlobBatchClient batchClient = new BlobBatchClientBuilder(containerClient).buildClient();
-        HttpPipeline pipeline = batchClient.client.client.getHttpPipeline();
+        HttpPipeline pipeline = batchClient.getClient().getClient().getHttpPipeline();
 
         assertPipelineAndRequest(pipeline, request(containerClient.getBlobContainerUrl()));
     }
