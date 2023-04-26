@@ -38,8 +38,6 @@ public abstract class AzureProfileOptionsAdapter implements AzureProfileOptionsP
                 return AzureEnvironmentProperties.AZURE_CHINA;
             case AZURE_US_GOVERNMENT:
                 return AzureEnvironmentProperties.AZURE_US_GOVERNMENT;
-            case AZURE_GERMANY:
-                return AzureEnvironmentProperties.AZURE_GERMANY;
             case AZURE:
                 return AzureEnvironmentProperties.AZURE;
             default:

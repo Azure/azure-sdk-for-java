@@ -54,9 +54,9 @@ class EventHubsProducerPropertiesTests {
 
     @Test
     void domainNameConfigureAsCloud() {
-        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, producerProperties.getProfile().getCloudType());
-        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(), producerProperties.getDomainName());
+        producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, producerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(), producerProperties.getDomainName());
     }
 
     @Test
