@@ -58,11 +58,6 @@ generic-response-type: true
 stream-style-serialization: true
 required-fields-as-ctor-args: true
 include-read-only-in-constructor-args: true
-custom-package-info-descriptions:
-  com.azure.security.keyvault.administration.implementation.models: 'Package containing the data models for KeyVaultAccessControlClient, KeyVaultBackupClient, and KeyVaultSettingsClient. The key vault client performs cryptographic key operations and vault operations against the Key Vault service.'
-  com.azure.security.keyvault.administration.implementation: 'Package containing the implementations for KeyVaultAccessControlClient, KeyVaultBackupClient, and KeyVaultSettingsClient. The key vault client performs cryptographic key operations and vault operations against the Key Vault service.'
-  com.azure.security.keyvault.administration.models: 'Package containing classes used by {@link com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient} and {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient} to perform access control operations on Azure Key Vault resources, as well as classes used by {@link com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient} and {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} to perform backup and restore operations on Azure Key Vault keys.'
-  com.azure.security.keyvault.administration: 'Package containing classes for creating clients {@link com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient} and {@link com.azure.security.keyvault.administration.KeyVaultAccessControlClient} that perform access control operations on Azure Key Vault resources, as well as clients {@link com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient} and {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} that perform backup and restore operations on Azure Key Vault keys.'
 ```
 
 ### Tag: rbac
@@ -93,6 +88,7 @@ These settings apply only when `--tag=backuprestore` is specified on the command
 ``` yaml $(tag) == 'backuprestore'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/backuprestore.json
 title: KeyVaultBackupClient
+customization-class: src/main/java/BackupRestoreCustomizations.java
 ```
 
 ### Tag: settings
@@ -102,6 +98,7 @@ These settings apply only when `--tag=settings` is specified on the command line
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/settings.json
 title: KeyVaultSettingsClient
 custom-types: KeyVaultSettingType
+customization-class: src/main/java/SettingsCustomizations.java
 ```
 
 #### Rename SettingTypeEnum to KeyVaultSettingType
