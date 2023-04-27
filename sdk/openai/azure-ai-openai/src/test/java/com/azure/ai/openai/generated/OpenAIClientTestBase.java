@@ -38,21 +38,25 @@ abstract class OpenAIClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         OpenAIClientBuilder openAIClientbuilder =
                 new OpenAIClientBuilder()
-                        .endpoint(interceptorManager.isPlaybackMode() ? "https://localhost:8080"
-                            : Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             openAIClientbuilder
+                .endpoint("https://localhost:8080")
                 .httpClient(interceptorManager.getPlaybackClient())
                 .credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
             openAIClientbuilder
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT",
+                    "https://localhost:8080"))
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
 //                    .credential(new DefaultAzureCredentialBuilder().build()); // Uncomment it if using AAD
         } else if (getTestMode() == TestMode.LIVE) {
-            openAIClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            openAIClientbuilder
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT",
+                    "https://localhost:8080"))
+                .credential(new DefaultAzureCredentialBuilder().build());
         }
         openAIClient = openAIClientbuilder.buildClient();
         openAIAsyncClient = openAIClientbuilder.buildAsyncClient();
