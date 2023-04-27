@@ -3,8 +3,8 @@
 ## 1.0.0-beta.2 (Unreleased)
 
 ### Features Added
-- Continuous Dtmf Detection
-- Send Dtmf
+- Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
+- Send DTMF tones to a participant in the call
 
 ### Breaking Changes
 

@@ -128,7 +128,7 @@ public final class CallMedia {
 
 
     /**
-     * Send Dtmf tones
+     * Sends Dtmf tones
      * @param targetParticipant the target participant
      * @param tones tones to be sent
      * @param operationContext operationContext (pass null if not applicable)
@@ -139,7 +139,7 @@ public final class CallMedia {
     }
 
     /**
-     * Send Dtmf tones
+     * Sends Dtmf tones
      * @param targetParticipant the target participant
      * @param tones tones to be sent
      * @param operationContext operationContext (pass null if not applicable)
