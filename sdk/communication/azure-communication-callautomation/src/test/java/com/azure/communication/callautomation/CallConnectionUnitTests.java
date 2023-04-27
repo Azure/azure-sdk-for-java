@@ -19,7 +19,7 @@ import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -115,7 +115,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        CallParticipant callParticipant = callConnection.getParticipant(CALL_CALLER_ID);
+        CallParticipant callParticipant = callConnection.getParticipant(USER_1);
 
         assertNotNull(callParticipant);
         assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) callParticipant.getIdentifier()).getId());
@@ -129,7 +129,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(CALL_CALLER_ID, Context.NONE);
+        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(USER_1, Context.NONE);
 
         assertNotNull(callParticipantResponse);
         assertEquals(200, callParticipantResponse.getStatusCode());
@@ -182,7 +182,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
-        TransferCallResult transferCallResult = callConnection.transferToParticipantCall(callInvite);
+        TransferCallResult transferCallResult = callConnection.transferCallToParticipant(callInvite);
 
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
@@ -198,8 +198,8 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             .getCallConnection(CALL_CONNECTION_ID);
 
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
-        Response<TransferCallResult> transferCallResultResponse = callConnection.transferToParticipantCallWithResponse(
-            new TransferToParticipantCallOptions(callInvite)
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
+            new TransferCallToParticipantOptions(callInvite)
                 .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
 
         assertNotNull(transferCallResultResponse);

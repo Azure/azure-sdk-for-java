@@ -11,7 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.voiceservices.VoiceservicesManager;
+import com.azure.resourcemanager.voiceservices.VoiceServicesManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -48,8 +48,8 @@ public final class CommunicationsGatewaysDeleteMockTests {
                             return Mono.just(httpResponse);
                         }));
 
-        VoiceservicesManager manager =
-            VoiceservicesManager
+        VoiceServicesManager manager =
+            VoiceServicesManager
                 .configure()
                 .withHttpClient(httpClient)
                 .authenticate(

@@ -425,7 +425,7 @@ public final class ContainerRegistryContentAsyncClient {
             .createManifestWithResponseAsync(
                 repositoryName,
                 tagOrDigest,
-                Flux.just(data),
+                BinaryData.fromByteBuffer(data),
                 data.remaining(),
                 manifestMediaType.toString(),
                 context)
