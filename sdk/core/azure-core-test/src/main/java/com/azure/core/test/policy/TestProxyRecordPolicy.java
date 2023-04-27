@@ -43,17 +43,21 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
+    private final boolean skipRecordingRequestBody;
     private String xRecordingId;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
+    public static final String RECORD_MODE = "record";
 
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      */
-    public TestProxyRecordPolicy(HttpClient httpClient) {
+    public TestProxyRecordPolicy(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
+        this.skipRecordingRequestBody = skipRecordingRequestBody;
         this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
@@ -113,22 +117,42 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         }
     }
 
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, "record");
-        HttpResponse response = next.processSync();
+    /**
+     * Method is invoked before the request is sent.
+     *
+     * @param context The request context.
+     */
+    private void beforeSendingRequest(HttpPipelineCallContext context) {
+        TestProxyUtils.changeHeaders(context.getHttpRequest(), proxyUrl, xRecordingId, RECORD_MODE, skipRecordingRequestBody);
+    }
+
+    /**
+     * Method is invoked after the response is received.
+     *
+     * @param response The response received.
+     * @return The transformed response.
+     */
+    private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
         return TestProxyUtils.revertUrl(response);
     }
 
     @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        beforeSendingRequest(context);
+        HttpResponse response = next.processSync();
+        return afterReceivedResponse(response);
+    }
+
+    @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        HttpRequest request = context.getHttpRequest();
-        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "record");
-        return next.process().map(response -> {
-            TestProxyUtils.checkForTestProxyErrors(response);
-            return TestProxyUtils.revertUrl(response);
-        });
+        return Mono.fromCallable(
+                () -> {
+                    beforeSendingRequest(context);
+                    return next;
+                })
+            .flatMap(ignored -> next.process())
+            .map(this::afterReceivedResponse);
     }
 
     /**

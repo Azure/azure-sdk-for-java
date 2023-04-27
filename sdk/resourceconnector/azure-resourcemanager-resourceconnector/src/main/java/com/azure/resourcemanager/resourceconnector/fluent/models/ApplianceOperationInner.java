@@ -4,11 +4,11 @@
 
 package com.azure.resourcemanager.resourceconnector.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Appliances operation. */
-@Fluent
+@Immutable
 public final class ApplianceOperationInner {
     /*
      * Describes the properties of an Appliances Operation Value Display.
@@ -33,6 +33,10 @@ public final class ApplianceOperationInner {
      */
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
+
+    /** Creates an instance of ApplianceOperationInner class. */
+    public ApplianceOperationInner() {
+    }
 
     /**
      * Get the innerDisplay property: Describes the properties of an Appliances Operation Value Display.

@@ -31,8 +31,8 @@ import reactor.core.publisher.Mono;
  * commands below:</p>
  *
  * <ol>
- *     <li>Run "azd login" in Azure Developer CLI to authenticate interactively as a user.</li>
- *     <li>Run "azd login --client-id {@code clientID} --client-secret {@code clientSecret}
+ *     <li>Run "azd auth login" in Azure Developer CLI to authenticate interactively as a user.</li>
+ *     <li>Run "azd auth login --client-id {@code clientID} --client-secret {@code clientSecret}
  *     --tenant-id {@code tenantID}" to authenticate as a service principal.</li>
  * </ol>
  *

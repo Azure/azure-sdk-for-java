@@ -1,9 +1,19 @@
 # Release History
 
-## 1.1.13 (2023-04-12)
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
 
 ### Other Changes
 - Integrated sync stack workflow for synchronous APIs
+
+## 1.1.13 (2023-04-21)
+
+### Other Changes
 
 #### Dependency Updates
 
