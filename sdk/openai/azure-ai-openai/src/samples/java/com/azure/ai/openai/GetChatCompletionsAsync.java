@@ -30,6 +30,7 @@ public class GetChatCompletionsAsync {
     public static void main(String[] args) throws InterruptedException  {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
+        String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -42,9 +43,9 @@ public class GetChatCompletionsAsync {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
 
-        client.getChatCompletions("gpt-35-turbo", new ChatCompletionsOptions(chatMessages)).subscribe(
+        client.getChatCompletions(deploymentOrModelId, new ChatCompletionsOptions(chatMessages)).subscribe(
             chatCompletions -> {
-                System.out.printf("Mode ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+                System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
                 for (ChatChoice choice : chatCompletions.getChoices()) {
                     ChatMessage message = choice.getMessage();
                     System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
@@ -62,6 +63,12 @@ public class GetChatCompletionsAsync {
             () -> System.out.println("Completed called getChatCompletions."));
 
 
-        TimeUnit.MILLISECONDS.sleep(10000);
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException ignored) {
+        }
     }
 }

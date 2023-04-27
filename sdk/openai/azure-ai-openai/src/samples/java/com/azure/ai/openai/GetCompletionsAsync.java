@@ -24,9 +24,10 @@ public class GetCompletionsAsync {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) throws InterruptedException  {
+    public static void main(String[] args) {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
+        String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -36,9 +37,9 @@ public class GetCompletionsAsync {
         List<String> prompt = new ArrayList<>();
         prompt.add("Say this is a test");
 
-        client.getCompletions("text-davinci-003", new CompletionsOptions(prompt)).subscribe(
+        client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt)).subscribe(
             completions -> {
-                System.out.printf("Mode ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+                System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
                 for (Choice choice : completions.getChoices()) {
                     System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
                 }
@@ -50,6 +51,14 @@ public class GetCompletionsAsync {
             },
             error -> System.err.println("There was an error getting completions." + error),
             () -> System.out.println("Completed called getCompletions."));
-        TimeUnit.MILLISECONDS.sleep(1000);
+
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException ignored) {
+        }
     }
 }

@@ -30,7 +30,7 @@ import static com.azure.ai.openai.generated.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-abstract class OpenAIClientTestBase extends TestProxyTestBase {
+public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     protected OpenAIClient openAIClient;
     protected OpenAIAsyncClient openAIAsyncClient;
 

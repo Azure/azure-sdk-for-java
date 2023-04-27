@@ -30,6 +30,7 @@ public class GetChatCompletions {
     public static void main(String[] args) {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
+        String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -42,9 +43,9 @@ public class GetChatCompletions {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
 
-        ChatCompletions chatCompletions = client.getChatCompletions("gpt-35-turbo", new ChatCompletionsOptions(chatMessages));
+        ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
 
-        System.out.printf("Mode ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+        System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
         for (ChatChoice choice : chatCompletions.getChoices()) {
             ChatMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());

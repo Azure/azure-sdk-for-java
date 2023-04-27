@@ -27,6 +27,7 @@ public class GetCompletions {
     public static void main(String[] args) {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
+        String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -36,9 +37,9 @@ public class GetCompletions {
         List<String> prompt = new ArrayList<>();
         prompt.add("Say this is a test");
 
-        Completions completions = client.getCompletions("text-davinci-003", new CompletionsOptions(prompt));
+        Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt));
 
-        System.out.printf("Mode ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+        System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
         for (Choice choice : completions.getChoices()) {
             System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
         }
