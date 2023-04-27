@@ -27,8 +27,9 @@ module com.azure.cosmos {
     //  This is only required by guava shaded libraries
     requires java.logging;
 	requires HdrHistogram;
+    requires commons.math3;
 
-	// public API surface area
+    // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;

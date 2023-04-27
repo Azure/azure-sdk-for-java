@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.implementation.Configs;
 
 import java.time.Duration;
 
@@ -26,6 +27,9 @@ public class CosmosEndToEndOperationLatencyPolicyConfig {
 
     private final boolean isEnabled;
     private final Duration endToEndOperationTimeout;
+
+    private boolean isSpeculationEnabled = Configs.isSpeculationEnabled();
+    private int speculationThresholdInMs = Configs.speculationThreshold();
 
     /**
      * Constructor

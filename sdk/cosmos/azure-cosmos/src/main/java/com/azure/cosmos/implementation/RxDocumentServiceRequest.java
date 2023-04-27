@@ -1032,7 +1032,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
-        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(), this.resourceId, true, this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(rxDocumentServiceRequest.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
@@ -1048,7 +1048,14 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
+        rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
+        rxDocumentServiceRequest.requestContext = this.requestContext.clone();
         return rxDocumentServiceRequest;
+    }
+
+    // Used by clone
+    private static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext, OperationType operationType, String resourceId, boolean b, ResourceType resourceType, Map<String, String> headers) {
+        return new RxDocumentServiceRequest(clientContext, operationType, resourceId,resourceType, (ByteBuffer) null, headers, b, AuthorizationTokenType.PrimaryMasterKey) ;
     }
 
     public void dispose() {

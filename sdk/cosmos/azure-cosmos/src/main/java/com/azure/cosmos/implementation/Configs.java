@@ -20,6 +20,8 @@ import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
+    private static final String SPECULATION_ENABLED = "COSMOS_SPECULATION_ENABLED";
+    private static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     private final SslContext sslContext;
 
     // The names we use are consistent with the:
@@ -289,6 +291,14 @@ public class Configs {
         return getJVMConfigAsInt(
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME,
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
+    }
+
+    public static boolean isSpeculationEnabled() {
+        return getJVMConfigAsBoolean(SPECULATION_ENABLED, false);
+    }
+
+    public static int speculationThreshold() {
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD, 200);
     }
 
     public static boolean shouldSwitchOffIOThreadForResponse() {

@@ -2262,6 +2262,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+                options.getCosmosEndToEndLatencyPolicyConfig() != null ? options.getCosmosEndToEndLatencyPolicyConfig()
+                    : this.cosmosEndToEndOperationLatencyPolicyConfig;
+            request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -2269,9 +2273,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-                options.getCosmosEndToEndLatencyPolicyConfig() != null ? options.getCosmosEndToEndLatencyPolicyConfig()
-                    : this.cosmosEndToEndOperationLatencyPolicyConfig;
+
 
             return requestObs.flatMap(req -> {
 

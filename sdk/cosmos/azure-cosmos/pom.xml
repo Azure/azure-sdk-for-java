@@ -89,6 +89,12 @@ Licensed under the MIT License.
       <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.6.1</version>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram -->
     <dependency>
       <groupId>org.hdrhistogram</groupId>
