@@ -7,7 +7,7 @@
 ### Spring Cloud Azure Dependencies (BOM)
 
 #### Dependency Updates
-- Upgrade `azure-sdk-bom` to 1.2.11.
+- Upgrade `azure-sdk-bom` to 1.2.12.
 - Upgrade `azure-resourcemanager` to 2.25.0.
 
 #### Features Added
