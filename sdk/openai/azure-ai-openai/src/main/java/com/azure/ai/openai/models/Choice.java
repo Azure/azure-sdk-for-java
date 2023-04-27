@@ -4,7 +4,6 @@
 
 package com.azure.ai.openai.models;
 
-import com.azure.ai.openai.implementation.ChoicePropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,38 +38,6 @@ public final class Choice {
      */
     @JsonProperty(value = "finish_reason", required = true)
     private CompletionsFinishReason finishReason;
-
-
-    static {
-        ChoicePropertiesHelper.setAccessor(new ChoicePropertiesHelper.ChoiceAccessor() {
-            @Override
-            public void setText(Choice choice, String text) {
-                choice.setText(text);
-            }
-
-            @Override
-            public void setIndex(Choice choice, int index) {
-                choice.setIndex(index);
-            }
-
-            @Override
-            public void setLogprobs(Choice choice, CompletionsLogProbabilityModel logprobs) {
-                choice.setLogprobs(logprobs);
-            }
-
-            @Override
-            public void setFinishReason(Choice choice, CompletionsFinishReason finishReason) {
-                choice.setFinishReason(finishReason);
-            }
-        });
-    }
-
-    /**
-     * Default constructor for assigning private properties internally
-     */
-    public Choice() {
-
-    }
 
     /**
      * Creates an instance of Choice class.
@@ -126,21 +93,5 @@ public final class Choice {
      */
     public CompletionsFinishReason getFinishReason() {
         return this.finishReason;
-    }
-
-    private void setText(String text) {
-        this.text = text;
-    }
-
-    private void setIndex(int index) {
-        this.index = index;
-    }
-
-    private void setLogprobs(CompletionsLogProbabilityModel logprobs) {
-        this.logprobs = logprobs;
-    }
-
-    private void setFinishReason(CompletionsFinishReason finishReason) {
-        this.finishReason = finishReason;
     }
 }

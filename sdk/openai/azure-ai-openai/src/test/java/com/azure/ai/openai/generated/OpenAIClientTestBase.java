@@ -8,13 +8,10 @@ import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.ai.openai.implementation.ChoicePropertiesHelper;
-import com.azure.ai.openai.implementation.CompletionsPropertiesHelper;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
-import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -31,7 +28,6 @@ import java.util.function.BiConsumer;
 
 import static com.azure.ai.openai.generated.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 abstract class OpenAIClientTestBase extends TestProxyTestBase {
@@ -72,55 +68,30 @@ abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
-    static void assertCompletions(Completions expected, Completions actual) {
-        if (expected == actual) {
-            return;
-        } else if (expected == null || actual == null) {
-            assertFalse(true, "One of input completions is null");
-        }
+    static void assertCompletions(int[] index, CompletionsLogProbabilityModel[] logprobs,
+        CompletionsFinishReason[] finishReason, Completions actual) {
 
         assertNotNull(actual.getId());
 
-        assertChoices(expected.getChoices(), actual.getChoices());
+        assertChoices(index, logprobs, finishReason, actual.getChoices());
         // TODO: assert Usage
     }
 
-    static void assertChoices(List<Choice> expected, List<Choice> actual) {
-        if (expected == actual) {
-            return;
-        } else if (expected == null || actual == null) {
-            assertFalse(true, "One of input list of choice is null");
-        }
+    static void assertChoices(int[] index, CompletionsLogProbabilityModel[] logprobs,
+        CompletionsFinishReason[] finishReason, List<Choice> actual) {
+        assertEquals(index.length, actual.size());
 
-        assertEquals(expected.size(), actual.size());
-
-        for (int i = 0; i < expected.size(); i++) {
-            assertChoice(expected.get(i), actual.get(i));
+        for (int i = 0; i < actual.size(); i++) {
+            assertChoice(index[i], null, null, actual.get(i));
         }
     }
 
-    static void assertChoice(Choice expected, Choice actual) {
+    static void assertChoice(int index, CompletionsLogProbabilityModel logprobs,
+                             CompletionsFinishReason finishReason, Choice actual) {
         assertNotNull(actual.getText());
-        assertEquals(expected.getIndex(), actual.getIndex());
+        assertNotNull(actual.getFinishReason());
+        assertEquals(index, actual.getIndex());
+
         // TODO: add more assertions for the additional properties
-    }
-
-    Completions getExpectedCompletion(String id, int created, List<Choice> choices, CompletionsUsage usage) {
-        Completions completions = new Completions();
-        CompletionsPropertiesHelper.setText(completions, id);
-        CompletionsPropertiesHelper.setCreated(completions, created);
-        CompletionsPropertiesHelper.setChoices(completions, choices);
-        CompletionsPropertiesHelper.setUsage(completions, usage);
-        return completions;
-    }
-
-    Choice getExpectedChoice(String text, int index, CompletionsLogProbabilityModel logprobs,
-                             CompletionsFinishReason finishReason) {
-        Choice choice = new Choice();
-        ChoicePropertiesHelper.setText(choice, text);
-        ChoicePropertiesHelper.setIndex(choice, 0);
-        ChoicePropertiesHelper.setLogprobs(choice, logprobs);
-        ChoicePropertiesHelper.setFinishReason(choice, finishReason);
-        return choice;
     }
 }

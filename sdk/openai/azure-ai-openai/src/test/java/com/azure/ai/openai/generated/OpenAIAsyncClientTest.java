@@ -11,9 +11,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.util.Arrays;
-
 import static com.azure.ai.openai.generated.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIAsyncClientTest.class);
@@ -22,11 +21,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(openAIAsyncClient.getCompletions(deploymentId, new CompletionsOptions(prompt)))
-                .assertNext(completions -> {
-                    assertCompletions(getExpectedCompletion("dumpId", 1999,
-                            Arrays.asList(getExpectedChoice("dumpText", 0, null, null)),
-                            null),
-                        completions);
+                .assertNext(resultCompletions -> {
+                    assertNotNull(resultCompletions.getUsage());
+                    assertCompletions(new int[]{0}, null, null, resultCompletions);
                 })
                 .verifyComplete();
         });

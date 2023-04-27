@@ -11,9 +11,8 @@ import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
-
 import static com.azure.ai.openai.generated.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OpenAIClientTest extends OpenAIClientTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientTest.class);
@@ -23,10 +22,8 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     public void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         getCompletionsRunner((deploymentId, prompt) -> {
             Completions resultCompletions = openAIClient.getCompletions(deploymentId, new CompletionsOptions(prompt));
-            assertCompletions(getExpectedCompletion("dumpId", 1999,
-                    Arrays.asList(getExpectedChoice("dumpText", 0, null, null)),
-                    null),
-                resultCompletions);
+            assertNotNull(resultCompletions.getUsage());
+            assertCompletions(new int[]{0}, null, null, resultCompletions);
         });
     }
 }

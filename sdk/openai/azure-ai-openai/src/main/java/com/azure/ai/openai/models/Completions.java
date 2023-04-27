@@ -4,7 +4,6 @@
 
 package com.azure.ai.openai.models;
 
-import com.azure.ai.openai.implementation.CompletionsPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -43,37 +42,6 @@ public final class Completions {
      */
     @JsonProperty(value = "usage", required = true)
     private CompletionsUsage usage;
-
-    static {
-        CompletionsPropertiesHelper.setAccessor(new CompletionsPropertiesHelper.CompletionsAccessor() {
-            @Override
-            public void setId(Completions completions, String id) {
-                completions.setId(id);
-            }
-
-            @Override
-            public void setCreated(Completions completions, int created) {
-                completions.setCreated(created);
-            }
-
-            @Override
-            public void setChoices(Completions completions, List<Choice> choices) {
-                completions.setChoices(choices);
-            }
-
-            @Override
-            public void setUsage(Completions completions, CompletionsUsage usage) {
-                completions.setUsage(usage);
-            }
-        });
-    }
-
-    /**
-     * Default constructor for assigning private properties internally
-      */
-    public Completions() {
-
-    }
 
     /**
      * Creates an instance of Completions class.
@@ -133,21 +101,5 @@ public final class Completions {
      */
     public CompletionsUsage getUsage() {
         return this.usage;
-    }
-
-    private void setId(String id) {
-        this.id = id;
-    }
-
-    private void setCreated(int created) {
-        this.created = created;
-    }
-
-    private void setChoices(List<Choice> choices) {
-        this.choices = choices;
-    }
-
-    private void setUsage(CompletionsUsage usage) {
-        this.usage = usage;
     }
 }
