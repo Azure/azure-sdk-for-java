@@ -2,6 +2,17 @@
 
 ## 4.8.0-beta.1 (unreleased)
 
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Breaking Changes
+- Deprecated `CloudType.AZURE_GERMANY`, `JDBC_SCOPE_AZURE_GERMANY`, `REDIS_SCOPE_AZURE_GERMANY` and remove `AzureEnvironmentProperties.AZURE_GERMANY` [#34682](https://github.com/Azure/azure-sdk-for-java/pull/34682).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Deprecated `SERVICE_BUS_SCOPE_AZURE_GERMANY` [#34682](https://github.com/Azure/azure-sdk-for-java/pull/34682).
 
 ## 4.7.0 (2023-03-23)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.9. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>9) should be supported, but they aren't tested with this release.)
