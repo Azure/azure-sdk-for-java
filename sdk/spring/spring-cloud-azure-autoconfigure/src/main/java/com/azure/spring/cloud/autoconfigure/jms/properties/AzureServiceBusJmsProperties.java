@@ -31,7 +31,7 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
     private static final String SERVICE_BUS_SCOPE_AZURE = "https://servicebus.azure.net/.default";
     private static final String SERVICE_BUS_SCOPE_AZURE_CHINA = SERVICE_BUS_SCOPE_AZURE;
     /**
-     * @deprecated  AZURE_GERMANY is deprecated. Please use other Service Bus scopes.
+     * @deprecated AZURE_GERMANY is deprecated. Please use other Service Bus scopes.
      */
     @Deprecated
     private static final String SERVICE_BUS_SCOPE_AZURE_GERMANY = SERVICE_BUS_SCOPE_AZURE;
