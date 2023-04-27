@@ -4,40 +4,127 @@
 
 package com.azure.ai.openai.generated;
 
+import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.OpenAIServiceVersion;
+import com.azure.ai.openai.implementation.ChoicePropertiesHelper;
+import com.azure.ai.openai.implementation.CompletionsPropertiesHelper;
+import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-class OpenAIClientTestBase extends TestBase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+abstract class OpenAIClientTestBase extends TestProxyTestBase {
     protected OpenAIClient openAIClient;
+    protected OpenAIAsyncClient openAIAsyncClient;
 
     @Override
     protected void beforeTest() {
         OpenAIClientBuilder openAIClientbuilder =
                 new OpenAIClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             openAIClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             openAIClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+//                    .credential(new DefaultAzureCredentialBuilder().build()); // Uncomment it if using AAD
         } else if (getTestMode() == TestMode.LIVE) {
             openAIClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         openAIClient = openAIClientbuilder.buildClient();
+        openAIAsyncClient = openAIClientbuilder.buildAsyncClient();
+    }
+
+    @Test
+    public abstract void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
+        String deploymentId = "text-davinci-003";
+        List<String> prompt = new ArrayList<>();
+        prompt.add("Say this is a test");
+        testRunner.accept(deploymentId, prompt);
+    }
+
+    static void assertCompletions(Completions expected, Completions actual) {
+        if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertFalse(true, "One of input completions is null");
+        }
+
+        assertNotNull(actual.getId());
+
+        assertChoices(expected.getChoices(), actual.getChoices());
+        // TODO: assert Usage
+    }
+
+    static void assertChoices(List<Choice> expected, List<Choice> actual) {
+        if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertFalse(true, "One of input list of choice is null");
+        }
+
+        assertEquals(expected.size(), actual.size());
+
+        for (int i = 0; i < expected.size(); i++) {
+            assertChoice(expected.get(i), actual.get(i));
+        }
+    }
+
+    static void assertChoice(Choice expected, Choice actual) {
+        assertNotNull(actual.getText());
+        assertEquals(expected.getIndex(), actual.getIndex());
+        // TODO: add more assertions for the additional properties
+    }
+
+    Completions getExpectedCompletion(String id, int created, List<Choice> choices, CompletionsUsage usage) {
+        Completions completions = new Completions();
+        CompletionsPropertiesHelper.setText(completions, id);
+        CompletionsPropertiesHelper.setCreated(completions, created);
+        CompletionsPropertiesHelper.setChoices(completions, choices);
+        CompletionsPropertiesHelper.setUsage(completions, usage);
+        return completions;
+    }
+
+    Choice getExpectedChoice(String text, int index, CompletionsLogProbabilityModel logprobs,
+                             CompletionsFinishReason finishReason) {
+        Choice choice = new Choice();
+        ChoicePropertiesHelper.setText(choice, text);
+        ChoicePropertiesHelper.setIndex(choice, 0);
+        ChoicePropertiesHelper.setLogprobs(choice, logprobs);
+        ChoicePropertiesHelper.setFinishReason(choice, finishReason);
+        return choice;
     }
 }
