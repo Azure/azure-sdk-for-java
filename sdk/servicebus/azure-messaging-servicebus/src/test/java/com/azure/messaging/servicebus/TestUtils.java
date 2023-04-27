@@ -82,7 +82,7 @@ public class TestUtils {
     static final int USE_CASE_SEND_SCHEDULED = 26;
     static final int USE_CASE_RECEIVE_AND_COMPLETE = 27;
     static final int USE_CASE_PEEK_MESSAGE = 28;
-
+    static final int USE_CASE_MULTIPLE_SESSIONS = 29;
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // An application property key to identify where in the stream this message was created.

@@ -97,6 +97,50 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
             .verify(Duration.ofMinutes(2));
     }
 
+
+    @ParameterizedTest
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    void sessionRolloverOnTimeout(MessagingEntityType entityType) {
+        // Arrange
+        final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS;
+        final String messageId = "session1";
+        final String contents = "Some-contents";
+        final int numberToSend = 5;
+
+        setSender(entityType, entityIndex);
+        final Disposable subscription = Flux.interval(Duration.ofMillis(500))
+            .take(numberToSend)
+            .flatMap(index -> {
+                final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
+                    .setSessionId(sessionId);
+                messagesPending.incrementAndGet();
+                return sender.sendMessage(message).thenReturn(index);
+            })
+            .subscribe(
+                number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
+                error -> logger.error("sessionId[{}] Error encountered.", sessionId, error),
+                () -> logger.info("sessionId[{}] Finished sending.", sessionId));
+
+        setReceiver(entityType, entityIndex, Function.identity());
+
+        // Act & Assert
+        StepVerifier.create(receiver.receiveMessages().concatMap(
+                receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)
+            ))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .assertNext(serviceBusReceivedMessage ->
+                assertMessageEquals(sessionId, messageId, contents, serviceBusReceivedMessage))
+            .thenCancel()
+            .verify(Duration.ofMinutes(2));
+    }
+
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
