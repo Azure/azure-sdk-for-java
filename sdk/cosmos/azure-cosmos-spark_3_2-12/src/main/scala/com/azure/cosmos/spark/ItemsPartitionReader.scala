@@ -39,6 +39,7 @@ private case class ItemsPartitionReader
     .CosmosQueryRequestOptionsHelper
     .getCosmosQueryRequestOptionsAccessor
     .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
+  ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
 
   private val operationContext = initializeOperationContext()
 

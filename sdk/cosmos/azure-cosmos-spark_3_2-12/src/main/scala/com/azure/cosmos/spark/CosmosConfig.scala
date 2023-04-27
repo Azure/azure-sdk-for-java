@@ -577,7 +577,8 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     maxItemCount: Int,
                                     prefetchBufferSize: Int,
                                     dedicatedGatewayRequestOptions: DedicatedGatewayRequestOptions,
-                                    customQuery: Option[CosmosParameterizedQuery])
+                                    customQuery: Option[CosmosParameterizedQuery],
+                                    throughputControlConfig: Option[CosmosThroughputControlConfig] = None)
 
 private object SchemaConversionModes extends Enumeration {
   type SchemaConversionMode = Value
@@ -665,6 +666,7 @@ private object CosmosReadConfig {
       result
     }
 
+    val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
 
     CosmosReadConfig(
       forceEventualConsistency.get,
@@ -682,7 +684,8 @@ private object CosmosReadConfig {
         }
       ),
       dedicatedGatewayRequestOptions,
-      customQuery)
+      customQuery,
+      throughputControlConfigOpt)
   }
 }
 
@@ -805,7 +808,8 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      bulkMaxPendingOperations: Option[Int] = None,
                                      pointMaxConcurrency: Option[Int] = None,
                                      maxConcurrentCosmosPartitions: Option[Int] = None,
-                                     patchConfigs: Option[CosmosPatchConfigs] = None)
+                                     patchConfigs: Option[CosmosPatchConfigs] = None,
+                                     throughputControlConfig: Option[CosmosThroughputControlConfig] = None)
 
 private object CosmosWriteConfig {
   private val DefaultMaxRetryCount = 10
@@ -955,6 +959,7 @@ private object CosmosWriteConfig {
     val maxRetryCountOpt = CosmosConfigEntry.parse(cfg, maxRetryCount)
     val bulkEnabledOpt = CosmosConfigEntry.parse(cfg, bulkEnabled)
     var patchConfigsOpt = Option.empty[CosmosPatchConfigs]
+    val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(cfg)
 
     assert(bulkEnabledOpt.isDefined)
 
@@ -978,7 +983,8 @@ private object CosmosWriteConfig {
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
       maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
-      patchConfigs = patchConfigsOpt)
+      patchConfigs = patchConfigsOpt,
+      throughputControlConfig = throughputControlConfigOpt    )
   }
 
   def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
