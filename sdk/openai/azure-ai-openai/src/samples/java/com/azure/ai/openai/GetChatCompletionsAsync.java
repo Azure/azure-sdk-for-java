@@ -39,7 +39,7 @@ public class GetChatCompletionsAsync {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Arrrr! Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
 
         client.getChatCompletions("gpt-35-turbo", new ChatCompletionsOptions(chatMessages)).subscribe(
