@@ -37,15 +37,6 @@ class ReceiverOptions {
     }
 
     /**
-     * Gets the {@code sessionIdleTimeout} TODO
-     *
-     * @return TODO
-     */
-    Duration getSessionIdleTimeout() {
-        return sessionIdleTimeout;
-    }
-
-    /**
      * Gets the {@code maxLockRenewDuration} for the message lock or session lock.
      *
      * @return the max lock duration for the message lock or session lock.
@@ -107,6 +98,15 @@ class ReceiverOptions {
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
+    }
+
+    /**
+     * Gets the {@code sessionIdleTimeout} to roll to another session if no messages could be received.
+     *
+     * @return the session idle timeout.
+     */
+    Duration getSessionIdleTimeout() {
+        return sessionIdleTimeout;
     }
 
     public boolean isEnableAutoComplete() {

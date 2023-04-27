@@ -62,7 +62,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
@@ -208,9 +207,7 @@ public final class ServiceBusClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
     private static final String LIBRARY_NAME;
     private static final String LIBRARY_VERSION;
-    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
-    private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofMinutes(1);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
     private final Object connectionLock = new Object();
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
@@ -1043,10 +1040,11 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Sets TODO
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * If not specified, the try timeout will be used.
          *
-         * @param sessionIdleTimeout TODO
-         *
+         * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
@@ -1250,7 +1248,7 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
-        private Duration sessionIdleTimeout = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private Duration sessionIdleTimeout = null;
         private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
@@ -1287,9 +1285,11 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Sets the TODO
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         * After this time has elapsed, the processor will close the session and attempt to process another session.
+         * If not specified, the try timeout will be used.
          *
-         * @param sessionIdleTimeout Session idle timeout. TODO
+         * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */

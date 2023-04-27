@@ -68,6 +68,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final List<Scheduler> schedulers;
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
+    private final Duration sessionIdleTimeout;
 
     /**
      * SessionId to receiver mapping.
@@ -107,6 +108,9 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.processor = EmitterProcessor.create(numberOfSchedulers, false);
         this.sessionReceiveSink = processor.sink();
         this.receiveLink = receiveLink;
+        this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
+            ? receiverOptions.getSessionIdleTimeout()
+            : connectionProcessor.getRetryOptions().getTryTimeout();
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
@@ -349,7 +353,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration, receiverOptions.getSessionIdleTimeout());
+                    maxSessionLockRenewDuration, sessionIdleTimeout);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()
