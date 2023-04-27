@@ -5,12 +5,9 @@
 package com.azure.ai.openai.models;
 
 import com.azure.ai.openai.implementation.ChoicePropertiesHelper;
-import com.azure.ai.openai.implementation.CompletionsPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
 
 /**
  * The representation of a single prompt completion as part of an overall completions request. Generally, `n` choices
@@ -68,6 +65,9 @@ public final class Choice {
         });
     }
 
+    /**
+     * Default constructor for assigning private properties internally
+     */
     public Choice() {
 
     }

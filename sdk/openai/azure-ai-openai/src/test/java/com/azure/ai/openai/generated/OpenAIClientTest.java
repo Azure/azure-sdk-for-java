@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.generated;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
@@ -12,8 +15,8 @@ import java.util.Arrays;
 
 import static com.azure.ai.openai.generated.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public class OpenAiClientTest extends OpenAIClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(OpenAiClientTest.class);
+public class OpenAIClientTest extends OpenAIClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientTest.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")

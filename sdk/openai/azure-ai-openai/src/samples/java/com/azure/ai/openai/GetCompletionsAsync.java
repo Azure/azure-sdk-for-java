@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,9 +6,9 @@ package com.azure.ai.openai.models;
 
 import com.azure.ai.openai.implementation.CompletionsPropertiesHelper;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -68,6 +68,9 @@ public final class Completions {
         });
     }
 
+    /**
+     * Default constructor for assigning private properties internally
+      */
     public Completions() {
 
     }

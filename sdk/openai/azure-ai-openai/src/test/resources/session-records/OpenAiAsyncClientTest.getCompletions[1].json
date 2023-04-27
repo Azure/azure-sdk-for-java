@@ -1,0 +1,60 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED//openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "REDACTED",
+        "Content-Length": "33",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Apr 2023 16:19:58 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "1804c50f-3512-4a11-ada3-139acbf6a07d"
+      },
+      "RequestBody": {
+        "prompt": [
+          "Say this is a test"
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Aicon-Correlation-Id": "c91fa1da-5b11-475e-91ba-460604a274c0",
+        "apim-request-id": "dc4ff049-88d2-4f9e-828d-549659f857fa",
+        "Cache-Control": "must-revalidate, no-cache",
+        "Content-Length": "300",
+        "Content-Type": "application/json",
+        "Date": "Thu, 27 Apr 2023 16:19:59 GMT",
+        "Openai-Model": "text-davinci-003",
+        "Openai-Processing-Ms": "730.9228",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Accel-Buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "X-Ms-Client-Request-Id": "1804c50f-3512-4a11-ada3-139acbf6a07d",
+        "x-ms-region": "East US",
+        "X-Request-ID": "bbcfa74b-ca4d-4ed8-b07f-a26af2ddc750"
+      },
+      "ResponseBody": {
+        "id": "cmpl-79ydbWb7XgnYSrjWN3KUjqfj3SRzF",
+        "object": "text_completion",
+        "created": 1682612399,
+        "model": "text-davinci-003",
+        "choices": [
+          {
+            "text": "\n\nThis is a test of my understanding.",
+            "index": 0,
+            "finish_reason": "stop",
+            "logprobs": null
+          }
+        ],
+        "usage": {
+          "completion_tokens": 10,
+          "prompt_tokens": 5,
+          "total_tokens": 15
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}
