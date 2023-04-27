@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Fixed issue where receiving messages from `ServiceBusSessionReceiverAsyncClient` would never complete. ([#34597](https://github.com/Azure/azure-sdk-for-java/issues/34597))
+- Fixed issue causing some messages to not be returned when calling peek on receiver client. 
 
 ### Other Changes
 
