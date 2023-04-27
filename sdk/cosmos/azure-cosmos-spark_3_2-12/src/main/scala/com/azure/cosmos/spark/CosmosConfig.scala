@@ -100,6 +100,7 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
+  val ThroughputControlPriorityLevel = "spark.cosmos.throughputControl.priorityLevel"
   val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
   val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
   val ThroughputControlGlobalControlRenewalIntervalInMS =
@@ -182,6 +183,7 @@ private[spark] object CosmosConfigNames {
     ThroughputControlName,
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
+    ThroughputControlPriorityLevel,
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
@@ -1290,6 +1292,13 @@ private object ChangeFeedStartFromModes extends Enumeration {
   val PointInTime: ChangeFeedStartFromModes.Value = Value("PointInTime")
 }
 
+private object PriorityLevels extends Enumeration {
+  type PriorityLevel = Value
+
+  val Low: PriorityLevels.Value = Value("Low")
+  val High: PriorityLevels.Value = Value("High")
+}
+
 private case class CosmosChangeFeedConfig
 (
   changeFeedMode: ChangeFeedMode,
@@ -1417,6 +1426,7 @@ private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAcco
                                                  groupName: String,
                                                  targetThroughput: Option[Int],
                                                  targetThroughputThreshold: Option[Double],
+                                                 priorityLevel: Option[PriorityLevel],
                                                  globalControlDatabase: Option[String],
                                                  globalControlContainer: Option[String],
                                                  globalControlRenewInterval: Option[Duration],
@@ -1466,6 +1476,12 @@ private object CosmosThroughputControlConfig {
         mandatory = false,
         parseFromStringFunction = targetThroughput => targetThroughput.toDouble,
         helpMessage = "Throughput control group target throughput threshold. The value should be between (0,1]. ")
+
+    private val priorityLevelSupplier = CosmosConfigEntry[PriorityLevel](
+        key = CosmosConfigNames.ThroughputControlPriorityLevel,
+        mandatory = false,
+        parseFromStringFunction = priorityLevel => CosmosConfigEntry.parseEnumeration(priorityLevel, PriorityLevels),
+        helpMessage = "Throughput control group priority level. The value can be High or Low. ")
 
     private val globalControlDatabaseSupplier = CosmosConfigEntry[String](
         key = CosmosConfigNames.ThroughputControlGlobalControlDatabase,
@@ -1517,6 +1533,7 @@ private object CosmosThroughputControlConfig {
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
             val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+            val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
             val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
             val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
             val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
@@ -1536,6 +1553,7 @@ private object CosmosThroughputControlConfig {
                 groupName.get,
                 targetThroughput,
                 targetThroughputThreshold,
+                priorityLevel,
                 globalControlDatabase,
                 globalControlContainer,
                 globalControlItemRenewInterval,

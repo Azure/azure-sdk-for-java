@@ -64,6 +64,9 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         if (throughputControlConfig.targetThroughputThreshold.isDefined) {
             groupConfigBuilder.targetThroughputThreshold(throughputControlConfig.targetThroughputThreshold.get)
         }
+        if (throughputControlConfig.priorityLevel.isDefined) {
+            groupConfigBuilder.priorityLevel(throughputControlConfig.priorityLevel.get)
+        }
 
         val globalThroughputControlConfigBuilder = throughputControlCacheItem.cosmosClient.createGlobalThroughputControlConfigBuilder(
             throughputControlConfig.globalControlDatabase.get,
@@ -122,6 +125,9 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                 (throughputControlConfig.targetThroughputThreshold.get * 10000 / instanceCount).ceil / 10000
             logInfo(s"Configure throughput control with throughput threshold $targetThroughputThresholdByExecutor")
             groupConfigBuilder.targetThroughputThreshold(targetThroughputThresholdByExecutor)
+        }
+        if (throughputControlConfig.priorityLevel.isDefined) {
+            groupConfigBuilder.priorityLevel(throughputControlConfig.priorityLevel.get)
         }
 
         // Currently CosmosDB data plane SDK does not support query database/container throughput by using AAD authentication
