@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Private Endpoint resource. */
+/**
+ * The Private Endpoint resource.
+ */
 @Immutable
 public final class PrivateEndpoint {
     /*
@@ -16,7 +18,9 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of PrivateEndpoint class. */
+    /**
+     * Creates an instance of PrivateEndpoint class.
+     */
     public PrivateEndpoint() {
     }
 

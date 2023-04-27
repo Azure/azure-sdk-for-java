@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** How the data that is collected should be combined over time. */
+/**
+ * How the data that is collected should be combined over time.
+ */
 @Fluent
 public final class ManagementEventAggregationCondition {
     /*
@@ -30,7 +32,9 @@ public final class ManagementEventAggregationCondition {
     @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
-    /** Creates an instance of ManagementEventAggregationCondition class. */
+    /**
+     * Creates an instance of ManagementEventAggregationCondition class.
+     */
     public ManagementEventAggregationCondition() {
     }
 

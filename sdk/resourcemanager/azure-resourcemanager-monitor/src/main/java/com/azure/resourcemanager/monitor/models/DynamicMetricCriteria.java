@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Criterion for dynamic threshold. */
+/**
+ * Criterion for dynamic threshold.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
 @JsonTypeName("DynamicThresholdCriterion")
 @Fluent
@@ -43,7 +45,9 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     @JsonProperty(value = "ignoreDataBefore")
     private OffsetDateTime ignoreDataBefore;
 
-    /** Creates an instance of DynamicMetricCriteria class. */
+    /**
+     * Creates an instance of DynamicMetricCriteria class.
+     */
     public DynamicMetricCriteria() {
     }
 
@@ -133,42 +137,54 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicMetricCriteria withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicMetricCriteria withMetricName(String metricName) {
         super.withMetricName(metricName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicMetricCriteria withMetricNamespace(String metricNamespace) {
         super.withMetricNamespace(metricNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicMetricCriteria withTimeAggregation(AggregationTypeEnum timeAggregation) {
         super.withTimeAggregation(timeAggregation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicMetricCriteria withDimensions(List<MetricDimension> dimensions) {
         super.withDimensions(dimensions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicMetricCriteria withSkipMetricValidation(Boolean skipMetricValidation) {
         super.withSkipMetricValidation(skipMetricValidation);
@@ -184,21 +200,13 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
         }
         if (alertSensitivity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertSensitivity in model DynamicMetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property alertSensitivity in model DynamicMetricCriteria"));
         }
         if (failingPeriods() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failingPeriods in model DynamicMetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property failingPeriods in model DynamicMetricCriteria"));
         } else {
             failingPeriods().validate();
         }

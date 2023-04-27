@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.AutoscaleSettingResourceI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of autoscale setting resources. */
+/**
+ * Represents a collection of autoscale setting resources.
+ */
 @Fluent
 public final class AutoscaleSettingResourceCollection {
     /*
@@ -25,7 +27,9 @@ public final class AutoscaleSettingResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AutoscaleSettingResourceCollection class. */
+    /**
+     * Creates an instance of AutoscaleSettingResourceCollection class.
+     */
     public AutoscaleSettingResourceCollection() {
     }
 
@@ -76,10 +80,7 @@ public final class AutoscaleSettingResourceCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AutoscaleSettingResourceCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model AutoscaleSettingResourceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

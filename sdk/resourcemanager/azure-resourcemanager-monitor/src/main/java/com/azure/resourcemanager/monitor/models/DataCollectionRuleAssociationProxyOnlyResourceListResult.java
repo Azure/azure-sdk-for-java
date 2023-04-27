@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleAssocia
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A pageable list of resources. */
+/**
+ * A pageable list of resources.
+ */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
     /*
@@ -25,7 +27,9 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceListResult class. */
+    /**
+     * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceListResult class.
+     */
     public DataCollectionRuleAssociationProxyOnlyResourceListResult() {
     }
 
@@ -44,8 +48,7 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
      * @param value the value value to set.
      * @return the DataCollectionRuleAssociationProxyOnlyResourceListResult object itself.
      */
-    public DataCollectionRuleAssociationProxyOnlyResourceListResult withValue(
-        List<DataCollectionRuleAssociationProxyOnlyResourceInner> value) {
+    public DataCollectionRuleAssociationProxyOnlyResourceListResult withValue(List<DataCollectionRuleAssociationProxyOnlyResourceInner> value) {
         this.value = value;
         return this;
     }
@@ -77,16 +80,11 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model"
-                            + " DataCollectionRuleAssociationProxyOnlyResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model DataCollectionRuleAssociationProxyOnlyResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(DataCollectionRuleAssociationProxyOnlyResourceListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataCollectionRuleAssociationProxyOnlyResourceListResult.class);
 }

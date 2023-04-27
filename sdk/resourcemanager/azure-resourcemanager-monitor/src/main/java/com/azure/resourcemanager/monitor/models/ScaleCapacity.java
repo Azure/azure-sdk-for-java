@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The number of instances that can be used during this profile. */
+/**
+ * The number of instances that can be used during this profile.
+ */
 @Fluent
 public final class ScaleCapacity {
     /*
@@ -31,7 +33,9 @@ public final class ScaleCapacity {
     @JsonProperty(value = "default", required = true)
     private String defaultProperty;
 
-    /** Creates an instance of ScaleCapacity class. */
+    /**
+     * Creates an instance of ScaleCapacity class.
+     */
     public ScaleCapacity() {
     }
 
@@ -106,19 +110,13 @@ public final class ScaleCapacity {
      */
     public void validate() {
         if (minimum() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property minimum in model ScaleCapacity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property minimum in model ScaleCapacity"));
         }
         if (maximum() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property maximum in model ScaleCapacity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property maximum in model ScaleCapacity"));
         }
         if (defaultProperty() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property defaultProperty in model ScaleCapacity"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property defaultProperty in model ScaleCapacity"));
         }
     }
 

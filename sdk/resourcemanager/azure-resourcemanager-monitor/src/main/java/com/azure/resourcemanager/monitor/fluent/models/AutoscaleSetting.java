@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.PredictiveAutoscalePolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A setting that contains all of the configuration for the automatic scaling of a resource. */
+/**
+ * A setting that contains all of the configuration for the automatic scaling of a resource.
+ */
 @Fluent
 public final class AutoscaleSetting {
     /*
@@ -57,13 +59,15 @@ public final class AutoscaleSetting {
     @JsonProperty(value = "targetResourceLocation")
     private String targetResourceLocation;
 
-    /** Creates an instance of AutoscaleSetting class. */
+    /**
+     * Creates an instance of AutoscaleSetting class.
+     */
     public AutoscaleSetting() {
     }
 
     /**
-     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
-     * for different time periods. A maximum of 20 profiles can be specified.
+     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling
+     * parameters for different time periods. A maximum of 20 profiles can be specified.
      *
      * @return the profiles value.
      */
@@ -72,8 +76,8 @@ public final class AutoscaleSetting {
     }
 
     /**
-     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
-     * for different time periods. A maximum of 20 profiles can be specified.
+     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling
+     * parameters for different time periods. A maximum of 20 profiles can be specified.
      *
      * @param profiles the profiles value to set.
      * @return the AutoscaleSetting object itself.
@@ -216,9 +220,7 @@ public final class AutoscaleSetting {
      */
     public void validate() {
         if (profiles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property profiles in model AutoscaleSetting"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property profiles in model AutoscaleSetting"));
         } else {
             profiles().forEach(e -> e.validate());
         }

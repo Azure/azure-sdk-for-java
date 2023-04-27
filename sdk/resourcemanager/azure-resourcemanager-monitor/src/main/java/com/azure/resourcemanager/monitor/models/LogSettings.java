@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log. */
+/**
+ * Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
+ */
 @Fluent
 public final class LogSettings {
     /*
@@ -36,7 +38,9 @@ public final class LogSettings {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of LogSettings class. */
+    /**
+     * Creates an instance of LogSettings class.
+     */
     public LogSettings() {
     }
 

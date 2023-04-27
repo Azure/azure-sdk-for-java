@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specification of destinations that can be used in data flows. */
+/**
+ * Specification of destinations that can be used in data flows.
+ */
 @Fluent
 public class DestinationsSpec {
     /*
@@ -23,7 +25,9 @@ public class DestinationsSpec {
     @JsonProperty(value = "azureMonitorMetrics")
     private DestinationsSpecAzureMonitorMetrics azureMonitorMetrics;
 
-    /** Creates an instance of DestinationsSpec class. */
+    /**
+     * Creates an instance of DestinationsSpec class.
+     */
     public DestinationsSpec() {
     }
 

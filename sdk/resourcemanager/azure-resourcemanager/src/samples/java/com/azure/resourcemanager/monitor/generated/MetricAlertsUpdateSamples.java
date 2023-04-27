@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.AggregationTypeEnum;
 import com.azure.resourcemanager.monitor.models.MetricAlertAction;
 import com.azure.resourcemanager.monitor.models.MetricAlertResourcePatch;
@@ -66,7 +65,7 @@ public final class MetricAlertsUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

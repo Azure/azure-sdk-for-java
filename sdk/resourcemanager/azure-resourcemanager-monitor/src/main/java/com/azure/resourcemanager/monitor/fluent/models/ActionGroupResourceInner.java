@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An action group resource. */
+/**
+ * An action group resource.
+ */
 @Fluent
 public final class ActionGroupResourceInner extends Resource {
     /*
@@ -30,7 +32,9 @@ public final class ActionGroupResourceInner extends Resource {
     @JsonProperty(value = "properties")
     private ActionGroup innerProperties;
 
-    /** Creates an instance of ActionGroupResourceInner class. */
+    /**
+     * Creates an instance of ActionGroupResourceInner class.
+     */
     public ActionGroupResourceInner() {
     }
 
@@ -43,14 +47,18 @@ public final class ActionGroupResourceInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionGroupResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionGroupResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -81,8 +89,8 @@ public final class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its receivers will receive communications.
+     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its receivers will receive communications.
      *
      * @return the enabled value.
      */
@@ -91,8 +99,8 @@ public final class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its receivers will receive communications.
+     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its receivers will receive communications.
      *
      * @param enabled the enabled value to set.
      * @return the ActionGroupResourceInner object itself.
@@ -221,8 +229,8 @@ public final class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
+     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
      *
      * @return the automationRunbookReceivers value.
      */
@@ -231,14 +239,13 @@ public final class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
+     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
      *
      * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the ActionGroupResourceInner object itself.
      */
-    public ActionGroupResourceInner withAutomationRunbookReceivers(
-        List<AutomationRunbookReceiver> automationRunbookReceivers) {
+    public ActionGroupResourceInner withAutomationRunbookReceivers(List<AutomationRunbookReceiver> automationRunbookReceivers) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ActionGroup();
         }
@@ -293,7 +300,8 @@ public final class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
+     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
      *
      * @return the azureFunctionReceivers value.
      */
@@ -302,7 +310,8 @@ public final class ActionGroupResourceInner extends Resource {
     }
 
     /**
-     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
+     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
      *
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the ActionGroupResourceInner object itself.

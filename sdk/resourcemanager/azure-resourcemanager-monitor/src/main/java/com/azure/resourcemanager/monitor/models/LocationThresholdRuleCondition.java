@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** A rule condition based on a certain number of locations failing. */
+/**
+ * A rule condition based on a certain number of locations failing.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition")
 @Fluent
@@ -28,7 +30,9 @@ public final class LocationThresholdRuleCondition extends RuleCondition {
     @JsonProperty(value = "failedLocationCount", required = true)
     private int failedLocationCount;
 
-    /** Creates an instance of LocationThresholdRuleCondition class. */
+    /**
+     * Creates an instance of LocationThresholdRuleCondition class.
+     */
     public LocationThresholdRuleCondition() {
     }
 
@@ -74,7 +78,9 @@ public final class LocationThresholdRuleCondition extends RuleCondition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocationThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
         super.withDataSource(dataSource);

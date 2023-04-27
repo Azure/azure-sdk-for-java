@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ActivityLogAlerts List. */
 public final class ActivityLogAlertsListSamples {
     /*
@@ -18,6 +16,11 @@ public final class ActivityLogAlertsListSamples {
      */
     public static void getListOfAllActivityLogAlertRulesUnderASubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActivityLogAlerts().list(Context.NONE);
+        azure
+            .diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActivityLogAlerts()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

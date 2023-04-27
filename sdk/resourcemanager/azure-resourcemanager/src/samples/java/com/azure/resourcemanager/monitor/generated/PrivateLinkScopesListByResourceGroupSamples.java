@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkScopes ListByResourceGroup. */
 public final class PrivateLinkScopesListByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class PrivateLinkScopesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkScopes()
-            .listByResourceGroup("my-resource-group", Context.NONE);
+            .listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a baseline metadata value. */
+/**
+ * Represents a baseline metadata value.
+ */
 @Fluent
 public final class BaselineMetadata {
     /*
@@ -23,7 +25,9 @@ public final class BaselineMetadata {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of BaselineMetadata class. */
+    /**
+     * Creates an instance of BaselineMetadata class.
+     */
     public BaselineMetadata() {
     }
 
@@ -74,14 +78,10 @@ public final class BaselineMetadata {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model BaselineMetadata"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model BaselineMetadata"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model BaselineMetadata"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model BaselineMetadata"));
         }
     }
 

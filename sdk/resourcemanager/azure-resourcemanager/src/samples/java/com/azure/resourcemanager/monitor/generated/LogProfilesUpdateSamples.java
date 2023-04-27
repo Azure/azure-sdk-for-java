@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
 import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import java.util.Arrays;
@@ -37,7 +36,7 @@ public final class LogProfilesUpdateSamples {
                     .withLocations(Arrays.asList("global"))
                     .withCategories(Arrays.asList("Write", "Delete", "Action"))
                     .withRetentionPolicy(new RetentionPolicy().withEnabled(true).withDays(3)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

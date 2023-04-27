@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MetricAlerts ListByResourceGroup. */
 public final class MetricAlertsListByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class MetricAlertsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .listByResourceGroup("gigtest", Context.NONE);
+            .listByResourceGroup("gigtest", com.azure.core.util.Context.NONE);
     }
 }

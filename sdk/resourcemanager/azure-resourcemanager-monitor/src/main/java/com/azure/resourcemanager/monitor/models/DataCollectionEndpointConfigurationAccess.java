@@ -6,10 +6,14 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** The endpoint used by clients to access their configuration. */
+/**
+ * The endpoint used by clients to access their configuration.
+ */
 @Immutable
 public final class DataCollectionEndpointConfigurationAccess extends ConfigurationAccessEndpointSpec {
-    /** Creates an instance of DataCollectionEndpointConfigurationAccess class. */
+    /**
+     * Creates an instance of DataCollectionEndpointConfigurationAccess class.
+     */
     public DataCollectionEndpointConfigurationAccess() {
     }
 

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
@@ -23,6 +21,10 @@ public final class PrivateEndpointConnectionsDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .delete("MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name", Context.NONE);
+            .delete(
+                "MyResourceGroup",
+                "MyPrivateLinkScope",
+                "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE);
     }
 }

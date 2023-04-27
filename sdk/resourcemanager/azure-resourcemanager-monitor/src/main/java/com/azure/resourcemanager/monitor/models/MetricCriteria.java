@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Criterion to filter metrics. */
+/**
+ * Criterion to filter metrics.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType")
 @JsonTypeName("StaticThresholdCriterion")
 @Fluent
@@ -28,7 +30,9 @@ public final class MetricCriteria extends MultiMetricCriteria {
     @JsonProperty(value = "threshold", required = true)
     private double threshold;
 
-    /** Creates an instance of MetricCriteria class. */
+    /**
+     * Creates an instance of MetricCriteria class.
+     */
     public MetricCriteria() {
     }
 
@@ -72,42 +76,54 @@ public final class MetricCriteria extends MultiMetricCriteria {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withMetricName(String metricName) {
         super.withMetricName(metricName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withMetricNamespace(String metricNamespace) {
         super.withMetricNamespace(metricNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withTimeAggregation(AggregationTypeEnum timeAggregation) {
         super.withTimeAggregation(timeAggregation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withDimensions(List<MetricDimension> dimensions) {
         super.withDimensions(dimensions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricCriteria withSkipMetricValidation(Boolean skipMetricValidation) {
         super.withSkipMetricValidation(skipMetricValidation);
@@ -123,9 +139,7 @@ public final class MetricCriteria extends MultiMetricCriteria {
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model MetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model MetricCriteria"));
         }
     }
 

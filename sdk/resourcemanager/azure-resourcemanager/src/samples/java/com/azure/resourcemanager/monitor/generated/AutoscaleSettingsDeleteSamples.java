@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AutoscaleSettings Delete. */
 public final class AutoscaleSettingsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class AutoscaleSettingsDeleteSamples {
             .manager()
             .serviceClient()
             .getAutoscaleSettings()
-            .deleteWithResponse("TestingMetricsScaleSet", "MySetting", Context.NONE);
+            .deleteWithResponse("TestingMetricsScaleSet", "MySetting", com.azure.core.util.Context.NONE);
     }
 }

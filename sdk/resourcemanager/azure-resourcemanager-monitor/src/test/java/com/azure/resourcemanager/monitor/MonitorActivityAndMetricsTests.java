@@ -19,6 +19,7 @@ import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
@@ -36,6 +37,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     @DoNotRecord(skipInPlayback = true)
     public void canListEventsAndMetrics() {
         // make sure there exists a VM

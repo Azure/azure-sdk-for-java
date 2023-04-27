@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.DataCollectionEndpointRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A pageable list of resources. */
+/**
+ * A pageable list of resources.
+ */
 @Fluent
 public final class DataCollectionEndpointResourceListResult {
     /*
@@ -25,7 +27,9 @@ public final class DataCollectionEndpointResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DataCollectionEndpointResourceListResult class. */
+    /**
+     * Creates an instance of DataCollectionEndpointResourceListResult class.
+     */
     public DataCollectionEndpointResourceListResult() {
     }
 
@@ -76,10 +80,7 @@ public final class DataCollectionEndpointResourceListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DataCollectionEndpointResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model DataCollectionEndpointResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

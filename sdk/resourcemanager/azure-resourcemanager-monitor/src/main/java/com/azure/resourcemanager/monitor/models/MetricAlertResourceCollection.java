@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of alert rule resources. */
+/**
+ * Represents a collection of alert rule resources.
+ */
 @Fluent
 public final class MetricAlertResourceCollection {
     /*
@@ -18,7 +20,9 @@ public final class MetricAlertResourceCollection {
     @JsonProperty(value = "value")
     private List<MetricAlertResourceInner> value;
 
-    /** Creates an instance of MetricAlertResourceCollection class. */
+    /**
+     * Creates an instance of MetricAlertResourceCollection class.
+     */
     public MetricAlertResourceCollection() {
     }
 

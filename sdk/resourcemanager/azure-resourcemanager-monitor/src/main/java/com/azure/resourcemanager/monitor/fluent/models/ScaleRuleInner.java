@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.models.MetricTrigger;
 import com.azure.resourcemanager.monitor.models.ScaleAction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A rule that provide the triggers and parameters for the scaling action. */
+/**
+ * A rule that provide the triggers and parameters for the scaling action.
+ */
 @Fluent
 public final class ScaleRuleInner {
     /*
@@ -25,7 +27,9 @@ public final class ScaleRuleInner {
     @JsonProperty(value = "scaleAction", required = true)
     private ScaleAction scaleAction;
 
-    /** Creates an instance of ScaleRuleInner class. */
+    /**
+     * Creates an instance of ScaleRuleInner class.
+     */
     public ScaleRuleInner() {
     }
 
@@ -76,16 +80,12 @@ public final class ScaleRuleInner {
      */
     public void validate() {
         if (metricTrigger() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property metricTrigger in model ScaleRuleInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property metricTrigger in model ScaleRuleInner"));
         } else {
             metricTrigger().validate();
         }
         if (scaleAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scaleAction in model ScaleRuleInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property scaleAction in model ScaleRuleInner"));
         } else {
             scaleAction().validate();
         }

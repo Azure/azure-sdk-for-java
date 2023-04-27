@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.AutoscaleProfileInner;
 import com.azure.resourcemanager.monitor.fluent.models.AutoscaleSettingResourceInner;
 import com.azure.resourcemanager.monitor.fluent.models.ScaleRuleInner;
@@ -180,7 +179,7 @@ public final class AutoscaleSettingsCreateOrUpdateSamples {
                         new PredictiveAutoscalePolicy().withScaleMode(PredictiveAutoscalePolicyScaleMode.ENABLED))
                     .withTargetResourceUri(
                         "/subscriptions/b67f7fec-69fc-4974-9099-a26bd6ffeda3/resourceGroups/TestingMetricsScaleSet/providers/Microsoft.Compute/virtualMachineScaleSets/testingsc"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

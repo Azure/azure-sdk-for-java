@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ScheduledQueryRules ListByResourceGroup. */
 public final class ScheduledQueryRulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/listScheduledQueryRulesByResourceGroup.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/listScheduledQueryRulesByResourceGroup.json
      */
     /**
      * Sample code: List scheduled query rules by resource group.
@@ -22,6 +20,6 @@ public final class ScheduledQueryRulesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getScheduledQueryRules()
-            .listByResourceGroup("QueryResourceGroupName", Context.NONE);
+            .listByResourceGroup("QueryResourceGroupName", com.azure.core.util.Context.NONE);
     }
 }

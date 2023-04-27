@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Autoscale notification. */
+/**
+ * Autoscale notification.
+ */
 @Fluent
 public final class AutoscaleNotification {
     /*
@@ -29,7 +31,9 @@ public final class AutoscaleNotification {
     @JsonProperty(value = "webhooks")
     private List<WebhookNotification> webhooks;
 
-    /** Creates an instance of AutoscaleNotification class. */
+    /**
+     * Creates an instance of AutoscaleNotification class.
+     */
     public AutoscaleNotification() {
         operation = "Scale";
     }

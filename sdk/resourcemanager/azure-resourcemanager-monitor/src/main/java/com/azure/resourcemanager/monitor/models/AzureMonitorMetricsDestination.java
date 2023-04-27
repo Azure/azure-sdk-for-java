@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Monitor Metrics destination. */
+/**
+ * Azure Monitor Metrics destination.
+ */
 @Fluent
 public class AzureMonitorMetricsDestination {
     /*
@@ -17,13 +19,15 @@ public class AzureMonitorMetricsDestination {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of AzureMonitorMetricsDestination class. */
+    /**
+     * Creates an instance of AzureMonitorMetricsDestination class.
+     */
     public AzureMonitorMetricsDestination() {
     }
 
     /**
-     * Get the name property: A friendly name for the destination. This name should be unique across all destinations
-     * (regardless of type) within the data collection rule.
+     * Get the name property: A friendly name for the destination.
+     * This name should be unique across all destinations (regardless of type) within the data collection rule.
      *
      * @return the name value.
      */
@@ -32,8 +36,8 @@ public class AzureMonitorMetricsDestination {
     }
 
     /**
-     * Set the name property: A friendly name for the destination. This name should be unique across all destinations
-     * (regardless of type) within the data collection rule.
+     * Set the name property: A friendly name for the destination.
+     * This name should be unique across all destinations (regardless of type) within the data collection rule.
      *
      * @param name the name value to set.
      * @return the AzureMonitorMetricsDestination object itself.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MetricAlertsStatus ListByName. */
 public final class MetricAlertsStatusListByNameSamples {
     /*
@@ -26,6 +24,6 @@ public final class MetricAlertsStatusListByNameSamples {
                 "EastUs",
                 "custom1",
                 "cmVzb3VyY2VJZD0vc3Vic2NyaXB0aW9ucy8xNGRkZjBjNS03N2M1LTRiNTMtODRmNi1lMWZhNDNhZDY4ZjcvcmVzb3VyY2VHcm91cHMvZ2lndGVzdC9wcm92aWRlcnMvTWljcm9zb2Z0LkNvbXB1dGUvdmlydHVhbE1hY2hpbmVzL2dpZ3dhZG1l",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

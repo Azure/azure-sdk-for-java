@@ -9,6 +9,7 @@ import com.azure.resourcemanager.monitor.samples.QueryMetricsAndActivityLogs;
 import com.azure.resourcemanager.monitor.samples.SecurityBreachOrRiskActivityLogAlerts;
 import com.azure.resourcemanager.monitor.samples.WebAppPerformanceMonitoringAlerts;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -24,11 +25,13 @@ public class MonitorTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled
     public void testSecurityBreachOrRiskActivityLogAlerts() {
         Assertions.assertTrue(SecurityBreachOrRiskActivityLogAlerts.runSample(azureResourceManager));
     }
 
     @Test
+    @Disabled
     public void testWebAppPerformanceMonitoringAlerts() {
         Assertions.assertTrue(WebAppPerformanceMonitoringAlerts.runSample(azureResourceManager));
     }

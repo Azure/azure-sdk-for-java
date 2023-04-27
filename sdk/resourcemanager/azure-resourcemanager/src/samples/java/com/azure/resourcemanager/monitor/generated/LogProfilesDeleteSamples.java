@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LogProfiles Delete. */
 public final class LogProfilesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class LogProfilesDeleteSamples {
             .manager()
             .serviceClient()
             .getLogProfiles()
-            .deleteWithResponse("Rac46PostSwapRG", Context.NONE);
+            .deleteWithResponse("Rac46PostSwapRG", com.azure.core.util.Context.NONE);
     }
 }

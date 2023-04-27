@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric. */
+/**
+ * Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric.
+ */
 @Fluent
 public final class MetricSettings {
     /*
@@ -36,7 +38,9 @@ public final class MetricSettings {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of MetricSettings class. */
+    /**
+     * Creates an instance of MetricSettings class.
+     */
     public MetricSettings() {
     }
 

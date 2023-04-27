@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.IncidentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List incidents operation response. */
+/**
+ * The List incidents operation response.
+ */
 @Fluent
 public final class IncidentListResult {
     /*
@@ -18,7 +20,9 @@ public final class IncidentListResult {
     @JsonProperty(value = "value")
     private List<IncidentInner> value;
 
-    /** Creates an instance of IncidentListResult class. */
+    /**
+     * Creates an instance of IncidentListResult class.
+     */
     public IncidentListResult() {
     }
 

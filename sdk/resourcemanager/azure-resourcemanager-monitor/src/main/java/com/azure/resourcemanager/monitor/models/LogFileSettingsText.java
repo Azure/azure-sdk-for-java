@@ -6,17 +6,22 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Text settings. */
+/**
+ * Text settings.
+ */
 @Fluent
 public final class LogFileSettingsText extends LogFileTextSettings {
-    /** Creates an instance of LogFileSettingsText class. */
+    /**
+     * Creates an instance of LogFileSettingsText class.
+     */
     public LogFileSettingsText() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public LogFileSettingsText withRecordStartTimestampFormat(
-        KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat) {
+    public LogFileSettingsText withRecordStartTimestampFormat(KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat) {
         super.withRecordStartTimestampFormat(recordStartTimestampFormat);
         return this;
     }

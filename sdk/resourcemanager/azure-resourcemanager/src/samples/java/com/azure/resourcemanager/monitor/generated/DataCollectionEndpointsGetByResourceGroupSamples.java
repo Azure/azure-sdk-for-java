@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataCollectionEndpoints GetByResourceGroup. */
 public final class DataCollectionEndpointsGetByResourceGroupSamples {
     /*
@@ -22,6 +20,7 @@ public final class DataCollectionEndpointsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDataCollectionEndpoints()
-            .getByResourceGroupWithResponse("myResourceGroup", "myCollectionEndpoint", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "myResourceGroup", "myCollectionEndpoint", com.azure.core.util.Context.NONE);
     }
 }

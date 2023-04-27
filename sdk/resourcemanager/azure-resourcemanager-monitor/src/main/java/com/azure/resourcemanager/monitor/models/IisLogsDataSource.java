@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Enables IIS logs to be collected by this data collection rule. */
+/**
+ * Enables IIS logs to be collected by this data collection rule.
+ */
 @Fluent
 public final class IisLogsDataSource {
     /*
@@ -31,7 +33,9 @@ public final class IisLogsDataSource {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of IisLogsDataSource class. */
+    /**
+     * Creates an instance of IisLogsDataSource class.
+     */
     public IisLogsDataSource() {
     }
 
@@ -76,8 +80,8 @@ public final class IisLogsDataSource {
     }
 
     /**
-     * Get the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
+     * Get the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      *
      * @return the name value.
      */
@@ -86,8 +90,8 @@ public final class IisLogsDataSource {
     }
 
     /**
-     * Set the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
+     * Set the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      *
      * @param name the name value to set.
      * @return the IisLogsDataSource object itself.
@@ -104,9 +108,7 @@ public final class IisLogsDataSource {
      */
     public void validate() {
         if (streams() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property streams in model IisLogsDataSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property streams in model IisLogsDataSource"));
         }
     }
 

@@ -14,7 +14,9 @@ import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourc
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DiagnosticSettingsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiagnosticSettingsOperationsClient.
+ */
 public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<Void> {
     /**
      * Gets the active diagnostic settings for the specified resource.
@@ -24,8 +26,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DiagnosticSettingsResourceInner>> getWithResponseAsync(String resourceUri, String name);
@@ -82,8 +83,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @return the diagnostic setting resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters);
+    Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(String resourceUri, String name, DiagnosticSettingsResourceInner parameters);
 
     /**
      * Creates or updates diagnostic settings for the specified resource.
@@ -97,8 +97,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @return the diagnostic setting resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DiagnosticSettingsResourceInner> createOrUpdateAsync(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters);
+    Mono<DiagnosticSettingsResourceInner> createOrUpdateAsync(String resourceUri, String name, DiagnosticSettingsResourceInner parameters);
 
     /**
      * Creates or updates diagnostic settings for the specified resource.
@@ -113,8 +112,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @return the diagnostic setting resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticSettingsResourceInner> createOrUpdateWithResponse(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context);
+    Response<DiagnosticSettingsResourceInner> createOrUpdateWithResponse(String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context);
 
     /**
      * Creates or updates diagnostic settings for the specified resource.
@@ -128,8 +126,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @return the diagnostic setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticSettingsResourceInner createOrUpdate(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters);
+    DiagnosticSettingsResourceInner createOrUpdate(String resourceUri, String name, DiagnosticSettingsResourceInner parameters);
 
     /**
      * Deletes existing diagnostic settings for the specified resource.
@@ -190,8 +187,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DiagnosticSettingsResourceInner> listAsync(String resourceUri);
@@ -203,8 +199,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiagnosticSettingsResourceInner> list(String resourceUri);
@@ -217,8 +212,7 @@ public interface DiagnosticSettingsOperationsClient extends InnerSupportsDelete<
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiagnosticSettingsResourceInner> list(String resourceUri, Context context);

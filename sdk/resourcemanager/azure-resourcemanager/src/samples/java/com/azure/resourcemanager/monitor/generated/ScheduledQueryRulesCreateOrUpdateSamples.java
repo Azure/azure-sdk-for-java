@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourceInner;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
@@ -13,6 +12,7 @@ import com.azure.resourcemanager.monitor.models.ConditionFailingPeriods;
 import com.azure.resourcemanager.monitor.models.ConditionOperator;
 import com.azure.resourcemanager.monitor.models.Dimension;
 import com.azure.resourcemanager.monitor.models.DimensionOperator;
+import com.azure.resourcemanager.monitor.models.RuleResolveConfiguration;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
 import com.azure.resourcemanager.monitor.models.TimeAggregation;
 import java.time.Duration;
@@ -23,7 +23,7 @@ import java.util.Map;
 /** Samples for ScheduledQueryRules CreateOrUpdate. */
 public final class ScheduledQueryRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRuleSubscription.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleSubscription.json
      */
     /**
      * Sample code: Create or update a scheduled query rule on Subscription.
@@ -86,12 +86,15 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
                             .withCustomProperties(mapOf("key11", "value11", "key12", "value12")))
                     .withCheckWorkspaceAlertsStorageConfigured(true)
                     .withSkipQueryValidation(true)
-                    .withAutoMitigate(true),
-                Context.NONE);
+                    .withRuleResolveConfiguration(
+                        new RuleResolveConfiguration()
+                            .withAutoResolved(true)
+                            .withTimeToResolve(Duration.parse("PT10M"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRuleResourceGroup.json
      */
     /**
      * Sample code: Create or update a scheduled query rule on Resource group(s).
@@ -145,12 +148,15 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
                             .withCustomProperties(mapOf("key11", "value11", "key12", "value12")))
                     .withCheckWorkspaceAlertsStorageConfigured(true)
                     .withSkipQueryValidation(true)
-                    .withAutoMitigate(true),
-                Context.NONE);
+                    .withRuleResolveConfiguration(
+                        new RuleResolveConfiguration()
+                            .withAutoResolved(true)
+                            .withTimeToResolve(Duration.parse("PT10M"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/createOrUpdateScheduledQueryRule.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2022-08-01-preview/examples/createOrUpdateScheduledQueryRule.json
      */
     /**
      * Sample code: Create or update a scheduled query rule for Single Resource.
@@ -215,8 +221,11 @@ public final class ScheduledQueryRulesCreateOrUpdateSamples {
                             .withCustomProperties(mapOf("key11", "value11", "key12", "value12")))
                     .withCheckWorkspaceAlertsStorageConfigured(true)
                     .withSkipQueryValidation(true)
-                    .withAutoMitigate(true),
-                Context.NONE);
+                    .withRuleResolveConfiguration(
+                        new RuleResolveConfiguration()
+                            .withAutoResolved(true)
+                            .withTimeToResolve(Duration.parse("PT10M"))),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

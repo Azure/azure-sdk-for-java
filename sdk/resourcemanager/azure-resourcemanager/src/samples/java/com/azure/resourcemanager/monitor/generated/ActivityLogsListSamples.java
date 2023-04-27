@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ActivityLogs List. */
 public final class ActivityLogsListSamples {
     /*
@@ -26,7 +24,7 @@ public final class ActivityLogsListSamples {
                 "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and"
                     + " resourceGroupName eq 'MSSupportGroup'",
                 "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -47,6 +45,6 @@ public final class ActivityLogsListSamples {
                 "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and"
                     + " resourceGroupName eq 'MSSupportGroup'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

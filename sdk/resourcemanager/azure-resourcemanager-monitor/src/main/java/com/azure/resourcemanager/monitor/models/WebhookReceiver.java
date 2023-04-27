@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A webhook receiver. */
+/**
+ * A webhook receiver.
+ */
 @Fluent
 public final class WebhookReceiver {
     /*
@@ -53,7 +55,9 @@ public final class WebhookReceiver {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of WebhookReceiver class. */
+    /**
+     * Creates an instance of WebhookReceiver class.
+     */
     public WebhookReceiver() {
     }
 
@@ -206,14 +210,10 @@ public final class WebhookReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model WebhookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model WebhookReceiver"));
         }
         if (serviceUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serviceUri in model WebhookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property serviceUri in model WebhookReceiver"));
         }
     }
 

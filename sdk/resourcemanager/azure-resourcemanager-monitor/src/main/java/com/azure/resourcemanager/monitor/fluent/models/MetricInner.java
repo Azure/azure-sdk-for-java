@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.Unit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result data of a query. */
+/**
+ * The result data of a query.
+ */
 @Fluent
 public final class MetricInner {
     /*
@@ -62,7 +64,9 @@ public final class MetricInner {
     @JsonProperty(value = "timeseries", required = true)
     private List<TimeSeriesElement> timeseries;
 
-    /** Creates an instance of MetricInner class. */
+    /**
+     * Creates an instance of MetricInner class.
+     */
     public MetricInner() {
     }
 
@@ -233,30 +237,21 @@ public final class MetricInner {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model MetricInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model MetricInner"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model MetricInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property type in model MetricInner"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MetricInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model MetricInner"));
         } else {
             name().validate();
         }
         if (unit() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property unit in model MetricInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property unit in model MetricInner"));
         }
         if (timeseries() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeseries in model MetricInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timeseries in model MetricInner"));
         } else {
             timeseries().forEach(e -> e.validate());
         }

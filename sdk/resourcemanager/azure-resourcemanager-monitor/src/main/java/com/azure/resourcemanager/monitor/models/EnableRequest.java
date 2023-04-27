@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a receiver that should be resubscribed. */
+/**
+ * Describes a receiver that should be resubscribed.
+ */
 @Fluent
 public final class EnableRequest {
     /*
@@ -17,7 +19,9 @@ public final class EnableRequest {
     @JsonProperty(value = "receiverName", required = true)
     private String receiverName;
 
-    /** Creates an instance of EnableRequest class. */
+    /**
+     * Creates an instance of EnableRequest class.
+     */
     public EnableRequest() {
     }
 
@@ -48,9 +52,7 @@ public final class EnableRequest {
      */
     public void validate() {
         if (receiverName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property receiverName in model EnableRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property receiverName in model EnableRequest"));
         }
     }
 

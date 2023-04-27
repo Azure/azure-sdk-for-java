@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.OnboardingStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class VMInsightsOnboardingStatusProperties {
     /*
@@ -41,7 +43,9 @@ public final class VMInsightsOnboardingStatusProperties {
     @JsonProperty(value = "data")
     private List<DataContainer> data;
 
-    /** Creates an instance of VMInsightsOnboardingStatusProperties class. */
+    /**
+     * Creates an instance of VMInsightsOnboardingStatusProperties class.
+     */
     public VMInsightsOnboardingStatusProperties() {
     }
 
@@ -68,8 +72,8 @@ public final class VMInsightsOnboardingStatusProperties {
     }
 
     /**
-     * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
-     * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
+     * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
      *
      * @return the onboardingStatus value.
      */
@@ -78,8 +82,8 @@ public final class VMInsightsOnboardingStatusProperties {
     }
 
     /**
-     * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
-     * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
+     * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
      *
      * @param onboardingStatus the onboardingStatus value to set.
      * @return the VMInsightsOnboardingStatusProperties object itself.
@@ -140,22 +144,13 @@ public final class VMInsightsOnboardingStatusProperties {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model VMInsightsOnboardingStatusProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resourceId in model VMInsightsOnboardingStatusProperties"));
         }
         if (onboardingStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property onboardingStatus in model VMInsightsOnboardingStatusProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property onboardingStatus in model VMInsightsOnboardingStatusProperties"));
         }
         if (dataStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataStatus in model VMInsightsOnboardingStatusProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property dataStatus in model VMInsightsOnboardingStatusProperties"));
         }
         if (data() != null) {
             data().forEach(e -> e.validate());

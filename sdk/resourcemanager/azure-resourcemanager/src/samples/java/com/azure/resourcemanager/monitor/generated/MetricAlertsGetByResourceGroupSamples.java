@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MetricAlerts GetByResourceGroup. */
 public final class MetricAlertsGetByResourceGroupSamples {
     /*
@@ -22,7 +20,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest1", "MetricAlertAtResourceGroupLevel", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "gigtest1", "MetricAlertAtResourceGroupLevel", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,7 +38,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "gigtest", "MetricAlertOnMultipleResources", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -56,7 +56,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("rg-example", "webtest-name-example", Context.NONE);
+            .getByResourceGroupWithResponse("rg-example", "webtest-name-example", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -73,7 +73,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "chiricutin", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -90,7 +90,8 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "MetricAlertAtSubscriptionLevel", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "gigtest", "MetricAlertAtSubscriptionLevel", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -107,7 +108,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "chiricutin", Context.NONE);
+            .getByResourceGroupWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -124,6 +125,7 @@ public final class MetricAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .getByResourceGroupWithResponse("gigtest", "MetricAlertOnMultipleResources", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "gigtest", "MetricAlertOnMultipleResources", com.azure.core.util.Context.NONE);
     }
 }

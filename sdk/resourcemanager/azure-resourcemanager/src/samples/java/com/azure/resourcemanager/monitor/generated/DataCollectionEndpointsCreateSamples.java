@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionEndpointResourceInner;
 import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcls;
 import com.azure.resourcemanager.monitor.models.KnownPublicNetworkAccessOptions;
@@ -33,6 +32,6 @@ public final class DataCollectionEndpointsCreateSamples {
                     .withNetworkAcls(
                         new DataCollectionEndpointNetworkAcls()
                             .withPublicNetworkAccess(KnownPublicNetworkAccessOptions.ENABLED)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

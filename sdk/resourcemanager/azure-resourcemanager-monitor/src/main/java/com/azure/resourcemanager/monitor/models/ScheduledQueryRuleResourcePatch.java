@@ -12,9 +12,17 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-/** The scheduled query rule resource for patch operations. */
+/**
+ * The scheduled query rule resource for patch operations.
+ */
 @Fluent
 public final class ScheduledQueryRuleResourcePatch {
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
     /*
      * Resource tags
      */
@@ -28,8 +36,30 @@ public final class ScheduledQueryRuleResourcePatch {
     @JsonProperty(value = "properties")
     private ScheduledQueryRuleProperties innerProperties;
 
-    /** Creates an instance of ScheduledQueryRuleResourcePatch class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleResourcePatch class.
+     */
     public ScheduledQueryRuleResourcePatch() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ScheduledQueryRuleResourcePatch object itself.
+     */
+    public ScheduledQueryRuleResourcePatch withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -172,6 +202,31 @@ public final class ScheduledQueryRuleResourcePatch {
             this.innerProperties = new ScheduledQueryRuleProperties();
         }
         this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ScheduledQueryRuleResourcePatch object itself.
+     */
+    public ScheduledQueryRuleResourcePatch withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledQueryRuleProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -402,8 +457,7 @@ public final class ScheduledQueryRuleResourcePatch {
      * @param checkWorkspaceAlertsStorageConfigured the checkWorkspaceAlertsStorageConfigured value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
-    public ScheduledQueryRuleResourcePatch withCheckWorkspaceAlertsStorageConfigured(
-        Boolean checkWorkspaceAlertsStorageConfigured) {
+    public ScheduledQueryRuleResourcePatch withCheckWorkspaceAlertsStorageConfigured(Boolean checkWorkspaceAlertsStorageConfigured) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScheduledQueryRuleProperties();
         }
@@ -437,8 +491,8 @@ public final class ScheduledQueryRuleResourcePatch {
     }
 
     /**
-     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
+     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
      *
      * @return the autoMitigate value.
      */
@@ -447,8 +501,8 @@ public final class ScheduledQueryRuleResourcePatch {
     }
 
     /**
-     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
+     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
      *
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
@@ -462,11 +516,39 @@ public final class ScheduledQueryRuleResourcePatch {
     }
 
     /**
+     * Get the ruleResolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only
+     * for rules of the kind LogAlert.
+     *
+     * @return the ruleResolveConfiguration value.
+     */
+    public RuleResolveConfiguration ruleResolveConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().ruleResolveConfiguration();
+    }
+
+    /**
+     * Set the ruleResolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only
+     * for rules of the kind LogAlert.
+     *
+     * @param ruleResolveConfiguration the ruleResolveConfiguration value to set.
+     * @return the ScheduledQueryRuleResourcePatch object itself.
+     */
+    public ScheduledQueryRuleResourcePatch withRuleResolveConfiguration(RuleResolveConfiguration ruleResolveConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledQueryRuleProperties();
+        }
+        this.innerProperties().withRuleResolveConfiguration(ruleResolveConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

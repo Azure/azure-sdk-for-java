@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
@@ -22,6 +20,10 @@ public final class PrivateEndpointConnectionsGetSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .getWithResponse("MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name", Context.NONE);
+            .getWithResponse(
+                "MyResourceGroup",
+                "MyPrivateLinkScope",
+                "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE);
     }
 }

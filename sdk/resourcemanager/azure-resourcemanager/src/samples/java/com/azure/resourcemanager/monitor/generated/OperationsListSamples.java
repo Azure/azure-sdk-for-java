@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -17,6 +15,11 @@ public final class OperationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAListOfOperationsForAResourceProvider(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getOperations().listWithResponse(Context.NONE);
+        azure
+            .diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getOperations()
+            .listWithResponse(com.azure.core.util.Context.NONE);
     }
 }

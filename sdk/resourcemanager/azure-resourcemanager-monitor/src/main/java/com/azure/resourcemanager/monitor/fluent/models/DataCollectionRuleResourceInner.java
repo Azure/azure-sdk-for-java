@@ -18,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Definition of ARM tracked top level resource. */
+/**
+ * Definition of ARM tracked top level resource.
+ */
 @Fluent
 public final class DataCollectionRuleResourceInner extends Resource {
     /*
@@ -45,7 +47,9 @@ public final class DataCollectionRuleResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DataCollectionRuleResourceInner class. */
+    /**
+     * Creates an instance of DataCollectionRuleResourceInner class.
+     */
     public DataCollectionRuleResourceInner() {
     }
 
@@ -96,14 +100,18 @@ public final class DataCollectionRuleResourceInner extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -200,8 +208,9 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the dataSources property: The specification of data sources. This property is optional and can be omitted if
-     * the rule is meant to be used via direct calls to the provisioned endpoint.
+     * Get the dataSources property: The specification of data sources.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
      *
      * @return the dataSources value.
      */
@@ -210,8 +219,9 @@ public final class DataCollectionRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the dataSources property: The specification of data sources. This property is optional and can be omitted if
-     * the rule is meant to be used via direct calls to the provisioned endpoint.
+     * Set the dataSources property: The specification of data sources.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
      *
      * @param dataSources the dataSources value to set.
      * @return the DataCollectionRuleResourceInner object itself.

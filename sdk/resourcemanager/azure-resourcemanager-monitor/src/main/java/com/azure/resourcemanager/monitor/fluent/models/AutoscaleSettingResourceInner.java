@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The autoscale setting resource. */
+/**
+ * The autoscale setting resource.
+ */
 @Fluent
 public final class AutoscaleSettingResourceInner extends Resource {
     /*
@@ -29,7 +31,9 @@ public final class AutoscaleSettingResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AutoscaleSettingResourceInner class. */
+    /**
+     * Creates an instance of AutoscaleSettingResourceInner class.
+     */
     public AutoscaleSettingResourceInner() {
     }
 
@@ -51,14 +55,18 @@ public final class AutoscaleSettingResourceInner extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutoscaleSettingResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutoscaleSettingResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,8 +74,8 @@ public final class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
-     * for different time periods. A maximum of 20 profiles can be specified.
+     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling
+     * parameters for different time periods. A maximum of 20 profiles can be specified.
      *
      * @return the profiles value.
      */
@@ -76,8 +84,8 @@ public final class AutoscaleSettingResourceInner extends Resource {
     }
 
     /**
-     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
-     * for different time periods. A maximum of 20 profiles can be specified.
+     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling
+     * parameters for different time periods. A maximum of 20 profiles can be specified.
      *
      * @param profiles the profiles value to set.
      * @return the AutoscaleSettingResourceInner object itself.
@@ -153,8 +161,7 @@ public final class AutoscaleSettingResourceInner extends Resource {
      * @param predictiveAutoscalePolicy the predictiveAutoscalePolicy value to set.
      * @return the AutoscaleSettingResourceInner object itself.
      */
-    public AutoscaleSettingResourceInner withPredictiveAutoscalePolicy(
-        PredictiveAutoscalePolicy predictiveAutoscalePolicy) {
+    public AutoscaleSettingResourceInner withPredictiveAutoscalePolicy(PredictiveAutoscalePolicy predictiveAutoscalePolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoscaleSetting();
         }
@@ -242,10 +249,7 @@ public final class AutoscaleSettingResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AutoscaleSettingResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model AutoscaleSettingResourceInner"));
         } else {
             innerProperties().validate();
         }

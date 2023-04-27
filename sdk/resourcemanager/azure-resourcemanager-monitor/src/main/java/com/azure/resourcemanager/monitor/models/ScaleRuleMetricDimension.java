@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies an auto scale rule metric dimension. */
+/**
+ * Specifies an auto scale rule metric dimension.
+ */
 @Fluent
 public final class ScaleRuleMetricDimension {
     /*
@@ -31,7 +33,9 @@ public final class ScaleRuleMetricDimension {
     @JsonProperty(value = "Values", required = true)
     private List<String> values;
 
-    /** Creates an instance of ScaleRuleMetricDimension class. */
+    /**
+     * Creates an instance of ScaleRuleMetricDimension class.
+     */
     public ScaleRuleMetricDimension() {
     }
 
@@ -104,21 +108,13 @@ public final class ScaleRuleMetricDimension {
      */
     public void validate() {
         if (dimensionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dimensionName in model ScaleRuleMetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property dimensionName in model ScaleRuleMetricDimension"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model ScaleRuleMetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model ScaleRuleMetricDimension"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model ScaleRuleMetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property values in model ScaleRuleMetricDimension"));
         }
     }
 

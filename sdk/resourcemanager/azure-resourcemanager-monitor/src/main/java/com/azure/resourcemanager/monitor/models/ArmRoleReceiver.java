@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An arm role receiver. */
+/**
+ * An arm role receiver.
+ */
 @Fluent
 public final class ArmRoleReceiver {
     /*
@@ -29,7 +31,9 @@ public final class ArmRoleReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
-    /** Creates an instance of ArmRoleReceiver class. */
+    /**
+     * Creates an instance of ArmRoleReceiver class.
+     */
     public ArmRoleReceiver() {
     }
 
@@ -102,14 +106,10 @@ public final class ArmRoleReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ArmRoleReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model ArmRoleReceiver"));
         }
         if (roleId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property roleId in model ArmRoleReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property roleId in model ArmRoleReceiver"));
         }
     }
 

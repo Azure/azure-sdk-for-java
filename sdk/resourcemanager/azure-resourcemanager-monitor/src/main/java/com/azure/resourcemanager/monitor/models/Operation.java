@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Microsoft Insights API operation definition. */
+/**
+ * Microsoft Insights API operation definition.
+ */
 @Fluent
 public final class Operation {
     /*
@@ -22,7 +24,9 @@ public final class Operation {
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 

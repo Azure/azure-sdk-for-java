@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for ActionGroups Update. */
 public final class ActionGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/patchActionGroup.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/patchActionGroup.json
      */
     /**
      * Sample code: Patch an action group.
@@ -29,7 +28,7 @@ public final class ActionGroupsUpdateSamples {
                 "Default-NotificationRules",
                 "SampleActionGroup",
                 new ActionGroupPatchBody().withTags(mapOf("key1", "value1", "key2", "value2")).withEnabled(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

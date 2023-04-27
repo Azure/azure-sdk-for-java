@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MetricDefinitions List. */
 public final class MetricDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricDefinitions.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitions.json
      */
     /**
      * Sample code: Get Metric Definitions without filter.
@@ -25,11 +23,11 @@ public final class MetricDefinitionsListSamples {
             .list(
                 "subscriptions/07c0b09d-9f69-4e6e-8d05-f59f67299cb2/resourceGroups/Rac46PostSwapRG/providers/Microsoft.Web/sites/alertruleTest/providers/microsoft.insights/metricDefinitions",
                 "Microsoft.Web/sites",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricDefinitionsApplicationInsights.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsApplicationInsights.json
      */
     /**
      * Sample code: Get Application Insights Metric Definitions without filter.
@@ -46,11 +44,11 @@ public final class MetricDefinitionsListSamples {
             .list(
                 "subscriptions/182c901a-129a-4f5d-86e4-cc6b294590a2/resourceGroups/hyr-log/providers/microsoft.insights/components/f1-bill/providers/microsoft.insights/metricdefinitions",
                 "microsoft.insights/components",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricDefinitionsMetricClass.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricDefinitionsMetricClass.json
      */
     /**
      * Sample code: Get StorageCache Metric Definitions with metric class.
@@ -67,6 +65,6 @@ public final class MetricDefinitionsListSamples {
             .list(
                 "subscriptions/46841c0e-69c8-4b17-af46-6626ecb15fc2/resourceGroups/adgarntptestrg/providers/Microsoft.StorageCache/caches/adgarntptestcache",
                 "microsoft.storagecache/caches",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

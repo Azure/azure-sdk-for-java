@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.monitor.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.monitor.models.PrivateLinkServiceConnectionState;
@@ -35,6 +34,6 @@ public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
                         new PrivateLinkServiceConnectionState()
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                             .withDescription("Approved by johndoe@contoso.com")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkScopes Delete. */
 public final class PrivateLinkScopesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class PrivateLinkScopesDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkScopes()
-            .delete("my-resource-group", "my-privatelinkscope", Context.NONE);
+            .delete("my-resource-group", "my-privatelinkscope", com.azure.core.util.Context.NONE);
     }
 }

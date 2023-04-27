@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.Unit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metric definition class specifies the metadata for a metric. */
+/**
+ * Metric definition class specifies the metadata for a metric.
+ */
 @Fluent
 public final class MetricDefinitionInner {
     /*
@@ -58,7 +60,7 @@ public final class MetricDefinitionInner {
     private MetricClass metricClass;
 
     /*
-     * The unit of the metric.
+     * the unit of the metric.
      */
     @JsonProperty(value = "unit")
     private Unit unit;
@@ -93,7 +95,9 @@ public final class MetricDefinitionInner {
     @JsonProperty(value = "dimensions")
     private List<LocalizableStringInner> dimensions;
 
-    /** Creates an instance of MetricDefinitionInner class. */
+    /**
+     * Creates an instance of MetricDefinitionInner class.
+     */
     public MetricDefinitionInner() {
     }
 
@@ -238,7 +242,7 @@ public final class MetricDefinitionInner {
     }
 
     /**
-     * Get the unit property: The unit of the metric.
+     * Get the unit property: the unit of the metric.
      *
      * @return the unit value.
      */
@@ -247,7 +251,7 @@ public final class MetricDefinitionInner {
     }
 
     /**
-     * Set the unit property: The unit of the metric.
+     * Set the unit property: the unit of the metric.
      *
      * @param unit the unit value to set.
      * @return the MetricDefinitionInner object itself.

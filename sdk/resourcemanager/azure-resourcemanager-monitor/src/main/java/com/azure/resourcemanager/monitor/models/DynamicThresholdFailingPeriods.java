@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The minimum number of violations required within the selected lookback time window required to raise an alert. */
+/**
+ * The minimum number of violations required within the selected lookback time window required to raise an alert.
+ */
 @Fluent
 public final class DynamicThresholdFailingPeriods {
     /*
@@ -23,13 +25,15 @@ public final class DynamicThresholdFailingPeriods {
     @JsonProperty(value = "minFailingPeriodsToAlert", required = true)
     private float minFailingPeriodsToAlert;
 
-    /** Creates an instance of DynamicThresholdFailingPeriods class. */
+    /**
+     * Creates an instance of DynamicThresholdFailingPeriods class.
+     */
     public DynamicThresholdFailingPeriods() {
     }
 
     /**
-     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
+     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      *
      * @return the numberOfEvaluationPeriods value.
      */
@@ -38,8 +42,8 @@ public final class DynamicThresholdFailingPeriods {
     }
 
     /**
-     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
+     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      *
      * @param numberOfEvaluationPeriods the numberOfEvaluationPeriods value to set.
      * @return the DynamicThresholdFailingPeriods object itself.

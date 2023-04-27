@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of custom data column. */
+/**
+ * Definition of custom data column.
+ */
 @Fluent
 public final class ColumnDefinition {
     /*
@@ -22,7 +24,9 @@ public final class ColumnDefinition {
     @JsonProperty(value = "type")
     private KnownColumnDefinitionType type;
 
-    /** Creates an instance of ColumnDefinition class. */
+    /**
+     * Creates an instance of ColumnDefinition class.
+     */
     public ColumnDefinition() {
     }
 

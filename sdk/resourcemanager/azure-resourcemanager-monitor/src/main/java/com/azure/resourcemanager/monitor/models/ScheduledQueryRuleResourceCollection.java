@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.ScheduledQueryRuleResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of scheduled query rule resources. */
+/**
+ * Represents a collection of scheduled query rule resources.
+ */
 @Fluent
 public final class ScheduledQueryRuleResourceCollection {
     /*
@@ -24,7 +26,9 @@ public final class ScheduledQueryRuleResourceCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ScheduledQueryRuleResourceCollection class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleResourceCollection class.
+     */
     public ScheduledQueryRuleResourceCollection() {
     }
 

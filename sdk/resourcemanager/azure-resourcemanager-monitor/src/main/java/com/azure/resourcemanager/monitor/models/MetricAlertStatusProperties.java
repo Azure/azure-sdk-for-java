@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An alert status properties. */
+/**
+ * An alert status properties.
+ */
 @Fluent
 public final class MetricAlertStatusProperties {
     /*
@@ -32,7 +34,9 @@ public final class MetricAlertStatusProperties {
     @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
-    /** Creates an instance of MetricAlertStatusProperties class. */
+    /**
+     * Creates an instance of MetricAlertStatusProperties class.
+     */
     public MetricAlertStatusProperties() {
     }
 

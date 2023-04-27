@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A collection of information about the state of the connection between service consumer and provider. */
+/**
+ * A collection of information about the state of the connection between service consumer and provider.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
     /*
@@ -28,7 +30,9 @@ public final class PrivateLinkServiceConnectionState {
     @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
 
-    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
     public PrivateLinkServiceConnectionState() {
     }
 

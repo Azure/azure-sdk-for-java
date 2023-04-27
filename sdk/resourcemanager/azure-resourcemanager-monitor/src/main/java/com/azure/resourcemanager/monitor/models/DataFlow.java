@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Definition of which streams are sent to which destinations. */
+/**
+ * Definition of which streams are sent to which destinations.
+ */
 @Fluent
 public final class DataFlow {
     /*
@@ -35,7 +37,9 @@ public final class DataFlow {
     @JsonProperty(value = "outputStream")
     private String outputStream;
 
-    /** Creates an instance of DataFlow class. */
+    /**
+     * Creates an instance of DataFlow class.
+     */
     public DataFlow() {
     }
 
@@ -100,8 +104,8 @@ public final class DataFlow {
     }
 
     /**
-     * Get the outputStream property: The output stream of the transform. Only required if the transform changes data to
-     * a different stream.
+     * Get the outputStream property: The output stream of the transform. Only required if the transform changes data
+     * to a different stream.
      *
      * @return the outputStream value.
      */
@@ -110,8 +114,8 @@ public final class DataFlow {
     }
 
     /**
-     * Set the outputStream property: The output stream of the transform. Only required if the transform changes data to
-     * a different stream.
+     * Set the outputStream property: The output stream of the transform. Only required if the transform changes data
+     * to a different stream.
      *
      * @param outputStream the outputStream value to set.
      * @return the DataFlow object itself.

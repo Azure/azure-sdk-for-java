@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.MetricAlertResourceInner;
 import com.azure.resourcemanager.monitor.models.AggregationTypeEnum;
 import com.azure.resourcemanager.monitor.models.DynamicMetricCriteria;
@@ -75,7 +74,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -131,7 +130,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -194,7 +193,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -240,7 +239,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                 "/subscriptions/12345678-1234-1234-1234-123456789101/resourcegroups/rg-example/providers/microsoft.insights/components/webtest-name-example")
                             .withFailedLocationCount(2f))
                     .withActions(Arrays.asList()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -299,7 +298,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -352,7 +351,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -409,7 +408,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/14ddf0c5-77c5-4b53-84f6-e1fa43ad68f7/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -470,7 +469,7 @@ public final class MetricAlertsCreateOrUpdateSamples {
                                     .withActionGroupId(
                                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/gigtest/providers/microsoft.insights/actiongroups/group2")
                                     .withWebhookProperties(mapOf("key11", "value11", "key12", "value12")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

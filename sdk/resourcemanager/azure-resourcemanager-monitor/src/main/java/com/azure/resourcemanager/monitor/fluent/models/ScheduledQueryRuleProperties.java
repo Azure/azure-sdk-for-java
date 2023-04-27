@@ -7,12 +7,16 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
+import com.azure.resourcemanager.monitor.models.PublicNetworkAccess;
+import com.azure.resourcemanager.monitor.models.RuleResolveConfiguration;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** scheduled query rule Definition. */
+/**
+ * scheduled query rule Definition.
+ */
 @Fluent
 public final class ScheduledQueryRuleProperties {
     /*
@@ -51,6 +55,12 @@ public final class ScheduledQueryRuleProperties {
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /*
+     * This determines if traffic is allowed over public network. By default it is enabled.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The list of resource id's that this scheduled query rule is scoped to.
@@ -135,7 +145,15 @@ public final class ScheduledQueryRuleProperties {
     @JsonProperty(value = "autoMitigate")
     private Boolean autoMitigate;
 
-    /** Creates an instance of ScheduledQueryRuleProperties class. */
+    /*
+     * Defines the configuration for resolving fired alerts. Relevant only for rules of the kind LogAlert.
+     */
+    @JsonProperty(value = "ruleResolveConfiguration")
+    private RuleResolveConfiguration ruleResolveConfiguration;
+
+    /**
+     * Creates an instance of ScheduledQueryRuleProperties class.
+     */
     public ScheduledQueryRuleProperties() {
     }
 
@@ -238,6 +256,28 @@ public final class ScheduledQueryRuleProperties {
      */
     public ScheduledQueryRuleProperties withEnabled(Boolean enabled) {
         this.enabled = enabled;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ScheduledQueryRuleProperties object itself.
+     */
+    public ScheduledQueryRuleProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
@@ -444,8 +484,7 @@ public final class ScheduledQueryRuleProperties {
      * @param checkWorkspaceAlertsStorageConfigured the checkWorkspaceAlertsStorageConfigured value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
-    public ScheduledQueryRuleProperties withCheckWorkspaceAlertsStorageConfigured(
-        Boolean checkWorkspaceAlertsStorageConfigured) {
+    public ScheduledQueryRuleProperties withCheckWorkspaceAlertsStorageConfigured(Boolean checkWorkspaceAlertsStorageConfigured) {
         this.checkWorkspaceAlertsStorageConfigured = checkWorkspaceAlertsStorageConfigured;
         return this;
     }
@@ -473,8 +512,8 @@ public final class ScheduledQueryRuleProperties {
     }
 
     /**
-     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
+     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
      *
      * @return the autoMitigate value.
      */
@@ -483,14 +522,36 @@ public final class ScheduledQueryRuleProperties {
     }
 
     /**
-     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
+     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
      *
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleProperties object itself.
      */
     public ScheduledQueryRuleProperties withAutoMitigate(Boolean autoMitigate) {
         this.autoMitigate = autoMitigate;
+        return this;
+    }
+
+    /**
+     * Get the ruleResolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only
+     * for rules of the kind LogAlert.
+     *
+     * @return the ruleResolveConfiguration value.
+     */
+    public RuleResolveConfiguration ruleResolveConfiguration() {
+        return this.ruleResolveConfiguration;
+    }
+
+    /**
+     * Set the ruleResolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only
+     * for rules of the kind LogAlert.
+     *
+     * @param ruleResolveConfiguration the ruleResolveConfiguration value to set.
+     * @return the ScheduledQueryRuleProperties object itself.
+     */
+    public ScheduledQueryRuleProperties withRuleResolveConfiguration(RuleResolveConfiguration ruleResolveConfiguration) {
+        this.ruleResolveConfiguration = ruleResolveConfiguration;
         return this;
     }
 
@@ -505,6 +566,9 @@ public final class ScheduledQueryRuleProperties {
         }
         if (actions() != null) {
             actions().validate();
+        }
+        if (ruleResolveConfiguration() != null) {
+            ruleResolveConfiguration().validate();
         }
     }
 }

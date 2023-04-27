@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The claims for a rule management event data source. */
+/**
+ * The claims for a rule management event data source.
+ */
 @Fluent
 public final class RuleManagementEventClaimsDataSource {
     /*
@@ -16,7 +18,9 @@ public final class RuleManagementEventClaimsDataSource {
     @JsonProperty(value = "emailAddress")
     private String emailAddress;
 
-    /** Creates an instance of RuleManagementEventClaimsDataSource class. */
+    /**
+     * Creates an instance of RuleManagementEventClaimsDataSource class.
+     */
     public RuleManagementEventClaimsDataSource() {
     }
 

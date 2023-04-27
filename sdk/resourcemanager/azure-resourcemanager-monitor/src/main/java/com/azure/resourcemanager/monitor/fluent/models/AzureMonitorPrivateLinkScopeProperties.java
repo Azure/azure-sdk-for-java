@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.models.AccessModeSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties that define a Azure Monitor PrivateLinkScope resource. */
+/**
+ * Properties that define a Azure Monitor PrivateLinkScope resource.
+ */
 @Fluent
 public final class AzureMonitorPrivateLinkScopeProperties {
     /*
@@ -33,14 +35,16 @@ public final class AzureMonitorPrivateLinkScopeProperties {
     @JsonProperty(value = "accessModeSettings", required = true)
     private AccessModeSettings accessModeSettings;
 
-    /** Creates an instance of AzureMonitorPrivateLinkScopeProperties class. */
+    /**
+     * Creates an instance of AzureMonitorPrivateLinkScopeProperties class.
+     */
     public AzureMonitorPrivateLinkScopeProperties() {
     }
 
     /**
      * Get the provisioningState property: Current state of this PrivateLinkScope: whether or not is has been
-     * provisioned within the resource group it is defined. Users cannot change this value but are able to read from it.
-     * Values will include Provisioning ,Succeeded, Canceled and Failed.
+     * provisioned within the resource group it is defined. Users cannot change this value but are able to read from
+     * it. Values will include Provisioning ,Succeeded, Canceled and Failed.
      *
      * @return the provisioningState value.
      */
@@ -87,11 +91,7 @@ public final class AzureMonitorPrivateLinkScopeProperties {
             privateEndpointConnections().forEach(e -> e.validate());
         }
         if (accessModeSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accessModeSettings in model"
-                            + " AzureMonitorPrivateLinkScopeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property accessModeSettings in model AzureMonitorPrivateLinkScopeProperties"));
         } else {
             accessModeSettings().validate();
         }

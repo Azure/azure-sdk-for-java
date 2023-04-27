@@ -26,7 +26,9 @@ public final class MetricAvailability {
     @JsonProperty(value = "retention")
     private Duration retention;
 
-    /** Creates an instance of MetricAvailability class. */
+    /**
+     * Creates an instance of MetricAvailability class.
+     */
     public MetricAvailability() {
     }
 
@@ -53,7 +55,7 @@ public final class MetricAvailability {
     }
 
     /**
-     * Get the retention property: the retention period for the metric at the specified timegrain. Expressed as a
+     * Get the retention property: the retention period for the metric at the specified timegrain.  Expressed as a
      * duration 'PT1M', 'P1D', etc.
      *
      * @return the retention value.
@@ -63,7 +65,7 @@ public final class MetricAvailability {
     }
 
     /**
-     * Set the retention property: the retention period for the metric at the specified timegrain. Expressed as a
+     * Set the retention property: the retention period for the metric at the specified timegrain.  Expressed as a
      * duration 'PT1M', 'P1D', etc.
      *
      * @param retention the retention value to set.

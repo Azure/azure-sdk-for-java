@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Itsm receiver. */
+/**
+ * An Itsm receiver.
+ */
 @Fluent
 public final class ItsmReceiver {
     /*
@@ -43,7 +45,9 @@ public final class ItsmReceiver {
     @JsonProperty(value = "region", required = true)
     private String region;
 
-    /** Creates an instance of ItsmReceiver class. */
+    /**
+     * Creates an instance of ItsmReceiver class.
+     */
     public ItsmReceiver() {
     }
 
@@ -162,30 +166,19 @@ public final class ItsmReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model ItsmReceiver"));
         }
         if (workspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property workspaceId in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property workspaceId in model ItsmReceiver"));
         }
         if (connectionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property connectionId in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property connectionId in model ItsmReceiver"));
         }
         if (ticketConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ticketConfiguration in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property ticketConfiguration in model ItsmReceiver"));
         }
         if (region() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property region in model ItsmReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property region in model ItsmReceiver"));
         }
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A condition of the scheduled query rule. */
+/**
+ * A condition of the scheduled query rule.
+ */
 @Fluent
 public final class Condition {
     /*
@@ -68,7 +70,9 @@ public final class Condition {
     @JsonProperty(value = "metricName")
     private String metricName;
 
-    /** Creates an instance of Condition class. */
+    /**
+     * Creates an instance of Condition class.
+     */
     public Condition() {
     }
 
@@ -113,8 +117,8 @@ public final class Condition {
     }
 
     /**
-     * Get the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules of
-     * the kind LogAlert.
+     * Get the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules
+     * of the kind LogAlert.
      *
      * @return the metricMeasureColumn value.
      */
@@ -123,8 +127,8 @@ public final class Condition {
     }
 
     /**
-     * Set the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules of
-     * the kind LogAlert.
+     * Set the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules
+     * of the kind LogAlert.
      *
      * @param metricMeasureColumn the metricMeasureColumn value to set.
      * @return the Condition object itself.
@@ -135,8 +139,8 @@ public final class Condition {
     }
 
     /**
-     * Get the resourceIdColumn property: The column containing the resource id. The content of the column must be a uri
-     * formatted as resource id. Relevant only for rules of the kind LogAlert.
+     * Get the resourceIdColumn property: The column containing the resource id. The content of the column must be a
+     * uri formatted as resource id. Relevant only for rules of the kind LogAlert.
      *
      * @return the resourceIdColumn value.
      */
@@ -145,8 +149,8 @@ public final class Condition {
     }
 
     /**
-     * Set the resourceIdColumn property: The column containing the resource id. The content of the column must be a uri
-     * formatted as resource id. Relevant only for rules of the kind LogAlert.
+     * Set the resourceIdColumn property: The column containing the resource id. The content of the column must be a
+     * uri formatted as resource id. Relevant only for rules of the kind LogAlert.
      *
      * @param resourceIdColumn the resourceIdColumn value to set.
      * @return the Condition object itself.
@@ -197,8 +201,8 @@ public final class Condition {
     }
 
     /**
-     * Get the threshold property: the criteria threshold value that activates the alert. Relevant and required only for
-     * rules of the kind LogAlert.
+     * Get the threshold property: the criteria threshold value that activates the alert. Relevant and required only
+     * for rules of the kind LogAlert.
      *
      * @return the threshold value.
      */
@@ -207,8 +211,8 @@ public final class Condition {
     }
 
     /**
-     * Set the threshold property: the criteria threshold value that activates the alert. Relevant and required only for
-     * rules of the kind LogAlert.
+     * Set the threshold property: the criteria threshold value that activates the alert. Relevant and required only
+     * for rules of the kind LogAlert.
      *
      * @param threshold the threshold value to set.
      * @return the Condition object itself.

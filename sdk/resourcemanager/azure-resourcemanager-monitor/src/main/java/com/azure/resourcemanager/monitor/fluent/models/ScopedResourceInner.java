@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private link scoped resource. */
+/**
+ * A private link scoped resource.
+ */
 @Fluent
 public final class ScopedResourceInner extends ProxyResource {
     /*
@@ -24,7 +26,9 @@ public final class ScopedResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ScopedResourceInner class. */
+    /**
+     * Creates an instance of ScopedResourceInner class.
+     */
     public ScopedResourceInner() {
     }
 

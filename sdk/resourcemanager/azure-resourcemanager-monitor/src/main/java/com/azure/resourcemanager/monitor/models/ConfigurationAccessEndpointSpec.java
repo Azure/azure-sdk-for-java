@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of the endpoint used for accessing configuration. */
+/**
+ * Definition of the endpoint used for accessing configuration.
+ */
 @Immutable
 public class ConfigurationAccessEndpointSpec {
     /*
@@ -16,7 +18,9 @@ public class ConfigurationAccessEndpointSpec {
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
-    /** Creates an instance of ConfigurationAccessEndpointSpec class. */
+    /**
+     * Creates an instance of ConfigurationAccessEndpointSpec class.
+     */
     public ConfigurationAccessEndpointSpec() {
     }
 

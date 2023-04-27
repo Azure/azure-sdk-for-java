@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MetricAlerts Delete. */
 public final class MetricAlertsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class MetricAlertsDeleteSamples {
             .manager()
             .serviceClient()
             .getMetricAlerts()
-            .deleteWithResponse("gigtest", "chiricutin", Context.NONE);
+            .deleteWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 }

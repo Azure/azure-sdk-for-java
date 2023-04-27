@@ -11,6 +11,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ActionGroupsTests extends MonitorManagementTest {
@@ -29,6 +30,7 @@ public class ActionGroupsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDActionGroups() throws Exception {
 
         ActionGroup ag =

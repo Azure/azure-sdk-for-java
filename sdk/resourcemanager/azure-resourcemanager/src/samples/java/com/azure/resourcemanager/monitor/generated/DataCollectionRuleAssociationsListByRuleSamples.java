@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataCollectionRuleAssociations ListByRule. */
 public final class DataCollectionRuleAssociationsListByRuleSamples {
     /*
@@ -23,6 +21,6 @@ public final class DataCollectionRuleAssociationsListByRuleSamples {
             .manager()
             .serviceClient()
             .getDataCollectionRuleAssociations()
-            .listByRule("myResourceGroup", "myCollectionRule", Context.NONE);
+            .listByRule("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
     }
 }

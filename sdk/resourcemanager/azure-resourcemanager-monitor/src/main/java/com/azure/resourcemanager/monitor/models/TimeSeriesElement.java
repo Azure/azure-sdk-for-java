@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A time series result type. The discriminator value is always TimeSeries in this case. */
+/**
+ * A time series result type. The discriminator value is always TimeSeries in this case.
+ */
 @Fluent
 public final class TimeSeriesElement {
     /*
@@ -25,7 +27,9 @@ public final class TimeSeriesElement {
     @JsonProperty(value = "data")
     private List<MetricValue> data;
 
-    /** Creates an instance of TimeSeriesElement class. */
+    /**
+     * Creates an instance of TimeSeriesElement class.
+     */
     public TimeSeriesElement() {
     }
 
@@ -50,8 +54,8 @@ public final class TimeSeriesElement {
     }
 
     /**
-     * Get the data property: An array of data points representing the metric values. This is only returned if a result
-     * type of data is specified.
+     * Get the data property: An array of data points representing the metric values.  This is only returned if a
+     * result type of data is specified.
      *
      * @return the data value.
      */
@@ -60,8 +64,8 @@ public final class TimeSeriesElement {
     }
 
     /**
-     * Set the data property: An array of data points representing the metric values. This is only returned if a result
-     * type of data is specified.
+     * Set the data property: An array of data points representing the metric values.  This is only returned if a
+     * result type of data is specified.
      *
      * @param data the data value to set.
      * @return the TimeSeriesElement object itself.

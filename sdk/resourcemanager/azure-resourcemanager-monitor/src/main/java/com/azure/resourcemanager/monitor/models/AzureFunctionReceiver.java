@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An azure function receiver. */
+/**
+ * An azure function receiver.
+ */
 @Fluent
 public final class AzureFunctionReceiver {
     /*
@@ -41,7 +43,9 @@ public final class AzureFunctionReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
-    /** Creates an instance of AzureFunctionReceiver class. */
+    /**
+     * Creates an instance of AzureFunctionReceiver class.
+     */
     public AzureFunctionReceiver() {
     }
 
@@ -154,27 +158,16 @@ public final class AzureFunctionReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model AzureFunctionReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model AzureFunctionReceiver"));
         }
         if (functionAppResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property functionAppResourceId in model AzureFunctionReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property functionAppResourceId in model AzureFunctionReceiver"));
         }
         if (functionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property functionName in model AzureFunctionReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property functionName in model AzureFunctionReceiver"));
         }
         if (httpTriggerUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property httpTriggerUrl in model AzureFunctionReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property httpTriggerUrl in model AzureFunctionReceiver"));
         }
     }
 

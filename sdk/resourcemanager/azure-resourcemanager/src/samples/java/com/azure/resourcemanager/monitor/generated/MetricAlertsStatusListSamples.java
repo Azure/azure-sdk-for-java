@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for MetricAlertsStatus List. */
 public final class MetricAlertsStatusListSamples {
     /*
@@ -22,6 +20,6 @@ public final class MetricAlertsStatusListSamples {
             .manager()
             .serviceClient()
             .getMetricAlertsStatus()
-            .listWithResponse("gigtest", "chiricutin", Context.NONE);
+            .listWithResponse("gigtest", "chiricutin", com.azure.core.util.Context.NONE);
     }
 }

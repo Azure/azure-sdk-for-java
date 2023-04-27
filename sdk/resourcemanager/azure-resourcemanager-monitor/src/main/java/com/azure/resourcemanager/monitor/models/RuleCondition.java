@@ -10,23 +10,15 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The condition that results in the alert rule being activated. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = RuleCondition.class)
+/**
+ * The condition that results in the alert rule being activated.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = RuleCondition.class)
 @JsonTypeName("RuleCondition")
 @JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition",
-        value = ThresholdRuleCondition.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition",
-        value = LocationThresholdRuleCondition.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition",
-        value = ManagementEventRuleCondition.class)
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition", value = ThresholdRuleCondition.class),
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition", value = LocationThresholdRuleCondition.class),
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition", value = ManagementEventRuleCondition.class)
 })
 @Fluent
 public class RuleCondition {
@@ -37,7 +29,9 @@ public class RuleCondition {
     @JsonProperty(value = "dataSource")
     private RuleDataSource dataSource;
 
-    /** Creates an instance of RuleCondition class. */
+    /**
+     * Creates an instance of RuleCondition class.
+     */
     public RuleCondition() {
     }
 

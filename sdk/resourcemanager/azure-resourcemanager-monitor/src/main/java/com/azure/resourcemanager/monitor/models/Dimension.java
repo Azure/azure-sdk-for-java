@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dimension splitting and filtering definition. */
+/**
+ * Dimension splitting and filtering definition.
+ */
 @Fluent
 public final class Dimension {
     /*
@@ -30,7 +32,9 @@ public final class Dimension {
     @JsonProperty(value = "values", required = true)
     private List<String> values;
 
-    /** Creates an instance of Dimension class. */
+    /**
+     * Creates an instance of Dimension class.
+     */
     public Dimension() {
     }
 
@@ -101,18 +105,13 @@ public final class Dimension {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Dimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model Dimension"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model Dimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model Dimension"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model Dimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property values in model Dimension"));
         }
     }
 

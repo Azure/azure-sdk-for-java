@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Specifies the metric alert criteria for multiple resource that has multiple metric criteria. */
+/**
+ * Specifies the metric alert criteria for multiple resource that has multiple metric criteria.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria")
 @Fluent
@@ -21,7 +23,9 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     @JsonProperty(value = "allOf")
     private List<MultiMetricCriteria> allOf;
 
-    /** Creates an instance of MetricAlertMultipleResourceMultipleMetricCriteria class. */
+    /**
+     * Creates an instance of MetricAlertMultipleResourceMultipleMetricCriteria class.
+     */
     public MetricAlertMultipleResourceMultipleMetricCriteria() {
     }
 

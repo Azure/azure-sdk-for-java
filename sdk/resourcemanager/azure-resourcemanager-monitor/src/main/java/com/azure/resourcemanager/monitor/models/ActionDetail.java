@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The action detail. */
+/**
+ * The action detail.
+ */
 @Fluent
 public final class ActionDetail {
     /*
@@ -46,7 +48,9 @@ public final class ActionDetail {
     @JsonProperty(value = "Detail")
     private String detail;
 
-    /** Creates an instance of ActionDetail class. */
+    /**
+     * Creates an instance of ActionDetail class.
+     */
     public ActionDetail() {
     }
 

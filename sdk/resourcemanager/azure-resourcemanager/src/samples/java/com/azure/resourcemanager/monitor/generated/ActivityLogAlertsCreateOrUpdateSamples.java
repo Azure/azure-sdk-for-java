@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.monitor.models.ActionList;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
@@ -62,7 +61,7 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                                                 mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
                     .withEnabled(true)
                     .withDescription("Description of sample Activity Log Alert rule with 'containsAny'."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -117,7 +116,7 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                                                 mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
                     .withEnabled(true)
                     .withDescription("Description of sample Activity Log Alert rule with 'anyOf' condition."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -162,7 +161,7 @@ public final class ActivityLogAlertsCreateOrUpdateSamples {
                                                 mapOf("sampleWebhookProperty", "SamplePropertyValue")))))
                     .withEnabled(true)
                     .withDescription("Description of sample Activity Log Alert rule."),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

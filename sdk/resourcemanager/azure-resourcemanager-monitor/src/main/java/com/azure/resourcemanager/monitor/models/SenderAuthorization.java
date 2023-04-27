@@ -31,7 +31,9 @@ public final class SenderAuthorization {
     @JsonProperty(value = "scope")
     private String scope;
 
-    /** Creates an instance of SenderAuthorization class. */
+    /**
+     * Creates an instance of SenderAuthorization class.
+     */
     public SenderAuthorization() {
     }
 

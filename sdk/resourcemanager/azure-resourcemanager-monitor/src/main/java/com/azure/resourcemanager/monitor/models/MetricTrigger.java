@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The trigger that results in a scaling action. */
+/**
+ * The trigger that results in a scaling action.
+ */
 @Fluent
 public final class MetricTrigger {
     /*
@@ -78,8 +80,7 @@ public final class MetricTrigger {
 
     /*
      * List of dimension conditions. For example:
-     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment""
-         + ","Operator":"Equals","Values":["default"]}].
+     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
      */
     @JsonProperty(value = "dimensions")
     private List<ScaleRuleMetricDimension> dimensions;
@@ -90,7 +91,9 @@ public final class MetricTrigger {
     @JsonProperty(value = "dividePerInstance")
     private Boolean dividePerInstance;
 
-    /** Creates an instance of MetricTrigger class. */
+    /**
+     * Creates an instance of MetricTrigger class.
+     */
     public MetricTrigger() {
     }
 
@@ -304,8 +307,7 @@ public final class MetricTrigger {
 
     /**
      * Get the dimensions property: List of dimension conditions. For example:
-     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment""
-         + ","Operator":"Equals","Values":["default"]}].
+     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
      *
      * @return the dimensions value.
      */
@@ -315,8 +317,7 @@ public final class MetricTrigger {
 
     /**
      * Set the dimensions property: List of dimension conditions. For example:
-     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment""
-         + ","Operator":"Equals","Values":["default"]}].
+     * [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
      *
      * @param dimensions the dimensions value to set.
      * @return the MetricTrigger object itself.
@@ -353,39 +354,25 @@ public final class MetricTrigger {
      */
     public void validate() {
         if (metricName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property metricName in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property metricName in model MetricTrigger"));
         }
         if (metricResourceUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property metricResourceUri in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property metricResourceUri in model MetricTrigger"));
         }
         if (timeGrain() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeGrain in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timeGrain in model MetricTrigger"));
         }
         if (statistic() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property statistic in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property statistic in model MetricTrigger"));
         }
         if (timeWindow() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeWindow in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timeWindow in model MetricTrigger"));
         }
         if (timeAggregation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeAggregation in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timeAggregation in model MetricTrigger"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model MetricTrigger"));
         }
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.ActivityLogAlertResourceI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Activity Log Alert rules. */
+/**
+ * A list of Activity Log Alert rules.
+ */
 @Fluent
 public final class AlertRuleList {
     /*
@@ -24,7 +26,9 @@ public final class AlertRuleList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AlertRuleList class. */
+    /**
+     * Creates an instance of AlertRuleList class.
+     */
     public AlertRuleList() {
     }
 

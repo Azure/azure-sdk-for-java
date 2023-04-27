@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkScopedResources Delete. */
 public final class PrivateLinkScopedResourcesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class PrivateLinkScopedResourcesDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkScopedResources()
-            .delete("MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", Context.NONE);
+            .delete("MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", com.azure.core.util.Context.NONE);
     }
 }

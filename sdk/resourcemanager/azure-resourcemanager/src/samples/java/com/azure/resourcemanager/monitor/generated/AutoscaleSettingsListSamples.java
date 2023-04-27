@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AutoscaleSettings List. */
 public final class AutoscaleSettingsListSamples {
     /*
@@ -17,6 +15,11 @@ public final class AutoscaleSettingsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAutoscaleSettingsBySubs(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAutoscaleSettings().list(Context.NONE);
+        azure
+            .diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAutoscaleSettings()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

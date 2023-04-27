@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An Activity Log Alert rule resource. */
+/**
+ * An Activity Log Alert rule resource.
+ */
 @Fluent
 public final class ActivityLogAlertResourceInner extends Resource {
     /*
@@ -21,7 +23,9 @@ public final class ActivityLogAlertResourceInner extends Resource {
     @JsonProperty(value = "properties")
     private AlertRuleProperties innerProperties;
 
-    /** Creates an instance of ActivityLogAlertResourceInner class. */
+    /**
+     * Creates an instance of ActivityLogAlertResourceInner class.
+     */
     public ActivityLogAlertResourceInner() {
     }
 
@@ -34,14 +38,18 @@ public final class ActivityLogAlertResourceInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityLogAlertResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityLogAlertResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);

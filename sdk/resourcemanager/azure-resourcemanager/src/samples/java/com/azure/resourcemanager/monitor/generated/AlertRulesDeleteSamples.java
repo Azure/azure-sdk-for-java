@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AlertRules Delete. */
 public final class AlertRulesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class AlertRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getAlertRules()
-            .deleteWithResponse("Rac46PostSwapRG", "chiricutin", Context.NONE);
+            .deleteWithResponse("Rac46PostSwapRG", "chiricutin", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The response to a metric baselines query. */
+/**
+ * The response to a metric baselines query.
+ */
 @Fluent
 public final class MetricBaselinesProperties {
     /*
@@ -40,13 +42,15 @@ public final class MetricBaselinesProperties {
     @JsonProperty(value = "baselines", required = true)
     private List<TimeSeriesBaseline> baselines;
 
-    /** Creates an instance of MetricBaselinesProperties class. */
+    /**
+     * Creates an instance of MetricBaselinesProperties class.
+     */
     public MetricBaselinesProperties() {
     }
 
     /**
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
-     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally
      * requested.
      *
      * @return the timespan value.
@@ -57,7 +61,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
-     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally
      * requested.
      *
      * @param timespan the timespan value to set.
@@ -69,8 +73,8 @@ public final class MetricBaselinesProperties {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
-     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * Get the interval property: The interval (window size) for which the metric data was returned in.  This may be
+     * adjusted in the future and returned back from what was originally requested.  This is not present if a metadata
      * request was made.
      *
      * @return the interval value.
@@ -80,8 +84,8 @@ public final class MetricBaselinesProperties {
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
-     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * Set the interval property: The interval (window size) for which the metric data was returned in.  This may be
+     * adjusted in the future and returned back from what was originally requested.  This is not present if a metadata
      * request was made.
      *
      * @param interval the interval value to set.
@@ -139,22 +143,13 @@ public final class MetricBaselinesProperties {
      */
     public void validate() {
         if (timespan() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timespan in model MetricBaselinesProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timespan in model MetricBaselinesProperties"));
         }
         if (interval() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property interval in model MetricBaselinesProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property interval in model MetricBaselinesProperties"));
         }
         if (baselines() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baselines in model MetricBaselinesProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property baselines in model MetricBaselinesProperties"));
         } else {
             baselines().forEach(e -> e.validate());
         }

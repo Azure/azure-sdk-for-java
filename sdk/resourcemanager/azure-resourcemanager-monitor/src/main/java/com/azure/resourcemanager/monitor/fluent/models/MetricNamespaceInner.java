@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.models.MetricNamespaceName;
 import com.azure.resourcemanager.monitor.models.NamespaceClassification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metric namespace class specifies the metadata for a metric namespace. */
+/**
+ * Metric namespace class specifies the metadata for a metric namespace.
+ */
 @Fluent
 public final class MetricNamespaceInner {
     /*
@@ -42,7 +44,9 @@ public final class MetricNamespaceInner {
     @JsonProperty(value = "properties")
     private MetricNamespaceName properties;
 
-    /** Creates an instance of MetricNamespaceInner class. */
+    /**
+     * Creates an instance of MetricNamespaceInner class.
+     */
     public MetricNamespaceInner() {
     }
 

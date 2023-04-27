@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AlertRules ListByResourceGroup. */
 public final class AlertRulesListByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class AlertRulesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAlertRules()
-            .listByResourceGroup("Rac46PostSwapRG", Context.NONE);
+            .listByResourceGroup("Rac46PostSwapRG", com.azure.core.util.Context.NONE);
     }
 }

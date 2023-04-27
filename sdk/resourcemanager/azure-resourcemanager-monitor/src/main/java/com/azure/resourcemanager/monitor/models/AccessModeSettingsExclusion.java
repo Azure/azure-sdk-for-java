@@ -32,7 +32,9 @@ public final class AccessModeSettingsExclusion {
     @JsonProperty(value = "ingestionAccessMode")
     private AccessMode ingestionAccessMode;
 
-    /** Creates an instance of AccessModeSettingsExclusion class. */
+    /**
+     * Creates an instance of AccessModeSettingsExclusion class.
+     */
     public AccessModeSettingsExclusion() {
     }
 

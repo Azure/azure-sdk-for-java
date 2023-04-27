@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a private link resource. */
+/**
+ * Properties of a private link resource.
+ */
 @Fluent
 public final class PrivateLinkResourceProperties {
     /*
@@ -29,7 +31,9 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "requiredZoneNames")
     private List<String> requiredZoneNames;
 
-    /** Creates an instance of PrivateLinkResourceProperties class. */
+    /**
+     * Creates an instance of PrivateLinkResourceProperties class.
+     */
     public PrivateLinkResourceProperties() {
     }
 

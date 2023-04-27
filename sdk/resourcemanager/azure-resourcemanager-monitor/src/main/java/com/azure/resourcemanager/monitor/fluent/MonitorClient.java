@@ -129,11 +129,11 @@ public interface MonitorClient {
     MetricDefinitionsClient getMetricDefinitions();
 
     /**
-     * Gets the MetricsClient object to access its operations.
+     * Gets the MetricsOperationsClient object to access its operations.
      *
-     * @return the MetricsClient object.
+     * @return the MetricsOperationsClient object.
      */
-    MetricsClient getMetrics();
+    MetricsOperationsClient getMetricsOperations();
 
     /**
      * Gets the BaselinesClient object to access its operations.
@@ -239,4 +239,18 @@ public interface MonitorClient {
      * @return the DataCollectionRulesClient object.
      */
     DataCollectionRulesClient getDataCollectionRules();
+
+    /**
+     * Gets the AzureMonitorWorkspacesClient object to access its operations.
+     *
+     * @return the AzureMonitorWorkspacesClient object.
+     */
+    AzureMonitorWorkspacesClient getAzureMonitorWorkspaces();
+
+    /**
+     * Gets the MonitorOperationsClient object to access its operations.
+     *
+     * @return the MonitorOperationsClient object.
+     */
+    MonitorOperationsClient getMonitorOperations();
 }

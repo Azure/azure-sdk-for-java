@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataCollectionEndpoints List. */
 public final class DataCollectionEndpointsListSamples {
     /*
@@ -17,6 +15,11 @@ public final class DataCollectionEndpointsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listDataCollectionEndpointsBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getDataCollectionEndpoints().list(Context.NONE);
+        azure
+            .diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getDataCollectionEndpoints()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

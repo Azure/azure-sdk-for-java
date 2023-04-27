@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents collection of metric definitions. */
+/**
+ * Represents collection of metric definitions.
+ */
 @Fluent
 public final class MetricDefinitionCollection {
     /*
@@ -19,7 +21,9 @@ public final class MetricDefinitionCollection {
     @JsonProperty(value = "value", required = true)
     private List<MetricDefinitionInner> value;
 
-    /** Creates an instance of MetricDefinitionCollection class. */
+    /**
+     * Creates an instance of MetricDefinitionCollection class.
+     */
     public MetricDefinitionCollection() {
     }
 
@@ -50,10 +54,7 @@ public final class MetricDefinitionCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model MetricDefinitionCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model MetricDefinitionCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

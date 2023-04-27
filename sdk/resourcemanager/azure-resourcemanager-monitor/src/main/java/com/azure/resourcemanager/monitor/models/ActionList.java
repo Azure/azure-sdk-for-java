@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Activity Log Alert rule actions. */
+/**
+ * A list of Activity Log Alert rule actions.
+ */
 @Fluent
 public final class ActionList {
     /*
@@ -17,7 +19,9 @@ public final class ActionList {
     @JsonProperty(value = "actionGroups")
     private List<ActivityLogAlertActionGroup> actionGroups;
 
-    /** Creates an instance of ActionList class. */
+    /**
+     * Creates an instance of ActionList class.
+     */
     public ActionList() {
     }
 

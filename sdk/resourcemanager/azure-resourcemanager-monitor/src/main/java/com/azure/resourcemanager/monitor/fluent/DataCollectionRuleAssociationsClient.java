@@ -14,7 +14,9 @@ import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleAssocia
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataCollectionRuleAssociationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataCollectionRuleAssociationsClient.
+ */
 public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelete<Void> {
     /**
      * Lists associations for the specified resource.
@@ -51,8 +53,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResource(
-        String resourceUri, Context context);
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByResource(String resourceUri, Context context);
 
     /**
      * Lists associations for the specified data collection rule.
@@ -65,8 +66,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(
-        String resourceGroupName, String dataCollectionRuleName);
+    PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRuleAsync(String resourceGroupName, String dataCollectionRuleName);
 
     /**
      * Lists associations for the specified data collection rule.
@@ -79,8 +79,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(
-        String resourceGroupName, String dataCollectionRuleName);
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName, String dataCollectionRuleName);
 
     /**
      * Lists associations for the specified data collection rule.
@@ -94,8 +93,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(
-        String resourceGroupName, String dataCollectionRuleName, Context context);
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByRule(String resourceGroupName, String dataCollectionRuleName, Context context);
 
     /**
      * Lists associations for the specified data collection endpoint.
@@ -108,8 +106,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpointAsync(
-        String resourceGroupName, String dataCollectionEndpointName);
+    PagedFlux<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpointAsync(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Lists associations for the specified data collection endpoint.
@@ -122,8 +119,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpoint(
-        String resourceGroupName, String dataCollectionEndpointName);
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpoint(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Lists associations for the specified data collection endpoint.
@@ -137,8 +133,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return a pageable list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpoint(
-        String resourceGroupName, String dataCollectionEndpointName, Context context);
+    PagedIterable<DataCollectionRuleAssociationProxyOnlyResourceInner> listByDataCollectionEndpoint(String resourceGroupName, String dataCollectionEndpointName, Context context);
 
     /**
      * Returns the specified association.
@@ -148,12 +143,10 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> getWithResponseAsync(
-        String resourceUri, String associationName);
+    Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> getWithResponseAsync(String resourceUri, String associationName);
 
     /**
      * Returns the specified association.
@@ -180,8 +173,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return definition of generic ARM proxy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> getWithResponse(
-        String resourceUri, String associationName, Context context);
+    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> getWithResponse(String resourceUri, String associationName, Context context);
 
     /**
      * Returns the specified association.
@@ -205,12 +197,10 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return definition of generic ARM proxy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> createWithResponseAsync(
-        String resourceUri, String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body);
+    Mono<Response<DataCollectionRuleAssociationProxyOnlyResourceInner>> createWithResponseAsync(String resourceUri, String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body);
 
     /**
      * Creates or updates an association.
@@ -238,11 +228,7 @@ public interface DataCollectionRuleAssociationsClient extends InnerSupportsDelet
      * @return definition of generic ARM proxy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> createWithResponse(
-        String resourceUri,
-        String associationName,
-        DataCollectionRuleAssociationProxyOnlyResourceInner body,
-        Context context);
+    Response<DataCollectionRuleAssociationProxyOnlyResourceInner> createWithResponse(String resourceUri, String associationName, DataCollectionRuleAssociationProxyOnlyResourceInner body, Context context);
 
     /**
      * Creates or updates an association.

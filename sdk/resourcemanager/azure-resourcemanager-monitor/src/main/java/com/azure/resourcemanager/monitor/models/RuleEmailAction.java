@@ -31,7 +31,9 @@ public final class RuleEmailAction extends RuleAction {
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
-    /** Creates an instance of RuleEmailAction class. */
+    /**
+     * Creates an instance of RuleEmailAction class.
+     */
     public RuleEmailAction() {
     }
 

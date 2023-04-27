@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ActionGroups GetTestNotificationsAtActionGroupResourceLevel. */
 public final class ActionGroupsGetTestNotificationsAtActionGroupResourceLevelSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getTestNotificationsAtActionGroupResourceLevel.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/getTestNotificationsAtActionGroupResourceLevel.json
      */
     /**
      * Sample code: Get notification details at resource group level.
@@ -24,6 +22,6 @@ public final class ActionGroupsGetTestNotificationsAtActionGroupResourceLevelSam
             .serviceClient()
             .getActionGroups()
             .getTestNotificationsAtActionGroupResourceLevelWithResponse(
-                "TestRgName", "TestAgName", "11000222191287", Context.NONE);
+                "TestRgName", "TestAgName", "11000222191287", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A rule metric data source. The discriminator value is always RuleMetricDataSource in this case. */
+/**
+ * A rule metric data source. The discriminator value is always RuleMetricDataSource in this case.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
 @Fluent
@@ -20,7 +22,9 @@ public final class RuleMetricDataSource extends RuleDataSource {
     @JsonProperty(value = "metricName")
     private String metricName;
 
-    /** Creates an instance of RuleMetricDataSource class. */
+    /**
+     * Creates an instance of RuleMetricDataSource class.
+     */
     public RuleMetricDataSource() {
     }
 
@@ -44,28 +48,36 @@ public final class RuleMetricDataSource extends RuleDataSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withResourceUri(String resourceUri) {
         super.withResourceUri(resourceUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withLegacyResourceId(String legacyResourceId) {
         super.withLegacyResourceId(legacyResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withResourceLocation(String resourceLocation) {
         super.withResourceLocation(resourceLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleMetricDataSource withMetricNamespace(String metricNamespace) {
         super.withMetricNamespace(metricNamespace);

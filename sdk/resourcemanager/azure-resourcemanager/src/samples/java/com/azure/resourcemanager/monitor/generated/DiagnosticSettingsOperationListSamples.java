@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiagnosticSettingsOperation List. */
 public final class DiagnosticSettingsOperationListSamples {
     /*
@@ -24,7 +22,7 @@ public final class DiagnosticSettingsOperationListSamples {
             .getDiagnosticSettingsOperations()
             .list(
                 "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -43,6 +41,6 @@ public final class DiagnosticSettingsOperationListSamples {
             .getDiagnosticSettingsOperations()
             .list(
                 "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

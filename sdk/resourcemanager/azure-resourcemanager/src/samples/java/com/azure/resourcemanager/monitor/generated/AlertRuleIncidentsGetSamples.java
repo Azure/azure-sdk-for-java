@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AlertRuleIncidents Get. */
 public final class AlertRuleIncidentsGetSamples {
     /*
@@ -22,6 +20,6 @@ public final class AlertRuleIncidentsGetSamples {
             .manager()
             .serviceClient()
             .getAlertRuleIncidents()
-            .getWithResponse("Rac46PostSwapRG", "myRuleName", "Website_started", Context.NONE);
+            .getWithResponse("Rac46PostSwapRG", "myRuleName", "Website_started", com.azure.core.util.Context.NONE);
     }
 }

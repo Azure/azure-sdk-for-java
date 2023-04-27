@@ -27,7 +27,9 @@ public final class OperationListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationListResultInner class. */
+    /**
+     * Creates an instance of OperationListResultInner class.
+     */
     public OperationListResultInner() {
     }
 

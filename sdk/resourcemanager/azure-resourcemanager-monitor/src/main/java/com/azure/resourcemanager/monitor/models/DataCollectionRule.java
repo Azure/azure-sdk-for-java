@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Definition of what monitoring data to collect and where that data should be sent. */
+/**
+ * Definition of what monitoring data to collect and where that data should be sent.
+ */
 @Fluent
 public class DataCollectionRule {
     /*
@@ -70,7 +72,9 @@ public class DataCollectionRule {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionRuleProvisioningState provisioningState;
 
-    /** Creates an instance of DataCollectionRule class. */
+    /**
+     * Creates an instance of DataCollectionRule class.
+     */
     public DataCollectionRule() {
     }
 
@@ -155,8 +159,9 @@ public class DataCollectionRule {
     }
 
     /**
-     * Get the dataSources property: The specification of data sources. This property is optional and can be omitted if
-     * the rule is meant to be used via direct calls to the provisioned endpoint.
+     * Get the dataSources property: The specification of data sources.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
      *
      * @return the dataSources value.
      */
@@ -165,8 +170,9 @@ public class DataCollectionRule {
     }
 
     /**
-     * Set the dataSources property: The specification of data sources. This property is optional and can be omitted if
-     * the rule is meant to be used via direct calls to the provisioned endpoint.
+     * Set the dataSources property: The specification of data sources.
+     * This property is optional and can be omitted if the rule is meant to be used via direct calls to the provisioned
+     * endpoint.
      *
      * @param dataSources the dataSources value to set.
      * @return the DataCollectionRule object itself.
@@ -235,14 +241,11 @@ public class DataCollectionRule {
             metadata().validate();
         }
         if (streamDeclarations() != null) {
-            streamDeclarations()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            streamDeclarations().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (dataSources() != null) {
             dataSources().validate();

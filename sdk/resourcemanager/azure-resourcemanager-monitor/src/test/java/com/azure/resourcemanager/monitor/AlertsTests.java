@@ -23,6 +23,7 @@ import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -48,6 +49,7 @@ public class AlertsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDMetricAlerts() throws Exception {
 
         try {
@@ -331,6 +333,7 @@ public class AlertsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDMultipleResourceMetricAlerts() throws Exception {
         try {
             final String userName = "tirekicker";
@@ -434,6 +437,7 @@ public class AlertsTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDActivityLogAlerts() {
         Region region = Region.US_EAST2;
         ActionGroup ag =

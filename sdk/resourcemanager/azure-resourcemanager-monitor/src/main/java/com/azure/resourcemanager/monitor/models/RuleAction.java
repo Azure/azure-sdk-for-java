@@ -9,24 +9,20 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The action that is performed when the alert rule becomes active, and when an alert condition is resolved. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = RuleAction.class)
+/**
+ * The action that is performed when the alert rule becomes active, and when an alert condition is resolved.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = RuleAction.class)
 @JsonTypeName("RuleAction")
 @JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
-        value = RuleEmailAction.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction",
-        value = RuleWebhookAction.class)
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction", value = RuleEmailAction.class),
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction", value = RuleWebhookAction.class)
 })
 @Immutable
 public class RuleAction {
-    /** Creates an instance of RuleAction class. */
+    /**
+     * Creates an instance of RuleAction class.
+     */
     public RuleAction() {
     }
 

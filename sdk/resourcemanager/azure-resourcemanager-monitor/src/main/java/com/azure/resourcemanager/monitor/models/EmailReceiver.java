@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An email receiver. */
+/**
+ * An email receiver.
+ */
 @Fluent
 public final class EmailReceiver {
     /*
@@ -35,13 +37,15 @@ public final class EmailReceiver {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
 
-    /** Creates an instance of EmailReceiver class. */
+    /**
+     * Creates an instance of EmailReceiver class.
+     */
     public EmailReceiver() {
     }
 
     /**
-     * Get the name property: The name of the email receiver. Names must be unique across all receivers within an action
-     * group.
+     * Get the name property: The name of the email receiver. Names must be unique across all receivers within an
+     * action group.
      *
      * @return the name value.
      */
@@ -50,8 +54,8 @@ public final class EmailReceiver {
     }
 
     /**
-     * Set the name property: The name of the email receiver. Names must be unique across all receivers within an action
-     * group.
+     * Set the name property: The name of the email receiver. Names must be unique across all receivers within an
+     * action group.
      *
      * @param name the name value to set.
      * @return the EmailReceiver object itself.
@@ -117,14 +121,10 @@ public final class EmailReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EmailReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model EmailReceiver"));
         }
         if (emailAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property emailAddress in model EmailReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property emailAddress in model EmailReceiver"));
         }
     }
 

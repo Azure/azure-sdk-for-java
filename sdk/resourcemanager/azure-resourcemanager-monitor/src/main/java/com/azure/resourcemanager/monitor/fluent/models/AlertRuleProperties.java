@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Azure Activity Log Alert rule. */
+/**
+ * An Azure Activity Log Alert rule.
+ */
 @Fluent
 public final class AlertRuleProperties {
     /*
@@ -46,7 +48,9 @@ public final class AlertRuleProperties {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of AlertRuleProperties class. */
+    /**
+     * Creates an instance of AlertRuleProperties class.
+     */
     public AlertRuleProperties() {
     }
 
@@ -163,21 +167,15 @@ public final class AlertRuleProperties {
      */
     public void validate() {
         if (scopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scopes in model AlertRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property scopes in model AlertRuleProperties"));
         }
         if (condition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property condition in model AlertRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property condition in model AlertRuleProperties"));
         } else {
             condition().validate();
         }
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actions in model AlertRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property actions in model AlertRuleProperties"));
         } else {
             actions().validate();
         }

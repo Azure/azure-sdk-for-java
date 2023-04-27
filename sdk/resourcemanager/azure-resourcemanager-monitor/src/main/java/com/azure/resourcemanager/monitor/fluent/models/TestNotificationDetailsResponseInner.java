@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The details of the test notification results. */
+/**
+ * The details of the test notification results.
+ */
 @Fluent
 public final class TestNotificationDetailsResponseInner {
     /*
@@ -44,7 +46,9 @@ public final class TestNotificationDetailsResponseInner {
     @JsonProperty(value = "actionDetails")
     private List<ActionDetail> actionDetails;
 
-    /** Creates an instance of TestNotificationDetailsResponseInner class. */
+    /**
+     * Creates an instance of TestNotificationDetailsResponseInner class.
+     */
     public TestNotificationDetailsResponseInner() {
     }
 
@@ -158,10 +162,7 @@ public final class TestNotificationDetailsResponseInner {
             context().validate();
         }
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model TestNotificationDetailsResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property state in model TestNotificationDetailsResponseInner"));
         }
         if (actionDetails() != null) {
             actionDetails().forEach(e -> e.validate());

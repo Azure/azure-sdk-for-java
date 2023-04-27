@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.AlertRuleResourcePatch;
 import com.azure.resourcemanager.monitor.models.ConditionOperator;
 import com.azure.resourcemanager.monitor.models.RuleMetricDataSource;
@@ -52,7 +51,7 @@ public final class AlertRulesUpdateSamples {
                             .withWindowSize(Duration.parse("PT5M"))
                             .withTimeAggregation(TimeAggregationOperator.TOTAL))
                     .withActions(Arrays.asList()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

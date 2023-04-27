@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataCollectionEndpoints Delete. */
 public final class DataCollectionEndpointsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class DataCollectionEndpointsDeleteSamples {
             .manager()
             .serviceClient()
             .getDataCollectionEndpoints()
-            .deleteWithResponse("myResourceGroup", "myCollectionEndpoint", Context.NONE);
+            .deleteWithResponse("myResourceGroup", "myCollectionEndpoint", com.azure.core.util.Context.NONE);
     }
 }

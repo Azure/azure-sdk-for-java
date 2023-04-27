@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Specifies the metric alert rule criteria for a web test resource. */
+/**
+ * Specifies the metric alert rule criteria for a web test resource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria")
 @Fluent
@@ -33,7 +35,9 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     @JsonProperty(value = "failedLocationCount", required = true)
     private float failedLocationCount;
 
-    /** Creates an instance of WebtestLocationAvailabilityCriteria class. */
+    /**
+     * Creates an instance of WebtestLocationAvailabilityCriteria class.
+     */
     public WebtestLocationAvailabilityCriteria() {
     }
 
@@ -106,16 +110,10 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     public void validate() {
         super.validate();
         if (webTestId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
         }
         if (componentId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
         }
     }
 

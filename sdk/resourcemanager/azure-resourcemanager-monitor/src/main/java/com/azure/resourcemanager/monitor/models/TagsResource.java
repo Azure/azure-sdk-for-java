@@ -22,7 +22,9 @@ public final class TagsResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of TagsResource class. */
+    /**
+     * Creates an instance of TagsResource class.
+     */
     public TagsResource() {
     }
 
