@@ -78,7 +78,7 @@ class ServiceBusSessionManagerTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
-
+    private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(20);
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
@@ -176,7 +176,7 @@ class ServiceBusSessionManagerTest {
     @Test
     void properties() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -187,7 +187,7 @@ class ServiceBusSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -204,7 +204,7 @@ class ServiceBusSessionManagerTest {
     void singleUnnamedSession() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            5);
+            5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -259,7 +259,7 @@ class ServiceBusSessionManagerTest {
     void singleUnnamedSessionLockRenew() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            1);
+            1, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -317,7 +317,7 @@ class ServiceBusSessionManagerTest {
     void multipleSessions() {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
-            null, 5);
+            null, 5, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -445,7 +445,7 @@ class ServiceBusSessionManagerTest {
         final int expectedLinksCreated = 2;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
-            null, 1);
+            null, 1, SESSION_IDLE_TIMEOUT);
 
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
@@ -518,7 +518,7 @@ class ServiceBusSessionManagerTest {
     void singleUnnamedSessionCleanupAfterTimeout() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
-            2);
+            2, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 

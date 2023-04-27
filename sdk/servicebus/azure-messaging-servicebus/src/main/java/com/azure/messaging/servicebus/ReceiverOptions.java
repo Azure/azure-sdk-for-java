@@ -19,20 +19,30 @@ class ReceiverOptions {
     private final String sessionId;
     private final Integer maxConcurrentSessions;
     private final Duration maxLockRenewDuration;
-
+    private final Duration sessionIdleTimeout;
     ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
         boolean enableAutoComplete) {
-        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null);
+        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null, null);
     }
 
     ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions) {
+        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.enableAutoComplete = enableAutoComplete;
         this.sessionId = sessionId;
         this.maxConcurrentSessions = maxConcurrentSessions;
         this.maxLockRenewDuration = maxLockRenewDuration;
+        this.sessionIdleTimeout = sessionIdleTimeout;
+    }
+
+    /**
+     * Gets the {@code sessionIdleTimeout} TODO
+     *
+     * @return TODO
+     */
+    Duration getSessionIdleTimeout() {
+        return sessionIdleTimeout;
     }
 
     /**
@@ -43,6 +53,7 @@ class ReceiverOptions {
     Duration getMaxLockRenewDuration() {
         return maxLockRenewDuration;
     }
+
     /**
      * Gets the receive mode for the message.
      *

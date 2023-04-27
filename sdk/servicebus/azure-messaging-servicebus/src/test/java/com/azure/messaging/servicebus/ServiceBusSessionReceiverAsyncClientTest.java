@@ -58,7 +58,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
-
+    private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(20);
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
@@ -152,7 +152,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     @Test
     void acceptSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null, SESSION_IDLE_TIMEOUT);
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
         final String sessionId = linkName;
@@ -203,7 +203,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
     @Test
     void acceptNextSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
+            false, null, null, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -328,7 +329,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     void specificSessionReceive() {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
-            Duration.ZERO, false, null, null);
+            Duration.ZERO, false, null, null, SESSION_IDLE_TIMEOUT);
 
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";

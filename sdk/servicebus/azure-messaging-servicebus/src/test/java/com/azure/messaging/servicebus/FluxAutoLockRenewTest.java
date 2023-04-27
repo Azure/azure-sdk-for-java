@@ -59,7 +59,6 @@ public class FluxAutoLockRenewTest {
     private Function<String, Mono<OffsetDateTime>> renewalFunction;
 
     private OffsetDateTime lockedUntil;
-    private AutoCloseable mocksCloseable;
     private ReceiverOptions defaultReceiverOptions;
 
     @BeforeAll

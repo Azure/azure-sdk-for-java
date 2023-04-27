@@ -73,7 +73,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      */
     ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout) {
 
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
@@ -148,10 +148,10 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
         // receiver is idle.
         if (disposeOnIdle) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .map((String lockToken) -> Mono.delay(this.retryOptions.getTryTimeout())))
+                .map((String lockToken) -> Mono.delay(sessionIdleTimeout)))
                 .subscribe(item -> {
                     withReceiveLinkInformation(LOGGER.atInfo())
-                        .addKeyValue("timeout", retryOptions.getTryTimeout())
+                        .addKeyValue("timeout", sessionIdleTimeout)
                         .log("Did not a receive message within timeout.");
                     cancelReceiveProcessor.onComplete();
                 }));

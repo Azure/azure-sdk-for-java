@@ -46,6 +46,7 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
+    private static final  Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(10);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private final TestPublisher<ServiceBusReceiveLink> linkPublisher = TestPublisher.create();
@@ -118,7 +119,7 @@ class ServiceBusAsyncConsumerTest {
         final Duration maxAutoLockRenewDuration = Duration.ofSeconds(0);
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+            maxAutoLockRenewDuration, false, "sessionId", null, SESSION_IDLE_TIMEOUT);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -165,7 +166,7 @@ class ServiceBusAsyncConsumerTest {
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+            maxAutoLockRenewDuration, false, "sessionId", null, SESSION_IDLE_TIMEOUT);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);
@@ -205,7 +206,7 @@ class ServiceBusAsyncConsumerTest {
         final OffsetDateTime lockedUntil = OffsetDateTime.now().plusSeconds(3);
         final String lockToken = UUID.randomUUID().toString();
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, prefetch,
-            maxAutoLockRenewDuration, false, "sessionId", null);
+            maxAutoLockRenewDuration, false, "sessionId", null, SESSION_IDLE_TIMEOUT);
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
             receiverOptions);

@@ -122,7 +122,7 @@ class ServiceBusReceiverAsyncClientTest {
     private static final Duration CLEANUP_INTERVAL = Duration.ofSeconds(10);
     private static final String SESSION_ID = "my-session-id";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
-
+    private static final  Duration SESSION_IDLE_TIMEOUT = Duration.ofSeconds(10);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
@@ -209,7 +209,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         sessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, false, SESSION_ID,
-                null),
+                null, SESSION_IDLE_TIMEOUT),
             connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
     }
 
@@ -340,7 +340,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, maxLockRenewDuration,
-                false, SESSION_ID, null), connectionProcessor,
+                false, SESSION_ID, null, SESSION_IDLE_TIMEOUT), connectionProcessor,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
         // This needs to be used with "try with resource" : https://javadoc.io/static/org.mockito/mockito-core/3.9.0/org/mockito/Mockito.html#static_mocks
@@ -595,7 +595,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.renewSessionLock(SESSION_ID, null)).thenReturn(Mono.error(new AzureException("some error occurred.")));
 
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null, true, SESSION_ID,
-            null);
+            null, SESSION_IDLE_TIMEOUT);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, mock(ServiceBusSessionManager.class));
 
@@ -1037,7 +1037,7 @@ class ServiceBusReceiverAsyncClientTest {
         final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
         ServiceBusReceiverAsyncClient mySessionReceiver = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
             new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, CLEANUP_INTERVAL,
-                false, SESSION_ID, null), connectionProcessor,
+                false, SESSION_ID, null, SESSION_IDLE_TIMEOUT), connectionProcessor,
             CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, sessionManager);
 
         when(sessionManager.getSessionState(SESSION_ID))
@@ -1291,7 +1291,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final ServiceBusSessionManager sessionManager = mock(ServiceBusSessionManager.class);
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH, null,
-            true, SESSION_ID, null);
+            true, SESSION_ID, null, SESSION_IDLE_TIMEOUT);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, instrumentation,
             messageSerializer, onClientClose, sessionManager);

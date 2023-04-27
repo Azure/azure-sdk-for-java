@@ -138,7 +138,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             .map(sessionId -> {
                 final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-                    receiverOptions.isEnableAutoComplete(), sessionId, null);
+                    receiverOptions.isEnableAutoComplete(), sessionId, null, receiverOptions.getSessionIdleTimeout());
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, messageSerializer, newReceiverOptions,
                     receiveLink, identifier);
@@ -174,7 +174,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
 
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-            receiverOptions.isEnableAutoComplete(), sessionId, null);
+            receiverOptions.isEnableAutoComplete(), sessionId, null, receiverOptions.getSessionIdleTimeout());
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
             connectionProcessor, messageSerializer, newReceiverOptions, identifier);
 

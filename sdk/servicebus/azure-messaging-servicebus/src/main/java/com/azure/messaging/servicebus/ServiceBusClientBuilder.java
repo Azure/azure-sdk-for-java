@@ -210,6 +210,7 @@ public final class ServiceBusClientBuilder implements
     private static final String LIBRARY_VERSION;
     private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
     private static final Duration MAX_LOCK_RENEW_DEFAULT_DURATION = Duration.ofMinutes(5);
+    private static final Duration SESSION_IDLE_TIMEOUT = Duration.ofMinutes(1);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusClientBuilder.class);
     private final Object connectionLock = new Object();
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
@@ -1042,6 +1043,20 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
+         * Sets TODO
+         *
+         * @param sessionIdleTimeout TODO
+         *
+         * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionProcessorClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout);
+            sessionReceiverClientBuilder.sessionIdleTimeout(sessionIdleTimeout);
+            return this;
+        }
+
+        /**
          * Enables session processing roll-over by processing at most {@code maxConcurrentSessions}.
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
@@ -1235,6 +1250,7 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
+        private Duration sessionIdleTimeout = MAX_LOCK_RENEW_DEFAULT_DURATION;
         private SubQueue subQueue = SubQueue.NONE;
 
         private ServiceBusSessionReceiverClientBuilder() {
@@ -1267,6 +1283,19 @@ public final class ServiceBusClientBuilder implements
         public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             validateAndThrow(maxAutoLockRenewDuration);
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
+            return this;
+        }
+
+        /**
+         * Sets the TODO
+         *
+         * @param sessionIdleTimeout Session idle timeout. TODO
+         * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
+         * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
+         */
+        public ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+            validateAndThrow(sessionIdleTimeout);
+            this.sessionIdleTimeout = sessionIdleTimeout;
             return this;
         }
 
@@ -1404,8 +1433,7 @@ public final class ServiceBusClientBuilder implements
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null,
-                maxConcurrentSessions);
+                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
 
             final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
@@ -1485,7 +1513,7 @@ public final class ServiceBusClientBuilder implements
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
+                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
 
             final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
@@ -1792,7 +1820,6 @@ public final class ServiceBusClientBuilder implements
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
-
         private ServiceBusReceiverClientBuilder() {
         }
 

@@ -1484,6 +1484,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             sessionReceiver = toClose(getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .maxAutoLockRenewDuration(options.getMaxAutoLockRenewDuration())
+                .sessionIdleTimeout(options.getSessionIdleTimeout())
                 .disableAutoComplete()
                 .buildAsyncClient());
 
@@ -1514,13 +1515,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     public static class ClientCreationOptions {
         Duration maxAutoLockRenewDuration;
 
+        Duration sessionIdleTimeout;
         ClientCreationOptions setMaxAutoLockRenewDuration(Duration maxAutoLockRenewDuration) {
             this.maxAutoLockRenewDuration = maxAutoLockRenewDuration;
             return this;
         }
 
+        ClientCreationOptions setSessionIdleTimeout(Duration sessionIdleTimeout) {
+            this.sessionIdleTimeout = sessionIdleTimeout;
+            return this;
+        }
+
         Duration getMaxAutoLockRenewDuration() {
             return this.maxAutoLockRenewDuration;
+        }
+        Duration getSessionIdleTimeout() {
+            return this.sessionIdleTimeout;
         }
     }
 }

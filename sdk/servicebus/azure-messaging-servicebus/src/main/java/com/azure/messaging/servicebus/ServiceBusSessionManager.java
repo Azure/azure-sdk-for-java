@@ -349,7 +349,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration);
+                    maxSessionLockRenewDuration, receiverOptions.getSessionIdleTimeout());
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()
