@@ -126,6 +126,7 @@
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
+    <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/orbital</module>
     <module>sdk/paloaltonetworks</module>
