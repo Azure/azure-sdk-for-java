@@ -22,6 +22,9 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of ContinuousDtmfRecognitionRequestInternal class. */
+    public ContinuousDtmfRecognitionRequestInternal() {}
+
     /**
      * Get the targetParticipant property: Defines options for recognition.
      *

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.net.URL;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CallMedias. */
@@ -58,7 +57,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> play(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
@@ -69,7 +68,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelAllMediaOperations(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -79,7 +78,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> recognize(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RecognizeRequest recognizeRequest,
@@ -90,7 +89,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> startContinuousDtmfRecognition(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -102,7 +101,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopContinuousDtmfRecognition(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -114,7 +113,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> sendDtmf(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
@@ -201,20 +200,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param playRequest play request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void play(String callConnectionId, PlayRequest playRequest) {
-        playAsync(callConnectionId, playRequest).block();
-    }
-
-    /**
-     * Plays audio to participants in the call.
-     *
-     * @param callConnectionId The call connection id.
-     * @param playRequest play request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -224,6 +209,20 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playWithResponse(String callConnectionId, PlayRequest playRequest, Context context) {
         return playWithResponseAsync(callConnectionId, playRequest, context).block();
+    }
+
+    /**
+     * Plays audio to participants in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void play(String callConnectionId, PlayRequest playRequest) {
+        playWithResponse(callConnectionId, playRequest, Context.NONE);
     }
 
     /**
@@ -298,19 +297,6 @@ public final class CallMediasImpl {
      * Cancel all media operations in a call.
      *
      * @param callConnectionId The call connection id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelAllMediaOperations(String callConnectionId) {
-        cancelAllMediaOperationsAsync(callConnectionId).block();
-    }
-
-    /**
-     * Cancel all media operations in a call.
-     *
-     * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -320,6 +306,19 @@ public final class CallMediasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAllMediaOperationsWithResponse(String callConnectionId, Context context) {
         return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context).block();
+    }
+
+    /**
+     * Cancel all media operations in a call.
+     *
+     * @param callConnectionId The call connection id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelAllMediaOperations(String callConnectionId) {
+        cancelAllMediaOperationsWithResponse(callConnectionId, Context.NONE);
     }
 
     /**
@@ -406,20 +405,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param recognizeRequest The media recognize request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void recognize(String callConnectionId, RecognizeRequest recognizeRequest) {
-        recognizeAsync(callConnectionId, recognizeRequest).block();
-    }
-
-    /**
-     * Recognize media from call.
-     *
-     * @param callConnectionId The call connection id.
-     * @param recognizeRequest The media recognize request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -430,6 +415,20 @@ public final class CallMediasImpl {
     public Response<Void> recognizeWithResponse(
             String callConnectionId, RecognizeRequest recognizeRequest, Context context) {
         return recognizeWithResponseAsync(callConnectionId, recognizeRequest, context).block();
+    }
+
+    /**
+     * Recognize media from call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param recognizeRequest The media recognize request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void recognize(String callConnectionId, RecognizeRequest recognizeRequest) {
+        recognizeWithResponse(callConnectionId, recognizeRequest, Context.NONE);
     }
 
     /**
@@ -526,21 +525,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param continuousDtmfRecognitionRequest The continuous recognize request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startContinuousDtmfRecognition(
-            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
-        startContinuousDtmfRecognitionAsync(callConnectionId, continuousDtmfRecognitionRequest).block();
-    }
-
-    /**
-     * Start continuous Dtmf recognition by subscribing to tones.
-     *
-     * @param callConnectionId The call connection id.
-     * @param continuousDtmfRecognitionRequest The continuous recognize request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -555,6 +539,21 @@ public final class CallMediasImpl {
         return startContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
                 .block();
+    }
+
+    /**
+     * Start continuous Dtmf recognition by subscribing to tones.
+     *
+     * @param callConnectionId The call connection id.
+     * @param continuousDtmfRecognitionRequest The continuous recognize request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startContinuousDtmfRecognition(
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
+        startContinuousDtmfRecognitionWithResponse(callConnectionId, continuousDtmfRecognitionRequest, Context.NONE);
     }
 
     /**
@@ -651,21 +650,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param continuousDtmfRecognitionRequest The continuous recognize request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopContinuousDtmfRecognition(
-            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
-        stopContinuousDtmfRecognitionAsync(callConnectionId, continuousDtmfRecognitionRequest).block();
-    }
-
-    /**
-     * Stop continuous Dtmf recognition by unsubscribing to tones.
-     *
-     * @param callConnectionId The call connection id.
-     * @param continuousDtmfRecognitionRequest The continuous recognize request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -680,6 +664,21 @@ public final class CallMediasImpl {
         return stopContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
                 .block();
+    }
+
+    /**
+     * Stop continuous Dtmf recognition by unsubscribing to tones.
+     *
+     * @param callConnectionId The call connection id.
+     * @param continuousDtmfRecognitionRequest The continuous recognize request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopContinuousDtmfRecognition(
+            String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
+        stopContinuousDtmfRecognitionWithResponse(callConnectionId, continuousDtmfRecognitionRequest, Context.NONE);
     }
 
     /**
@@ -767,20 +766,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfRequest The send dtmf request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
-        sendDtmfAsync(callConnectionId, sendDtmfRequest).block();
-    }
-
-    /**
-     * Send dtmf tones.
-     *
-     * @param callConnectionId The call connection id.
-     * @param sendDtmfRequest The send dtmf request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -791,5 +776,19 @@ public final class CallMediasImpl {
     public Response<Void> sendDtmfWithResponse(
             String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
         return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context).block();
+    }
+
+    /**
+     * Send dtmf tones.
+     *
+     * @param callConnectionId The call connection id.
+     * @param sendDtmfRequest The send dtmf request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendDtmf(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
+        sendDtmfWithResponse(callConnectionId, sendDtmfRequest, Context.NONE);
     }
 }

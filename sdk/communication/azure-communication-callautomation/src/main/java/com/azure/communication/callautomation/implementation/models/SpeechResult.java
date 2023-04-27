@@ -16,6 +16,9 @@ public final class SpeechResult {
     @JsonProperty(value = "speech")
     private String speech;
 
+    /** Creates an instance of SpeechResult class. */
+    public SpeechResult() {}
+
     /**
      * Get the speech property: The recognized speech in string.
      *

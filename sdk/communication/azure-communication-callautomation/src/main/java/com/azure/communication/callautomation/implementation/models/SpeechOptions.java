@@ -11,11 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SpeechOptions {
     /*
-     * The length of end silence when user stops speaking and cogservice send
-     * response.
+     * The length of end silence when user stops speaking and cogservice send response.
      */
     @JsonProperty(value = "endSilenceTimeoutInMs")
     private Long endSilenceTimeoutInMs;
+
+    /** Creates an instance of SpeechOptions class. */
+    public SpeechOptions() {}
 
     /**
      * Get the endSilenceTimeoutInMs property: The length of end silence when user stops speaking and cogservice send

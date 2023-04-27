@@ -44,6 +44,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.LinkedList;
@@ -80,7 +81,12 @@ public final class CallAutomationAsyncClient {
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
+        try {
+            this.resourceEndpoint = new URL(callServiceClient.getEndpoint());
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        this.contentDownloader = new ContentDownloader(resourceEndpoint, callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationIdentifierConverter.convert(sourceIdentity);
