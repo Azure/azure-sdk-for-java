@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;

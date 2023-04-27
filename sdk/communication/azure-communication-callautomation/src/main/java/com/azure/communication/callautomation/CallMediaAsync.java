@@ -474,7 +474,7 @@ public final class CallMediaAsync {
             SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
                     .setTones(tones.stream()
-                .map(this::translateDtmfToneInternal)
+                .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
                         .setOperationContext(operationContext);
 

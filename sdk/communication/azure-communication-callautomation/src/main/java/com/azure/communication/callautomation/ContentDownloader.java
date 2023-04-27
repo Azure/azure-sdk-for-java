@@ -37,11 +37,11 @@ import java.util.function.Function;
 import static java.lang.StrictMath.toIntExact;
 
 class ContentDownloader {
-    private final URL resourceEndpoint;
+    private final String resourceEndpoint;
     private final HttpPipeline httpPipeline;
     private final ClientLogger logger = new ClientLogger(ContentDownloader.class);
 
-    ContentDownloader(URL resourceEndpoint, HttpPipeline httpPipeline) {
+    ContentDownloader(String resourceEndpoint, HttpPipeline httpPipeline) {
         this.resourceEndpoint = resourceEndpoint;
         this.httpPipeline = httpPipeline;
     }

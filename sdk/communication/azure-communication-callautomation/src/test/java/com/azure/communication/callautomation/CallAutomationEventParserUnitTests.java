@@ -5,6 +5,9 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.events.CallAutomationEventData;
 import com.azure.communication.callautomation.models.events.CallConnectedEventData;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStoppedEventData;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailedEventData;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceivedEventData;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEventData;
 import com.azure.communication.callautomation.models.events.PlayCanceledEventData;
 import com.azure.communication.callautomation.models.events.PlayCompletedEventData;
@@ -22,6 +25,8 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceededEventData;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
 
+import com.azure.communication.callautomation.models.events.SendDtmfCompletedEventData;
+import com.azure.communication.callautomation.models.events.SendDtmfFailedEventData;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -367,11 +372,11 @@ public class CallAutomationEventParserUnitTests {
             + "   }\n"
             + "]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
-        ContinuousDtmfRecognitionToneReceived continuousDtmfRecognitionToneReceived = (ContinuousDtmfRecognitionToneReceived) event;
+        ContinuousDtmfRecognitionToneReceivedEventData continuousDtmfRecognitionToneReceived = (ContinuousDtmfRecognitionToneReceivedEventData) event;
 
         assertNotNull(continuousDtmfRecognitionToneReceived);
         assertEquals("serverCallId", continuousDtmfRecognitionToneReceived.getServerCallId());
@@ -412,11 +417,11 @@ public class CallAutomationEventParserUnitTests {
             + "   }\n"
             + "]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
-        ContinuousDtmfRecognitionToneFailed continuousDtmfRecognitionToneFailed = (ContinuousDtmfRecognitionToneFailed) event;
+        ContinuousDtmfRecognitionToneFailedEventData continuousDtmfRecognitionToneFailed = (ContinuousDtmfRecognitionToneFailedEventData) event;
 
         assertNotNull(continuousDtmfRecognitionToneFailed);
         assertEquals("serverCallId", continuousDtmfRecognitionToneFailed.getServerCallId());
@@ -455,11 +460,11 @@ public class CallAutomationEventParserUnitTests {
             + "   }\n"
             + "]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
-        ContinuousDtmfRecognitionStopped continuousDtmfRecognitionStopped = (ContinuousDtmfRecognitionStopped) event;
+        ContinuousDtmfRecognitionStoppedEventData continuousDtmfRecognitionStopped = (ContinuousDtmfRecognitionStoppedEventData) event;
 
         assertNotNull(continuousDtmfRecognitionStopped);
         assertEquals("serverCallId", continuousDtmfRecognitionStopped.getServerCallId());
@@ -498,11 +503,11 @@ public class CallAutomationEventParserUnitTests {
             + "   }\n"
             + "]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
-        SendDtmfCompleted sendDtmfCompleted = (SendDtmfCompleted) event;
+        SendDtmfCompletedEventData sendDtmfCompleted = (SendDtmfCompletedEventData) event;
 
         assertNotNull(sendDtmfCompleted);
         assertEquals("serverCallId", sendDtmfCompleted.getServerCallId());
@@ -541,11 +546,11 @@ public class CallAutomationEventParserUnitTests {
             + "   }\n"
             + "]";
 
-        CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
+        CallAutomationEventData event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
 
         assertNotNull(event);
 
-        SendDtmfFailed sendDtmfFailed = (SendDtmfFailed) event;
+        SendDtmfFailedEventData sendDtmfFailed = (SendDtmfFailedEventData) event;
 
         assertNotNull(sendDtmfFailed);
         assertEquals("serverCallId", sendDtmfFailed.getServerCallId());

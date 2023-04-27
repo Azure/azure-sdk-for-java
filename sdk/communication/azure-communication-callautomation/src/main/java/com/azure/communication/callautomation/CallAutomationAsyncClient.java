@@ -44,9 +44,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,7 +70,7 @@ public final class CallAutomationAsyncClient {
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
-    private final URL resourceEndpoint;
+    private final String resourceUrl;
     private final CommunicationIdentifierModel sourceIdentity;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
@@ -81,12 +79,7 @@ public final class CallAutomationAsyncClient {
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        try {
-            this.resourceEndpoint = new URL(callServiceClient.getEndpoint());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        this.contentDownloader = new ContentDownloader(resourceEndpoint, callServiceClient.getHttpPipeline());
+        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationIdentifierConverter.convert(sourceIdentity);
