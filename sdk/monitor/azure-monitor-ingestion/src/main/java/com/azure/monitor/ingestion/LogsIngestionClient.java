@@ -10,34 +10,11 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.ingestion.implementation.Batcher;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
-import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
-import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.models.LogsUploadError;
-import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
-import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
-import static com.azure.monitor.ingestion.implementation.Utils.createThreadPool;
-import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
-import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
-import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
  * The synchronous client for uploading logs to Azure Monitor.
@@ -53,18 +30,12 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
  * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.instantiation -->
  */
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
-public final class LogsIngestionClient implements AutoCloseable {
-    private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
-    private final IngestionUsingDataCollectionRulesClient client;
+public final class LogsIngestionClient {
 
-    // dynamic thread pool that scales up and down on demand.
-    private final ExecutorService threadPool;
-    private final Thread shutdownHook;
+    private final LogsIngestionAsyncClient asyncClient;
 
-    LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
-        this.client = client;
-        this.threadPool = createThreadPool();
-        this.shutdownHook = registerShutdownHook(this.threadPool, 5);
+    LogsIngestionClient(LogsIngestionAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
     /**
@@ -90,7 +61,7 @@ public final class LogsIngestionClient implements AutoCloseable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName, Iterable<Object> logs) {
-        upload(ruleId, streamName, logs, null);
+        asyncClient.upload(ruleId, streamName, logs).block();
     }
 
     /**
@@ -119,7 +90,7 @@ public final class LogsIngestionClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName,
                                    Iterable<Object> logs, LogsUploadOptions options) {
-        upload(ruleId, streamName, logs, options, Context.NONE);
+        asyncClient.upload(ruleId, streamName, logs, options, Context.NONE).block();
     }
 
     /**
@@ -140,62 +111,7 @@ public final class LogsIngestionClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(String ruleId, String streamName,
                        Iterable<Object> logs, LogsUploadOptions options, Context context) {
-        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
-        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
-        Objects.requireNonNull(logs, "'logs' cannot be null.");
-
-        Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null ? null : options.getLogsUploadErrorConsumer();
-
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addHeader(CONTENT_ENCODING, GZIP);
-        requestOptions.setContext(context);
-
-        Stream<UploadLogsResponseHolder> responses = new Batcher(options, logs)
-            .toStream()
-            .map(r -> uploadToService(ruleId, streamName, requestOptions, r));
-
-        responses = submit(responses, getConcurrency(options))
-            .filter(response -> response.getException() != null);
-
-        if (uploadLogsErrorConsumer != null) {
-            responses.forEach(response -> uploadLogsErrorConsumer.accept(new LogsUploadError(response.getException(), response.getRequest().getLogs())));
-            return;
-        }
-
-        final int[] failedLogCount = new int[1];
-        List<HttpResponseException> exceptions = responses
-            .map(response -> {
-                failedLogCount[0] += response.getRequest().getLogs().size();
-                return response.getException();
-            })
-            .collect(Collectors.toList());
-
-        if (exceptions.size() > 0) {
-            throw LOGGER.logExceptionAsError(new LogsUploadException(exceptions, failedLogCount[0]));
-        }
-    }
-
-    private Stream<UploadLogsResponseHolder> submit(Stream<UploadLogsResponseHolder> responseStream, int concurrency) {
-        if (concurrency == 1) {
-            return responseStream;
-        }
-
-        try {
-            return threadPool.submit(() -> responseStream).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
-    }
-
-    private UploadLogsResponseHolder uploadToService(String ruleId, String streamName, RequestOptions requestOptions, LogsIngestionRequest request) {
-        HttpResponseException exception = null;
-        try {
-            client.uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions);
-        } catch (HttpResponseException ex) {
-            exception = ex;
-        }
-
-        return new UploadLogsResponseHolder(request, exception);
+        asyncClient.upload(ruleId, streamName, logs, options, context).block();
     }
 
     /**
@@ -231,28 +147,6 @@ public final class LogsIngestionClient implements AutoCloseable {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
             String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
-        Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
-        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
-        Objects.requireNonNull(logs, "'logs' cannot be null.");
-
-        if (requestOptions == null) {
-            requestOptions = new RequestOptions();
-        }
-
-        requestOptions.addRequestCallback(request -> {
-            HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
-            if (httpHeader == null) {
-                BinaryData gzippedRequest = BinaryData.fromBytes(gzipRequest(logs.toBytes()));
-                request.setBody(gzippedRequest);
-                request.setHeader(CONTENT_ENCODING, GZIP);
-            }
-        });
-        return client.uploadWithResponse(ruleId, streamName, logs, requestOptions);
-    }
-
-    @Override
-    public void close() {
-        threadPool.shutdown();
-        Runtime.getRuntime().removeShutdownHook(shutdownHook);
+        return asyncClient.uploadWithResponse(ruleId, streamName, logs, requestOptions).block();
     }
 }
