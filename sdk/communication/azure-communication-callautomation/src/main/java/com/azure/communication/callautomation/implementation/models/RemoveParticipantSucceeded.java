@@ -61,7 +61,7 @@ public final class RemoveParticipantSucceeded {
      * Set the callConnectionId property: Call connection ID.
      *
      * @param callConnectionId the callConnectionId value to set.
-     * @return the RemoveParticipantSucceeded object itself.
+     * @return the RemoveParticipantSucceededEventData object itself.
      */
     public RemoveParticipantSucceeded setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
@@ -81,7 +81,7 @@ public final class RemoveParticipantSucceeded {
      * Set the serverCallId property: Server call ID.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the RemoveParticipantSucceeded object itself.
+     * @return the RemoveParticipantSucceededEventData object itself.
      */
     public RemoveParticipantSucceeded setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
@@ -103,7 +103,7 @@ public final class RemoveParticipantSucceeded {
      * ID.
      *
      * @param correlationId the correlationId value to set.
-     * @return the RemoveParticipantSucceeded object itself.
+     * @return the RemoveParticipantSucceededEventData object itself.
      */
     public RemoveParticipantSucceeded setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
@@ -125,7 +125,7 @@ public final class RemoveParticipantSucceeded {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RemoveParticipantSucceeded object itself.
+     * @return the RemoveParticipantSucceededEventData object itself.
      */
     public RemoveParticipantSucceeded setOperationContext(String operationContext) {
         this.operationContext = operationContext;
@@ -145,7 +145,7 @@ public final class RemoveParticipantSucceeded {
      * Set the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
      *
      * @param resultInformation the resultInformation value to set.
-     * @return the RemoveParticipantSucceeded object itself.
+     * @return the RemoveParticipantSucceededEventData object itself.
      */
     public RemoveParticipantSucceeded setResultInformation(ResultInformation resultInformation) {
         this.resultInformation = resultInformation;
@@ -165,7 +165,7 @@ public final class RemoveParticipantSucceeded {
      * Set the participant property: Participant.
      *
      * @param participant the participant value to set.
-     * @return the RemoveParticipantSucceeded object itself.
+     * @return the RemoveParticipantSucceededEventData object itself.
      */
     public RemoveParticipantSucceeded setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;

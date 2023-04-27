@@ -58,7 +58,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-metricsadvisor</artifactId>
-      <version>1.1.13</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -188,7 +188,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos-encryption</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
+      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos-encryption;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

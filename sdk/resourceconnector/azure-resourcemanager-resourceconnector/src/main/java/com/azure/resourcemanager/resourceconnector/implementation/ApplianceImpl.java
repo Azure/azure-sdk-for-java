@@ -10,8 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceInner;
 import com.azure.resourcemanager.resourceconnector.models.Appliance;
-import com.azure.resourcemanager.resourceconnector.models.ApplianceListClusterCustomerUserCredentialResults;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceListCredentialResults;
+import com.azure.resourcemanager.resourceconnector.models.ApplianceListKeysResults;
 import com.azure.resourcemanager.resourceconnector.models.AppliancePropertiesInfrastructureConfig;
 import com.azure.resourcemanager.resourceconnector.models.Distro;
 import com.azure.resourcemanager.resourceconnector.models.Identity;
@@ -190,25 +190,22 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         return this;
     }
 
-    public ApplianceListClusterCustomerUserCredentialResults listClusterCustomerUserCredential() {
-        return serviceManager.appliances().listClusterCustomerUserCredential(resourceGroupName, resourceName);
-    }
-
-    public Response<ApplianceListClusterCustomerUserCredentialResults> listClusterCustomerUserCredentialWithResponse(
-        Context context) {
+    public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(Context context) {
         return serviceManager
             .appliances()
-            .listClusterCustomerUserCredentialWithResponse(resourceGroupName, resourceName, context);
+            .listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
     }
 
     public ApplianceListCredentialResults listClusterUserCredential() {
         return serviceManager.appliances().listClusterUserCredential(resourceGroupName, resourceName);
     }
 
-    public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(Context context) {
-        return serviceManager
-            .appliances()
-            .listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplianceListKeysResults> listKeysWithResponse(Context context) {
+        return serviceManager.appliances().listKeysWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public ApplianceListKeysResults listKeys() {
+        return serviceManager.appliances().listKeys(resourceGroupName, resourceName);
     }
 
     public ApplianceImpl withRegion(Region location) {
