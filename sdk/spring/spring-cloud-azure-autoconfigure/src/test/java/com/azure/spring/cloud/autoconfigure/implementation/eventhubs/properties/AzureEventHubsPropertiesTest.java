@@ -72,9 +72,9 @@ class AzureEventHubsPropertiesTest {
     @Test
     void domainNameOverrideCloud() {
         AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
-        eventHubsProperties.setDomainName(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName());
+        eventHubsProperties.setDomainName(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
         eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
-        assertEquals(AzureEnvironmentProperties.AZURE_GERMANY.getServiceBusDomainName(),
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
                 eventHubsProperties.getDomainName());
     }
 
