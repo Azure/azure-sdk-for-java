@@ -42,7 +42,8 @@ abstract class OpenAIClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         OpenAIClientBuilder openAIClientbuilder =
                 new OpenAIClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT", "endpoint"))
+                        .endpoint(interceptorManager.isPlaybackMode() ? "https://localhost:8080"
+                            : Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
