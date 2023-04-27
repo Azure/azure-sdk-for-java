@@ -80,10 +80,10 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
 
         ServiceBusProcessorClient processor;
         if (isSessionEnabled) {
-            //assertNotNull(sessionId, "'sessionId' should have been set.");
-            //AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
-                //.setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
-            processor = toClose(getSessionProcessorBuilder(false, entityType, entityIndex, false, RETRY_OPTIONS)
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            AmqpRetryOptions amqpRetryOptions = new AmqpRetryOptions()
+                .setTryTimeout(Duration.ofSeconds(2 * lockTimeoutDurationSeconds));
+            processor = toClose(getSessionProcessorBuilder(false, entityType, entityIndex, false, amqpRetryOptions)
                 .maxAutoLockRenewDuration(expectedMaxAutoLockRenew)
                 .disableAutoComplete()
                 .processMessage(context -> processMessage(context, countDownLatch, messageId, lastMessageReceivedTime, lockTimeoutDurationSeconds))
@@ -102,7 +102,6 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         // Assert & Act
         processor.start();
         toClose((AutoCloseable) () -> processor.stop());
-        toClose(processor);
 
         assertTrue(countDownLatch.await(lockTimeoutDurationSeconds * 6, TimeUnit.SECONDS), "Message not arrived, closing processor.");
         LOGGER.info("Message lock has been renewed. Now closing processor");
