@@ -81,7 +81,7 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
-    <javadoc.excludePackageNames/>
+    <javadoc.excludePackageNames>com.azure.json</javadoc.excludePackageNames>
 
   </properties>
 
