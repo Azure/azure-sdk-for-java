@@ -4,11 +4,16 @@
 
 ### Features Added
 
+- Added `OperationLocationPollingStrategy` and `SyncOperationLocationPollingStrategy` for the new polling strategy.
+- Added `PollResult` which represents a general poll result for the new polling strategy.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Removed `com.azure.core.experimental.implementation` from "export" clause of module-info.java.
 
 ## 1.0.0-beta.38 (2023-04-07)
 

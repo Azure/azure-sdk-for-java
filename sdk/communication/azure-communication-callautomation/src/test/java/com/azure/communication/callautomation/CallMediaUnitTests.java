@@ -41,7 +41,7 @@ public class CallMediaUnitTests {
 
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playTextSourceId");
-        playFileSource.setUri("filePath");
+        playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
         playTextSource.setPlaySourceId("playTextSourceId");

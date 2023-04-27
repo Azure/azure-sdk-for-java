@@ -232,6 +232,11 @@
           "justification": "Removing Jackson annotations from Search in transition to stream-style."
         },
         {
+          "code": "java.field.removed",
+          "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
+          "justification": "Remove this because AZURE_GERMANY is deprecated."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",

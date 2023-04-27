@@ -13,7 +13,7 @@ import java.util.Objects;
  * The options for creating a call.
  */
 @Fluent
-public class StartRecordingOptions {
+public final class StartRecordingOptions {
     /**
      * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
