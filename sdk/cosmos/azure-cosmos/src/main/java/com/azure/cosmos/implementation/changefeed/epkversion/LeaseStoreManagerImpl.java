@@ -142,7 +142,7 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
 
     @Override
     public Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken) {
-        return this.createLeaseIfNotExist(leaseToken, continuationToken);
+        return this.createLeaseIfNotExist(leaseToken, continuationToken, null);
     }
 
     @Override
