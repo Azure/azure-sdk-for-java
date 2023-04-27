@@ -1043,7 +1043,9 @@ public final class ServiceBusClientBuilder implements
          * Sets the maximum amount of time to wait for a message to be received for the currently active session.
          * After this time has elapsed, the processor will close the session and attempt to process another session.
          * If not specified, the try timeout will be used.
-         *
+         * <p>
+         * Applies only when {@link ServiceBusSessionProcessorClientBuilder#maxConcurrentSessions} is set to a positive value.
+         * </p>
          * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
@@ -1293,7 +1295,7 @@ public final class ServiceBusClientBuilder implements
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
-        public ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
+        ServiceBusSessionReceiverClientBuilder sessionIdleTimeout(Duration sessionIdleTimeout) {
             validateAndThrow(sessionIdleTimeout);
             this.sessionIdleTimeout = sessionIdleTimeout;
             return this;
