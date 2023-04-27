@@ -396,8 +396,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         }
 
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sessionId)
-            .timeout(operationTimeout)
-            .cache();
+            .timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
 
