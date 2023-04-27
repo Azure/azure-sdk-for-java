@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
+ * <h2>Overview</h2>
  * An entity within a table.
  *
  * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
@@ -21,6 +22,11 @@ import java.util.Objects;
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
  * {@link #setProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
  * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
+ * 
+ * <h3><strong>Usage Code Samples</strong></h3>
+ * <h4>Create a {@code TableEntity} instance and add properties</h4>
+ * INSERT TableEntity-CreateEntityAndSetProperties
+ * 
  */
 @Fluent
 public final class TableEntity {

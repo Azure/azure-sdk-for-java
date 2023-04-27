@@ -54,18 +54,12 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
+ * <h3>Creating an Asynchronous Table Service Client</h3>
  * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method
  * on a {@link TableServiceClientBuilder} object.</p>
  *
- * <p><strong>Samples to construct an async client</strong></p>
- * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.instantiation -->
- * <pre>
- * TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
- *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableServiceAsyncClient.instantiation -->
+ * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing a client.</p>
+ * <h3>Usage Code Samples</h3>
  *
  * @see TableServiceClientBuilder
  */

@@ -78,28 +78,27 @@ import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTabl
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
+ * <h2>Overview</h2>
  * Provides a synchronous service client for accessing a table in the Azure Tables service.
  *
  * <p>The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
- * credentials for accessing the storage or CosmosDB table API account. It provides methods to create and delete the
+ * credentials for accessing the storage or CosmosDB table API account. It provides synchronous methods to create and delete the
  * table itself, as well as methods to create, upsert, update, delete, list, and get entities within the table. These
  * methods invoke REST API operations to make the requests and obtain the results that are returned.</p>
- *
+ * 
+ * <h2>Creating a Synchronous Table Client</h2>
  * <p>Instances of this client are obtained by calling the {@link TableClientBuilder#buildClient()} method on a
  * {@link TableClientBuilder} object.</p>
  *
- * <p><strong>Samples to construct a sync client</strong></p>
- * <!-- src_embed com.azure.data.tables.tableClient.instantiation -->
- * <pre>
- * TableClient tableClient = new TableClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
- *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
- *     .tableName&#40;&quot;myTable&quot;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableClient.instantiation -->
+ * <p>See {@link TableClientBuilder} documentation for more information on constructing a client.</p>
+ * <h2>Usage Code Samples</h2>
+ * 
+ * <h4>Creating a {@link TableEntity}</h4>
+ * <h4>Listing {@link TableEntity TableEntities}</h4>
+ * <h4>Deleting a {@link TableEntity}</h4>
  *
  * @see TableClientBuilder
+ * @see TableEntity
  */
 @ServiceClient(builder = TableClientBuilder.class)
 public final class TableClient {

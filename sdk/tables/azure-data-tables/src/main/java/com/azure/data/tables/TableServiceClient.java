@@ -52,24 +52,19 @@ import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTi
 import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 
 /**
+ * <h2>Overview</h2>
  * Provides a synchronous service client for accessing the Azure Tables service.
  *
  * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
+ * <h3>Creating a Synchronous Table Service Client</h3>
  * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
  * {@link TableServiceClientBuilder} object.</p>
  *
- * <p><strong>Samples to construct a sync client</strong></p>
- * <!-- src_embed com.azure.data.tables.tableServiceClient.instantiation -->
- * <pre>
- * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
- *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableServiceClient.instantiation -->
+ * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing a client.</p>
+ * <h4>Usage Code Samples</h4>
  *
  * @see TableServiceClientBuilder
  */

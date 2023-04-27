@@ -72,6 +72,7 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
 import static com.azure.data.tables.implementation.TableUtils.toTableServiceError;
 
 /**
+ * <h2>Overview</h2>
  * Provides an asynchronous service client for accessing a table in the Azure Tables service.
  *
  * <p>The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
@@ -79,20 +80,17 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * table itself, as well as methods to create, upsert, update, delete, list, and get entities within the table. These
  * methods invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
+ * <h2>Creating an Asynchronous Table Client</h2>
  * <p>Instances of this client are obtained by calling the {@link TableClientBuilder#buildAsyncClient()} method on a
  * {@link TableClientBuilder} object.</p>
- *
- * <p><strong>Samples to construct an async client</strong></p>
- * <!-- src_embed com.azure.data.tables.tableAsyncClient.instantiation -->
- * <pre>
- * TableAsyncClient tableAsyncClient = new TableClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
- *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
- *     .tableName&#40;&quot;myTable&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.tableAsyncClient.instantiation -->
- *
+ * 
+ * <p>See {@link TableClientBuilder} documentation for more information on constructing a client.</p>
+* <h2>Usage Code Samples</h2>
+ * 
+ * <h4>Creating a {@link TableEntity}</h4>
+ * <h4>Listing {@link TableEntity TableEntities}</h4>
+ * <h4>Deleting a {@link TableEntity}</h4>
+ * 
  * @see TableClientBuilder
  */
 @ServiceClient(builder = TableClientBuilder.class, isAsync = true)
