@@ -42,7 +42,7 @@ public class GetCompletionsAsync {
                 }
 
                 CompletionsUsage usage = completions.getUsage();
-                System.out.printf("Usage: number of prompt token is %d , number of completion token is %d, "
+                System.out.printf("Usage: number of prompt token is %d, number of completion token is %d, "
                         + "and number of total tokens in request and response is %d.%n",
                     usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
             },
