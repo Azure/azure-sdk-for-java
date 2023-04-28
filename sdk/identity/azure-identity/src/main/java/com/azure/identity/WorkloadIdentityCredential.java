@@ -63,7 +63,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
      * @param federatedTokenFilePath The path to a file containing a Kubernetes service account token that authenticates the identity.
      * @param identityClientOptions The identity client options to use for authentication.
      */
-    WorkloadIdentityCredential(String clientId, String tenantId, String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
+    WorkloadIdentityCredential(String tenantId, String clientId, String federatedTokenFilePath, IdentityClientOptions identityClientOptions) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
 
         Configuration configuration = identityClientOptions.getConfiguration() == null

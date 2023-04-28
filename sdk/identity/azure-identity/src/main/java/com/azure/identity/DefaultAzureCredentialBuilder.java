@@ -289,7 +289,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
             identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return new WorkloadIdentityCredential(clientId, null, null,
+        return new WorkloadIdentityCredential(null, clientId, null,
                 identityClientOptions.clone());
     }
 }
