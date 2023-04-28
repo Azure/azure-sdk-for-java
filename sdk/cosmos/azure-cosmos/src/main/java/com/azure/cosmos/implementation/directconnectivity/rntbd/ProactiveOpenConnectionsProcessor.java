@@ -43,23 +43,23 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
     private Disposable openConnectionBackgroundTask;
-    private final Duration aggressiveConnectionEstablishmentDuration;
+    private final Duration aggressiveWarmupDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
-    private final CompletableFuture<Boolean> aggressiveWarmUpFlowCompletionTracker = new CompletableFuture<>();
+    private final CompletableFuture<Boolean> aggressiveWarmUpCompletionTracker = new CompletableFuture<>();
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
         this(endpointProvider, null);
     }
 
-    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveConnectionEstablishmentDuration) {
+    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveWarmupDuration) {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(WarmupFlowAggressivenessHint.AGGRESSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
-        this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
+        this.aggressiveWarmupDuration = aggressiveWarmupDuration;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         concurrencySettings.put(WarmupFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
         concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
@@ -67,11 +67,11 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public void init() {
 
-        if (aggressiveConnectionEstablishmentDuration != null && aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
+        if (aggressiveWarmupDuration != null && aggressiveWarmupDuration.compareTo(Duration.ZERO) > 0) {
 
             Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
                     .just(1)
-                    .delayElements(aggressiveConnectionEstablishmentDuration);
+                    .delayElements(aggressiveWarmupDuration);
 
             this.isConcurrencySwitchFlow.set(true);
 
@@ -89,8 +89,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         // this is to keep track of the completion status of warm up flow
         // which is purely blocking
-        if (aggressiveConnectionEstablishmentDuration == null) {
-            aggressiveWarmUpFlowCompletionTracker.whenComplete((isCompletionSuccess, throwable) -> {
+        if (aggressiveWarmupDuration == null || aggressiveWarmupDuration.equals(Duration.ZERO)) {
+            aggressiveWarmUpCompletionTracker.whenComplete((isCompletionSuccess, throwable) -> {
                 if (isCompletionSuccess) {
                     logger.debug("Aggressive warm up is done, switch to defensively opening connections");
                     this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
@@ -112,8 +112,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
      public void completeWarmUpFlow() {
-        if (!aggressiveWarmUpFlowCompletionTracker.isDone()) {
-            aggressiveWarmUpFlowCompletionTracker.complete(true);
+        if (!aggressiveWarmUpCompletionTracker.isDone()) {
+            aggressiveWarmUpCompletionTracker.complete(true);
         }
     }
 
