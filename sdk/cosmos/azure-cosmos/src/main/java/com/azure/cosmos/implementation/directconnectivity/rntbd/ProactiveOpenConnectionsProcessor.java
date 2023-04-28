@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +45,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Disposable openConnectionBackgroundTask;
     private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
+    private final CompletableFuture<Boolean> aggressiveWarmUpFlowCompletionTracker = new CompletableFuture<>();
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
@@ -64,12 +66,15 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public void init() {
-        Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
-                .just(1)
-                .delayElements(aggressiveConnectionEstablishmentDuration);
 
         if (aggressiveConnectionEstablishmentDuration != null && aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
+
+            Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
+                    .just(1)
+                    .delayElements(aggressiveConnectionEstablishmentDuration);
+
             this.isConcurrencySwitchFlow.set(true);
+
             backgroundOpenConnectionsSinkReInstantiationTask
                     .doOnComplete(() -> {
                         this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
@@ -80,7 +85,18 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
 
         // start as a background task
-        openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
+        openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
+
+        // this is to keep track of the completion status of warm up flow
+        // which is purely blocking
+        if (aggressiveConnectionEstablishmentDuration == null) {
+            aggressiveWarmUpFlowCompletionTracker.whenComplete((isCompletionSuccess, throwable) -> {
+                if (isCompletionSuccess) {
+                    logger.debug("Aggressive warm up is done, switch to defensively opening connections");
+                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
+                }
+            });
+        }
     }
 
     public OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -93,6 +109,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.submitOpenConnectionTaskOutsideLoopInternal(openConnectionTask);
 
         return openConnectionTask;
+    }
+
+     public void completeWarmUpFlow() {
+        if (!aggressiveWarmUpFlowCompletionTracker.isDone()) {
+            aggressiveWarmUpFlowCompletionTracker.complete(true);
+        }
     }
 
     private void submitOpenConnectionTaskOutsideLoopInternal(OpenConnectionTask openConnectionTask) {
@@ -142,7 +164,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public Disposable getOpenConnectionsPublisher() {
+    public Disposable getBackgroundOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
@@ -227,7 +249,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         logger.debug("Re-instantiation openConnectionsTaskSink");
         this.instantiateOpenConnectionsPublisher();
         this.openConnectionBackgroundTask.dispose();
-        this.openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
+        this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
     private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(

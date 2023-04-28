@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -51,7 +50,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.net.URI;
@@ -160,7 +158,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
-                                       .withAggressiveProactiveConnectionDuration(this.proactiveContainerInitConfig != null ? this.proactiveContainerInitConfig.getAggressiveProactiveConnectionEstablishmentDuration() : null)
+                                       .withAggressiveWarmupDuration(this.proactiveContainerInitConfig != null ? this.proactiveContainerInitConfig.getAggressiveProactiveConnectionEstablishmentDuration() : null)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

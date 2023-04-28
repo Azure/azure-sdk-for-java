@@ -1116,7 +1116,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getBackgroundOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         ArrayList<AddressInformation> addressInfosFromCache =
                 Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);

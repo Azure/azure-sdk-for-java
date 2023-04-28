@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -237,7 +236,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withAggressiveProactiveConnectionDuration(Duration aggressiveConnectionEstablishmentDuration) {
+        public Builder withAggressiveWarmupDuration(Duration aggressiveConnectionEstablishmentDuration) {
             this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
             return this;
         }
