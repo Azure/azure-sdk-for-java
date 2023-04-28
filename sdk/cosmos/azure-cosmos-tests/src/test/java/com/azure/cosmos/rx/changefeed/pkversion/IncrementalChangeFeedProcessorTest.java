@@ -757,13 +757,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
 
+        ChangeFeedProcessor leaseMonitoringChangeFeedProcessor = null;
+
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             LeaseStateMonitor leaseStateMonitor = new LeaseStateMonitor();
 
             // create a monitoring CFP for ensuring the leases are updating as expected
-            ChangeFeedProcessor leaseMonitoringChangeFeedProcessor = new ChangeFeedProcessorBuilder()
+            leaseMonitoringChangeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(leasesChangeFeedProcessorHandler(leaseStateMonitor))
                 .feedContainer(createdLeaseCollection)
@@ -928,6 +930,28 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
         } finally {
+            if (leaseMonitoringChangeFeedProcessor != null && leaseMonitoringChangeFeedProcessor.isStarted()) {
+                leaseMonitoringChangeFeedProcessor
+                    .stop()
+                    .timeout(Duration.ofMinutes(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .onErrorResume(throwable -> {
+                        logger.warn("Stop leaseMonitoringChangeFeedProcessor failed", throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+            }
+
+            if (changeFeedProcessor != null && changeFeedProcessor.isStarted()) {
+                changeFeedProcessor
+                    .stop()
+                    .timeout(Duration.ofMinutes(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .onErrorResume(throwable -> {
+                        logger.warn("Stop changeFeedProcessor failed", throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+            }
+
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
 
@@ -941,10 +965,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
 
-        ChangeFeedProcessor changeFeedProcessor1;
-        ChangeFeedProcessor changeFeedProcessor2;
+        ChangeFeedProcessor changeFeedProcessor1 = null;
+        ChangeFeedProcessor changeFeedProcessor2 = null;
         String changeFeedProcessor1HostName = RandomStringUtils.randomAlphabetic(6);
         String changeFeedProcessor2HostName = RandomStringUtils.randomAlphabetic(6);
+        logger.info("readFeedDocumentsAfterSplit_maxScaleCount changeFeedProcessor1 name {}", changeFeedProcessor1HostName);
+        logger.info("readFeedDocumentsAfterSplit_maxScaleCount changeFeedProcessor2 name {}", changeFeedProcessor2HostName);
 
         try {
             // Set up the maxScaleCount to be equal to the current partition count
@@ -1021,6 +1047,9 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .getResults();
 
             long host1Leases = leaseDocuments.stream().filter(lease -> lease.get("Owner").asText().equals(changeFeedProcessor1HostName)).count();
+            for (JsonNode lease : leaseDocuments) {
+                logger.info("readFeedDocumentsAfterSplit_maxScaleCount lease {} {}", lease.get("Owner").asText(), lease);
+            }
             assertThat(host1Leases).isEqualTo(partitionCountBeforeSplit);
 
             // now starts a new change feed processor
@@ -1052,24 +1081,29 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to receive and process the second batch of documents.
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
 
-            changeFeedProcessor1
-                .stop()
-                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .onErrorResume(throwable -> {
-                    log.error("Change feed processor1 did not stop in the expected time", throwable);
-                    return Mono.empty();
-                })
-                .block();
-            changeFeedProcessor2
-                .stop()
-                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                .onErrorResume(throwable -> {
-                    log.error("Change feed processor2 did not stop in the expected time", throwable);
-                    return Mono.empty();
-                })
-                .block();
-
         } finally {
+            if (changeFeedProcessor1 != null && changeFeedProcessor1.isStarted()) {
+                changeFeedProcessor1
+                    .stop()
+                    .timeout(Duration.ofMinutes(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .onErrorResume(throwable -> {
+                        logger.warn("Stop changeFeedProcessor1 failed", throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+            }
+
+            if (changeFeedProcessor2 != null && changeFeedProcessor2.isStarted()) {
+                changeFeedProcessor2
+                    .stop()
+                    .timeout(Duration.ofMinutes(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .onErrorResume(throwable -> {
+                        logger.warn("Stop changeFeedProcessor2 failed", throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+            }
+
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
 
