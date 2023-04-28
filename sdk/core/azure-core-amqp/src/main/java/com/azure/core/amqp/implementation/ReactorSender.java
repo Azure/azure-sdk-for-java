@@ -362,25 +362,6 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             // The AMQP 1.0 spec format ^ for amqp:data:binary when the raw bytes length is > 255.
             return  8 + binaryRawSize;
         }
-        // When encoding for Amqp 1.0 spec "amqp:data:binary" format -
-        // 1. the QPid type org.apache.qpid.proton.codec.messaging.FastPathDataType writes the descriptor codes.
-        // 2. the QPid type org.apache.qpid.proton.codec.BinaryType writes the binary.
-        //
-        // The 'FastPathDataType' writes the descriptor codes as below:
-        //        .put(EncodingCodes.DESCRIBED_TYPE_INDICATOR); <- 0x00 (1 byte)
-        //        .put(EncodingCodes.SMALLULONG);               <- 0x53 (1 byte)
-        //        .put(DESCRIPTOR_CODE);                        <- 0x75 (1 byte)
-        //
-        // After the descriptor codes, the 'BinaryType' writes the binary (byte[]) as below:
-        //  a. For binary of size <= 255:
-        //        .put(EncodingCodes.VBIN8);                    <- 0xa0 (1 byte)
-        //        .put((byte) binary.getLength());              <- bytes[].length (1 byte)
-        //        .put(binary.getArray(), ...);
-        //
-        //  b. For binary (bye[]) of size > 255
-        //        .put(EncodingCodes.VBIN32);                   <- 0xb0 (1 byte)
-        //        .put(binary.getLength());                     <- bytes[].length (integer, 4 bytes)
-        //        .put(binary.getArray(), ...);
     }
 
     @Override
