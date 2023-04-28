@@ -41,22 +41,22 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
-      <version>5.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-servicebus-jms</artifactId>
-      <version>5.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-servicebus-jms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
-      <version>5.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-keyvault-secrets</artifactId>
-      <version>5.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -76,12 +76,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
-      <version>5.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
-      <version>5.1.0</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
+      <version>5.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
