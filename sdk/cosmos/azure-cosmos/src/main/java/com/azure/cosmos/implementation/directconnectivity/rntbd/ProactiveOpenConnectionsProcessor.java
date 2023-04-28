@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
@@ -38,6 +39,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
+    private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
@@ -53,6 +55,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
+
+        ReentrantReadWriteLock endpointsUnderMonitorMapWriteLock = new ReentrantReadWriteLock();
+        this.endpointsUnderMonitorMapWriteLock = endpointsUnderMonitorMapWriteLock.writeLock();
+
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
@@ -122,38 +128,55 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> containerIdentities) {
-        for (CosmosContainerIdentity containerIdentity : containerIdentities) {
-            this.containersUnderOpenConnectionAndInitCaches.remove(
-                ImplementationBridgeHelpers
-                    .CosmosContainerIdentityHelper
-                    .getCosmosContainerIdentityAccessor()
-                    .getContainerLink(containerIdentity)
-            );
+
+        endpointsUnderMonitorMapWriteLock.lock();
+        try {
+            for (CosmosContainerIdentity containerIdentity : containerIdentities) {
+                this.containersUnderOpenConnectionAndInitCaches.remove(
+                    ImplementationBridgeHelpers
+                        .CosmosContainerIdentityHelper
+                        .getCosmosContainerIdentityAccessor()
+                        .getContainerLink(containerIdentity)
+                );
+            }
+
+            // only switch to defensive mode if there is no container under openConnectionAndInitCachesFlow
+            if (this.containersUnderOpenConnectionAndInitCaches.isEmpty()) {
+                this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
+                this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
+            } else {
+                logger.debug(
+                    "Cannot switch to defensive mode as some of the containers are still under openConnectionAndInitCaches flow: [{}]",
+                    this.containersUnderOpenConnectionAndInitCaches);
+            }
+        } finally {
+            endpointsUnderMonitorMapWriteLock.unlock();
         }
 
-        // only switch to defensive mode if there is no container under openConnectionAndInitCachesFlow
-        if (this.containersUnderOpenConnectionAndInitCaches.isEmpty()) {
-            this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
-            this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
-        } else {
-            logger.debug(
-                "Cannot switch to defensive mode as some of the containers are still under openConnectionAndInitCaches flow: [{}]",
-                this.containersUnderOpenConnectionAndInitCaches);
-        }
     }
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
-            this.containersUnderOpenConnectionAndInitCaches.add(
-                ImplementationBridgeHelpers
-                    .CosmosContainerIdentityHelper
-                    .getCosmosContainerIdentityAccessor()
-                    .getContainerLink(containerIdentity)
-            );
+
+        endpointsUnderMonitorMapWriteLock.lock();
+        boolean shouldReInstantiatePublisher = false;
+        try {
+            shouldReInstantiatePublisher = this.containersUnderOpenConnectionAndInitCaches.size() == 0;
+            for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
+                this.containersUnderOpenConnectionAndInitCaches.add(
+                    ImplementationBridgeHelpers
+                        .CosmosContainerIdentityHelper
+                        .getCosmosContainerIdentityAccessor()
+                        .getContainerLink(containerIdentity)
+                );
+            }
+        } finally {
+            endpointsUnderMonitorMapWriteLock.unlock();
         }
 
-        this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE);
-        this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+        if (shouldReInstantiatePublisher) {
+            this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE);
+            this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+        }
     }
 
     public Disposable getOpenConnectionsPublisher() {
