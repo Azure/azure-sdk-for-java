@@ -159,7 +159,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
-                                       .withAggressiveProactiveConnectionDuration(this.proactiveContainerInitConfig != null ? this.proactiveContainerInitConfig.getAggressiveProactiveConnectionEstablishmentDuration() : null)
+                                       .withAggressiveWarmupDuration(this.proactiveContainerInitConfig != null ? this.proactiveContainerInitConfig.getAggressiveProactiveConnectionEstablishmentDuration() : null)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

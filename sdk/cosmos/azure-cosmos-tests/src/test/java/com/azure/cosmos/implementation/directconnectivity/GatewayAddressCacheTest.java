@@ -43,9 +43,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ParallelFlux;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -137,8 +135,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 null,
                 null,
                 ConnectionPolicy.getDefaultPolicy(),
-                null
-                );
+                null);
+
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -177,8 +175,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             ConnectionPolicy.getDefaultPolicy(),
-                                                            null
-                );
+                                                            null);
+
         for (int i = 0; i < 2; i++) {
             RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -533,8 +531,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                                                             null,
                                                             null,
                                                             null,
-                                 null
-                );
+                                 null);
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
@@ -1119,7 +1116,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs =
                 cache.tryGetAddresses(req, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
-//        Mockito.when(proactiveOpenConnectionsProcessorMock.getOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
+//        Mockito.when(proactiveOpenConnectionsProcessorMock.getBackgroundOpenConnectionsPublisher()).thenReturn(ParallelFlux.from(Flux.empty()));
 
         ArrayList<AddressInformation> addressInfosFromCache =
                 Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);

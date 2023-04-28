@@ -799,6 +799,7 @@ public class CosmosContainer {
      *  </p>
      *
      */
+    @Deprecated
     public void openConnectionsAndInitCaches() {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
@@ -814,6 +815,7 @@ public class CosmosContainer {
      *
      * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
      */
+    @Deprecated
     public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
     }

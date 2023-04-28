@@ -39,7 +39,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
@@ -55,9 +54,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
-
-        ReentrantReadWriteLock endpointsUnderMonitorMapWriteLock = new ReentrantReadWriteLock();
-        this.endpointsUnderMonitorMapWriteLock = endpointsUnderMonitorMapWriteLock.writeLock();
 
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
@@ -129,8 +125,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> containerIdentities) {
 
-        endpointsUnderMonitorMapWriteLock.lock();
-        try {
+        synchronized (this) {
             for (CosmosContainerIdentity containerIdentity : containerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.remove(
                     ImplementationBridgeHelpers
@@ -149,17 +144,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     "Cannot switch to defensive mode as some of the containers are still under openConnectionAndInitCaches flow: [{}]",
                     this.containersUnderOpenConnectionAndInitCaches);
             }
-        } finally {
-            endpointsUnderMonitorMapWriteLock.unlock();
         }
-
     }
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-
-        endpointsUnderMonitorMapWriteLock.lock();
-        boolean shouldReInstantiatePublisher = false;
-        try {
+        boolean shouldReInstantiatePublisher;
+        synchronized (this) {
             shouldReInstantiatePublisher = this.containersUnderOpenConnectionAndInitCaches.size() == 0;
             for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.add(
@@ -169,8 +159,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         .getContainerLink(containerIdentity)
                 );
             }
-        } finally {
-            endpointsUnderMonitorMapWriteLock.unlock();
         }
 
         if (shouldReInstantiatePublisher) {
@@ -179,7 +167,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public Disposable getOpenConnectionsPublisher() {
+    public Disposable getBackgroundOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
         Map<String, List<OpenConnectionTask>> mapSnapshot = new ConcurrentHashMap<>();
@@ -195,6 +183,11 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         return Flux.from(openConnectionsTaskSink.asFlux())
                 .mergeWith(initialFlux)
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .onErrorResume(throwable -> {
+                    logger.warn("An error occurred with proactiveOpenConnectionsProcessor, re-initializing open connections sink", throwable);
+                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+                    return Mono.empty();
+                })
                 .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionTask -> {
@@ -214,11 +207,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Flux.empty();
                             });
                 }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
-                .doOnError(throwable -> {
-                    logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
-                    // continue opening connections
-                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
-                })
                 .flatMap(openConnectionTaskToResponse -> {
                     OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
@@ -253,11 +241,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Mono.just(openConnectionResponse);
                             });
                 }, true)
-                .doOnError(throwable -> {
-                    logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
-                    // continue opening connections
-                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
-                })
                 .subscribe();
     }
 
@@ -284,7 +267,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         if (this.openConnectionBackgroundTask != null) {
             this.openConnectionBackgroundTask.dispose();
         }
-        this.openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
+        this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
     private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(

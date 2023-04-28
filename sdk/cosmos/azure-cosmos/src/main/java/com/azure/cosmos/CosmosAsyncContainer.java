@@ -710,6 +710,7 @@ public class CosmosAsyncContainer {
      *
      *  @return Mono of Void.
      */
+    @Deprecated
     public Mono<Void> openConnectionsAndInitCaches() {
 
         if (isInitialized.compareAndSet(false, true)) {
@@ -758,6 +759,7 @@ public class CosmosAsyncContainer {
      * @param numProactiveConnectionRegions the no of regions to proactively connect to
      * @return Mono of Void.
      */
+    @Deprecated
     public Mono<Void> openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
 
         List<String> preferredRegions = clientAccessor.getPreferredRegions(this.database.getClient());

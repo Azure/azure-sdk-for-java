@@ -237,7 +237,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withAggressiveProactiveConnectionDuration(Duration aggressiveConnectionEstablishmentDuration) {
+        public Builder withAggressiveWarmupDuration(Duration aggressiveConnectionEstablishmentDuration) {
             this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
             return this;
         }
