@@ -23,8 +23,8 @@ public class ProactiveOpenConnectionsProcessorTest {
         return new Object[][] {
                 {5, 500, 8, Duration.ofNanos(10), 1},
                 {50, 500, 8, Duration.ofNanos(10), 10},
-                {500, 500, 8, Duration.ofNanos(10), 10000},
-                {1000, 500, 8, Duration.ofNanos(10), 10000}
+                {500, 500, 8, Duration.ofNanos(10), 10},
+                {1000, 500, 8, Duration.ofNanos(10), 10}
         };
     }
 
