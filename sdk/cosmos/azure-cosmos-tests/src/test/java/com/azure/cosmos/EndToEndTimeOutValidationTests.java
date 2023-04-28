@@ -5,7 +5,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.RequestCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
