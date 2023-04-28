@@ -943,6 +943,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
         ChangeFeedProcessor changeFeedProcessor1;
         ChangeFeedProcessor changeFeedProcessor2;
+        String changeFeedProcessor1HostName = RandomStringUtils.randomAlphabetic(6);
+        String changeFeedProcessor2HostName = RandomStringUtils.randomAlphabetic(6);
 
         try {
             // Set up the maxScaleCount to be equal to the current partition count
@@ -954,7 +956,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
             changeFeedProcessor1 = new ChangeFeedProcessorBuilder()
-                .hostName(hostName)
+                .hostName(changeFeedProcessor1HostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
@@ -1009,11 +1011,6 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // wait for the change feed processor to receive some documents
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
-            // since we have setup the maxScaleCount = pre-split partition count
-            // so after split, some partitions will be left as no owner
-            int partitionCountAfterSplit = createdFeedCollectionForSplit.getFeedRanges().block().size();
-            int expectedLeasesWithoutOwnerCount = partitionCountAfterSplit - partitionCountBeforeSplit;
-
             String leaseQuery = "select * from c where not contains(c.id, \"info\")";
             List<JsonNode> leaseDocuments =
                 createdLeaseCollection
@@ -1022,12 +1019,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .blockFirst()
                     .getResults();
 
-            long leasesWithoutOwnerCount = leaseDocuments.stream().filter(lease -> lease.get("Owner").asText().equals("null")).count();
-            assertThat(leasesWithoutOwnerCount).isEqualTo(expectedLeasesWithoutOwnerCount);
+            long host1Leases = leaseDocuments.stream().filter(lease -> lease.get("Owner").asText().equals(changeFeedProcessor1HostName)).count();
+            assertThat(host1Leases).isEqualTo(partitionCountBeforeSplit);
 
             // now starts a new change feed processor
             changeFeedProcessor2 = new ChangeFeedProcessorBuilder()
-                .hostName(hostName + "-2")
+                .hostName(changeFeedProcessor2HostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
