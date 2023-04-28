@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Addressing the overhead of batch send allocating byte array equal to the max message size. ([34426](https://github.com/Azure/azure-sdk-for-java/issues/34426))
+
 ### Other Changes
 
 ## 2.8.4 (2023-04-07)
