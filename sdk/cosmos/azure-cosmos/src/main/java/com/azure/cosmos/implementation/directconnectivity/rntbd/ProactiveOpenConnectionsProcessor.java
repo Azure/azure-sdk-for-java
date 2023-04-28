@@ -148,6 +148,11 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         return Flux.from(openConnectionsTaskSink.asFlux())
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+                .onErrorResume(throwable -> {
+                    logger.warn("An error occurred with proactiveOpenConnectionsProcessor, re-initializing open connections sink", throwable);
+                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+                    return Mono.empty();
+                })
                 .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionTask -> {
@@ -167,11 +172,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Flux.empty();
                             });
                 }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
-                .doOnError(throwable -> {
-                    logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
-                    // continue opening connections
-                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
-                })
                 .flatMap(openConnectionTaskToResponse -> {
                     OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
                     OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
@@ -206,11 +206,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                 return Mono.just(openConnectionResponse);
                             });
                 }, true)
-                .doOnError(throwable -> {
-                    logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
-                    // continue opening connections
-                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
-                })
                 .subscribe();
     }
 
