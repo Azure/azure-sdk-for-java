@@ -249,7 +249,7 @@ com.azure.resourcemanager:azure-resourcemanager-cosmos;2.26.0;2.27.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-dns;2.26.0;2.27.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.26.0;2.27.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.26.0;2.27.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-monitor;2.26.0;2.27.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-monitor;2.26.0;2.27.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-msi;2.26.0;2.27.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-network;2.26.0;2.27.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -299,7 +299,7 @@ com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-be
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-datafactory;1.0.0-beta.22;1.0.0-beta.23
 com.azure.resourcemanager:azure-resourcemanager-advisor;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.6;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-appconfiguration;1.0.0-beta.7;1.0.0-beta.8
 com.azure.resourcemanager:azure-resourcemanager-attestation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-azurestack;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-azurestackhci;1.0.0-beta.3;1.0.0-beta.4
