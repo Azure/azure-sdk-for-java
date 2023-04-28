@@ -91,7 +91,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
                 setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
+            } else if (!interceptorManager.isLiveMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
@@ -99,7 +99,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new MockTokenCredential());
                 setMatchers();
-            } else if (interceptorManager.isRecordMode()) {
+            } else if (!interceptorManager.isLiveMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             }
