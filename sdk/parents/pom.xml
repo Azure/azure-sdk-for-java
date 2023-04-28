@@ -17,6 +17,7 @@
       </activation>
       <modules>
         <module>azure-client-sdk-parent</module>
+        <module>azure-code-customization-parent</module>
         <module>azure-data-sdk-parent</module>
         <module>azure-perf-test-parent</module>
         <module>azure-sdk-parent</module>
