@@ -22,7 +22,7 @@ public class GetEmbeddings {
     public static void main(String[] args) {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
