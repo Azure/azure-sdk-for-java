@@ -535,7 +535,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
         @Override
         public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-            throw new NotImplementedException("getOpenConnectionsProcessor is not supported in SessionNotAvailableRetryTest");
+            throw new NotImplementedException("getOpenConnectionsProcessor is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public void recordOpenConnectionsAndInitCachesCompleted() {
+            throw new NotImplementedException("recordOpenConnectionsAndInitCachesCompleted is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public void recordOpenConnectionsAndInitCachesStarted() {
+            throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in RntbdTransportClientTest");
         }
     }
 

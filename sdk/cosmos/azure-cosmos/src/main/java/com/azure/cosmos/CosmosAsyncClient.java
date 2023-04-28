@@ -601,8 +601,7 @@ public final class CosmosAsyncClient implements Closeable {
     void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
         Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
 
-        wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration)
-            .doOnTerminate(() -> asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted()).blockLast();
+        wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration).blockLast();
     }
 
     // this method is currently used to open connections when the client is being built
