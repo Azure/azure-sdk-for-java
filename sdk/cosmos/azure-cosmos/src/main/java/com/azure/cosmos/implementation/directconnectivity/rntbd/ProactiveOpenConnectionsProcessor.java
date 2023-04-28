@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
@@ -39,6 +38,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
+    private final Object endpointsUnderMonitorMapLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
@@ -54,6 +54,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
+        this.endpointsUnderMonitorMapLock = new Object();
 
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
@@ -125,7 +126,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> containerIdentities) {
 
-        synchronized (this) {
+        synchronized (endpointsUnderMonitorMapLock) {
             for (CosmosContainerIdentity containerIdentity : containerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.remove(
                     ImplementationBridgeHelpers
@@ -149,7 +150,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         boolean shouldReInstantiatePublisher;
-        synchronized (this) {
+        synchronized (endpointsUnderMonitorMapLock) {
             shouldReInstantiatePublisher = this.containersUnderOpenConnectionAndInitCaches.size() == 0;
             for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.add(
