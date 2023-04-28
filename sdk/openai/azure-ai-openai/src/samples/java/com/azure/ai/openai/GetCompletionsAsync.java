@@ -25,7 +25,7 @@ public class GetCompletionsAsync {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenAIKey = "{azure-open-ai-key}";
+        String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
