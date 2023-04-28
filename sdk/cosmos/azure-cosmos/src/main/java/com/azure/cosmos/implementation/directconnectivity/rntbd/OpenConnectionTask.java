@@ -81,6 +81,7 @@ public class OpenConnectionTask extends CompletableFuture<OpenConnectionResponse
         public Mono<ShouldRetryResult> shouldRetry(Exception e) {
 
             if (this.retryCount.get() >= MAX_RETRY_ATTEMPTS || this.waitTimeTimeoutHelper.isElapsed() || e == null) {
+                logger.debug("In retry policy: ProactiveOpenConnectionsRetryPolicy, retry attempt will not be performed");
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
