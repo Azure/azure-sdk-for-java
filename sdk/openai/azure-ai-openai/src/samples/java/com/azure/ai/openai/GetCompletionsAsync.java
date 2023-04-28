@@ -27,7 +27,7 @@ public class GetCompletionsAsync {
     public static void main(String[] args) throws InterruptedException {
         String azureOpenAIKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
