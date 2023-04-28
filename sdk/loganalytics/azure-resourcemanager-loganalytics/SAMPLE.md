@@ -542,7 +542,7 @@ public final class DataSourcesListByWorkspaceSamples {
     public static void dataSourcesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager
             .dataSources()
-            .listByWorkspace("OIAutoRest5123", "AzTest9724", "retentionPolicyKind='WindowsEvent'", null, Context.NONE);
+            .listByWorkspace("OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null, Context.NONE);
     }
 }
 ```
@@ -1029,7 +1029,7 @@ public final class QueriesPutSamples {
                     + "exceptions\n"
                     + "| where timestamp < ago(timeRangeToCheckBefore)\n"
                     + "| summarize count() by problemId\n"
-                    + "| join retentionPolicyKind= rightanti (\n"
+                    + "| join kind= rightanti (\n"
                     + "exceptions\n"
                     + "| where timestamp >= ago(newExceptionsTimeRange)\n"
                     + "| extend stack = tostring(details[0].rawStack)\n"
@@ -1142,7 +1142,7 @@ public final class QueriesUpdateSamples {
                     + "exceptions\n"
                     + "| where timestamp < ago(timeRangeToCheckBefore)\n"
                     + "| summarize count() by problemId\n"
-                    + "| join retentionPolicyKind= rightanti (\n"
+                    + "| join kind= rightanti (\n"
                     + "exceptions\n"
                     + "| where timestamp >= ago(newExceptionsTimeRange)\n"
                     + "| extend stack = tostring(details[0].rawStack)\n"

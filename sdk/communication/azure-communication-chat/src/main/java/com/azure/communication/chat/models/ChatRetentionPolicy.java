@@ -21,23 +21,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public abstract class ChatRetentionPolicy {
-    /** retentionPolicyKind of the ChatRetentionPolicy*/
-    private final RetentionPolicyKind retentionPolicyKind;
+    /** kind of the ChatRetentionPolicy*/
+    private final Kind kind;
 
     /**
-     * RetentionPolicyKind of retention policy. Available values are ["THREAD_CREATION_DATE"]
-     * @param retentionPolicyKind retentionPolicyKind of the retention policy
+     * Kind of retention policy. Available values are ["THREAD_CREATION_DATE"]
+     * @param kind kind of the retention policy
      */
-    public ChatRetentionPolicy(RetentionPolicyKind retentionPolicyKind) {
-        this.retentionPolicyKind = retentionPolicyKind;
+    public ChatRetentionPolicy(Kind kind) {
+        this.kind = kind;
     }
 
     /**
-     * Get the retentionPolicyKind property: Chat retentionPolicyKind of the retention policy.
+     * Get the kind property: Chat kind of the retention policy.
      *
-     * @return the retentionPolicyKind.
+     * @return the kind.
      */
-    public RetentionPolicyKind getChatRetentionPolicyKind() {
-        return retentionPolicyKind;
+    public Kind getChatRetentionPolicyKind() {
+        return kind;
     }
 }

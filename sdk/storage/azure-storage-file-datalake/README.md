@@ -69,7 +69,7 @@ Note: To use data lake, your account must have hierarchical namespace enabled.
 # Install the extension “Storage-Preview”
 az extension add --name storage-preview
 # Create the storage account
-az storage account create -n my-storage-account-name -g my-resource-group --sku Standard_LRS --retentionPolicyKind StorageV2 --hierarchical-namespace true
+az storage account create -n my-storage-account-name -g my-resource-group --sku Standard_LRS --kind StorageV2 --hierarchical-namespace true
 ```
 
 Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows

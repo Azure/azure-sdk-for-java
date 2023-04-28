@@ -1985,7 +1985,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
                                             .withDescription(
                                                 "**1. Create a Function App**\n\n"
                                                     + "1.  From the Azure Portal, navigate to [Function"
-                                                    + " App](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/retentionPolicyKind/functionapp),"
+                                                    + " App](https://portal.azure.com/#blade/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites/kind/functionapp),"
                                                     + " and select **+ Add**.\n"
                                                     + "2. In the **Basics** tab, ensure Runtime stack is set to"
                                                     + " **Powershell Core**. \n"

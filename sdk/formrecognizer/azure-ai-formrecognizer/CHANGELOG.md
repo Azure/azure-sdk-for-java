@@ -101,7 +101,7 @@ This version of the SDK defaults 2022-08-31 going forward.
 - Added interfaces from `com.azure.core.client.traits` to `FormRecognizerClientBuilder` and `FormTrainingClientBuilder`
 
 ### Breaking Changes
-- Removed property `retentionPolicyKind` from model `DocumentPage`
+- Removed property `kind` from model `DocumentPage`
 - Removed model `DocumentPageKind`, `DocumentEntity`, `DocumentFootnote`, and `DocumentCaption`.
 - Renamed models:
   - `ModelOperationDetails` to `OperationDetails`
@@ -198,7 +198,7 @@ and `customDocumentModelLimit` on model `ResourceDetails`.
 - Added support for vertex coordinates with model `Point` to represent polygon vertices in `boundingPolygon` property.
 - Added `paragraphs` property on `AnalyzeResult`.
 - Added a new `DocumentParagraph` model to represent document paragraphs.
-- Added `retentionPolicyKind` property on `DocumentPage` to represent the document page retentionPolicyKind.
+- Added `kind` property on `DocumentPage` to represent the document page kind.
 
 ### Breaking Changes
 - Renamed `modelIDs` in method `beginCreateComposedModel` to `componentModelIds`

@@ -33,8 +33,8 @@ public final class ChatThreadProperties {
     /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from retentionPolicyKind and rawId, at most one further
-     * property may be set which must match the retentionPolicyKind enum value.
+     * model is polymorphic: Apart from kind and rawId, at most one further
+     * property may be set which must match the kind enum value.
      */
     @JsonProperty(value = "createdByCommunicationIdentifier", required = true)
     private CommunicationIdentifierModel createdByCommunicationIdentifier;
@@ -118,7 +118,7 @@ public final class ChatThreadProperties {
     /**
      * Get the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * retentionPolicyKind and rawId, at most one further property may be set which must match the retentionPolicyKind enum value.
+     * kind and rawId, at most one further property may be set which must match the kind enum value.
      *
      * @return the createdByCommunicationIdentifier value.
      */
@@ -129,7 +129,7 @@ public final class ChatThreadProperties {
     /**
      * Set the createdByCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * retentionPolicyKind and rawId, at most one further property may be set which must match the retentionPolicyKind enum value.
+     * kind and rawId, at most one further property may be set which must match the kind enum value.
      *
      * @param createdByCommunicationIdentifier the createdByCommunicationIdentifier value to set.
      * @return the ChatThreadProperties object itself.

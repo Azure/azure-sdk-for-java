@@ -544,7 +544,7 @@
 
 * `validate()` was removed
 * `withKind(java.lang.String)` was removed
-* `retentionPolicyKind()` was removed
+* `kind()` was removed
 
 #### `SecurityManager` was modified
 

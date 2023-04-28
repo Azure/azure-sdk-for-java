@@ -21,8 +21,8 @@ The Azure Monitor Query client library is used to execute read-only queries agai
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later
 - An [Azure subscription][azure_subscription]
 - A [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementation, such as an [Azure Identity library credential type](https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#credential-classes).
-- To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal] or an Azure resource of any retentionPolicyKind (Storage Account, Key Vault, Cosmos DB, etc.).
-- To query Metrics, you need an Azure resource of any retentionPolicyKind (Storage Account, Key Vault, Cosmos DB, etc.).
+- To query Logs, you need an [Azure Log Analytics workspace][azure_monitor_create_using_portal] or an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
+- To query Metrics, you need an Azure resource of any kind (Storage Account, Key Vault, Cosmos DB, etc.).
 
 ### Include the package
 
@@ -389,7 +389,7 @@ raw JSON response. For example:
   "title": null,
   "accumulate": false,
   "isQuerySorted": false,
-  "retentionPolicyKind": null,
+  "kind": null,
   "legend": null,
   "series": null,
   "yMin": "",

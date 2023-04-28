@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
- * communication user. This model is polymorphic: Apart from retentionPolicyKind and rawId, at most one further property may be set
- * which must match the retentionPolicyKind enum value.
+ * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
+ * which must match the kind enum value.
  */
 @Fluent
 public final class CommunicationIdentifierModel {
     /*
-     * The identifier retentionPolicyKind. Only required in responses.
+     * The identifier kind. Only required in responses.
      */
-    @JsonProperty(value = "retentionPolicyKind")
+    @JsonProperty(value = "kind")
     private CommunicationIdentifierModelKind kind;
 
     /*
@@ -45,18 +45,18 @@ public final class CommunicationIdentifierModel {
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
     /**
-     * Get the retentionPolicyKind property: The identifier retentionPolicyKind. Only required in responses.
+     * Get the kind property: The identifier kind. Only required in responses.
      *
-     * @return the retentionPolicyKind value.
+     * @return the kind value.
      */
     public CommunicationIdentifierModelKind getKind() {
         return this.kind;
     }
 
     /**
-     * Set the retentionPolicyKind property: The identifier retentionPolicyKind. Only required in responses.
+     * Set the kind property: The identifier kind. Only required in responses.
      *
-     * @param kind the retentionPolicyKind value to set.
+     * @param kind the kind value to set.
      * @return the CommunicationIdentifierModel object itself.
      */
     public CommunicationIdentifierModel setKind(CommunicationIdentifierModelKind kind) {
