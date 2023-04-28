@@ -6,10 +6,14 @@ package com.azure.ai.openai.generated;
 
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.OpenAIServiceVersion;
+import com.azure.ai.openai.models.ChatMessage;
+import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
+import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.StringInputModel;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -87,5 +91,23 @@ public abstract class OpenAIClientTestBase extends TestBase {
         assertEquals(index, actual.getIndex());
 
         // TODO: add more assertions for the additional properties
+    }
+
+    @Test
+    public abstract void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+        String deploymentId = "gpt-35-turbo";
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+        testRunner.accept(deploymentId, chatMessages);
+    }
+    void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        String deploymentId = "text-embedding-ada-002";
+        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(new StringInputModel("Your text string goes here"));
+        testRunner.accept(deploymentId, embeddingsOptions);
     }
 }

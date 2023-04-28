@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3a708f0a-a679-46ff-9016-0f97d4e18e77",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "60f59515-98aa-44b3-adaf-73b7411b492e",
+      "x-ms-region" : "East US",
+      "apim-request-id" : "4540112e-50fa-4719-aa65-d0713a666b78",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 28 Apr 2023 06:01:18 GMT",
+      "access-control-allow-origin" : "*",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "x-accel-buffering" : "no",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "openai-processing-ms" : "5931.3534",
+      "openai-model" : "gpt-35-turbo",
+      "Content-Length" : "1118",
+      "Body" : "{\"id\":\"chatcmpl-7ABSKnZGXy0yiZj0TtbZtZNBavNYv\",\"object\":\"chat.completion\",\"created\":1682661672,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Ahoy there, me heartie! If ye want to train a parrot, ye need to be patient and persistent. Ye should start by establishing a bond with your parrot by spending time with it, talking to it, and offering it treats.\\n\\nTo train your parrot, ye can start with some basic commands, like \\\"step up\\\" or \\\"come here\\\". Use the same command every time and reward it with a treat when it follows commands. Ye can also train your parrot to identify objects, learn tricks like \\\"fetch\\\", or even teach it to mimic words.\\n\\nBe sure to always use positive reinforcement and avoid harsh punishment or scolding. Parrots respond best to kind and gentle training techniques.\\n\\nLastly, remember that learning is a lifelong process for all creatures, including yer parrot. Keep training fun and interactive, and enjoy the ride with yer feathered friend!\"}}],\"usage\":{\"completion_tokens\":177,\"prompt_tokens\":65,\"total_tokens\":242}}\n",
+      "x-ms-client-request-id" : "3a708f0a-a679-46ff-9016-0f97d4e18e77",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

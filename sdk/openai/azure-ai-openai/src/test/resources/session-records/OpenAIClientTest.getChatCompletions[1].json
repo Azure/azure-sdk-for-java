@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "118f51cc-8087-475c-a685-f65a84a0800a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "7ba3cb92-3874-4bd0-b736-ff9a1ad3fdf2",
+      "x-ms-region" : "East US",
+      "apim-request-id" : "7f4868a1-28de-492d-8e4f-52398f6ca806",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 28 Apr 2023 06:01:48 GMT",
+      "access-control-allow-origin" : "*",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "x-accel-buffering" : "no",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "openai-processing-ms" : "3661.5974",
+      "openai-model" : "gpt-35-turbo",
+      "Content-Length" : "824",
+      "Body" : "{\"id\":\"chatcmpl-7ABSrpafaNivUnCJb6GIr1qUXtu2E\",\"object\":\"chat.completion\",\"created\":1682661705,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Ahoy, me matey! If ye want to train yer parrot like a proper pirate, ye must be patient and use positive reinforcement. Parrots respond well to rewards such as treats and encouraging words. \\n\\nStart with teaching basic commands, such as \\\"step up\\\" or \\\"come here.\\\" Be consistent with the commands ye use and follow through with rewards when they are obeyed. \\n\\nAlso, make sure to spend plenty of quality time with yer parrot to establish trust and build a bond. And don't forget to practice yer pirate speak with yer parrot--they love it!\"}}],\"usage\":{\"completion_tokens\":119,\"prompt_tokens\":65,\"total_tokens\":184}}\n",
+      "x-ms-client-request-id" : "118f51cc-8087-475c-a685-f65a84a0800a",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
