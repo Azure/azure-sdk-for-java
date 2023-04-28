@@ -737,18 +737,41 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
             leaseStateMonitor.isAfterLeaseInitialization = true;
 
-            // wait for the split to finish
-            ThroughputResponse throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
-            while (true) {
-                assert throughputResponse != null;
-                if (!throughputResponse.isReplacePending()) {
+            // Loop through reading the current partition count until we get a split
+            //   This can take up to two minute or more.
+            String partitionKeyRangesPath = extractContainerSelfLink(createdFeedCollectionForSplit);
+
+            AsyncDocumentClient contextClient = getContextClient(createdDatabase);
+            Flux.just(1).subscribeOn(Schedulers.boundedElastic())
+                .flatMap(value -> {
+                    logger.warn("Reading current throughput change.");
+                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
+                })
+                .map(partitionKeyRangeFeedResponse -> {
+                    int count = partitionKeyRangeFeedResponse.getResults().size();
+
+                    if (count < 2) {
+                        logger.warn("Throughput change is pending.");
+                        throw new RuntimeException("Throughput change is not done.");
+                    }
+                    return count;
+                })
+                // this will timeout approximately after 30 minutes
+                .retryWhen(Retry.max(40).filter(throwable -> {
+                    try {
+                        logger.warn("Retrying...");
+                        // Splits are taking longer, so increasing sleep time between retries
+                        Thread.sleep(10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException("Interrupted exception", e);
+                    }
+                    return true;
+                }))
+                .last()
+                .doOnSuccess(partitionCount -> {
                     leaseStateMonitor.isAfterSplits = true;
-                    break;
-                }
-                logger.info("Waiting for split to complete");
-                Thread.sleep(10 * 1000);
-                throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
-            }
+                })
+                .block();
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
