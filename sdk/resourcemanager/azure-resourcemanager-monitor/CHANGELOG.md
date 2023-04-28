@@ -1,6 +1,6 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.27.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,10 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.27.0-beta.1 (2023-04-28)
+
+Preview release for `api-version` `2022-08-01-preview`.
 
 ## 2.26.0 (2023-04-21)
 
