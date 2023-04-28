@@ -75,7 +75,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Handles scheduling and transmitting events through proton-j to Event Hubs service.
  */
 class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
-    private static final boolean SEND_OLD = System.getenv("SEND_OLD") != null;
     private static final String DELIVERY_TAG_KEY = "deliveryTag";
     private static final String PENDING_SENDS_SIZE_KEY = "pending_sends_size";
     private final String entityPath;
