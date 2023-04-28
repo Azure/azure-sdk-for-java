@@ -36,7 +36,7 @@ public class CosmosE2EOperationRetryPolicyConfigBuilder {
      * Enables or disables the policy. It defaults to enable.
      * {@link OperationCancelledException}
      *
-
+     * @param isEnabled flag to enable or disable the policy
      * @return current CosmosEndToEndOperationConfigBuilder
      */
     public CosmosE2EOperationRetryPolicyConfigBuilder isEnabled(
