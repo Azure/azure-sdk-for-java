@@ -1224,7 +1224,6 @@ class ServiceAPITest extends APISpec {
         // testing with large dataset that is guaranteed to take longer than the specified timeout (1 second)
         def randomData = getRandomByteArray(256 * Constants.MB)
         def input = new ByteArrayInputStream(randomData)
-//        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(20 * Constants.MB)
 
         when:
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(input), null, null)
