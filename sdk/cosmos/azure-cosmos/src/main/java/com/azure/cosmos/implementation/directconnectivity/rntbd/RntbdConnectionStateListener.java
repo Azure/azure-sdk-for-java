@@ -79,10 +79,6 @@ public class RntbdConnectionStateListener {
 
     public void openConnectionIfNeeded() {
 
-        if (this.endpoint.isClosed()) {
-            return;
-        }
-
         // do not fail here, just log
         // this attempts to make the open connections flow
         // best effort

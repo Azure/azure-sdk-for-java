@@ -36,6 +36,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
     private final AtomicReference<WarmupFlowAggressivenessHint> aggressivenessHint;
+    private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
     private final AtomicBoolean isConcurrencySwitchFlow = new AtomicBoolean(false);
     private static final Map<WarmupFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
@@ -44,7 +45,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
-
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
         this(endpointProvider, null);
@@ -135,8 +135,11 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     @Override
     public void close() throws IOException {
-        completeSink(openConnectionsTaskSink);
-        completeSink(openConnectionsTaskSinkBackUp);
+        if (isClosed.compareAndSet(false, true)) {
+            logger.info("Shutting down ProactiveOpenConnectionsProcessor...");
+            completeSink(openConnectionsTaskSink);
+            completeSink(openConnectionsTaskSinkBackUp);
+        }
     }
 
     public Disposable getOpenConnectionsPublisher() {
@@ -152,8 +155,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     URI serviceEndpoint = openConnectionTask.getServiceEndpoint();
                     int minConnectionsForEndpoint = openConnectionTask.getMinConnectionsRequiredForEndpoint();
                     String collectionRid = openConnectionTask.getCollectionRid();
-
-                    logger.info("Aggressiveness setting : {}", aggressivenessHint.get());
 
                     return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
                                     collectionRid,
