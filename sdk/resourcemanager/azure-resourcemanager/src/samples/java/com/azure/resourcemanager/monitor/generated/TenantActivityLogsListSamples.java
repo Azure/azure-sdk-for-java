@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TenantActivityLogs List. */
 public final class TenantActivityLogsListSamples {
     /*
@@ -26,7 +24,7 @@ public final class TenantActivityLogsListSamples {
                 "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and"
                     + " resourceGroupName eq 'MSSupportGroup'",
                 "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -46,7 +44,7 @@ public final class TenantActivityLogsListSamples {
             .list(
                 null,
                 "eventName,id,resourceGroupName,resourceProviderName,operationName,status,eventTimestamp,correlationId,submissionTimestamp,level",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -67,7 +65,7 @@ public final class TenantActivityLogsListSamples {
                 "eventTimestamp ge '2015-01-21T20:00:00Z' and eventTimestamp le '2015-01-23T20:00:00Z' and"
                     + " resourceGroupName eq 'MSSupportGroup'",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -80,6 +78,11 @@ public final class TenantActivityLogsListSamples {
      */
     public static void getTenantActivityLogsWithoutFilterOrSelect(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getTenantActivityLogs().list(null, null, Context.NONE);
+        azure
+            .diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getTenantActivityLogs()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiagnosticSettingsCategory Get. */
 public final class DiagnosticSettingsCategoryGetSamples {
     /*
@@ -25,6 +23,6 @@ public final class DiagnosticSettingsCategoryGetSamples {
             .getWithResponse(
                 "subscriptions/1a66ce04-b633-4a0b-b2bc-a912ec8986a6/resourcegroups/viruela1/providers/microsoft.logic/workflows/viruela6",
                 "WorkflowRuntime",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

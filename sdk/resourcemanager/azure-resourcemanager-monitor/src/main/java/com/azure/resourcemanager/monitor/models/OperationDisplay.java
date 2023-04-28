@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Display metadata associated with the operation. */
+/**
+ * Display metadata associated with the operation.
+ */
 @Fluent
 public final class OperationDisplay {
     /*
@@ -28,7 +30,9 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation")
     private String operation;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 

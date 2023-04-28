@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AutoscaleSettings ListByResourceGroup. */
 public final class AutoscaleSettingsListByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class AutoscaleSettingsListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getAutoscaleSettings()
-            .listByResourceGroup("TestingMetricsScaleSet", Context.NONE);
+            .listByResourceGroup("TestingMetricsScaleSet", com.azure.core.util.Context.NONE);
     }
 }

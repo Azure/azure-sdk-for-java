@@ -14,7 +14,9 @@ import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LogProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LogProfilesClient.
+ */
 public interface LogProfilesClient {
     /**
      * Deletes the log profile.
@@ -124,8 +126,7 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
-        String logProfileName, LogProfileResourceInner parameters);
+    Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(String logProfileName, LogProfileResourceInner parameters);
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
@@ -152,8 +153,7 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogProfileResourceInner> createOrUpdateWithResponse(
-        String logProfileName, LogProfileResourceInner parameters, Context context);
+    Response<LogProfileResourceInner> createOrUpdateWithResponse(String logProfileName, LogProfileResourceInner parameters, Context context);
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
@@ -179,8 +179,7 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(
-        String logProfileName, LogProfileResourcePatch logProfilesResource);
+    Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(String logProfileName, LogProfileResourcePatch logProfilesResource);
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
@@ -207,8 +206,7 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogProfileResourceInner> updateWithResponse(
-        String logProfileName, LogProfileResourcePatch logProfilesResource, Context context);
+    Response<LogProfileResourceInner> updateWithResponse(String logProfileName, LogProfileResourcePatch logProfilesResource, Context context);
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.

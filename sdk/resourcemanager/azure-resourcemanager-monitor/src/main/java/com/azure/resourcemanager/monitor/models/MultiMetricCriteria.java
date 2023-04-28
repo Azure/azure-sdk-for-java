@@ -17,12 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The types of conditions for a multi resource alert. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "criterionType",
-    defaultImpl = MultiMetricCriteria.class)
+/**
+ * The types of conditions for a multi resource alert.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType", defaultImpl = MultiMetricCriteria.class)
 @JsonTypeName("MultiMetricCriteria")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StaticThresholdCriterion", value = MetricCriteria.class),
@@ -70,9 +68,12 @@ public class MultiMetricCriteria {
     /*
      * The types of conditions for a multi resource alert.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MultiMetricCriteria class. */
+    /**
+     * Creates an instance of MultiMetricCriteria class.
+     */
     public MultiMetricCriteria() {
     }
 
@@ -220,7 +221,7 @@ public class MultiMetricCriteria {
     }
 
     @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
+     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }
@@ -234,20 +235,13 @@ public class MultiMetricCriteria {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
         }
         if (metricName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
         }
         if (timeAggregation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeAggregation in model MultiMetricCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timeAggregation in model MultiMetricCriteria"));
         }
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());

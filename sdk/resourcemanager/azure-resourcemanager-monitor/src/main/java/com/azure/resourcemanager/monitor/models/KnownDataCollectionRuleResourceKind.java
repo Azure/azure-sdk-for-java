@@ -8,18 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the resource. */
-public final class KnownDataCollectionRuleResourceKind
-    extends ExpandableStringEnum<KnownDataCollectionRuleResourceKind> {
-    /** Static value Linux for KnownDataCollectionRuleResourceKind. */
+/**
+ * The kind of the resource.
+ */
+public final class KnownDataCollectionRuleResourceKind extends ExpandableStringEnum<KnownDataCollectionRuleResourceKind> {
+    /**
+     * Static value Linux for KnownDataCollectionRuleResourceKind.
+     */
     public static final KnownDataCollectionRuleResourceKind LINUX = fromString("Linux");
 
-    /** Static value Windows for KnownDataCollectionRuleResourceKind. */
+    /**
+     * Static value Windows for KnownDataCollectionRuleResourceKind.
+     */
     public static final KnownDataCollectionRuleResourceKind WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of KnownDataCollectionRuleResourceKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownDataCollectionRuleResourceKind() {
+    }
+
+    /**
      * Creates or finds a KnownDataCollectionRuleResourceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownDataCollectionRuleResourceKind.
      */
@@ -30,7 +44,7 @@ public final class KnownDataCollectionRuleResourceKind
 
     /**
      * Gets known KnownDataCollectionRuleResourceKind values.
-     *
+     * 
      * @return known KnownDataCollectionRuleResourceKind values.
      */
     public static Collection<KnownDataCollectionRuleResourceKind> values() {

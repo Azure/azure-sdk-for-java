@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The metric dimension name and value. */
+/**
+ * The metric dimension name and value.
+ */
 @Fluent
 public final class MetricSingleDimension {
     /*
@@ -23,7 +25,9 @@ public final class MetricSingleDimension {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of MetricSingleDimension class. */
+    /**
+     * Creates an instance of MetricSingleDimension class.
+     */
     public MetricSingleDimension() {
     }
 
@@ -74,14 +78,10 @@ public final class MetricSingleDimension {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MetricSingleDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model MetricSingleDimension"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model MetricSingleDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model MetricSingleDimension"));
         }
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of the endpoint used for ingesting logs. */
+/**
+ * Definition of the endpoint used for ingesting logs.
+ */
 @Immutable
 public class LogsIngestionEndpointSpec {
     /*
@@ -16,7 +18,9 @@ public class LogsIngestionEndpointSpec {
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
-    /** Creates an instance of LogsIngestionEndpointSpec class. */
+    /**
+     * Creates an instance of LogsIngestionEndpointSpec class.
+     */
     public LogsIngestionEndpointSpec() {
     }
 

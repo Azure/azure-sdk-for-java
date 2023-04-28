@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ActionGroups GetByResourceGroup. */
 public final class ActionGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/getActionGroup.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/getActionGroup.json
      */
     /**
      * Sample code: Get an action group.
@@ -22,6 +20,7 @@ public final class ActionGroupsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getActionGroups()
-            .getByResourceGroupWithResponse("Default-NotificationRules", "SampleActionGroup", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "Default-NotificationRules", "SampleActionGroup", com.azure.core.util.Context.NONE);
     }
 }

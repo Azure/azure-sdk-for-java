@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic setting resource. */
+/**
+ * The diagnostic setting resource.
+ */
 @Fluent
 public final class DiagnosticSettingsResourceInner extends ProxyResource {
     /*
@@ -27,7 +29,9 @@ public final class DiagnosticSettingsResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DiagnosticSettingsResourceInner class. */
+    /**
+     * Creates an instance of DiagnosticSettingsResourceInner class.
+     */
     public DiagnosticSettingsResourceInner() {
     }
 

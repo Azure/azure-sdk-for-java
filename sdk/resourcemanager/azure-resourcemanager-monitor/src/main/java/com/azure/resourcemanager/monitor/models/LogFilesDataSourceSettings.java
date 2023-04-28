@@ -6,14 +6,20 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The log files specific settings. */
+/**
+ * The log files specific settings.
+ */
 @Fluent
 public final class LogFilesDataSourceSettings extends LogFileSettings {
-    /** Creates an instance of LogFilesDataSourceSettings class. */
+    /**
+     * Creates an instance of LogFilesDataSourceSettings class.
+     */
     public LogFilesDataSourceSettings() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogFilesDataSourceSettings withText(LogFileSettingsText text) {
         super.withText(text);

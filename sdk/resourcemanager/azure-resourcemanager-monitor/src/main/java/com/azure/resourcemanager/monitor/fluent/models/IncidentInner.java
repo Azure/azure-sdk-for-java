@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An alert incident indicates the activation status of an alert rule. */
+/**
+ * An alert incident indicates the activation status of an alert rule.
+ */
 @Immutable
 public final class IncidentInner {
     /*
@@ -41,7 +43,9 @@ public final class IncidentInner {
     @JsonProperty(value = "resolvedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resolvedTime;
 
-    /** Creates an instance of IncidentInner class. */
+    /**
+     * Creates an instance of IncidentInner class.
+     */
     public IncidentInner() {
     }
 

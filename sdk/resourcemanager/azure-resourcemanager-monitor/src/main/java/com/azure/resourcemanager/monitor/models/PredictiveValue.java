@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents a predictive metric value in the given bucket. */
+/**
+ * Represents a predictive metric value in the given bucket.
+ */
 @Fluent
 public final class PredictiveValue {
     /*
@@ -24,7 +26,9 @@ public final class PredictiveValue {
     @JsonProperty(value = "value", required = true)
     private double value;
 
-    /** Creates an instance of PredictiveValue class. */
+    /**
+     * Creates an instance of PredictiveValue class.
+     */
     public PredictiveValue() {
     }
 
@@ -75,9 +79,7 @@ public final class PredictiveValue {
      */
     public void validate() {
         if (timestamp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
         }
     }
 

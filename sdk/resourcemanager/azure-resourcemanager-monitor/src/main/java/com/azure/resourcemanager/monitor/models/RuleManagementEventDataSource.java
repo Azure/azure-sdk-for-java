@@ -70,7 +70,9 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     @JsonProperty(value = "claims")
     private RuleManagementEventClaimsDataSource claims;
 
-    /** Creates an instance of RuleManagementEventDataSource class. */
+    /**
+     * Creates an instance of RuleManagementEventDataSource class.
+     */
     public RuleManagementEventDataSource() {
     }
 
@@ -135,8 +137,8 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     }
 
     /**
-     * Get the operationName property: The name of the operation that should be checked for. If no name is provided, any
-     * operation will match.
+     * Get the operationName property: The name of the operation that should be checked for. If no name is provided,
+     * any operation will match.
      *
      * @return the operationName value.
      */
@@ -145,8 +147,8 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     }
 
     /**
-     * Set the operationName property: The name of the operation that should be checked for. If no name is provided, any
-     * operation will match.
+     * Set the operationName property: The name of the operation that should be checked for. If no name is provided,
+     * any operation will match.
      *
      * @param operationName the operationName value to set.
      * @return the RuleManagementEventDataSource object itself.
@@ -258,28 +260,36 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleManagementEventDataSource withResourceUri(String resourceUri) {
         super.withResourceUri(resourceUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleManagementEventDataSource withLegacyResourceId(String legacyResourceId) {
         super.withLegacyResourceId(legacyResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleManagementEventDataSource withResourceLocation(String resourceLocation) {
         super.withResourceLocation(resourceLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RuleManagementEventDataSource withMetricNamespace(String metricNamespace) {
         super.withMetricNamespace(metricNamespace);

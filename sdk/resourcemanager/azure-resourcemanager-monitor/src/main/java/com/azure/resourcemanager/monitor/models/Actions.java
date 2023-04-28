@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Actions to invoke when the alert fires. */
+/**
+ * Actions to invoke when the alert fires.
+ */
 @Fluent
 public final class Actions {
     /*
@@ -26,7 +28,9 @@ public final class Actions {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customProperties;
 
-    /** Creates an instance of Actions class. */
+    /**
+     * Creates an instance of Actions class.
+     */
     public Actions() {
     }
 

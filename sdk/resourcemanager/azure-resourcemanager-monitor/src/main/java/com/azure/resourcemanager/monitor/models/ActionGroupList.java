@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.ActionGroupResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of action groups. */
+/**
+ * A list of action groups.
+ */
 @Fluent
 public final class ActionGroupList {
     /*
@@ -24,7 +26,9 @@ public final class ActionGroupList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ActionGroupList class. */
+    /**
+     * Creates an instance of ActionGroupList class.
+     */
     public ActionGroupList() {
     }
 

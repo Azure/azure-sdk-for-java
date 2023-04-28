@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An Azure Monitor PrivateLinkScope definition. */
+/**
+ * An Azure Monitor PrivateLinkScope definition.
+ */
 @Fluent
 public final class AzureMonitorPrivateLinkScopeInner extends Resource {
     /*
@@ -28,7 +30,9 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AzureMonitorPrivateLinkScopeInner class. */
+    /**
+     * Creates an instance of AzureMonitorPrivateLinkScopeInner class.
+     */
     public AzureMonitorPrivateLinkScopeInner() {
     }
 
@@ -50,14 +54,18 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMonitorPrivateLinkScopeInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMonitorPrivateLinkScopeInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,8 +74,8 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Get the provisioningState property: Current state of this PrivateLinkScope: whether or not is has been
-     * provisioned within the resource group it is defined. Users cannot change this value but are able to read from it.
-     * Values will include Provisioning ,Succeeded, Canceled and Failed.
+     * provisioned within the resource group it is defined. Users cannot change this value but are able to read from
+     * it. Values will include Provisioning ,Succeeded, Canceled and Failed.
      *
      * @return the provisioningState value.
      */
@@ -114,10 +122,7 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AzureMonitorPrivateLinkScopeInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model AzureMonitorPrivateLinkScopeInner"));
         } else {
             innerProperties().validate();
         }

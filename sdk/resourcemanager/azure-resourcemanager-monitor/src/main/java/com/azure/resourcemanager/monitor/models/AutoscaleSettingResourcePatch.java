@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The autoscale setting object for patch operations. */
+/**
+ * The autoscale setting object for patch operations.
+ */
 @Fluent
 public final class AutoscaleSettingResourcePatch {
     /*
@@ -28,7 +30,9 @@ public final class AutoscaleSettingResourcePatch {
     @JsonProperty(value = "properties")
     private AutoscaleSetting innerProperties;
 
-    /** Creates an instance of AutoscaleSettingResourcePatch class. */
+    /**
+     * Creates an instance of AutoscaleSettingResourcePatch class.
+     */
     public AutoscaleSettingResourcePatch() {
     }
 
@@ -62,8 +66,8 @@ public final class AutoscaleSettingResourcePatch {
     }
 
     /**
-     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
-     * for different time periods. A maximum of 20 profiles can be specified.
+     * Get the profiles property: the collection of automatic scaling profiles that specify different scaling
+     * parameters for different time periods. A maximum of 20 profiles can be specified.
      *
      * @return the profiles value.
      */
@@ -72,8 +76,8 @@ public final class AutoscaleSettingResourcePatch {
     }
 
     /**
-     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
-     * for different time periods. A maximum of 20 profiles can be specified.
+     * Set the profiles property: the collection of automatic scaling profiles that specify different scaling
+     * parameters for different time periods. A maximum of 20 profiles can be specified.
      *
      * @param profiles the profiles value to set.
      * @return the AutoscaleSettingResourcePatch object itself.
@@ -149,8 +153,7 @@ public final class AutoscaleSettingResourcePatch {
      * @param predictiveAutoscalePolicy the predictiveAutoscalePolicy value to set.
      * @return the AutoscaleSettingResourcePatch object itself.
      */
-    public AutoscaleSettingResourcePatch withPredictiveAutoscalePolicy(
-        PredictiveAutoscalePolicy predictiveAutoscalePolicy) {
+    public AutoscaleSettingResourcePatch withPredictiveAutoscalePolicy(PredictiveAutoscalePolicy predictiveAutoscalePolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AutoscaleSetting();
         }

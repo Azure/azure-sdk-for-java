@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of the network rules. */
+/**
+ * Definition of the network rules.
+ */
 @Fluent
 public class NetworkRuleSet {
     /*
@@ -16,13 +18,15 @@ public class NetworkRuleSet {
     @JsonProperty(value = "publicNetworkAccess")
     private KnownPublicNetworkAccessOptions publicNetworkAccess;
 
-    /** Creates an instance of NetworkRuleSet class. */
+    /**
+     * Creates an instance of NetworkRuleSet class.
+     */
     public NetworkRuleSet() {
     }
 
     /**
-     * Get the publicNetworkAccess property: The configuration to set whether network access from public internet to the
-     * endpoints are allowed.
+     * Get the publicNetworkAccess property: The configuration to set whether network access from public internet to
+     * the endpoints are allowed.
      *
      * @return the publicNetworkAccess value.
      */
@@ -31,8 +35,8 @@ public class NetworkRuleSet {
     }
 
     /**
-     * Set the publicNetworkAccess property: The configuration to set whether network access from public internet to the
-     * endpoints are allowed.
+     * Set the publicNetworkAccess property: The configuration to set whether network access from public internet to
+     * the endpoints are allowed.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the NetworkRuleSet object itself.

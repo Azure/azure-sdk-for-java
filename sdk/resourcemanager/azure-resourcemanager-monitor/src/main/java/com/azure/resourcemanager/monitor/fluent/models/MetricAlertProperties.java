@@ -13,7 +13,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An alert rule. */
+/**
+ * An alert rule.
+ */
 @Fluent
 public final class MetricAlertProperties {
     /*
@@ -97,7 +99,9 @@ public final class MetricAlertProperties {
     @JsonProperty(value = "isMigrated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMigrated;
 
-    /** Creates an instance of MetricAlertProperties class. */
+    /**
+     * Creates an instance of MetricAlertProperties class.
+     */
     public MetricAlertProperties() {
     }
 
@@ -312,8 +316,8 @@ public final class MetricAlertProperties {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @return the actions value.
      */
@@ -322,8 +326,8 @@ public final class MetricAlertProperties {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @param actions the actions value to set.
      * @return the MetricAlertProperties object itself.
@@ -358,26 +362,16 @@ public final class MetricAlertProperties {
      */
     public void validate() {
         if (scopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scopes in model MetricAlertProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property scopes in model MetricAlertProperties"));
         }
         if (evaluationFrequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property evaluationFrequency in model MetricAlertProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property evaluationFrequency in model MetricAlertProperties"));
         }
         if (windowSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property windowSize in model MetricAlertProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property windowSize in model MetricAlertProperties"));
         }
         if (criteria() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property criteria in model MetricAlertProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property criteria in model MetricAlertProperties"));
         } else {
             criteria().validate();
         }

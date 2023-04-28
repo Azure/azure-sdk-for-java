@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.AzureMonitorPrivateLinkSc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the list of Azure Monitor PrivateLinkScope resources. */
+/**
+ * Describes the list of Azure Monitor PrivateLinkScope resources.
+ */
 @Fluent
 public final class AzureMonitorPrivateLinkScopeListResult {
     /*
@@ -26,7 +28,9 @@ public final class AzureMonitorPrivateLinkScopeListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AzureMonitorPrivateLinkScopeListResult class. */
+    /**
+     * Creates an instance of AzureMonitorPrivateLinkScopeListResult class.
+     */
     public AzureMonitorPrivateLinkScopeListResult() {
     }
 
@@ -79,10 +83,7 @@ public final class AzureMonitorPrivateLinkScopeListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AzureMonitorPrivateLinkScopeListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model AzureMonitorPrivateLinkScopeListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

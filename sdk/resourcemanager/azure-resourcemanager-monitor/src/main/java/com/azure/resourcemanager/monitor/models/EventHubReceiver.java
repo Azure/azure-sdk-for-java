@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Event hub receiver. */
+/**
+ * An Event hub receiver.
+ */
 @Fluent
 public final class EventHubReceiver {
     /*
@@ -47,7 +49,9 @@ public final class EventHubReceiver {
     @JsonProperty(value = "subscriptionId", required = true)
     private String subscriptionId;
 
-    /** Creates an instance of EventHubReceiver class. */
+    /**
+     * Creates an instance of EventHubReceiver class.
+     */
     public EventHubReceiver() {
     }
 
@@ -180,25 +184,16 @@ public final class EventHubReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model EventHubReceiver"));
         }
         if (eventHubNameSpace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubNameSpace in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property eventHubNameSpace in model EventHubReceiver"));
         }
         if (eventHubName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventHubName in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property eventHubName in model EventHubReceiver"));
         }
         if (subscriptionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subscriptionId in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property subscriptionId in model EventHubReceiver"));
         }
     }
 

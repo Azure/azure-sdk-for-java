@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Activity Log Alert rule object for the body of patch operations. */
+/**
+ * An Activity Log Alert rule object for the body of patch operations.
+ */
 @Fluent
 public final class AlertRulePatchObject {
     /*
@@ -26,7 +28,9 @@ public final class AlertRulePatchObject {
     @JsonProperty(value = "properties")
     private AlertRulePatchProperties innerProperties;
 
-    /** Creates an instance of AlertRulePatchObject class. */
+    /**
+     * Creates an instance of AlertRulePatchObject class.
+     */
     public AlertRulePatchObject() {
     }
 

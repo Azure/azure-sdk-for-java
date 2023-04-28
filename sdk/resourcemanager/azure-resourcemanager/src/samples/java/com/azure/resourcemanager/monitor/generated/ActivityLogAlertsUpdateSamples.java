@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.AlertRulePatchObject;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public final class ActivityLogAlertsUpdateSamples {
                 "MyResourceGroup",
                 "SampleActivityLogAlertRule",
                 new AlertRulePatchObject().withTags(mapOf("key1", "value1", "key2", "value2")).withEnabled(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

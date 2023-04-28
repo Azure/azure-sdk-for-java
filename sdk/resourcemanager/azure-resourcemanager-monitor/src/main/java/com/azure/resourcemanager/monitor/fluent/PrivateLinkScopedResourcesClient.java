@@ -18,7 +18,9 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkScopedResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkScopedResourcesClient.
+ */
 public interface PrivateLinkScopedResourcesClient {
     /**
      * Gets a scoped resource in a private link scope.
@@ -29,8 +31,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ScopedResourceInner>> getWithResponseAsync(String resourceGroupName, String scopeName, String name);
@@ -62,8 +63,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return a scoped resource in a private link scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScopedResourceInner> getWithResponse(
-        String resourceGroupName, String scopeName, String name, Context context);
+    Response<ScopedResourceInner> getWithResponse(String resourceGroupName, String scopeName, String name, Context context);
 
     /**
      * Gets a scoped resource in a private link scope.
@@ -92,8 +92,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return a private link scoped resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -108,8 +107,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return the {@link PollerFlux} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
+    PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -124,8 +122,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return the {@link SyncPoller} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
+    SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -141,8 +138,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return the {@link SyncPoller} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context);
+    SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -157,8 +153,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return a private link scoped resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ScopedResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
+    Mono<ScopedResourceInner> createOrUpdateAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -173,8 +168,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopedResourceInner createOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
+    ScopedResourceInner createOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -190,8 +184,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopedResourceInner createOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context);
+    ScopedResourceInner createOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
@@ -248,8 +241,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String scopeName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, String name, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
@@ -313,8 +305,7 @@ public interface PrivateLinkScopedResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections on a private link scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScopedResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName);
@@ -328,10 +319,8 @@ public interface PrivateLinkScopedResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections on a private link scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScopedResourceInner> listByPrivateLinkScope(
-        String resourceGroupName, String scopeName, Context context);
+    PagedIterable<ScopedResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName, Context context);
 }

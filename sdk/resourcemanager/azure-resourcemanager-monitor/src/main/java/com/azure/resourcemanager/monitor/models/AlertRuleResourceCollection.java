@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.AlertRuleResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of alert rule resources. */
+/**
+ * Represents a collection of alert rule resources.
+ */
 @Fluent
 public final class AlertRuleResourceCollection {
     /*
@@ -18,7 +20,9 @@ public final class AlertRuleResourceCollection {
     @JsonProperty(value = "value")
     private List<AlertRuleResourceInner> value;
 
-    /** Creates an instance of AlertRuleResourceCollection class. */
+    /**
+     * Creates an instance of AlertRuleResourceCollection class.
+     */
     public AlertRuleResourceCollection() {
     }
 

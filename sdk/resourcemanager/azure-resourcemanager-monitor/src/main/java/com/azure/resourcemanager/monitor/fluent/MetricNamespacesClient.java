@@ -11,7 +11,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.MetricNamespaceInner;
 
-/** An instance of this class provides access to all the operations defined in MetricNamespacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MetricNamespacesClient.
+ */
 public interface MetricNamespacesClient {
     /**
      * Lists the metric namespaces for the resource.

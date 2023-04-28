@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.ArmRoleReceiver;
 import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
 import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;
@@ -22,7 +21,7 @@ import java.util.Arrays;
 /** Samples for ActionGroups CreateNotificationsAtActionGroupResourceLevel. */
 public final class ActionGroupsCreateNotificationsAtActionGroupResourceLevelSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-01/examples/postTestNotificationsAtActionGroupResourceLevel.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2023-01-01/examples/postTestNotificationsAtActionGroupResourceLevel.json
      */
     /**
      * Sample code: Create notifications at resource group level.
@@ -154,6 +153,6 @@ public final class ActionGroupsCreateNotificationsAtActionGroupResourceLevelSamp
                                     .withEventHubName("testEventHub")
                                     .withTenantId("68a4459a-ccb8-493c-b9da-dd30457d1b84")
                                     .withSubscriptionId("187f412d-1758-44d9-b052-169e2564721d"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

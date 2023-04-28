@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.SingleMetricBaselineInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of metric baselines. */
+/**
+ * A list of metric baselines.
+ */
 @Fluent
 public final class MetricBaselinesResponse {
     /*
@@ -18,7 +20,9 @@ public final class MetricBaselinesResponse {
     @JsonProperty(value = "value")
     private List<SingleMetricBaselineInner> value;
 
-    /** Creates an instance of MetricBaselinesResponse class. */
+    /**
+     * Creates an instance of MetricBaselinesResponse class.
+     */
     public MetricBaselinesResponse() {
     }
 

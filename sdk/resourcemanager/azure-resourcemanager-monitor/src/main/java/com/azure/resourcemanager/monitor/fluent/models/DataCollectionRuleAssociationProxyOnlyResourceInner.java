@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.DataCollectionRuleAssociationMet
 import com.azure.resourcemanager.monitor.models.KnownDataCollectionRuleAssociationProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of generic ARM proxy resource. */
+/**
+ * Definition of generic ARM proxy resource.
+ */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends ProxyResource {
     /*
@@ -32,7 +34,9 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceInner class. */
+    /**
+     * Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceInner class.
+     */
     public DataCollectionRuleAssociationProxyOnlyResourceInner() {
     }
 
@@ -126,8 +130,7 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceInner extends P
      * @param dataCollectionEndpointId the dataCollectionEndpointId value to set.
      * @return the DataCollectionRuleAssociationProxyOnlyResourceInner object itself.
      */
-    public DataCollectionRuleAssociationProxyOnlyResourceInner withDataCollectionEndpointId(
-        String dataCollectionEndpointId) {
+    public DataCollectionRuleAssociationProxyOnlyResourceInner withDataCollectionEndpointId(String dataCollectionEndpointId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DataCollectionRuleAssociationProxyOnlyResourceProperties();
         }

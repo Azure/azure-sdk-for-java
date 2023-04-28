@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The Azure event log entries are of type EventData. */
+/**
+ * The Azure event log entries are of type EventData.
+ */
 @Immutable
 public final class EventDataInner {
     /*
@@ -174,7 +176,9 @@ public final class EventDataInner {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of EventDataInner class. */
+    /**
+     * Creates an instance of EventDataInner class.
+     */
     public EventDataInner() {
     }
 
@@ -381,9 +385,10 @@ public final class EventDataInner {
     }
 
     /**
-     * Get the submissionTimestamp property: the timestamp of when the event became available for querying via this API.
-     * It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay between the
-     * occurrence time of the event, and the time that the event is submitted to the Azure logging infrastructure.
+     * Get the submissionTimestamp property: the timestamp of when the event became available for querying via this
+     * API. It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay
+     * between the occurrence time of the event, and the time that the event is submitted to the Azure logging
+     * infrastructure.
      *
      * @return the submissionTimestamp value.
      */

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of log profiles. */
+/**
+ * Represents a collection of log profiles.
+ */
 @Fluent
 public final class LogProfileCollection {
     /*
@@ -19,7 +21,9 @@ public final class LogProfileCollection {
     @JsonProperty(value = "value", required = true)
     private List<LogProfileResourceInner> value;
 
-    /** Creates an instance of LogProfileCollection class. */
+    /**
+     * Creates an instance of LogProfileCollection class.
+     */
     public LogProfileCollection() {
     }
 
@@ -50,9 +54,7 @@ public final class LogProfileCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model LogProfileCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model LogProfileCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

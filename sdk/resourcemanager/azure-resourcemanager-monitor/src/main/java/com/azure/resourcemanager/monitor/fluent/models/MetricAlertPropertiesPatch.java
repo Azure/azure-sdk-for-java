@@ -12,7 +12,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An alert rule properties for patch. */
+/**
+ * An alert rule properties for patch.
+ */
 @Fluent
 public final class MetricAlertPropertiesPatch {
     /*
@@ -96,7 +98,9 @@ public final class MetricAlertPropertiesPatch {
     @JsonProperty(value = "isMigrated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMigrated;
 
-    /** Creates an instance of MetricAlertPropertiesPatch class. */
+    /**
+     * Creates an instance of MetricAlertPropertiesPatch class.
+     */
     public MetricAlertPropertiesPatch() {
     }
 
@@ -311,8 +315,8 @@ public final class MetricAlertPropertiesPatch {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @return the actions value.
      */
@@ -321,8 +325,8 @@ public final class MetricAlertPropertiesPatch {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @param actions the actions value to set.
      * @return the MetricAlertPropertiesPatch object itself.

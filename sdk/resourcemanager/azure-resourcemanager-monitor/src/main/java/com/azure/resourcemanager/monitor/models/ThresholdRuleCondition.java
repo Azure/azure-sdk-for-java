@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** A rule condition based on a metric crossing a threshold. */
+/**
+ * A rule condition based on a metric crossing a threshold.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
 @Fluent
@@ -42,7 +44,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
     @JsonProperty(value = "timeAggregation")
     private TimeAggregationOperator timeAggregation;
 
-    /** Creates an instance of ThresholdRuleCondition class. */
+    /**
+     * Creates an instance of ThresholdRuleCondition class.
+     */
     public ThresholdRuleCondition() {
     }
 
@@ -130,7 +134,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThresholdRuleCondition withDataSource(RuleDataSource dataSource) {
         super.withDataSource(dataSource);
@@ -146,9 +152,7 @@ public final class ThresholdRuleCondition extends RuleCondition {
     public void validate() {
         super.validate();
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model ThresholdRuleCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model ThresholdRuleCondition"));
         }
     }
 

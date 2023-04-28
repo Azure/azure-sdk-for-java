@@ -10,16 +10,27 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.models.Actions;
 import com.azure.resourcemanager.monitor.models.AlertSeverity;
+import com.azure.resourcemanager.monitor.models.Identity;
 import com.azure.resourcemanager.monitor.models.Kind;
+import com.azure.resourcemanager.monitor.models.PublicNetworkAccess;
+import com.azure.resourcemanager.monitor.models.RuleResolveConfiguration;
 import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleCriteria;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-/** The scheduled query rule resource. */
+/**
+ * The scheduled query rule resource.
+ */
 @Fluent
 public final class ScheduledQueryRuleResourceInner extends Resource {
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
     /*
      * Indicates the type of scheduled query rule. The default is LogAlert.
      */
@@ -47,8 +58,30 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private ScheduledQueryRuleProperties innerProperties = new ScheduledQueryRuleProperties();
 
-    /** Creates an instance of ScheduledQueryRuleResourceInner class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleResourceInner class.
+     */
     public ScheduledQueryRuleResourceInner() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ScheduledQueryRuleResourceInner object itself.
+     */
+    public ScheduledQueryRuleResourceInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -73,9 +106,9 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
 
     /**
      * Get the etag property: The etag field is *not* required. If it is provided in the response body, it must also be
-     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
-     * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
-     * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     * provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities
+     * from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section
+     * 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
      *
      * @return the etag value.
      */
@@ -101,14 +134,18 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduledQueryRuleResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduledQueryRuleResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -226,6 +263,31 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
             this.innerProperties = new ScheduledQueryRuleProperties();
         }
         this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ScheduledQueryRuleResourceInner object itself.
+     */
+    public ScheduledQueryRuleResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledQueryRuleProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -456,8 +518,7 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
      * @param checkWorkspaceAlertsStorageConfigured the checkWorkspaceAlertsStorageConfigured value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
      */
-    public ScheduledQueryRuleResourceInner withCheckWorkspaceAlertsStorageConfigured(
-        Boolean checkWorkspaceAlertsStorageConfigured) {
+    public ScheduledQueryRuleResourceInner withCheckWorkspaceAlertsStorageConfigured(Boolean checkWorkspaceAlertsStorageConfigured) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScheduledQueryRuleProperties();
         }
@@ -491,8 +552,8 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
+     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
      *
      * @return the autoMitigate value.
      */
@@ -501,8 +562,8 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
+     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
      *
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleResourceInner object itself.
@@ -516,16 +577,41 @@ public final class ScheduledQueryRuleResourceInner extends Resource {
     }
 
     /**
+     * Get the ruleResolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only
+     * for rules of the kind LogAlert.
+     *
+     * @return the ruleResolveConfiguration value.
+     */
+    public RuleResolveConfiguration ruleResolveConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().ruleResolveConfiguration();
+    }
+
+    /**
+     * Set the ruleResolveConfiguration property: Defines the configuration for resolving fired alerts. Relevant only
+     * for rules of the kind LogAlert.
+     *
+     * @param ruleResolveConfiguration the ruleResolveConfiguration value to set.
+     * @return the ScheduledQueryRuleResourceInner object itself.
+     */
+    public ScheduledQueryRuleResourceInner withRuleResolveConfiguration(RuleResolveConfiguration ruleResolveConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduledQueryRuleProperties();
+        }
+        this.innerProperties().withRuleResolveConfiguration(ruleResolveConfiguration);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ScheduledQueryRuleResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ScheduledQueryRuleResourceInner"));
         } else {
             innerProperties().validate();
         }

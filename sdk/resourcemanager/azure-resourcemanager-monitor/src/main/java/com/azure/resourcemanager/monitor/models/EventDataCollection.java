@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents collection of events. */
+/**
+ * Represents collection of events.
+ */
 @Fluent
 public final class EventDataCollection {
     /*
@@ -25,7 +27,9 @@ public final class EventDataCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of EventDataCollection class. */
+    /**
+     * Creates an instance of EventDataCollection class.
+     */
     public EventDataCollection() {
     }
 
@@ -76,9 +80,7 @@ public final class EventDataCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model EventDataCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model EventDataCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

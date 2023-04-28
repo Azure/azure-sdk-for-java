@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Http request info. */
+/**
+ * The Http request info.
+ */
 @Fluent
 public final class HttpRequestInfo {
     /*
@@ -34,7 +36,9 @@ public final class HttpRequestInfo {
     @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of HttpRequestInfo class. */
+    /**
+     * Creates an instance of HttpRequestInfo class.
+     */
     public HttpRequestInfo() {
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.models.CategoryType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic settings Category. */
+/**
+ * The diagnostic settings Category.
+ */
 @Fluent
 public final class DiagnosticSettingsCategory {
     /*
@@ -24,7 +26,9 @@ public final class DiagnosticSettingsCategory {
     @JsonProperty(value = "categoryGroups")
     private List<String> categoryGroups;
 
-    /** Creates an instance of DiagnosticSettingsCategory class. */
+    /**
+     * Creates an instance of DiagnosticSettingsCategory class.
+     */
     public DiagnosticSettingsCategory() {
     }
 

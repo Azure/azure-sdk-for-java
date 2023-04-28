@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.ResourceForUpdate;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public final class DataCollectionRulesUpdateSamples {
                 "myResourceGroup",
                 "myCollectionRule",
                 new ResourceForUpdate().withTags(mapOf("tag1", "A", "tag2", "B", "tag3", "C")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

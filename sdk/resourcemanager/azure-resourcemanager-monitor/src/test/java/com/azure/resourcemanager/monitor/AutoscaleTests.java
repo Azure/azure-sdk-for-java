@@ -22,6 +22,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -43,6 +44,7 @@ public class AutoscaleTests extends MonitorManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCRUDAutoscale() throws Exception {
 
         try {

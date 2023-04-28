@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The response to a metrics query. */
+/**
+ * The response to a metrics query.
+ */
 @Fluent
 public final class PredictiveResponseInner {
     /*
@@ -45,13 +47,15 @@ public final class PredictiveResponseInner {
     @JsonProperty(value = "data")
     private List<PredictiveValue> data;
 
-    /** Creates an instance of PredictiveResponseInner class. */
+    /**
+     * Creates an instance of PredictiveResponseInner class.
+     */
     public PredictiveResponseInner() {
     }
 
     /**
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
-     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally
      * requested.
      *
      * @return the timespan value.
@@ -62,7 +66,7 @@ public final class PredictiveResponseInner {
 
     /**
      * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
-     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally
      * requested.
      *
      * @param timespan the timespan value to set.
@@ -74,8 +78,8 @@ public final class PredictiveResponseInner {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
-     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * Get the interval property: The interval (window size) for which the metric data was returned in.  This may be
+     * adjusted in the future and returned back from what was originally requested.  This is not present if a metadata
      * request was made.
      *
      * @return the interval value.
@@ -85,8 +89,8 @@ public final class PredictiveResponseInner {
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
-     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * Set the interval property: The interval (window size) for which the metric data was returned in.  This may be
+     * adjusted in the future and returned back from what was originally requested.  This is not present if a metadata
      * request was made.
      *
      * @param interval the interval value to set.

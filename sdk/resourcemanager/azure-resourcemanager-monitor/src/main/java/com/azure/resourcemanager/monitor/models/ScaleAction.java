@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The parameters for the scaling action. */
+/**
+ * The parameters for the scaling action.
+ */
 @Fluent
 public final class ScaleAction {
     /*
@@ -38,7 +40,9 @@ public final class ScaleAction {
     @JsonProperty(value = "cooldown", required = true)
     private Duration cooldown;
 
-    /** Creates an instance of ScaleAction class. */
+    /**
+     * Creates an instance of ScaleAction class.
+     */
     public ScaleAction() {
     }
 
@@ -107,8 +111,8 @@ public final class ScaleAction {
     }
 
     /**
-     * Get the cooldown property: the amount of time to wait since the last scaling action before this action occurs. It
-     * must be between 1 week and 1 minute in ISO 8601 format.
+     * Get the cooldown property: the amount of time to wait since the last scaling action before this action occurs.
+     * It must be between 1 week and 1 minute in ISO 8601 format.
      *
      * @return the cooldown value.
      */
@@ -117,8 +121,8 @@ public final class ScaleAction {
     }
 
     /**
-     * Set the cooldown property: the amount of time to wait since the last scaling action before this action occurs. It
-     * must be between 1 week and 1 minute in ISO 8601 format.
+     * Set the cooldown property: the amount of time to wait since the last scaling action before this action occurs.
+     * It must be between 1 week and 1 minute in ISO 8601 format.
      *
      * @param cooldown the cooldown value to set.
      * @return the ScaleAction object itself.
@@ -135,19 +139,13 @@ public final class ScaleAction {
      */
     public void validate() {
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model ScaleAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property direction in model ScaleAction"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ScaleAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property type in model ScaleAction"));
         }
         if (cooldown() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property cooldown in model ScaleAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property cooldown in model ScaleAction"));
         }
     }
 

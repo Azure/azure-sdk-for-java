@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleResourceInner;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDataSources;
 import com.azure.resourcemanager.monitor.models.DataCollectionRuleDestinations;
@@ -129,6 +128,6 @@ public final class DataCollectionRulesCreateSamples {
                                                 KnownDataFlowStreams.MICROSOFT_SYSLOG,
                                                 KnownDataFlowStreams.MICROSOFT_WINDOWS_EVENT))
                                     .withDestinations(Arrays.asList("centralWorkspace")))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

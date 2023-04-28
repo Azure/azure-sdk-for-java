@@ -26,13 +26,18 @@ import com.azure.resourcemanager.monitor.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkScopeOperationStatusClient. */
-public final class PrivateLinkScopeOperationStatusClientImpl
-    implements InnerSupportsGet<OperationStatusInner>, PrivateLinkScopeOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkScopeOperationStatusClient.
+ */
+public final class PrivateLinkScopeOperationStatusClientImpl implements InnerSupportsGet<OperationStatusInner>, PrivateLinkScopeOperationStatusClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkScopeOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitorClientImpl client;
 
     /**
@@ -40,13 +45,8 @@ public final class PrivateLinkScopeOperationStatusClientImpl
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkScopeOperationStatusClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateLinkScopeOperationStatusService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+     PrivateLinkScopeOperationStatusClientImpl(MonitorClientImpl client) {
+        this.service = RestProxy.create(PrivateLinkScopeOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,20 +57,11 @@ public final class PrivateLinkScopeOperationStatusClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientPrivate")
     public interface PrivateLinkScopeOperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/privateLinkScopeOperationStatuses/{asyncOperationId}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.insights/privateLinkScopeOperationStatuses/{asyncOperationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("asyncOperationId") String asyncOperationId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationStatusInner>> getByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("asyncOperationId") String asyncOperationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -81,46 +72,25 @@ public final class PrivateLinkScopeOperationStatusClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String asyncOperationId) {
+    public Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String asyncOperationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (asyncOperationId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter asyncOperationId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter asyncOperationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            asyncOperationId,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, asyncOperationId, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -133,44 +103,26 @@ public final class PrivateLinkScopeOperationStatusClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String asyncOperationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String asyncOperationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (asyncOperationId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter asyncOperationId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter asyncOperationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                asyncOperationId,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, asyncOperationId, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -181,14 +133,12 @@ public final class PrivateLinkScopeOperationStatusClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation on
-     *     successful completion of {@link Mono}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OperationStatusInner> getByResourceGroupAsync(String resourceGroupName, String asyncOperationId) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, asyncOperationId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
@@ -199,12 +149,10 @@ public final class PrivateLinkScopeOperationStatusClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response}.
+     * @return the status of an azure asynchronous operation associated with a private link scope operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String asyncOperationId, Context context) {
+    public Response<OperationStatusInner> getByResourceGroupWithResponse(String resourceGroupName, String asyncOperationId, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, asyncOperationId, context).block();
     }
 

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.OnboardingStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VM Insights onboarding status for a resource. */
+/**
+ * VM Insights onboarding status for a resource.
+ */
 @Fluent
 public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     /*
@@ -21,7 +23,9 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VMInsightsOnboardingStatusProperties innerProperties;
 
-    /** Creates an instance of VMInsightsOnboardingStatusInner class. */
+    /**
+     * Creates an instance of VMInsightsOnboardingStatusInner class.
+     */
     public VMInsightsOnboardingStatusInner() {
     }
 
@@ -60,8 +64,8 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     }
 
     /**
-     * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
-     * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
+     * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
      *
      * @return the onboardingStatus value.
      */
@@ -70,8 +74,8 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     }
 
     /**
-     * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
-     * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
+     * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
      *
      * @param onboardingStatus the onboardingStatus value to set.
      * @return the VMInsightsOnboardingStatusInner object itself.

@@ -22,7 +22,9 @@ public final class EventCategoryCollection {
     @JsonProperty(value = "value", required = true)
     private List<LocalizableStringInner> value;
 
-    /** Creates an instance of EventCategoryCollection class. */
+    /**
+     * Creates an instance of EventCategoryCollection class.
+     */
     public EventCategoryCollection() {
     }
 
@@ -53,9 +55,7 @@ public final class EventCategoryCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

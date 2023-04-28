@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The metric alert resource for patch operations. */
+/**
+ * The metric alert resource for patch operations.
+ */
 @Fluent
 public final class MetricAlertResourcePatch {
     /*
@@ -29,7 +31,9 @@ public final class MetricAlertResourcePatch {
     @JsonProperty(value = "properties")
     private MetricAlertPropertiesPatch innerProperties;
 
-    /** Creates an instance of MetricAlertResourcePatch class. */
+    /**
+     * Creates an instance of MetricAlertResourcePatch class.
+     */
     public MetricAlertResourcePatch() {
     }
 
@@ -303,8 +307,8 @@ public final class MetricAlertResourcePatch {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @return the actions value.
      */
@@ -313,8 +317,8 @@ public final class MetricAlertResourcePatch {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @param actions the actions value to set.
      * @return the MetricAlertResourcePatch object itself.

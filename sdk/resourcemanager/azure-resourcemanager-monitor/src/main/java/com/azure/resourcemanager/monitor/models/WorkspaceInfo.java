@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.models.WorkspaceInfoProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about a Log Analytics Workspace. */
+/**
+ * Information about a Log Analytics Workspace.
+ */
 @Fluent
 public final class WorkspaceInfo {
     /*
@@ -30,7 +32,9 @@ public final class WorkspaceInfo {
     @JsonProperty(value = "properties", required = true)
     private WorkspaceInfoProperties innerProperties = new WorkspaceInfoProperties();
 
-    /** Creates an instance of WorkspaceInfo class. */
+    /**
+     * Creates an instance of WorkspaceInfo class.
+     */
     public WorkspaceInfo() {
     }
 
@@ -113,19 +117,13 @@ public final class WorkspaceInfo {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model WorkspaceInfo"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model WorkspaceInfo"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model WorkspaceInfo"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property location in model WorkspaceInfo"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model WorkspaceInfo"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model WorkspaceInfo"));
         } else {
             innerProperties().validate();
         }

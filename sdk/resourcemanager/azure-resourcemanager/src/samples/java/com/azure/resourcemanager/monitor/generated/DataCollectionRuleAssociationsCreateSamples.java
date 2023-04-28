@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.DataCollectionRuleAssociationProxyOnlyResourceInner;
 
 /** Samples for DataCollectionRuleAssociations Create. */
@@ -29,6 +28,6 @@ public final class DataCollectionRuleAssociationsCreateSamples {
                 new DataCollectionRuleAssociationProxyOnlyResourceInner()
                     .withDataCollectionRuleId(
                         "/subscriptions/703362b3-f278-4e4b-9179-c76eaf41ffc2/resourceGroups/myResourceGroup/providers/Microsoft.Insights/dataCollectionRules/myCollectionRule"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

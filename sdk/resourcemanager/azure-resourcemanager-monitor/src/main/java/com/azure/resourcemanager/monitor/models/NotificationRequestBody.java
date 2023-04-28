@@ -9,13 +9,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request body which contain contact detail metadata. */
+/**
+ * The request body which contain contact detail metadata.
+ */
 @Fluent
 public final class NotificationRequestBody {
     /*
      * The value of the supported alert type. Supported alert type values are: servicehealth, metricstaticthreshold,
      * metricsdynamicthreshold, logalertv2, smartalert, webtestalert, logalertv1numresult, logalertv1metricmeasurement,
-     * resourcehealth, activitylog, budget
+     * resourcehealth, activitylog, actualcostbudget, forecastedbudget
      */
     @JsonProperty(value = "alertType", required = true)
     private String alertType;
@@ -87,14 +89,17 @@ public final class NotificationRequestBody {
     @JsonProperty(value = "eventHubReceivers")
     private List<EventHubReceiver> eventHubReceivers;
 
-    /** Creates an instance of NotificationRequestBody class. */
+    /**
+     * Creates an instance of NotificationRequestBody class.
+     */
     public NotificationRequestBody() {
     }
 
     /**
      * Get the alertType property: The value of the supported alert type. Supported alert type values are:
      * servicehealth, metricstaticthreshold, metricsdynamicthreshold, logalertv2, smartalert, webtestalert,
-     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, budget.
+     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, actualcostbudget,
+     * forecastedbudget.
      *
      * @return the alertType value.
      */
@@ -105,7 +110,8 @@ public final class NotificationRequestBody {
     /**
      * Set the alertType property: The value of the supported alert type. Supported alert type values are:
      * servicehealth, metricstaticthreshold, metricsdynamicthreshold, logalertv2, smartalert, webtestalert,
-     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, budget.
+     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, actualcostbudget,
+     * forecastedbudget.
      *
      * @param alertType the alertType value to set.
      * @return the NotificationRequestBody object itself.
@@ -216,8 +222,8 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
+     * Get the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
      *
      * @return the automationRunbookReceivers value.
      */
@@ -226,14 +232,13 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this action
-     * group.
+     * Set the automationRunbookReceivers property: The list of AutomationRunbook receivers that are part of this
+     * action group.
      *
      * @param automationRunbookReceivers the automationRunbookReceivers value to set.
      * @return the NotificationRequestBody object itself.
      */
-    public NotificationRequestBody withAutomationRunbookReceivers(
-        List<AutomationRunbookReceiver> automationRunbookReceivers) {
+    public NotificationRequestBody withAutomationRunbookReceivers(List<AutomationRunbookReceiver> automationRunbookReceivers) {
         this.automationRunbookReceivers = automationRunbookReceivers;
         return this;
     }
@@ -279,7 +284,8 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
+     * Get the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
      *
      * @return the azureFunctionReceivers value.
      */
@@ -288,7 +294,8 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action group.
+     * Set the azureFunctionReceivers property: The list of azure function receivers that are part of this action
+     * group.
      *
      * @param azureFunctionReceivers the azureFunctionReceivers value to set.
      * @return the NotificationRequestBody object itself.
@@ -347,10 +354,7 @@ public final class NotificationRequestBody {
      */
     public void validate() {
         if (alertType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertType in model NotificationRequestBody"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property alertType in model NotificationRequestBody"));
         }
         if (emailReceivers() != null) {
             emailReceivers().forEach(e -> e.validate());

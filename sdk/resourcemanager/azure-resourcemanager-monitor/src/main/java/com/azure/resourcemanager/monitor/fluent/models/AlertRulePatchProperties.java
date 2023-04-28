@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Activity Log Alert rule properties for patch operations. */
+/**
+ * An Activity Log Alert rule properties for patch operations.
+ */
 @Fluent
 public final class AlertRulePatchProperties {
     /*
@@ -17,7 +19,9 @@ public final class AlertRulePatchProperties {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of AlertRulePatchProperties class. */
+    /**
+     * Creates an instance of AlertRulePatchProperties class.
+     */
     public AlertRulePatchProperties() {
     }
 

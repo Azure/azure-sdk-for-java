@@ -27,13 +27,15 @@ public final class ConditionFailingPeriods {
     @JsonProperty(value = "minFailingPeriodsToAlert")
     private Long minFailingPeriodsToAlert;
 
-    /** Creates an instance of ConditionFailingPeriods class. */
+    /**
+     * Creates an instance of ConditionFailingPeriods class.
+     */
     public ConditionFailingPeriods() {
     }
 
     /**
-     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
+     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      * Default value is 1.
      *
      * @return the numberOfEvaluationPeriods value.
@@ -43,8 +45,8 @@ public final class ConditionFailingPeriods {
     }
 
     /**
-     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
-     * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
+     * Set the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window
+     * is calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.
      * Default value is 1.
      *
      * @param numberOfEvaluationPeriods the numberOfEvaluationPeriods value to set.

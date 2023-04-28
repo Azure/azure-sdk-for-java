@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the retention policy for the log. */
+/**
+ * Specifies the retention policy for the log.
+ */
 @Fluent
 public final class RetentionPolicy {
     /*
@@ -22,7 +24,9 @@ public final class RetentionPolicy {
     @JsonProperty(value = "days", required = true)
     private int days;
 
-    /** Creates an instance of RetentionPolicy class. */
+    /**
+     * Creates an instance of RetentionPolicy class.
+     */
     public RetentionPolicy() {
     }
 

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties that define the scope private link mode settings. */
+/**
+ * Properties that define the scope private link mode settings.
+ */
 @Fluent
 public final class AccessModeSettings {
     /*
@@ -34,7 +36,9 @@ public final class AccessModeSettings {
     @JsonProperty(value = "exclusions")
     private List<AccessModeSettingsExclusion> exclusions;
 
-    /** Creates an instance of AccessModeSettings class. */
+    /**
+     * Creates an instance of AccessModeSettings class.
+     */
     public AccessModeSettings() {
     }
 
@@ -115,16 +119,10 @@ public final class AccessModeSettings {
      */
     public void validate() {
         if (queryAccessMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property queryAccessMode in model AccessModeSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property queryAccessMode in model AccessModeSettings"));
         }
         if (ingestionAccessMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ingestionAccessMode in model AccessModeSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property ingestionAccessMode in model AccessModeSettings"));
         }
         if (exclusions() != null) {
             exclusions().forEach(e -> e.validate());

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The log profile properties. */
+/**
+ * The log profile properties.
+ */
 @Fluent
 public final class LogProfileProperties {
     /*
@@ -47,7 +49,9 @@ public final class LogProfileProperties {
     @JsonProperty(value = "retentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of LogProfileProperties class. */
+    /**
+     * Creates an instance of LogProfileProperties class.
+     */
     public LogProfileProperties() {
     }
 
@@ -168,20 +172,13 @@ public final class LogProfileProperties {
      */
     public void validate() {
         if (locations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property locations in model LogProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property locations in model LogProfileProperties"));
         }
         if (categories() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property categories in model LogProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property categories in model LogProfileProperties"));
         }
         if (retentionPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property retentionPolicy in model LogProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property retentionPolicy in model LogProfileProperties"));
         } else {
             retentionPolicy().validate();
         }

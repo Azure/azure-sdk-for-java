@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VMInsights GetOnboardingStatus. */
 public final class VMInsightsGetOnboardingStatusSamples {
     /*
@@ -25,7 +23,7 @@ public final class VMInsightsGetOnboardingStatusSamples {
             .getVMInsights()
             .getOnboardingStatusWithResponse(
                 "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/resource-group-with-vms",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -44,7 +42,7 @@ public final class VMInsightsGetOnboardingStatusSamples {
             .getVMInsights()
             .getOnboardingStatusWithResponse(
                 "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/vm-resource-group/providers/Microsoft.Compute/virtualMachines/ubuntu-vm",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -64,7 +62,7 @@ public final class VMInsightsGetOnboardingStatusSamples {
             .getVMInsights()
             .getOnboardingStatusWithResponse(
                 "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/vm-resource-group/providers/Microsoft.Compute/virtualMachines/ubuntu-vm",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -84,7 +82,7 @@ public final class VMInsightsGetOnboardingStatusSamples {
             .getVMInsights()
             .getOnboardingStatusWithResponse(
                 "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87/resourceGroups/my-service-cluster/providers/Microsoft.Compute/virtualMachineScaleSets/scale-set-01",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -102,6 +100,7 @@ public final class VMInsightsGetOnboardingStatusSamples {
             .manager()
             .serviceClient()
             .getVMInsights()
-            .getOnboardingStatusWithResponse("subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87", Context.NONE);
+            .getOnboardingStatusWithResponse(
+                "subscriptions/3d51de47-8d1c-4d24-b42f-bcae075dfa87", com.azure.core.util.Context.NONE);
     }
 }

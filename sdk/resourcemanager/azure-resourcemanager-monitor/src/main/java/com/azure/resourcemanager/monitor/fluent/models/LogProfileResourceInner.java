@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The log profile resource. */
+/**
+ * The log profile resource.
+ */
 @Fluent
 public final class LogProfileResourceInner extends Resource {
     /*
@@ -21,7 +23,9 @@ public final class LogProfileResourceInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private LogProfileProperties innerProperties = new LogProfileProperties();
 
-    /** Creates an instance of LogProfileResourceInner class. */
+    /**
+     * Creates an instance of LogProfileResourceInner class.
+     */
     public LogProfileResourceInner() {
     }
 
@@ -34,14 +38,18 @@ public final class LogProfileResourceInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogProfileResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogProfileResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -180,10 +188,7 @@ public final class LogProfileResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LogProfileResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model LogProfileResourceInner"));
         } else {
             innerProperties().validate();
         }

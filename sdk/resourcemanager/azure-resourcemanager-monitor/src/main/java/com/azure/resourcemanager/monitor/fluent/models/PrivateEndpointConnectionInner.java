@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.PrivateEndpointConnectionProvisi
 import com.azure.resourcemanager.monitor.models.PrivateLinkServiceConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Private Endpoint Connection resource. */
+/**
+ * The Private Endpoint Connection resource.
+ */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
     /*
@@ -20,7 +22,9 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
 
-    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionInner class.
+     */
     public PrivateEndpointConnectionInner() {
     }
 
@@ -57,8 +61,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
      *
      * @return the privateLinkServiceConnectionState value.
      */
@@ -67,14 +71,13 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
      *
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionProperties();
         }

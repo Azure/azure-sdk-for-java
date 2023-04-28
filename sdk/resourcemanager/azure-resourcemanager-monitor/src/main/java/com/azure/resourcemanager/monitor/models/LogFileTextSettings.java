@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for text log files. */
+/**
+ * Settings for text log files.
+ */
 @Fluent
 public class LogFileTextSettings {
     /*
@@ -17,7 +19,9 @@ public class LogFileTextSettings {
     @JsonProperty(value = "recordStartTimestampFormat", required = true)
     private KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat;
 
-    /** Creates an instance of LogFileTextSettings class. */
+    /**
+     * Creates an instance of LogFileTextSettings class.
+     */
     public LogFileTextSettings() {
     }
 
@@ -36,8 +40,7 @@ public class LogFileTextSettings {
      * @param recordStartTimestampFormat the recordStartTimestampFormat value to set.
      * @return the LogFileTextSettings object itself.
      */
-    public LogFileTextSettings withRecordStartTimestampFormat(
-        KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat) {
+    public LogFileTextSettings withRecordStartTimestampFormat(KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat) {
         this.recordStartTimestampFormat = recordStartTimestampFormat;
         return this;
     }
@@ -49,10 +52,7 @@ public class LogFileTextSettings {
      */
     public void validate() {
         if (recordStartTimestampFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recordStartTimestampFormat in model LogFileTextSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property recordStartTimestampFormat in model LogFileTextSettings"));
         }
     }
 

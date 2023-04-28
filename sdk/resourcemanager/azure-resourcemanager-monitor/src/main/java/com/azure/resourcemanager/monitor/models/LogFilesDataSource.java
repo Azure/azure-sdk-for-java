@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Definition of which custom log files will be collected by this data collection rule. */
+/**
+ * Definition of which custom log files will be collected by this data collection rule.
+ */
 @Fluent
 public final class LogFilesDataSource {
     /*
@@ -44,13 +46,15 @@ public final class LogFilesDataSource {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of LogFilesDataSource class. */
+    /**
+     * Creates an instance of LogFilesDataSource class.
+     */
     public LogFilesDataSource() {
     }
 
     /**
-     * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema
-     * will be used for this data source.
+     * Get the streams property: List of streams that this data source will be sent to.
+     * A stream indicates what schema will be used for this data source.
      *
      * @return the streams value.
      */
@@ -59,8 +63,8 @@ public final class LogFilesDataSource {
     }
 
     /**
-     * Set the streams property: List of streams that this data source will be sent to. A stream indicates what schema
-     * will be used for this data source.
+     * Set the streams property: List of streams that this data source will be sent to.
+     * A stream indicates what schema will be used for this data source.
      *
      * @param streams the streams value to set.
      * @return the LogFilesDataSource object itself.
@@ -131,8 +135,8 @@ public final class LogFilesDataSource {
     }
 
     /**
-     * Get the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
+     * Get the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      *
      * @return the name value.
      */
@@ -141,8 +145,8 @@ public final class LogFilesDataSource {
     }
 
     /**
-     * Set the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
+     * Set the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
      *
      * @param name the name value to set.
      * @return the LogFilesDataSource object itself.
@@ -159,19 +163,13 @@ public final class LogFilesDataSource {
      */
     public void validate() {
         if (streams() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property streams in model LogFilesDataSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property streams in model LogFilesDataSource"));
         }
         if (filePatterns() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filePatterns in model LogFilesDataSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property filePatterns in model LogFilesDataSource"));
         }
         if (format() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property format in model LogFilesDataSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property format in model LogFilesDataSource"));
         }
         if (settings() != null) {
             settings().validate();

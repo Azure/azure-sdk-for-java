@@ -17,11 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ActivityLogAlertsClient. */
-public interface ActivityLogAlertsClient
-    extends InnerSupportsGet<ActivityLogAlertResourceInner>,
-        InnerSupportsListing<ActivityLogAlertResourceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in ActivityLogAlertsClient.
+ */
+public interface ActivityLogAlertsClient extends InnerSupportsGet<ActivityLogAlertResourceInner>, InnerSupportsListing<ActivityLogAlertResourceInner>, InnerSupportsDelete<Void> {
     /**
      * Create a new Activity Log Alert rule or update an existing one.
      *
@@ -34,8 +33,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule);
+    Mono<Response<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule);
 
     /**
      * Create a new Activity Log Alert rule or update an existing one.
@@ -49,8 +47,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ActivityLogAlertResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule);
+    Mono<ActivityLogAlertResourceInner> createOrUpdateAsync(String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule);
 
     /**
      * Create a new Activity Log Alert rule or update an existing one.
@@ -65,11 +62,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ActivityLogAlertResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String activityLogAlertName,
-        ActivityLogAlertResourceInner activityLogAlertRule,
-        Context context);
+    Response<ActivityLogAlertResourceInner> createOrUpdateWithResponse(String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule, Context context);
 
     /**
      * Create a new Activity Log Alert rule or update an existing one.
@@ -83,8 +76,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ActivityLogAlertResourceInner createOrUpdate(
-        String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule);
+    ActivityLogAlertResourceInner createOrUpdate(String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlertRule);
 
     /**
      * Get an Activity Log Alert rule.
@@ -97,8 +89,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String activityLogAlertName);
+    Mono<Response<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String activityLogAlertName);
 
     /**
      * Get an Activity Log Alert rule.
@@ -125,8 +116,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ActivityLogAlertResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String activityLogAlertName, Context context);
+    Response<ActivityLogAlertResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String activityLogAlertName, Context context);
 
     /**
      * Get an Activity Log Alert rule.
@@ -194,8 +184,7 @@ public interface ActivityLogAlertsClient
     void delete(String resourceGroupName, String activityLogAlertName);
 
     /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
+     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags, and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
@@ -206,12 +195,10 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ActivityLogAlertResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch);
+    Mono<Response<ActivityLogAlertResourceInner>> updateWithResponseAsync(String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch);
 
     /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
+     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags, and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
@@ -222,12 +209,10 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ActivityLogAlertResourceInner> updateAsync(
-        String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch);
+    Mono<ActivityLogAlertResourceInner> updateAsync(String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch);
 
     /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
+     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags, and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
@@ -239,15 +224,10 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ActivityLogAlertResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String activityLogAlertName,
-        AlertRulePatchObject activityLogAlertRulePatch,
-        Context context);
+    Response<ActivityLogAlertResourceInner> updateWithResponse(String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch, Context context);
 
     /**
-     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags,
-     * and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
+     * Updates 'tags' and 'enabled' fields in an existing Alert rule. This method is used to update the Alert rule tags, and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param activityLogAlertName The name of the Activity Log Alert rule.
@@ -258,8 +238,7 @@ public interface ActivityLogAlertsClient
      * @return an Activity Log Alert rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ActivityLogAlertResourceInner update(
-        String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch);
+    ActivityLogAlertResourceInner update(String resourceGroupName, String activityLogAlertName, AlertRulePatchObject activityLogAlertRulePatch);
 
     /**
      * Get a list of all Activity Log Alert rules in a subscription.
@@ -276,8 +255,7 @@ public interface ActivityLogAlertsClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Activity Log Alert rules in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActivityLogAlertResourceInner> list();
@@ -289,8 +267,7 @@ public interface ActivityLogAlertsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Activity Log Alert rules in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActivityLogAlertResourceInner> list(Context context);
@@ -314,8 +291,7 @@ public interface ActivityLogAlertsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Activity Log Alert rules in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActivityLogAlertResourceInner> listByResourceGroup(String resourceGroupName);
@@ -328,8 +304,7 @@ public interface ActivityLogAlertsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Activity Log Alert rules in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of all Activity Log Alert rules in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ActivityLogAlertResourceInner> listByResourceGroup(String resourceGroupName, Context context);

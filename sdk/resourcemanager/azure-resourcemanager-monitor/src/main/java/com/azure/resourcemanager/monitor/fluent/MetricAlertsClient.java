@@ -17,11 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MetricAlertsClient. */
-public interface MetricAlertsClient
-    extends InnerSupportsGet<MetricAlertResourceInner>,
-        InnerSupportsListing<MetricAlertResourceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in MetricAlertsClient.
+ */
+public interface MetricAlertsClient extends InnerSupportsGet<MetricAlertResourceInner>, InnerSupportsListing<MetricAlertResourceInner>, InnerSupportsDelete<Void> {
     /**
      * Retrieve alert rule definitions in a subscription.
      *
@@ -102,8 +101,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MetricAlertResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ruleName);
+    Mono<Response<MetricAlertResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String ruleName);
 
     /**
      * Retrieve an alert rule definition.
@@ -130,8 +128,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetricAlertResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ruleName, Context context);
+    Response<MetricAlertResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String ruleName, Context context);
 
     /**
      * Retrieve an alert rule definition.
@@ -158,8 +155,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MetricAlertResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String ruleName, MetricAlertResourceInner parameters);
+    Mono<Response<MetricAlertResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String ruleName, MetricAlertResourceInner parameters);
 
     /**
      * Create or update an metric alert definition.
@@ -173,8 +169,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MetricAlertResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String ruleName, MetricAlertResourceInner parameters);
+    Mono<MetricAlertResourceInner> createOrUpdateAsync(String resourceGroupName, String ruleName, MetricAlertResourceInner parameters);
 
     /**
      * Create or update an metric alert definition.
@@ -189,8 +184,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetricAlertResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String ruleName, MetricAlertResourceInner parameters, Context context);
+    Response<MetricAlertResourceInner> createOrUpdateWithResponse(String resourceGroupName, String ruleName, MetricAlertResourceInner parameters, Context context);
 
     /**
      * Create or update an metric alert definition.
@@ -204,8 +198,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MetricAlertResourceInner createOrUpdate(
-        String resourceGroupName, String ruleName, MetricAlertResourceInner parameters);
+    MetricAlertResourceInner createOrUpdate(String resourceGroupName, String ruleName, MetricAlertResourceInner parameters);
 
     /**
      * Update an metric alert definition.
@@ -219,8 +212,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MetricAlertResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String ruleName, MetricAlertResourcePatch parameters);
+    Mono<Response<MetricAlertResourceInner>> updateWithResponseAsync(String resourceGroupName, String ruleName, MetricAlertResourcePatch parameters);
 
     /**
      * Update an metric alert definition.
@@ -234,8 +226,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MetricAlertResourceInner> updateAsync(
-        String resourceGroupName, String ruleName, MetricAlertResourcePatch parameters);
+    Mono<MetricAlertResourceInner> updateAsync(String resourceGroupName, String ruleName, MetricAlertResourcePatch parameters);
 
     /**
      * Update an metric alert definition.
@@ -250,8 +241,7 @@ public interface MetricAlertsClient
      * @return the metric alert resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetricAlertResourceInner> updateWithResponse(
-        String resourceGroupName, String ruleName, MetricAlertResourcePatch parameters, Context context);
+    Response<MetricAlertResourceInner> updateWithResponse(String resourceGroupName, String ruleName, MetricAlertResourcePatch parameters, Context context);
 
     /**
      * Update an metric alert definition.

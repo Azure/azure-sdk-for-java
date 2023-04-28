@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The localizable string class. */
+/**
+ * The localizable string class.
+ */
 @Fluent
 public final class LocalizableStringInner {
     /*
@@ -23,7 +25,9 @@ public final class LocalizableStringInner {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of LocalizableStringInner class. */
+    /**
+     * Creates an instance of LocalizableStringInner class.
+     */
     public LocalizableStringInner() {
     }
 
@@ -74,9 +78,7 @@ public final class LocalizableStringInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model LocalizableStringInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model LocalizableStringInner"));
         }
     }
 

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The log profile resource for patch operations. */
+/**
+ * The log profile resource for patch operations.
+ */
 @Fluent
 public final class LogProfileResourcePatch {
     /*
@@ -27,7 +29,9 @@ public final class LogProfileResourcePatch {
     @JsonProperty(value = "properties")
     private LogProfileProperties innerProperties;
 
-    /** Creates an instance of LogProfileResourcePatch class. */
+    /**
+     * Creates an instance of LogProfileResourcePatch class.
+     */
     public LogProfileResourcePatch() {
     }
 

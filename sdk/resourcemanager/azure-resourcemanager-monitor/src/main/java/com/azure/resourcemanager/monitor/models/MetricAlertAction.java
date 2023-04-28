@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An alert action. */
+/**
+ * An alert action.
+ */
 @Fluent
 public final class MetricAlertAction {
     /*
@@ -26,7 +28,9 @@ public final class MetricAlertAction {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
-    /** Creates an instance of MetricAlertAction class. */
+    /**
+     * Creates an instance of MetricAlertAction class.
+     */
     public MetricAlertAction() {
     }
 

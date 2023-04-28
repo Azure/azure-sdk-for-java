@@ -10,20 +10,14 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The resource from which the rule collects its data. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = RuleDataSource.class)
+/**
+ * The resource from which the rule collects its data.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = RuleDataSource.class)
 @JsonTypeName("RuleDataSource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
-        value = RuleMetricDataSource.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
-        value = RuleManagementEventDataSource.class)
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource", value = RuleMetricDataSource.class),
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource", value = RuleManagementEventDataSource.class)
 })
 @Fluent
 public class RuleDataSource {
@@ -53,7 +47,9 @@ public class RuleDataSource {
     @JsonProperty(value = "metricNamespace")
     private String metricNamespace;
 
-    /** Creates an instance of RuleDataSource class. */
+    /**
+     * Creates an instance of RuleDataSource class.
+     */
     public RuleDataSource() {
     }
 

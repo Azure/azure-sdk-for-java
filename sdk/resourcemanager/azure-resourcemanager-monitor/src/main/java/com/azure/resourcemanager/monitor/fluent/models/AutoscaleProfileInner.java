@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.TimeWindow;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Autoscale profile. */
+/**
+ * Autoscale profile.
+ */
 @Fluent
 public final class AutoscaleProfileInner {
     /*
@@ -46,7 +48,9 @@ public final class AutoscaleProfileInner {
     @JsonProperty(value = "recurrence")
     private Recurrence recurrence;
 
-    /** Creates an instance of AutoscaleProfileInner class. */
+    /**
+     * Creates an instance of AutoscaleProfileInner class.
+     */
     public AutoscaleProfileInner() {
     }
 
@@ -163,21 +167,15 @@ public final class AutoscaleProfileInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model AutoscaleProfileInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model AutoscaleProfileInner"));
         }
         if (capacity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property capacity in model AutoscaleProfileInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property capacity in model AutoscaleProfileInner"));
         } else {
             capacity().validate();
         }
         if (rules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rules in model AutoscaleProfileInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property rules in model AutoscaleProfileInner"));
         } else {
             rules().forEach(e -> e.validate());
         }

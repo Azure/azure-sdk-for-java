@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkScopeOperationStatus GetByResourceGroup. */
 public final class PrivateLinkScopeOperationStatusGetByResourceGroupSamples {
     /*
@@ -22,6 +20,7 @@ public final class PrivateLinkScopeOperationStatusGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getPrivateLinkScopeOperationStatus()
-            .getByResourceGroupWithResponse("MyResourceGroup", "713192d7-503f-477a-9cfe-4efc3ee2bd11", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "MyResourceGroup", "713192d7-503f-477a-9cfe-4efc3ee2bd11", com.azure.core.util.Context.NONE);
     }
 }

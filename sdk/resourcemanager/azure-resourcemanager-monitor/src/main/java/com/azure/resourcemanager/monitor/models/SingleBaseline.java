@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The baseline values for a single sensitivity value. */
+/**
+ * The baseline values for a single sensitivity value.
+ */
 @Fluent
 public final class SingleBaseline {
     /*
@@ -30,7 +32,9 @@ public final class SingleBaseline {
     @JsonProperty(value = "highThresholds", required = true)
     private List<Double> highThresholds;
 
-    /** Creates an instance of SingleBaseline class. */
+    /**
+     * Creates an instance of SingleBaseline class.
+     */
     public SingleBaseline() {
     }
 
@@ -101,19 +105,13 @@ public final class SingleBaseline {
      */
     public void validate() {
         if (sensitivity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sensitivity in model SingleBaseline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property sensitivity in model SingleBaseline"));
         }
         if (lowThresholds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lowThresholds in model SingleBaseline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property lowThresholds in model SingleBaseline"));
         }
         if (highThresholds() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property highThresholds in model SingleBaseline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property highThresholds in model SingleBaseline"));
         }
     }
 

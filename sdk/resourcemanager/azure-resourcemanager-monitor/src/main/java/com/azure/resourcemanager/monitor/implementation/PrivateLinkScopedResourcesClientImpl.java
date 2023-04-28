@@ -38,12 +38,18 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkScopedResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkScopedResourcesClient.
+ */
 public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkScopedResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkScopedResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitorClientImpl client;
 
     /**
@@ -51,11 +57,8 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkScopedResourcesClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateLinkScopedResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+     PrivateLinkScopedResourcesClientImpl(MonitorClientImpl client) {
+        this.service = RestProxy.create(PrivateLinkScopedResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,79 +69,35 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientPrivate")
     public interface PrivateLinkScopedResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/privateLinkScopes/{scopeName}/scopedResources/{name}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScopedResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scopeName") String scopeName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScopedResourceInner>> get(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("scopeName") String scopeName, @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/privateLinkScopes/{scopeName}/scopedResources/{name}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scopeName") String scopeName,
-            @PathParam("name") String name,
-            @BodyParam("application/json") ScopedResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("scopeName") String scopeName, @PathParam("name") String name, @BodyParam("application/json") ScopedResourceInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/privateLinkScopes/{scopeName}/scopedResources/{name}")
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scopeName") String scopeName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("scopeName") String scopeName, @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/privateLinkScopes/{scopeName}/scopedResources")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScopedResourceListResult>> listByPrivateLinkScope(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("scopeName") String scopeName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScopedResourceListResult>> listByPrivateLinkScope(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("scopeName") String scopeName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScopedResourceListResult>> listByPrivateLinkScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScopedResourceListResult>> listByPrivateLinkScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -150,27 +109,18 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ScopedResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String scopeName, String name) {
+    public Mono<Response<ScopedResourceInner>> getWithResponseAsync(String resourceGroupName, String scopeName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -180,19 +130,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            scopeName,
-                            name,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -206,27 +144,18 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a scoped resource in a private link scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScopedResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, Context context) {
+    private Mono<Response<ScopedResourceInner>> getWithResponseAsync(String resourceGroupName, String scopeName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -237,16 +166,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                scopeName,
-                name,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, name, accept, context);
     }
 
     /**
@@ -263,8 +183,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ScopedResourceInner> getAsync(String resourceGroupName, String scopeName, String name) {
         return getWithResponseAsync(resourceGroupName, scopeName, name)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Gets a scoped resource in a private link scope.
@@ -279,8 +198,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a scoped resource in a private link scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScopedResourceInner> getWithResponse(
-        String resourceGroupName, String scopeName, String name, Context context) {
+    public Response<ScopedResourceInner> getWithResponse(String resourceGroupName, String scopeName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, scopeName, name, context).block();
     }
 
@@ -313,23 +231,15 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a private link scoped resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -344,20 +254,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            scopeName,
-                            name,
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, name, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -375,23 +272,15 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a private link scoped resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -407,17 +296,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                scopeName,
-                name,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, name, parameters, accept, context);
     }
 
     /**
@@ -433,18 +312,9 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link PollerFlux} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, parameters);
-        return this
-            .client
-            .<ScopedResourceInner, ScopedResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ScopedResourceInner.class,
-                ScopedResourceInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, parameters);
+        return this.client.<ScopedResourceInner, ScopedResourceInner>getLroResult(mono, this.client.getHttpPipeline(), ScopedResourceInner.class, ScopedResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -461,15 +331,10 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link PollerFlux} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+    private PollerFlux<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, parameters, context);
-        return this
-            .client
-            .<ScopedResourceInner, ScopedResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ScopedResourceInner.class, ScopedResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, scopeName, name, parameters, context);
+        return this.client.<ScopedResourceInner, ScopedResourceInner>getLroResult(mono, this.client.getHttpPipeline(), ScopedResourceInner.class, ScopedResourceInner.class, context);
     }
 
     /**
@@ -485,9 +350,8 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link SyncPoller} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters).getSyncPoller();
+    public SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters).getSyncPoller();
     }
 
     /**
@@ -504,9 +368,8 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link SyncPoller} for polling of a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<ScopedResourceInner>, ScopedResourceInner> beginCreateOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context).getSyncPoller();
     }
 
     /**
@@ -522,8 +385,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a private link scoped resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ScopedResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+    public Mono<ScopedResourceInner> createOrUpdateAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -543,8 +405,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a private link scoped resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScopedResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+    private Mono<ScopedResourceInner> createOrUpdateAsync(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -563,8 +424,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScopedResourceInner createOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
+    public ScopedResourceInner createOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, scopeName, name, parameters).block();
     }
 
@@ -582,8 +442,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return a private link scoped resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScopedResourceInner createOrUpdate(
-        String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
+    public ScopedResourceInner createOrUpdate(String resourceGroupName, String scopeName, String name, ScopedResourceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, scopeName, name, parameters, context).block();
     }
 
@@ -599,23 +458,15 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String scopeName, String name) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String scopeName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -625,19 +476,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            scopeName,
-                            name,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -654,23 +493,15 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String scopeName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String scopeName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -681,16 +512,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                scopeName,
-                name,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, name, accept, context);
     }
 
     /**
@@ -705,13 +527,9 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String scopeName, String name) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String scopeName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, scopeName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -727,13 +545,10 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String scopeName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String scopeName, String name, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, scopeName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -749,7 +564,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, String name) {
-        return beginDeleteAsync(resourceGroupName, scopeName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, scopeName, name).getSyncPoller();
     }
 
     /**
@@ -765,9 +580,8 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String scopeName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, scopeName, name, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, String name, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, scopeName, name, context).getSyncPoller();
     }
 
     /**
@@ -846,54 +660,32 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeSinglePageAsync(
-        String resourceGroupName, String scopeName) {
+    private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeSinglePageAsync(String resourceGroupName, String scopeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
         }
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByPrivateLinkScope(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            apiVersion,
-                            scopeName,
-                            accept,
-                            context))
-            .<PagedResponse<ScopedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByPrivateLinkScope(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, accept, context))
+            .<PagedResponse<ScopedResourceInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -906,27 +698,18 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all private endpoint connections on a private link scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeSinglePageAsync(
-        String resourceGroupName, String scopeName, Context context) {
+    private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeSinglePageAsync(String resourceGroupName, String scopeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (scopeName == null) {
             return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
@@ -934,24 +717,14 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
         final String apiVersion = "2021-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByPrivateLinkScope(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                apiVersion,
-                scopeName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByPrivateLinkScope(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, scopeName, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
@@ -983,8 +756,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @return all private endpoint connections on a private link scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScopedResourceInner> listByPrivateLinkScopeAsync(
-        String resourceGroupName, String scopeName, Context context) {
+    private PagedFlux<ScopedResourceInner> listByPrivateLinkScopeAsync(String resourceGroupName, String scopeName, Context context) {
         return new PagedFlux<>(
             () -> listByPrivateLinkScopeSinglePageAsync(resourceGroupName, scopeName, context),
             nextLink -> listByPrivateLinkScopeNextSinglePageAsync(nextLink, context));
@@ -998,8 +770,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections on a private link scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScopedResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName) {
@@ -1015,12 +786,10 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections on a private link scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections on a private link scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScopedResourceInner> listByPrivateLinkScope(
-        String resourceGroupName, String scopeName, Context context) {
+    public PagedIterable<ScopedResourceInner> listByPrivateLinkScope(String resourceGroupName, String scopeName, Context context) {
         return new PagedIterable<>(listByPrivateLinkScopeAsync(resourceGroupName, scopeName, context));
     }
 
@@ -1028,12 +797,12 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     *
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeNextSinglePageAsync(String nextLink) {
@@ -1041,24 +810,17 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByPrivateLinkScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ScopedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByPrivateLinkScopeNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ScopedResourceInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1066,38 +828,31 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * Get the next page of items.
      *
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     *
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return a list of scoped resources in a private link scope along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ScopedResourceInner>> listByPrivateLinkScopeNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByPrivateLinkScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByPrivateLinkScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

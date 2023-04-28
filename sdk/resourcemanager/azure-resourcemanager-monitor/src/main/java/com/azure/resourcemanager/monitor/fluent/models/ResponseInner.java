@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The response to a metrics query. */
+/**
+ * The response to a metrics query.
+ */
 @Fluent
 public final class ResponseInner {
     /*
@@ -51,7 +53,9 @@ public final class ResponseInner {
     @JsonProperty(value = "value", required = true)
     private List<MetricInner> value;
 
-    /** Creates an instance of ResponseInner class. */
+    /**
+     * Creates an instance of ResponseInner class.
+     */
     public ResponseInner() {
     }
 
@@ -77,7 +81,7 @@ public final class ResponseInner {
 
     /**
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
-     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally
      * requested.
      *
      * @return the timespan value.
@@ -88,7 +92,7 @@ public final class ResponseInner {
 
     /**
      * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
-     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally
      * requested.
      *
      * @param timespan the timespan value to set.
@@ -100,8 +104,8 @@ public final class ResponseInner {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
-     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * Get the interval property: The interval (window size) for which the metric data was returned in.  This may be
+     * adjusted in the future and returned back from what was originally requested.  This is not present if a metadata
      * request was made.
      *
      * @return the interval value.
@@ -111,8 +115,8 @@ public final class ResponseInner {
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
-     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * Set the interval property: The interval (window size) for which the metric data was returned in.  This may be
+     * adjusted in the future and returned back from what was originally requested.  This is not present if a metadata
      * request was made.
      *
      * @param interval the interval value to set.
@@ -190,14 +194,10 @@ public final class ResponseInner {
      */
     public void validate() {
         if (timespan() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timespan in model ResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timespan in model ResponseInner"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property value in model ResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }

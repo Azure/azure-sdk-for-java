@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of data collection endpoint. */
+/**
+ * Definition of data collection endpoint.
+ */
 @Fluent
 public class DataCollectionEndpoint {
     /*
@@ -46,7 +48,9 @@ public class DataCollectionEndpoint {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionEndpointProvisioningState provisioningState;
 
-    /** Creates an instance of DataCollectionEndpoint class. */
+    /**
+     * Creates an instance of DataCollectionEndpoint class.
+     */
     public DataCollectionEndpoint() {
     }
 
@@ -107,8 +111,7 @@ public class DataCollectionEndpoint {
      * @param configurationAccess the configurationAccess value to set.
      * @return the DataCollectionEndpoint object itself.
      */
-    public DataCollectionEndpoint withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
+    public DataCollectionEndpoint withConfigurationAccess(DataCollectionEndpointConfigurationAccess configurationAccess) {
         this.configurationAccess = configurationAccess;
         return this;
     }

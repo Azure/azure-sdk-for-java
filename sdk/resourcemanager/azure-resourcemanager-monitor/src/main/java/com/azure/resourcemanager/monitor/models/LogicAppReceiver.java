@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A logic app receiver. */
+/**
+ * A logic app receiver.
+ */
 @Fluent
 public final class LogicAppReceiver {
     /*
@@ -35,7 +37,9 @@ public final class LogicAppReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
-    /** Creates an instance of LogicAppReceiver class. */
+    /**
+     * Creates an instance of LogicAppReceiver class.
+     */
     public LogicAppReceiver() {
     }
 
@@ -128,19 +132,13 @@ public final class LogicAppReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
         }
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
         }
         if (callbackUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
         }
     }
 

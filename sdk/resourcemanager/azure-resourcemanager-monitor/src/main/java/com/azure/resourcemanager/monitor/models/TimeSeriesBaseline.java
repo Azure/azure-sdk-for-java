@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The baseline values for a single time series. */
+/**
+ * The baseline values for a single time series.
+ */
 @Fluent
 public final class TimeSeriesBaseline {
     /*
@@ -43,7 +45,9 @@ public final class TimeSeriesBaseline {
     @JsonProperty(value = "metadataValues")
     private List<BaselineMetadata> metadataValues;
 
-    /** Creates an instance of TimeSeriesBaseline class. */
+    /**
+     * Creates an instance of TimeSeriesBaseline class.
+     */
     public TimeSeriesBaseline() {
     }
 
@@ -154,22 +158,16 @@ public final class TimeSeriesBaseline {
      */
     public void validate() {
         if (aggregation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aggregation in model TimeSeriesBaseline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property aggregation in model TimeSeriesBaseline"));
         }
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());
         }
         if (timestamps() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timestamps in model TimeSeriesBaseline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timestamps in model TimeSeriesBaseline"));
         }
         if (data() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property data in model TimeSeriesBaseline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property data in model TimeSeriesBaseline"));
         } else {
             data().forEach(e -> e.validate());
         }

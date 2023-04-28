@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.CategoryType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic settings category resource. */
+/**
+ * The diagnostic settings category resource.
+ */
 @Immutable
 public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource {
     /*
@@ -26,7 +28,9 @@ public final class DiagnosticSettingsCategoryResourceInner extends ProxyResource
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DiagnosticSettingsCategoryResourceInner class. */
+    /**
+     * Creates an instance of DiagnosticSettingsCategoryResourceInner class.
+     */
     public DiagnosticSettingsCategoryResourceInner() {
     }
 

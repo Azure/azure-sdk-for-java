@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import java.time.Duration;
 
 /** Samples for PredictiveMetric Get. */
@@ -31,6 +30,6 @@ public final class PredictiveMetricGetSamples {
                 "Microsoft.Compute/virtualMachineScaleSets",
                 "PercentageCPU",
                 "Total",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

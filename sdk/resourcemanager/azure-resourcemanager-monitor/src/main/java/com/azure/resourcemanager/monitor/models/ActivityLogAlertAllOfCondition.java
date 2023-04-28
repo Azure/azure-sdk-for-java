@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Activity Log Alert rule condition that is met when all its member conditions are met. */
+/**
+ * An Activity Log Alert rule condition that is met when all its member conditions are met.
+ */
 @Fluent
 public final class ActivityLogAlertAllOfCondition {
     /*
@@ -18,7 +20,9 @@ public final class ActivityLogAlertAllOfCondition {
     @JsonProperty(value = "allOf", required = true)
     private List<ActivityLogAlertLeafCondition> allOf;
 
-    /** Creates an instance of ActivityLogAlertAllOfCondition class. */
+    /**
+     * Creates an instance of ActivityLogAlertAllOfCondition class.
+     */
     public ActivityLogAlertAllOfCondition() {
     }
 
@@ -49,10 +53,7 @@ public final class ActivityLogAlertAllOfCondition {
      */
     public void validate() {
         if (allOf() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property allOf in model ActivityLogAlertAllOfCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property allOf in model ActivityLogAlertAllOfCondition"));
         } else {
             allOf().forEach(e -> e.validate());
         }

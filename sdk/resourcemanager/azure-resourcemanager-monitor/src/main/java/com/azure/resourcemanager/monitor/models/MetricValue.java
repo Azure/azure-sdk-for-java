@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents a metric value. */
+/**
+ * Represents a metric value.
+ */
 @Fluent
 public final class MetricValue {
     /*
@@ -49,7 +51,9 @@ public final class MetricValue {
     @JsonProperty(value = "count")
     private Double count;
 
-    /** Creates an instance of MetricValue class. */
+    /**
+     * Creates an instance of MetricValue class.
+     */
     public MetricValue() {
     }
 
@@ -182,9 +186,7 @@ public final class MetricValue {
      */
     public void validate() {
         if (timestamp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
         }
     }
 

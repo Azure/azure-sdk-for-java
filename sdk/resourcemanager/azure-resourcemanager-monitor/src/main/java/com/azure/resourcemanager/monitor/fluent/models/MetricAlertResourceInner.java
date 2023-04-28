@@ -15,7 +15,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The metric alert resource. */
+/**
+ * The metric alert resource.
+ */
 @Fluent
 public final class MetricAlertResourceInner extends Resource {
     /*
@@ -24,7 +26,9 @@ public final class MetricAlertResourceInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private MetricAlertProperties innerProperties = new MetricAlertProperties();
 
-    /** Creates an instance of MetricAlertResourceInner class. */
+    /**
+     * Creates an instance of MetricAlertResourceInner class.
+     */
     public MetricAlertResourceInner() {
     }
 
@@ -37,14 +41,18 @@ public final class MetricAlertResourceInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricAlertResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetricAlertResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -292,8 +300,8 @@ public final class MetricAlertResourceInner extends Resource {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @return the actions value.
      */
@@ -302,8 +310,8 @@ public final class MetricAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
      *
      * @param actions the actions value to set.
      * @return the MetricAlertResourceInner object itself.
@@ -341,10 +349,7 @@ public final class MetricAlertResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MetricAlertResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model MetricAlertResourceInner"));
         } else {
             innerProperties().validate();
         }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Webhook notification of an autoscale event. */
+/**
+ * Webhook notification of an autoscale event.
+ */
 @Fluent
 public final class WebhookNotification {
     /*
@@ -25,7 +27,9 @@ public final class WebhookNotification {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of WebhookNotification class. */
+    /**
+     * Creates an instance of WebhookNotification class.
+     */
     public WebhookNotification() {
     }
 

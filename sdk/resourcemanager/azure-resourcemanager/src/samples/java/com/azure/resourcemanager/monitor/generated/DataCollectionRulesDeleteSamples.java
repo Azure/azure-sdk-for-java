@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataCollectionRules Delete. */
 public final class DataCollectionRulesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class DataCollectionRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getDataCollectionRules()
-            .deleteWithResponse("myResourceGroup", "myCollectionRule", Context.NONE);
+            .deleteWithResponse("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
     }
 }

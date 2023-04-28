@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
 
-/** Samples for Metrics List. */
-public final class MetricsListSamples {
+/** Samples for MetricsOperation List. */
+public final class MetricsOperationListSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetric.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetric.json
      */
     /**
      * Sample code: Get Metric for data.
@@ -22,23 +22,25 @@ public final class MetricsListSamples {
             .diagnosticSettings()
             .manager()
             .serviceClient()
-            .getMetrics()
+            .getMetricsOperations()
             .listWithResponse(
-                "subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
-                "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z",
-                Duration.parse("PT1M"),
-                null,
-                "Average,count",
-                3,
-                "Average asc",
-                "BlobType eq '*'",
+                "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default",
+                "2021-04-20T09:00:00.000Z/2021-04-20T14:00:00.000Z",
+                Duration.parse("PT6H"),
+                "BlobCount,BlobCapacity",
+                "average,minimum,maximum",
+                5,
+                "average asc",
+                "Tier eq '*'",
                 null,
                 "Microsoft.Storage/storageAccounts/blobServices",
-                Context.NONE);
+                true,
+                false,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricMetadata.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricMetadata.json
      */
     /**
      * Sample code: Get Metric for metadata.
@@ -50,23 +52,25 @@ public final class MetricsListSamples {
             .diagnosticSettings()
             .manager()
             .serviceClient()
-            .getMetrics()
+            .getMetricsOperations()
             .listWithResponse(
-                "subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
+                "subscriptions/1f3fa6d2-851c-4a91-9087-1a050f3a9c38/resourceGroups/todking/providers/Microsoft.Storage/storageAccounts/tkfileserv/blobServices/default",
                 "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z",
-                Duration.parse("PT1M"),
                 null,
-                "Average,count",
-                3,
-                "Average asc",
-                "BlobType eq '*'",
                 null,
+                null,
+                null,
+                null,
+                "Tier eq '*'",
+                ResultType.fromString("metadata"),
                 "Microsoft.Storage/storageAccounts/blobServices",
-                Context.NONE);
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetricError.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2021-05-01/examples/GetMetricError.json
      */
     /**
      * Sample code: Get Metric with error.
@@ -78,7 +82,7 @@ public final class MetricsListSamples {
             .diagnosticSettings()
             .manager()
             .serviceClient()
-            .getMetrics()
+            .getMetricsOperations()
             .listWithResponse(
                 "subscriptions/ac41e21f-afd6-4a79-8070-f01eba278f97/resourceGroups/todking/providers/Microsoft.DocumentDb/databaseAccounts/tk-cosmos-mongo",
                 "2021-06-07T21:51:00Z/2021-06-08T01:51:00Z",
@@ -90,6 +94,8 @@ public final class MetricsListSamples {
                 null,
                 null,
                 "microsoft.documentdb/databaseaccounts",
-                Context.NONE);
+                true,
+                false,
+                com.azure.core.util.Context.NONE);
     }
 }

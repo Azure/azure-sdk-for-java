@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ActivityLogAlerts Delete. */
 public final class ActivityLogAlertsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class ActivityLogAlertsDeleteSamples {
             .manager()
             .serviceClient()
             .getActivityLogAlerts()
-            .deleteWithResponse("MyResourceGroup", "SampleActivityLogAlertRule", Context.NONE);
+            .deleteWithResponse("MyResourceGroup", "SampleActivityLogAlertRule", com.azure.core.util.Context.NONE);
     }
 }

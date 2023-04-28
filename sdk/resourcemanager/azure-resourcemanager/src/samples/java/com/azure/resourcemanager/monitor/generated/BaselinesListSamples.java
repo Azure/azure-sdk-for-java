@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import java.time.Duration;
 
 /** Samples for Baselines List. */
@@ -33,6 +32,6 @@ public final class BaselinesListSamples {
                 "Low,Medium",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

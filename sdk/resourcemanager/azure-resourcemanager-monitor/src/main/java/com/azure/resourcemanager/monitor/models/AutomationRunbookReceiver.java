@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Azure Automation Runbook notification receiver. */
+/**
+ * The Azure Automation Runbook notification receiver.
+ */
 @Fluent
 public final class AutomationRunbookReceiver {
     /*
@@ -53,7 +55,9 @@ public final class AutomationRunbookReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
-    /** Creates an instance of AutomationRunbookReceiver class. */
+    /**
+     * Creates an instance of AutomationRunbookReceiver class.
+     */
     public AutomationRunbookReceiver() {
     }
 
@@ -206,22 +210,13 @@ public final class AutomationRunbookReceiver {
      */
     public void validate() {
         if (automationAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property automationAccountId in model AutomationRunbookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property automationAccountId in model AutomationRunbookReceiver"));
         }
         if (runbookName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runbookName in model AutomationRunbookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property runbookName in model AutomationRunbookReceiver"));
         }
         if (webhookResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property webhookResourceId in model AutomationRunbookReceiver"));
         }
     }
 

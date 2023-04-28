@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.monitor.models.LogSettings;
 import com.azure.resourcemanager.monitor.models.MetricSettings;
@@ -54,7 +53,7 @@ public final class DiagnosticSettingsOperationCreateOrUpdateSamples {
                     .withMarketplacePartnerId(
                         "/subscriptions/abcdeabc-1234-1234-ab12-123a1234567a/resourceGroups/test-rg/providers/Microsoft.Datadog/monitors/dd1")
                     .withLogAnalyticsDestinationType("Dedicated"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -99,6 +98,6 @@ public final class DiagnosticSettingsOperationCreateOrUpdateSamples {
                     .withMarketplacePartnerId(
                         "/subscriptions/abcdeabc-1234-1234-ab12-123a1234567a/resourceGroups/test-rg/providers/Microsoft.Datadog/monitors/dd1")
                     .withLogAnalyticsDestinationType("Dedicated"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.ScopedResourceInner;
 
 /** Samples for PrivateLinkScopedResources CreateOrUpdate. */
@@ -30,6 +29,6 @@ public final class PrivateLinkScopedResourcesCreateOrUpdateSamples {
                 new ScopedResourceInner()
                     .withLinkedResourceId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.Insights/components/my-component"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

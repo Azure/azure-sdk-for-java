@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The context info. */
+/**
+ * The context info.
+ */
 @Fluent
 public final class Context {
     /*
@@ -22,7 +24,9 @@ public final class Context {
     @JsonProperty(value = "contextType")
     private String contextType;
 
-    /** Creates an instance of Context class. */
+    /**
+     * Creates an instance of Context class.
+     */
     public Context() {
     }
 

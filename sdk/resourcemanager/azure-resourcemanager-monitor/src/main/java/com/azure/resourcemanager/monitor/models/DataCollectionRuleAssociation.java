@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of association of a data collection rule with a monitored Azure resource. */
+/**
+ * Definition of association of a data collection rule with a monitored Azure resource.
+ */
 @Fluent
 public class DataCollectionRuleAssociation {
     /*
@@ -40,7 +42,9 @@ public class DataCollectionRuleAssociation {
     @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private DataCollectionRuleAssociationMetadata metadata;
 
-    /** Creates an instance of DataCollectionRuleAssociation class. */
+    /**
+     * Creates an instance of DataCollectionRuleAssociation class.
+     */
     public DataCollectionRuleAssociation() {
     }
 

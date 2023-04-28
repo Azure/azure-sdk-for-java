@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.models.MetricSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The diagnostic settings. */
+/**
+ * The diagnostic settings.
+ */
 @Fluent
 public final class DiagnosticSettings {
     /*
@@ -71,7 +73,9 @@ public final class DiagnosticSettings {
     @JsonProperty(value = "logAnalyticsDestinationType")
     private String logAnalyticsDestinationType;
 
-    /** Creates an instance of DiagnosticSettings class. */
+    /**
+     * Creates an instance of DiagnosticSettings class.
+     */
     public DiagnosticSettings() {
     }
 

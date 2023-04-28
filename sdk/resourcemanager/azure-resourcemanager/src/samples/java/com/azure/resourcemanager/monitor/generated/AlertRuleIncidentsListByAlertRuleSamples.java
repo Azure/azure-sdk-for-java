@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AlertRuleIncidents ListByAlertRule. */
 public final class AlertRuleIncidentsListByAlertRuleSamples {
     /*
@@ -22,6 +20,6 @@ public final class AlertRuleIncidentsListByAlertRuleSamples {
             .manager()
             .serviceClient()
             .getAlertRuleIncidents()
-            .listByAlertRule("Rac46PostSwapRG", "myRuleName", Context.NONE);
+            .listByAlertRule("Rac46PostSwapRG", "myRuleName", com.azure.core.util.Context.NONE);
     }
 }

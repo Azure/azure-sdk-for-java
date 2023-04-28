@@ -34,13 +34,18 @@ import com.azure.resourcemanager.monitor.models.DiagnosticSettingsResourceCollec
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DiagnosticSettingsOperationsClient. */
-public final class DiagnosticSettingsOperationsClientImpl
-    implements InnerSupportsDelete<Void>, DiagnosticSettingsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in DiagnosticSettingsOperationsClient.
+ */
+public final class DiagnosticSettingsOperationsClientImpl implements InnerSupportsDelete<Void>, DiagnosticSettingsOperationsClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DiagnosticSettingsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitorClientImpl client;
 
     /**
@@ -48,11 +53,8 @@ public final class DiagnosticSettingsOperationsClientImpl
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DiagnosticSettingsOperationsClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    DiagnosticSettingsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+     DiagnosticSettingsOperationsClientImpl(MonitorClientImpl client) {
+        this.service = RestProxy.create(DiagnosticSettingsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,53 +65,29 @@ public final class DiagnosticSettingsOperationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientDiagnos")
     public interface DiagnosticSettingsOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiagnosticSettingsResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DiagnosticSettingsResourceInner>> get(@HostParam("$host") String endpoint, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @QueryParam("api-version") String apiVersion, @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("name") String name,
-            @BodyParam("application/json") DiagnosticSettingsResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @QueryParam("api-version") String apiVersion, @PathParam("name") String name, @BodyParam("application/json") DiagnosticSettingsResourceInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @QueryParam("api-version") String apiVersion, @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DiagnosticSettingsResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DiagnosticSettingsResourceCollection>> list(@HostParam("$host") String endpoint, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -120,16 +98,12 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DiagnosticSettingsResourceInner>> getWithResponseAsync(String resourceUri, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -139,9 +113,7 @@ public final class DiagnosticSettingsOperationsClientImpl
         }
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -154,17 +126,12 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the active diagnostic settings for the specified resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticSettingsResourceInner>> getWithResponseAsync(
-        String resourceUri, String name, Context context) {
+    private Mono<Response<DiagnosticSettingsResourceInner>> getWithResponseAsync(String resourceUri, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -190,8 +157,8 @@ public final class DiagnosticSettingsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiagnosticSettingsResourceInner> getAsync(String resourceUri, String name) {
-        return getWithResponseAsync(resourceUri, name).flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+        return getWithResponseAsync(resourceUri, name)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Gets the active diagnostic settings for the specified resource.
@@ -236,13 +203,9 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @return the diagnostic setting resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
+    public Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -257,12 +220,7 @@ public final class DiagnosticSettingsOperationsClientImpl
         }
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, accept, context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -279,13 +237,9 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @return the diagnostic setting resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context) {
+    private Mono<Response<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -301,8 +255,7 @@ public final class DiagnosticSettingsOperationsClientImpl
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceUri, apiVersion, name, parameters, accept, context);
     }
 
     /**
@@ -317,11 +270,9 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @return the diagnostic setting resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiagnosticSettingsResourceInner> createOrUpdateAsync(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
+    public Mono<DiagnosticSettingsResourceInner> createOrUpdateAsync(String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceUri, name, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));}
 
     /**
      * Creates or updates diagnostic settings for the specified resource.
@@ -336,8 +287,7 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @return the diagnostic setting resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DiagnosticSettingsResourceInner> createOrUpdateWithResponse(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context) {
+    public Response<DiagnosticSettingsResourceInner> createOrUpdateWithResponse(String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceUri, name, parameters, context).block();
     }
 
@@ -353,8 +303,7 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @return the diagnostic setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiagnosticSettingsResourceInner createOrUpdate(
-        String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
+    public DiagnosticSettingsResourceInner createOrUpdate(String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
         return createOrUpdateWithResponse(resourceUri, name, parameters, Context.NONE).getValue();
     }
 
@@ -371,10 +320,7 @@ public final class DiagnosticSettingsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -384,9 +330,7 @@ public final class DiagnosticSettingsOperationsClientImpl
         }
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceUri, apiVersion, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -404,10 +348,7 @@ public final class DiagnosticSettingsOperationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -433,8 +374,8 @@ public final class DiagnosticSettingsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceUri, String name) {
-        return deleteWithResponseAsync(resourceUri, name).flatMap(ignored -> Mono.empty());
-    }
+        return deleteWithResponseAsync(resourceUri, name)
+            .flatMap(ignored -> Mono.empty());}
 
     /**
      * Deletes existing diagnostic settings for the specified resource.
@@ -473,28 +414,26 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the active diagnostic settings list for the specified resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticSettingsResourceInner>> listSinglePageAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context))
-            .<PagedResponse<DiagnosticSettingsResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context))
+            .<PagedResponse<DiagnosticSettingsResourceInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -506,17 +445,12 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the active diagnostic settings list for the specified resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiagnosticSettingsResourceInner>> listSinglePageAsync(
-        String resourceUri, Context context) {
+    private Mono<PagedResponse<DiagnosticSettingsResourceInner>> listSinglePageAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -524,12 +458,14 @@ public final class DiagnosticSettingsOperationsClientImpl
         final String apiVersion = "2021-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), resourceUri, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
@@ -539,12 +475,12 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiagnosticSettingsResourceInner> listAsync(String resourceUri) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceUri));
     }
 
     /**
@@ -555,12 +491,12 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiagnosticSettingsResourceInner> listAsync(String resourceUri, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, context));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceUri, context));
     }
 
     /**
@@ -570,8 +506,7 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticSettingsResourceInner> list(String resourceUri) {
@@ -586,8 +521,7 @@ public final class DiagnosticSettingsOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the active diagnostic settings list for the specified resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return the active diagnostic settings list for the specified resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticSettingsResourceInner> list(String resourceUri, Context context) {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Azure mobile App push notification receiver. */
+/**
+ * The Azure mobile App push notification receiver.
+ */
 @Fluent
 public final class AzureAppPushReceiver {
     /*
@@ -24,7 +26,9 @@ public final class AzureAppPushReceiver {
     @JsonProperty(value = "emailAddress", required = true)
     private String emailAddress;
 
-    /** Creates an instance of AzureAppPushReceiver class. */
+    /**
+     * Creates an instance of AzureAppPushReceiver class.
+     */
     public AzureAppPushReceiver() {
     }
 
@@ -77,15 +81,10 @@ public final class AzureAppPushReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model AzureAppPushReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model AzureAppPushReceiver"));
         }
         if (emailAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property emailAddress in model AzureAppPushReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property emailAddress in model AzureAppPushReceiver"));
         }
     }
 

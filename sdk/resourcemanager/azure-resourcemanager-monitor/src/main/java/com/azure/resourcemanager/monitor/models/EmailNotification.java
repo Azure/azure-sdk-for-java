@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Email notification of an autoscale event. */
+/**
+ * Email notification of an autoscale event.
+ */
 @Fluent
 public final class EmailNotification {
     /*
@@ -29,7 +31,9 @@ public final class EmailNotification {
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
-    /** Creates an instance of EmailNotification class. */
+    /**
+     * Creates an instance of EmailNotification class.
+     */
     public EmailNotification() {
     }
 

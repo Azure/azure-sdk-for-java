@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specification of data sources that will be collected. */
+/**
+ * Specification of data sources that will be collected.
+ */
 @Fluent
 public class DataSourcesSpec {
     /*
@@ -47,7 +49,9 @@ public class DataSourcesSpec {
     @JsonProperty(value = "iisLogs")
     private List<IisLogsDataSource> iisLogs;
 
-    /** Creates an instance of DataSourcesSpec class. */
+    /**
+     * Creates an instance of DataSourcesSpec class.
+     */
     public DataSourcesSpec() {
     }
 

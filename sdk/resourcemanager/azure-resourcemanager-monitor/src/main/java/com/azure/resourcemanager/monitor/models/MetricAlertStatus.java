@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An alert status. */
+/**
+ * An alert status.
+ */
 @Fluent
 public final class MetricAlertStatus {
     /*
@@ -34,7 +36,9 @@ public final class MetricAlertStatus {
     @JsonProperty(value = "properties")
     private MetricAlertStatusProperties properties;
 
-    /** Creates an instance of MetricAlertStatus class. */
+    /**
+     * Creates an instance of MetricAlertStatus class.
+     */
     public MetricAlertStatus() {
     }
 

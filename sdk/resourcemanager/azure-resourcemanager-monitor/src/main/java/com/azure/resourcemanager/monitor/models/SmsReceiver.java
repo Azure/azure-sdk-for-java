@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An SMS receiver. */
+/**
+ * An SMS receiver.
+ */
 @Fluent
 public final class SmsReceiver {
     /*
@@ -35,7 +37,9 @@ public final class SmsReceiver {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
 
-    /** Creates an instance of SmsReceiver class. */
+    /**
+     * Creates an instance of SmsReceiver class.
+     */
     public SmsReceiver() {
     }
 
@@ -117,19 +121,13 @@ public final class SmsReceiver {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SmsReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model SmsReceiver"));
         }
         if (countryCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property countryCode in model SmsReceiver"));
         }
         if (phoneNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property phoneNumber in model SmsReceiver"));
         }
     }
 

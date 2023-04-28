@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies a metric dimension. */
+/**
+ * Specifies a metric dimension.
+ */
 @Fluent
 public final class MetricDimension {
     /*
@@ -30,7 +32,9 @@ public final class MetricDimension {
     @JsonProperty(value = "values", required = true)
     private List<String> values;
 
-    /** Creates an instance of MetricDimension class. */
+    /**
+     * Creates an instance of MetricDimension class.
+     */
     public MetricDimension() {
     }
 
@@ -101,19 +105,13 @@ public final class MetricDimension {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property name in model MetricDimension"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model MetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property operator in model MetricDimension"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model MetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property values in model MetricDimension"));
         }
     }
 

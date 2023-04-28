@@ -17,11 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AutoscaleSettingsClient. */
-public interface AutoscaleSettingsClient
-    extends InnerSupportsGet<AutoscaleSettingResourceInner>,
-        InnerSupportsListing<AutoscaleSettingResourceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in AutoscaleSettingsClient.
+ */
+public interface AutoscaleSettingsClient extends InnerSupportsGet<AutoscaleSettingResourceInner>, InnerSupportsListing<AutoscaleSettingResourceInner>, InnerSupportsDelete<Void> {
     /**
      * Lists the autoscale settings for a resource group.
      *
@@ -71,8 +70,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AutoscaleSettingResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters);
+    Mono<Response<AutoscaleSettingResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters);
 
     /**
      * Creates or updates an autoscale setting.
@@ -86,8 +84,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AutoscaleSettingResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters);
+    Mono<AutoscaleSettingResourceInner> createOrUpdateAsync(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters);
 
     /**
      * Creates or updates an autoscale setting.
@@ -102,11 +99,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutoscaleSettingResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String autoscaleSettingName,
-        AutoscaleSettingResourceInner parameters,
-        Context context);
+    Response<AutoscaleSettingResourceInner> createOrUpdateWithResponse(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters, Context context);
 
     /**
      * Creates or updates an autoscale setting.
@@ -120,8 +113,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AutoscaleSettingResourceInner createOrUpdate(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters);
+    AutoscaleSettingResourceInner createOrUpdate(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourceInner parameters);
 
     /**
      * Deletes and autoscale setting.
@@ -186,8 +178,7 @@ public interface AutoscaleSettingsClient
      * @return an autoscale setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AutoscaleSettingResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String autoscaleSettingName);
+    Mono<Response<AutoscaleSettingResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String autoscaleSettingName);
 
     /**
      * Gets an autoscale setting.
@@ -214,8 +205,7 @@ public interface AutoscaleSettingsClient
      * @return an autoscale setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutoscaleSettingResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String autoscaleSettingName, Context context);
+    Response<AutoscaleSettingResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String autoscaleSettingName, Context context);
 
     /**
      * Gets an autoscale setting.
@@ -242,8 +232,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AutoscaleSettingResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource);
+    Mono<Response<AutoscaleSettingResourceInner>> updateWithResponseAsync(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource);
 
     /**
      * Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
@@ -257,8 +246,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AutoscaleSettingResourceInner> updateAsync(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource);
+    Mono<AutoscaleSettingResourceInner> updateAsync(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource);
 
     /**
      * Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
@@ -273,11 +261,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AutoscaleSettingResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String autoscaleSettingName,
-        AutoscaleSettingResourcePatch autoscaleSettingResource,
-        Context context);
+    Response<AutoscaleSettingResourceInner> updateWithResponse(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource, Context context);
 
     /**
      * Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
@@ -291,8 +275,7 @@ public interface AutoscaleSettingsClient
      * @return the autoscale setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AutoscaleSettingResourceInner update(
-        String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource);
+    AutoscaleSettingResourceInner update(String resourceGroupName, String autoscaleSettingName, AutoscaleSettingResourcePatch autoscaleSettingResource);
 
     /**
      * Lists the autoscale settings for a subscription.

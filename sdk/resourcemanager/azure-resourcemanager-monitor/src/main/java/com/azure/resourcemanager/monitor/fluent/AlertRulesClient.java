@@ -17,11 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AlertRulesClient. */
-public interface AlertRulesClient
-    extends InnerSupportsGet<AlertRuleResourceInner>,
-        InnerSupportsListing<AlertRuleResourceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in AlertRulesClient.
+ */
+public interface AlertRulesClient extends InnerSupportsGet<AlertRuleResourceInner>, InnerSupportsListing<AlertRuleResourceInner>, InnerSupportsDelete<Void> {
     /**
      * Creates or updates a classic metric alert rule.
      *
@@ -34,8 +33,7 @@ public interface AlertRulesClient
      * @return the alert rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String ruleName, AlertRuleResourceInner parameters);
+    Mono<Response<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String ruleName, AlertRuleResourceInner parameters);
 
     /**
      * Creates or updates a classic metric alert rule.
@@ -49,8 +47,7 @@ public interface AlertRulesClient
      * @return the alert rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AlertRuleResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String ruleName, AlertRuleResourceInner parameters);
+    Mono<AlertRuleResourceInner> createOrUpdateAsync(String resourceGroupName, String ruleName, AlertRuleResourceInner parameters);
 
     /**
      * Creates or updates a classic metric alert rule.
@@ -65,8 +62,7 @@ public interface AlertRulesClient
      * @return the alert rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertRuleResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String ruleName, AlertRuleResourceInner parameters, Context context);
+    Response<AlertRuleResourceInner> createOrUpdateWithResponse(String resourceGroupName, String ruleName, AlertRuleResourceInner parameters, Context context);
 
     /**
      * Creates or updates a classic metric alert rule.
@@ -145,8 +141,7 @@ public interface AlertRulesClient
      * @return a classic metric alert rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AlertRuleResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ruleName);
+    Mono<Response<AlertRuleResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String ruleName);
 
     /**
      * Gets a classic metric alert rule.
@@ -173,8 +168,7 @@ public interface AlertRulesClient
      * @return a classic metric alert rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertRuleResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ruleName, Context context);
+    Response<AlertRuleResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String ruleName, Context context);
 
     /**
      * Gets a classic metric alert rule.
@@ -201,8 +195,7 @@ public interface AlertRulesClient
      * @return the alert rule resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AlertRuleResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource);
+    Mono<Response<AlertRuleResourceInner>> updateWithResponseAsync(String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource);
 
     /**
      * Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
@@ -216,8 +209,7 @@ public interface AlertRulesClient
      * @return the alert rule resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AlertRuleResourceInner> updateAsync(
-        String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource);
+    Mono<AlertRuleResourceInner> updateAsync(String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource);
 
     /**
      * Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
@@ -232,8 +224,7 @@ public interface AlertRulesClient
      * @return the alert rule resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AlertRuleResourceInner> updateWithResponse(
-        String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource, Context context);
+    Response<AlertRuleResourceInner> updateWithResponse(String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource, Context context);
 
     /**
      * Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.

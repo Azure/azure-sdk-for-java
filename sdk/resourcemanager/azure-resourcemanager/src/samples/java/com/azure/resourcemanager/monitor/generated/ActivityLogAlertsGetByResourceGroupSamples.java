@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ActivityLogAlerts GetByResourceGroup. */
 public final class ActivityLogAlertsGetByResourceGroupSamples {
     /*
@@ -22,6 +20,7 @@ public final class ActivityLogAlertsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getActivityLogAlerts()
-            .getByResourceGroupWithResponse("MyResourceGroup", "SampleActivityLogAlertRule", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "MyResourceGroup", "SampleActivityLogAlertRule", com.azure.core.util.Context.NONE);
     }
 }

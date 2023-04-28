@@ -9,7 +9,9 @@ import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The status of operation. */
+/**
+ * The status of operation.
+ */
 @Fluent
 public final class OperationStatusInner {
     /*
@@ -48,7 +50,9 @@ public final class OperationStatusInner {
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 

@@ -14,32 +14,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The rule criteria that defines the conditions of the alert rule. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
-    defaultImpl = MetricAlertCriteria.class)
+/**
+ * The rule criteria that defines the conditions of the alert rule.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = MetricAlertCriteria.class)
 @JsonTypeName("MetricAlertCriteria")
 @JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
-        value = MetricAlertSingleResourceMultipleMetricCriteria.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria",
-        value = WebtestLocationAvailabilityCriteria.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
-        value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria", value = MetricAlertSingleResourceMultipleMetricCriteria.class),
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria", value = WebtestLocationAvailabilityCriteria.class),
+    @JsonSubTypes.Type(name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria", value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
 })
 @Fluent
 public class MetricAlertCriteria {
     /*
      * The rule criteria that defines the conditions of the alert rule.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MetricAlertCriteria class. */
+    /**
+     * Creates an instance of MetricAlertCriteria class.
+     */
     public MetricAlertCriteria() {
     }
 
@@ -65,7 +60,7 @@ public class MetricAlertCriteria {
     }
 
     @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
+     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }

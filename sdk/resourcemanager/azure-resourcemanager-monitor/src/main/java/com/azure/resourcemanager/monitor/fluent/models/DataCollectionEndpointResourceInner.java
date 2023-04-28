@@ -15,7 +15,9 @@ import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Definition of ARM tracked top level resource. */
+/**
+ * Definition of ARM tracked top level resource.
+ */
 @Fluent
 public final class DataCollectionEndpointResourceInner extends Resource {
     /*
@@ -42,7 +44,9 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DataCollectionEndpointResourceInner class. */
+    /**
+     * Creates an instance of DataCollectionEndpointResourceInner class.
+     */
     public DataCollectionEndpointResourceInner() {
     }
 
@@ -93,14 +97,18 @@ public final class DataCollectionEndpointResourceInner extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -170,8 +178,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
      * @param configurationAccess the configurationAccess value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
-    public DataCollectionEndpointResourceInner withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
+    public DataCollectionEndpointResourceInner withConfigurationAccess(DataCollectionEndpointConfigurationAccess configurationAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DataCollectionEndpointResourceProperties();
         }

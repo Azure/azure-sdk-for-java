@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.fluent.models.AzureMonitorPrivateLinkScopeInner;
 import com.azure.resourcemanager.monitor.models.AccessMode;
 import com.azure.resourcemanager.monitor.models.AccessModeSettings;
@@ -38,7 +37,7 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
                             .withQueryAccessMode(AccessMode.OPEN)
                             .withIngestionAccessMode(AccessMode.OPEN)
                             .withExclusions(Arrays.asList())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -66,7 +65,7 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
                             .withQueryAccessMode(AccessMode.OPEN)
                             .withIngestionAccessMode(AccessMode.OPEN)
                             .withExclusions(Arrays.asList())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

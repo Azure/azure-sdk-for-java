@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.monitor.models.TagsResource;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public final class PrivateLinkScopesUpdateTagsSamples {
                 "my-resource-group",
                 "my-privatelinkscope",
                 new TagsResource().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")
