@@ -52,7 +52,6 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
-            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -147,10 +146,10 @@ public class TestProxyUtils {
             }
             responseRequest.setUrl(currentUrl.toUrl());
 
-            responseRequest.setHeader(X_RECORDING_UPSTREAM_BASE_URI, null);
-            responseRequest.setHeader(X_RECORDING_MODE, null);
-            responseRequest.setHeader(X_RECORDING_SKIP, null);
-            responseRequest.setHeader(X_RECORDING_ID, null);
+            requestHeaders.remove(X_RECORDING_UPSTREAM_BASE_URI);
+            requestHeaders.remove(X_RECORDING_MODE);
+            requestHeaders.remove(X_RECORDING_SKIP);
+            requestHeaders.remove(X_RECORDING_ID);
             return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);

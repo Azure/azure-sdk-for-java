@@ -11,7 +11,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
@@ -29,7 +28,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -52,6 +50,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -146,25 +145,6 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.sendSync(request, Context.NONE));
         assertTrue(thrown.getMessage().contains("Uri doesn't match"));
-    }
-
-    @Test
-    @Tag("Record")
-    public void testResetTestProxyData() throws MalformedURLException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-        HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            HttpHeaders headers = context.getHttpRequest().getHeaders();
-            String headerValue = headers.getValue(HttpHeaderName.fromString("x-recording-upstream-base-uri"));
-            Assertions.assertNull(headerValue);
-            return next.process();
-        };
-
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(auditorPolicy, interceptorManager.getRecordPolicy())
-            .build();
-
-        pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost")), Context.NONE);
     }
 
     @Test
@@ -382,6 +362,27 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    public void testResetTestProxyData() throws MalformedURLException {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy())
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, new URL("http://localhost:3000")), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            HttpHeaders headers = response.getRequest().getHeaders();
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-mode")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-id")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-skip")));
+        }
+    }
+
+    @Test
+    @Tag("Record")
     public void testRecordWithRedirect() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -392,7 +393,7 @@ public class TestProxyTests extends TestProxyTestBase {
         try {
             url = new UrlBuilder()
                 .setHost("localhost")
-                .setPath("/fr/path/3")
+                .setPath("/getRedirect")
                 .setPort(3000)
                 .setScheme("http")
                 .toUrl();
@@ -403,12 +404,10 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            assertEquals(response.getStatusCode(), 200);
+            assertEquals(200, response.getStatusCode());
+            assertEquals("http://localhost:3000/echoheaders", response.getRequest().getUrl().toString());
+            assertNull(response.getRequest().getHeaders().get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
         }
-
-        // RecordedTestProxyData recordedTestProxyData = readDataFromFile();
-        // RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
-        // assertEquals("http://REDACTED/fr/path/1", record.getUri());
     }
 
     private RecordedTestProxyData readDataFromFile() {

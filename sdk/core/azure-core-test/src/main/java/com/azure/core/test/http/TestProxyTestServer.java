@@ -26,7 +26,7 @@ public class TestProxyTestServer implements Closeable {
 
     {
         try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").toUrl();
+            url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").setPath("echoheaders").toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +61,7 @@ public class TestProxyTestServer implements Closeable {
                     (req, res) -> res.status(HttpResponseStatus.OK)
                         .addHeader("Content-Type", "application/json")
                         .sendString(Mono.just(TEST_XML_RESPONSE_BODY)))
-                .get("/fr/path/3", (req, res) -> {
+                .get("/getRedirect", (req, res) -> {
                     return res.status(HttpResponseStatus.TEMPORARY_REDIRECT)
                         .addHeader("Content-Type", "application/json")
                         .addHeader("Location", url.toString());
