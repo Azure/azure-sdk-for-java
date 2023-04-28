@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "19087eae-b551-4057-b2b6-f0e39401d005",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "c4268ebe-086b-4e1a-b830-b320dbc46b6e",
+      "x-ms-region" : "East US",
+      "apim-request-id" : "0d2caf90-15f6-454a-ac62-6fd23dae4cc9",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 28 Apr 2023 17:47:54 GMT",
+      "access-control-allow-origin" : "*",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "x-accel-buffering" : "no",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "openai-processing-ms" : "2771.258",
+      "openai-model" : "gpt-35-turbo",
+      "Content-Length" : "668",
+      "Body" : "{\"id\":\"chatcmpl-7AMUCKt65i83OPeBgCybDxF2oQ206\",\"object\":\"chat.completion\",\"created\":1682704072,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Arrr, training a parrot be an arduous task indeed! But ye can start by using positive reinforcement, offering the parrot treats or praise when it responds to commands or exhibits desirable behavior. Repetition and consistency be key, and using clear and simple commands can help the parrot understand what ye be asking of it. And remember to always be patient with your feathered friend!\"}}],\"usage\":{\"completion_tokens\":80,\"prompt_tokens\":65,\"total_tokens\":145}}\n",
+      "x-ms-client-request-id" : "19087eae-b551-4057-b2b6-f0e39401d005",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

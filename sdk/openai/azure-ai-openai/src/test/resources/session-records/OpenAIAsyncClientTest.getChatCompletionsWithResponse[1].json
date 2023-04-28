@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3e072b74-fe45-475a-87ca-57bf6cf191fd",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "b7c20b40-3e71-4117-9e80-249886e5bd96",
+      "x-ms-region" : "East US",
+      "apim-request-id" : "ee7fd255-8f30-41bd-a442-918960e4b8b6",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 28 Apr 2023 18:29:18 GMT",
+      "access-control-allow-origin" : "*",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "x-accel-buffering" : "no",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "openai-processing-ms" : "2069.8977",
+      "openai-model" : "gpt-35-turbo",
+      "Content-Length" : "672",
+      "Body" : "{\"id\":\"chatcmpl-7AN8HlRLT2rKf3oP4lDzJWLoAS5V9\",\"object\":\"chat.completion\",\"created\":1682706557,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Ahoy, matey! The best way to train a parrot be through positive reinforcement. Reward yer feathery friend with treats and praise when they exhibit the desired behavior. Consistency be key, so be sure to train yer parrot regularly and use the same commands or phrases each time. Patience be also important, as some parrots take longer to learn than others. And don't forget to have fun, arrr!\"}}],\"usage\":{\"completion_tokens\":88,\"prompt_tokens\":65,\"total_tokens\":153}}\n",
+      "x-ms-client-request-id" : "3e072b74-fe45-475a-87ca-57bf6cf191fd",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
