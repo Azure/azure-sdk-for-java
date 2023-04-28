@@ -35,52 +35,26 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final AtomicReference<WarmupFlowAggressivenessHint> aggressivenessHint;
+    private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
     private final AtomicBoolean isConcurrencySwitchFlow = new AtomicBoolean(false);
-    private static final Map<WarmupFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
+    private static final Map<ConnectionOpenFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
     private Disposable openConnectionBackgroundTask;
-    private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
-        this(endpointProvider, null);
-    }
-
-    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveConnectionEstablishmentDuration) {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        this.aggressivenessHint = new AtomicReference<>(WarmupFlowAggressivenessHint.AGGRESSIVE);
+        this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
-        this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
-        concurrencySettings.put(WarmupFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
-        concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
-    }
-
-    public void init() {
-        Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
-                .just(1)
-                .delayElements(aggressiveConnectionEstablishmentDuration);
-
-        if (aggressiveConnectionEstablishmentDuration != null && aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
-            this.isConcurrencySwitchFlow.set(true);
-            backgroundOpenConnectionsSinkReInstantiationTask
-                    .doOnComplete(() -> {
-                        this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
-                        this.isConcurrencySwitchFlow.set(false);
-                    })
-                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                    .subscribe();
-        }
-
-        // start as a background task
-        openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
+        concurrencySettings.put(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
+        concurrencySettings.put(ConnectionOpenFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
     }
 
     public OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -140,6 +114,18 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             completeSink(openConnectionsTaskSink);
             completeSink(openConnectionsTaskSinkBackUp);
         }
+    }
+
+    public void recordOpenConnectionsAndInitCachesCompleted() {
+        this.isConcurrencySwitchFlow.set(false);
+        this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
+        this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted() {
+        this.isConcurrencySwitchFlow.set(true);
+        this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE);
+        this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
     }
 
     public Disposable getOpenConnectionsPublisher() {
@@ -231,7 +217,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
         logger.debug("Re-instantiation openConnectionsTaskSink");
         this.instantiateOpenConnectionsPublisher();
-        this.openConnectionBackgroundTask.dispose();
+
+        // If this is not the first time we are initiating the publisher
+        // then we are going to dispose the previous one
+        if (this.openConnectionBackgroundTask != null) {
+            this.openConnectionBackgroundTask.dispose();
+        }
         this.openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
     }
 
@@ -266,8 +257,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void forceDefensiveOpenConnections() {
-        if (aggressivenessHint.get() == WarmupFlowAggressivenessHint.AGGRESSIVE) {
-            aggressivenessHint.set(WarmupFlowAggressivenessHint.DEFENSIVE);
+        if (aggressivenessHint.get() == ConnectionOpenFlowAggressivenessHint.AGGRESSIVE) {
+            aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         }
     }
 
@@ -309,7 +300,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private enum WarmupFlowAggressivenessHint {
+    private enum ConnectionOpenFlowAggressivenessHint {
         AGGRESSIVE, DEFENSIVE
     }
 }

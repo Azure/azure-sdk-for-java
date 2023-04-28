@@ -70,4 +70,6 @@ public interface RxStoreModel {
      * @param injectorProvider the fault injector provider.
      */
     void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
+    void recordOpenConnectionsAndInitCachesCompleted();
+    void recordOpenConnectionsAndInitCachesStarted();
 }

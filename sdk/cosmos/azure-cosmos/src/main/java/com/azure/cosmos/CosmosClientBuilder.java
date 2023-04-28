@@ -940,6 +940,9 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
+
+            cosmosAsyncClient.recordOpenConnectionsAndInitCachesStart();
+
             Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
                     .getAggressiveProactiveConnectionEstablishmentDuration();
             if (aggressiveProactiveConnectionEstablishmentTimeWindow != null) {
@@ -948,6 +951,8 @@ public class CosmosClientBuilder implements
                 cosmosAsyncClient.openConnectionsAndInitCaches();
             }
         }
+
+        cosmosAsyncClient.recordOpenConnectionsAndInitCachesComplete();
         logStartupInfo(stopwatch, cosmosAsyncClient);
         return cosmosAsyncClient;
     }

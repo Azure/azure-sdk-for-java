@@ -537,6 +537,16 @@ public class RxGatewayStoreModel implements RxStoreModel {
         throw new NotImplementedException("configureFaultInjectorProvider is not supported in RxGatewayStoreModel");
     }
 
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted() {
+        //no-op
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesStarted() {
+        //no-op
+    }
+
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
         if (request.getResourceType() == ResourceType.DocumentCollection &&
             request.getOperationType() == OperationType.Delete) {

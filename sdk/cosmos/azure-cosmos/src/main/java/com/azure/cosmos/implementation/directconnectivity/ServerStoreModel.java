@@ -7,7 +7,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RMResources;
@@ -65,5 +64,14 @@ public class ServerStoreModel implements RxStoreModel {
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         this.storeClient.configureFaultInjectorProvider(injectorProvider);
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted() {
+        this.storeClient.recordOpenConnectionsAndInitCachesCompleted();
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted() {
+        this.storeClient.recordOpenConnectionsAndInitCachesStarted();
     }
 }

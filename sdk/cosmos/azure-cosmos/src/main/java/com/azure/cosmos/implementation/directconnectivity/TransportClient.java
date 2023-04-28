@@ -50,6 +50,10 @@ public abstract class TransportClient implements AutoCloseable {
 
     public abstract ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
 
+    public abstract void recordOpenConnectionsAndInitCachesCompleted();
+
+    public abstract void recordOpenConnectionsAndInitCachesStarted();
+
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(
             request,

@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
@@ -1571,4 +1570,14 @@ public interface AsyncDocumentClient {
      * @param injectorProvider the fault injector provider.
      */
     void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
+
+    /**
+     * Mark the openConnectionAndInitCaches completed.
+     */
+    void recordOpenConnectionsAndInitCachesCompleted();
+
+    /**
+     * Mark the openConnectionAndInitCaches to start.
+     */
+    void recordOpenConnectionsAndInitCachesStarted();
 }

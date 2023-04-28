@@ -195,7 +195,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private ThroughputControlStore throughputControlStore;
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final String clientCorrelationId;
-    private Duration aggressiveProactiveConnectionEstablishmentDuration;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -246,8 +245,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
-                                String clientCorrelationId,
-                                Duration aggressiveProactiveConnectionEstablishmentDuration) {
+                                String clientCorrelationId) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -265,7 +263,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientTelemetryConfig,
                 clientCorrelationId);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
-        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -593,8 +590,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled,
             this.clientTelemetry,
-            this.globalEndpointManager,
-            this.aggressiveProactiveConnectionEstablishmentDuration);
+            this.globalEndpointManager);
 
         this.createStoreModel(true);
     }
@@ -4316,6 +4312,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else {
             throw new IllegalArgumentException("configureFaultInjectorProvider is not supported for gateway mode");
         }
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted() {
+        this.storeModel.recordOpenConnectionsAndInitCachesCompleted();
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesStarted() {
+        this.storeModel.recordOpenConnectionsAndInitCachesStarted();
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

@@ -143,6 +143,14 @@ public class StoreClient implements IStoreClient {
         this.replicatedResourceClient.configureFaultInjectorProvider(injectorProvider);
     }
 
+    public void recordOpenConnectionsAndInitCachesCompleted() {
+        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesCompleted();
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted() {
+        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesStarted();
+    }
+
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {
         this.updateResponseHeader(request, exception.getResponseHeaders());
         if ((!ReplicatedResourceClient.isMasterResource(request.getResourceType())) &&

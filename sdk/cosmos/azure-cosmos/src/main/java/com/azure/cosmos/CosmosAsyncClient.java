@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -51,7 +50,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.net.URI;
@@ -593,13 +591,18 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        blockVoidFlux(asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig));
+        blockVoidFlux(
+            asyncDocumentClient
+                .submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
+                .doOnTerminate(() -> asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted())
+        );
     }
 
     void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
         Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
 
-        wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration).blockLast();
+        wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration)
+            .doOnTerminate(() -> asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted()).blockLast();
     }
 
     // this method is currently used to open connections when the client is being built
@@ -770,6 +773,14 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         return telemetryConfigAccessor.isTransportLevelTracingEnabled(effectiveConfig);
+    }
+
+    void recordOpenConnectionsAndInitCachesComplete() {
+        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted();
+    }
+
+    void recordOpenConnectionsAndInitCachesStart() {
+        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesStarted();
     }
 
     String getAccountTagValue() {

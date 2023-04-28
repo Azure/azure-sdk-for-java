@@ -256,6 +256,16 @@ public class HttpTransportClient extends TransportClient {
         return null;
     }
 
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted() {
+        throw new NotImplementedException("recordOpenConnectionsAndInitCachesComplete is not supported in httpTransportClient");
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesStarted() {
+        throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in httpTransportClient");
+    }
+
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
         // TODO: perf counters
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/258624
