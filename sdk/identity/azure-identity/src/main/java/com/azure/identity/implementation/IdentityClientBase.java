@@ -206,7 +206,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -267,7 +267,7 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -474,7 +474,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(this.options.getProcessTimeout().getSeconds(), TimeUnit.SECONDS);
+            process.waitFor(this.options.getCredentialProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -567,7 +567,7 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(this.options.getProcessTimeout().getSeconds(), TimeUnit.SECONDS);
+            process.waitFor(this.options.getCredentialProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
