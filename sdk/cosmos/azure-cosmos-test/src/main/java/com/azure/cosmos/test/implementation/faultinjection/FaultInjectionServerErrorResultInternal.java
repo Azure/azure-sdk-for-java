@@ -66,6 +66,7 @@ public class FaultInjectionServerErrorResultInternal {
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;
     }
 
+    // IMPORTANT: Please keep the behavior be consistent with RequestManager
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
