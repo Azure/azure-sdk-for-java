@@ -22,6 +22,9 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
     /** Static value Quarantined for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus QUARANTINED = fromString("Quarantined");
 
+    /** Static value Suppressed for AcsEmailDeliveryReportStatus. */
+    public static final AcsEmailDeliveryReportStatus SUPPRESSED = fromString("Suppressed");
+
     /**
      * Creates or finds a AcsEmailDeliveryReportStatus from its string representation.
      *

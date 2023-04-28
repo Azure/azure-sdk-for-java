@@ -7,9 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageCreated event. */
+/** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageUpdated event. */
 @Fluent
-public final class HealthcareDicomImageCreatedEventData {
+public final class HealthcareDicomImageUpdatedEventData {
     /*
      * Data partition name
      */
@@ -42,7 +42,8 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /*
      * Sequence number of the DICOM Service within Azure Health Data Services.
-     * It is unique for every image creation and deletion within the service.
+     * It is unique for every image creation, updation and deletion within the
+     * service.
      */
     @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
@@ -60,9 +61,9 @@ public final class HealthcareDicomImageCreatedEventData {
      * Set the partitionName property: Data partition name.
      *
      * @param partitionName the partitionName value to set.
-     * @return the HealthcareDicomImageCreatedEventData object itself.
+     * @return the HealthcareDicomImageUpdatedEventData object itself.
      */
-    public HealthcareDicomImageCreatedEventData setPartitionName(String partitionName) {
+    public HealthcareDicomImageUpdatedEventData setPartitionName(String partitionName) {
         this.partitionName = partitionName;
         return this;
     }
@@ -80,9 +81,9 @@ public final class HealthcareDicomImageCreatedEventData {
      * Set the imageStudyInstanceUid property: Unique identifier for the Study.
      *
      * @param imageStudyInstanceUid the imageStudyInstanceUid value to set.
-     * @return the HealthcareDicomImageCreatedEventData object itself.
+     * @return the HealthcareDicomImageUpdatedEventData object itself.
      */
-    public HealthcareDicomImageCreatedEventData setImageStudyInstanceUid(String imageStudyInstanceUid) {
+    public HealthcareDicomImageUpdatedEventData setImageStudyInstanceUid(String imageStudyInstanceUid) {
         this.imageStudyInstanceUid = imageStudyInstanceUid;
         return this;
     }
@@ -100,9 +101,9 @@ public final class HealthcareDicomImageCreatedEventData {
      * Set the imageSeriesInstanceUid property: Unique identifier for the Series.
      *
      * @param imageSeriesInstanceUid the imageSeriesInstanceUid value to set.
-     * @return the HealthcareDicomImageCreatedEventData object itself.
+     * @return the HealthcareDicomImageUpdatedEventData object itself.
      */
-    public HealthcareDicomImageCreatedEventData setImageSeriesInstanceUid(String imageSeriesInstanceUid) {
+    public HealthcareDicomImageUpdatedEventData setImageSeriesInstanceUid(String imageSeriesInstanceUid) {
         this.imageSeriesInstanceUid = imageSeriesInstanceUid;
         return this;
     }
@@ -120,9 +121,9 @@ public final class HealthcareDicomImageCreatedEventData {
      * Set the imageSopInstanceUid property: Unique identifier for the DICOM Image.
      *
      * @param imageSopInstanceUid the imageSopInstanceUid value to set.
-     * @return the HealthcareDicomImageCreatedEventData object itself.
+     * @return the HealthcareDicomImageUpdatedEventData object itself.
      */
-    public HealthcareDicomImageCreatedEventData setImageSopInstanceUid(String imageSopInstanceUid) {
+    public HealthcareDicomImageUpdatedEventData setImageSopInstanceUid(String imageSopInstanceUid) {
         this.imageSopInstanceUid = imageSopInstanceUid;
         return this;
     }
@@ -140,16 +141,16 @@ public final class HealthcareDicomImageCreatedEventData {
      * Set the serviceHostName property: Domain name of the DICOM account for this image.
      *
      * @param serviceHostName the serviceHostName value to set.
-     * @return the HealthcareDicomImageCreatedEventData object itself.
+     * @return the HealthcareDicomImageUpdatedEventData object itself.
      */
-    public HealthcareDicomImageCreatedEventData setServiceHostName(String serviceHostName) {
+    public HealthcareDicomImageUpdatedEventData setServiceHostName(String serviceHostName) {
         this.serviceHostName = serviceHostName;
         return this;
     }
 
     /**
      * Get the sequenceNumber property: Sequence number of the DICOM Service within Azure Health Data Services. It is
-     * unique for every image creation and deletion within the service.
+     * unique for every image creation, updation and deletion within the service.
      *
      * @return the sequenceNumber value.
      */
@@ -159,12 +160,12 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Set the sequenceNumber property: Sequence number of the DICOM Service within Azure Health Data Services. It is
-     * unique for every image creation and deletion within the service.
+     * unique for every image creation, updation and deletion within the service.
      *
      * @param sequenceNumber the sequenceNumber value to set.
-     * @return the HealthcareDicomImageCreatedEventData object itself.
+     * @return the HealthcareDicomImageUpdatedEventData object itself.
      */
-    public HealthcareDicomImageCreatedEventData setSequenceNumber(Long sequenceNumber) {
+    public HealthcareDicomImageUpdatedEventData setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
     }

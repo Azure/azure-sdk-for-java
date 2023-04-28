@@ -11,6 +11,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HealthcareDicomImageDeletedEventData {
     /*
+     * Data partition name
+     */
+    @JsonProperty(value = "partitionName")
+    private String partitionName;
+
+    /*
      * Unique identifier for the Study
      */
     @JsonProperty(value = "imageStudyInstanceUid")
@@ -40,6 +46,26 @@ public final class HealthcareDicomImageDeletedEventData {
      */
     @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
+
+    /**
+     * Get the partitionName property: Data partition name.
+     *
+     * @return the partitionName value.
+     */
+    public String getPartitionName() {
+        return this.partitionName;
+    }
+
+    /**
+     * Set the partitionName property: Data partition name.
+     *
+     * @param partitionName the partitionName value to set.
+     * @return the HealthcareDicomImageDeletedEventData object itself.
+     */
+    public HealthcareDicomImageDeletedEventData setPartitionName(String partitionName) {
+        this.partitionName = partitionName;
+        return this;
+    }
 
     /**
      * Get the imageStudyInstanceUid property: Unique identifier for the Study.
