@@ -984,7 +984,7 @@ private object CosmosWriteConfig {
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency),
       maxConcurrentCosmosPartitions = CosmosConfigEntry.parse(cfg, bulkMaxConcurrentPartitions),
       patchConfigs = patchConfigsOpt,
-      throughputControlConfig = throughputControlConfigOpt    )
+      throughputControlConfig = throughputControlConfigOpt)
   }
 
   def parsePatchColumnConfigs(cfg: Map[String, String], inputSchema: StructType): TrieMap[String, CosmosPatchColumnConfig] = {
