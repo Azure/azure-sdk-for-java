@@ -6,18 +6,13 @@
 - Reduce the number of requests made to Azure Active Directory (Azure AD) to obtain access tokens.
 - Reduce the number of times the user is prompted to authenticate.
 
-When an app needs to access a protected Azure resource, it typically needs to obtain an access token from Azure AD. Obtaining that token typically involves sending a request to Azure AD and may also involve prompting the user. Azure AD then validates the credentials provided in the request and issues an access token.
+When an app needs to access a protected Azure resource, it typically needs to obtain an access token from Azure AD. Obtaining that token involves sending a request to Azure AD and may also involve prompting the user. Azure AD then validates the credentials provided in the request and issues an access token.
 
-Token caching, via the Azure Identity library, allows the app to store this access token [in memory](#in-memory-token-caching), where it is accessible to the current process, or [on disk](#persistent-token-caching) where it can be accessed across application or process invocations. The token can then be retrieved quickly and easily the next time the app needs to access the same resource. The app can avoid making another request to Azure AD, which reduces network traffic and improves resilience. Additionally, in scenarios where the app is authenticating users, token caching also avoids prompting the user each time new tokens are requested.
+Token caching, via the Azure Identity library, allows the app to store this access token [in memory](#in-memory-token-caching), where it's accessible to the current process, or [on disk](#persistent-token-caching) where it can be accessed across application or process invocations. The token can then be retrieved quickly and easily the next time the app needs to access the same resource. The app can avoid making another request to Azure AD, which reduces network traffic and improves resilience. Additionally, in scenarios where the app is authenticating users, token caching also avoids prompting the user each time new tokens are requested.
 
 ### In-memory token caching
 
-*In-memory token caching* is the default option provided by the Azure Identity library. This caching approach allows apps to store access tokens in memory. With in-memory token caching, the library first determines if a valid access token for the requested resource is already stored in memory. If a valid token is found, it's returned to the app without the need to make another request to Azure AD. If a valid token is not found, the library will automatically acquire a token by sending a request to Azure AD.
-
-The in-memory token cache provided by the Azure Identity library:
-
-- Is thread-safe.
-- Can be used by multiple threads concurrently.
+*In-memory token caching* is the default option provided by the Azure Identity library. This caching approach allows apps to store access tokens in memory. With in-memory token caching, the library first determines if a valid access token for the requested resource is already stored in memory. If a valid token is found, it's returned to the app without the need to make another request to Azure AD. If a valid token isn't found, the library will automatically acquire a token by sending a request to Azure AD. The in-memory token cache provided by the Azure Identity library is thread-safe.
 
 **Note:** When Azure Identity library credentials are used with Azure service libraries (for example, Azure Blob Storage), the in-memory token caching is active in the `HttpPipeline` layer as well. All `TokenCredential` implementations are supported there, including custom implementations external to the Azure Identity library.
 
@@ -29,7 +24,9 @@ The in-memory token cache provided by the Azure Identity library:
 |------------------|-------------------|
 | Linux            | Keyring           |
 | macOS            | Keychain          |
-| Windows          | DPAPI              |
+| Windows          | DPAPI             |
+
+**Note:** The Linux platform allows for unencrypted persistent storage, which can be activated by setting `setUnencryptedStorageAllowed` to `true` on `TokenCachePersistenceOptions`. However, we do not recommend using this storage method due to its significantly lower security measures. In addition, tokens are not encrypted solely to the current user, which could potentially allow unauthorized access to the cache by individuals with machine access.
 
 With persistent disk token caching enabled, the library first determines if a valid access token for the requested resource is already stored in the persistent cache. If a valid token is found, it's returned to the app without the need to make another request to Azure AD. Additionally, the tokens are preserved across app runs, which:
 
@@ -53,10 +50,15 @@ ClientSecretCredential clientCredential = new ClientSecretCredentialBuilder()
         .build();
 ```
 
-#### Persisting User Authentication Record
-When authenticating a user via `InteractiveBrowserCredential`, `DeviceCodeCredential` or `UsernamePasswordCredential` an `AuthenticationRecord` can be persisted as well. It is returned from the `authenticate` API and contains data identifying an authenticated account. It is needed to identify the appropriate entry in the persisted token cache to silently authenticate on subsequent executions. There is no sensitive data in the `AuthenticationRecord` so it can be persisted in a non-protected state.
+#### Persist user authentication record
+When authenticating a user via `InteractiveBrowserCredential`, `DeviceCodeCredential`, or `UsernamePasswordCredential`, an `AuthenticationRecord` can be persisted as well. The authentication record is:
 
-Here is an example of an application storing the `AuthenticationRecord` to the local file system after authenticating the user.
+- Returned from the `authenticate` API and contains data identifying an authenticated account.
+- Needed to identify the appropriate entry in the persisted token cache to silently authenticate on subsequent executions.
+
+There's no sensitive data in the `AuthenticationRecord`, so it can be persisted in a non-protected state.
+
+Here's an example of an app storing the `AuthenticationRecord` to the local file system after authenticating the user:
 
 ```java
 InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
@@ -77,7 +79,8 @@ interactiveBrowserCredential.authenticate()
 ```
 
 #### Silently authenticating a user with AuthenticationRecord and TokenCachePersistenceOptions
-Once an application has configured a `InteractiveBrowserCredential`, `DeviceCodeCredential` or `UsernamePasswordCredential` to persist token data and an `AuthenticationRecord`, it is possible to silently authenticate. This example demonstrates an application setting the `TokenCachePersistenceOptions` and retrieving an `AuthenticationRecord` from the local file system to create an `InteractiveBrowserCredential` capable of silent authentication.
+
+Once an app has configured an `InteractiveBrowserCredential`, `DeviceCodeCredential`, or `UsernamePasswordCredential` to persist token data and an `AuthenticationRecord`, it's possible to silently authenticate. This example demonstrates an app setting the `TokenCachePersistenceOptions` and retrieving an `AuthenticationRecord` from the local file system to create an `InteractiveBrowserCredential` capable of silent authentication:
 
 ```java
 AuthenticationRecord authenticationRecord = AuthenticationRecord.deserialize(new FileInputStream(authRecordFilePath));
