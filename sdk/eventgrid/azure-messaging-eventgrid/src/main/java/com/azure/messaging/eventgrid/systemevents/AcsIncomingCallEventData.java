@@ -14,13 +14,13 @@ public final class AcsIncomingCallEventData {
      * The communication identifier of the target user.
      */
     @JsonProperty(value = "to")
-    private CommunicationIdentifierModel toCommunicationIdentifier;
+    private CommunicationIdentifierModel to;
 
     /*
      * The communication identifier of the user who initiated the call.
      */
     @JsonProperty(value = "from")
-    private CommunicationIdentifierModel fromCommunicationIdentifier;
+    private CommunicationIdentifierModel from;
 
     /*
      * The Id of the server call
@@ -52,48 +52,43 @@ public final class AcsIncomingCallEventData {
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
-    /** Creates an instance of AcsIncomingCallEventData class. */
-    public AcsIncomingCallEventData() {}
-
     /**
-     * Get the toCommunicationIdentifier property: The communication identifier of the target user.
+     * Get the to property: The communication identifier of the target user.
      *
-     * @return the toCommunicationIdentifier value.
+     * @return the to value.
      */
-    public CommunicationIdentifierModel getToCommunicationIdentifier() {
-        return this.toCommunicationIdentifier;
+    public CommunicationIdentifierModel getTo() {
+        return this.to;
     }
 
     /**
-     * Set the toCommunicationIdentifier property: The communication identifier of the target user.
+     * Set the to property: The communication identifier of the target user.
      *
-     * @param toCommunicationIdentifier the toCommunicationIdentifier value to set.
+     * @param to the to value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
-    public AcsIncomingCallEventData setToCommunicationIdentifier(
-            CommunicationIdentifierModel toCommunicationIdentifier) {
-        this.toCommunicationIdentifier = toCommunicationIdentifier;
+    public AcsIncomingCallEventData setTo(CommunicationIdentifierModel to) {
+        this.to = to;
         return this;
     }
 
     /**
-     * Get the fromCommunicationIdentifier property: The communication identifier of the user who initiated the call.
+     * Get the from property: The communication identifier of the user who initiated the call.
      *
-     * @return the fromCommunicationIdentifier value.
+     * @return the from value.
      */
-    public CommunicationIdentifierModel getFromCommunicationIdentifier() {
-        return this.fromCommunicationIdentifier;
+    public CommunicationIdentifierModel getFrom() {
+        return this.from;
     }
 
     /**
-     * Set the fromCommunicationIdentifier property: The communication identifier of the user who initiated the call.
+     * Set the from property: The communication identifier of the user who initiated the call.
      *
-     * @param fromCommunicationIdentifier the fromCommunicationIdentifier value to set.
+     * @param from the from value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
-    public AcsIncomingCallEventData setFromCommunicationIdentifier(
-            CommunicationIdentifierModel fromCommunicationIdentifier) {
-        this.fromCommunicationIdentifier = fromCommunicationIdentifier;
+    public AcsIncomingCallEventData setFrom(CommunicationIdentifierModel from) {
+        this.from = from;
         return this;
     }
 

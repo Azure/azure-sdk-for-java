@@ -71,6 +71,26 @@ public final class HealthcareDicomImageDeletedEventData {
     }
 
     /**
+     * Get the partitionName property: Data partition name.
+     *
+     * @return the partitionName value.
+     */
+    public String getPartitionName() {
+        return this.partitionName;
+    }
+
+    /**
+     * Set the partitionName property: Data partition name.
+     *
+     * @param partitionName the partitionName value to set.
+     * @return the HealthcareDicomImageDeletedEventData object itself.
+     */
+    public HealthcareDicomImageDeletedEventData setPartitionName(String partitionName) {
+        this.partitionName = partitionName;
+        return this;
+    }
+
+    /**
      * Get the imageStudyInstanceUid property: Unique identifier for the Study.
      *
      * @return the imageStudyInstanceUid value.

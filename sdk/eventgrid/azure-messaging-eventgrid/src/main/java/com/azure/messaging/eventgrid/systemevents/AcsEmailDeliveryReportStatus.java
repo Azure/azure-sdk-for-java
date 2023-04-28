@@ -28,16 +28,8 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
      */
     public static final AcsEmailDeliveryReportStatus QUARANTINED = fromString("Quarantined");
 
-    /** The email was suppressed. */
+    /** Static value Suppressed for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus SUPPRESSED = fromString("Suppressed");
-
-    /**
-     * Creates a new instance of AcsEmailDeliveryReportStatus value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public AcsEmailDeliveryReportStatus() {}
 
     /**
      * Creates or finds a AcsEmailDeliveryReportStatus from its string representation.

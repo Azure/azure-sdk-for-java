@@ -280,7 +280,7 @@ public final class SystemEventNames {
             "Microsoft.Communication.EmailEngagementTrackingReportReceived";
 
     /** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.IncomingCall event. */
-    public static final String COMMUNICATION_INCOMING_CALL = "Microsoft.Communication.IncomingCall";
+    public static final String ACS_INCOMING_CALL = "Microsoft.Communication.IncomingCall";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
@@ -932,7 +932,7 @@ public final class SystemEventNames {
                     put(
                             COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
                             AcsEmailEngagementTrackingReportReceivedEventData.class);
-                    put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
+                    put(ACS_INCOMING_CALL, AcsIncomingCallEventData.class);
                     put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
                     put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
                     put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);

@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Custom Context of Incoming Call. */
+/** Custom context for incoming call. */
 @Fluent
 public final class AcsIncomingCallCustomContext {
     /*
      * Custom Headers for incoming call
      */
     @JsonProperty(value = "customHeaders")
-    private String customHeaders;
+    private Map<String, String> customHeaders;
 
     /*
      * Sip Headers for incoming call
@@ -29,15 +29,12 @@ public final class AcsIncomingCallCustomContext {
     @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
-    /** Creates an instance of AcsIncomingCallCustomContext class. */
-    public AcsIncomingCallCustomContext() {}
-
     /**
      * Get the customHeaders property: Custom Headers for incoming call.
      *
      * @return the customHeaders value.
      */
-    public String getCustomHeaders() {
+    public Map<String, String> getCustomHeaders() {
         return this.customHeaders;
     }
 
@@ -47,7 +44,7 @@ public final class AcsIncomingCallCustomContext {
      * @param customHeaders the customHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
-    public AcsIncomingCallCustomContext setCustomHeaders(String customHeaders) {
+    public AcsIncomingCallCustomContext setCustomHeaders(Map<String, String> customHeaders) {
         this.customHeaders = customHeaders;
         return this;
     }
