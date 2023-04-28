@@ -130,7 +130,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig;
+    private CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -788,21 +788,21 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosEndToEndOperationConfig} on the client
-     * @param cosmosEndToEndOperationConfig the {@link CosmosEndToEndOperationConfig}
+     * Sets the {@link CosmosE2EOperationRetryPolicyConfig} on the client
+     * @param cosmosE2EOperationRetryPolicyConfig the {@link CosmosE2EOperationRetryPolicyConfig}
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig){
-        this.cosmosEndToEndOperationConfig = cosmosEndToEndOperationConfig;
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig){
+        this.cosmosE2EOperationRetryPolicyConfig = cosmosE2EOperationRetryPolicyConfig;
         return this;
     }
 
     /**
-     * Gets the {@link CosmosEndToEndOperationConfig}
-     * @return the {@link CosmosEndToEndOperationConfig}
+     * Gets the {@link CosmosE2EOperationRetryPolicyConfig}
+     * @return the {@link CosmosE2EOperationRetryPolicyConfig}
      */
-    CosmosEndToEndOperationConfig getEndToEndOperationConfig() {
-        return this.cosmosEndToEndOperationConfig;
+    CosmosE2EOperationRetryPolicyConfig getEndToEndOperationConfig() {
+        return this.cosmosE2EOperationRetryPolicyConfig;
     }
 
     /**

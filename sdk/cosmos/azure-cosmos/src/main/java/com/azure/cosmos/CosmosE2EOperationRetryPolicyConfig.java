@@ -9,29 +9,18 @@ import java.time.Duration;
  * Represents End to end operation latency policy config
  * This enables requests to get cancelled by the client once the specified timeout is reached
  */
-public final class CosmosEndToEndOperationConfig {
-    /**
-     * The default end to end operation latency policy with timeout of 2 seconds
-     */
-    public static final CosmosEndToEndOperationConfig DEFAULT =
-        new CosmosEndToEndOperationConfigBuilder().build();
-
-    /**
-     * The disabled end to end operation latency policy
-     */
-    public static final CosmosEndToEndOperationConfig DISABLED =
-        new CosmosEndToEndOperationConfigBuilder(false).build();
-
+public final class CosmosE2EOperationRetryPolicyConfig {
     private final boolean isEnabled;
     private final Duration endToEndOperationTimeout;
 
     /**
      * Constructor
-     * @param isEnabled toggle if the policy should be enabled or disabled
+     *
+     * @param isEnabled                toggle if the policy should be enabled or disabled
      * @param endToEndOperationTimeout the timeout for request cancellation in {@link Duration}. Setting very low timeouts
      *                                 can cause the request to never succeed.
      */
-    CosmosEndToEndOperationConfig(
+    CosmosE2EOperationRetryPolicyConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout) {
 

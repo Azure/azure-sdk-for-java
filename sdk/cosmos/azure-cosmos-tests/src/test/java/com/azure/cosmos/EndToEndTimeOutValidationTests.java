@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.RequestCancelledException;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -43,14 +44,13 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
     private CosmosAsyncContainer createdContainer;
     private final Random random;
     private final List<TestObject> createdDocuments = new ArrayList<>();
-    private final CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig;
+    private final CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public EndToEndTimeOutValidationTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();
-        endToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationConfigBuilder()
-            .endToEndOperationTimeout(Duration.ofSeconds(1))
+        endToEndOperationLatencyPolicyConfig = new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
             .build();
     }
 
@@ -140,7 +140,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
     private static void verifyExpectError(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
         StepVerifier.create(cosmosItemResponseMono)
-            .expectErrorMatches(throwable -> throwable instanceof RequestCancelledException)
+            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException)
             .verify();
     }
 
@@ -149,9 +149,8 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
-        CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig =
-            new CosmosEndToEndOperationConfigBuilder()
-                .endToEndOperationTimeout(Duration.ofSeconds(1))
+        CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig =
+            new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
                 .build();
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
@@ -166,7 +165,9 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
         StepVerifier.create(queryPagedFlux)
-            .expectErrorMatches(throwable -> throwable instanceof RequestCancelledException)
+            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
+                && ((OperationCancelledException) throwable).getSubStatusCode()
+                == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
             .verify();
     }
 
@@ -226,13 +227,16 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
             // Should timeout after injected delay
             StepVerifier.create(queryPagedFlux)
-                .expectErrorMatches(throwable -> throwable instanceof RequestCancelledException)
+                .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException)
                 .verify();
 
             // Enabling at client level and disabling at the read item operation level should not fail the request even
             // with injected delay
             CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig.DISABLED);
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .isEnabled(false)
+                        .build());
             cosmosItemResponseMono =
                 container.readItem(obj.id, new PartitionKey(obj.mypk), options, TestObject.class);
             StepVerifier.create(cosmosItemResponseMono)
@@ -243,7 +247,10 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             // Enabling at client level and disabling at the query item operation level should not fail the request even
             // with injected delay
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig.DISABLED);
+                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                    new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
+                        .isEnabled(false)
+                        .build());
             queryPagedFlux = container.queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class);
             StepVerifier.create(queryPagedFlux)
                 .expectNextCount(1)

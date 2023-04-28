@@ -7,7 +7,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosEndToEndOperationConfig;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -76,7 +76,7 @@ public class RxDocumentClientImplTest {
     private RxClientCollectionCache collectionCacheMock;
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
-    private CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig;
+    private CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -96,7 +96,7 @@ public class RxDocumentClientImplTest {
         this.collectionCacheMock = Mockito.mock(RxClientCollectionCache.class);
         this.partitionKeyRangeCacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
-        this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosEndToEndOperationConfig.class);
+        this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosE2EOperationRetryPolicyConfig.class);
     }
 
     @Test(groups = {"unit"})

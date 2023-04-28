@@ -6,7 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.CosmosEndToEndOperationConfig;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -99,7 +99,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig;
+        private CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -236,8 +236,8 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig) {
-            this.cosmosEndToEndOperationConfig = endToEndOperationLatencyPolicyConfig;
+        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
+            this.cosmosE2EOperationRetryPolicyConfig = endToEndOperationLatencyPolicyConfig;
             return this;
         }
 
@@ -274,7 +274,7 @@ public interface AsyncDocumentClient {
                 apiType,
                 clientTelemetryConfig,
                 clientCorrelationId,
-                cosmosEndToEndOperationConfig);
+                cosmosE2EOperationRetryPolicyConfig);
 
             client.init(state, null);
             return client;

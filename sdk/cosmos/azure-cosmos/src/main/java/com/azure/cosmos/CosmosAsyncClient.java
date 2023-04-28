@@ -96,7 +96,6 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
-    private final CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -113,7 +112,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
-        this.endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -155,7 +154,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
-                                       .withEndToEndOperationLatencyPolicyConfig(this.endToEndOperationLatencyPolicyConfig)
+                                       .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -757,10 +756,6 @@ public final class CosmosAsyncClient implements Closeable {
             telemetryConfigAccessor.getDiagnosticsThresholds(this.clientTelemetryConfig);
 
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
-    }
-
-    CosmosEndToEndOperationConfig getEndToEndOperationLatencyPolicyConfig() {
-        return endToEndOperationLatencyPolicyConfig;
     }
 
     boolean isTransportLevelTracingEnabled() {
