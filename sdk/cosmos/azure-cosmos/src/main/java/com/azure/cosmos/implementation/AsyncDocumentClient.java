@@ -273,8 +273,7 @@ public interface AsyncDocumentClient {
                     state,
                     apiType,
                     clientTelemetryConfig,
-                    clientCorrelationId,
-                    aggressiveConnectionEstablishmentDuration
+                    clientCorrelationId
             );
 
             client.init(state, null);
