@@ -77,7 +77,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
     private ChangeFeedProcessor changeFeedProcessor;
 
-    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
+    @Factory(dataProvider = "clientBuilders")
     public IncrementalChangeFeedProcessorTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
