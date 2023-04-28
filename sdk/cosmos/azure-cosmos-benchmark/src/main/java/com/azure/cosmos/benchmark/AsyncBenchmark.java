@@ -265,7 +265,7 @@ abstract class AsyncBenchmark<T> {
                 && configuration.isProactiveConnectionManagementEnabled()
                 && !configuration.isUseUnWarmedUpContainer();
 
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+        CosmosClientBuilder cosmosClientBuilderForOpeningConnections = new CosmosClientBuilder()
                 .endpoint(configuration.getServiceEndpoint())
                 .key(configuration.getMasterKey())
                 .preferredRegions(configuration.getPreferredRegionsList())
@@ -287,7 +287,7 @@ abstract class AsyncBenchmark<T> {
 
             if (configuration.getAggressiveWarmupDuration() == Duration.ZERO) {
 
-                cosmosClientBuilder = cosmosClientBuilder
+                cosmosClientBuilder = cosmosClientBuilderForOpeningConnections
                         .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())
                         .endpointDiscoveryEnabled(true);
             } else {
