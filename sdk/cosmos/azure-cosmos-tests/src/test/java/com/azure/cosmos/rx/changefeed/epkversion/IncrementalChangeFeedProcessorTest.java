@@ -737,41 +737,18 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             }
             leaseStateMonitor.isAfterLeaseInitialization = true;
 
-            // Loop through reading the current partition count until we get a split
-            //   This can take up to two minute or more.
-            String partitionKeyRangesPath = extractContainerSelfLink(createdFeedCollectionForSplit);
-
-            AsyncDocumentClient contextClient = getContextClient(createdDatabase);
-            Flux.just(1).subscribeOn(Schedulers.boundedElastic())
-                .flatMap(value -> {
-                    logger.warn("Reading current throughput change.");
-                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
-                })
-                .map(partitionKeyRangeFeedResponse -> {
-                    int count = partitionKeyRangeFeedResponse.getResults().size();
-
-                    if (count < 2) {
-                        logger.warn("Throughput change is pending.");
-                        throw new RuntimeException("Throughput change is not done.");
-                    }
-                    return count;
-                })
-                // this will timeout approximately after 30 minutes
-                .retryWhen(Retry.max(40).filter(throwable -> {
-                    try {
-                        logger.warn("Retrying...");
-                        // Splits are taking longer, so increasing sleep time between retries
-                        Thread.sleep(10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException("Interrupted exception", e);
-                    }
-                    return true;
-                }))
-                .last()
-                .doOnSuccess(partitionCount -> {
+            // wait for the split to finish
+            ThroughputResponse throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
+            while (true) {
+                assert throughputResponse != null;
+                if (!throughputResponse.isReplacePending()) {
                     leaseStateMonitor.isAfterSplits = true;
-                })
-                .block();
+                    break;
+                }
+                logger.info("Waiting for split to complete");
+                Thread.sleep(10 * 1000);
+                throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
+            }
 
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
@@ -837,6 +814,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeasePrefix("TEST")
                     .setStartFromBeginning(true)
                     .setMaxItemCount(10)
+                    .setLeaseAcquireInterval(Duration.ofSeconds(1))
                     .setMaxScaleCount(partitionCountBeforeSplit) // set to match the partition count
                     .setLeaseRenewInterval(Duration.ofSeconds(2))
                 )
@@ -882,7 +860,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
             // wait for the change feed processor to receive some documents
-            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             String leaseQuery = "select * from c where not contains(c.id, \"info\")";
             List<JsonNode> leaseDocuments =
@@ -905,6 +883,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setLeasePrefix("TEST")
                     .setStartFromBeginning(true)
                     .setMaxItemCount(10)
+                    .setLeaseAcquireInterval(Duration.ofSeconds(1))
                     .setMaxScaleCount(partitionCountBeforeSplit) // set to match the partition count
                     .setLeaseRenewInterval(Duration.ofSeconds(2))
                 )
