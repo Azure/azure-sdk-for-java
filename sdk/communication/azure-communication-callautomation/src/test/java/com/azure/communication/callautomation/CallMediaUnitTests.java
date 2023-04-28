@@ -109,7 +109,10 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),  "operationContext", Context.NONE);
+        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(
+            new CommunicationUserIdentifier("id"),
+            "operationContext", Context.NONE
+        );
         assertEquals(response.getStatusCode(), 200);
     }
 
@@ -121,13 +124,20 @@ public class CallMediaUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
             );
         callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),  "operationContext", Context.NONE);
+        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
+            new CommunicationUserIdentifier("id"),
+            "operationContext", Context.NONE
+        );
         assertEquals(response.getStatusCode(), 200);
     }
 
     @Test
     public void sendDtmfWithResponseTest() {
-        Response<Void> response = callMedia.sendDtmfWithResponse(new CommunicationUserIdentifier("id"), Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), "ctx", Context.NONE);
+        Response<Void> response = callMedia.sendDtmfWithResponse(
+            new CommunicationUserIdentifier("id"),
+            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
+            "ctx", Context.NONE
+        );
         assertEquals(response.getStatusCode(), 202);
     }
 

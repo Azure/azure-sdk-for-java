@@ -167,7 +167,9 @@ public class CallMediaAsyncUnitTests {
             );
         callMedia = callConnection.getCallMediaAsync();
         StepVerifier.create(
-                callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),  "operationContext"))
+                callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
+                    "operationContext")
+            )
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -181,7 +183,9 @@ public class CallMediaAsyncUnitTests {
             );
         callMedia = callConnection.getCallMediaAsync();
         StepVerifier.create(
-                callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"), "operationContext"))
+                callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
+                    "operationContext")
+            )
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -189,8 +193,12 @@ public class CallMediaAsyncUnitTests {
     @Test
     public void sendDtmfWithResponse() {
         StepVerifier.create(
-                callMedia.sendDtmfWithResponse(new CommunicationUserIdentifier("id"), Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),  "operationContext"))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+                callMedia.sendDtmfWithResponse(
+                    new CommunicationUserIdentifier("id"),
+                    Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
+                    "operationContext"
+                )
+            ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 

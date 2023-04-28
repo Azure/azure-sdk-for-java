@@ -131,11 +131,10 @@ public final class CallMedia {
      * Sends Dtmf tones
      * @param targetParticipant the target participant
      * @param tones tones to be sent
-     * @param operationContext operationContext (pass null if not applicable)
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext) {
-        callMediaAsync.sendDtmf(targetParticipant, tones, operationContext).block();
+    public void sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
+        callMediaAsync.sendDtmf(targetParticipant, tones).block();
     }
 
     /**
@@ -155,11 +154,10 @@ public final class CallMedia {
     /**
      * Starts continuous Dtmf recognition.
      * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant, String operationContext) {
-        callMediaAsync.startContinuousDtmfRecognition(targetParticipant, operationContext).block();
+    public void startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.startContinuousDtmfRecognition(targetParticipant).block();
     }
 
     /**
@@ -178,11 +176,10 @@ public final class CallMedia {
     /**
      * Stops continuous Dtmf recognition.
      * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant, String operationContext) {
-        callMediaAsync.stopContinuousDtmfRecognition(targetParticipant, operationContext).block();
+    public void stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.stopContinuousDtmfRecognition(targetParticipant).block();
     }
 
     /**

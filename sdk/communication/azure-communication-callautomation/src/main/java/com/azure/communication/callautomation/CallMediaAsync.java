@@ -450,11 +450,10 @@ public final class CallMediaAsync {
      * Send DTMF tones
      * @param targetParticipant the target participant
      * @param tones tones to be sent
-     * @param operationContext operationContext (pass null if not applicable)
      * @return Response for successful sendDtmf request.
      */
-    public Mono<Void> sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext) {
-        return sendDtmfWithResponse(targetParticipant, tones, operationContext).then();
+    public Mono<Void> sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
+        return sendDtmfWithResponse(targetParticipant, tones, null).then();
     }
 
     /**
@@ -489,11 +488,10 @@ public final class CallMediaAsync {
      * Starts continuous Dtmf recognition.
      *
      * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
      * @return void
      */
-    public Mono<Void> startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant, String operationContext) {
-        return startContinuousDtmfRecognitionWithResponse(targetParticipant, operationContext).then();
+    public Mono<Void> startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        return startContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
     }
 
     /**
@@ -522,11 +520,10 @@ public final class CallMediaAsync {
     /**
      * Stops continuous Dtmf recognition.
      * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
      * @return void
      */
-    public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant, String operationContext) {
-        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, operationContext).then();
+    public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
     }
 
     /**
