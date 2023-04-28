@@ -39,6 +39,8 @@ private case class ItemsPartitionReader
     .CosmosQueryRequestOptionsHelper
     .getCosmosQueryRequestOptionsAccessor
     .disallowQueryPlanRetrieval(new CosmosQueryRequestOptions())
+    
+  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)  
   ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, readConfig.throughputControlConfig)
 
   private val operationContext = initializeOperationContext()
@@ -50,9 +52,6 @@ private case class ItemsPartitionReader
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container} - " +
     s"correlationActivityId ${diagnosticsContext.correlationActivityId}, " +
     s"query: ${cosmosQuery.toString}, Context: ${operationContext.toString} ${getThreadInfo}")
-
-  private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-
 
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
