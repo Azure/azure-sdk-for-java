@@ -1,0 +1,33 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/text-davinci-003/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "654a1c48-4f3b-4a81-a00d-4d8c5f9a2beb",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-region" : "East US",
+      "X-Request-Id" : "1d12a4d8-e9bf-42e4-91cf-16b6e1c7d16e",
+      "Access-Control-Allow-Origin" : "*",
+      "apim-request-id" : "b6a41601-2165-46b3-ad2d-aa3ed5ba528e",
+      "Openai-Processing-Ms" : "571.6205",
+      "Aicon-Correlation-Id" : "d8fac9a5-c687-42ad-b320-c8aecea3af45",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 28 Apr 2023 01:12:48 GMT",
+      "X-Accel-Buffering" : "no",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Openai-Model" : "text-davinci-003",
+      "X-Ms-Client-Request-Id" : "654a1c48-4f3b-4a81-a00d-4d8c5f9a2beb",
+      "x-content-type-options" : "nosniff",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "Content-Length" : "286",
+      "Body" : "{\"id\":\"cmpl-7A6xEFsMNgkFYv4o9qo9PwWvNmSSy\",\"object\":\"text_completion\",\"created\":1682644368,\"model\":\"text-davinci-003\",\"choices\":[{\"text\":\"\\n\\nThis is indeed a test.\",\"index\":0,\"finish_reason\":\"stop\",\"logprobs\":null}],\"usage\":{\"completion_tokens\":8,\"prompt_tokens\":5,\"total_tokens\":13}}\n",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

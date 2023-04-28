@@ -4,8 +4,6 @@
 
 package com.azure.ai.openai.generated;
 
-import com.azure.ai.openai.OpenAIAsyncClient;
-import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.ai.openai.models.Choice;
@@ -16,10 +14,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,36 +27,29 @@ import static com.azure.ai.openai.generated.TestUtils.FAKE_API_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public abstract class OpenAIClientTestBase extends TestProxyTestBase {
-    protected OpenAIClient openAIClient;
-    protected OpenAIAsyncClient openAIAsyncClient;
+public abstract class OpenAIClientTestBase extends TestBase {
 
-    @Override
-    protected void beforeTest() {
-        OpenAIClientBuilder openAIClientbuilder =
-                new OpenAIClientBuilder()
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+    OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        OpenAIClientBuilder builder = new OpenAIClientBuilder()
+            .httpClient(httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion);
+
         if (getTestMode() == TestMode.PLAYBACK) {
-            openAIClientbuilder
+            builder
                 .endpoint("https://localhost:8080")
-                .httpClient(interceptorManager.getPlaybackClient())
                 .credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
-            openAIClientbuilder
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT",
-                    "https://localhost:8080"))
+            builder
                 .addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
                 .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
-//                    .credential(new DefaultAzureCredentialBuilder().build()); // Uncomment it if using AAD
-        } else if (getTestMode() == TestMode.LIVE) {
-            openAIClientbuilder
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT",
-                    "https://localhost:8080"))
-                .credential(new DefaultAzureCredentialBuilder().build());
+        } else {
+            builder
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
-        openAIClient = openAIClientbuilder.buildClient();
-        openAIAsyncClient = openAIClientbuilder.buildAsyncClient();
+        return builder;
     }
 
     @Test
