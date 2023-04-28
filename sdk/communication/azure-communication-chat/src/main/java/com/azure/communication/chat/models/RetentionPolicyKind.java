@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for Kind. */
-public final class Kind extends ExpandableStringEnum<Kind> {
+public final class RetentionPolicyKind extends ExpandableStringEnum<RetentionPolicyKind> {
     /** Static value threadCreationDate for Kind. */
-    public static final Kind THREAD_CREATION_DATE = fromString("threadCreationDate");
+    public static final RetentionPolicyKind THREAD_CREATION_DATE = fromString("threadCreationDate");
 
     /**
      * Creates or finds a Kind from its string representation.
@@ -16,12 +16,12 @@ public final class Kind extends ExpandableStringEnum<Kind> {
      * @return the corresponding Kind.
      */
     @JsonCreator
-    public static Kind fromString(String name) {
-        return fromString(name, Kind.class);
+    public static RetentionPolicyKind fromString(String name) {
+        return fromString(name, RetentionPolicyKind.class);
     }
 
     /** @return known Kind values. */
-    public static Collection<Kind> values() {
-        return values(Kind.class);
+    public static Collection<RetentionPolicyKind> values() {
+        return values(RetentionPolicyKind.class);
     }
 }
