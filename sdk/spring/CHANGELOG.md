@@ -53,6 +53,12 @@ This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-
 #### Breaking Changes
 - Deprecated `CloudType.AZURE_GERMANY` and remove `AzureEnvironmentProperties.AZURE_GERMANY` [#34663](https://github.com/Azure/azure-sdk-for-java/pull/34663).
 
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web` modules.
+
+#### Bugs Fixed
+- Fixes issue where credential from Azure Spring global properties was being overridden [#34695](https://github.com/Azure/azure-sdk-for-java/pull/34695).
+
 ## 5.0.0 (2023-01-17)
 - This release is compatible with Spring Boot 3.0.0-3.0.1. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
