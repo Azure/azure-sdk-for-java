@@ -5,7 +5,6 @@ package com.azure.ai.openai.generated;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRole;
@@ -15,17 +14,13 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.util.List;
-
 import static com.azure.ai.openai.generated.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     private OpenAIAsyncClient client;
@@ -44,7 +39,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, new CompletionsOptions(prompt)))
                 .assertNext(resultCompletions -> {
-                    assertNotNull(resultCompletions.getUsage());
                     assertCompletions(new int[]{0}, null, null, resultCompletions);
                 })
                 .verifyComplete();
@@ -62,7 +56,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .assertNext(response -> {
                     assertEquals(200, response.getStatusCode());
                     Completions resultCompletions = response.getValue().toObject(Completions.class);
-                    assertNotNull(resultCompletions.getUsage());
                     assertCompletions(new int[]{0}, null, null, resultCompletions);
                 })
                 .verifyComplete();
@@ -77,14 +70,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages)))
                 .assertNext(resultChatCompletions -> {
                     assertNotNull(resultChatCompletions.getUsage());
-                    // TODO: assert chat completion and make it generic
-                    List<ChatChoice> choices = resultChatCompletions.getChoices();
-                    assertNotNull(choices);
-                    assertTrue(choices.size() > 0);
-                    ChatChoice chatChoice = resultChatCompletions.getChoices().get(0);
-                    assertEquals(0, chatChoice.getIndex());
-                    assertEquals(ChatRole.ASSISTANT, chatChoice.getMessage().getRole());
-                    assertNotNull(chatChoice.getMessage().getContent());
+                    assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
                 })
                 .verifyComplete();
         });
@@ -101,49 +87,35 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .assertNext(response -> {
                     assertEquals(200, response.getStatusCode());
                     ChatCompletions resultChatCompletions = response.getValue().toObject(ChatCompletions.class);
-                    assertNotNull(resultChatCompletions.getUsage());
-                    // TODO: assert chat completion and make it generic
-                    List<ChatChoice> choices = resultChatCompletions.getChoices();
-                    assertNotNull(choices);
-                    assertTrue(choices.size() > 0);
-                    ChatChoice chatChoice = resultChatCompletions.getChoices().get(0);
-                    assertEquals(0, chatChoice.getIndex());
-                    assertEquals(ChatRole.ASSISTANT, chatChoice.getMessage().getRole());
-                    assertNotNull(chatChoice.getMessage().getContent());
+                    assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
                 })
                 .verifyComplete();
         });
     }
 
-    @Disabled("Status code 401, Access denied due to invalid subscription key or wrong API endpoint")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
     public void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
-                .assertNext(resultEmbeddings -> {
-                    assertNotNull(resultEmbeddings.getUsage());
-                    // TODO: assert embeddings
-                })
+                .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
                 .verifyComplete();
         });
     }
 
-    @Disabled("Status code 401, Access denied due to invalid subscription key or wrong API endpoint")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
     public void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
-            StepVerifier.create(client.getChatCompletionsWithResponse(deploymentId,
+            StepVerifier.create(client.getEmbeddingsWithResponse(deploymentId,
                     BinaryData.fromObject(embeddingsOptions),
                     new RequestOptions()))
                 .assertNext(response -> {
                     assertEquals(200, response.getStatusCode());
-                    Embeddings resultEmbedding = response.getValue().toObject(Embeddings.class);
-                    assertNotNull(resultEmbedding.getUsage());
-                    // TODO: assert embeddings
+                    Embeddings resultEmbeddings = response.getValue().toObject(Embeddings.class);
+                    assertEmbeddings(resultEmbeddings);
                 })
                 .verifyComplete();
         });
