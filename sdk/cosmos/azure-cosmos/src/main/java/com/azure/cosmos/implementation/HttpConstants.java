@@ -374,7 +374,7 @@ public class HttpConstants {
         /**
          * Used by {@link RequestCancelledException} to indicate a client side request cancellation
          */
-        public static final int REQUEST_CANCELLED = 499;
+        public static final int OPERATION_CANCELLED = 499;
     }
 
     public static class SubStatusCodes {

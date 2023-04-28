@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -53,7 +54,7 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
-    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig;
 
     /**
      * Instantiates a new query request options.
@@ -96,7 +97,7 @@ public class CosmosQueryRequestOptions {
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
-        this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
+        this.cosmosEndToEndOperationConfig = options.cosmosEndToEndOperationConfig;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -324,21 +325,22 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * Gets the {@link CosmosEndToEndOperationConfig}
      * @return the CosmosEndToEndOperationLatencyPolicyConfig
      */
-    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
-        return cosmosEndToEndOperationLatencyPolicyConfig;
+    public CosmosEndToEndOperationConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+        return cosmosEndToEndOperationConfig;
     }
 
     /**
-     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request
+     * Sets the {@link CosmosEndToEndOperationConfig} to be used for the request. If the config is already set
+     *      * on the client, then this will override the client level config for this request
      *
-     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @param cosmosEndToEndOperationConfig the {@link CosmosEndToEndOperationConfig}
      * @return the CosmosQueryRequestOptions
      */
-    public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
-        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+    public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig) {
+        this.cosmosEndToEndOperationConfig = cosmosEndToEndOperationConfig;
         return this;
     }
 
@@ -794,7 +796,7 @@ public class CosmosQueryRequestOptions {
                     if (queryRequestOptions.thresholds != null) {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
-                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
+                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationConfig);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {

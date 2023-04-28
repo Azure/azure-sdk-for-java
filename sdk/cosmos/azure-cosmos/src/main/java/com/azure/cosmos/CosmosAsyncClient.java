@@ -35,7 +35,6 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -97,7 +96,7 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
-    private final CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private final CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -114,7 +113,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
-        this.endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationLatencyPolicyConfig();
+        this.endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -760,7 +759,7 @@ public final class CosmosAsyncClient implements Closeable {
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
     }
 
-    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+    CosmosEndToEndOperationConfig getEndToEndOperationLatencyPolicyConfig() {
         return endToEndOperationLatencyPolicyConfig;
     }
 

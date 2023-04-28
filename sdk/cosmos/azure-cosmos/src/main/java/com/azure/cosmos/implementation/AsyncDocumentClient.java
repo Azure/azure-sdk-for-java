@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosEndToEndOperationConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -19,7 +20,6 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -99,7 +99,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+        private CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -236,8 +236,8 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
-            this.cosmosEndToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig endToEndOperationLatencyPolicyConfig) {
+            this.cosmosEndToEndOperationConfig = endToEndOperationLatencyPolicyConfig;
             return this;
         }
 
@@ -274,7 +274,7 @@ public interface AsyncDocumentClient {
                 apiType,
                 clientTelemetryConfig,
                 clientCorrelationId,
-                cosmosEndToEndOperationLatencyPolicyConfig);
+                cosmosEndToEndOperationConfig);
 
             client.init(state, null);
             return client;

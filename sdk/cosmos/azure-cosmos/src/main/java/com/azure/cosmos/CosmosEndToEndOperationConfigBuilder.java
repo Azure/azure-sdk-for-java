@@ -3,21 +3,19 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
-
 import java.time.Duration;
 
 /**
  * Builder for CosmosEndToEndOperationLatencyPolicyConfig
  */
-public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
+public class CosmosEndToEndOperationConfigBuilder {
     private final boolean isEnabled;
     private Duration endToEndOperationTimeout = Duration.ofSeconds(2); //defaults to two seconds
 
     /**
-     * Create a CosmosEndToEndOperationLatencyPolicyConfigBuilder enabling the policy
+     * Create a CosmosEndToEndOperationConfigBuilder enabling the policy
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder() {
+    public CosmosEndToEndOperationConfigBuilder() {
         this(true);
     }
 
@@ -25,17 +23,17 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * Enable or disable the end to end timeout policy
      * @param isEnabled Flag to toggle the end to end timeout policy
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder(boolean isEnabled) {
+    public CosmosEndToEndOperationConfigBuilder(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }
 
     /**
-     * Builds {@link CosmosEndToEndOperationLatencyPolicyConfig} with specified properties
+     * Builds {@link CosmosEndToEndOperationConfig} with specified properties
      *
-     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationConfig}
      */
-    public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout);
+    public CosmosEndToEndOperationConfig build() {
+        return new CosmosEndToEndOperationConfig(isEnabled, endToEndOperationTimeout);
     }
 
     /**
@@ -44,9 +42,9 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      *
      * @param endToEndOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
      *                                can cause the request to never succeed.
-     * @return current CosmosEndToEndOperationLatencyPolicyConfigBuilder
+     * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosEndToEndOperationLatencyPolicyConfigBuilder endToEndOperationTimeout(
+    public CosmosEndToEndOperationConfigBuilder endToEndOperationTimeout(
         Duration endToEndOperationTimeout) {
 
         this.endToEndOperationTimeout = endToEndOperationTimeout;

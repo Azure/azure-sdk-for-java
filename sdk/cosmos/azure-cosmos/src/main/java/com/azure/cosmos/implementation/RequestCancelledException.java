@@ -12,7 +12,7 @@ import java.net.URI;
 /**
  * The type Request cancelled exception.
  */
-public class RequestCancelledException extends CosmosException {
+public final class RequestCancelledException extends CosmosException {
 
     /**
      * Instantiates a new Request cancelled exception.
@@ -35,7 +35,7 @@ public class RequestCancelledException extends CosmosException {
                               Exception innerException,
                               HttpHeaders headers,
                               URI requestUrl) {
-        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_CANCELLED,
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.OPERATION_CANCELLED,
             requestUrl != null ? requestUrl.toString() : null);
     }
 }

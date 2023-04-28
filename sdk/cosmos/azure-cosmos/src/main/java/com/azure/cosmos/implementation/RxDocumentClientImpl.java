@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.CosmosEndToEndOperationConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
@@ -59,7 +60,6 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -167,7 +167,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final int clientId;
     private ClientTelemetry clientTelemetry;
     private final ApiType apiType;
-    private final CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private final CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -214,7 +214,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
-                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+                                CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -231,7 +231,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 apiType,
                 clientTelemetryConfig,
                 clientCorrelationId,
-                cosmosEndToEndOperationLatencyPolicyConfig);
+            cosmosEndToEndOperationConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -251,7 +251,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
-                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+                                CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -268,7 +268,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 apiType,
                 clientTelemetryConfig,
                 clientCorrelationId,
-                cosmosEndToEndOperationLatencyPolicyConfig);
+            cosmosEndToEndOperationConfig);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -287,7 +287,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ApiType apiType,
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
-                                CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+                                CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -303,7 +303,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 apiType,
                 clientTelemetryConfig,
                 clientCorrelationId,
-                cosmosEndToEndOperationLatencyPolicyConfig);
+            cosmosEndToEndOperationConfig);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -361,7 +361,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          ApiType apiType,
                          CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
-                         CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+                         CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -382,7 +382,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(connectionSharingAcrossClientsEnabled);
         this.diagnosticsClientConfig.withConsistency(consistencyLevel);
         this.throughputControlEnabled = new AtomicBoolean(false);
-        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+        this.cosmosEndToEndOperationConfig = cosmosEndToEndOperationConfig;
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -959,9 +959,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return tFeedResponse;
                 });
 
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            CosmosEndToEndOperationConfig endToEndPolicyConfig =
                 options.getCosmosEndToEndOperationLatencyPolicyConfig() != null ?
-                options.getCosmosEndToEndOperationLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+                options.getCosmosEndToEndOperationLatencyPolicyConfig() : this.cosmosEndToEndOperationConfig;
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                 return feedResponseFlux
@@ -1902,7 +1902,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceResponse> responseObservable =
                 requestObs.flatMap(request -> {
-                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                    CosmosEndToEndOperationConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
                     Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
                     if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                         return rxDocumentServiceResponseMono
@@ -1922,7 +1922,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private static Throwable getCancellationException(RxDocumentServiceRequest request, Throwable throwable) {
-        if (throwable instanceof TimeoutException) {
+        Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+        if (unwrappedException instanceof TimeoutException) {
             CosmosException exception = new RequestCancelledException();
             exception.setStackTrace(throwable.getStackTrace());
             return BridgeInternal.setCosmosDiagnostics(exception, request.requestContext.cosmosDiagnostics);
@@ -1950,7 +1951,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 options, disableAutomaticIdGeneration, OperationType.Upsert);
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
-                CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                CosmosEndToEndOperationConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
                 if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                     return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options))
                         .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
@@ -2075,7 +2076,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return requestObs.flatMap(req -> {
             Mono<ResourceResponse<Document>> resourceResponseMono = replace(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+            CosmosEndToEndOperationConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                 return resourceResponseMono
                     .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
@@ -2085,10 +2086,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         });
     }
 
-    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+    private CosmosEndToEndOperationConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
+        CosmosEndToEndOperationConfig endToEndPolicyConfig =
             (options != null && options.getCosmosEndToEndLatencyPolicyConfig() != null) ?
-                options.getCosmosEndToEndLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+                options.getCosmosEndToEndLatencyPolicyConfig() : this.cosmosEndToEndOperationConfig;
         return endToEndPolicyConfig;
     }
 
@@ -2269,9 +2270,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
-            CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            CosmosEndToEndOperationConfig endToEndPolicyConfig =
                 options.getCosmosEndToEndLatencyPolicyConfig() != null ? options.getCosmosEndToEndLatencyPolicyConfig()
-                    : this.cosmosEndToEndOperationLatencyPolicyConfig;
+                    : this.cosmosEndToEndOperationConfig;
 
             return requestObs.flatMap(req -> {
 

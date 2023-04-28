@@ -21,7 +21,6 @@ import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -131,7 +130,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -789,21 +788,21 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} on the client
-     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * Sets the {@link CosmosEndToEndOperationConfig} on the client
+     * @param cosmosEndToEndOperationConfig the {@link CosmosEndToEndOperationConfig}
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
-        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationConfig cosmosEndToEndOperationConfig){
+        this.cosmosEndToEndOperationConfig = cosmosEndToEndOperationConfig;
         return this;
     }
 
     /**
-     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
-     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * Gets the {@link CosmosEndToEndOperationConfig}
+     * @return the {@link CosmosEndToEndOperationConfig}
      */
-    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
-        return this.cosmosEndToEndOperationLatencyPolicyConfig;
+    CosmosEndToEndOperationConfig getEndToEndOperationConfig() {
+        return this.cosmosEndToEndOperationConfig;
     }
 
     /**

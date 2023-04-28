@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
-
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+package com.azure.cosmos;
 
 import java.time.Duration;
 
@@ -11,18 +9,18 @@ import java.time.Duration;
  * Represents End to end operation latency policy config
  * This enables requests to get cancelled by the client once the specified timeout is reached
  */
-public class CosmosEndToEndOperationLatencyPolicyConfig {
+public final class CosmosEndToEndOperationConfig {
     /**
      * The default end to end operation latency policy with timeout of 2 seconds
      */
-    public static final CosmosEndToEndOperationLatencyPolicyConfig DEFAULT =
-        new CosmosEndToEndOperationLatencyPolicyConfigBuilder().build();
+    public static final CosmosEndToEndOperationConfig DEFAULT =
+        new CosmosEndToEndOperationConfigBuilder().build();
 
     /**
      * The disabled end to end operation latency policy
      */
-    public static final CosmosEndToEndOperationLatencyPolicyConfig DISABLED =
-        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(false).build();
+    public static final CosmosEndToEndOperationConfig DISABLED =
+        new CosmosEndToEndOperationConfigBuilder(false).build();
 
     private final boolean isEnabled;
     private final Duration endToEndOperationTimeout;
@@ -33,7 +31,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfig {
      * @param endToEndOperationTimeout the timeout for request cancellation in {@link Duration}. Setting very low timeouts
      *                                 can cause the request to never succeed.
      */
-    public CosmosEndToEndOperationLatencyPolicyConfig(
+    CosmosEndToEndOperationConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout) {
 
