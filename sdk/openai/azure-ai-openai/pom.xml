@@ -50,7 +50,6 @@
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.openai/com.azure.ai.openai=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <graalvm.disable>false</graalvm.disable>
   </properties>
 
   <dependencies>

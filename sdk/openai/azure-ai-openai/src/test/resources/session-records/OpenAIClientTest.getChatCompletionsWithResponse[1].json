@@ -4,29 +4,53 @@
     "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0e052c49-7070-46ac-b13f-db816b762821",
+      "x-ms-client-request-id" : "34fe6cc8-4c03-4736-993c-14fb1b460366",
       "Content-Type" : "application/json"
     },
-    "Response" : {
-      "x-request-id" : "63a1d995-7641-4f9e-a163-abdd2003dc06",
-      "x-ms-region" : "East US",
-      "apim-request-id" : "63682bd1-d365-4ae1-957e-62ed4bdaefae",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Fri, 28 Apr 2023 06:02:07 GMT",
-      "access-control-allow-origin" : "*",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "x-accel-buffering" : "no",
-      "Cache-Control" : "no-cache, must-revalidate",
-      "openai-processing-ms" : "3153.7141",
-      "openai-model" : "gpt-35-turbo",
-      "Content-Length" : "789",
-      "Body" : "{\"id\":\"chatcmpl-7ABTBIqSzNY9x9ET9DTKi4sn2j7j0\",\"object\":\"chat.completion\",\"created\":1682661725,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Arrr matey! If ye be wanting to train a parrot, ye first need to gain its trust. Spend some time with yer bird and speak to it gently. Once ye have built a rapport with yer bird, ye can start with some basic commands, such as \\\"step up\\\" or \\\"come here\\\". Use treats as a reward for good behavior, but remember to not overfeed the bird in the process. Clarity and consistency are key while giving commands. Keep practicing the same commands every day, and ye'll have a well-trained pirate parrot in no time!\"}}],\"usage\":{\"completion_tokens\":117,\"prompt_tokens\":65,\"total_tokens\":182}}\n",
-      "x-ms-client-request-id" : "0e052c49-7070-46ac-b13f-db816b762821",
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.util.concurrent.TimeoutException",
+      "ErrorMessage" : "Channel response timed out after 60000 milliseconds."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34fe6cc8-4c03-4736-993c-14fb1b460366",
       "Content-Type" : "application/json"
     },
-    "Exception" : null
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.io.IOException",
+      "ErrorMessage" : "An existing connection was forcibly closed by the remote host"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34fe6cc8-4c03-4736-993c-14fb1b460366",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.io.IOException",
+      "ErrorMessage" : "An existing connection was forcibly closed by the remote host"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "34fe6cc8-4c03-4736-993c-14fb1b460366",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.io.IOException",
+      "ErrorMessage" : "An existing connection was forcibly closed by the remote host"
+    }
   } ],
   "variables" : [ ]
 }

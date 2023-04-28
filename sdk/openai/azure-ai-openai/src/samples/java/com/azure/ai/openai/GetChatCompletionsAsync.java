@@ -27,7 +27,7 @@ public class GetChatCompletionsAsync {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
         String deploymentOrModelId = "{azure_open_ai_deployment_model_id}";
@@ -66,9 +66,6 @@ public class GetChatCompletionsAsync {
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
         // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException ignored) {
-        }
+        TimeUnit.SECONDS.sleep(10);
     }
 }

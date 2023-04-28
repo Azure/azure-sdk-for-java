@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai.generated;
+package com.azure.ai.openai;
 
-import com.azure.ai.openai.OpenAIClient;
-import com.azure.ai.openai.OpenAIServiceVersion;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRole;
@@ -18,7 +16,7 @@ import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static com.azure.ai.openai.generated.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OpenAIClientTest extends OpenAIClientTestBase {
@@ -31,7 +29,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
@@ -41,7 +39,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
@@ -54,7 +52,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
@@ -64,7 +62,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
@@ -77,7 +75,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
@@ -87,7 +85,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.generated.TestUtils#getTestParameters")
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
