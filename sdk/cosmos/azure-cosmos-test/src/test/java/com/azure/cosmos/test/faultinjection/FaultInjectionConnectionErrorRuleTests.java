@@ -38,7 +38,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, dataProvider = "connectionErrorTypeProvider", timeOut = TIMEOUT)
-    public void faultInjectionConnectionErrorRuleTests(FaultInjectionConnectionErrorType errorType) throws InterruptedException {
+    public void faultInjectionConnectionErrorRuleTests(FaultInjectionConnectionErrorType errorType) {
 
         client = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -47,63 +47,66 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
                 .directMode()
                 .buildAsyncClient();
 
+        try {
+            // using single partition here so that all write operations will be on the same physical partitions
+            CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
 
-        // using single partition here so that all write operations will be on the same physical partitions
-        CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
+            // validate one channel exists
+            TestItem createdItem = TestItem.createNewItem();
+            singlePartitionContainer.createItem(createdItem).block();
 
-        // validate one channel exists
-        TestItem createdItem = TestItem.createNewItem();
-        singlePartitionContainer.createItem(createdItem).block();
+            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(this.client);
+            RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
+            assertThat(provider.count()).isEqualTo(1);
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
 
-        RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(this.client);
-        RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
-        assertThat(provider.count()).isEqualTo(1);
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+            // now enable the connection error rule which expected to close the connections
+            String ruleId = "connectionErrorRule-close-" + UUID.randomUUID();
+            FaultInjectionRule connectionErrorRule =
+                    new FaultInjectionRuleBuilder(ruleId)
+                            .condition(
+                                    new FaultInjectionConditionBuilder()
+                                            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                                            .endpoints(
+                                                    new FaultInjectionEndpointBuilder(
+                                                            FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk())))
+                                                            .build())
+                                            .build()
+                            )
+                            .result(
+                                    FaultInjectionResultBuilders
+                                            .getResultBuilder(errorType)
+                                            .interval(Duration.ofSeconds(1))
+                                            .threshold(1.0)
+                                            .build()
+                            )
+                            .duration(Duration.ofSeconds(2))
+                            .build();
 
-        // now enable the connection error rule which expected to close the connections
-        String ruleId = "connectionErrorRule-close-" + UUID.randomUUID();
-        FaultInjectionRule connectionErrorRule =
-            new FaultInjectionRuleBuilder(ruleId)
-                .condition(
-                    new FaultInjectionConditionBuilder()
-                        .operationType(FaultInjectionOperationType.CREATE_ITEM)
-                        .endpoints(
-                            new FaultInjectionEndpointBuilder(
-                                FeedRange.forLogicalPartition(new PartitionKey(createdItem.getMypk())))
-                            .build())
-                        .build()
-                )
-                .result(
-                    FaultInjectionResultBuilders
-                        .getResultBuilder(errorType)
-                        .interval(Duration.ofSeconds(1))
-                        .threshold(1.0)
-                        .build()
-                )
-                .duration(Duration.ofSeconds(2))
-                .build();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
+            Thread.sleep(Duration.ofSeconds(2).toMillis());
+            // validate that a connection is closed by fault injection
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().totalChannelsClosedMetric()).isEqualTo(1));
+            // validate that a min required no. of connections is opened back by proactive connection management
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().getEndpoint().channelsMetrics()).isEqualTo(1));
+            long ruleHitCount = connectionErrorRule.getHitCount();
+            assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
+            assertThat(connectionErrorRule.getHitCountDetails()).isNull();
 
-        CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
-        Thread.sleep(Duration.ofSeconds(2).toMillis());
-        // validate that a connection is closed by fault injection
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().totalChannelsClosedMetric()).isEqualTo(1));
-        // validate that a min required no. of connections is opened back by proactive connection management
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().getEndpoint().channelsMetrics()).isEqualTo(1));
-        long ruleHitCount = connectionErrorRule.getHitCount();
-        assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
-        assertThat(connectionErrorRule.getHitCountDetails()).isNull();
+            // do another request to open a new connection
+            singlePartitionContainer.createItem(TestItem.createNewItem()).block();
 
-        // do another request to open a new connection
-        singlePartitionContainer.createItem(TestItem.createNewItem()).block();
+            Thread.sleep(Duration.ofSeconds(2).toMillis());
+            // the configured connection rule should have disabled after 2s, so the connection will remain open
+            // Due to the open connection flow,eventually we might get 1 or 2 channels.
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isLessThanOrEqualTo(2));
+            assertThat(ruleHitCount).isEqualTo(ruleHitCount);
 
-        Thread.sleep(Duration.ofSeconds(2).toMillis());
-        // the configured connection rule should have disabled after 2s, so the connection will remain open
-        // Due to the open connection flow,eventually we might get 1 or 2 channels.
-        provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isLessThanOrEqualTo(2));
-        assertThat(ruleHitCount).isEqualTo(ruleHitCount);
-
-        connectionErrorRule.disable();
-
-        safeClose(client);
+            connectionErrorRule.disable();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            safeClose(client);
+        }
     }
 }
