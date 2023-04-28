@@ -13,29 +13,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
+        property = "retentionPolicyKind",
         defaultImpl = ChatRetentionPolicy.class)
 @JsonTypeName("ChatRetentionPolicy")
 @JsonSubTypes({@JsonSubTypes.Type(name = "threadCreationDate", value = ThreadCreationDateRetentionPolicy.class)})
 @Immutable
 public abstract class ChatRetentionPolicy {
-    /** kind of the ChatRetentionPolicy*/
-    public final Kind kind;
+    /** retentionPolicyKind of the ChatRetentionPolicy*/
+    public final RetentionPolicyKind retentionPolicyKind;
 
     /**
-     * Kind of retention policy. Available values are [THREAD_CREATION_DATE]
-     * @param kind kind of the retention policy
+     * RetentionPolicyKind of retention policy. Available values are [THREAD_CREATION_DATE]
+     * @param retentionPolicyKind retentionPolicyKind of the retention policy
      * */
-    public ChatRetentionPolicy(Kind kind) {
-        this.kind = kind;
+    public ChatRetentionPolicy(RetentionPolicyKind retentionPolicyKind) {
+        this.retentionPolicyKind = retentionPolicyKind;
     }
 
     /**
-     * Get the kind property: Chat kind of the retention policy.
+     * Get the retentionPolicyKind property: Chat retentionPolicyKind of the retention policy.
      *
-     * @return the kind.
+     * @return the retentionPolicyKind.
      */
-    public Kind getChatRetentionPolicyKind() {
-        return kind;
+    public RetentionPolicyKind getChatRetentionPolicyKind() {
+        return retentionPolicyKind;
     }
 }

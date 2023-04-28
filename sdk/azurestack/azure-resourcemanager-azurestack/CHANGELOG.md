@@ -45,7 +45,7 @@
 #### `models.Registration` was modified
 
 * `systemData()` was removed
-* `kind()` was removed
+* `retentionPolicyKind()` was removed
 
 #### `models.CustomerSubscription` was modified
 

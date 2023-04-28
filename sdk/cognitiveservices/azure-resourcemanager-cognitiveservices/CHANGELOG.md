@@ -81,7 +81,7 @@
 
 #### `models.CommitmentPlan` was modified
 
-* `kind()` was added
+* `retentionPolicyKind()` was added
 * `location()` was added
 * `sku()` was added
 * `region()` was added
@@ -282,12 +282,12 @@
 
 #### `models.CheckDomainAvailabilityParameter` was modified
 
-* `kind()` was added
+* `retentionPolicyKind()` was added
 * `withKind(java.lang.String)` was added
 
 #### `models.DomainAvailability` was modified
 
-* `kind()` was added
+* `retentionPolicyKind()` was added
 
 #### `CognitiveServicesManager$Configurable` was modified
 

@@ -59,7 +59,7 @@ occur out of order, resulting in incorrect message state.
 
 Mitigation: Use `disableAutoComplete()` and `.maxAutoLockRenewalDuration(Duration.ZERO)` to turn off the two features 
 in `ServiceBusReceiverAsyncClient`. 
-Especially when there is any kind of buffering involved in the message processing code path. After disabling 
+Especially when there is any retentionPolicyKind of buffering involved in the message processing code path. After disabling 
 AutoComplete, message settlement (completion / abandonment) should be done explicitly from the message processing code.
 For more information on how to use this correctly, please refer to the [samples][Samples]
 

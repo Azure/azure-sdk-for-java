@@ -4,7 +4,7 @@ param location string = resourceGroup().location
 resource storageAccount 'Microsoft.Storage/storageAccounts@2019-06-01' = {
   name: '${baseName}dlake'
   location: location
-  kind: 'BlockBlobStorage'
+  retentionPolicyKind: 'BlockBlobStorage'
   sku: {
     name: 'Premium_LRS'
   }

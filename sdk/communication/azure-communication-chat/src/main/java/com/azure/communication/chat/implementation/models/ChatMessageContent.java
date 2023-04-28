@@ -39,8 +39,8 @@ public final class ChatMessageContent {
     /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * model is polymorphic: Apart from retentionPolicyKind and rawId, at most one further
+     * property may be set which must match the retentionPolicyKind enum value.
      */
     @JsonProperty(value = "initiatorCommunicationIdentifier")
     private CommunicationIdentifierModel initiatorCommunicationIdentifier;
@@ -128,7 +128,7 @@ public final class ChatMessageContent {
     /**
      * Get the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
+     * retentionPolicyKind and rawId, at most one further property may be set which must match the retentionPolicyKind enum value.
      *
      * @return the initiatorCommunicationIdentifier value.
      */
@@ -139,7 +139,7 @@ public final class ChatMessageContent {
     /**
      * Set the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
+     * retentionPolicyKind and rawId, at most one further property may be set which must match the retentionPolicyKind enum value.
      *
      * @param initiatorCommunicationIdentifier the initiatorCommunicationIdentifier value to set.
      * @return the ChatMessageContent object itself.

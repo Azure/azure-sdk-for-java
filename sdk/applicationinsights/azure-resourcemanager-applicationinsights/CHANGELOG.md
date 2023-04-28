@@ -20,12 +20,12 @@
 
 #### `models.WorkbookUpdateParameters` was modified
 
-* `models.SharedTypeKind kind()` -> `models.WorkbookUpdateSharedTypeKind kind()`
+* `models.SharedTypeKind retentionPolicyKind()` -> `models.WorkbookUpdateSharedTypeKind retentionPolicyKind()`
 * `withKind(models.SharedTypeKind)` was removed
 
 #### `models.WorkbookResource` was modified
 
-* `models.Kind kind()` -> `models.WorkbookSharedTypeKind kind()`
+* `models.Kind retentionPolicyKind()` -> `models.WorkbookSharedTypeKind retentionPolicyKind()`
 * `withKind(models.Kind)` was removed
 
 #### `models.Workbook$Definition` was modified
@@ -38,7 +38,7 @@
 
 #### `models.Workbook` was modified
 
-* `models.Kind kind()` -> `models.WorkbookSharedTypeKind kind()`
+* `models.Kind retentionPolicyKind()` -> `models.WorkbookSharedTypeKind retentionPolicyKind()`
 
 ### Features Added
 

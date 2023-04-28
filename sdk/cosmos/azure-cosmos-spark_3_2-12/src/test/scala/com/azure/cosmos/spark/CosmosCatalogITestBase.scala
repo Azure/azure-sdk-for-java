@@ -101,7 +101,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
 
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "1"
-    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"retentionPolicyKind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
@@ -196,7 +196,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
     // tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "3000000"
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "1"
-    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\",\"version\":2}"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"retentionPolicyKind\":\"Hash\",\"version\":2}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
@@ -243,7 +243,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
 
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "2"
-    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/id\"],\"retentionPolicyKind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
     tblProperties("IndexingPolicy") shouldEqual
       "{\"indexingMode\":\"consistent\",\"automatic\":true,\"includedPaths\":[{\"path\":\"/*\"}]," +
@@ -369,7 +369,7 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
 
     tblProperties("AnalyticalStoreTtlInSeconds") shouldEqual "null"
     tblProperties("CosmosPartitionCount") shouldEqual "1"
-    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"kind\":\"Hash\"}"
+    tblProperties("CosmosPartitionKeyDefinition") shouldEqual "{\"paths\":[\"/mypk\"],\"retentionPolicyKind\":\"Hash\"}"
     tblProperties("DefaultTtlInSeconds") shouldEqual "null"
 
     // indexPolicyJson will be normalized by the backend - so not be the same as the input json

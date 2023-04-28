@@ -192,7 +192,7 @@
 
 * `extendedLocation()` was removed
 * `sku()` was removed
-* `kind()` was removed
+* `retentionPolicyKind()` was removed
 
 #### `models.PartnerRegistration$Update` was modified
 
@@ -578,7 +578,7 @@
 * `sku()` was added
 * `dataResidencyBoundary()` was added
 * `extendedLocation()` was added
-* `kind()` was added
+* `retentionPolicyKind()` was added
 * `resourceGroupName()` was added
 
 #### `models.Operation` was modified
@@ -885,7 +885,7 @@
 
 * `dataResidencyBoundary()` was added
 * `sku()` was added
-* `kind()` was added
+* `retentionPolicyKind()` was added
 * `extendedLocation()` was added
 
 #### `models.Operation` was modified
@@ -1458,7 +1458,7 @@
 #### `models.Topic` was modified
 
 * `disableLocalAuth()` was added
-* `kind()` was added
+* `retentionPolicyKind()` was added
 * `identity()` was added
 * `extendedLocation()` was added
 * `sku()` was added
@@ -1802,7 +1802,7 @@
 * `regenerateKey(models.TopicRegenerateKeyRequest)` was added
 * `identity()` was added
 * `extendedLocation()` was added
-* `kind()` was added
+* `retentionPolicyKind()` was added
 
 #### `models.EventSubscriptionFilter` was modified
 

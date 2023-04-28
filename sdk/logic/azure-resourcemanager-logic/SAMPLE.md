@@ -3098,7 +3098,7 @@ public final class WorkflowsCreateOrUpdateSamples {
                 SerializerFactory
                     .createDefaultManagementSerializerAdapter()
                     .deserialize(
-                        "{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{\"Find_pet_by_ID\":{\"type\":\"ApiConnection\",\"inputs\":{\"path\":\"/pet/@{encodeURIComponent('1')}\",\"method\":\"get\",\"host\":{\"connection\":{\"name\":\"@parameters('$connections')['test-custom-connector']['connectionId']\"}}},\"runAfter\":{}}},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"parameters\":{\"$connections\":{\"type\":\"Object\",\"defaultValue\":{}}},\"triggers\":{\"manual\":{\"type\":\"Request\",\"inputs\":{\"schema\":{}},\"kind\":\"Http\"}}}",
+                        "{\"$schema\":\"https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#\",\"actions\":{\"Find_pet_by_ID\":{\"type\":\"ApiConnection\",\"inputs\":{\"path\":\"/pet/@{encodeURIComponent('1')}\",\"method\":\"get\",\"host\":{\"connection\":{\"name\":\"@parameters('$connections')['test-custom-connector']['connectionId']\"}}},\"runAfter\":{}}},\"contentVersion\":\"1.0.0.0\",\"outputs\":{},\"parameters\":{\"$connections\":{\"type\":\"Object\",\"defaultValue\":{}}},\"triggers\":{\"manual\":{\"type\":\"Request\",\"inputs\":{\"schema\":{}},\"retentionPolicyKind\":\"Http\"}}}",
                         Object.class,
                         SerializerEncoding.JSON))
             .withParameters(

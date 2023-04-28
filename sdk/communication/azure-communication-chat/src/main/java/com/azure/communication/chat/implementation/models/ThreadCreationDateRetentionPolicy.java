@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Thread retention policy based on thread creation date. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "retentionPolicyKind")
 @JsonTypeName("threadCreationDate")
 @Fluent
 public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy {
@@ -26,7 +26,7 @@ public final class ThreadCreationDateRetentionPolicy extends ChatRetentionPolicy
      * @param deleteThreadAfterDays set the deleteThreadAfterDays
      */
     public ThreadCreationDateRetentionPolicy (int deleteThreadAfterDays) {
-        super(Kind.THREAD_CREATION_DATE);
+        super(RetentionPolicyKind.THREAD_CREATION_DATE);
         this.deleteThreadAfterDays = deleteThreadAfterDays;
     }
     /**

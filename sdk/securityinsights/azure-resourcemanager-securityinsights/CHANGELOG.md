@@ -45,7 +45,7 @@
 * `queryId()` was removed
 * `validate()` was removed
 * `withKind(java.lang.String)` was removed
-* `kind()` was removed
+* `retentionPolicyKind()` was removed
 
 #### `models.EntityQueryTemplates` was modified
 

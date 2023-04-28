@@ -108,7 +108,7 @@ az group create --name <your-resource-group> --location <location>
 az cognitiveservices account create \
     --name <your-form-recognizer-resource-name> \
     --resource-group <your-resource-group> \
-    --kind FormRecognizer \
+    --retentionPolicyKind FormRecognizer \
     --sku <sku> \
     --location <location> \
     --yes

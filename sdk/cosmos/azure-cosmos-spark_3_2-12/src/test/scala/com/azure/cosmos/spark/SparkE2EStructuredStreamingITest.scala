@@ -312,7 +312,7 @@ class SparkE2EStructuredStreamingITest
     }
 
     spark.udf.register("GetFeedRangeForPartitionKey", new GetFeedRangeForPartitionKeyValue(), StringType)
-    val pkDefinition = "{\"paths\":[\"/id\"],\"kind\":\"Hash\"}"
+    val pkDefinition = "{\"paths\":[\"/id\"],\"retentionPolicyKind\":\"Hash\"}"
     val dummyDf = spark.sql(s"SELECT GetFeedRangeForPartitionKey('$pkDefinition', '$lastId')")
 
     val feedRange = dummyDf
