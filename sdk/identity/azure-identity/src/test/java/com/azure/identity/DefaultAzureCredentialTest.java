@@ -388,7 +388,7 @@ public class DefaultAzureCredentialTest {
                 && (e.getMessage().contains("The current credential is not configured to")));
     }
 
-//    @Test
+    @Test
     public void testValidMultiTenantAuth() {
         // setup
         Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
