@@ -224,9 +224,9 @@ public class RoomsClientTest extends RoomsTestBase {
                 .addOrUpdateParticipantsWithResponse(roomId, participantsToUpdate, Context.NONE);
         assertEquals(200, addPartcipantResponse.getStatusCode());
 
-        PagedIterable<RoomParticipant> listReponse = roomsClient.listParticipants(roomId);
+        PagedIterable<RoomParticipant> listResponse = roomsClient.listParticipants(roomId);
 
-        for (RoomParticipant participant : listReponse) {
+        for (RoomParticipant participant : listResponse) {
             assertEquals(ParticipantRole.ATTENDEE, participant.getRole());
         }
 
@@ -268,9 +268,9 @@ public class RoomsClientTest extends RoomsTestBase {
         AddOrUpdateParticipantsResult addPartcipantResponse = roomsClient.addOrUpdateParticipants(roomId,
                 participantsToUpdate);
 
-        PagedIterable<RoomParticipant> listReponse = roomsClient.listParticipants(roomId);
+        PagedIterable<RoomParticipant> listResponse = roomsClient.listParticipants(roomId);
 
-        for (RoomParticipant participant : listReponse) {
+        for (RoomParticipant participant : listResponse) {
             assertEquals(ParticipantRole.PRESENTER, participant.getRole());
         }
 
@@ -554,8 +554,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createRoomSyncWithReponseOnlyValidUntil(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithReponseOnlyValidUntil");
+    public void createRoomSyncWithResponseOnlyValidUntil(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithResponseOnlyValidUntil");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -574,8 +574,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createRoomSyncWithReponseOnlyValidUntilGreaterThan180(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithReponseOnlyValidUntilGreaterThan180");
+    public void createRoomSyncWithResponseOnlyValidUntilGreaterThan180(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithResponseOnlyValidUntilGreaterThan180");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -590,8 +590,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createRoomSyncWithReponseOnlyValidFromGreaterThan180(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithReponseOnlyValidFromGreaterThan180");
+    public void createRoomSyncWithResponseOnlyValidFromGreaterThan180(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithResponseOnlyValidFromGreaterThan180");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -606,8 +606,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createRoomSyncWithReponseValidFromValidUntilGreaterThan180(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithReponseValidFromValidUntilGreaterThan180");
+    public void createRoomSyncWithResponseValidFromValidUntilGreaterThan180(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithResponseValidFromValidUntilGreaterThan180");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -621,8 +621,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateRoomSyncWithReponseOnlyValidFrom(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithReponseOnlyValidFrom");
+    public void updateRoomSyncWithResponseOnlyValidFrom(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithResponseOnlyValidFrom");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -647,8 +647,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateRoomSyncWithReponseOnlyValidUntil(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithReponseOnlyValidUntil");
+    public void updateRoomSyncWithResponseOnlyValidUntil(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithResponseOnlyValidUntil");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -674,8 +674,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateRoomSyncWithReponseValidUntilGreaterThan180(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "updateRoomSyncValidUntilWithReponseGreaterThan180");
+    public void updateRoomSyncWithResponseValidUntilGreaterThan180(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncValidUntilWithResponseGreaterThan180");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()
@@ -700,8 +700,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateRoomSyncWithReponseValidFromGreaterThan180(HttpClient httpClient) {
-        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithReponseValidFromGreaterThan180");
+    public void updateRoomSyncWithResponseValidFromGreaterThan180(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "updateRoomSyncWithResponseValidFromGreaterThan180");
         assertNotNull(roomsClient);
 
         CreateRoomOptions createRoomOptions = new CreateRoomOptions()

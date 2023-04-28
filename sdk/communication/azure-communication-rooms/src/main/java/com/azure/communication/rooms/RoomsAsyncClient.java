@@ -365,6 +365,8 @@ public final class RoomsAsyncClient {
 
             String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
 
+
+
             return this.participantsClient
                     .updateWithResponseAsync(roomId, updateRequest, context)
                     .map(result -> new SimpleResponse<AddOrUpdateParticipantsResult>(

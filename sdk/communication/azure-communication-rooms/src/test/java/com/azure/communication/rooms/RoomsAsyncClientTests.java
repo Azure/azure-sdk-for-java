@@ -183,7 +183,7 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
         List<RoomParticipant> participants = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
 
         // Add 3 participants.
-        Mono<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId, participants);
+        AddOrUpdateParticipantsResult addParticipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
 
         // Check participant count, expected 3
         PagedFlux<RoomParticipant> listParticipantsResponse2 = roomsAsyncClient.listParticipants(roomId);
@@ -296,14 +296,14 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         // Add 3 participants
         RoomParticipant firstParticipant = new RoomParticipant(communicationClient.createUser());
-        RoomParticipant secondParticipant = new RoomParticipant(communicationClient.createUser());
+        RoomParticipant secondParticipant = new RoomParticipant(communicationClient.createUser()).setRole(null);
         RoomParticipant thirdParticipant = new RoomParticipant(communicationClient.createUser())
                 .setRole(ParticipantRole.CONSUMER);
 
         List<RoomParticipant> participants = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant);
 
         // Add 3 participants.
-        Mono<AddOrUpdateParticipantsResult> addPartcipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId, participants);
+        AddOrUpdateParticipantsResult addParticipantResponse = roomsAsyncClient.addOrUpdateParticipants(roomId, participants).block();
 
         // Check participant count, expected 3
         PagedFlux<RoomParticipant> listParticipantsResponse2 = roomsAsyncClient.listParticipants(roomId);
