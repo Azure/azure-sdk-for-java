@@ -5,11 +5,14 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.TestProxyTestServer;
@@ -26,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -142,6 +146,25 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.sendSync(request, Context.NONE));
         assertTrue(thrown.getMessage().contains("Uri doesn't match"));
+    }
+
+    @Test
+    @Tag("Record")
+    public void testResetTestProxyData() throws MalformedURLException {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
+            HttpHeaders headers = context.getHttpRequest().getHeaders();
+            String headerValue = headers.getValue(HttpHeaderName.fromString("x-recording-upstream-base-uri"));
+            Assertions.assertNull(headerValue);
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(auditorPolicy, interceptorManager.getRecordPolicy())
+            .build();
+
+        pipeline.sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost")), Context.NONE);
     }
 
     @Test
@@ -334,7 +357,6 @@ public class TestProxyTests extends TestProxyTestBase {
         request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            assertEquals(response.getStatusCode(), 200);
             assertEquals(200, response.getStatusCode());
         }
 
@@ -356,6 +378,37 @@ public class TestProxyTests extends TestProxyTestBase {
     public void canGetTestProxyVersion() {
         String version = TestProxyUtils.getTestProxyVersion();
         assertNotNull(version);
+    }
+
+    @Test
+    @Tag("Record")
+    public void testRecordWithRedirect() {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy()).build();
+        URL url;
+        try {
+            url = new UrlBuilder()
+                .setHost("localhost")
+                .setPath("/fr/path/3")
+                .setPort(3000)
+                .setScheme("http")
+                .toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(response.getStatusCode(), 200);
+        }
+
+        // RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        // RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+        // assertEquals("http://REDACTED/fr/path/1", record.getUri());
     }
 
     private RecordedTestProxyData readDataFromFile() {

@@ -1,0 +1,22 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://REDACTED/fr/path/3",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "User-Agent": "Java/17.0.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 307,
+      "ResponseHeaders": {
+        "Content-Type": "application/json",
+        "Location": "http://REDACTED/",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

@@ -81,6 +81,14 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
+        setRecordingOptions();
+    }
+
+    private void setRecordingOptions() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
+        request.setBody("{\"HandleRedirects\": false}");
+        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.sendSync(request, Context.NONE);
     }
 
     /**
@@ -134,7 +142,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.revertUrl(response);
+        return TestProxyUtils.resetTestProxyData(response);
     }
 
     @Override

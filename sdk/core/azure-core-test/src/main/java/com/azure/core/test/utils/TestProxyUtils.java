@@ -130,12 +130,13 @@ public class TestProxyUtils {
      * @return The modified response.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static HttpResponse revertUrl(HttpResponse response) {
+    public static HttpResponse resetTestProxyData(HttpResponse response) {
+        HttpRequest responseRequest = response.getRequest();
+        HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
-            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders()
-                .getValue(X_RECORDING_UPSTREAM_BASE_URI))
+            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI))
                 .toUrl();
-            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            UrlBuilder currentUrl = UrlBuilder.parse(responseRequest.getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
             int port = originalUrl.getPort();
@@ -144,7 +145,12 @@ public class TestProxyUtils {
             } else {
                 currentUrl.setPort(port);
             }
-            response.getRequest().setUrl(currentUrl.toUrl());
+            responseRequest.setUrl(currentUrl.toUrl());
+
+            responseRequest.setHeader(X_RECORDING_UPSTREAM_BASE_URI, null);
+            responseRequest.setHeader(X_RECORDING_MODE, null);
+            responseRequest.setHeader(X_RECORDING_SKIP, null);
+            responseRequest.setHeader(X_RECORDING_ID, null);
             return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
