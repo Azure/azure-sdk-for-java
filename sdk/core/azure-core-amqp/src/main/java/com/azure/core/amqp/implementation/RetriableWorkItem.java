@@ -18,7 +18,6 @@ class RetriableWorkItem {
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final MonoSink<DeliveryState> monoSink;
     private final TimeoutTracker timeoutTracker;
-    private final byte[] encodedBytes;
     private final ReadableBuffer encodedBuffer;
     private final int messageFormat;
     private final int encodedMessageSize;
@@ -29,32 +28,15 @@ class RetriableWorkItem {
     private final AmqpMetricsProvider metricsProvider;
     private long tryStartTime = 0;
 
-    RetriableWorkItem(byte[] encodedBytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
-                      Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
-        this(encodedBytes, null, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
-            false), deliveryState, metricsProvider);
-    }
-
-    RetriableWorkItem(ReadableBuffer encodedBytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
-                      Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
-        this(null, encodedBytes, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
-            false), deliveryState, metricsProvider);
-    }
-
-    private RetriableWorkItem(byte[] encodedBytes, ReadableBuffer encodedBuffer, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
-        monoSink, TimeoutTracker timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
-        this.encodedBytes = encodedBytes;
-        this.encodedBuffer = encodedBuffer;
-        this.encodedMessageSize = encodedMessageSize;
+    RetriableWorkItem(ReadableBuffer buffer, int messageFormat, MonoSink<DeliveryState> monoSink, Duration timeout,
+        DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
+        this.encodedBuffer = buffer;
+        this.encodedMessageSize = buffer.remaining();
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
-        this.timeoutTracker = timeout;
+        this.timeoutTracker = new TimeoutTracker(timeout, false);
         this.deliveryState = deliveryState;
         this.metricsProvider = metricsProvider;
-    }
-
-    byte[] getMessage() {
-        return encodedBytes;
     }
 
     ReadableBuffer getEncodedBuffer() {
