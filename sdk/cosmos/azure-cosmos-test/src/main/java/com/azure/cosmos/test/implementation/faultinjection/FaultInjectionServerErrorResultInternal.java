@@ -75,7 +75,7 @@ public class FaultInjectionServerErrorResultInternal {
 
         switch (this.serverErrorType) {
             case GONE:
-                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
+                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone), HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 goneException.setIsBasedOn410ResponseFromService();
                 cosmosException = goneException;
                 break;
@@ -93,7 +93,17 @@ public class FaultInjectionServerErrorResultInternal {
                 break;
 
             case TIMEOUT:
-                cosmosException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                // For server return 408, SDK internally will wrap into 410
+                // Details can be found in RntbdRequestManager
+                RequestTimeoutException rootException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                cosmosException = new GoneException(
+                    null,
+                    null,
+                    lsn,
+                    partitionKeyRangeId,
+                    responseHeaders,
+                    rootException,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
                 break;
 
             case INTERNAL_SERVER_ERROR:
