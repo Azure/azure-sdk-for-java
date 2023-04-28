@@ -966,16 +966,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     .toRequestOptions(options));
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return feedResponseFlux
-                    .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
-                    .onErrorMap(throwable -> {
-                        if (throwable instanceof TimeoutException) {
-                            CosmosException exception = new OperationCancelledException();
-                            exception.setStackTrace(throwable.getStackTrace());
-                            return exception;
-                        }
-                        return throwable;
-                    });
+                return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig);
             }
 
             return feedResponseFlux;
@@ -983,6 +974,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // maximize the IDocumentQueryExecutionContext publisher instances to subscribe to concurrently
             // prefetch is set to 1 to minimize the no. prefetched pages (result of merged executeAsync invocations)
         }, Queues.SMALL_BUFFER_SIZE, 1);
+    }
+
+    private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(Flux<FeedResponse<T>> feedResponseFlux, CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig) {
+        return feedResponseFlux
+            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+            .onErrorMap(throwable -> {
+                if (throwable instanceof TimeoutException) {
+                    CosmosException exception = new OperationCancelledException();
+                    exception.setStackTrace(throwable.getStackTrace());
+                    return exception;
+                }
+                return throwable;
+            });
     }
 
     @Override
@@ -1906,12 +1910,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 requestObs.flatMap(request -> {
                     CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
                     Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
-                    if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                        return rxDocumentServiceResponseMono
-                            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
-                            .onErrorMap(throwable -> getCancellationException(request, throwable));
-                    }
-                    return rxDocumentServiceResponseMono;
+                    return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
                 });
 
             return responseObservable
@@ -1921,6 +1920,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
             return Mono.error(e);
         }
+    }
+
+    private static <T> Mono<T> getRxDocumentServiceResponseMonoWithE2ETimeout(RxDocumentServiceRequest request,
+                                                                                                  CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig,
+                                                                                                  Mono<T> rxDocumentServiceResponseMono) {
+        if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+            return rxDocumentServiceResponseMono
+                .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+                .onErrorMap(throwable -> getCancellationException(request, throwable));
+        }
+        return rxDocumentServiceResponseMono;
     }
 
     private static Throwable getCancellationException(RxDocumentServiceRequest request, Throwable throwable) {
@@ -1954,12 +1964,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
                 CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
-                if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                    return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options))
-                        .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
-                        .onErrorMap(throwable -> getCancellationException(request, throwable));
-                }
-                return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)));
             });
 
             return responseObservable
@@ -2079,12 +2084,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<ResourceResponse<Document>> resourceResponseMono = replace(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));
             CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
-            if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                return resourceResponseMono
-                    .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
-                    .onErrorMap(throwable -> getCancellationException(request, throwable));
-            }
-            return resourceResponseMono;
+            return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
         });
     }
 
@@ -2270,18 +2270,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
-            CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig =
-                options.getCosmosEndToEndLatencyPolicyConfig() != null ? options.getCosmosEndToEndLatencyPolicyConfig()
-                    : this.cosmosE2EOperationRetryPolicyConfig;
+            CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
 
             return requestObs.flatMap(req -> {
-
-                if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
-                    return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class))
-                        .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
-                        .onErrorMap(throwable -> getCancellationException(request, throwable));
-                }
-                return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
             });
 
         } catch (Exception e) {
