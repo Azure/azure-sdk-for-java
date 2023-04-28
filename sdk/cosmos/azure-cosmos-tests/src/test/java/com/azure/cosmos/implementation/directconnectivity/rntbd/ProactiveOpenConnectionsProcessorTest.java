@@ -49,10 +49,7 @@ public class ProactiveOpenConnectionsProcessorTest {
         intSink
                 .asFlux()
                 .delayElements(backpressureSimulationDelay)
-                .doOnNext(integer -> {
-                    System.out.println(integer);
-                    recordedSignalsCount.incrementAndGet();
-                })
+                .doOnNext(integer -> recordedSignalsCount.incrementAndGet())
                 .subscribe();
 
         Flux
