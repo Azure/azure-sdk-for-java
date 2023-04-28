@@ -812,7 +812,15 @@ public class CosmosAsyncContainer {
     private Flux<Void> openConnectionsAndInitCachesInternal(
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
 
-        return this.database.getDocClientWrapper().submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
+        return this.database
+            .getDocClientWrapper()
+            .submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
+            .doOnSubscribe(subscription -> {
+                this.database.getDocClientWrapper().recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+            })
+            .doOnTerminate(() -> {
+                this.database.getDocClientWrapper().recordOpenConnectionsAndInitCachesCompleted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+            });
     }
 
     /**

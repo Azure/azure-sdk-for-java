@@ -16,8 +16,11 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 public class ServerStoreModel implements RxStoreModel {
     private final StoreClient storeClient;
@@ -67,11 +70,11 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public void recordOpenConnectionsAndInitCachesCompleted() {
-        this.storeClient.recordOpenConnectionsAndInitCachesCompleted();
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.storeClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
     }
 
-    public void recordOpenConnectionsAndInitCachesStarted() {
-        this.storeClient.recordOpenConnectionsAndInitCachesStarted();
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.storeClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 }

@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -52,6 +53,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
@@ -219,13 +221,13 @@ public class RntbdTransportClient extends TransportClient {
     }
 
     @Override
-    public void recordOpenConnectionsAndInitCachesCompleted() {
-        this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesCompleted();
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
     }
 
     @Override
-    public void recordOpenConnectionsAndInitCachesStarted() {
-        this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesStarted();
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     /**

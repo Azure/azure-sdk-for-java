@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -591,11 +592,7 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     void openConnectionsAndInitCaches() {
-        blockVoidFlux(
-            asyncDocumentClient
-                .submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig)
-                .doOnTerminate(() -> asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted())
-        );
+        blockVoidFlux(asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig));
     }
 
     void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
@@ -774,12 +771,12 @@ public final class CosmosAsyncClient implements Closeable {
         return telemetryConfigAccessor.isTransportLevelTracingEnabled(effectiveConfig);
     }
 
-    void recordOpenConnectionsAndInitCachesComplete() {
-        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted();
+    void recordOpenConnectionsAndInitCachesComplete(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
     }
 
-    void recordOpenConnectionsAndInitCachesStart() {
-        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesStarted();
+    void recordOpenConnectionsAndInitCachesStart(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.asyncDocumentClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     String getAccountTagValue() {

@@ -19,6 +19,7 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -1572,11 +1573,15 @@ public interface AsyncDocumentClient {
 
     /**
      * Mark the openConnectionAndInitCaches completed.
+     *
+     * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
      */
-    void recordOpenConnectionsAndInitCachesCompleted();
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
     /**
      * Mark the openConnectionAndInitCaches to start.
+     *
+     * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
      */
-    void recordOpenConnectionsAndInitCachesStarted();
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 }

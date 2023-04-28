@@ -11,7 +11,10 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -50,9 +53,9 @@ public abstract class TransportClient implements AutoCloseable {
 
     public abstract ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
 
-    public abstract void recordOpenConnectionsAndInitCachesCompleted();
+    public abstract void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
-    public abstract void recordOpenConnectionsAndInitCachesStarted();
+    public abstract void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(

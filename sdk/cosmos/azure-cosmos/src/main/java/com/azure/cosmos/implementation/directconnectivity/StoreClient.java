@@ -28,12 +28,14 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
@@ -143,12 +145,12 @@ public class StoreClient implements IStoreClient {
         this.replicatedResourceClient.configureFaultInjectorProvider(injectorProvider);
     }
 
-    public void recordOpenConnectionsAndInitCachesCompleted() {
-        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesCompleted();
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
     }
 
-    public void recordOpenConnectionsAndInitCachesStarted() {
-        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesStarted();
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.replicatedResourceClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {
