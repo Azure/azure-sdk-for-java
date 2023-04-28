@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -27,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
@@ -36,6 +36,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
     private final AtomicReference<WarmupFlowAggressivenessHint> aggressivenessHint;
+    private final AtomicBoolean isConcurrencySwitchFlow = new AtomicBoolean(false);
     private static final Map<WarmupFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
@@ -43,6 +44,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final Duration aggressiveConnectionEstablishmentDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
+
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
         this(endpointProvider, null);
@@ -62,19 +64,23 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public void init() {
-        // start as a background task
-        openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
-
         Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
                 .just(1)
                 .delayElements(aggressiveConnectionEstablishmentDuration);
 
         if (aggressiveConnectionEstablishmentDuration != null && aggressiveConnectionEstablishmentDuration.compareTo(Duration.ZERO) > 0) {
+            this.isConcurrencySwitchFlow.set(true);
             backgroundOpenConnectionsSinkReInstantiationTask
-                    .doOnComplete(() -> reInstantiateOpenConnectionsPublisherAndSubscribe(true))
+                    .doOnComplete(() -> {
+                        this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
+                        this.isConcurrencySwitchFlow.set(false);
+                    })
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
         }
+
+        // start as a background task
+        openConnectionBackgroundTask = this.getOpenConnectionsPublisher();
     }
 
     public OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -121,7 +127,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // for this case, then there is no need to validate whether the endpoint exists
     private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
         openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
-        openConnectionsTaskSinkBackUp.emitNext(openConnectionTask, serializedEmitFailureHandler);
+
+        if (this.isConcurrencySwitchFlow.get()) {
+            openConnectionsTaskSinkBackUp.emitNext(openConnectionTask, serializedEmitFailureHandler);
+        }
     }
 
     @Override
@@ -143,6 +152,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     URI serviceEndpoint = openConnectionTask.getServiceEndpoint();
                     int minConnectionsForEndpoint = openConnectionTask.getMinConnectionsRequiredForEndpoint();
                     String collectionRid = openConnectionTask.getCollectionRid();
+
+                    logger.info("Aggressiveness setting : {}", aggressivenessHint.get());
 
                     return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
                                     collectionRid,
@@ -212,7 +223,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private void reInstantiateOpenConnectionsPublisherAndSubscribe(boolean shouldForceDefensiveOpenConnections) {
+    private synchronized void reInstantiateOpenConnectionsPublisherAndSubscribe(boolean shouldForceDefensiveOpenConnections) {
         if (shouldForceDefensiveOpenConnections) {
             logger.debug("Force defensive opening of connections");
             this.forceDefensiveOpenConnections();
@@ -244,8 +255,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // the sink
     private void instantiateOpenConnectionsPublisher() {
         logger.debug("Re-instantiate open connections task sink");
-        openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
-        openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
+
+        if (this.isConcurrencySwitchFlow.get()) {
+            openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
+            openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
+        } else {
+            openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
+        }
     }
 
     private void forceDefensiveOpenConnections() {
@@ -281,7 +297,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         @Override
         public boolean onEmitFailure(SignalType signalType, Sinks.EmitResult emitResult) {
-            if (emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED)) {
+            if (emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED) || emitResult.equals(Sinks.EmitResult.FAIL_OVERFLOW)) {
                 logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
 
                 return true;

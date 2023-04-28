@@ -1414,7 +1414,7 @@ public class ImplementationBridgeHelpers {
 
         private CosmosContainerProactiveInitConfigHelper() {}
 
-        public static CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor getCosmosContainerIdentityAccessor() {
+        public static CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor getCosmosContainerProactiveInitConfigAccessor() {
 
             if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
                 logger.debug("Initializing CosmosContainerProactiveInitConfigAccessor...");
@@ -1425,7 +1425,7 @@ public class ImplementationBridgeHelpers {
 
             if (snapshot == null) {
                 logger.error("CosmosContainerProactiveInitConfigAccessor is not initialized yet!");
-                System.exit(9729); // Using a unique status code here to help debug the issue.
+                System.exit(9726); // Using a unique status code here to help debug the issue.
             }
 
             return snapshot;

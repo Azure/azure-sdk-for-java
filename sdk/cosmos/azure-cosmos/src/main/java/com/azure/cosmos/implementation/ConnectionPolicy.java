@@ -570,14 +570,6 @@ public final class ConnectionPolicy {
         return this.tcpHealthCheckTimeoutDetectionEnabled;
     }
 
-    public int getMinConnectionsPerEndpoint() {
-        return this.minConnectionsPerEndpoint;
-    }
-
-    public int getDefensiveWarmupConcurrency() {
-        return this.defensiveWarmupConcurrency;
-    }
-
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
         return this;

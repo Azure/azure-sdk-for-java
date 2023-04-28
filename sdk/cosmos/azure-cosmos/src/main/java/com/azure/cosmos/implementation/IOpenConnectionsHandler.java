@@ -18,11 +18,4 @@ public interface IOpenConnectionsHandler {
         ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
         int minConnectionsRequiredForEndpoint
     );
-
-    Flux<OpenConnectionResponse> openConnections(
-        String collectionRid,
-        URI serviceEndpoint,
-        List<Uri> addresses,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor
-    );
 }

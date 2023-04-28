@@ -84,7 +84,7 @@ public class OpenConnectionTask extends CompletableFuture<OpenConnectionResponse
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
-            logger.warn("In retry policy: ProactiveOpenConnectionsRetryPolicy, retry attempt: {}, exception :{}", this.retryCount.get(), e.getMessage());
+            logger.debug("In retry policy: ProactiveOpenConnectionsRetryPolicy, retry attempt: {}, exception :{}", this.retryCount.get(), e.getMessage());
 
             this.retryCount.incrementAndGet();
 

@@ -373,8 +373,6 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                     .directMode()
                     .buildAsyncClient();
 
-            Thread.sleep(0);
-
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(clientWithOpenConnections);
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(clientWithOpenConnections);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
@@ -441,8 +439,6 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(minConnectionPoolSizePerEndpoint));
 
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         } finally {
 
             for (CosmosAsyncContainer asyncContainer : asyncContainers) {

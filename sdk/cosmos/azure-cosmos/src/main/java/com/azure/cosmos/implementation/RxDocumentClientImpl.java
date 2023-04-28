@@ -4303,14 +4303,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return this.gatewayConfigurationReader.getDefaultConsistencyLevel();
     }
 
-    @Override
-    public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-        if (this.storeClientFactory == null) {
-            return null;
-        }
-        return this.storeClientFactory.getTransportClient().getProactiveOpenConnectionsProcessor();
-    }
-
     /***
      * Configure fault injector provider.
      *

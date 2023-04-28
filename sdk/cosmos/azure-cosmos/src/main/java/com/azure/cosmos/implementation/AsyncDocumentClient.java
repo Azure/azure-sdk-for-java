@@ -1564,8 +1564,7 @@ public interface AsyncDocumentClient {
     Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     ConsistencyLevel getDefaultConsistencyLevelOfAccount();
-    ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor();
-    
+
     /***
      * Configure fault injector provider.
      *

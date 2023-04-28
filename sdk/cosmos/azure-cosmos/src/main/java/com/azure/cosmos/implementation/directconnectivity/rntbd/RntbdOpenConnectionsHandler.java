@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
@@ -15,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.util.List;
@@ -94,16 +92,6 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                             return Mono.just(new OpenConnectionResponse(addressUri, true, null, false));
                         }
                 );
-    }
-
-    @Override
-    public Flux<OpenConnectionResponse> openConnections(String collectionRid, URI serviceEndpoint, List<Uri> addresses, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
-        return openConnections(
-                collectionRid,
-                serviceEndpoint,
-                addresses,
-                proactiveOpenConnectionsProcessor,
-                Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
     private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {

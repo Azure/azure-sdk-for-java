@@ -164,7 +164,7 @@ public class GlobalAddressResolver implements IAddressResolver {
 
                                                         Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
                                                             .CosmosContainerProactiveInitConfigHelper
-                                                            .getCosmosContainerIdentityAccessor()
+                                                            .getCosmosContainerProactiveInitConfigAccessor()
                                                             .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
 
                                                         int connectionsPerEndpointCountForContainer = containerLinkToMinConnectionsMap
