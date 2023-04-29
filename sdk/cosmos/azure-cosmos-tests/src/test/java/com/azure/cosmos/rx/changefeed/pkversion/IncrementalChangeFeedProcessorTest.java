@@ -270,7 +270,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor Main estimated total lag at start");
+            assertThat(totalLag).as("Change Feed Processor Main estimated total lag at start").isEqualTo(0);
 
             // check the side cart CFP instance
             Map<String, Integer> estimatedLagSideCartResult = changeFeedProcessorSideCart.getEstimatedLag()
@@ -290,7 +290,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                 totalLag += lag;
             }
 
-            assertThat(totalLag).isEqualTo(0).as("Change Feed Processor Side Cart estimated total lag at start");
+            assertThat(totalLag).as("Change Feed Processor Side Cart estimated total lag at start").isEqualTo(0);
 
 
             // Test for "FEED_COUNT total lag
