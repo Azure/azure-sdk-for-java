@@ -39,7 +39,7 @@ public class CosmosE2EOperationRetryPolicyConfigBuilder {
      * @param isEnabled flag to enable or disable the policy
      * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosE2EOperationRetryPolicyConfigBuilder isEnabled(
+    public CosmosE2EOperationRetryPolicyConfigBuilder enable(
         boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;

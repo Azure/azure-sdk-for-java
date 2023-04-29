@@ -235,7 +235,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(
                     new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .isEnabled(false)
+                        .enable(false)
                         .build());
             cosmosItemResponseMono =
                 container.readItem(obj.id, new PartitionKey(obj.mypk), options, TestObject.class);
@@ -249,7 +249,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
                 .setCosmosEndToEndOperationLatencyPolicyConfig(
                     new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
-                        .isEnabled(false)
+                        .enable(false)
                         .build());
             queryPagedFlux = container.queryItems(sqlQuerySpec, queryRequestOptions, TestObject.class);
             StepVerifier.create(queryPagedFlux)
