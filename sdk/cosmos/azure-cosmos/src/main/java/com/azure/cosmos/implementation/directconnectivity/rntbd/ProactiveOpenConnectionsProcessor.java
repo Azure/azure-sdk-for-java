@@ -262,6 +262,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private void removeEndpointFromMonitor(String addressUriString, OpenConnectionResponse openConnectionResponse) {
         List<OpenConnectionTask> openConnectionTasks = this.endpointsUnderMonitorMap.remove(addressUriString);
 
+        logger.debug("Open connections completed for endpoint : {}, no. of connections opened : {}", addressUriString, openConnectionResponse.getOpenConnectionCountToEndpoint());
+
         if (openConnectionTasks != null && !openConnectionTasks.isEmpty()) {
             for (OpenConnectionTask connectionTask : openConnectionTasks) {
                 connectionTask.complete(openConnectionResponse);
