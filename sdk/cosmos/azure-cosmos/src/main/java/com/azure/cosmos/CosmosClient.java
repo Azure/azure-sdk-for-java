@@ -142,8 +142,8 @@ public final class CosmosClient implements Closeable {
         asyncClientWrapper.openConnectionsAndInitCaches();
     }
 
-    void openConnectionsAndInitCaches(Duration aggressiveProactiveConnectionEstablishmentDuration) {
-        asyncClientWrapper.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentDuration);
+    void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
+        asyncClientWrapper.openConnectionsAndInitCaches(aggressiveWarmupDuration);
     }
 
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {

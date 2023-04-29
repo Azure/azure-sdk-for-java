@@ -231,7 +231,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                             .shouldRetry((Exception) openConnectionResponse.getException())
                             .flatMap(shouldRetryResult -> {
                                 if (shouldRetryResult.shouldRetry) {
-                                    return enqueueOpenConnectionOpsForRetry(openConnectionTask, shouldRetryResult)
+                                    return enqueueOpenConnectionTaskForRetry(openConnectionTask, shouldRetryResult)
                                             .onErrorResume(throwable -> {
                                                 logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
                                                 return Mono.empty();
@@ -287,7 +287,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
-    private Mono<OpenConnectionResponse> enqueueOpenConnectionOpsForRetry(
+    private Mono<OpenConnectionResponse> enqueueOpenConnectionTaskForRetry(
             OpenConnectionTask op,
             ShouldRetryResult retryResult) {
         if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {

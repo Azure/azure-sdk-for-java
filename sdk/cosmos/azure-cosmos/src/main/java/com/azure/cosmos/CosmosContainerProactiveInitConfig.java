@@ -23,18 +23,18 @@ public final class CosmosContainerProactiveInitConfig {
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private final int numProactiveConnectionRegions;
-    private final Duration aggressiveProactiveConnectionEstablishmentDuration;
+    private final Duration aggressiveWarmupDuration;
 
     CosmosContainerProactiveInitConfig(
         List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
         Map<String, Integer> containerLinkToMinConnectionsMap,
-        Duration aggressiveProactiveConnectionEstablishmentDuration
+        Duration aggressiveWarmupDuration
     ) {
         this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
-        this.aggressiveProactiveConnectionEstablishmentDuration = aggressiveProactiveConnectionEstablishmentDuration;
+        this.aggressiveWarmupDuration = aggressiveWarmupDuration;
     }
 
     /**
@@ -86,7 +86,7 @@ public final class CosmosContainerProactiveInitConfig {
      * @return the aggressive proactive connection establishment duration
      * */
     Duration getAggressiveWarmupDuration() {
-        return this.aggressiveProactiveConnectionEstablishmentDuration;
+        return this.aggressiveWarmupDuration;
     }
 
     @Override

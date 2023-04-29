@@ -556,7 +556,6 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
                 totalConnectionCountForAllEndpoints += endpoint.channelsMetrics();
             }
 
-            // TODO: Investigate why some extra connections are being created
             assertThat(totalConnectionCountForAllEndpoints).isEqualTo(endpoints.size() * minConnectionPoolSizePerEndpoint);
 
             provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(minConnectionPoolSizePerEndpoint));

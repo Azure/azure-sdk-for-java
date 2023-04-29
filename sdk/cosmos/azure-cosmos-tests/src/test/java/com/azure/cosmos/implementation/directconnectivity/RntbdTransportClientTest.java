@@ -846,7 +846,7 @@ public final class RntbdTransportClientTest {
 
         transportClient
             .invokeStoreAsync(
-                    addressUri,
+                addressUri,
                 request)
             .cancelOn(Schedulers.boundedElastic())
             .subscribe()

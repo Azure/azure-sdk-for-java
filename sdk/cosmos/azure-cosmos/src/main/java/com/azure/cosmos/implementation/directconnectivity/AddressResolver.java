@@ -95,7 +95,7 @@ public class AddressResolver implements IAddressResolver {
 
     @Override
     public void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
-        throw new NotImplementedException("setOpenConnectionsExecutor is not supported on AddressResolver");
+        throw new NotImplementedException("setOpenConnectionsProcessor is not supported on AddressResolver");
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {
