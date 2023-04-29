@@ -39,4 +39,8 @@ public class OpenConnectionResponse {
     public boolean isOpenConnectionAttempted() {
         return openConnectionAttempted;
     }
+
+    public int getOpenConnectionCountToEndpoint() {
+        return openConnectionCountToEndpoint;
+    }
 }
