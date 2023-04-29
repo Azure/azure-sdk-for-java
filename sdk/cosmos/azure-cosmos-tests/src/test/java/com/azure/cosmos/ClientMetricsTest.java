@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdDurableEndpointMetrics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -914,12 +915,12 @@ public class ClientMetricsTest extends BatchTestBase {
                     ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
 
             String address = "https://localhost:12345";
-            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint firstEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
             RntbdDurableEndpointMetrics firstDurableMetricsInstance = firstEndpoint.durableEndpointMetrics();
             firstEndpoint.close();
             assertThat(firstEndpoint.durableEndpointMetrics().getEndpoint()).isNull();
 
-            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), URI.create(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint secondEndpoint = endpointProvider.createIfAbsent(URI.create(address), new Uri(address), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
 
             // ensure metrics are durable across multiple endpoint instances
             assertThat(firstEndpoint).isNotSameAs(secondEndpoint);

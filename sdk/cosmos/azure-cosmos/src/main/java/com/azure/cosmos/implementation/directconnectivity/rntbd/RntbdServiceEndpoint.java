@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -95,6 +96,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private String lastFaultInjectionRuleId;
     private Instant lastFaultInjectionTimestamp;
     private int minChannelsRequired;
+    private final Uri addressUri;
 
     // endregion
 
@@ -105,7 +107,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final Config config,
         final EventLoopGroup group,
         final RntbdRequestTimer timer,
-        final URI physicalAddress,
+        final Uri addressUri,
         final ClientTelemetry clientTelemetry,
         final RntbdServerErrorInjector faultInjectionInterceptors,
         final URI serviceEndpoint,
@@ -114,7 +116,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final int minChannelsRequired) {
 
         this.durableMetrics = durableMetrics;
-        this.serverKey = RntbdUtils.getServerKey(physicalAddress);
+        this.addressUri = addressUri;
+        this.serverKey = RntbdUtils.getServerKey(addressUri.getURI());
         this.serviceEndpoint = serviceEndpoint;
         this.minChannelsRequired = minChannelsRequired;
 
@@ -341,6 +344,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     @Override
     public void setMinChannelsRequired(int minChannelsRequired) {
         this.minChannelsRequired = minChannelsRequired;
+    }
+
+    @Override
+    public Uri getAddressUri() {
+        return this.addressUri;
     }
 
     // endregion
@@ -744,11 +752,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         @Override
         public RntbdEndpoint createIfAbsent(
             final URI serviceEndpoint,
-            final URI physicalAddress,
+            final Uri addressUri,
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
             int minChannelsRequiredCount) {
             return endpoints.computeIfAbsent(
-                physicalAddress.getAuthority(),
+                addressUri.getURI().getAuthority(),
                 authority -> {
                     RntbdDurableEndpointMetrics durableEndpointMetrics = durableMetrics.computeIfAbsent(
                         authority,
@@ -760,7 +768,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         this.config,
                         this.eventLoopGroup,
                         this.requestTimer,
-                        physicalAddress,
+                        addressUri,
                         this.clientTelemetry,
                         this.serverErrorInjector,
                         serviceEndpoint,

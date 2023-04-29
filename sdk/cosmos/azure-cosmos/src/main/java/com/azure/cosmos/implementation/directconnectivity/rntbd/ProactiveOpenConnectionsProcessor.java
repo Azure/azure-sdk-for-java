@@ -107,13 +107,11 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             return taskList;
         });
 
-        RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
-                openConnectionTask.getServiceEndpoint(),
-                openConnectionTask.getAddressUri().getURI(),
-                this,
-                openConnectionTask.getMinConnectionsRequiredForEndpoint());
-
-        endpoint.setMinChannelsRequired(Math.max(openConnectionTask.getMinConnectionsRequiredForEndpoint(), endpoint.getMinChannelsRequired()));
+        // it is necessary to invoke getOrCreateEndpoint
+        // multiple times to ensure a global max of min connections required
+        // is taken when an endpoint is used by different containers
+        // and each container has a different min connection required setting for the endpoint
+        getOrCreateEndpoint(openConnectionTask);
     }
 
     // There are two major kind tasks will be submitted
@@ -200,17 +198,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionTask -> {
-                    Uri addressUri = openConnectionTask.getAddressUri();
-                    URI serviceEndpoint = openConnectionTask.getServiceEndpoint();
-                    int minConnectionsForEndpoint = openConnectionTask.getMinConnectionsRequiredForEndpoint();
-                    String collectionRid = openConnectionTask.getCollectionRid();
+
+                    RntbdEndpoint endpoint = getOrCreateEndpoint(openConnectionTask);
 
                     return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
-                                    collectionRid,
-                                    serviceEndpoint,
-                                    Arrays.asList(addressUri),
-                                    this,
-                                    minConnectionsForEndpoint))
+                                    openConnectionTask.getCollectionRid(),
+                                    Arrays.asList(endpoint),
+                                    openConnectionTask.getMinConnectionsRequiredForEndpoint()))
                             .onErrorResume(throwable -> {
                                 logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
                                 return Flux.empty();
@@ -251,6 +245,20 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                             });
                 }, true)
                 .subscribe();
+    }
+
+    private RntbdEndpoint getOrCreateEndpoint(OpenConnectionTask openConnectionTask) {
+
+        RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
+                openConnectionTask.getServiceEndpoint(),
+                openConnectionTask.getAddressUri(),
+                this,
+                openConnectionTask.getMinConnectionsRequiredForEndpoint());
+
+        endpoint.setMinChannelsRequired(Math.max(openConnectionTask.getMinConnectionsRequiredForEndpoint(),
+                endpoint.getMinChannelsRequired()));
+
+        return endpoint;
     }
 
     private void removeEndpointFromMonitor(String addressUriString, OpenConnectionResponse openConnectionResponse) {

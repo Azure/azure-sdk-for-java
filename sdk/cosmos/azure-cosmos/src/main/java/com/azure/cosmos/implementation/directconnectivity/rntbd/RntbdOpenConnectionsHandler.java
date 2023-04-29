@@ -32,51 +32,30 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnections(
-            String collectionRid,
-            URI serviceEndpoint,
-            List<Uri> addresses,
-            ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-            int minConnectionsRequiredForEndpoint) {
+    public Flux<OpenConnectionResponse> openConnections(String collectionRid, List<RntbdEndpoint> endpoints, int minConnectionsRequiredForEndpoint) {
         // collectionRid may not always be available, especially for open connection flows
         // from the RntbdConnectionsStateListener, hence there is no null check for collectionRid
-
-        checkNotNull(addresses, "Argument 'addresses' should not be null");
+        checkNotNull(endpoints, "Argument 'endpoints' should not be null");
 
         if (logger.isDebugEnabled()) {
             logger.debug(
-                    "Open connections for addresses {}",
-                    StringUtils.join(addresses, ","));
+                    "Open connections for endpoints {}",
+                    StringUtils.join(endpoints, ","));
         }
 
-        return Flux.fromIterable(addresses)
-                .flatMap(addressUri -> {
+        return Flux.fromIterable(endpoints)
+                .flatMap(endpoint -> {
+
+                            Uri addressUri = endpoint.getAddressUri();
+
                             RxDocumentServiceRequest openConnectionRequest =
-                                    this.getOpenConnectionRequest(collectionRid, serviceEndpoint);
+                                    this.getOpenConnectionRequest(collectionRid, endpoint.serviceEndpoint());
 
                             final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
-                            final RntbdEndpoint endpoint =
-                                    this.endpointProvider.createIfAbsent(
-                                            serviceEndpoint,
-                                            addressUri.getURI(),
-                                            proactiveOpenConnectionsProcessor,
-                                            minConnectionsRequiredForEndpoint
-                                    );
-
-                            // if endpoint had already been instantiated with a
-                            // different minConnectionsRequired value, check if
-                            // the open connections flow through a different
-                            // container for the same endpoint has a higher
-                            // value for minConnectionsRequired and choose the higher
-                            // value
-                            final int minConnectionsRequired = endpoint.getMinChannelsRequired();
-                            final int newMinConnectionsRequired = Math.max(minConnectionsRequired, minConnectionsRequiredForEndpoint);
-
-                            endpoint.setMinChannelsRequired(newMinConnectionsRequired);
 
                             final int connectionsOpened = endpoint.channelsMetrics();
 
-                            if (connectionsOpened < newMinConnectionsRequired) {
+                            if (connectionsOpened < minConnectionsRequiredForEndpoint) {
                                 OpenConnectionRntbdRequestRecord requestRecord = endpoint.openConnection(requestArgs);
                                 return Mono.fromFuture(requestRecord)
                                         .onErrorResume(throwable -> Mono.just(new OpenConnectionResponse(addressUri, false, throwable, true)))

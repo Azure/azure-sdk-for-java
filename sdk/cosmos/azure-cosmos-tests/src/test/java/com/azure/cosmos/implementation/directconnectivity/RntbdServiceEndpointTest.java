@@ -44,13 +44,13 @@ public class RntbdServiceEndpointTest {
             uriList.add(physicalAddress);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress.getURI(), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress, proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);
 
         for(int i = 0;i <5;i++) {
-            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i).getURI(), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            RntbdEndpoint rntbdEndpoint = endpointProvider.createIfAbsent(new URI("http://localhost"), uriList.get(i), proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
             assertThat(rntbdEndpoint.isClosed()).isFalse();
             rntbdEndpoint.close();
             assertThat(rntbdEndpoint.isClosed()).isTrue();

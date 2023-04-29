@@ -842,7 +842,7 @@ public final class RntbdTransportClientTest {
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
 
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress.getURI(), transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
 
         transportClient
             .invokeStoreAsync(
@@ -957,17 +957,21 @@ public final class RntbdTransportClientTest {
 
         final RntbdRequestTimer requestTimer;
         final FakeChannel fakeChannel;
-        final URI physicalAddress;
+        final Uri addressUri;
         final URI remoteURI;
         final Tag tag;
         private final Tag clientMetricTag;
         private final RntbdDurableEndpointMetrics durableEndpointMetrics;
 
         private FakeEndpoint(
-            final Config config, final RntbdRequestTimer timer, final URI physicalAddress,
+            final Config config, final RntbdRequestTimer timer, final Uri addressUri,
             final RntbdResponse... expected
         ) {
+
+            URI physicalAddress = addressUri.getURI();
+
             try {
+                this.addressUri = addressUri;
                 this.remoteURI = new URI(
                     physicalAddress.getScheme(),
                     null,
@@ -980,7 +984,7 @@ public final class RntbdTransportClientTest {
                 this.durableEndpointMetrics.setEndpoint(this);
             } catch (URISyntaxException error) {
                 throw new IllegalArgumentException(
-                    lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                    lenientFormat("addressUri %s cannot be parsed as a server-based authority", addressUri),
                     error);
             }
 
@@ -995,7 +999,6 @@ public final class RntbdTransportClientTest {
                     Duration.ofMillis(100).toNanos(),
                     null,
                     config.tcpNetworkRequestTimeoutInNanos());
-            this.physicalAddress = physicalAddress;
             this.requestTimer = timer;
 
             this.fakeChannel = new FakeChannel(responses,
@@ -1008,7 +1011,7 @@ public final class RntbdTransportClientTest {
             this.tag = Tag.of(FakeEndpoint.class.getSimpleName(), this.fakeChannel.remoteAddress().toString());
             this.clientMetricTag = Tag.of(
                 TagName.ServiceEndpoint.toString(),
-                String.format("%s_%d", this.physicalAddress.getHost(), this.physicalAddress.getPort()));
+                String.format("%s_%d", physicalAddress.getHost(), physicalAddress.getPort()));
         }
 
         // region Accessors
@@ -1129,6 +1132,11 @@ public final class RntbdTransportClientTest {
             throw new NotImplementedException("setMinChannelsRequired is not implemented for FakeServiceEndpoint");
         }
 
+        @Override
+        public Uri getAddressUri() {
+            return addressUri;
+        }
+
         // endregion
 
         // region Methods
@@ -1191,13 +1199,13 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minChannelsRequired) {
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri physicalAddress, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minChannelsRequired) {
                 return new FakeEndpoint(config, timer, physicalAddress, expected);
             }
 
             @Override
             public RntbdEndpoint get(URI physicalAddress) {
-                return new FakeEndpoint(config, timer, physicalAddress, expected);
+                return new FakeEndpoint(config, timer, new Uri(physicalAddress.toString()), expected);
             }
 
             @Override

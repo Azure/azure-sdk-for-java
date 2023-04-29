@@ -278,7 +278,7 @@ public class RntbdTransportClient extends TransportClient {
 
         final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
                 request.requestContext.locationEndpointToRoute,
-                addressUri.getURI(),
+                addressUri,
                 this.proactiveOpenConnectionsProcessor,
                 Configs.getMinConnectionPoolSizePerEndpoint());
 
