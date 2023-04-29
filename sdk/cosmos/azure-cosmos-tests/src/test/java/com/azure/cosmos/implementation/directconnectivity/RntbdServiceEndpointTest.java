@@ -37,14 +37,14 @@ public class RntbdServiceEndpointTest {
 
         for(int i = 0;i <10;i++) {
             int port=uri.getPort()+i;
-            Uri physicalAddress = new Uri("rntbd://"
+            Uri addressUri = new Uri("rntbd://"
                 + uri.getHost()+":"+port
                 + "/apps/82691bd9-bcdd-44c4-b8e3-0722d357b80d/services/dc15e65d-9fb3-46cb-83e0-765faeec8855/partitions/fd9d234b-cdf5-47a0-a495-99f2fb19e874/replicas/132542487074124709p/"
             );
-            uriList.add(physicalAddress);
+            uriList.add(addressUri);
 
             //Adding endpoints to provider
-            endpointProvider.createIfAbsent(new URI("http://localhost"), physicalAddress, proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
+            endpointProvider.createIfAbsent(new URI("http://localhost"), addressUri, proactiveOpenConnectionsProcessor, Configs.getMinConnectionPoolSizePerEndpoint());
         }
         //Asserting no eviction yet
         assertThat(endpointProvider.evictions()).isEqualTo(0);

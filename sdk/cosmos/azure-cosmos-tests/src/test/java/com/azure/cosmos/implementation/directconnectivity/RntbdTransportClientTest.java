@@ -105,7 +105,7 @@ public final class RntbdTransportClientTest {
     private static final int lsn = 5;
     private static final ByteBuf noContent = Unpooled.wrappedBuffer(new byte[0]);
     private static final String partitionKeyRangeId = "3";
-    private static final Uri physicalAddress = new Uri("rntbd://host:10251/replica-path/");
+    private static final Uri addressUri = new Uri("rntbd://host:10251/replica-path/");
     private static final Duration requestTimeout = Duration.ofSeconds(1000);
     private static final int sslHandshakeTimeoutInMillis = 5000;
     private static final boolean timeoutDetectionEnabled = true;
@@ -731,7 +731,7 @@ public final class RntbdTransportClientTest {
             final Mono<StoreResponse> responseMono;
 
             try {
-                responseMono = client.invokeResourceOperationAsync(physicalAddress, request);
+                responseMono = client.invokeResourceOperationAsync(addressUri, request);
             } catch (final Exception error) {
                 throw new AssertionError(String.format("%s: %s", error.getClass(), error));
             }
@@ -830,7 +830,7 @@ public final class RntbdTransportClientTest {
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         URI locationToRoute = new URI("http://localhost-west:8080");
         request.requestContext.locationEndpointToRoute = locationToRoute;
-        RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, physicalAddress);
+        RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
 
@@ -842,11 +842,11 @@ public final class RntbdTransportClientTest {
 
         RntbdTransportClient transportClient = new RntbdTransportClient(endpointProvider);
 
-        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, physicalAddress, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
+        Mockito.when(endpointProvider.createIfAbsent(locationToRoute, addressUri, transportClient.getProactiveOpenConnectionsProcessor(), Configs.getMinConnectionPoolSizePerEndpoint())).thenReturn(rntbdEndpoint);
 
         transportClient
             .invokeStoreAsync(
-                physicalAddress,
+                    addressUri,
                 request)
             .cancelOn(Schedulers.boundedElastic())
             .subscribe()
@@ -1199,8 +1199,8 @@ public final class RntbdTransportClientTest {
             }
 
             @Override
-            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri physicalAddress, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minChannelsRequired) {
-                return new FakeEndpoint(config, timer, physicalAddress, expected);
+            public RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minChannelsRequired) {
+                return new FakeEndpoint(config, timer, addressUri, expected);
             }
 
             @Override
