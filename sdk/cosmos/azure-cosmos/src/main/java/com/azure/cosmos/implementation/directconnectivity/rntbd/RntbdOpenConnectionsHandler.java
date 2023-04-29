@@ -52,7 +52,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
         return Flux.fromIterable(addresses)
                 .flatMap(addressUri -> {
                             RxDocumentServiceRequest openConnectionRequest =
-                                    this.getOpenConnectionRequest(collectionRid, serviceEndpoint, addressUri);
+                                    this.getOpenConnectionRequest(collectionRid, serviceEndpoint);
 
                             final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
                             final RntbdEndpoint endpoint =
@@ -94,7 +94,7 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
                 );
     }
 
-    private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint, Uri addressUri) {
+    private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint) {
         RxDocumentServiceRequest openConnectionRequest =
             RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
         openConnectionRequest.requestContext.locationEndpointToRoute = serviceEndpoint;

@@ -29,7 +29,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -945,10 +944,10 @@ public class CosmosClientBuilder implements
 
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesStart(proactiveContainerInitConfig.getCosmosContainerIdentities());
 
-            Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
-                    .getAggressiveProactiveConnectionEstablishmentDuration();
-            if (aggressiveProactiveConnectionEstablishmentTimeWindow != null) {
-                cosmosAsyncClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
+            Duration aggressiveWarmupDuration = proactiveContainerInitConfig
+                    .getAggressiveWarmupDuration();
+            if (aggressiveWarmupDuration != null) {
+                cosmosAsyncClient.openConnectionsAndInitCaches(aggressiveWarmupDuration);
             } else {
                 cosmosAsyncClient.openConnectionsAndInitCaches();
             }
@@ -973,10 +972,10 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
         if (proactiveContainerInitConfig != null) {
-            Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
-                    .getAggressiveProactiveConnectionEstablishmentDuration();
-            if (aggressiveProactiveConnectionEstablishmentTimeWindow != null) {
-                cosmosClient.openConnectionsAndInitCaches(aggressiveProactiveConnectionEstablishmentTimeWindow);
+            Duration aggressiveWarmupDuration = proactiveContainerInitConfig
+                    .getAggressiveWarmupDuration();
+            if (aggressiveWarmupDuration != null) {
+                cosmosClient.openConnectionsAndInitCaches(aggressiveWarmupDuration);
             } else {
                 cosmosClient.openConnectionsAndInitCaches();
             }

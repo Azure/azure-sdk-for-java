@@ -85,7 +85,7 @@ public final class CosmosContainerProactiveInitConfig {
      *
      * @return the aggressive proactive connection establishment duration
      * */
-    Duration getAggressiveProactiveConnectionEstablishmentDuration() {
+    Duration getAggressiveWarmupDuration() {
         return this.aggressiveProactiveConnectionEstablishmentDuration;
     }
 
