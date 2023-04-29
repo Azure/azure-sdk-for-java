@@ -19,6 +19,7 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -273,8 +274,7 @@ public interface AsyncDocumentClient {
                     state,
                     apiType,
                     clientTelemetryConfig,
-                    clientCorrelationId,
-                    aggressiveConnectionEstablishmentDuration
+                    clientCorrelationId
             );
 
             client.init(state, null);
@@ -1570,4 +1570,18 @@ public interface AsyncDocumentClient {
      * @param injectorProvider the fault injector provider.
      */
     void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
+
+    /**
+     * Mark the openConnectionAndInitCaches completed.
+     *
+     * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
+     */
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+
+    /**
+     * Mark the openConnectionAndInitCaches to start.
+     *
+     * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
+     */
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 }

@@ -13,11 +13,13 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -37,18 +39,6 @@ public class SharedTransportClient extends TransportClient {
     private final RntbdTransportClient.Options rntbdOptions;
 
     public static TransportClient getOrCreateInstance(
-        Protocol protocol,
-        Configs configs,
-        ConnectionPolicy connectionPolicy,
-        UserAgentContainer userAgent,
-        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
-        IAddressResolver addressResolver,
-        ClientTelemetry clientTelemetry,
-        GlobalEndpointManager globalEndpointManager) {
-        return getOrCreateInstance(protocol, configs, connectionPolicy, userAgent, diagnosticsClientConfig, addressResolver, clientTelemetry, globalEndpointManager, null);
-    }
-
-    public static TransportClient getOrCreateInstance(
             Protocol protocol,
             Configs configs,
             ConnectionPolicy connectionPolicy,
@@ -56,15 +46,14 @@ public class SharedTransportClient extends TransportClient {
             DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
             IAddressResolver addressResolver,
             ClientTelemetry clientTelemetry,
-            GlobalEndpointManager globalEndpointManager,
-            Duration aggressiveProactiveConnectionEstablishmentDuration) {
+            GlobalEndpointManager globalEndpointManager) {
 
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
                 sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy,
-                        userAgent, addressResolver, clientTelemetry, globalEndpointManager, aggressiveProactiveConnectionEstablishmentDuration);
+                        userAgent, addressResolver, clientTelemetry, globalEndpointManager);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -88,13 +77,17 @@ public class SharedTransportClient extends TransportClient {
             UserAgentContainer userAgent,
             IAddressResolver addressResolver,
             ClientTelemetry clientTelemetry,
-            GlobalEndpointManager globalEndpointManager,
-            Duration aggressiveProactiveConnectionEstablishmentDuration) {
+            GlobalEndpointManager globalEndpointManager) {
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-            this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver,
-                clientTelemetry, globalEndpointManager, aggressiveProactiveConnectionEstablishmentDuration);
+            this.transportClient =
+                new RntbdTransportClient(
+                    rntbdOptions,
+                    configs.getSslContext(),
+                    addressResolver,
+                    clientTelemetry,
+                    globalEndpointManager);
 
         } else if (protocol == Protocol.HTTPS){
             this.rntbdOptions = null;
@@ -139,5 +132,15 @@ public class SharedTransportClient extends TransportClient {
     @Override
     public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
         return this.transportClient.getProactiveOpenConnectionsProcessor();
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 }

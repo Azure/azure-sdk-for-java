@@ -28,6 +28,8 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -940,6 +942,9 @@ public class CosmosClientBuilder implements
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
         if (proactiveContainerInitConfig != null) {
+
+            cosmosAsyncClient.recordOpenConnectionsAndInitCachesStart(proactiveContainerInitConfig.getCosmosContainerIdentities());
+
             Duration aggressiveProactiveConnectionEstablishmentTimeWindow = proactiveContainerInitConfig
                     .getAggressiveProactiveConnectionEstablishmentDuration();
             if (aggressiveProactiveConnectionEstablishmentTimeWindow != null) {
@@ -947,7 +952,11 @@ public class CosmosClientBuilder implements
             } else {
                 cosmosAsyncClient.openConnectionsAndInitCaches();
             }
+
+            cosmosAsyncClient.recordOpenConnectionsAndInitCachesComplete(proactiveContainerInitConfig.getCosmosContainerIdentities());
         }
+
+        cosmosAsyncClient.recordOpenConnectionsAndInitCachesComplete(Collections.EMPTY_LIST);
         logStartupInfo(stopwatch, cosmosAsyncClient);
         return cosmosAsyncClient;
     }

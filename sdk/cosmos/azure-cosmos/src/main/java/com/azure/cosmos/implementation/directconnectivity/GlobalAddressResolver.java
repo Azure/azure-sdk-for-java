@@ -189,8 +189,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 return Flux.empty();
                             });
                     });
-            }, Configs.getCPUCnt(), Configs.getCPUCnt())
-            .doOnComplete(() -> proactiveOpenConnectionsProcessor.completeWarmUpFlow());
+            }, Configs.getCPUCnt(), Configs.getCPUCnt());
     }
 
     private Flux<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> resolveAddressesPerCollection(

@@ -798,7 +798,10 @@ public class CosmosContainer {
      *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
      *  </p>
      *
+     *  @deprecated use {@link CosmosClientBuilder#openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)} instead.
+     *
      */
+    @Deprecated
     public void openConnectionsAndInitCaches() {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
@@ -813,7 +816,9 @@ public class CosmosContainer {
      *  </p>
      *
      * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
+     * @deprecated use {@link CosmosClientBuilder#openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)} instead.
      */
+    @Deprecated
     public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
     }

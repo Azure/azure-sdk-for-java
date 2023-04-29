@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.IOpenConnectionsHandler;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
@@ -25,78 +27,44 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
-    private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final AtomicReference<WarmupFlowAggressivenessHint> aggressivenessHint;
+    private final Object endpointsUnderMonitorMapLock;
+    private final Set<String> containersUnderOpenConnectionAndInitCaches;
+    private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
-    private final AtomicBoolean isConcurrencySwitchFlow = new AtomicBoolean(false);
-    private static final Map<WarmupFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
+    private static final Map<ConnectionOpenFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
     private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
     private Disposable openConnectionBackgroundTask;
-    private final Duration aggressiveWarmupDuration;
     private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
-    private final CompletableFuture<Boolean> aggressiveWarmUpCompletionTracker = new CompletableFuture<>();
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
-        this(endpointProvider, null);
-    }
-
-    public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider, Duration aggressiveWarmupDuration) {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        this.aggressivenessHint = new AtomicReference<>(WarmupFlowAggressivenessHint.AGGRESSIVE);
+        this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
+        this.endpointsUnderMonitorMapLock = new Object();
+
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
-        this.aggressiveWarmupDuration = aggressiveWarmupDuration;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
-        concurrencySettings.put(WarmupFlowAggressivenessHint.AGGRESSIVE, new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
-        concurrencySettings.put(WarmupFlowAggressivenessHint.DEFENSIVE, new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
-    }
+        this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
 
-    public void init() {
-
-        if (aggressiveWarmupDuration != null && aggressiveWarmupDuration.compareTo(Duration.ZERO) > 0) {
-
-            Flux<Integer> backgroundOpenConnectionsSinkReInstantiationTask = Flux
-                    .just(1)
-                    .delayElements(aggressiveWarmupDuration);
-
-            this.isConcurrencySwitchFlow.set(true);
-
-            backgroundOpenConnectionsSinkReInstantiationTask
-                    .doOnComplete(() -> {
-                        this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
-                        this.isConcurrencySwitchFlow.set(false);
-                    })
-                    .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                    .subscribe();
-        }
-
-        // start as a background task
-        openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
-
-        // this is to keep track of the completion status of warm up flow
-        // which is purely blocking
-        if (aggressiveWarmupDuration == null || aggressiveWarmupDuration.equals(Duration.ZERO)) {
-            aggressiveWarmUpCompletionTracker.whenComplete((isCompletionSuccess, throwable) -> {
-                if (isCompletionSuccess) {
-                    logger.debug("Aggressive warm up is done, switch to defensively opening connections");
-                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
-                }
-            });
-        }
+        concurrencySettings.put(
+            ConnectionOpenFlowAggressivenessHint.AGGRESSIVE,
+            new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
+        concurrencySettings.put(
+            ConnectionOpenFlowAggressivenessHint.DEFENSIVE,
+            new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
     }
 
     public OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -109,12 +77,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.submitOpenConnectionTaskOutsideLoopInternal(openConnectionTask);
 
         return openConnectionTask;
-    }
-
-     public void completeWarmUpFlow() {
-        if (!aggressiveWarmUpCompletionTracker.isDone()) {
-            aggressiveWarmUpCompletionTracker.complete(true);
-        }
     }
 
     private void submitOpenConnectionTaskOutsideLoopInternal(OpenConnectionTask openConnectionTask) {
@@ -149,10 +111,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // for this case, then there is no need to validate whether the endpoint exists
     private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
         openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
-
-        if (this.isConcurrencySwitchFlow.get()) {
-            openConnectionsTaskSinkBackUp.emitNext(openConnectionTask, serializedEmitFailureHandler);
-        }
     }
 
     @Override
@@ -160,15 +118,68 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         if (isClosed.compareAndSet(false, true)) {
             logger.info("Shutting down ProactiveOpenConnectionsProcessor...");
             completeSink(openConnectionsTaskSink);
-            completeSink(openConnectionsTaskSinkBackUp);
+        }
+    }
+
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> containerIdentities) {
+
+        synchronized (endpointsUnderMonitorMapLock) {
+            for (CosmosContainerIdentity containerIdentity : containerIdentities) {
+                this.containersUnderOpenConnectionAndInitCaches.remove(
+                    ImplementationBridgeHelpers
+                        .CosmosContainerIdentityHelper
+                        .getCosmosContainerIdentityAccessor()
+                        .getContainerLink(containerIdentity)
+                );
+            }
+
+            // only switch to defensive mode if there is no container under openConnectionAndInitCachesFlow
+            if (this.containersUnderOpenConnectionAndInitCaches.isEmpty()) {
+                this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
+                this.reInstantiateOpenConnectionsPublisherAndSubscribe(true);
+            } else {
+                logger.debug(
+                    "Cannot switch to defensive mode as some of the containers are still under openConnectionAndInitCaches flow: [{}]",
+                    this.containersUnderOpenConnectionAndInitCaches);
+            }
+        }
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        boolean shouldReInstantiatePublisher;
+        synchronized (endpointsUnderMonitorMapLock) {
+            shouldReInstantiatePublisher = this.containersUnderOpenConnectionAndInitCaches.size() == 0;
+            for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
+                this.containersUnderOpenConnectionAndInitCaches.add(
+                    ImplementationBridgeHelpers
+                        .CosmosContainerIdentityHelper
+                        .getCosmosContainerIdentityAccessor()
+                        .getContainerLink(containerIdentity)
+                );
+            }
+        }
+
+        if (shouldReInstantiatePublisher) {
+            this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE);
+            this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
         }
     }
 
     public Disposable getBackgroundOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
+        Map<String, List<OpenConnectionTask>> mapSnapshot = new ConcurrentHashMap<>();
+        mapSnapshot.putAll(this.endpointsUnderMonitorMap);
+
+        Flux<OpenConnectionTask> initialFlux  = Flux.fromIterable(
+            mapSnapshot
+                .keySet()
+                .stream()
+                .map(endpoint -> mapSnapshot.get(endpoint).get(0))
+                .collect(Collectors.toList()));
 
         return Flux.from(openConnectionsTaskSink.asFlux())
+                .mergeWith(initialFlux)
                 .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .onErrorResume(throwable -> {
                     logger.warn("An error occurred with proactiveOpenConnectionsProcessor, re-initializing open connections sink", throwable);
@@ -246,9 +257,14 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             logger.debug("Force defensive opening of connections");
             this.forceDefensiveOpenConnections();
         }
-        logger.debug("Re-instantiation openConnectionsTaskSink");
+        logger.debug("Re-instantiate openConnectionsTaskSink");
         this.instantiateOpenConnectionsPublisher();
-        this.openConnectionBackgroundTask.dispose();
+
+        // If this is not the first time we are initiating the publisher
+        // then we are going to dispose the previous one
+        if (this.openConnectionBackgroundTask != null) {
+            this.openConnectionBackgroundTask.dispose();
+        }
         this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
@@ -273,18 +289,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // the sink
     private void instantiateOpenConnectionsPublisher() {
         logger.debug("Re-instantiate open connections task sink");
-
-        if (this.isConcurrencySwitchFlow.get()) {
-            openConnectionsTaskSink = openConnectionsTaskSinkBackUp;
-            openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        } else {
-            openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        }
+        openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
     }
 
     private void forceDefensiveOpenConnections() {
-        if (aggressivenessHint.get() == WarmupFlowAggressivenessHint.AGGRESSIVE) {
-            aggressivenessHint.set(WarmupFlowAggressivenessHint.DEFENSIVE);
+        if (aggressivenessHint.get() == ConnectionOpenFlowAggressivenessHint.AGGRESSIVE) {
+            aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         }
     }
 
@@ -326,7 +336,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    private enum WarmupFlowAggressivenessHint {
+    private enum ConnectionOpenFlowAggressivenessHint {
         AGGRESSIVE, DEFENSIVE
     }
 }
