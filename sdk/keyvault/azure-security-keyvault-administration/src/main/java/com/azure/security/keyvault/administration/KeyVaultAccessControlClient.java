@@ -14,14 +14,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
-import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -34,11 +33,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeSync;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
 
 /**
  * The {@link KeyVaultAccessControlClient} provides synchronous methods to view and manage Role Based Access for the
@@ -100,10 +99,7 @@ public final class KeyVaultAccessControlClient {
         this.serviceVersion = serviceVersion.getVersion();
         this.pipeline = httpPipeline;
 
-        clientImpl = new KeyVaultAccessControlClientImplBuilder()
-            .pipeline(httpPipeline)
-            .apiVersion(this.serviceVersion)
-            .buildClient();
+        clientImpl = new KeyVaultAccessControlClientImpl(httpPipeline, this.serviceVersion);
     }
 
     /**

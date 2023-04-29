@@ -35,12 +35,14 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
+import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 
 /**
  * Utility functions for interaction with the test proxy.
  */
 public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
+    private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
 
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<String>(
@@ -86,9 +88,10 @@ public class TestProxyUtils {
      * @param proxyUrl The {@link URL} the proxy lives at.
      * @param xRecordingId The x-recording-id value for the current session.
      * @param mode The current test proxy mode.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode) {
+    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode, boolean skipRecordingRequestBody) {
         HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
@@ -110,6 +113,9 @@ public class TestProxyUtils {
                 headers.set(X_RECORDING_UPSTREAM_BASE_URI, originalUrl.toString());
                 headers.set(X_RECORDING_MODE, mode);
                 headers.set(X_RECORDING_ID, xRecordingId);
+                if (mode.equals(RECORD_MODE) && skipRecordingRequestBody) {
+                    headers.set(X_RECORDING_SKIP, "request-body");
+                }
             }
 
             request.setUrl(proxyUrlBuilder.toUrl());
