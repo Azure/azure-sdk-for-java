@@ -36,7 +36,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
-    private Sinks.Many<OpenConnectionTask> openConnectionsTaskSinkBackUp;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
     private final Object endpointsUnderMonitorMapLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
@@ -51,7 +50,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
         this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-        this.openConnectionsTaskSinkBackUp = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         this.endpointsUnderMonitorMapLock = new Object();
@@ -120,7 +118,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         if (isClosed.compareAndSet(false, true)) {
             logger.info("Shutting down ProactiveOpenConnectionsProcessor...");
             completeSink(openConnectionsTaskSink);
-            completeSink(openConnectionsTaskSinkBackUp);
         }
     }
 
