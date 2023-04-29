@@ -95,12 +95,15 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-        } else if (!interceptorManager.isLiveMode()) {
+        } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
-
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
 
