@@ -68,7 +68,7 @@ class AsyncReadManyBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> 
             cosmosItemIdentities.add(new CosmosItemIdentity(partitionKey, doc.getId()));
         }
 
-        Mono<FeedResponse<PojoizedJson>> obs = containerToUse.readMany(cosmosItemIdentities, PojoizedJson.class);
+        Mono<FeedResponse<PojoizedJson>> obs = cosmosAsyncContainer.readMany(cosmosItemIdentities, PojoizedJson.class);
 
         concurrencyControlSemaphore.acquire();
 

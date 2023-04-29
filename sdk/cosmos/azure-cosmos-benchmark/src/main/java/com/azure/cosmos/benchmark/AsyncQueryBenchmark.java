@@ -79,34 +79,34 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
             int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
             String sqlQuery = "Select * from c where c.id = \"" + docsToRead.get(index).getId() + "\"";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QuerySingle) {
 
             int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
             String pk = (String) docsToRead.get(index).getProperty(partitionKey);
             options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
 
             String sqlQuery = "Select * from c";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
 
             String sqlQuery = "Select * from c order by c._ts";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
 
             String sqlQuery = "Select value max(c._ts) from c";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
 
             String sqlQuery = "Select top 1 value count(c) from c order by c._ts";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryTopOrderby) {
 
             String sqlQuery = "Select top 1000 * from c order by c._ts";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryInClauseParallel) {
 
             ReadMyWriteWorkflow.QueryBuilder queryBuilder = new ReadMyWriteWorkflow.QueryBuilder();
@@ -123,12 +123,12 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
                                                                                                     parameters));
 
             SqlQuerySpec query = queryBuilder.toSqlQuerySpec();
-            obs = containerToUse.queryItems(query, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(query, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.ReadAllItemsOfLogicalPartition) {
 
             int index = r.nextInt(this.configuration.getNumberOfPreCreatedDocuments());
             String pk = (String) docsToRead.get(index).getProperty(partitionKey);
-            obs = containerToUse.readAllItems(new PartitionKey(pk), options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.readAllItems(new PartitionKey(pk), options, PojoizedJson.class).byPage();
         } else {
             throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }

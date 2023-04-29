@@ -65,13 +65,13 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
 
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
-            obs = containerToUse.createItem(BenchmarkHelper.generateDocument(id,
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()));
         } else {
             // more optimized for write as partition key is already passed as config
-            obs = containerToUse.createItem(BenchmarkHelper.generateDocument(id,
+            obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount()),

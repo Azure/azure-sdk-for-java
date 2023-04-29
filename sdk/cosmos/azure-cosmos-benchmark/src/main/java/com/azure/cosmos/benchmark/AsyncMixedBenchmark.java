@@ -38,13 +38,13 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
                 dataFieldValue,
                 partitionKey,
                 configuration.getDocumentDataFieldCount());
-            obs = containerToUse.createItem(data).flux();
+            obs = cosmosAsyncContainer.createItem(data).flux();
 
         } else if (i % 100 == 0) {
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             String sqlQuery = "Select top 100 * from c order by c._ts";
-            obs = containerToUse.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
 
         } else {
 
@@ -55,7 +55,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
 
             options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
-            obs = containerToUse.readItem(docsToRead.get(index).getId(),
+            obs = cosmosAsyncContainer.readItem(docsToRead.get(index).getId(),
                                               new PartitionKey(partitionKeyValue),
                                               PojoizedJson.class)
                     .flux();

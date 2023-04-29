@@ -55,7 +55,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
         PojoizedJson doc = docsToRead.get(index);
         String partitionKeyValue = doc.getId();
 
-        Mono<PojoizedJson> result = containerToUse.readItem(doc.getId(),
+        Mono<PojoizedJson> result = cosmosAsyncContainer.readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
             PojoizedJson.class).map(CosmosItemResponse::getItem);
 
