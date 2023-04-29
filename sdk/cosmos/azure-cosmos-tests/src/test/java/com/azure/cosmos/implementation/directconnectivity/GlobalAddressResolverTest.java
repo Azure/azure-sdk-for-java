@@ -196,8 +196,8 @@ public class GlobalAddressResolverTest {
         collectionToAddresses.add(new ImmutablePair<>(new ImmutablePair<>("coll1", documentCollection), addressInformation));
 
         List<OpenConnectionResponse> openConnectionResponses = new ArrayList<>();
-        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true);
-        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"));
+        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true,null, 1);
+        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"), 0);
 
         openConnectionResponses.add(response1);
         openConnectionResponses.add(response2);

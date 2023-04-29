@@ -222,7 +222,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     // open connections handler has created the min. required connections for the endpoint
                     if (openConnectionResponse.isConnected() && !openConnectionResponse.isOpenConnectionAttempted()) {
                         // for the specific service endpoint, it has met the mini pool size requirements, so remove from the map
-                        // TODO: response should reflect all previous opened connection
                         this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
                         return Mono.just(openConnectionResponse);
                     }
@@ -239,7 +238,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                                             });
                                 }
 
-                                // TODO: response should reflect all previous opened connection
                                 this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
                                 return Mono.just(openConnectionResponse);
                             });

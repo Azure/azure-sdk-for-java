@@ -444,13 +444,18 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             requestRecord.args().physicalAddressUri().setConnected();
 
             openConnectionResponse =
-                new OpenConnectionResponse(requestRecord.args().physicalAddressUri(), true);
+                new OpenConnectionResponse(
+                        requestRecord.args().physicalAddressUri(),
+                        true,
+                        null,
+                        this.channelsMetrics());
         } else {
             openConnectionResponse =
                 new OpenConnectionResponse(
                     requestRecord.args().physicalAddressUri(),
                     false,
-                    openChannelFuture.cause());
+                    openChannelFuture.cause(),
+                    this.channelsMetrics());
         }
 
         requestRecord.complete(openConnectionResponse);
