@@ -195,7 +195,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                     this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
                     return Mono.empty();
                 })
-                .parallel(concurrencyConfiguration.openConnectionOperationEmissionConcurrency)
+                .parallel(concurrencyConfiguration.openConnectionTaskEmissionConcurrency)
                 .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                 .flatMap(openConnectionTask -> {
 
@@ -288,16 +288,16 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private Mono<OpenConnectionResponse> enqueueOpenConnectionTaskForRetry(
-            OpenConnectionTask op,
+            OpenConnectionTask openConnectionTask,
             ShouldRetryResult retryResult) {
         if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {
-            this.submitOpenConnectionWithinLoopInternal(op);
+            this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
             return Mono.empty();
         } else {
             return Mono
                     .delay(retryResult.backOffTime)
                     .flatMap(ignore -> {
-                        this.submitOpenConnectionWithinLoopInternal(op);
+                        this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
                         return Mono.empty();
                     });
         }
@@ -331,11 +331,11 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private static class ConcurrencyConfiguration {
-        final int openConnectionOperationEmissionConcurrency;
+        final int openConnectionTaskEmissionConcurrency;
         final int openConnectionExecutionConcurrency;
 
-        public ConcurrencyConfiguration(int openConnectionOperationEmissionConcurrency, int openConnectionExecutionConcurrency) {
-            this.openConnectionOperationEmissionConcurrency = openConnectionOperationEmissionConcurrency;
+        public ConcurrencyConfiguration(int openConnectionTaskEmissionConcurrency, int openConnectionExecutionConcurrency) {
+            this.openConnectionTaskEmissionConcurrency = openConnectionTaskEmissionConcurrency;
             this.openConnectionExecutionConcurrency = openConnectionExecutionConcurrency;
         }
     }
