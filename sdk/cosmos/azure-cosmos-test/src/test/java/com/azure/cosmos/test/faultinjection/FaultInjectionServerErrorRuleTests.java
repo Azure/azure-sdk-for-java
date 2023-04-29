@@ -113,11 +113,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
+            { FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
-            { FaultInjectionServerErrorType.TIMEOUT, false, 408, 0 },
+            { FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 }
         };

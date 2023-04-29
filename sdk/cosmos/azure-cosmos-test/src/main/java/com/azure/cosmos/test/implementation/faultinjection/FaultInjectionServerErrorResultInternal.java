@@ -66,6 +66,7 @@ public class FaultInjectionServerErrorResultInternal {
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;
     }
 
+    // IMPORTANT: Please keep the behavior be consistent with RequestManager
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
@@ -93,7 +94,17 @@ public class FaultInjectionServerErrorResultInternal {
                 break;
 
             case TIMEOUT:
-                cosmosException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                // For server return 408, SDK internally will wrap into 410
+                // Details can be found in RntbdRequestManager
+                RequestTimeoutException rootException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                cosmosException = new GoneException(
+                    null,
+                    null,
+                    lsn,
+                    partitionKeyRangeId,
+                    responseHeaders,
+                    rootException,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
                 break;
 
             case INTERNAL_SERVER_ERROR:

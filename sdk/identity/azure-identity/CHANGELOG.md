@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+- renamed `disableInstanceDiscovery` to `disableAuthorityValidationAndInstanceDiscovery`.
+- renamed `DefaultAzureCredential.processTimeout` to `credentialProcessTimeout`.
 
 #### Dependency Updates
 - Upgraded `msal4j` from `1.13.7` to version `1.13.8`.
