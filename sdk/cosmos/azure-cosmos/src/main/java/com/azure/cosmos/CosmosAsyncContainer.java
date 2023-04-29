@@ -709,6 +709,7 @@ public class CosmosAsyncContainer {
      *  </p>
      *
      *  @return Mono of Void.
+     * @deprecated use {@link CosmosClientBuilder#openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)} instead.
      */
     @Deprecated
     public Mono<Void> openConnectionsAndInitCaches() {
@@ -758,6 +759,7 @@ public class CosmosAsyncContainer {
      *
      * @param numProactiveConnectionRegions the no of regions to proactively connect to
      * @return Mono of Void.
+     * @deprecated use {@link CosmosClientBuilder#openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)} instead.
      */
     @Deprecated
     public Mono<Void> openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
