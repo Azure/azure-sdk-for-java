@@ -956,7 +956,7 @@ public class CosmosClientBuilder implements
             cosmosAsyncClient.recordOpenConnectionsAndInitCachesComplete(proactiveContainerInitConfig.getCosmosContainerIdentities());
         }
 
-        cosmosAsyncClient.recordOpenConnectionsAndInitCachesComplete(Collections.EMPTY_LIST);
+        cosmosAsyncClient.recordOpenConnectionsAndInitCachesComplete(new ArrayList<>());
         logStartupInfo(stopwatch, cosmosAsyncClient);
         return cosmosAsyncClient;
     }
