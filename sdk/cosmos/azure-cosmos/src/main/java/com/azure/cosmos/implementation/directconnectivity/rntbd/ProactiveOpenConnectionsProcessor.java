@@ -82,6 +82,16 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private void submitOpenConnectionTaskOutsideLoopInternal(OpenConnectionTask openConnectionTask) {
         String addressUriAsString = openConnectionTask.getAddressUri().getURIAsString();
 
+        // endpointProvider is closed when RntbdTransportClient
+        // is closed
+        // the if check below prevents connectionStateListener
+        // to open connection / channels when channels are being closed
+        // and RntbdTransportClient / RntbdEndpointProvider are also closed
+        // this prevents netty executor classes from entering into IllegalStateException
+        if (endpointProvider.isClosed()) {
+            return;
+        }
+
         this.endpointsUnderMonitorMap.compute(addressUriAsString, (key, taskList) -> {
             if (taskList == null) {
                 taskList = new ArrayList<>();
@@ -89,6 +99,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
             taskList.add(openConnectionTask);
 
+            // 1. the
             if (taskList.size() == 1) {
                 this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
             }

@@ -121,6 +121,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
+
+        boolean isClosed();
     }
 
     final class Config {

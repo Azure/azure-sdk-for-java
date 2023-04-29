@@ -21,10 +21,10 @@ public class ProactiveOpenConnectionsProcessorTest {
     @DataProvider(name = "sinkEmissionHandlingParams")
     public Object[][] sinkEmissionHandlingParams() {
         return new Object[][] {
-                {5, 500, 8, Duration.ofNanos(10), 1},
-                {50, 500, 8, Duration.ofNanos(10), 10},
-                {500, 500, 8, Duration.ofNanos(10), 10},
-                {1000, 500, 8, Duration.ofNanos(10), 10}
+                {5, 500, 8, Duration.ofNanos(10), 50},
+                {50, 500, 8, Duration.ofNanos(10), 50},
+                {500, 500, 8, Duration.ofNanos(10), 50},
+                {1000, 500, 8, Duration.ofNanos(10), 50}
         };
     }
 

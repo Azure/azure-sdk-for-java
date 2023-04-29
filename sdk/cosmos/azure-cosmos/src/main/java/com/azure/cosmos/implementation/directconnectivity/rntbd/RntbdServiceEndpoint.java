@@ -789,6 +789,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             return this.endpoints.values().stream();
         }
 
+        @Override
+        public boolean isClosed() {
+            return this.closed.get();
+        }
+
         private void evict(final RntbdEndpoint endpoint) {
             if (this.endpoints.remove(endpoint.serverKey().getAuthority()) != null) {
                 this.evictions.incrementAndGet();

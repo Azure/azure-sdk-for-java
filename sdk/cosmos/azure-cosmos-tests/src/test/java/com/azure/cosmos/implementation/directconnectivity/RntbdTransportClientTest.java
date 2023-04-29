@@ -1209,6 +1209,11 @@ public final class RntbdTransportClientTest {
             public Stream<RntbdEndpoint> list() {
                 return Stream.empty();
             }
+
+            @Override
+            public boolean isClosed() {
+                return false;
+            }
         }
 
         // endregion
