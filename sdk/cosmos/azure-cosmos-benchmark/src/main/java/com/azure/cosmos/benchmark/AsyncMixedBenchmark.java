@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -31,7 +30,6 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
     @Override
     protected void performWorkload(BaseSubscriber<Object> documentBaseSubscriber, long i) throws InterruptedException {
         Flux<? extends Object> obs;
-
         if (i % 10 == 0 && i % 100 != 0) {
 
             PojoizedJson data = BenchmarkHelper.generateDocument(uuid + i,
@@ -43,9 +41,9 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Object> {
         } else if (i % 100 == 0) {
 
             CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
             String sqlQuery = "Select top 100 * from c order by c._ts";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
-
         } else {
 
             int index = r.nextInt(1000);

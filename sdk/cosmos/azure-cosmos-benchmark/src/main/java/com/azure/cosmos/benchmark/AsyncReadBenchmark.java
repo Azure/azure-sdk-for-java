@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;

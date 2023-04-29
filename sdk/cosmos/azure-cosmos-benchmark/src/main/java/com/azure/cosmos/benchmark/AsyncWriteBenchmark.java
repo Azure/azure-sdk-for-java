@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
@@ -62,7 +61,6 @@ class AsyncWriteBenchmark extends AsyncBenchmark<CosmosItemResponse> {
     protected void performWorkload(BaseSubscriber<CosmosItemResponse> baseSubscriber, long i) throws InterruptedException {
         String id = uuid + i;
         Mono<CosmosItemResponse<PojoizedJson>> obs;
-
         if (configuration.isDisablePassingPartitionKeyAsOptionOnWrite()) {
             // require parsing partition key from the doc
             obs = cosmosAsyncContainer.createItem(BenchmarkHelper.generateDocument(id,
