@@ -100,7 +100,6 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private Duration aggressiveConnectionEstablishmentDuration = Duration.ZERO;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -238,7 +237,6 @@ public interface AsyncDocumentClient {
         }
 
         public Builder withAggressiveWarmupDuration(Duration aggressiveConnectionEstablishmentDuration) {
-            this.aggressiveConnectionEstablishmentDuration = aggressiveConnectionEstablishmentDuration;
             return this;
         }
 
