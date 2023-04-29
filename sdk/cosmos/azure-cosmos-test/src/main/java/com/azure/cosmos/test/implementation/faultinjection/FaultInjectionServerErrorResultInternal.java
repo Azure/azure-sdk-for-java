@@ -75,7 +75,7 @@ public class FaultInjectionServerErrorResultInternal {
 
         switch (this.serverErrorType) {
             case GONE:
-                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
+                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone), HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 goneException.setIsBasedOn410ResponseFromService();
                 cosmosException = goneException;
                 break;

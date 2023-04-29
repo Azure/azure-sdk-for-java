@@ -175,7 +175,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 operationType,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneRuleId,
                 true);
 
