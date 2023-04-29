@@ -8,8 +8,8 @@ and rich integration with the rest of the Azure SDK ecosystem.
 
 Use the client library for Azure OpenAI to:
 
-* [Create a completion for text][msdocs_openai_completion]
-* [Create a text embedding for comparisons][msdocs_openai_embedding]
+* [Create a completion for text][microsoft_docs_openai_completion]
+* [Create a text embedding for comparisons][microsoft_docs_openai_embedding]
 
 [Source code][source_code] | [API reference documentation][docs] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -207,8 +207,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[msdocs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
-[msdocs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
+[microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
+[microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/feature/open-ai/sdk/openai/azure-ai-openai/src
