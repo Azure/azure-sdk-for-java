@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
@@ -33,6 +34,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
+
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
@@ -52,7 +55,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
-        this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         ReentrantReadWriteLock throughputReadWriteLock = new ReentrantReadWriteLock();
@@ -71,6 +73,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         concurrencySettings.put(
             ConnectionOpenFlowAggressivenessHint.DEFENSIVE,
             new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
+    }
+
+    public void init() {
+        this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
     public OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -95,6 +101,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // and RntbdTransportClient / RntbdEndpointProvider are also closed
         // this prevents netty executor classes from entering into IllegalStateException
         if (this.isClosed.get()) {
+            openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
             return;
         }
 
@@ -140,6 +147,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         if (isClosed.compareAndSet(false, true)) {
             logger.info("Shutting down ProactiveOpenConnectionsProcessor...");
             completeSink(openConnectionsTaskSink);
+
+            // Fail all pending tasks
+            this.endpointsUnderMonitorMap.forEach((addresses, taskList) -> {
+                for (OpenConnectionTask openConnectionTask : taskList) {
+                    openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
+                }
+            });
         }
     }
 
