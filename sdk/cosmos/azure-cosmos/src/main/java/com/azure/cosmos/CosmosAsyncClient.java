@@ -159,7 +159,6 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withApiType(apiType)
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
-                                       .withAggressiveWarmupDuration(this.proactiveContainerInitConfig != null ? this.proactiveContainerInitConfig.getAggressiveWarmupDuration() : null)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -597,8 +596,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     void openConnectionsAndInitCaches(Duration aggressiveWarmupDuration) {
         Flux<Void> submitOpenConnectionTasksFlux = asyncDocumentClient.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
-
-        wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration).blockLast();
+        blockVoidFlux(wrapSourceFluxAndSoftCompleteAfterTimeout(submitOpenConnectionTasksFlux, aggressiveWarmupDuration));
     }
 
     // this method is currently used to open connections when the client is being built
@@ -771,11 +769,11 @@ public final class CosmosAsyncClient implements Closeable {
         return telemetryConfigAccessor.isTransportLevelTracingEnabled(effectiveConfig);
     }
 
-    void recordOpenConnectionsAndInitCachesComplete(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.asyncDocumentClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
     }
 
-    void recordOpenConnectionsAndInitCachesStart(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.asyncDocumentClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 

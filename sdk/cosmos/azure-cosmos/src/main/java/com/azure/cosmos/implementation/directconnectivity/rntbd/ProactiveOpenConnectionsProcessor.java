@@ -88,7 +88,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // to open connection / channels when channels are being closed
         // and RntbdTransportClient / RntbdEndpointProvider are also closed
         // this prevents netty executor classes from entering into IllegalStateException
-        if (endpointProvider.isClosed()) {
+        if (this.isClosed.get()) {
             return;
         }
 

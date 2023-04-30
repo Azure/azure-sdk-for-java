@@ -791,10 +791,10 @@ public class CosmosAsyncContainer {
             return withContext(context -> openConnectionsAndInitCachesInternal(
                     proactiveContainerInitConfig
             )
-                .collectList() // TODO: need a way to get open result
+                .collectList()
                 .flatMap(
                     openResult -> {
-                        logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                        logger.debug("OpenConnectionsAndInitCaches: {}", openResult);
                         return Mono.empty();
                     }));
         } else {
