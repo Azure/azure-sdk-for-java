@@ -11,9 +11,6 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
-
-import java.time.Duration;
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -96,10 +93,6 @@ public class StoreClientFactory implements AutoCloseable {
             authorizationTokenProvider,
             this.transportClient,
             useMultipleWriteLocations);
-    }
-
-    public TransportClient getTransportClient() {
-        return this.transportClient;
     }
 
     private void throwIfClosed() {

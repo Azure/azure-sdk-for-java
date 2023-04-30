@@ -202,8 +202,8 @@ public class RntbdTransportClient extends TransportClient {
 
         if (this.closed.compareAndSet(false, true)) {
             logger.debug("close {}", this);
+            LifeCycleUtils.closeQuietly(this.proactiveOpenConnectionsProcessor);
             this.endpointProvider.close();
-            LifeCycleUtils.closeQuietly(this.proactiveOpenConnectionsProcessor);;
             return;
         }
 

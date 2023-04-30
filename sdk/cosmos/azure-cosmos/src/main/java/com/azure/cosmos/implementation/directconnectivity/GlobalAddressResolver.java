@@ -177,7 +177,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                                 endpointCache,
                                                                 addressInformation,
                                                                 containerLinkToCollection.getRight(),
-                                                                connectionsPerEndpointCountForContainer).then(); // TODO: figure out return type
+                                                                connectionsPerEndpointCountForContainer).then();
                                                     });
                                             }
 

@@ -67,7 +67,6 @@ public class SharedTransportClient extends TransportClient {
         }
     }
 
-
     private final TransportClient transportClient;
 
     private SharedTransportClient(

@@ -1414,14 +1414,14 @@ public class ImplementationBridgeHelpers {
 
         private CosmosContainerProactiveInitConfigHelper() {}
 
-        public static CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor getCosmosContainerProactiveInitConfigAccessor() {
+        public static CosmosContainerProactiveInitConfigAccessor getCosmosContainerProactiveInitConfigAccessor() {
 
             if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
                 logger.debug("Initializing CosmosContainerProactiveInitConfigAccessor...");
                 initializeAllAccessors();
             }
 
-            CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
+            CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
 
             if (snapshot == null) {
                 logger.error("CosmosContainerProactiveInitConfigAccessor is not initialized yet!");
@@ -1431,7 +1431,7 @@ public class ImplementationBridgeHelpers {
             return snapshot;
         }
 
-        public static void setCosmosContainerProactiveInitConfigAccessor(final CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor newAccessor) {
+        public static void setCosmosContainerProactiveInitConfigAccessor(final CosmosContainerProactiveInitConfigAccessor newAccessor) {
 
             assert (newAccessor != null);
 
