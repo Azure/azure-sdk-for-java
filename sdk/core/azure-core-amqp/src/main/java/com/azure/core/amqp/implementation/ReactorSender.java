@@ -498,19 +498,22 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
 
     @Override
     public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
-        final CompositeReadableBuffer buffer = new CompositeReadableBuffer();
-        buffer.append(bytes).limit(arrayOffset);
-        return send(buffer, messageFormat, deliveryState);
+        return onEndpointActive().then(Mono.create(sink -> {
+            sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),
+                deliveryState, metricsProvider));
+        }));
     }
 
     Mono<DeliveryState> send(ReadableBuffer buffer, int messageFormat, DeliveryState deliveryState) {
-        final Flux<EndpointState> activeEndpointFlux = RetryUtil.withRetry(
-            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), retryOptions,
-            activeTimeoutMessage);
-
-        return activeEndpointFlux.then(Mono.create(sink -> {
-            sendWork(new RetriableWorkItem(buffer, messageFormat, sink, retryOptions.getTryTimeout(), deliveryState, metricsProvider));
+        return onEndpointActive().then(Mono.create(sink -> {
+            sendWork(new RetriableWorkItem(buffer, messageFormat, sink, retryOptions.getTryTimeout(),
+                deliveryState, metricsProvider));
         }));
+    }
+
+    private Flux<EndpointState> onEndpointActive() {
+        return RetryUtil.withRetry(handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE),
+            retryOptions, activeTimeoutMessage);
     }
 
     /**
@@ -582,13 +585,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                 if (workItem.isDeliveryStateProvided()) {
                     delivery.disposition(workItem.getDeliveryState());
                 }
-                final ReadableBuffer encodedBuffer = workItem.getEncodedBuffer();
-                encodedBuffer.rewind();
-                sentMsgSize = sender.send(encodedBuffer);
-
-                assert sentMsgSize == workItem.getEncodedMessageSize()
-                    : "Contract of the ProtonJ library for Sender. Send API changed";
-
+                workItem.send(sender);
                 linkAdvance = sender.advance();
             } catch (Exception exception) {
                 sendException = exception;

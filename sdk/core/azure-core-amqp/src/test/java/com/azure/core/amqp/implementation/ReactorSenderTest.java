@@ -735,10 +735,8 @@ public class ReactorSenderTest {
         final Delivery delivery = mock(Delivery.class);
         when(sender.delivery(any())).thenReturn(delivery);
         when(sender.advance()).thenReturn(true);
-        when(sender.send(any(ReadableBuffer.class))).thenAnswer(invocation ->  {
-            final ReadableBuffer buffer = invocation.getArgument(0);
-            return buffer.remaining();
-        });
+        when(sender.send(any(), eq(0), anyInt())).thenAnswer(invocation -> invocation.getArgument(2));
+
 
         reactorSender = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,
             reactorProvider, tokenManager, messageSerializer, noRetryOptions, scheduler, AmqpMetricsProvider.noop());
@@ -776,10 +774,7 @@ public class ReactorSenderTest {
         final Delivery delivery = mock(Delivery.class);
         when(sender.delivery(any())).thenReturn(delivery);
         when(sender.advance()).thenReturn(true);
-        when(sender.send(any(ReadableBuffer.class))).thenAnswer(invocation -> {
-            final ReadableBuffer buffer = invocation.getArgument(0);
-            return buffer.remaining();
-        });
+        when(sender.send(any(), anyInt(), anyInt())).thenAnswer(invocation -> invocation.getArgument(2));
 
         TestMeter meter = new TestMeter();
         ReactorSender reactorSenderWithMetrics = new ReactorSender(amqpConnection, ENTITY_PATH, sender, handler,

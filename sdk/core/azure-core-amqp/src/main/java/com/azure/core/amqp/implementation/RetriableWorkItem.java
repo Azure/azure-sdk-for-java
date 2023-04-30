@@ -5,6 +5,7 @@ package com.azure.core.amqp.implementation;
 
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.codec.ReadableBuffer;
+import org.apache.qpid.proton.engine.Sender;
 import reactor.core.publisher.MonoSink;
 
 import java.time.Duration;
@@ -19,6 +20,7 @@ class RetriableWorkItem {
     private final MonoSink<DeliveryState> monoSink;
     private final TimeoutTracker timeoutTracker;
     private final ReadableBuffer encodedBuffer;
+    private final byte[] encodedBytes;
     private final int messageFormat;
     private final int encodedMessageSize;
     private final DeliveryState deliveryState;
@@ -31,6 +33,7 @@ class RetriableWorkItem {
     RetriableWorkItem(ReadableBuffer buffer, int messageFormat, MonoSink<DeliveryState> monoSink, Duration timeout,
         DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
         this.encodedBuffer = buffer;
+        this.encodedBytes = null;
         this.encodedMessageSize = buffer.remaining();
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
@@ -39,8 +42,16 @@ class RetriableWorkItem {
         this.metricsProvider = metricsProvider;
     }
 
-    ReadableBuffer getEncodedBuffer() {
-        return encodedBuffer;
+    RetriableWorkItem(byte[] bytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink, Duration timeout,
+        DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
+        this.encodedBytes = bytes;
+        this.encodedBuffer = null;
+        this.encodedMessageSize = encodedMessageSize;
+        this.messageFormat = messageFormat;
+        this.monoSink = monoSink;
+        this.timeoutTracker = new TimeoutTracker(timeout, false);
+        this.deliveryState = deliveryState;
+        this.metricsProvider = metricsProvider;
     }
 
     DeliveryState getDeliveryState() {
@@ -101,6 +112,17 @@ class RetriableWorkItem {
 
     boolean isWaitingForAck() {
         return this.waitingForAck;
+    }
+
+    void send(Sender sender) {
+        final int sentMsgSize;
+        if (encodedBytes != null) {
+            sentMsgSize = sender.send(encodedBytes, 0, encodedMessageSize);
+        } else {
+            encodedBuffer.rewind();
+            sentMsgSize = sender.send(encodedBuffer);
+        }
+        assert sentMsgSize == encodedMessageSize : "Contract of the ProtonJ library for Sender. Send API changed";
     }
 
     private void reportMetrics(DeliveryState deliveryState) {
