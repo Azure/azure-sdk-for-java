@@ -34,6 +34,44 @@ public class FeedRangeGoneSplitHandlerTests {
         };
     }
 
+    @DataProvider(name = "maxScaleCountArgProvider")
+    public static Object[][] maxScaleCountArgProvider() {
+        return new Object[][]{
+            // maxScaleCount
+            { 0 },
+            { 1 }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "maxScaleCountArgProvider")
+    public void feedRangeGoneSplitHandler_constructor(int maxScaleCount) {
+        ServiceItemLeaseV1 leaseWithGoneException =
+            new ServiceItemLeaseV1()
+                .withLeaseToken("AA-CC")
+                .withFeedRange(new FeedRangeEpkImpl(new Range<>("AA", "CC", true, false)));
+        leaseWithGoneException.setId("TestLease-" + UUID.randomUUID());
+
+        List<PartitionKeyRange> childRanges = new ArrayList<>();
+        // using a min less than AA to check we are using the min of the lease with gone exception
+        childRanges.add(new PartitionKeyRange("1", "", "BB"));
+        // using a max larger than CC to check we are using the max of the lease with gone exception
+        childRanges.add(new PartitionKeyRange("2", "BB", "FF"));
+
+        FeedRangeGoneSplitHandler splitHandler = new FeedRangeGoneSplitHandler(
+            leaseWithGoneException,
+            childRanges,
+            Mockito.mock(LeaseManager.class),
+            maxScaleCount);
+
+        if (maxScaleCount > 0) {
+            assertThat(splitHandler.shouldSkipDirectLeaseAssignment()).isTrue();
+        } else {
+            assertThat(splitHandler.shouldSkipDirectLeaseAssignment()).isFalse();
+        }
+
+        assertThat(splitHandler.shouldDeleteCurrentLease()).isTrue();
+    }
+
     @Test(groups = "unit", dataProvider = "secondChildLeaseSuccessArgProvider")
     public void splitHandlerForEpkBasedLease(boolean secondChildLeaseSuccess) {
         // Testing an imaginary scenario FeedRange "AA-CC" has been split into "''-BB", "BB-FF"
@@ -74,8 +112,8 @@ public class FeedRangeGoneSplitHandlerTests {
         FeedRangeGoneSplitHandler splitHandler = new FeedRangeGoneSplitHandler(
             leaseWithGoneException,
             childRanges,
-            leaseManagerMock
-        );
+            leaseManagerMock,
+            0);
 
         if (secondChildLeaseSuccess) {
             StepVerifier
