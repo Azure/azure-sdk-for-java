@@ -176,7 +176,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 operationType,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneRuleId,
                 true);
 
@@ -294,7 +294,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     cosmosDiagnostics,
                     operationType,
                     HttpConstants.StatusCodes.GONE,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                     writeRegionServerGoneRuleId,
                     true);
             } else {
@@ -394,7 +394,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Read,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 localRegionRuleId,
                 true
             );
@@ -456,7 +456,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             cosmosDiagnostics,
             OperationType.Query,
             HttpConstants.StatusCodes.GONE,
-            HttpConstants.SubStatusCodes.UNKNOWN,
+            HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
             feedRangeRuleId,
             true
         );
@@ -818,7 +818,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                         cosmosDiagnostics,
                         OperationType.Read,
                         HttpConstants.StatusCodes.GONE,
-                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                         hitLimitRuleId,
                         true
                     );
@@ -942,7 +942,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneIncludePrimaryRuleId,
                 true);
 
@@ -952,7 +952,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneIncludePrimaryRuleId,
                 true);
         } finally {
