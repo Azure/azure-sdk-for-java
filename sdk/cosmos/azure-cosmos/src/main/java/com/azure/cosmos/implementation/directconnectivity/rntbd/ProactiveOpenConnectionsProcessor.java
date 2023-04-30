@@ -98,7 +98,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             return;
         }
 
-        synchronized (this.endpointsUnderMonitorMapReadLock) {
+        this.endpointsUnderMonitorMapReadLock.lock();
+        try {
             this.endpointsUnderMonitorMap.compute(addressUriAsString, (key, taskList) -> {
                 if (taskList == null) {
                     taskList = new ArrayList<>();
@@ -113,6 +114,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
                 return taskList;
             });
+        } finally {
+            this.endpointsUnderMonitorMapReadLock.unlock();
         }
 
         // it is necessary to invoke getOrCreateEndpoint
@@ -190,9 +193,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
         Map<String, List<OpenConnectionTask>> mapSnapshot = new ConcurrentHashMap<>();
 
-        synchronized (this.endpointsUnderMonitorMapWriteLock) {
+        this.endpointsUnderMonitorMapWriteLock.lock();
+        try {
             this.instantiateOpenConnectionsPublisher();
             mapSnapshot.putAll(this.endpointsUnderMonitorMap);
+        } finally {
+            this.endpointsUnderMonitorMapWriteLock.unlock();
         }
 
         Flux<OpenConnectionTask> initialFlux  = Flux.fromIterable(
