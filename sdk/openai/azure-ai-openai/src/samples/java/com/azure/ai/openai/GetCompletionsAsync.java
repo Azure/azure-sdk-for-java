@@ -35,7 +35,7 @@ public class GetCompletionsAsync {
             .buildAsyncClient();
 
         List<String> prompt = new ArrayList<>();
-        prompt.add("Say this is a test");
+        prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
 
         client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt)).subscribe(
             completions -> {

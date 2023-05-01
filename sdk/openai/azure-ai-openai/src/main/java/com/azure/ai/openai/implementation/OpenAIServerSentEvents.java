@@ -39,8 +39,12 @@ public final class OpenAIServerSentEvents<T> {
                 currentLine = lastLine.get() + currentLine;
                 List<T> values = new ArrayList<>();
                 while (currentLine != null) {
+                    if (currentLine.equals("data: [DONE]")) {
+                        return Flux.fromIterable(values);
+                    }
+
                     if (expectEmptyLine.get() && !currentLine.isEmpty()) {
-                        return Flux.error(new UnsupportedOperationException("Multi-line data not supported"));
+                        return Flux.error(new UnsupportedOperationException("Multi-line data not supported " + currentLine));
                     }
 
                     if (!expectEmptyLine.get()) {
@@ -54,12 +58,14 @@ public final class OpenAIServerSentEvents<T> {
                         if (split[1].startsWith(" ")) {
                             completionJson = split[1].substring(1);
                         }
+
                         try {
                             T value = JSON_SERIALIZER.deserializeFromBytes(completionJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(type));
                             values.add(value);
                             lastLine.set("");
                         } catch (UncheckedIOException exception) {
                             lastLine.set(currentLine);
+                            expectEmptyLine.set(false);
                         }
                     } else {
                         expectEmptyLine.set(false);

@@ -191,8 +191,8 @@ public class SyncRestProxy extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            HttpHeader httpHeader = response.getSourceResponse().getHeaders().get(HttpHeaderName.fromString("Content-Type"));
-            if (httpHeader != null && httpHeader.getValue() != null && httpHeader.getValue().equals("text/event-stream")) {
+            HttpHeader httpHeader = response.getSourceResponse().getHeaders().get(HttpHeaderName.CONTENT_TYPE);
+            if (httpHeader != null && "text/event-stream".equals(httpHeader.getValue())) {
                 result = BinaryData.fromFlux(response.getSourceResponse().getBody(), null, false);
             } else {
                 result = BinaryData.fromFlux(response.getSourceResponse().getBody());

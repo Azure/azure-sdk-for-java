@@ -309,6 +309,8 @@
     "linksource",
     "listbyconfigurationprofileassignments",
     "localizable",
+    "logit",
+    "logprobs",
     "logz",
     "Lucene",
     "mgmt",

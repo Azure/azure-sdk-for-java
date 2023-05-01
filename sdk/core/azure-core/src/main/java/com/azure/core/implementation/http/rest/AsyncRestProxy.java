@@ -178,13 +178,13 @@ public class AsyncRestProxy extends RestProxyBase {
             // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(sourceResponse.getBody());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
-            HttpHeader httpHeader = sourceResponse.getHeaders().get(HttpHeaderName.fromString("Content-Type"));
+            HttpHeader httpHeader = sourceResponse.getHeaders().get(HttpHeaderName.CONTENT_TYPE);
             // Mono<BinaryData>
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            if (httpHeader != null && httpHeader.getValue() != null && httpHeader.getValue().equals("text/event-stream")) {
+            if (httpHeader != null && "text/event-stream".equals(httpHeader.getValue())) {
                 asyncResult = BinaryData.fromFlux(sourceResponse.getBody(), null, false);
             } else {
                 asyncResult = BinaryData.fromFlux(sourceResponse.getBody());
