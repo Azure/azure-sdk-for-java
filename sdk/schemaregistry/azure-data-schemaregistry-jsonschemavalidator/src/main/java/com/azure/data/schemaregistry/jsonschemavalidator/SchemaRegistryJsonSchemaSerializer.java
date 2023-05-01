@@ -46,4 +46,22 @@ public final class SchemaRegistryJsonSchemaSerializer {
 
         return Mono.empty();
     }
+
+    public <T> T deserialize(MessageContent message, TypeReference<T> typeReference) {
+        return deserializeAsync(message, typeReference).block();
+    }
+
+    public <T> SerializationResult<T> deserializeWithValidation(MessageContent message, TypeReference<T> typeReference,
+        String schemaId) {
+        return deserializeWithValidationAsync(message, typeReference, schemaId).block();
+    }
+
+    public <T> Mono<T> deserializeAsync(MessageContent message, TypeReference<T> typeReference) {
+        return Mono.empty();
+    }
+
+    public <T> Mono<SerializationResult<T>> deserializeWithValidationAsync(MessageContent message,
+        TypeReference<T> typeReference, String schemaId) {
+        return Mono.empty();
+    }
 }

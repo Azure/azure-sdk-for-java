@@ -1,8 +1,6 @@
 package com.azure.data.schemaregistry.jsonschemavalidator.models;
 
-import com.azure.core.models.MessageContent;
-
-public class SerializationResult<T extends MessageContent> {
+public class SerializationResult<T> {
     private final T value;
     private final Iterable<ValidationError> errors;
 
