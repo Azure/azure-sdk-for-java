@@ -150,7 +150,7 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
     System.out.println(message.getContent());
 }
 ```
-Please refer to the service documentation for a conceptual discussion of [text completion][msdocs_openai_completion].
+Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
 
 ### Text embeddings
 
@@ -167,7 +167,7 @@ for (EmbeddingItem item : embeddings.getData()) {
     }
 }
 ```
-Please refer to the service documentation for a conceptual discussion of [openAI embedding][msdocs_openai_embedding].
+Please refer to the service documentation for a conceptual discussion of [openAI embedding][microsoft_docs_openai_embedding].
 
 ## Troubleshooting
 ### Enable client logging
