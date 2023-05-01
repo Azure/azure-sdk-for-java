@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
@@ -30,15 +31,20 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
     private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final Object endpointsUnderMonitorMapLock;
+    private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
+    private final ReentrantReadWriteLock.ReadLock endpointsUnderMonitorMapReadLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
+    private final Object containersUnderOpenConnectionAndInitCachesLock;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
     private static final Map<ConnectionOpenFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
@@ -49,15 +55,17 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
-        this.openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
-        this.endpointsUnderMonitorMapLock = new Object();
+        ReentrantReadWriteLock throughputReadWriteLock = new ReentrantReadWriteLock();
+        this.endpointsUnderMonitorMapWriteLock = throughputReadWriteLock.writeLock();
+        this.endpointsUnderMonitorMapReadLock = throughputReadWriteLock.readLock();
 
         this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
+        this.containersUnderOpenConnectionAndInitCachesLock = new Object();
 
         concurrencySettings.put(
             ConnectionOpenFlowAggressivenessHint.AGGRESSIVE,
@@ -65,6 +73,10 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         concurrencySettings.put(
             ConnectionOpenFlowAggressivenessHint.DEFENSIVE,
             new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
+    }
+
+    public void init() {
+        this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
     public OpenConnectionTask submitOpenConnectionTaskOutsideLoop(
@@ -88,23 +100,30 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // to open connection / channels when channels are being closed
         // and RntbdTransportClient / RntbdEndpointProvider are also closed
         // this prevents netty executor classes from entering into IllegalStateException
-        if (endpointProvider.isClosed() || this.isClosed.get()) {
+        if (this.isClosed.get()) {
+            openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
             return;
         }
 
-        this.endpointsUnderMonitorMap.compute(addressUriAsString, (key, taskList) -> {
-            if (taskList == null) {
-                taskList = new ArrayList<>();
-            }
+        this.endpointsUnderMonitorMapReadLock.lock();
+        try {
+            this.endpointsUnderMonitorMap.compute(addressUriAsString, (key, taskList) -> {
+                if (taskList == null) {
+                    taskList = new ArrayList<>();
+                }
 
-            taskList.add(openConnectionTask);
+                taskList.add(openConnectionTask);
 
-            if (taskList.size() == 1) {
-                this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
-            }
+                // Only submit task to the sink if this is the first openConnectionTask to the endpoint
+                if (taskList.size() == 1) {
+                    this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
+                }
 
-            return taskList;
-        });
+                return taskList;
+            });
+        } finally {
+            this.endpointsUnderMonitorMapReadLock.unlock();
+        }
 
         // it is necessary to invoke getOrCreateEndpoint
         // multiple times to ensure a global max of min connections required
@@ -117,6 +136,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     // 1. Tasks from up caller -> in this case, before we enqueue a task we would want to check whether the endpoint has already in the map
     // 2. Tasks from existing flow -> for each endpoint, each time we will only 1 connection, if the connection count < the mini connection requirements,then re-queue.
     // for this case, then there is no need to validate whether the endpoint exists
+    //
+    // Using synchronized here to reduce the Sinks.EmitResult.FAIL_NON_SERIALIZED errors.
     private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
         openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
     }
@@ -126,12 +147,19 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         if (isClosed.compareAndSet(false, true)) {
             logger.info("Shutting down ProactiveOpenConnectionsProcessor...");
             completeSink(openConnectionsTaskSink);
+
+            // Fail all pending tasks
+            this.endpointsUnderMonitorMap.forEach((addresses, taskList) -> {
+                for (OpenConnectionTask openConnectionTask : taskList) {
+                    openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
+                }
+            });
         }
     }
 
     public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> containerIdentities) {
 
-        synchronized (endpointsUnderMonitorMapLock) {
+        synchronized (this.containersUnderOpenConnectionAndInitCachesLock) {
             for (CosmosContainerIdentity containerIdentity : containerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.remove(
                     ImplementationBridgeHelpers
@@ -155,7 +183,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         boolean shouldReInstantiatePublisher;
-        synchronized (endpointsUnderMonitorMapLock) {
+        synchronized (this.containersUnderOpenConnectionAndInitCachesLock) {
             shouldReInstantiatePublisher = this.containersUnderOpenConnectionAndInitCaches.size() == 0;
             for (CosmosContainerIdentity containerIdentity : cosmosContainerIdentities) {
                 this.containersUnderOpenConnectionAndInitCaches.add(
@@ -165,19 +193,27 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                         .getContainerLink(containerIdentity)
                 );
             }
-        }
 
-        if (shouldReInstantiatePublisher) {
-            this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE);
-            this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+            if (shouldReInstantiatePublisher) {
+                this.aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.AGGRESSIVE);
+                this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
+            }
         }
     }
 
     public Disposable getBackgroundOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
+
         Map<String, List<OpenConnectionTask>> mapSnapshot = new ConcurrentHashMap<>();
-        mapSnapshot.putAll(this.endpointsUnderMonitorMap);
+
+        this.endpointsUnderMonitorMapWriteLock.lock();
+        try {
+            this.instantiateOpenConnectionsPublisher();
+            mapSnapshot.putAll(this.endpointsUnderMonitorMap);
+        } finally {
+            this.endpointsUnderMonitorMapWriteLock.unlock();
+        }
 
         Flux<OpenConnectionTask> initialFlux  = Flux.fromIterable(
             mapSnapshot
@@ -275,8 +311,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             logger.debug("Force defensive opening of connections");
             this.forceDefensiveOpenConnections();
         }
-        logger.debug("Re-instantiate openConnectionsTaskSink");
-        this.instantiateOpenConnectionsPublisher();
 
         // If this is not the first time we are initiating the publisher
         // then we are going to dispose the previous one

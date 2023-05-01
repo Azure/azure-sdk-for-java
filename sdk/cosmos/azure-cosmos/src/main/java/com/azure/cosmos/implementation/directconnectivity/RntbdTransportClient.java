@@ -167,7 +167,10 @@ public class RntbdTransportClient extends TransportClient {
             addressResolver,
             clientTelemetry,
             this.serverErrorInjector);
+
         this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
+        this.proactiveOpenConnectionsProcessor.init();
+
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
         this.channelAcquisitionContextEnabled = options.channelAcquisitionContextEnabled;
