@@ -82,7 +82,7 @@ public class DeserializeEventData {
         for (PartitionEvent event : partitionEvents) {
 
             SerializationResult<Person> results = serializer.deserializeWithValidation(event.getData(),
-                TypeReference.createInstance(Person.class), schemaId);
+                TypeReference.createInstance(Person.class));
 
             for (ValidationError validationError : results.getValidationErrors()) {
                 System.out.println("Error: " + validationError);

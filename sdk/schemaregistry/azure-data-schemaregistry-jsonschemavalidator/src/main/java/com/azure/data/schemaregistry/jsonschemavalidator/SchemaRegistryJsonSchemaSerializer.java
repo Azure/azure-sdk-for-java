@@ -51,9 +51,8 @@ public final class SchemaRegistryJsonSchemaSerializer {
         return deserializeAsync(message, typeReference).block();
     }
 
-    public <T> SerializationResult<T> deserializeWithValidation(MessageContent message, TypeReference<T> typeReference,
-        String schemaId) {
-        return deserializeWithValidationAsync(message, typeReference, schemaId).block();
+    public <T> SerializationResult<T> deserializeWithValidation(MessageContent message, TypeReference<T> typeReference) {
+        return deserializeWithValidationAsync(message, typeReference).block();
     }
 
     public <T> Mono<T> deserializeAsync(MessageContent message, TypeReference<T> typeReference) {
@@ -61,7 +60,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
     }
 
     public <T> Mono<SerializationResult<T>> deserializeWithValidationAsync(MessageContent message,
-        TypeReference<T> typeReference, String schemaId) {
+        TypeReference<T> typeReference) {
         return Mono.empty();
     }
 }
