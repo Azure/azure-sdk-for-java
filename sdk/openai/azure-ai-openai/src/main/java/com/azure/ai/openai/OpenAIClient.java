@@ -4,6 +4,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
@@ -260,7 +261,7 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
         String deploymentId, List<String> prompts, RequestOptions requestOptions) {
-        CompletionsOptions completionsOptions = new CompletionsOptions(prompts);
+        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionOptions(prompts);
         BinaryData completionsOptionsRequest = BinaryData.fromObject(completionsOptions);
         return this.client.getCompletionsWithResponse(deploymentId, completionsOptionsRequest, requestOptions).block();
     }
@@ -410,7 +411,7 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Completions getCompletions(String deploymentId, List<String> prompts) {
         RequestOptions requestOptions = new RequestOptions();
-        CompletionsOptions completionsOptions = new CompletionsOptions(prompts);
+        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionOptions(prompts);
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
             .getValue()
             .toObject(Completions.class);
