@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.implementation;
 
 import com.azure.core.util.serializer.JsonSerializer;
@@ -34,12 +37,12 @@ public final class OpenAIServerSentEvents<T> {
         return source.concatMap(byteBuffer -> {
             try {
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(byteArrayInputStream, StandardCharsets.UTF_8));
                 String currentLine = reader.readLine();
                 currentLine = lastLine.get() + currentLine;
                 List<T> values = new ArrayList<>();
                 while (currentLine != null) {
-                    if (currentLine.equals("data: [DONE]")) {
+                    if ("data: [DONE]".equals(currentLine)) {
                         return Flux.fromIterable(values);
                     }
 
