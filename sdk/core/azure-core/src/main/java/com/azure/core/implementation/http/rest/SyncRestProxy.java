@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -189,7 +191,12 @@ public class SyncRestProxy extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getSourceResponse().getBodyAsBinaryData();
+            HttpHeader httpHeader = response.getSourceResponse().getHeaders().get(HttpHeaderName.fromString("Content-Type"));
+            if (httpHeader != null && httpHeader.getValue() != null && httpHeader.getValue().equals("text/event-stream")) {
+                result = BinaryData.fromFlux(response.getSourceResponse().getBody(), null, false);
+            } else {
+                result = BinaryData.fromFlux(response.getSourceResponse().getBody());
+            }
         } else {
             // Object or Page<T>
             result = response.getDecodedBody((byte[]) null);

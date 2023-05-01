@@ -4,6 +4,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.implementation.OpenAIStream;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
@@ -21,6 +22,10 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
+
+import java.nio.ByteBuffer;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
@@ -301,6 +306,17 @@ public final class OpenAIClient {
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
                 .getValue()
                 .toObject(Completions.class);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<Completions> getCompletionsStream(String deploymentId, CompletionsOptions completionOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream =
+            getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionOptions), requestOptions)
+                .getValue()
+                .toFluxByteBuffer();
+        OpenAIStream<Completions> completionsStream = new OpenAIStream<>(responseStream, Completions.class);
+        return new IterableStream<>(completionsStream.getEvents());
     }
 
     /**
