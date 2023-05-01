@@ -48,13 +48,14 @@ import static com.azure.data.tables.implementation.TableUtils.applyOptionalTimeo
 import static com.azure.data.tables.implementation.TableUtils.swallowExceptionForStatusCode;
 
 /**
- * Provides an asynchronous service client for accessing the Azure Tables service.
+ * <h2>Overview</h2>
+ * <p>Provides an asynchronous service client for accessing the Azure Tables service.</p>
  *
  * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * <h3>Creating an Asynchronous Table Service Client</h3>
+ * <h3> Creating an Asynchronous Table Service Client </h3>
  * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method
  * on a {@link TableServiceClientBuilder} object.</p>
  *

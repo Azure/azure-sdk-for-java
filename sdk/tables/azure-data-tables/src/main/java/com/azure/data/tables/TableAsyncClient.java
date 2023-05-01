@@ -73,7 +73,7 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
 
 /**
  * <h2>Overview</h2>
- * Provides an asynchronous service client for accessing a table in the Azure Tables service.
+ * <p>Provides an asynchronous service client for accessing a table in the Azure Tables service.</p>
  *
  * <p>The client encapsulates the URL for the table within the Tables service endpoint, the name of the table, and the
  * credentials for accessing the storage or CosmosDB table API account. It provides methods to create and delete the
@@ -87,9 +87,9 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * <p>See {@link TableClientBuilder} documentation for more information on constructing a client.</p>
 * <h2>Usage Code Samples</h2>
  * 
- * <h4>Creating a {@link TableEntity}</h4>
- * <h4>Listing {@link TableEntity TableEntities}</h4>
- * <h4>Deleting a {@link TableEntity}</h4>
+ * <h3>Creating a {@link TableEntity}</h3>
+ * <h3>Listing {@link TableEntity TableEntities}</h3>
+ * <h3>Deleting a {@link TableEntity}</h3>
  * 
  * @see TableClientBuilder
  */
