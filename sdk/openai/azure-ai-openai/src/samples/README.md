@@ -5,7 +5,7 @@ languages:
 products: 
   - azure 
   - azure-cognitive-services
-  - openai
+  - azure-openai
 urlFragment: ai-openai-java-samples
 ---
 
