@@ -13,7 +13,7 @@ public class CompletionsUtils {
      * Convenience method for minimal initialization for the CompletionsOptions class
      * @param prompt from which Completions will be generated
      * @return A CompletionsOptions object */
-    public static CompletionsOptions DefaultCompletionOptions(List<String> prompt) {
+    public static CompletionsOptions DefaultCompletionsOptions(List<String> prompt) {
         return new CompletionsOptions(prompt).setMaxTokens(DEFAULT_MAX_COMPLETION_TOKENS);
     }
 

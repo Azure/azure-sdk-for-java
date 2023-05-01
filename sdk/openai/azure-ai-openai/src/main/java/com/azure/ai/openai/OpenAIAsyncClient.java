@@ -266,7 +266,7 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
         String deploymentId, List<String> prompts, RequestOptions requestOptions) {
-        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionOptions(prompts);
+        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompts);
         BinaryData completionsOptionsRequest = BinaryData.fromObject(completionsOptions);
         return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptionsRequest, requestOptions);
     }
@@ -419,7 +419,7 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Completions> getCompletions(String deploymentId, List<String> prompts) {
         RequestOptions requestOptions = new RequestOptions();
-        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionOptions(prompts);
+        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompts);
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
