@@ -101,7 +101,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getCompletionsRunner((deploymentId, prompts) -> {
+        getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
             Completions completions = client.getCompletions(deploymentId, prompts);
             assertCompletions(new int[]{0}, null, null, completions);
         });
@@ -111,8 +111,11 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsFromPromptWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getCompletionsRunner((deploymentId, prompts) -> {
-            Response<BinaryData> response = client.getCompletionsWithResponse(deploymentId, prompts, new RequestOptions());
+        getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
+            Response<BinaryData> response = client.getCompletionsWithResponse(
+                deploymentId,
+                prompts,
+                new RequestOptions());
             assertEquals(200, response.getStatusCode());
             Completions completions = response.getValue().toObject(Completions.class);
             assertCompletions(new int[]{0}, null, null, completions);

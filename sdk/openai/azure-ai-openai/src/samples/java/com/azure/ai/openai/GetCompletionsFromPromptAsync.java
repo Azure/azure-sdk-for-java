@@ -31,8 +31,7 @@ public class GetCompletionsFromPromptAsync {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildAsyncClient();
 
-        List<String> prompt = new ArrayList<>();
-        prompt.add("Tell me 3 facts about pineapples");
+        String prompt = "Tell me 3 facts about pineapples";
 
         Sinks.Empty<Void> completionSink = Sinks.empty();
 

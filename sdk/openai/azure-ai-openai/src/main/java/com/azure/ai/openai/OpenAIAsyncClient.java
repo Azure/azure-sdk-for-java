@@ -253,7 +253,7 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param prompts The prompts to generate values from.
+     * @param prompt The prompts to generate values from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -265,8 +265,8 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
-        String deploymentId, List<String> prompts, RequestOptions requestOptions) {
-        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompts);
+        String deploymentId, String prompt, RequestOptions requestOptions) {
+        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompt);
         BinaryData completionsOptionsRequest = BinaryData.fromObject(completionsOptions);
         return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptionsRequest, requestOptions);
     }
@@ -406,7 +406,7 @@ public final class OpenAIAsyncClient {
      * that continues from or "completes" provided prompt data.
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param prompts The prompts to generate values from.
+     * @param prompt The prompts to generate values from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -417,9 +417,9 @@ public final class OpenAIAsyncClient {
      *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Completions> getCompletions(String deploymentId, List<String> prompts) {
+    public Mono<Completions> getCompletions(String deploymentId, String prompt) {
         RequestOptions requestOptions = new RequestOptions();
-        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompts);
+        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompt);
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));

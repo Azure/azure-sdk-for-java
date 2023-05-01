@@ -31,8 +31,7 @@ public class GetCompletionsFromPrompt {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
-        List<String> prompt = new ArrayList<>();
-        prompt.add("Tell me 3 jokes about trains");
+        String prompt = "Tell me 3 jokes about trains";
 
         Completions completions = client.getCompletions(deploymentOrModelId, prompt);
 
