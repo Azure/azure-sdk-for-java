@@ -60,6 +60,12 @@
       <groupId>com.networknt</groupId>
       <artifactId>json-schema-validator</artifactId>
       <version>1.0.80</version> <!-- {x-version-update;com.networknt:json-schema-validator;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Explicitly stating these because org.apache.avro uses an older version of jackson which is resolved since it
