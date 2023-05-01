@@ -896,9 +896,12 @@
   </Match>
 
   <!-- Tracking work-item: https://github.com/Azure/azure-sdk-for-java/issues/9037 -->
+  <!-- For ProactiveOpenConnectionsProcessor, it is okay to not synchronize the sink
+       when subscribing to it -->
   <Match>
     <Or>
       <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics"/>
+      <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor"/>
       <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
