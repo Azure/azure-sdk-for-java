@@ -1,5 +1,14 @@
 # Release History
 
+## 1.8.3 (2023-05-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.13.7` to version `1.13.8`.
+- Upgraded `msal4j-persistence-extension` from `1.1.0` to version `1.2.0`.
+
 ## 1.8.2 (2023-04-10)
 
 ### Bugs Fixed
