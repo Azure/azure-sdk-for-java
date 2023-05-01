@@ -6,14 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.TokenRequestContext;
 
 /**
- * <p>The Authentication Required Exception is thrown by {@link InteractiveBrowserCredential} and
- * {@link DeviceCodeCredential} to indicate to the user that automatic authentication is disabled and authentication
- * needs to be initiated via {@link InteractiveBrowserCredential#authenticate()} or
- * {@link DeviceCodeCredential#authenticate()} APIs respectively before fetching an access token.</p>
- *
- * @see com.azure.identity
- * @see InteractiveBrowserCredential
- * @see DeviceCodeCredential
+ * The exception thrown to indicate that interactive authentication is required.
  */
 public final class AuthenticationRequiredException extends CredentialUnavailableException {
 

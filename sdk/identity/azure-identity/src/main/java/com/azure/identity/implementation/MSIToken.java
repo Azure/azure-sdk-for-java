@@ -44,13 +44,11 @@ public final class MSIToken extends AccessToken {
     @JsonProperty(value = "expires_in")
     private String expiresIn;
 
-
     /**
      * Creates an access token instance.
      *
-     * @param token     the token string.
+     * @param token the token string.
      * @param expiresOn the expiration time.
-     * @param expiresIn the number of seconds until expiration.
      */
     @JsonCreator
     public MSIToken(
@@ -69,20 +67,13 @@ public final class MSIToken extends AccessToken {
     }
 
     private static Long parseToEpochSeconds(String expiresOn, String expiresIn) {
-
-        // expiresIn = number of seconds until refresh
-        // expiresOn = timestamp of refresh expressed as seconds since epoch.
-
-        // if we have an expiresOn, we'll use it. Otherwise, we use expiresIn.
         String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
 
         try {
-            long seconds = Long.parseLong(dateToParse);
-            // we have an expiresOn, so no parsing required.
+            Long seconds = Long.parseLong(dateToParse);
             if (!CoreUtils.isNullOrEmpty(expiresOn)) {
                 return seconds;
             } else {
-                // otherwise we need the OffsetDateTime representing now plus the expiresIn duration.
                 return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(seconds).toEpochSecond();
             }
         } catch (NumberFormatException e) {
@@ -102,4 +93,5 @@ public final class MSIToken extends AccessToken {
         }
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
     }
+
 }

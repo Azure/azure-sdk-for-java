@@ -3,12 +3,11 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.test.utils.TestConfigurationSource;
-import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.azure.core.util.Configuration;
 
 public class IdentityClientOptionsTest {
 
@@ -20,12 +19,16 @@ public class IdentityClientOptionsTest {
 
     @Test
     public void testEnvAuthorityHost() {
-        String envAuthorityHost = "https://envauthority.com/";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("AZURE_AUTHORITY_HOST", envAuthorityHost));
+        Configuration configuration = Configuration.getGlobalConfiguration();
 
-        IdentityClientOptions identityClientOptions = new IdentityClientOptions().setConfiguration(configuration);
-        Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
+        try {
+            String envAuthorityHost = "https://envauthority.com/";
+            configuration.put("AZURE_AUTHORITY_HOST", envAuthorityHost);
+            IdentityClientOptions identityClientOptions = new IdentityClientOptions();
+            Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
+        } finally {
+            configuration.remove("AZURE_AUTHORITY_HOST");
+        }
     }
 
     @Test
@@ -34,12 +37,5 @@ public class IdentityClientOptionsTest {
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
         identityClientOptions.setAuthorityHost(authorityHost);
         Assert.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
-    }
-
-    @Test
-    public void testDisableAuthorityValidationAndInstanceDiscovery() {
-        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        identityClientOptions.disableAuthorityValidationAndInstanceDiscovery();
-        Assert.assertFalse(identityClientOptions.getDisableAuthorityValidationAndInstanceDiscovery());
     }
 }

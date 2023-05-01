@@ -4,7 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.identity.implementation.IdentityClient;
@@ -30,17 +29,17 @@ public class AzureApplicationCredentialTest {
     private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
-    public void testUseEnvironmentCredential() {
+    public void testUseEnvironmentCredential() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
         // setup
         String secret = "secret";
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("AZURE_CLIENT_ID", CLIENT_ID)
-            .put("AZURE_CLIENT_SECRET", secret)
-            .put("AZURE_TENANT_ID", TENANT_ID));
+        configuration.put("AZURE_CLIENT_ID", CLIENT_ID);
+        configuration.put("AZURE_CLIENT_SECRET", secret);
+        configuration.put("AZURE_TENANT_ID", TENANT_ID);
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
@@ -58,7 +57,7 @@ public class AzureApplicationCredentialTest {
     }
 
     @Test
-    public void testUseManagedIdentityCredential() {
+    public void testUseManagedIdentityCredential() throws Exception {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -85,7 +84,7 @@ public class AzureApplicationCredentialTest {
     }
 
     @Test
-    public void testNoCredentialWorks() {
+    public void testNoCredentialWorks() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();
@@ -106,7 +105,7 @@ public class AzureApplicationCredentialTest {
     }
 
     @Test
-    public void testCredentialUnavailable() {
+    public void testCredentialUnavailable() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         EmptyEnvironmentConfigurationSource source = new EmptyEnvironmentConfigurationSource();

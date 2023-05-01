@@ -13,9 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
 /**
- * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host and
- * additionally allowed tenants for an Azure Active Directory.</p>
- *
+ * The base class for credential builders that allow specifying a client ID and tenant ID for an Azure Active Directory.
  * @param <T> the type of the credential builder
  */
 public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
@@ -66,7 +64,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
+     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
      * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
      * requests might starve and setting up this executor service should be considered.
      * </p>
@@ -107,23 +105,6 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
-        return (T) this;
-    }
-
-    /**
-     * Disables the setting which determines whether or not instance discovery is performed when attempting to
-     * authenticate. This will completely disable both instance discovery and authority validation.
-     * This functionality is intended for use in scenarios where the metadata endpoint cannot be reached, such as in
-     * private clouds or Azure Stack. The process of instance discovery entails retrieving authority metadata from
-     * https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the authority
-     * is disabled. As a result, it is crucial to ensure that the configured authority host is valid and trustworthy.
-     *
-     * @return An updated instance of this builder with instance discovery disabled.
-     */
-    @SuppressWarnings("unchecked")
-
-    public T disableAuthorityValidationAndInstanceDiscovery() {
-        this.identityClientOptions.disableAuthorityValidationAndInstanceDiscovery();
         return (T) this;
     }
 }
