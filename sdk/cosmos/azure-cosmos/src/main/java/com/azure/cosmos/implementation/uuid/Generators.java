@@ -178,7 +178,7 @@ public class Generators
      * @param ethernetAddress (optional) MAC address to use; if null, a transient
      *   random address is generated.
      * 
-     * @see com.fasterxml.uuid.ext.FileBasedTimestampSynchronizer
+     * @see com.azure.cosmos.implementation.uuid.ext.FileBasedTimestampSynchronizer
      */
     public static TimeBasedGenerator timeBasedGenerator(EthernetAddress ethernetAddress,
             TimestampSynchronizer sync)

@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 package com.azure.cosmos.implementation.uuid.impl;
 
 import org.slf4j.Logger;

@@ -140,7 +140,7 @@ public final class FileBasedTimestampSynchronizer
 
     /**
      * This method is to be called only once by
-     * {@link com.fasterxml.uuid.UUIDTimer}. It
+     * {@link com.azure.cosmos.implementation.uuid.UUIDTimer}. It
      * should fetch the persisted timestamp value, which indicates
      * first timestamp value that is guaranteed NOT to have used by
      * a previous incarnation. If it can not determine such value, it
