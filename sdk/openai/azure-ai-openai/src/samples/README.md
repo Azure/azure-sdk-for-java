@@ -5,8 +5,6 @@ languages:
   products:
     - azure
     - azure-cognitive-services
-    - openai-service
-      urlFragment: openai-java-samples
 ---
 
 # Azure OpenAI client library samples for Java
