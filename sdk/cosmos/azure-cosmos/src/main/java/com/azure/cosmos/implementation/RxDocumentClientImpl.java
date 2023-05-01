@@ -959,11 +959,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return tFeedResponse;
                 });
 
+            RequestOptions requestOptions = options == null? null : ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .toRequestOptions(options);
             CosmosE2EOperationRetryPolicyConfig endToEndPolicyConfig =
-                getEndToEndOperationLatencyPolicyConfig(ImplementationBridgeHelpers
-                    .CosmosQueryRequestOptionsHelper
-                    .getCosmosQueryRequestOptionsAccessor()
-                    .toRequestOptions(options));
+                getEndToEndOperationLatencyPolicyConfig(requestOptions);
 
             if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
                 return getFeedResponseFluxWithTimeout(feedResponseFlux, endToEndPolicyConfig);
