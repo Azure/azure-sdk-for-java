@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.apacheavro;
+package com.azure.data.schemaregistry.jsonschemavalidator;
 
 import com.azure.core.annotation.Immutable;
 
@@ -10,7 +10,6 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 class SerializerOptions {
-    private final boolean autoRegisterSchemas;
     private final int maxCacheSize;
     private final String schemaGroup;
 
@@ -18,22 +17,11 @@ class SerializerOptions {
      * Creates a new instance.
      *
      * @param schemaGroup Optional schema group when registering a schema is required.
-     * @param autoRegisterSchemas {@code true} to register schema if it does not exist, {@code false} otherwise.
      * @param maxCacheSize The maximum cache size for the serializer.
      */
-    SerializerOptions(String schemaGroup, boolean autoRegisterSchemas, int maxCacheSize) {
+    SerializerOptions(String schemaGroup, int maxCacheSize) {
         this.schemaGroup = schemaGroup;
-        this.autoRegisterSchemas = autoRegisterSchemas;
         this.maxCacheSize = maxCacheSize;
-    }
-
-    /**
-     * Gets whether to auto-register schemas.
-     *
-     * @return {@code true} to register schema if it does not exist; {@code false} otherwise.
-     */
-    boolean autoRegisterSchemas() {
-        return autoRegisterSchemas;
     }
 
     /**
