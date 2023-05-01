@@ -507,8 +507,6 @@ public final class ContainerRegistryContentAsyncClient {
 
     private Flux<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>> getAllChunks(
         ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData> firstResponse, String digest, Context context) {
-        validateResponseHeaderDigest(digest, firstResponse.getHeaders());
-
         long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
         List<Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>>> others = new ArrayList<>();
         others.add(Mono.just(firstResponse));
