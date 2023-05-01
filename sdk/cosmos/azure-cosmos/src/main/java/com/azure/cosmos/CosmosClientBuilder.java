@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -938,7 +940,23 @@ public class CosmosClientBuilder implements
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
-        cosmosAsyncClient.openConnectionsAndInitCaches();
+        if (proactiveContainerInitConfig != null) {
+
+            cosmosAsyncClient.recordOpenConnectionsAndInitCachesStarted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+
+            Duration aggressiveWarmupDuration = proactiveContainerInitConfig
+                    .getAggressiveWarmupDuration();
+            if (aggressiveWarmupDuration != null) {
+                cosmosAsyncClient.openConnectionsAndInitCaches(aggressiveWarmupDuration);
+            } else {
+                cosmosAsyncClient.openConnectionsAndInitCaches();
+            }
+
+            cosmosAsyncClient.recordOpenConnectionsAndInitCachesCompleted(proactiveContainerInitConfig.getCosmosContainerIdentities());
+        } else {
+            cosmosAsyncClient.recordOpenConnectionsAndInitCachesCompleted(new ArrayList<>());
+        }
+
         logStartupInfo(stopwatch, cosmosAsyncClient);
         return cosmosAsyncClient;
     }
@@ -954,7 +972,15 @@ public class CosmosClientBuilder implements
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
-        cosmosClient.openConnectionsAndInitCaches();
+        if (proactiveContainerInitConfig != null) {
+            Duration aggressiveWarmupDuration = proactiveContainerInitConfig
+                    .getAggressiveWarmupDuration();
+            if (aggressiveWarmupDuration != null) {
+                cosmosClient.openConnectionsAndInitCaches(aggressiveWarmupDuration);
+            } else {
+                cosmosClient.openConnectionsAndInitCaches();
+            }
+        }
         logStartupInfo(stopwatch, cosmosClient.asyncClient());
         return cosmosClient;
     }
@@ -1003,6 +1029,11 @@ public class CosmosClientBuilder implements
             Preconditions.checkArgument(preferredRegions != null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
             Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() <= this.preferredRegions.size(), "no. of regions to proactively connect to " +
                     "cannot be greater than the no.of preferred regions");
+            Preconditions.checkArgument(this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0, "no. of proactive connection regions should be greater than 0");
+            if (this.proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 1) {
+                Preconditions.checkArgument(this.isEndpointDiscoveryEnabled(), "endpoint discovery should be enabled when no. " +
+                        "of proactive regions is greater than 1");
+            }
         }
 
         ifThrowIllegalArgException(this.serviceEndpoint == null,

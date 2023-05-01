@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -19,12 +18,14 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -172,6 +173,14 @@ public class ReplicatedResourceClient {
             addressSelector);
     }
 
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,
             boolean isInRetry, boolean forceRefresh) {
 
@@ -191,8 +200,8 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
