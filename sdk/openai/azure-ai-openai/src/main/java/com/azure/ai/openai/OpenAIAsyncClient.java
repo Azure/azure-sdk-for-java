@@ -5,7 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.OpenAIStream;
+import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
@@ -314,13 +314,28 @@ public final class OpenAIAsyncClient {
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
 
+    /**
+     * Gets completions as a stream for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     * @param deploymentId deployment id of the deployed model.
+     * @param completionsOptions The configuration information for a completions request. Completions support a wide
+     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a {@link Flux} of completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<Completions> getCompletionsStream(String deploymentId, CompletionsOptions completionOptions) {
+    public Flux<Completions> getCompletionsStream(String deploymentId, CompletionsOptions completionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        BinaryData requestBody = BinaryData.fromObject(completionOptions);
+        BinaryData requestBody = BinaryData.fromObject(completionsOptions);
         Flux<ByteBuffer> responseStream = getCompletionsWithResponse(deploymentId, requestBody, requestOptions)
             .flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        OpenAIStream<Completions> completionsStream = new OpenAIStream<>(responseStream, Completions.class);
+        OpenAIServerSentEvents<Completions> completionsStream = new OpenAIServerSentEvents<>(responseStream, Completions.class);
         return completionsStream.getEvents();
     }
 

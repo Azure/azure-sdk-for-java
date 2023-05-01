@@ -37,7 +37,8 @@ public class GetCompletionsStreamAsyncSample {
         List<String> prompt = new ArrayList<>();
         prompt.add("Say this is a test");
 
-        client.getCompletionsStream(deploymentOrModelId, new CompletionsOptions(prompt).setStream(true))
+        client.getCompletionsStream(deploymentOrModelId,
+                new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true))
             .subscribe(completions -> {
                 System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
                 for (Choice choice : completions.getChoices()) {
@@ -45,9 +46,11 @@ public class GetCompletionsStreamAsyncSample {
                 }
 
                 CompletionsUsage usage = completions.getUsage();
-                System.out.printf("Usage: number of prompt token is %d, "
-                        + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+                if (usage != null) {
+                    System.out.printf("Usage: number of prompt token is %d, "
+                            + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+                        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+                }
             });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

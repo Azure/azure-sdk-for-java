@@ -17,15 +17,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-public final class OpenAIStream<T> {
+public final class OpenAIServerSentEvents<T> {
 
-    public static final JsonSerializer JSON_SERIALIZER = JsonSerializerProviders.createInstance(true);
+    private static final JsonSerializer JSON_SERIALIZER = JsonSerializerProviders.createInstance(true);
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
     private AtomicReference<String> lastLine = new AtomicReference<>("");
     private AtomicBoolean expectEmptyLine = new AtomicBoolean();
 
-    public OpenAIStream(Flux<ByteBuffer> source, Class<T> type) {
+    public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;
         this.type = type;
     }
@@ -36,17 +36,15 @@ public final class OpenAIStream<T> {
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(byteArrayInputStream));
                 String currentLine = reader.readLine();
-
                 currentLine = lastLine.get() + currentLine;
-
                 List<T> values = new ArrayList<>();
-
                 while (currentLine != null) {
                     if (expectEmptyLine.get() && !currentLine.isEmpty()) {
                         return Flux.error(new UnsupportedOperationException("Multi-line data not supported"));
                     }
 
                     if (!expectEmptyLine.get()) {
+                        expectEmptyLine.set(true);
                         String[] split = currentLine.split(":", 2);
                         if (split.length != 2) {
                             return Flux.error(new IllegalStateException("Invalid data format " + currentLine));
@@ -58,11 +56,10 @@ public final class OpenAIStream<T> {
                         }
                         try {
                             T value = JSON_SERIALIZER.deserializeFromBytes(completionJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(type));
-                            expectEmptyLine.set(true);
                             values.add(value);
                             lastLine.set("");
                         } catch (UncheckedIOException exception) {
-                            lastLine.getAndSet(currentLine);
+                            lastLine.set(currentLine);
                         }
                     } else {
                         expectEmptyLine.set(false);
