@@ -64,7 +64,7 @@ public class ClinicalMatchingClientTestBase extends TestBase {
     }
 
     private BinaryData getTMRequest() {
-        BinaryData requestBody = BinaryData.fromFile(Paths.get("target/test-classes/session-records/ClinicalMatchingClientTest.request.json"));
+        BinaryData requestBody = BinaryData.fromFile(Paths.get("src/test/resources/session-records/ClinicalMatchingClientTest.request.json"));
         return requestBody;
     }
 }

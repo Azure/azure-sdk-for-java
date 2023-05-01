@@ -64,7 +64,7 @@ public class CancerProfilingClientTestBase extends TestBase {
     }
 
     private BinaryData getOncoPhenotypeRequest() {
-        BinaryData requestBody = BinaryData.fromFile(Paths.get("target/test-classes/session-records/CancerProfilingClientTest.request.json"));
+        BinaryData requestBody = BinaryData.fromFile(Paths.get("src/test/resources/session-records/CancerProfilingClientTest.request.json"));
         return requestBody;
     }
 }
