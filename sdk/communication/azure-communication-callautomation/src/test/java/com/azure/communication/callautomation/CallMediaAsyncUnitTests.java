@@ -6,10 +6,13 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.GenderType;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -31,7 +34,7 @@ public class CallMediaAsyncUnitTests {
     private CallMediaAsync callMedia;
     private FileSource playFileSource;
     private TextSource playTextSource;
-
+    private SsmlSource playSsmlSource;
 
     private PlayOptions playOptions;
 
@@ -45,13 +48,16 @@ public class CallMediaAsyncUnitTests {
 
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playFileSourceId");
-        playFileSource.setUri("filePath");
+        playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
         playTextSource.setPlaySourceId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+
+        playSsmlSource = new SsmlSource();
+        playSsmlSource.setSsmlText("<speak></speak>");
 
         playOptions = new PlayOptions()
             .setLoop(false)
@@ -93,6 +99,23 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    public void playSsmlWithResponseTest() {
+        StepVerifier.create(
+            callMedia.playWithResponse(playSsmlSource,
+                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void playSsmlToAllWithResponseTest() {
+        StepVerifier.create(
+                callMedia.playToAllWithResponse(playSsmlSource, playOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
     public void cancelAllOperationsWithResponse() {
         StepVerifier.create(
                 callMedia.cancelAllMediaOperationsWithResponse())
@@ -120,7 +143,7 @@ public class CallMediaAsyncUnitTests {
         stopDtmfTones.add(DtmfTone.TWO);
         recognizeOptions.setStopTones(stopDtmfTones);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
-        recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
+        recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
@@ -173,7 +196,7 @@ public class CallMediaAsyncUnitTests {
         CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
-        recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
+        recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
@@ -207,6 +230,44 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
         recognizeOptions.setSpeechLanguage("en-US");
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseTextSpeechOptions() {
+
+        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
+        recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize speech or dtmf with text source."));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseTextSpeechOrDtmfOptions() {
+
+        CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
+        recognizeOptions.setPlayPrompt(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))

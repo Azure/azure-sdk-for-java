@@ -56,6 +56,6 @@ public final class LedgersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.ledgers().delete("sle", "yvxyqjp", com.azure.core.util.Context.NONE);
+        manager.ledgers().delete("feallnwsu", "isnjampmngnz", com.azure.core.util.Context.NONE);
     }
 }

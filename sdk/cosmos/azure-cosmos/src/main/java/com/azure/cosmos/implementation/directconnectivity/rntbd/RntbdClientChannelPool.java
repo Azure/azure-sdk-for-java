@@ -191,6 +191,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
     private final ClientTelemetry clientTelemetry;
     private final RntbdServerErrorInjector serverErrorInjector;
+    private final RntbdServiceEndpoint endpoint;
+    private final RntbdConnectionStateListener connectionStateListener;
 
     /**
      * Initializes a newly created {@link RntbdClientChannelPool} instance.
@@ -242,6 +244,8 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.healthChecker = healthChecker;
         this.serverErrorInjector = serverErrorInjector;
         this.durableEndpointMetrics = durableEndpointMetrics;
+        this.endpoint = endpoint;
+        this.connectionStateListener = connectionStateListener;
 
         this.bootstrap = bootstrap.clone().handler(new ChannelInitializer<Channel>() {
             @Override
@@ -670,24 +674,26 @@ public final class RntbdClientChannelPool implements ChannelPool {
         }
 
         try {
-            Channel candidate = this.pollChannel(channelAcquisitionTimeline);
 
-            if (candidate != null) {
+            Channel candidate = null;
 
-                // Fulfill this request with our candidate, assuming it's healthy
-                // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+            // in the open channel flow, force a new channel
+            // to be opened if min channels required for the endpoint
+            // has not been attained
+            if ((!(promise instanceof OpenChannelPromise)) || this.endpoint.getMinChannelsRequired() <= this.channels(false)) {
+                candidate = this.pollChannel(channelAcquisitionTimeline);
 
-                doAcquireChannel(promise, candidate);
-                return;
+                if (candidate != null) {
+
+                    // Fulfill this request with our candidate, assuming it's healthy
+                    // If our candidate is unhealthy, notifyChannelHealthCheck will call us again
+
+                    doAcquireChannel(promise, candidate);
+                    return;
+                }
             }
 
-            // ONLY allow maximum 1 channel to be opened by open channel request
-            int allowedMaxChannels = this.maxChannels;
-            if (promise instanceof OpenChannelPromise) {
-                allowedMaxChannels = 1;
-            }
-
-            if (this.allowedToOpenNewChannel(allowedMaxChannels)) {
+            if (this.allowedToOpenNewChannel(this.maxChannels)) {
                 if (this.connecting.compareAndSet(false, true)) {
 
                     // Fulfill this request with a new channel, assuming we can connect one
@@ -868,7 +874,11 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.acquiredChannels.remove(channel);
         this.availableChannels.remove(channel);
         channel.attr(POOL_KEY).set(null);
-        channel.close();
+        channel.close().addListener(future -> {
+            if (future.isDone() && !this.isClosed()) {
+                this.connectionStateListener.openConnectionIfNeeded();
+            }
+        });
     }
 
     private void closeChannelAndFail(final Channel channel, final Throwable cause, final Promise<?> promise) {

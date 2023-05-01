@@ -896,9 +896,12 @@
   </Match>
 
   <!-- Tracking work-item: https://github.com/Azure/azure-sdk-for-java/issues/9037 -->
+  <!-- For ProactiveOpenConnectionsProcessor, it is okay to not synchronize the sink
+       when subscribing to it -->
   <Match>
     <Or>
       <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics"/>
+      <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor"/>
       <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
@@ -2593,8 +2596,15 @@
   <!-- Exception is ignored in a loop waiting for an http endpoint -->
   <Match>
     <Class name="com.azure.core.test.utils.TestProxyManager"/>
-    <Method name="startProxy"/>
+    <Method name="checkAlive"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.core.test.models.RecordFilePayload"/>
+    <Field name="recordingFile"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
 </FindBugsFilter>

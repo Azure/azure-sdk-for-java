@@ -26,7 +26,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.AbstractMap;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -204,20 +203,16 @@ public final class ImplUtils {
         return result;
     }
 
-    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters))
-            ? Collections.emptyIterator()
-            : new QueryParameterIterator(queryParameters);
-    }
-
-    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
+    public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
         private final String queryParameters;
+        private final int queryParametersLength;
 
         private boolean done = false;
         private int position;
 
-        QueryParameterIterator(String queryParameters) {
+        public QueryParameterIterator(String queryParameters) {
             this.queryParameters = queryParameters;
+            this.queryParametersLength = queryParameters.length();
 
             // If the URL query begins with '?' the first possible start of a query parameter key is the
             // second character in the query.
@@ -235,10 +230,27 @@ public final class ImplUtils {
                 throw new NoSuchElementException();
             }
 
-            int nextPosition = queryParameters.indexOf('=', position);
+            int nextPosition = position;
+            char c;
+            while (nextPosition < queryParametersLength) {
+                // Next position can either be '=' or '&' as a query parameter may not have a '=', ex 'key&key2=value'.
+                c = queryParameters.charAt(nextPosition);
+                if (c == '=') {
+                    break;
+                } else if (c == '&') {
+                    String key = queryParameters.substring(position, nextPosition);
 
-            if (nextPosition == -1) {
-                // Query parameters completed with a key only 'https://example.com?param'
+                    // Position is set to nextPosition + 1 to skip over the '&'
+                    position = nextPosition + 1;
+
+                    return new AbstractMap.SimpleImmutableEntry<>(key, "");
+                }
+
+                nextPosition++;
+            }
+
+            if (nextPosition == queryParametersLength) {
+                // Query parameters completed.
                 done = true;
                 return new AbstractMap.SimpleImmutableEntry<>(queryParameters.substring(position), "");
             }

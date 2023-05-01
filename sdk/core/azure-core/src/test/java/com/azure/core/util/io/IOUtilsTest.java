@@ -100,7 +100,7 @@ public class IOUtilsTest {
     }
 
     @Test
-    public void canResumeStreamResponseTransfer() throws IOException {
+    public void canResumeStreamResponseTransfer() throws IOException, InterruptedException {
         byte[] data = new byte[10 * 1024 * 1024 + 117]; // more than default buffer.
         fillArray(data);
 
@@ -108,7 +108,7 @@ public class IOUtilsTest {
         MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(128, data.length - currentOffset);
+            int size = Math.min(4096, data.length - currentOffset);
             if (size > 0) {
                 sink.next(ByteBuffer.wrap(data, currentOffset, size));
             } else {
@@ -135,7 +135,7 @@ public class IOUtilsTest {
 
         try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
             IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
-            () -> new IOException("KABOOM"), 3, 1024)) {
+            () -> new IOException("KABOOM"), 3, 16384)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
                     channel, initialResponse, onErrorResume, null, 5))
@@ -144,12 +144,13 @@ public class IOUtilsTest {
 
         assertEquals(3, retries.get());
         assertEquals(3, offsets.size());
-        offsets.forEach(e -> assertEquals(1024L, e));
+        offsets.forEach(e -> assertEquals(16384, e));
         assertEquals(3, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
         assertArraysEqual(data, written);
         // check that all responses are closed
         assertEquals(4, responses.size());
+        Thread.sleep(100); // Give all responses a chance to close
         responses.forEach(r -> assertTrue(r.isClosed()));
     }
 
@@ -162,7 +163,7 @@ public class IOUtilsTest {
         MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
         Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(64, data.length - currentOffset);
+            int size = Math.min(256, data.length - currentOffset);
             if (size > 0) {
                 sink.next(ByteBuffer.wrap(data, currentOffset, size));
             } else {

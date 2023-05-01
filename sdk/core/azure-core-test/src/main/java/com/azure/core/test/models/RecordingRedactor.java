@@ -78,11 +78,14 @@ public class RecordingRedactor {
      * @return the redacted content
      */
     public String redact(String redactableString) {
-        String redactedString = redactableString;
-        for (Function<String, String> redactor : recordingRedactors) {
-            redactedString = redactor.apply(redactedString);
+        if (CoreUtils.isNullOrEmpty(redactableString)) {
+            return redactableString;
         }
-        return redactedString;
+
+        for (Function<String, String> redactor : recordingRedactors) {
+            redactableString = redactor.apply(redactableString);
+        }
+        return redactableString;
     }
 
     private static List<Function<String, String>> loadRedactor() {

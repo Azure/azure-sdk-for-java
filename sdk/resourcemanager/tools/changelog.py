@@ -28,6 +28,26 @@ def get_version(module: dict, version_file: str):
 
     raise KeyError('Cannot found version of {} in {}'.format(module_name, version_file))
 
+def removeEmptyEntry(changelogContent: str):
+    previous_entry_exists = False
+    previous_entry_line = None
+    left = changelogContent
+    for line in left.split('\n'):
+        line = line.strip()
+        if not line:
+            continue
+        if not line.startswith('### '):
+            previous_entry_exists = True
+        else:
+            if not previous_entry_exists and previous_entry_line:
+                left = re.sub(previous_entry_line + '\s*', '', left)
+            previous_entry_exists = False
+            previous_entry_line = line
+    # last line
+    if not previous_entry_exists and previous_entry_line:
+        left = re.sub('\n{0,1}' + previous_entry_line + '\s*', '', left)
+    return left
+
 def main():
     basedir = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), '..')
     os.chdir(basedir)
@@ -53,16 +73,11 @@ def main():
             current_changelog = left if left.strip() else '\n\n- Migrated from previous sdk\n'
         else:
             left = left[:second_version.start()]
-            exist_lastest_changelog = False
-            for line in left.split('\n'):
-                line = line.strip()
-                if line and not line.startswith('###'):
-                    exist_lastest_changelog = True
-                    break
-            if exist_lastest_changelog:
-                current_changelog = left
-            else:
+            left = removeEmptyEntry(left)
+            if not re.search('\n### ', left):
                 current_changelog = '\n\n### Other Changes\n\n#### Dependency Updates\n\n- Updated core dependency from resources.\n'
+            else:
+                current_changelog = left
 
         version: str = first_version.group().replace(
             first_version.group(2), str(date)).replace(

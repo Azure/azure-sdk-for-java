@@ -36,6 +36,7 @@ import com.azure.resourcemanager.compute.fluent.DedicatedHostsClient;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.DedicatedHostListResult;
+import com.azure.resourcemanager.compute.models.DedicatedHostSizeListResult;
 import com.azure.resourcemanager.compute.models.DedicatedHostUpdate;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import java.nio.ByteBuffer;
@@ -70,8 +71,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     public interface DedicatedHostsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
-                + "/{hostGroupName}/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -87,8 +87,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
-                + "/{hostGroupName}/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -104,8 +103,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
-                + "/{hostGroupName}/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -120,8 +118,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
-                + "/{hostGroupName}/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DedicatedHostInner>> get(
@@ -137,8 +134,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
-                + "/{hostGroupName}/hosts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<DedicatedHostListResult>> listByHostGroup(
@@ -152,11 +148,25 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
-                + "/{hostGroupName}/hosts/{hostName}/restart")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/restart")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}/hostSizes")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<Response<DedicatedHostSizeListResult>> listAvailableSizes(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostGroupName") String hostGroupName,
@@ -220,7 +230,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -287,7 +297,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -489,7 +499,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -531,7 +541,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -551,7 +561,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -598,7 +608,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -615,7 +625,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -642,7 +652,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -671,7 +681,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -689,7 +699,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -712,7 +722,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -732,7 +742,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -757,7 +767,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -775,7 +785,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Update an dedicated host .
+     * Update a dedicated host .
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
@@ -833,7 +843,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -888,7 +898,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1089,7 +1099,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1148,7 +1158,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1253,7 +1263,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1314,7 +1324,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1448,7 +1458,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1506,7 +1516,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1690,6 +1700,197 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String hostGroupName, String hostname, Context context) {
         restartAsync(resourceGroupName, hostGroupName, hostname, context).block();
+    }
+
+    /**
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAvailableSizesSinglePageAsync(
+        String resourceGroupName, String hostGroupName, String hostname) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
+        }
+        if (hostname == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2023-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAvailableSizes(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            hostGroupName,
+                            hostname,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<String>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<String>> listAvailableSizesSinglePageAsync(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostGroupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
+        }
+        if (hostname == null) {
+            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2023-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listAvailableSizes(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                hostGroupName,
+                hostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> listAvailableSizesAsync(String resourceGroupName, String hostGroupName, String hostname) {
+        return new PagedFlux<>(() -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostname));
+    }
+
+    /**
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<String> listAvailableSizesAsync(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        return new PagedFlux<>(
+            () -> listAvailableSizesSinglePageAsync(resourceGroupName, hostGroupName, hostname, context));
+    }
+
+    /**
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listAvailableSizes(String resourceGroupName, String hostGroupName, String hostname) {
+        return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostname));
+    }
+
+    /**
+     * Lists all available dedicated host sizes to which the specified dedicated host can be resized. NOTE: The
+     * dedicated host sizes provided can be used to only scale up the existing dedicated host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param hostname The name of the dedicated host.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Dedicated Host sizes operation response as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listAvailableSizes(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        return new PagedIterable<>(listAvailableSizesAsync(resourceGroupName, hostGroupName, hostname, context));
     }
 
     /**

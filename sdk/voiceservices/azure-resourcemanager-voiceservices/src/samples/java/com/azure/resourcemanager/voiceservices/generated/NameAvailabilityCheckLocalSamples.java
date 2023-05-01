@@ -14,17 +14,17 @@ public final class NameAvailabilityCheckLocalSamples {
     /**
      * Sample code: CheckLocalNameAvailability.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void checkLocalNameAvailability(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .nameAvailabilities()
             .checkLocalWithResponse(
                 "useast",
                 new CheckNameAvailabilityRequest()
                     .withName("myname")
-                    .withType("Microsoft.VoiceServices/CommunicationsGateway"),
+                    .withType("Microsoft.VoiceServices/CommunicationsGateways"),
                 com.azure.core.util.Context.NONE);
     }
 }
