@@ -1,28 +1,33 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.serializer.json.jackson.implementation;
+package com.azure.core.serializer.json.gson.implementation;
 
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Objects;
 
 /**
- * Jackson-based implementation of {@link JsonWriter}.
+ * GSON-based implementation of {@link JsonWriter}.
  */
-public final class JacksonJsonWriter extends JsonWriter {
-    private final JsonGenerator generator;
+public final class GsonJsonWriter extends JsonWriter {
+    private final com.google.gson.stream.JsonWriter writer;
 
     // Initial state is always root.
     private JsonWriteContext context = JsonWriteContext.ROOT;
 
-    JacksonJsonWriter(JsonGenerator generator) {
-        this.generator = Objects.requireNonNull(generator,
-            "Cannot create a Jackson-based instance of com.azure.json.JsonWriter with a null Jackson JsonGenerator.");
+    /**
+     * Creates an instance of {@link JsonWriter} based on the passed GSON {@link com.google.gson.stream.JsonWriter}.
+     *
+     * @param writer The GSON JSON writer.
+     */
+    public GsonJsonWriter(com.google.gson.stream.JsonWriter writer) {
+        this.writer = Objects.requireNonNull(writer,
+            "Cannot create a GSON-based instance of com.azure.json.JsonWriter with a null GSON JsonWriter");
     }
 
     @Override
@@ -37,20 +42,20 @@ public final class JacksonJsonWriter extends JsonWriter {
                 + "closed. Current writing state is '" + context.getWriteState() + "'.");
         }
 
-        generator.flush();
-        generator.close();
+        writer.flush();
+        writer.close();
     }
 
     @Override
     public JsonWriter flush() throws IOException {
-        generator.flush();
+        writer.flush();
         return this;
     }
 
     @Override
     public JsonWriter writeStartObject() throws IOException {
         context.validateToken(JsonToken.START_OBJECT);
-        generator.writeStartObject();
+        writer.beginObject();
 
         context = context.updateContext(JsonToken.START_OBJECT);
         return this;
@@ -59,7 +64,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeEndObject() throws IOException {
         context.validateToken(JsonToken.END_OBJECT);
-        generator.writeEndObject();
+        writer.endObject();
 
         context = context.updateContext(JsonToken.END_OBJECT);
         return this;
@@ -68,7 +73,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeStartArray() throws IOException {
         context.validateToken(JsonToken.START_ARRAY);
-        generator.writeStartArray();
+        writer.beginArray();
 
         context = context.updateContext(JsonToken.START_ARRAY);
         return this;
@@ -77,7 +82,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeEndArray() throws IOException {
         context.validateToken(JsonToken.END_ARRAY);
-        generator.writeEndArray();
+        writer.endArray();
 
         context = context.updateContext(JsonToken.END_ARRAY);
         return this;
@@ -88,7 +93,7 @@ public final class JacksonJsonWriter extends JsonWriter {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
         context.validateToken(JsonToken.FIELD_NAME);
-        generator.writeFieldName(fieldName);
+        writer.name(fieldName);
 
         context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
@@ -97,11 +102,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBinary(byte[] value) throws IOException {
         context.validateToken(JsonToken.STRING);
-        if (value == null) {
-            generator.writeNull();
-        } else {
-            generator.writeBinary(value);
-        }
+        writeBinaryInternal(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
@@ -110,7 +111,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBoolean(boolean value) throws IOException {
         context.validateToken(JsonToken.BOOLEAN);
-        generator.writeBoolean(value);
+        writer.value(value);
 
         context = context.updateContext(JsonToken.BOOLEAN);
         return this;
@@ -119,7 +120,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeDouble(double value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        generator.writeNumber(value);
+        writer.value(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -128,7 +129,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeFloat(float value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        generator.writeNumber(value);
+        writer.value(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -137,7 +138,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeInt(int value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        generator.writeNumber(value);
+        writer.value(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -146,7 +147,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeLong(long value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        generator.writeNumber(value);
+        writer.value(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -155,7 +156,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeNull() throws IOException {
         context.validateToken(JsonToken.NULL);
-        generator.writeNull();
+        writer.nullValue();
 
         context = context.updateContext(JsonToken.NULL);
         return this;
@@ -164,7 +165,7 @@ public final class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeString(String value) throws IOException {
         context.validateToken(JsonToken.STRING);
-        generator.writeString(value);
+        writer.value(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
@@ -175,9 +176,17 @@ public final class JacksonJsonWriter extends JsonWriter {
         Objects.requireNonNull(value, "'value' cannot be null.");
 
         context.validateToken(JsonToken.STRING);
-        generator.writeRawValue(value);
+        writer.jsonValue(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
+    }
+
+    private void writeBinaryInternal(byte[] value) throws IOException {
+        if (value == null) {
+            writer.nullValue();
+        } else {
+            writer.value(Base64.getEncoder().encodeToString(value));
+        }
     }
 }

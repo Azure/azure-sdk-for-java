@@ -35,6 +35,7 @@ module com.azure.core {
     exports com.azure.core.util.metrics;
 
     exports com.azure.core.implementation to com.azure.core.serializer.json.jackson,
+        com.azure.core.serializer.json.gson,
         // export core implementation.ImplUtils to other core packages.
         com.azure.core.experimental;
 

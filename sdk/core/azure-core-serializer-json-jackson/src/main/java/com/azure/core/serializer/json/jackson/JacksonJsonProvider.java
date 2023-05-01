@@ -52,7 +52,7 @@ public class JacksonJsonProvider implements JsonProvider {
     }
 
     /**
-     * Creates an instance of {@link JsonReader}.
+     * Creates an instance of {@link JsonReader} wrapping a Jackson {@link JsonParser}.
      *
      * @param parser The {@link JsonParser} parsing JSON.
      * @return A {@link JsonReader} wrapping the {@link JsonParser}.
@@ -73,7 +73,7 @@ public class JacksonJsonProvider implements JsonProvider {
     }
 
     /**
-     * Creates an instance of {@link JsonWriter}.
+     * Creates an instance of {@link JsonWriter} wrapping a Jackson {@link JsonGenerator}.
      *
      * @param generator The {@link JsonGenerator} writing JSON.
      * @return A {@link JsonWriter} wrapping the {@link JsonGenerator}.
@@ -90,7 +90,7 @@ public class JacksonJsonProvider implements JsonProvider {
      * Use the {@link Module} returned by this method with your instance of {@link ObjectMapper} to have Jackson
      * Databind support {@link JsonSerializable} types.
      *
-     * @return A Jackson Databind {@link Module} that handles serialization and deserialization of
+     * @return A Jackson Databind {@link Module} that handles deserialization and serialization of
      * {@link JsonSerializable} types.
      */
     public static Module getJsonSerializableDatabindModule() {
@@ -102,7 +102,7 @@ public class JacksonJsonProvider implements JsonProvider {
                     JsonDeserializer<?> deserializer) {
                     return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
                         ? new JsonSerializableDeserializer(
-                            (Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                        (Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
                         : deserializer;
                 }
             })
