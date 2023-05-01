@@ -1,10 +1,12 @@
 ---
 page_type: sample
 languages:
-- java
-  products:
-    - azure
-    - azure-cognitive-services
+  - java
+products: 
+  - azure 
+  - azure-cognitive-services
+  - openai
+urlFragment: ai-openai-java-samples
 ---
 
 # Azure OpenAI client library samples for Java
