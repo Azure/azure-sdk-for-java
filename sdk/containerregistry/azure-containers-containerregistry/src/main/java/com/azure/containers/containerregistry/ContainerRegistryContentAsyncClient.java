@@ -53,10 +53,8 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.co
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;

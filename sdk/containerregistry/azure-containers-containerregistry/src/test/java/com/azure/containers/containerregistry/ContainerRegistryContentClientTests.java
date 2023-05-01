@@ -64,7 +64,6 @@ import static com.azure.containers.containerregistry.TestUtils.MANIFEST_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.OCI_INDEX_MEDIA_TYPE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.DOCKER_DIGEST_HEADER_NAME;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;

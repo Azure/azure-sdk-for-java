@@ -59,7 +59,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ge
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
