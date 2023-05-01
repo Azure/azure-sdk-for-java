@@ -27,38 +27,37 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * Implementation of UUID generator that uses generation method 4.
- *<p>
- * Note on random number generation when using {@link SecureRandom} for random number
- * generation: the first time {@link SecureRandom} object is used, there is noticeable delay between
- * calling the method and getting the reply. This is because SecureRandom
- * has to initialize itself to reasonably random state. Thus, if you
- * want to lessen delay, it may be be a good idea to either get the
- * first random UUID asynchronously from a separate thread, or to
- * use the other generateRandomBasedUUID passing a previously initialized
- * SecureRandom instance.
+ * Implementation of UUID generator that uses time/location based generation
+ * method field from the Unix Epoch timestamp source - the number of 
+ * milliseconds seconds since midnight 1 Jan 1970 UTC, leap seconds excluded.
+ * This is usually referred to as "Variant 7".
+ * <p>
+ * As all JUG provided implementations, this generator is fully thread-safe.
+ * Additionally it can also be made externally synchronized with other instances
+ * (even ones running on other JVMs); to do this, use
+ * {@link com.azure.cosmos.implementation.uuid.ext.FileBasedTimestampSynchronizer} (or
+ * equivalent).
  *
- * @since 3.0
+ * @since 4.1
  */
-public class RandomBasedGenerator extends NoArgGenerator
+public class TimeBasedEpochGenerator extends NoArgGenerator
 {
-    /**
-     * Default shared random number generator, used if no random number generator
-     * is explicitly specified for instance
+    /*
+    /**********************************************************************
+    /* Configuration
+    /**********************************************************************
      */
-    protected static Random _sharedRandom = null;
 
     /**
      * Random number generator that this generator uses.
      */
     protected final Random _random;
 
-    /**
-     * Looks like {@link SecureRandom} implementation is more efficient
-     * using single call access (compared to basic {@link Random}),
-     * so let's use that knowledge to our benefit.
+    /*
+    /**********************************************************************
+    /* Construction
+    /**********************************************************************
      */
-    protected final boolean _secureRandom;
 
     /**
      * @param rnd Random number generator to use for generating UUIDs; if null,
@@ -66,13 +65,11 @@ public class RandomBasedGenerator extends NoArgGenerator
      *   use a <b>good</b> (pseudo) random number generator; for example, JDK's
      *   {@link SecureRandom}.
      */
-    public RandomBasedGenerator(Random rnd)
+    
+    public TimeBasedEpochGenerator(Random rnd)
     {
         if (rnd == null) {
             rnd = LazyRandom.sharedSecureRandom();
-            _secureRandom = true;
-        } else {
-            _secureRandom = (rnd instanceof SecureRandom);
         }
         _random = rnd;
     }
@@ -84,32 +81,32 @@ public class RandomBasedGenerator extends NoArgGenerator
      */
 
     @Override
-    public UUIDType getType() { return UUIDType.RANDOM_BASED; }
+    public UUIDType getType() { return UUIDType.TIME_BASED_EPOCH; }
 
     /*
     /**********************************************************************
     /* UUID generation
     /**********************************************************************
      */
-    
+
     @Override
     public UUID generate()
     {
-        // 14-Oct-2010, tatu: Surprisingly, variant for reading byte array is
-        //   tad faster for SecureRandom... so let's use that then
+        final long rawTimestamp = System.currentTimeMillis();
+        final byte[] rnd = new byte[10];
+        _random.nextBytes(rnd);
 
-        long r1, r2;
+        // Use only 48 lowest bits as per spec, next 16 bit from random
+        // (note: UUIDUtil.constuctUUID will add "version" so it's only 12
+        // actual random bits)
+        long l1 = (rawTimestamp << 16) | _toShort(rnd, 8);
 
-        if (_secureRandom) {
-            final byte[] buffer = new byte[16];
-            _random.nextBytes(buffer);
-            r1 = _toLong(buffer, 0);
-            r2 = _toLong(buffer, 1);
-        } else {
-            r1 = _random.nextLong();
-            r2 = _random.nextLong();
-        }
-        return UUIDUtil.constructUUID(UUIDType.RANDOM_BASED, r1, r2);
+        // And then the other 64 bits of random; likewise UUIDUtil.constructUUID
+        // will overwrite first 2 random bits so it's "only" 62 bits
+        long l2 = _toLong(rnd, 0);
+
+        // and as per above, this call fills in "variant" and "version" bits
+        return UUIDUtil.constructUUID(UUIDType.TIME_BASED_EPOCH, l1, l2);
     }
 
     /*
@@ -131,6 +128,12 @@ public class RandomBasedGenerator extends NoArgGenerator
         return (buffer[offset] << 24)
             + ((buffer[++offset] & 0xFF) << 16)
             + ((buffer[++offset] & 0xFF) << 8)
+            + (buffer[++offset] & 0xFF);
+    }
+
+    private final static long _toShort(byte[] buffer, int offset)
+    {
+        return ((buffer[offset] & 0xFF) << 8)
             + (buffer[++offset] & 0xFF);
     }
 }

@@ -1,6 +1,6 @@
 /* JUG Java Uuid Generator
  *
- * Copyright (c) 2002- Tatu Saloranta, tatu.saloranta@iki.fi
+ * Copyright (c) 2002 Tatu Saloranta, tatu.saloranta@iki.fi
  *
  * Licensed under the License specified in the file LICENSE which is
  * included with the source code.
@@ -21,9 +21,9 @@ package com.azure.cosmos.implementation.uuid;
 
 import java.io.Serializable;
 import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.security.SecureRandom;
 import java.util.Enumeration;
-import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -277,21 +277,21 @@ public class EthernetAddress
                 NetworkInterface nint = en.nextElement();
                 if (!nint.isLoopback()) {
                     byte[] data = nint.getHardwareAddress();
-                    if (data != null && data.length == 6) {
+                    if ((data != null) && (data.length == 6)) {
                         return new EthernetAddress(data);
                     }
                 }
             }
-        } catch (java.net.SocketException e) {
+        } catch (SocketException e) {
             // fine, let's take is as signal of not having any interfaces
         }
         return null;
     }
-    
+
     /**
      * Factory method that can be used to construct a random multicast
      * address; to be used in cases where there is no "real" ethernet
-     * address to use. Address to generate should be a multicase address
+     * address to use. Address to generate should be a multicast address
      * to avoid accidental collision with real manufacturer-assigned
      * MAC addresses.
      *<p>
@@ -306,7 +306,7 @@ public class EthernetAddress
     /**
      * Factory method that can be used to construct a random multicast
      * address; to be used in cases where there is no "real" ethernet
-     * address to use. Address to generate should be a multicase address
+     * address to use. Address to generate should be a multicast address
      * to avoid accidental collision with real manufacturer-assigned
      * MAC addresses.
      *<p>
@@ -427,7 +427,7 @@ public class EthernetAddress
 
     @Override
     public int hashCode() {
-        return Objects.hash(_address, _asString);
+        return (int) _address ^ (int) (_address >>> 32);
     }
 
     /**

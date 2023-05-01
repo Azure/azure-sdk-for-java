@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -186,8 +187,8 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
      * @return Observable of document
      */
     private Flux<Document> writeDocument(Integer i) {
-        String idString = Utils.randomUUID().toString();
-        String randomVal = Utils.randomUUID().toString();
+        String idString = UUID.randomUUID().toString();
+        String randomVal = UUID.randomUUID().toString();
         Document document = new Document();
         document.setId(idString);
         BridgeInternal.setProperty(document, partitionKey, idString);

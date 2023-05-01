@@ -1,6 +1,6 @@
 /* JUG Java Uuid Generator
  *
- * Copyright (c) 2002- Tatu Saloranta, tatu.saloranta@iki.fi
+ * Copyright (c) 2002 Tatu Saloranta, tatu.saloranta@iki.fi
  *
  * Licensed under the License specified in the file LICENSE which is
  * included with the source code.

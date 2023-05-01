@@ -32,8 +32,10 @@ public enum UUIDType {
     NAME_BASED_MD5(3),
     RANDOM_BASED(4),
     NAME_BASED_SHA1(5),
-    UNKNOWN(0)
-    ;
+    TIME_BASED_REORDERED(6),
+    TIME_BASED_EPOCH(7),
+    FREE_FORM(8),
+    UNKNOWN(0);
 
     private final int _raw;
 	

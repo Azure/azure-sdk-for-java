@@ -28,18 +28,23 @@ import java.util.UUID;
 
 /**
  * Implementation of UUID generator that uses time/location based generation
- * method (variant 1).
- *<p>
+ * method field compatible with UUIDv1, reorderd for improved DB locality.
+ * This is usually referred to as "Variant 6".
+ * <p>
  * As all JUG provided implementations, this generator is fully thread-safe.
- * Additionally it can also be made externally synchronized with other
- * instances (even ones running on other JVMs); to do this,
- * use {@link com.azure.cosmos.implementation.uuid.ext.FileBasedTimestampSynchronizer}
- * (or equivalent).
+ * Additionally it can also be made externally synchronized with other instances
+ * (even ones running on other JVMs); to do this, use
+ * {@link com.azure.cosmos.implementation.uuid.ext.FileBasedTimestampSynchronizer} (or
+ * equivalent).
  *
- * @since 3.0
+ * @since 4.1
  */
-public class TimeBasedGenerator extends NoArgGenerator
+public class TimeBasedReorderedGenerator extends NoArgGenerator
 {
+    public static int BYTE_OFFSET_TIME_HIGH = 0;
+    public static int BYTE_OFFSET_TIME_MID = 4;
+    public static int BYTE_OFFSET_TIME_LOW = 7;
+
     /*
     /**********************************************************************
     /* Configuration
@@ -73,7 +78,7 @@ public class TimeBasedGenerator extends NoArgGenerator
      *   spatially unique part of UUID. If system has more than one NIC,
      */
     
-    public TimeBasedGenerator(EthernetAddress ethAddr, UUIDTimer timer)
+    public TimeBasedReorderedGenerator(EthernetAddress ethAddr, UUIDTimer timer)
     {
         byte[] uuidBytes = new byte[16];
         if (ethAddr == null) {
@@ -98,7 +103,7 @@ public class TimeBasedGenerator extends NoArgGenerator
      */
 
     @Override
-    public UUIDType getType() { return UUIDType.TIME_BASED; }
+    public UUIDType getType() { return UUIDType.TIME_BASED_REORDERED; }
 
     public EthernetAddress getEthernetAddress() { return _ethernetAddress; }
     
@@ -115,20 +120,23 @@ public class TimeBasedGenerator extends NoArgGenerator
     @Override
     public UUID generate()
     {
+        // Ok, get 60-bit timestamp (4 MSB are ignored)
         final long rawTimestamp = _timer.getTimestamp();
-        // Time field components are kind of shuffled, need to slice:
-        int clockHi = (int) (rawTimestamp >>> 32);
-        int clockLo = (int) rawTimestamp;
-        // and dice
-        int midhi = (clockHi << 16) | (clockHi >>> 16);
-        // need to squeeze in type (4 MSBs in byte 6, clock hi)
-        midhi &= ~0xF000; // remove high nibble of 6th byte
-        midhi |= 0x1000; // type 1
-        long midhiL = (long) midhi;
-        midhiL = ((midhiL << 32) >>> 32); // to get rid of sign extension
+
+        // First: discard 4 MSB, next 32 bits (top of 60-bit timestamp) form the
+        // highest 32-bit segments
+        final long timestampHigh = (rawTimestamp >>> 28) << 32;
+        // and then bottom 28 bits split into mid (16 bits), low (12 bits)
+        final int timestampLow = (int) rawTimestamp;
+        // and then low part gets mixed with variant identifier
+        final int timeBottom = (((timestampLow >> 12) & 0xFFFF) << 16)
+                // and final 12 bits mixed with variant identifier
+                | 0x6000 | (timestampLow & 0xFFF);
+        long timeBottomL = (long) timeBottom;
+        timeBottomL = ((timeBottomL << 32) >>> 32); // to get rid of sign extension
+
         // and reconstruct
-        long l1 = (((long) clockLo) << 32) | midhiL;
-        // last detail: must force 2 MSB to be '10'
+        long l1 = timestampHigh | timeBottomL;
         return new UUID(l1, _uuidL2);
     }
 }

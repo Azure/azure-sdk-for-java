@@ -6,6 +6,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
+import com.azure.cosmos.implementation.uuid.impl.TimeBasedEpochGenerator;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -39,10 +40,10 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -70,6 +71,9 @@ public class Utils {
     private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
+
+    private static final TimeBasedEpochGenerator EPOCH_TIME_BASED_GENERATOR =
+        Generators.timeBasedEpochGenerator(new Random());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
@@ -380,7 +384,8 @@ public class Utils {
     }
 
     public static UUID randomUUID() {
-        return TIME_BASED_GENERATOR.generate();
+        //  return TIME_BASED_GENERATOR.generate();
+        return EPOCH_TIME_BASED_GENERATOR.generate();
     }
 
     public static String instantAsUTCRFC1123(Instant instant){

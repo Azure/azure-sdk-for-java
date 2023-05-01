@@ -19,8 +19,6 @@
 
 package com.azure.cosmos.implementation.uuid;
 
-import com.azure.cosmos.implementation.uuid.ext.FileBasedTimestampSynchronizer;
-
 import java.io.IOException;
 
 /**
@@ -30,7 +28,7 @@ import java.io.IOException;
  * is ever used on a single system, even in presence of multiple JVMs.
  *<p>
  * The default implementation used by JUG is
- * {@link FileBasedTimestampSynchronizer}.
+ * {@link com.azure.cosmos.implementation.uuid.ext.FileBasedTimestampSynchronizer}.
  */
 public abstract class TimestampSynchronizer
 {

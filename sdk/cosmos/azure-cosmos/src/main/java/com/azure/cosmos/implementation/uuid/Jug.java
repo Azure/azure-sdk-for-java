@@ -1,4 +1,4 @@
-/* JUG Java Uuid Generator
+/* JUG Java UUID Generator
  *
  * Copyright (c) 2002- Tatu Saloranta, tatu.saloranta@iki.fi
  *
@@ -38,6 +38,8 @@ public class Jug
         TYPES.put("time-based", "t");
         TYPES.put("random-based", "r");
         TYPES.put("name-based", "n");
+        TYPES.put("reordered-time-based", "o"); // Variant 6
+        TYPES.put("epoch-time-based", "e"); // Variant 7
     }
 
     protected final static HashMap<String,String> OPTIONS = new HashMap<String,String>();
@@ -74,7 +76,9 @@ public class Jug
         System.err.println("And type is one of:");
         System.err.println("  time-based / t: generate UUID based on current time and optional\n    location information (defined with -e option)");
         System.err.println("  random-based / r: generate UUID based on the default secure random number generator");
-        System.err.println("  name-based / n: generate UUID based on the na the default secure random number generator");
+        System.err.println("  name-based / n: generate UUID based on MD5 hash of given String ('name')");
+        System.err.println("  reordered-time-based / o: generate UUID based on current time and optional\n    location information (defined with -e option)");
+        System.err.println("  epoch-based / e: generate UUID based on current time (as 'epoch') and random number");
     }
 
     private static void printMap(Map<String,String> m, PrintStream out, boolean option)
@@ -121,7 +125,7 @@ public class Jug
         --count;
 
         // Type we recognize?
-        String tmp = TYPES.get(type);
+        String tmp = (String) TYPES.get(type);
         if (tmp == null) {
             if (!TYPES.containsValue(type)) {
                 System.err.println("Unrecognized UUID generation type '"+
@@ -149,7 +153,7 @@ public class Jug
 
             char option = (char)0;
             if (opt.startsWith("--")) {
-                String o = OPTIONS.get(opt.substring(2));
+                String o = (String) OPTIONS.get(opt.substring(2));
                 // Let's translate longer names to simple names:
                 if (o != null) {
                     option = o.charAt(0);
@@ -230,6 +234,9 @@ public class Jug
 
         switch (typeC) {
         case 't': // time-based
+        case 'o': // reordered-time-based (Variant 6)
+            // 30-Jun-2022, tatu: Is this true? My former self must have had his
+            //    reasons so leaving as is but... odd.
             usesRnd = true;
             // No address specified? Need a dummy one...
             if (addr == null) {
@@ -242,7 +249,9 @@ public class Jug
                     System.out.println(")");
                 }
             }
-            noArgGenerator = Generators.timeBasedGenerator(addr);
+            noArgGenerator = (typeC == 't')
+                    ? Generators.timeBasedGenerator(addr)
+                    : Generators.timeBasedReorderedGenerator(addr);
             break;
         case 'r': // random-based
             usesRnd = true;
@@ -254,8 +263,18 @@ public class Jug
                 noArgGenerator = Generators.randomBasedGenerator(r);
             }
             break;
+        case 'e': // epoch-time-based
+            usesRnd = true;
+            {
+                SecureRandom r = new SecureRandom();
+                if (verbose) {
+                    System.out.print("(using secure random generator, info = '"+r.getProvider().getInfo()+"')");
+                }
+                noArgGenerator = Generators.timeBasedEpochGenerator(r);
+            }
+            break;
         case 'n': // name-based
-            if (name == null) {
+            if (nameSpace == null) {
                 System.err.println("--name-space (-s) - argument missing when using method that requires it, exiting.");
                 System.exit(1);
             }
@@ -272,7 +291,7 @@ public class Jug
                     nsUUID = NameBasedGenerator.NAMESPACE_DNS;
                 } else {
                     System.err.println("Unrecognized namespace '"+orig
-                                       +"'; only DNS and URL allowed for name-based generation.");
+                            +"'; only DNS and URL allowed for name-based generation.");
                     System.exit(1);
                 }
             }
@@ -285,9 +304,8 @@ public class Jug
             System.out.println();
         }
 
-        /* When measuring performance, make sure that the random number
-         * generator is initialized prior to measurements...
-         */
+        // When measuring performance, make sure that the random number
+        // generator is initialized prior to measurements...
         long now = 0L;
 
         if (performance) {
@@ -307,7 +325,7 @@ public class Jug
 
         for (int i = 0; i < genCount; ++i) {
             UUID uuid = (nameArgGenerator == null) ?
-                    noArgGenerator.generate() : nameArgGenerator.generate(name);
+                    noArgGenerator.generate() : nameArgGenerator.generate(name); // lgtm [java/dereferenced-value-may-be-null]
             if (verbose) {
                 System.out.print("UUID: ");
             }

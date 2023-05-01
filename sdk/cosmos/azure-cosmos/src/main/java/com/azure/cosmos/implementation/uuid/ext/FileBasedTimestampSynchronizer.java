@@ -16,7 +16,6 @@
 package com.azure.cosmos.implementation.uuid.ext;
 
 import com.azure.cosmos.implementation.uuid.TimestampSynchronizer;
-import com.azure.cosmos.implementation.uuid.UUIDTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -141,7 +140,7 @@ public final class FileBasedTimestampSynchronizer
 
     /**
      * This method is to be called only once by
-     * {@link UUIDTimer}. It
+     * {@link com.fasterxml.uuid.UUIDTimer}. It
      * should fetch the persisted timestamp value, which indicates
      * first timestamp value that is guaranteed NOT to have used by
      * a previous incarnation. If it can not determine such value, it
@@ -186,7 +185,7 @@ public final class FileBasedTimestampSynchronizer
              * harmful? It can obviously be useless but...
              */
         }
-
+        
         return result;
     }
 

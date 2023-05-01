@@ -21,8 +21,6 @@ package com.azure.cosmos.implementation.uuid.impl;
 
 import com.azure.cosmos.implementation.uuid.StringArgGenerator;
 import com.azure.cosmos.implementation.uuid.UUIDType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -39,14 +37,13 @@ import java.util.UUID;
  */
 public class NameBasedGenerator extends StringArgGenerator
 {
-
-    private static final Logger logger = LoggerFactory.getLogger(NameBasedGenerator.class);
-    
     public final static Charset _utf8;
     static {
         _utf8 = Charset.forName("UTF-8");
     }
-    
+
+    private final LoggerFacade _logger = LoggerFacade.getLogger(getClass());
+
     /**
      * Namespace used when name is a DNS name.
      */
@@ -96,14 +93,13 @@ public class NameBasedGenerator extends StringArgGenerator
      *   Note that this argument is optional; if no namespace is needed
      *   (for example when name includes namespace prefix), null may be passed.
      * @param digester Hashing algorithm to use. 
-
-    */
+     */
     public NameBasedGenerator(UUID namespace, MessageDigest digester, UUIDType type)
     {
         _namespace = namespace;
         // And default digester SHA-1
         if (digester == null) {
-            
+            throw new IllegalArgumentException("Digester not optional: cannot pass `null`");
         }
         if (type == null) {
             String typeStr = digester.getAlgorithm();
@@ -114,7 +110,7 @@ public class NameBasedGenerator extends StringArgGenerator
             } else {
                 // Hmmh... error out? Let's default to SHA-1, but log a warning
                 type = UUIDType.NAME_BASED_SHA1;
-                logger.warn("Could not determine type of Digester from '{}'; assuming 'SHA-1' type", typeStr);
+                _logger.warn("Could not determine type of Digester from '%s'; assuming 'SHA-1' type", typeStr);
             }
         }
         _digester = digester;

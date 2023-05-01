@@ -43,11 +43,6 @@ import java.nio.channels.FileLock;
  * variations in number of digits are accepeted, as are white space
  * chars before and after bracketed value.
  */
-
-/*
- * Portions Copyright (c) Microsoft Corporation
- */
-
 class LockedFile
 {
 
