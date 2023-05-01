@@ -25,6 +25,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /** Initializes a new instance of the asynchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
@@ -181,6 +183,94 @@ public final class OpenAIAsyncClient {
     }
 
     /**
+     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     prompt (Required): [
+     *         String (Required)
+     *     ]
+     *     max_tokens: Integer (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     logit_bias (Optional): {
+     *         String: int (Optional)
+     *     }
+     *     user: String (Optional)
+     *     n: Integer (Optional)
+     *     logprobs: Integer (Optional)
+     *     echo: Boolean (Optional)
+     *     stop (Optional): [
+     *         String (Optional)
+     *     ]
+     *     presence_penalty: Double (Optional)
+     *     frequency_penalty: Double (Optional)
+     *     best_of: Integer (Optional)
+     *     stream: Boolean (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created: int (Required)
+     *     choices (Required): [
+     *          (Required){
+     *             text: String (Required)
+     *             index: int (Required)
+     *             logprobs (Required): {
+     *                 tokens (Required): [
+     *                     String (Required)
+     *                 ]
+     *                 token_logprobs (Required): [
+     *                     double (Required)
+     *                 ]
+     *                 top_logprobs (Required): [
+     *                      (Required){
+     *                         String: double (Required)
+     *                     }
+     *                 ]
+     *                 text_offset (Required): [
+     *                     int (Required)
+     *                 ]
+     *             }
+     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+     *         }
+     *     ]
+     *     usage (Required): {
+     *         completion_tokens: int (Required)
+     *         prompt_tokens: int (Required)
+     *         total_tokens: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param prompts The prompts to generate values from.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     *     that continues from or "completes" provided prompt data along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getCompletionsWithResponse(
+        String deploymentId, List<String> prompts, RequestOptions requestOptions) {
+        CompletionsOptions completionsOptions = new CompletionsOptions(prompts);
+        BinaryData completionsOptionsRequest = BinaryData.fromObject(completionsOptions);
+        return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptionsRequest, requestOptions);
+    }
+
+    /**
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
@@ -308,6 +398,30 @@ public final class OpenAIAsyncClient {
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
+    }
+
+    /**
+     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * that continues from or "completes" provided prompt data.
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param prompts The prompts to generate values from.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Completions> getCompletions(String deploymentId, List<String> prompts) {
+        RequestOptions requestOptions = new RequestOptions();
+        CompletionsOptions completionsOptions = new CompletionsOptions(prompts);
+        return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
 
     /**

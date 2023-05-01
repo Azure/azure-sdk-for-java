@@ -45,11 +45,41 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getCompletions(deploymentId, prompt))
+                .assertNext(resultCompletions -> {
+                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(deploymentId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
+                    new RequestOptions()))
+                .assertNext(response -> {
+                    assertEquals(200, response.getStatusCode());
+                    Completions resultCompletions = response.getValue().toObject(Completions.class);
+                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsFromPromptWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getCompletionsWithResponse(deploymentId,
+                    prompt,
                     new RequestOptions()))
                 .assertNext(response -> {
                     assertEquals(200, response.getStatusCode());
