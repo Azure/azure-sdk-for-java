@@ -10,10 +10,18 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 
-public class JsonSerializableSerializer extends JsonSerializer<JsonSerializable<?>> {
+@SuppressWarnings("rawtypes")
+public class JsonSerializableSerializer extends JsonSerializer<JsonSerializable> {
     @Override
-    public void serialize(JsonSerializable<?> value, JsonGenerator gen, SerializerProvider serializers)
+    public void serialize(JsonSerializable value, JsonGenerator gen, SerializerProvider serializers)
         throws IOException {
+        // Do not use this JacksonJsonWriter in a try-with-resources block as closing it closes the underlying
+        // JsonGenerator which could cause problems in further serialization done.
         new JacksonJsonWriter(gen).writeJson(value);
+    }
+
+    @Override
+    public Class<JsonSerializable> handledType() {
+        return JsonSerializable.class;
     }
 }

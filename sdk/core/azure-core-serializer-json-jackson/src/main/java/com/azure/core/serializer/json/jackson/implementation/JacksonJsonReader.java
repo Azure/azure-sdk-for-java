@@ -44,6 +44,7 @@ public final class JacksonJsonReader extends JsonReader {
         this.jsonString = jsonString;
         this.resetSupported = resetSupported;
         this.jsonOptions = jsonOptions;
+        this.currentToken = mapToken(parser.currentToken(), null);
     }
 
     @Override

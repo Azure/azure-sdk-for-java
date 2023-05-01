@@ -13,8 +13,12 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
@@ -91,7 +95,17 @@ public class JacksonJsonProvider implements JsonProvider {
      */
     public static Module getJsonSerializableDatabindModule() {
         return new SimpleModule()
-            .addDeserializer(JsonSerializable.class, new JsonSerializableDeserializer())
+            .setDeserializerModifier(new BeanDeserializerModifier() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
+                    JsonDeserializer<?> deserializer) {
+                    return (JsonSerializable.class.isAssignableFrom(beanDesc.getBeanClass()))
+                        ? new JsonSerializableDeserializer(
+                            (Class<? extends JsonSerializable<?>>) beanDesc.getBeanClass())
+                        : deserializer;
+                }
+            })
             .addSerializer(JsonSerializable.class, new JsonSerializableSerializer());
     }
 }
