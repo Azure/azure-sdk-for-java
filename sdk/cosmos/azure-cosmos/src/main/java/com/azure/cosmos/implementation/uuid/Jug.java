@@ -125,7 +125,7 @@ public class Jug
         --count;
 
         // Type we recognize?
-        String tmp = (String) TYPES.get(type);
+        String tmp = TYPES.get(type);
         if (tmp == null) {
             if (!TYPES.containsValue(type)) {
                 System.err.println("Unrecognized UUID generation type '"+
@@ -153,7 +153,7 @@ public class Jug
 
             char option = (char)0;
             if (opt.startsWith("--")) {
-                String o = (String) OPTIONS.get(opt.substring(2));
+                String o = OPTIONS.get(opt.substring(2));
                 // Let's translate longer names to simple names:
                 if (o != null) {
                     option = o.charAt(0);
