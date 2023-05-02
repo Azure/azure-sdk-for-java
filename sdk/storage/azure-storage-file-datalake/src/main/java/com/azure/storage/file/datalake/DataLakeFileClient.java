@@ -34,7 +34,6 @@ import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
-import com.azure.storage.file.datalake.models.DataLakeFileOutputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -1112,11 +1111,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
      * will be overwritten.
      *
-     * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
-     * to the file.
+     * @return The {@link OutputStream} that can be used to write to the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public DataLakeFileOutputStreamResult getOutputStream() {
+    public OutputStream getOutputStream() {
         return getOutputStream(null);
     }
 
@@ -1128,13 +1126,12 @@ public class DataLakeFileClient extends DataLakePathClient {
      * </p>
      *
      * @param options {@link DataLakeFileOutputStreamOptions}
-     * @return A {@link DataLakeFileOutputStreamResult} object containing the output stream that can be used to write
-     * to the file.
+     * @return The {@link OutputStream} that can be used to write to the file.
      * @throws DataLakeStorageException If a storage service error occurred.
      */
-    public DataLakeFileOutputStreamResult getOutputStream(DataLakeFileOutputStreamOptions options) {
+    public OutputStream getOutputStream(DataLakeFileOutputStreamOptions options) {
         BlockBlobOutputStreamOptions convertedOptions = Transforms.toBlockBlobOutputStreamOptions(options);
-        return new DataLakeFileOutputStreamResult(blockBlobClient.getBlobOutputStream(convertedOptions));
+        return blockBlobClient.getBlobOutputStream(convertedOptions);
     }
 
     /**
