@@ -92,6 +92,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void submitOpenConnectionTaskOutsideLoopInternal(OpenConnectionTask openConnectionTask) {
+        Uri addressUri = openConnectionTask.getAddressUri();
         String addressUriAsString = openConnectionTask.getAddressUri().getURIAsString();
 
         // endpointProvider is closed when RntbdTransportClient
@@ -102,6 +103,12 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // this prevents netty executor classes from entering into IllegalStateException
         if (this.endpointProvider.isClosed() || this.isClosed.get()) {
             openConnectionTask.completeExceptionally(new TransportException(lenientFormat("%s is closed", this), null));
+            return;
+        }
+
+        if (!addressUri.IsInUse()) {
+            openConnectionTask.completeExceptionally(new TransportException(lenientFormat("Address: %s is not mapped to a physical partition",
+                    addressUriAsString), null));
             return;
         }
 
@@ -130,16 +137,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // is taken when an endpoint is used by different containers
         // and each container has a different min connection required setting for the endpoint
         getOrCreateEndpoint(openConnectionTask);
-    }
-
-    // There are two major kind tasks will be submitted
-    // 1. Tasks from up caller -> in this case, before we enqueue a task we would want to check whether the endpoint has already in the map
-    // 2. Tasks from existing flow -> for each endpoint, each time we will only 1 connection, if the connection count < the mini connection requirements,then re-queue.
-    // for this case, then there is no need to validate whether the endpoint exists
-    //
-    // Using synchronized here to reduce the Sinks.EmitResult.FAIL_NON_SERIALIZED errors.
-    private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
-        openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
     }
 
     @Override
@@ -201,7 +198,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public Disposable getBackgroundOpenConnectionsPublisher() {
+    private Disposable getBackgroundOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 
@@ -278,6 +275,16 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                             });
                 }, true)
                 .subscribe();
+    }
+
+    // There are two major kind tasks will be submitted
+    // 1. Tasks from up caller -> in this case, before we enqueue a task we would want to check whether the endpoint has already in the map
+    // 2. Tasks from existing flow -> for each endpoint, each time we will only 1 connection, if the connection count < the mini connection requirements,then re-queue.
+    // for this case, then there is no need to validate whether the endpoint exists
+    //
+    // Using synchronized here to reduce the Sinks.EmitResult.FAIL_NON_SERIALIZED errors.
+    private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
+        openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
     }
 
     private RntbdEndpoint getOrCreateEndpoint(OpenConnectionTask openConnectionTask) {

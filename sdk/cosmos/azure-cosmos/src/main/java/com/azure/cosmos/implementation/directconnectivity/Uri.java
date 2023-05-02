@@ -24,6 +24,7 @@ public class Uri {
     private volatile Instant lastUnhealthyPendingTimestamp;
     private volatile Instant lastUnhealthyTimestamp;
     private volatile boolean isPrimary;
+    private final AtomicBoolean isInUse;
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);
@@ -43,6 +44,7 @@ public class Uri {
         this.lastUnknownTimestamp = Instant.now();
         this.lastUnhealthyPendingTimestamp = null;
         this.lastUnhealthyTimestamp = null;
+        this.isInUse = new AtomicBoolean(true);
     }
 
     public URI getURI() {
@@ -140,6 +142,13 @@ public class Uri {
         });
     }
 
+    /**
+     * Set to true if {@link Uri} instance is used by a physical partition.
+     * */
+    public void setIsInUse(boolean isInUse) {
+        this.isInUse.set(isInUse);
+    }
+
     public HealthStatus getHealthStatus() {
         return this.healthStatus.get();
     }
@@ -181,6 +190,10 @@ public class Uri {
 
     public String getHealthStatusDiagnosticString() {
         return this.uri.getPort() + ":" + this.healthStatus.get().toString();
+    }
+
+    public boolean IsInUse() {
+        return isInUse.get();
     }
 
     @Override
