@@ -8,18 +8,13 @@ import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
-/** The PlayOptions model. */
+/** The PlayToAllOptions model. */
 @Fluent
-public final class PlayOptions {
+public final class PlayToAllOptions {
     /*
      * A {@link PlaySource} representing the source to play.
      */
     private final PlaySource playSource;
-
-    /*
-     * The targets to play to
-     */
-    private final List<CommunicationIdentifier> playTo;
 
     /*
      * The option to play the provided audio source in loop when set to true
@@ -34,11 +29,9 @@ public final class PlayOptions {
     /**
      * Constructor
      * @param playSource A {@link PlaySource} representing the source to play.
-     * @param playTo The targets to play to.
      */
-    public PlayOptions(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+    public PlayToAllOptions(PlaySource playSource) {
         this.playSource = playSource;
-        this.playTo = playTo;
     }
 
     /**
@@ -48,15 +41,6 @@ public final class PlayOptions {
      */
     public PlaySource getPlaySource() {
         return this.playSource;
-    }
-
-    /**
-     * Get the list of targets to play to.
-     *
-     * @return the playTo value.
-     */
-    public List<CommunicationIdentifier> getPlayTo() {
-        return this.playTo;
     }
 
     /**
@@ -83,7 +67,7 @@ public final class PlayOptions {
      * @param loop the loop value to set.
      * @return the PlayOptionsInternal object itself.
      */
-    public PlayOptions setLoop(boolean loop) {
+    public PlayToAllOptions setLoop(boolean loop) {
         this.loop = loop;
         return this;
     }
@@ -94,7 +78,7 @@ public final class PlayOptions {
      * @param operationContext the operationContext value to set.
      * @return the PlayOptionsInternal object itself.
      */
-    public PlayOptions setOperationContext(String operationContext) {
+    public PlayToAllOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
