@@ -21,14 +21,14 @@ public class GetCompletionsFromPromptAsync {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
+    public static void main(String[] args) {
+        String azureOpenAIKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(azureOpenaiKey))
+            .credential(new AzureKeyCredential(azureOpenAIKey))
             .buildAsyncClient();
 
         String prompt = "Tell me 3 facts about pineapples";
@@ -44,7 +44,10 @@ public class GetCompletionsFromPromptAsync {
                     }
                 },
                 error -> System.err.println("There was an error getting completions." + error),
-                () -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST)
+                () -> {
+                    System.out.println("Completed called getCompletions.");
+                    completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
+                }
             );
 
         completionSink.asMono().block();

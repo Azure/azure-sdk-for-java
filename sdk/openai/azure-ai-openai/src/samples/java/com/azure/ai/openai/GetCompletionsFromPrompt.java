@@ -28,7 +28,7 @@ public class GetCompletionsFromPrompt {
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(azureOpenaiKey))
+            .credential(new AzureKeyCredential(azureOpenAIKey))
             .buildClient();
 
         String prompt = "Tell me 3 jokes about trains";
