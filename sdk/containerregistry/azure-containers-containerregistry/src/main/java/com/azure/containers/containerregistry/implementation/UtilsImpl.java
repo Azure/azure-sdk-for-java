@@ -70,6 +70,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.CoreUtils.bytesToHexString;
+import static com.azure.core.util.CoreUtils.extractSizeFromContentRange;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -481,25 +482,18 @@ public final class UtilsImpl {
         return locationHeader;
     }
 
-    public static long getBlobSize(HttpHeader contentRangeHeader) {
-        Exception cause = null;
+    public static long getBlobSize(HttpHeaders headers) {
+        HttpHeader contentRangeHeader = headers.get(HttpHeaderName.CONTENT_RANGE);
         if (contentRangeHeader != null) {
-            int slashInd = contentRangeHeader.getValue().indexOf('/');
-            if (slashInd > 0) {
-                try {
-                    long blobSize = Long.parseLong(contentRangeHeader.getValue().substring(slashInd + 1));
-                    if (blobSize > 0) {
-                        return blobSize;
-                    }
-                } catch (NumberFormatException ex) {
-                    cause = ex;
-                }
+            long size = extractSizeFromContentRange(contentRangeHeader.getValue());
+            if (size > 0) {
+                return size;
             }
         }
 
         throw LOGGER.atError()
             .addKeyValue("contentRange", contentRangeHeader)
-            .log(new ServiceResponseException("Invalid content-range header in response", cause));
+            .log(new ServiceResponseException("Missing or invalid content-range header in response"));
     }
 
     /**

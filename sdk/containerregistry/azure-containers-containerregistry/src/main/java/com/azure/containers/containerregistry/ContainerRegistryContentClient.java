@@ -25,7 +25,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -535,7 +534,7 @@ public final class ContainerRegistryContentClient {
             // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/34400
             context = context.addData("azure-eagerly-read-response", true);
             Response<BinaryData> lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
-            long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+            long blobSize = getBlobSize(lastChunk.getHeaders());
             long length = writeChunk(lastChunk, sha256, channel);
 
             for (long p = length; p < blobSize; p += CHUNK_SIZE) {
