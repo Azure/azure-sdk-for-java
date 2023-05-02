@@ -25,46 +25,40 @@ public class ReadmeSamples {
     RoomParticipant participant1;
     RoomParticipant participant2;
 
-    // BEGIN: readme-sample-createRoomsClientUsingAzureKeyCredential
     public RoomsClient createRoomsClientUsingAzureKeyCredential() {
-        // You can find your endpoint and access key from your resource in the Azure
-        // Portal
+        // BEGIN: readme-sample-createRoomsClientUsingAzureKeyCredential
+        // Find your endpoint and access key from your resource in the Azure
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
         RoomsClient roomsClient = new RoomsClientBuilder().endpoint(endpoint).credential(azureKeyCredential)
                 .buildClient();
-
+        // END: readme-sample-createRoomsClientUsingAzureKeyCredential
         return roomsClient;
     }
-    // END: readme-sample-createRoomsClientUsingAzureKeyCredential
 
 
-    // BEGIN: readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
     public RoomsAsyncClient createRoomsAsyncClientUsingAzureKeyCredential() {
-        // You can find your endpoint and access key from your resource in the Azure
-        // Portal
+        // BEGIN: readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
+        // Find your endpoint and access key from your resource in the Azure Portal
         String endpoint = "https://<resource-name>.communication.azure.com";
         AzureKeyCredential azureKeyCredential = new AzureKeyCredential("<access-key>");
 
         RoomsAsyncClient roomsClient = new RoomsClientBuilder().endpoint(endpoint).credential(azureKeyCredential)
                 .buildAsyncClient();
-
+        // END: readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
         return roomsClient;
     }
-    // END: readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
 
-
-    // BEGIN: readme-sample-createRoomsClientWithConnectionString
     public RoomsClient createRoomsClientWithConnectionString() {
-        // You can find your connection string from your resource in the Azure Portal
+        // BEGIN: readme-sample-createRoomsClientWithConnectionString
+        // Find your connection string from your resource in the Azure Portal
         String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
         RoomsClient roomsClient = new RoomsClientBuilder().connectionString(connectionString).buildClient();
-
+        // END: readme-sample-createRoomsClientWithConnectionString
         return roomsClient;
     }
-    // END: readme-sample-createRoomsClientWithConnectionString
 
     public RoomsClient createRoomsClientWithAAD() {
         // You can find your endpoint and access key from your resource in the Azure
@@ -87,8 +81,10 @@ public class ReadmeSamples {
         return roomsClient;
     }
 
-    // BEGIN: readme-sample-createRoomWithValidInput
     public void createRoomWithValidInput() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        // BEGIN: readme-sample-createRoomWithValidInput
         OffsetDateTime validFrom = OffsetDateTime.now();
         OffsetDateTime validUntil = validFrom.plusDays(30);
         List<RoomParticipant> participants = new ArrayList<>();
@@ -106,15 +102,14 @@ public class ReadmeSamples {
                 .setValidUntil(validUntil)
                 .setParticipants(participants);
 
-        RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
         CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
+        // END: readme-sample-createRoomWithValidInput
         System.out.println("Room Id: " + roomResult.getRoomId());
     }
-    // END: readme-sample-createRoomWithValidInput
 
-    // BEGIN: readme-sample-updateRoomWithRoomId
     public void updateRoomWithRoomId() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        // BEGIN: readme-sample-updateRoomWithRoomId
         OffsetDateTime validFrom = OffsetDateTime.now();
         OffsetDateTime validUntil = validFrom.plusDays(30);
 
@@ -123,44 +118,44 @@ public class ReadmeSamples {
                 .setValidFrom(validFrom)
                 .setValidUntil(validUntil);
 
-        RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
         try {
-            CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id in String>", updateRoomOptions);
+            CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id>", updateRoomOptions);
             System.out.println("Room Id: " + roomResult.getRoomId());
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
+        // END: readme-sample-updateRoomWithRoomId
     }
-    // END: readme-sample-updateRoomWithRoomId
 
-    // BEGIN: readme-sample-getRoomWithRoomId
     public void getRoomWithRoomId() {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
+        // BEGIN: readme-sample-getRoomWithRoomId
         try {
-            CommunicationRoom roomResult = roomsClient.getRoom("<Room Id in String>");
+            CommunicationRoom roomResult = roomsClient.getRoom("<Room Id>");
             System.out.println("Room Id: " + roomResult.getRoomId());
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
+        // END: readme-sample-getRoomWithRoomId
     }
-    // END: readme-sample-getRoomWithRoomId
 
-    // BEGIN: readme-sample-deleteRoomWithRoomId
     public void deleteRoomWithRoomId() {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
+        // BEGIN: readme-sample-deleteRoomWithRoomId
         try {
-            roomsClient.deleteRoom("<Room Id in String>");
+            roomsClient.deleteRoom("<Room Id>");
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
+        // END: readme-sample-deleteRoomWithRoomId
     }
-    // END: readme-sample-deleteRoomWithRoomId
 
-    // BEGIN: readme-sample-addOrUpdateRoomParticipantsWithRoomId
     public void addOrUpdateRoomParticipantsWithRoomId() {
+
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        // BEGIN: readme-sample-addOrUpdateRoomParticipantsWithRoomId
         List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
 
         // New participant to add
@@ -173,30 +168,39 @@ public class ReadmeSamples {
         participantsToaddOrUpdate.add(participantToAdd); // Adding new participant to room
         participantsToaddOrUpdate.add(participant2); // Update participant from Consumer -> Attendee
 
-        RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
         try {
             AddOrUpdateParticipantsResult addOrUpdateResult = roomsClient.addOrUpdateParticipants("<Room Id>", participantsToaddOrUpdate);
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
+        // END: readme-sample-addOrUpdateRoomParticipantsWithRoomId
     }
-    // END: readme-sample-addOrUpdateRoomParticipantsWithRoomId
 
-    // BEGIN: readme-sample-removeRoomParticipantsWithRoomId
     public void removeRoomParticipantsWithRoomId() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        // BEGIN: readme-sample-removeRoomParticipantsWithRoomId
         List<CommunicationIdentifier> participantsToRemove = new ArrayList<>();
 
         participantsToRemove.add(participant1.getCommunicationIdentifier());
         participantsToRemove.add(participant2.getCommunicationIdentifier());
-
-        RoomsClient roomsClient = createRoomsClientWithConnectionString();
 
         try {
             RemoveParticipantsResult removeResult = roomsClient.removeParticipants("<Room Id>", participantsToRemove);
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
+        // END: readme-sample-removeRoomParticipantsWithRoomId
     }
-    // END: readme-sample-removeRoomParticipantsWithRoomId
+
+    public void listRoomParticipantsWithRoomId() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+        // BEGIN: readme-sample-listRoomParticipantsWithRoomId
+        try {
+            PagedFlux<RoomParticipant> allParticipants = roomsAsyncClient.listParticipants("<Room Id>");
+        } catch (RuntimeException ex) {
+            System.out.println(ex);
+        }
+        // END: readme-sample-listRoomParticipantsWithRoomId
+    }
 }
