@@ -10,6 +10,11 @@ import java.util.List;
 
 public class CompletionsUtils {
 
+    public static final int DEFAULT_MAX_COMPLETION_TOKENS = 100;
+
+    private CompletionsUtils() {
+    }
+
     /**
      * Convenience method for minimal initialization for the CompletionsOptions class
      * @param prompt from which Completions will be generated
@@ -20,5 +25,4 @@ public class CompletionsUtils {
         return new CompletionsOptions(prompts).setMaxTokens(DEFAULT_MAX_COMPLETION_TOKENS);
     }
 
-    public static int DEFAULT_MAX_COMPLETION_TOKENS = 100;
 }

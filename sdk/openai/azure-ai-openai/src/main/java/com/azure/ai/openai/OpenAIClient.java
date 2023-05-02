@@ -261,7 +261,7 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
         String deploymentId, String prompt, RequestOptions requestOptions) {
-        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompt);
+        CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
         BinaryData completionsOptionsRequest = BinaryData.fromObject(completionsOptions);
         return this.client.getCompletionsWithResponse(deploymentId, completionsOptionsRequest, requestOptions).block();
     }
@@ -411,7 +411,7 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Completions getCompletions(String deploymentId, String prompt) {
         RequestOptions requestOptions = new RequestOptions();
-        CompletionsOptions completionsOptions = CompletionsUtils.DefaultCompletionsOptions(prompt);
+        CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
             .getValue()
             .toObject(Completions.class);
