@@ -9,7 +9,7 @@
       "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" }
     },
     "JavaTestVersion": [ "1.8", "1.17" ],
-    "AZURE_TEST_HTTP_CLIENTS": [ "jdk-httpclient", "vertx", "okhttp", "netty" ],
+    "AZURE_TEST_HTTP_CLIENTS": ["vertx", "okhttp", "netty" ],
     "TestFromSource": false,
     "RunAggregateReports": false,
     "TestGoals": "surefire:test",
@@ -54,17 +54,6 @@
       "RunAggregateReports": false,
       "TestGoals": "surefire:test",
       "TestOptions": ""
-    },
-    {
-      "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
-      },
-      "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "jdk-httpclient",
-      "TestFromSource": true,
-      "RunAggregateReports": false,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
     },
     {
       "Agent": {
