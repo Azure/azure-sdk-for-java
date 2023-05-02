@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -297,6 +298,10 @@ public class ReflectionUtils {
 
     public static RntbdEndpoint.Provider getRntbdEndpointProvider(RntbdTransportClient rntbdTransportClient) {
         return get(RntbdEndpoint.Provider.class, rntbdTransportClient, "endpointProvider");
+    }
+
+    public static ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor(RntbdTransportClient rntbdTransportClient) {
+        return get(ProactiveOpenConnectionsProcessor.class, rntbdTransportClient, "proactiveOpenConnectionsProcessor");
     }
 
     @SuppressWarnings("unchecked")

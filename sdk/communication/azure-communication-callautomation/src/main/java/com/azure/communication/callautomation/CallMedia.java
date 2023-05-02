@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
@@ -12,6 +12,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.exception.HttpResponseException;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * CallContent.
  */
-public class CallMedia {
+public final class CallMedia {
     private final CallMediaAsync callMediaAsync;
 
     CallMedia(CallMediaAsync callMediaAsync) {
@@ -31,7 +32,7 @@ public class CallMedia {
      *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -43,7 +44,7 @@ public class CallMedia {
      * Play to all participants
      *
      * @param playSource A {@link PlaySource} representing the source to play.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -59,7 +60,7 @@ public class CallMedia {
      * @param options play options.
      * @param context A {@link Context} representing the request context.
      * @return Response for successful play request.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -75,7 +76,7 @@ public class CallMedia {
      * @param options play options.
      * @param context A {@link Context} representing the request context.
      * @return Response for successful playAll request.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -125,4 +126,71 @@ public class CallMedia {
         return callMediaAsync.cancelAllMediaOperationsWithResponseInternal(context).block();
     }
 
+
+    /**
+     * Sends Dtmf tones
+     * @param targetParticipant the target participant
+     * @param tones tones to be sent
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
+        callMediaAsync.sendDtmf(targetParticipant, tones).block();
+    }
+
+    /**
+     * Sends Dtmf tones
+     * @param targetParticipant the target participant
+     * @param tones tones to be sent
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response for successful sendDtmf request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendDtmfWithResponse(CommunicationIdentifier targetParticipant, List<DtmfTone> tones,
+                                               String operationContext, Context context) {
+        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
+    }
+
+    /**
+     * Starts continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.startContinuousDtmfRecognition(targetParticipant).block();
+    }
+
+    /**
+     * Starts continuous Dtmf recognition.
+     *
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response for successful start continuous dtmf recognition request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        return callMediaAsync.startContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    }
+
+    /**
+     * Stops continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.stopContinuousDtmfRecognition(targetParticipant).block();
+    }
+
+    /**
+     * Stops continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response for successful stop continuous dtmf recognition request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    }
 }

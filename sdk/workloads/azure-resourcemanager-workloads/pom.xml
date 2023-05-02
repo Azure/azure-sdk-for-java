@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-workloads</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-workloads;current} -->
+  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-workloads;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Workloads Management</name>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.8.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

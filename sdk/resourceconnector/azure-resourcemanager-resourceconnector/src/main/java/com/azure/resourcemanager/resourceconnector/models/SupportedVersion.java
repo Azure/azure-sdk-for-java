@@ -22,6 +22,10 @@ public final class SupportedVersion {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
+    /** Creates an instance of SupportedVersion class. */
+    public SupportedVersion() {
+    }
+
     /**
      * Get the metadata property: This is the metadata of the supported newer version.
      *

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Implement `azure-json` service provider interface with a Jackson-based implementation.
+
 ### Breaking Changes
 
 ### Bugs Fixed

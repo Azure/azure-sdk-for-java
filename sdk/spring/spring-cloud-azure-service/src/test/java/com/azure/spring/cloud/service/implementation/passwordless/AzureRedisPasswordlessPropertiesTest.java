@@ -16,7 +16,6 @@ class AzureRedisPasswordlessPropertiesTest {
 
     private static final String REDIS_SCOPE_GLOBAL = "https://*.cacheinfra.windows.net:10225/appid/.default";
     private static final String REDIS_SCOPE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
     private static final String REDIS_SCOPE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
 
     @Test
@@ -30,11 +29,6 @@ class AzureRedisPasswordlessPropertiesTest {
         properties.setScopes(null);
         String scopes = properties.getScopes();
         Assertions.assertEquals(REDIS_SCOPE_GLOBAL, scopes);
-
-        profile.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
-        properties.setProfile(profile);
-        scopes = properties.getScopes();
-        Assertions.assertEquals(REDIS_SCOPE_GERMANY, scopes);
 
         profile.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_CHINA);
         properties.setProfile(profile);
@@ -64,7 +58,7 @@ class AzureRedisPasswordlessPropertiesTest {
 
         AzureProfileProperties profile = new AzureProfileProperties();
         profile.setTenantId("fake-tenantId");
-        profile.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+        profile.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
         AzureRedisPasswordlessProperties azureRedisPasswordlessProperties = new AzureRedisPasswordlessProperties();
         azureRedisPasswordlessProperties.setScopes("fake-scopes");
