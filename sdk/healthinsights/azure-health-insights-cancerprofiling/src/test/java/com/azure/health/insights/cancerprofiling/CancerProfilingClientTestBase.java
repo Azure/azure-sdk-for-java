@@ -14,6 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
+import java.net.URL;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
 
@@ -64,7 +65,14 @@ public class CancerProfilingClientTestBase extends TestBase {
     }
 
     private BinaryData getOncoPhenotypeRequest() {
-        BinaryData requestBody = BinaryData.fromFile(Paths.get("src/test/resources/session-records/CancerProfilingClientTest.request.json"));
-        return requestBody;
+        URL url =TestBase.class.getResource("/session-records/CancerProfilingClientTest.request.json");
+        try {
+            String mainPath = Paths.get(url.toURI()).toString();
+            BinaryData requestBody = BinaryData.fromFile(Paths.get(mainPath));
+            return requestBody;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
