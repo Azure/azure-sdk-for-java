@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The speech status as a result. */
 @Fluent
-public final class SpeechResultInternal {
+public final class SpeechResult {
     /*
      * The recognized speech in string.
      */
     @JsonProperty(value = "speech")
     private String speech;
 
-    /** Creates an instance of SpeechResultInternal class. */
-    public SpeechResultInternal() {}
+    /** Creates an instance of SpeechResult class. */
+    public SpeechResult() {}
 
     /**
      * Get the speech property: The recognized speech in string.
@@ -32,9 +32,9 @@ public final class SpeechResultInternal {
      * Set the speech property: The recognized speech in string.
      *
      * @param speech the speech value to set.
-     * @return the SpeechResultInternal object itself.
+     * @return the SpeechResult object itself.
      */
-    public SpeechResultInternal setSpeech(String speech) {
+    public SpeechResult setSpeech(String speech) {
         this.speech = speech;
         return this;
     }

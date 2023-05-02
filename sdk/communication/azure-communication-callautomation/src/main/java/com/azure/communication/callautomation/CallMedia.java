@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
@@ -125,4 +126,71 @@ public final class CallMedia {
         return callMediaAsync.cancelAllMediaOperationsWithResponseInternal(context).block();
     }
 
+
+    /**
+     * Sends Dtmf tones
+     * @param targetParticipant the target participant
+     * @param tones tones to be sent
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
+        callMediaAsync.sendDtmf(targetParticipant, tones).block();
+    }
+
+    /**
+     * Sends Dtmf tones
+     * @param targetParticipant the target participant
+     * @param tones tones to be sent
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response for successful sendDtmf request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> sendDtmfWithResponse(CommunicationIdentifier targetParticipant, List<DtmfTone> tones,
+                                               String operationContext, Context context) {
+        return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
+    }
+
+    /**
+     * Starts continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.startContinuousDtmfRecognition(targetParticipant).block();
+    }
+
+    /**
+     * Starts continuous Dtmf recognition.
+     *
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response for successful start continuous dtmf recognition request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        return callMediaAsync.startContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    }
+
+    /**
+     * Stops continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        callMediaAsync.stopContinuousDtmfRecognition(targetParticipant).block();
+    }
+
+    /**
+     * Stops continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @param context Context
+     * @return Response for successful stop continuous dtmf recognition request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context).block();
+    }
 }
