@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/ae5136ab33aa5d3a4e29028348ac060d0aafb4ab/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/33883b827facd6567cbe03e3853634d59633b970/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -186,6 +186,12 @@ directive:
 - rename-model:
     from: BlobStorage
     to: BlobStorageInternal
+- rename-model:
+    from: ContinuousDtmfRecognitionRequest
+    to: ContinuousDtmfRecognitionRequestInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -203,6 +209,12 @@ directive:
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
 - remove-model: RecognizeCanceled
+- remove-model: ContinuousDtmfRecognitionToneReceived
+- remove-model: ToneInfo
+- remove-model: ContinuousDtmfRecognitionToneFailed
+- remove-model: ContinuousDtmfRecognitionStopped
+- remove-model: SendDtmfCompleted
+- remove-model: SendDtmfFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

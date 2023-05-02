@@ -6,19 +6,12 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** The SendDtmfRequestInternal model. */
+/** The ContinuousDtmfRecognitionRequestInternal model. */
 @Fluent
-public final class SendDtmfRequestInternal {
+public final class ContinuousDtmfRecognitionRequestInternal {
     /*
-     * List of tones to be sent to target participant.
-     */
-    @JsonProperty(value = "tones", required = true)
-    private List<DtmfToneInternal> tones;
-
-    /*
-     * Target participant of send DTMF.
+     * Defines options for recognition.
      */
     @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
@@ -29,31 +22,11 @@ public final class SendDtmfRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of SendDtmfRequestInternal class. */
-    public SendDtmfRequestInternal() {}
+    /** Creates an instance of ContinuousDtmfRecognitionRequestInternal class. */
+    public ContinuousDtmfRecognitionRequestInternal() {}
 
     /**
-     * Get the tones property: List of tones to be sent to target participant.
-     *
-     * @return the tones value.
-     */
-    public List<DtmfToneInternal> getTones() {
-        return this.tones;
-    }
-
-    /**
-     * Set the tones property: List of tones to be sent to target participant.
-     *
-     * @param tones the tones value to set.
-     * @return the SendDtmfRequestInternal object itself.
-     */
-    public SendDtmfRequestInternal setTones(List<DtmfToneInternal> tones) {
-        this.tones = tones;
-        return this;
-    }
-
-    /**
-     * Get the targetParticipant property: Target participant of send DTMF.
+     * Get the targetParticipant property: Defines options for recognition.
      *
      * @return the targetParticipant value.
      */
@@ -62,12 +35,13 @@ public final class SendDtmfRequestInternal {
     }
 
     /**
-     * Set the targetParticipant property: Target participant of send DTMF.
+     * Set the targetParticipant property: Defines options for recognition.
      *
      * @param targetParticipant the targetParticipant value to set.
-     * @return the SendDtmfRequestInternal object itself.
+     * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
-    public SendDtmfRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
+    public ContinuousDtmfRecognitionRequestInternal setTargetParticipant(
+            CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
@@ -85,9 +59,9 @@ public final class SendDtmfRequestInternal {
      * Set the operationContext property: The value to identify context of the operation.
      *
      * @param operationContext the operationContext value to set.
-     * @return the SendDtmfRequestInternal object itself.
+     * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
-    public SendDtmfRequestInternal setOperationContext(String operationContext) {
+    public ContinuousDtmfRecognitionRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

@@ -19,11 +19,13 @@ public final class UnmuteParticipantsRequestInternal {
     private List<CommunicationIdentifierModel> targetParticipants;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of UnmuteParticipantsRequestInternal class. */
+    public UnmuteParticipantsRequestInternal() {}
 
     /**
      * Get the targetParticipants property: Participants to be unmuted from the call. Only ACS Users are supported.

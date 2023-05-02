@@ -10,16 +10,21 @@ import com.azure.communication.callautomation.models.events.CallConnectedEventDa
 import com.azure.communication.callautomation.models.events.CallDisconnectedEventData;
 import com.azure.communication.callautomation.models.events.CallTransferAcceptedEventData;
 import com.azure.communication.callautomation.models.events.CallTransferFailedEventData;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStoppedEventData;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailedEventData;
+import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceivedEventData;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEventData;
 import com.azure.communication.callautomation.models.events.PlayCanceledEventData;
+import com.azure.communication.callautomation.models.events.PlayCompletedEventData;
 import com.azure.communication.callautomation.models.events.PlayFailedEventData;
 import com.azure.communication.callautomation.models.events.RecognizeCanceledEventData;
 import com.azure.communication.callautomation.models.events.RecognizeCompletedEventData;
 import com.azure.communication.callautomation.models.events.RecognizeFailedEventData;
-import com.azure.communication.callautomation.models.events.PlayCompletedEventData;
 import com.azure.communication.callautomation.models.events.RecordingStateChangedEventData;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailedEventData;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceededEventData;
+import com.azure.communication.callautomation.models.events.SendDtmfCompletedEventData;
+import com.azure.communication.callautomation.models.events.SendDtmfFailedEventData;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -115,6 +120,16 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, RemoveParticipantFailedEventData.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RemoveParticipantSucceeded")) {
                 ret = mapper.convertValue(eventData, RemoveParticipantSucceededEventData.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ContinuousDtmfRecognitionToneReceived")) {
+                ret = mapper.convertValue(eventData, ContinuousDtmfRecognitionToneReceivedEventData.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ContinuousDtmfRecognitionToneFailed")) {
+                ret = mapper.convertValue(eventData, ContinuousDtmfRecognitionToneFailedEventData.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ContinuousDtmfRecognitionStopped")) {
+                ret = mapper.convertValue(eventData, ContinuousDtmfRecognitionStoppedEventData.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.SendDtmfCompleted")) {
+                ret = mapper.convertValue(eventData, SendDtmfCompletedEventData.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.SendDtmfFailed")) {
+                ret = mapper.convertValue(eventData, SendDtmfFailedEventData.class);
             }
             return ret;
         } catch (RuntimeException e) {
