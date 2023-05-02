@@ -3,7 +3,11 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.*;
+import com.azure.communication.callautomation.models.DtmfTone;
+import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;

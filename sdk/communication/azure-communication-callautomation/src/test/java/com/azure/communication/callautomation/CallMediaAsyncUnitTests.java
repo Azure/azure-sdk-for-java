@@ -3,7 +3,19 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.*;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.DtmfTone;
+import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.SsmlSource;
+import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
