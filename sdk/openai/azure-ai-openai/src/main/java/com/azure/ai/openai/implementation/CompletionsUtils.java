@@ -8,7 +8,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompletionsUtils {
+public final class CompletionsUtils {
 
     public static final int DEFAULT_MAX_COMPLETION_TOKENS = 100;
 
