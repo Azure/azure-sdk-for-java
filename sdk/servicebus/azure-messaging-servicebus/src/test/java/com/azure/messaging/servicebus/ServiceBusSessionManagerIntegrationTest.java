@@ -158,13 +158,15 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS2;
         final String contents = "Some-contents";
         final Duration sessionIdleTimeout = Duration.ofSeconds(3);
+        final Duration tryTimeout = Duration.ofSeconds(10);
         setSender(entityType, entityIndex);
         final String randomPrefix = UUID.randomUUID().toString();
         ServiceBusMessage message0 = getServiceBusMessage(contents, randomPrefix + "0").setSessionId(randomPrefix + "0");
         ServiceBusMessage message1 = getServiceBusMessage(contents, randomPrefix + "1").setSessionId(randomPrefix + "1");
 
+        AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(tryTimeout);
         this.receiver = toClose(getSessionReceiverBuilder(false,
-            entityType, entityIndex, false, DEFAULT_RETRY_OPTIONS)
+            entityType, entityIndex, false, retryOptions)
             .disableAutoComplete()
             .sessionIdleTimeout(sessionIdleTimeout)
             .buildAsyncClientForProcessor());
@@ -178,12 +180,11 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
                         if (!sessionId.compareAndSet(null, m.getSessionId())) {
                             assertEquals(sessionId.get(), m.getSessionId(), "session rolling should not happen");
                         }
-                        return (message0.getMessageId().equals(m.getMessageId()))
-                            ? sender.sendMessage(message1).thenReturn(m) : Mono.just(m);
+                        return sender.sendMessage(message1).thenReturn(m);
                     })
             )
             .expectNextCount(1)
-            .verifyTimeout(sessionIdleTimeout.plusSeconds(20));
+            .verifyTimeout(tryTimeout.plusSeconds(20));
     }
 
     /**
@@ -204,7 +205,6 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents, ServiceBusReceivedMessage message) {
-
         assertNotNull(message, "'message' should not be null.");
 
         if (!CoreUtils.isNullOrEmpty(sessionId)) {

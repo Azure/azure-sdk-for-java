@@ -112,13 +112,13 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
     void rollingSessionOnIdleTimeout(MessagingEntityType entityType) throws InterruptedException {
         final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSIONS1;
         final Duration sessionIdleTimeout = Duration.ofSeconds(3);
+
         ServiceBusSenderAsyncClient sender = createSender(entityType, entityIndex, true);
 
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
             getSessionProcessorBuilder(false, entityType, entityIndex, false, RETRY_OPTIONS)
                 .sessionIdleTimeout(sessionIdleTimeout)
-                .disableAutoComplete()
-                .maxConcurrentSessions(1);
+                .disableAutoComplete();
 
         rollingSessionTest(sender, processorBuilder);
     }
@@ -133,8 +133,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder  processorBuilder =
             getSessionProcessorBuilder(false, entityType, entityIndex, false,
                     new AmqpRetryOptions().setTryTimeout(tryTimeout))
-                .disableAutoComplete()
-                .maxConcurrentSessions(1);
+                .disableAutoComplete();
 
         rollingSessionTest(sender, processorBuilder);
     }

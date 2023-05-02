@@ -465,6 +465,7 @@ public class FluxAutoLockRenewTest {
      * When auto complete is disabled by user, we do not perform message lock clean up.
      */
     @Test
+    //@RepeatedTest(1000)
     void autoCompleteDisabledLockRenewNotClosed() {
         // Arrange
         final TestContainer messageLockContainer = new TestContainer();
@@ -501,7 +502,8 @@ public class FluxAutoLockRenewTest {
             .verifyComplete();
 
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
-        assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
+        assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast,
+            String.format("expected at least %s, but got %s", renewedForAtLeast, actualTokenRenewCalledTimes.get()));
 
         // ensure that we do not remove lockToken from 'messageLockContainer' because user can do it at their will since
         // enableAutoComplete = false
