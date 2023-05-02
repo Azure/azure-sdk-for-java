@@ -78,7 +78,9 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
+     * @deprecated due to refactoring of code.
      */
+    @Deprecated
     public static final int MAX_BLOCKS = 50000;
 
     /**
@@ -91,6 +93,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * For versions 2022-11-02 and above.
      */
     static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = 100 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of blocks allowed in an append blob.
+     */
+    static final int MAX_APPEND_BLOCKS = 50000;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -677,5 +684,14 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         } else {
             return MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
         }
+    }
+
+    /**
+     * Get the maximum number of blocks allowed in an append blob.
+     *
+     * @return the max number of blocks that can be uploaded in an append blob.
+     */
+    public int getMaxBlocks() {
+        return MAX_APPEND_BLOCKS;
     }
 }
