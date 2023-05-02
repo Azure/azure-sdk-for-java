@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to get completions for the provided input prompts. Completions support a wide variety of
+ * Sample demonstrates how to get completions  as a stream for the provided input prompts. Completions support a wide variety of
  * tasks and generate text that continues from or "completes" provided prompt data.
  */
-public class GetCompletionsAsync {
+public class GetCompletionsStreamAsyncSample {
     /**
      * Runs the sample algorithm and demonstrates how to get completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
@@ -37,21 +37,21 @@ public class GetCompletionsAsync {
         List<String> prompt = new ArrayList<>();
         prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
 
-        client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt)).subscribe(
-            completions -> {
+        client.getCompletionsStream(deploymentOrModelId,
+                new CompletionsOptions(prompt).setMaxTokens(1000).setStream(true))
+            .subscribe(completions -> {
                 System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
                 for (Choice choice : completions.getChoices()) {
                     System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
                 }
 
                 CompletionsUsage usage = completions.getUsage();
-                System.out.printf("Usage: number of prompt token is %d, number of completion token is %d, "
-                        + "and number of total tokens in request and response is %d.%n",
-                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-            },
-            error -> System.err.println("There was an error getting completions." + error),
-            () -> System.out.println("Completed called getCompletions."));
-
+                if (usage != null) {
+                    System.out.printf("Usage: number of prompt token is %d, "
+                            + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+                        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+                }
+            });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
