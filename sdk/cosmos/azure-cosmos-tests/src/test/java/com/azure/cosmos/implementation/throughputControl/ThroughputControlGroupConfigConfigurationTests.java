@@ -79,7 +79,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
                 .groupName("group-1")
                 .priorityLevel(PriorityLevel.High)
                 .build();
-        assertThat(groupConfig.getTargetThroughputThreshold()).isEqualTo(1.0);
+        assertThat(groupConfig.getTargetThroughput()).isEqualTo(Integer.MAX_VALUE);
     }
 
     @Test(groups = { "unit" })

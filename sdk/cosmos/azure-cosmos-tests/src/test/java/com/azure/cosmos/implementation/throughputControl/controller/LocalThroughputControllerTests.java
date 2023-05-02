@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.throughputControl.controller.group.local.
 import com.azure.cosmos.models.PriorityLevel;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
@@ -48,14 +50,6 @@ public class LocalThroughputControllerTests {
         targetCollectionRid = "FakeCollection==";
         databaseRid = "FakeDatabase==";
         container = createMockContainer();
-        LocalThroughputControlGroup throughputControlGroup = new LocalThroughputControlGroup(
-            "test-" + UUID.randomUUID(),
-            container,
-            6,
-            null,
-            PriorityLevel.Low,
-            true,
-            false);
 
         pkRange1 = new PartitionKeyRange(UUID.randomUUID().toString(), "AA", "BB");
         PartitionKeyRange pkRange2 = new PartitionKeyRange(UUID.randomUUID().toString(), "BB", "CC");
@@ -78,6 +72,30 @@ public class LocalThroughputControllerTests {
                 any(),
                 any())
             ).thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRange1)));
+    }
+
+    @DataProvider
+    public static Object[][] throughputControlConfigProvider() {
+        return new Object[][]{
+            { 6, null, null, 6 },
+            { 6, null, PriorityLevel.High, 6 },
+            { null, 0.5, null, 3 },
+            { null, 0.5, PriorityLevel.High, 3 },
+            { Integer.MAX_VALUE, null, PriorityLevel.High, Integer.MAX_VALUE },
+            { Integer.MAX_VALUE, 0.5, PriorityLevel.High, 3 }
+        };
+    }
+
+    @Test(groups = "unit", dataProvider = "throughputControlConfigProvider")
+    public void setPriorityLevel(Integer targetThroughput, Double targetThroughputThreshold, PriorityLevel priorityLevel, int expectedClientAllocatedThroughput) {
+        LocalThroughputControlGroup throughputControlGroup = new LocalThroughputControlGroup(
+            "test-" + UUID.randomUUID(),
+            container,
+            targetThroughput,
+            targetThroughputThreshold,
+            priorityLevel,
+            true,
+            false);
 
         controller = new LocalThroughputControlGroupController(ConnectionMode.DIRECT,
             throughputControlGroup,
@@ -85,10 +103,6 @@ public class LocalThroughputControllerTests {
             pkRangeCache,
             targetCollectionRid,
             null);
-    }
-
-    @Test(groups = "unit")
-    public void setPriorityLevel() {
         controller.init().subscribe();
 
         RxDocumentServiceRequest requestMock = createMockRequest();
@@ -101,7 +115,8 @@ public class LocalThroughputControllerTests {
             .then(() -> request1MonoPublisher.emit(storeResponseMock))
             .expectNext(storeResponseMock)
             .verifyComplete();
-        Mockito.verify(requestMock, Mockito.times(1)).setPriorityLevel(eq(PriorityLevel.Low));
+        Mockito.verify(requestMock, Mockito.times(1)).setPriorityLevel(eq(priorityLevel));
+        assertThat(controller.getClientAllocatedThroughput()).isEqualTo(expectedClientAllocatedThroughput);
     }
 
     private RxDocumentServiceRequest createMockRequest() {

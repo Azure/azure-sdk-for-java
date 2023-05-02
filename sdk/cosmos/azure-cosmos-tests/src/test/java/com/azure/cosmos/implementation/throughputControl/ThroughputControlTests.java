@@ -228,6 +228,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         performDocumentOperation(container, operationType, createdItem, groupConfig.getGroupName());
 
+        assertThat(groupConfig.getTargetThroughput()).isEqualTo(Integer.MAX_VALUE);
         assertThat(createItemResponse.getStatusCode()).isEqualTo(201);
     }
 

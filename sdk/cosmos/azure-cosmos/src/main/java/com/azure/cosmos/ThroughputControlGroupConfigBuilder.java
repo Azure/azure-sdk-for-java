@@ -180,7 +180,7 @@ public class ThroughputControlGroupConfigBuilder {
             throw new IllegalArgumentException("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
         }
         if (this.targetThroughput == null && this.targetThroughputThreshold == null) {
-            this.targetThroughputThreshold = 1.0;
+            this.targetThroughput = Integer.MAX_VALUE;
         }
 
         return new ThroughputControlGroupConfig(
