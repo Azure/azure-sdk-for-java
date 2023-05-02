@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.azure.communication.callautomation.models.ToneInfo;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

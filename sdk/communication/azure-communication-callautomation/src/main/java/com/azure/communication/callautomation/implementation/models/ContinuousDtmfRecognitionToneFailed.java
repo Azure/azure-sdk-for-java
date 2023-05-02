@@ -4,7 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.communication.callautomation.models.events.ToneInfo;
+import com.azure.communication.callautomation.models.ToneInfo;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

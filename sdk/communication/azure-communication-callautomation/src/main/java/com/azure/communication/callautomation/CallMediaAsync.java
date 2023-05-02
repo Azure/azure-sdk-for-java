@@ -472,10 +472,10 @@ public final class CallMediaAsync {
             context = context == null ? Context.NONE : context;
             SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                    .setTones(tones.stream()
+                .setTones(tones.stream()
                 .map(this::convertDtmfToneInternal)
                 .collect(Collectors.toList()))
-                        .setOperationContext(operationContext);
+                .setOperationContext(operationContext);
 
             return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context);
         } catch (RuntimeException e) {
