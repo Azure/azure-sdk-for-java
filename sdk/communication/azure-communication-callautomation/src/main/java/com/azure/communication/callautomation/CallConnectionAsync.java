@@ -37,6 +37,9 @@ import com.azure.communication.callautomation.models.TransferCallToParticipantOp
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -230,14 +233,24 @@ public final class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CallInvite} representing the targetParticipant participant of this transfer.
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the targetParticipant participant of this transfer.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws IllegalArgumentException if the targetParticipant is not ACS, phone nor teams user
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferCallToParticipant(CallInvite targetParticipant) {
-        return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions(targetParticipant)).flatMap(FluxUtil::toMono);
+    public Mono<TransferCallResult> transferCallToParticipant(CommunicationIdentifier targetParticipant) {
+        
+        if (targetParticipant instanceof CommunicationUserIdentifier) {
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+        } else if (targetParticipant instanceof PhoneNumberIdentifier) {
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((PhoneNumberIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+        } else if (targetParticipant instanceof MicrosoftTeamsUserIdentifier) {
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+        } else {
+            throw logger.logThrowableAsError(new IllegalArgumentException("targetParticipant type is invalid."));
+        }
     }
 
     /**
@@ -260,15 +273,13 @@ public final class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant().getTargetParticipant()))
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant()))
                 .setOperationContext(transferCallToParticipantOptions.getOperationContext());
 
-            CallInvite callInvite = transferCallToParticipantOptions.getTargetParticipant();
-
-            if (callInvite.getSipHeaders() != null || callInvite.getVoipHeaders() != null) {
+            if (transferCallToParticipantOptions.getSipHeaders() != null || transferCallToParticipantOptions.getVoipHeaders() != null) {
                 request.setCustomContext(new CustomContext()
-                            .setSipHeaders(callInvite.getSipHeaders())
-                            .setVoipHeaders(callInvite.getVoipHeaders()));
+                            .setSipHeaders(transferCallToParticipantOptions.getSipHeaders())
+                            .setVoipHeaders(transferCallToParticipantOptions.getVoipHeaders()));
             }
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
