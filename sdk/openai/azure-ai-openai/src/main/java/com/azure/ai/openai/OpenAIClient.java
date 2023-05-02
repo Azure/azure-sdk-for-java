@@ -5,6 +5,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
+import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.Completions;
@@ -22,12 +23,16 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+
     @Generated private final OpenAIAsyncClient client;
 
     /**
@@ -325,6 +330,35 @@ public final class OpenAIClient {
     public Completions getCompletions(String deploymentId, String prompt) {
         CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
         return getCompletions(deploymentId, completionsOptions);
+    }
+
+    /**
+     * Gets completions as a stream for the provided input prompts. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param completionsOptions The configuration information for a completions request. Completions support a wide
+     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an {@link IterableStream} of completions for the provided input prompts. Completions support a wide
+     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<Completions> getCompletionsStream(
+            String deploymentId, CompletionsOptions completionsOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream =
+                getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
+                        .getValue()
+                        .toFluxByteBuffer();
+        OpenAIServerSentEvents<Completions> completionsStream =
+                new OpenAIServerSentEvents<>(responseStream, Completions.class);
+        return new IterableStream<>(completionsStream.getEvents());
     }
 
     /**
