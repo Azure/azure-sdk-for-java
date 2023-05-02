@@ -65,7 +65,7 @@ public class CancerProfilingClientTestBase extends TestBase {
     }
 
     private BinaryData getOncoPhenotypeRequest() {
-        URL url =TestBase.class.getResource("/session-records/CancerProfilingClientTest.request.json");
+        URL url = TestBase.class.getResource("/session-records/CancerProfilingClientTest.request.json");
         try {
             String mainPath = Paths.get(url.toURI()).toString();
             BinaryData requestBody = BinaryData.fromFile(Paths.get(mainPath));

@@ -65,7 +65,7 @@ public class ClinicalMatchingClientTestBase extends TestBase {
     }
 
     private BinaryData getTMRequest() {
-        URL url =TestBase.class.getResource("/session-records/ClinicalMatchingClientTest.request.json");
+        URL url = TestBase.class.getResource("/session-records/ClinicalMatchingClientTest.request.json");
         try {
             String mainPath = Paths.get(url.toURI()).toString();
             BinaryData requestBody = BinaryData.fromFile(Paths.get(mainPath));
