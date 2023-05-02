@@ -249,7 +249,7 @@ public final class OpenAIClient {
      * }</pre>
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param prompt The prompts to generate values from.
+     * @param prompt The prompt to generate values from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
