@@ -27,8 +27,6 @@ import com.azure.core.util.IterableStream;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
-
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
@@ -328,8 +326,7 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Completions getCompletions(String deploymentId, String prompt) {
-        CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
-        return getCompletions(deploymentId, completionsOptions);
+        return getCompletions(deploymentId, CompletionsUtils.defaultCompletionsOptions(prompt));
     }
 
     /**

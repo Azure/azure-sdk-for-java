@@ -7,12 +7,9 @@ import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.core.credential.AzureKeyCredential;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Sample demonstrates the minimal use we can have of the SDK where the user, aside from providing authentication
- * details, only needs to pass the list of prompts and the deploymentId
+ * Sample demonstrating the minimal usage where, aside from providing authentication
+ * details, we only need to pass a prompt and the deploymentId
  */
 public class GetCompletionsFromPrompt {
 

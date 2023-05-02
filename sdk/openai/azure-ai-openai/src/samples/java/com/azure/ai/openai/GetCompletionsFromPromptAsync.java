@@ -8,8 +8,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Sample demonstrates the minimal async use we can have of the SDK where the user, aside from providing authentication

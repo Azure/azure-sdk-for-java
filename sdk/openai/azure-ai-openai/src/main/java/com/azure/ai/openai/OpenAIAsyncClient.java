@@ -320,7 +320,7 @@ public final class OpenAIAsyncClient {
      * that continues from or "completes" provided prompt data.
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param prompt The prompt to generate completion text from..
+     * @param prompt The prompt to generate completion text from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -332,8 +332,7 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Completions> getCompletions(String deploymentId, String prompt) {
-        CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
-        return getCompletions(deploymentId, completionsOptions);
+        return getCompletions(deploymentId, CompletionsUtils.defaultCompletionsOptions(prompt));
     }
 
     /**
