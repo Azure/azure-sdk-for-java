@@ -180,93 +180,6 @@ public final class OpenAIClient {
     }
 
     /**
-     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     * that continues from or "completes" provided prompt data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     prompt (Required): [
-     *         String (Required)
-     *     ]
-     *     max_tokens: Integer (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     logit_bias (Optional): {
-     *         String: int (Optional)
-     *     }
-     *     user: String (Optional)
-     *     n: Integer (Optional)
-     *     logprobs: Integer (Optional)
-     *     echo: Boolean (Optional)
-     *     stop (Optional): [
-     *         String (Optional)
-     *     ]
-     *     presence_penalty: Double (Optional)
-     *     frequency_penalty: Double (Optional)
-     *     best_of: Integer (Optional)
-     *     stream: Boolean (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: int (Required)
-     *     choices (Required): [
-     *          (Required){
-     *             text: String (Required)
-     *             index: int (Required)
-     *             logprobs (Required): {
-     *                 tokens (Required): [
-     *                     String (Required)
-     *                 ]
-     *                 token_logprobs (Required): [
-     *                     double (Required)
-     *                 ]
-     *                 top_logprobs (Required): [
-     *                      (Required){
-     *                         String: double (Required)
-     *                     }
-     *                 ]
-     *                 text_offset (Required): [
-     *                     int (Required)
-     *                 ]
-     *             }
-     *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
-     *         }
-     *     ]
-     *     usage (Required): {
-     *         completion_tokens: int (Required)
-     *         prompt_tokens: int (Required)
-     *         total_tokens: int (Required)
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param deploymentId deployment id of the deployed model.
-     * @param prompt The prompt to generate values from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCompletionsWithResponse(
-        String deploymentId, String prompt, RequestOptions requestOptions) {
-        CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
-        BinaryData completionsOptionsRequest = BinaryData.fromObject(completionsOptions);
-        return this.client.getCompletionsWithResponse(deploymentId, completionsOptionsRequest, requestOptions).block();
-    }
-
-    /**
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
@@ -394,11 +307,11 @@ public final class OpenAIClient {
     }
 
     /**
-     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
+     * Gets completions for the provided input prompt. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
      * @param deploymentId deployment id of the deployed model.
-     * @param prompt The prompts to generate values from.
+     * @param prompt The prompt to generate completion text from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -410,11 +323,8 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Completions getCompletions(String deploymentId, String prompt) {
-        RequestOptions requestOptions = new RequestOptions();
         CompletionsOptions completionsOptions = CompletionsUtils.defaultCompletionsOptions(prompt);
-        return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
-            .getValue()
-            .toObject(Completions.class);
+        return getCompletions(deploymentId, completionsOptions);
     }
 
     /**
