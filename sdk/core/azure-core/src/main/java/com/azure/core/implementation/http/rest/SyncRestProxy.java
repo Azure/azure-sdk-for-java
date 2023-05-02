@@ -193,9 +193,9 @@ public class SyncRestProxy extends RestProxyBase {
             // fully copied into memory resulting in lesser overall memory usage.
             HttpHeader httpHeader = response.getSourceResponse().getHeaders().get(HttpHeaderName.CONTENT_TYPE);
             if (httpHeader != null && "text/event-stream".equals(httpHeader.getValue())) {
-                result = BinaryData.fromFlux(response.getSourceResponse().getBody(), null, false);
+                result = BinaryData.fromFlux(response.getSourceResponse().getBody(), null, false).block();
             } else {
-                result = BinaryData.fromFlux(response.getSourceResponse().getBody());
+                result = BinaryData.fromFlux(response.getSourceResponse().getBody()).block();
             }
         } else {
             // Object or Page<T>
