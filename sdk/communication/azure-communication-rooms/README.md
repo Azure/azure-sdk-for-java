@@ -171,7 +171,7 @@ try {
 Use the `listParticipants` function to list all participants from an existing room.
 ```java readme-sample-listRoomParticipantsWithRoomId
 try {
-    PagedFlux<RoomParticipant> allParticipants = roomsAsyncClient.listParticipants("<Room Id>");
+    PagedIterable<RoomParticipant> allParticipants = roomsClient.listParticipants("<Room Id>");
 } catch (RuntimeException ex) {
     System.out.println(ex);
 }

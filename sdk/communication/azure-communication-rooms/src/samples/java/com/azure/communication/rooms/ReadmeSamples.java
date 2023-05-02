@@ -18,6 +18,7 @@ import com.azure.communication.rooms.models.UpdateRoomOptions;
 import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
@@ -197,7 +198,7 @@ public class ReadmeSamples {
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
         // BEGIN: readme-sample-listRoomParticipantsWithRoomId
         try {
-            PagedFlux<RoomParticipant> allParticipants = roomsAsyncClient.listParticipants("<Room Id>");
+            PagedIterable<RoomParticipant> allParticipants = roomsClient.listParticipants("<Room Id>");
         } catch (RuntimeException ex) {
             System.out.println(ex);
         }
