@@ -45,6 +45,19 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)).last())
+                .assertNext(resultCompletions -> {
+                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
@@ -66,6 +79,20 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages)))
+                .assertNext(resultChatCompletions -> {
+                    assertNotNull(resultChatCompletions.getUsage());
+                    assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)).last())
                 .assertNext(resultChatCompletions -> {
                     assertNotNull(resultChatCompletions.getUsage());
                     assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
