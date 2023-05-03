@@ -31,8 +31,8 @@ public class JacksonJsonWriterContractTests extends JsonWriterContractTests {
             try {
                 writer.close();
             } catch (IllegalStateException ignored) {
-                // Closing the JsonWriter may through an IllegalStateException if the current writing state isn't
-                // valid for closing, ignore it in test.
+                // Closing the JsonWriter may throw an IllegalStateException if the current writing state isn't valid
+                // for closing, ignore it in test.
             }
         }
     }

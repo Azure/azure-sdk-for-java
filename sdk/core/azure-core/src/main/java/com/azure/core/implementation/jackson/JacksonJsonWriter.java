@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
@@ -16,6 +17,8 @@ import java.util.Objects;
  * Jackson-based implementation of {@link JsonWriter}.
  */
 final class JacksonJsonWriter extends JsonWriter {
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonJsonWriter.class);
+
     private final JsonGenerator generator;
 
     // Initial state is always root.
@@ -34,8 +37,8 @@ final class JacksonJsonWriter extends JsonWriter {
     @Override
     public void close() throws IOException {
         if (context != JsonWriteContext.COMPLETED) {
-            throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
-                + "closed. Current writing state is '" + context.getWriteState() + "'.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Writing of the JSON object must be completed "
+                + "before the writer can be closed. Current writing state is '" + context.getWriteState() + "'."));
         }
 
         generator.flush();
