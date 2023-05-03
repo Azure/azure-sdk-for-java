@@ -15,7 +15,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.exception.HttpResponseException;
 
-import java.util.Collections;
 import java.util.List;
 
 /**

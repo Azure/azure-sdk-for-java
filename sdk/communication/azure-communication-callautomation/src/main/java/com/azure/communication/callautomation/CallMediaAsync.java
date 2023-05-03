@@ -239,10 +239,8 @@ public final class CallMediaAsync {
                         .map(CommunicationIdentifierConverter::convert)
                         .collect(Collectors.toList()));
 
-            if (options != null) {
-                request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
-                request.setOperationContext(options.getOperationContext());
-            }
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setOperationContext(options.getOperationContext());
 
             return request;
         }
