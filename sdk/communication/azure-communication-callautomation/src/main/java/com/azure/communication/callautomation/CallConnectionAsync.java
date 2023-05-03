@@ -249,7 +249,7 @@ public final class CallConnectionAsync {
         } else if (targetParticipant instanceof MicrosoftTeamsUserIdentifier) {
             return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
         } else {
-            throw logger.logThrowableAsError(new IllegalArgumentException("targetParticipant type is invalid."));
+            throw logger.logExceptionAsError(new IllegalArgumentException("targetParticipant type is invalid."));
         }
     }
 
