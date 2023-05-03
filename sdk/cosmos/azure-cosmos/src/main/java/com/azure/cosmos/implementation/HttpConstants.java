@@ -422,6 +422,8 @@ public class HttpConstants {
         //SDK Codes(Client)
         public static final int TRANSPORT_GENERATED_410 = 20001;
         public static final int TIMEOUT_GENERATED_410 = 20002;
+        // Client generated operation timeout exception
+        public static final int CLIENT_OPERATION_TIMEOUT = 20008;
 
         //SDK Codes (Server)
         public static final int NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT = 21001;

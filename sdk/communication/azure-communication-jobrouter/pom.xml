@@ -44,6 +44,7 @@
       --add-opens com.azure.communication.jobrouter/com.azure.communication.jobrouter.implementation=ALL-UNNAMED
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.http.netty/com.azure.core.http.netty.NettyAsyncHttpClientBuilder=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -56,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.2.6</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.2.7</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -67,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.16.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

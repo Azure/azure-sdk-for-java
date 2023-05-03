@@ -123,6 +123,15 @@ public class Configs {
     private static final String TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = "COSMOS.TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED";
     private static final boolean DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED = true;
 
+    private static final String MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = "COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT";
+    private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT = 1;
+
+    private static final String AGGRESSIVE_WARMUP_CONCURRENCY = "COSMOS.AGGRESSIVE_WARMUP_CONCURRENCY";
+    private static final int DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY = Configs.getCPUCnt();
+
+    private static final String DEFENSIVE_WARMUP_CONCURRENCY = "COSMOS.DEFENSIVE_WARMUP_CONCURRENCY";
+    private static final int DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY = 1;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -355,5 +364,17 @@ public class Configs {
         return getJVMConfigAsBoolean(
             TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED,
             DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED);
+    }
+
+    public static int getMinConnectionPoolSizePerEndpoint() {
+        return getIntValue(System.getProperty(MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT), DEFAULT_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
+    }
+
+    public static int getDefensiveWarmupConcurrency() {
+        return getIntValue(System.getProperty(DEFENSIVE_WARMUP_CONCURRENCY), DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY);
+    }
+
+    public static int getAggressiveWarmupConcurrency() {
+        return getIntValue(System.getProperty(AGGRESSIVE_WARMUP_CONCURRENCY), DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY);
     }
 }

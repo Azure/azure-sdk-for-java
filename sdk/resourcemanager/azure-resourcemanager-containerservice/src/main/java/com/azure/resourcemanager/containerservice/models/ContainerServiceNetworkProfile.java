@@ -18,6 +18,12 @@ public final class ContainerServiceNetworkProfile {
     private NetworkPlugin networkPlugin;
 
     /*
+     * The mode the network plugin should use.
+     */
+    @JsonProperty(value = "networkPluginMode")
+    private NetworkPluginMode networkPluginMode;
+
+    /*
      * Network policy used for building the Kubernetes network.
      */
     @JsonProperty(value = "networkPolicy")
@@ -30,6 +36,12 @@ public final class ContainerServiceNetworkProfile {
      */
     @JsonProperty(value = "networkMode")
     private NetworkMode networkMode;
+
+    /*
+     * Network dataplane used in the Kubernetes cluster.
+     */
+    @JsonProperty(value = "networkDataplane")
+    private NetworkDataplane networkDataplane;
 
     /*
      * A CIDR notation IP range from which to assign pod IPs when kubenet is used.
@@ -140,6 +152,26 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
+     * Get the networkPluginMode property: The mode the network plugin should use.
+     *
+     * @return the networkPluginMode value.
+     */
+    public NetworkPluginMode networkPluginMode() {
+        return this.networkPluginMode;
+    }
+
+    /**
+     * Set the networkPluginMode property: The mode the network plugin should use.
+     *
+     * @param networkPluginMode the networkPluginMode value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkPluginMode(NetworkPluginMode networkPluginMode) {
+        this.networkPluginMode = networkPluginMode;
+        return this;
+    }
+
+    /**
      * Get the networkPolicy property: Network policy used for building the Kubernetes network.
      *
      * @return the networkPolicy value.
@@ -180,6 +212,26 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withNetworkMode(NetworkMode networkMode) {
         this.networkMode = networkMode;
+        return this;
+    }
+
+    /**
+     * Get the networkDataplane property: Network dataplane used in the Kubernetes cluster.
+     *
+     * @return the networkDataplane value.
+     */
+    public NetworkDataplane networkDataplane() {
+        return this.networkDataplane;
+    }
+
+    /**
+     * Set the networkDataplane property: Network dataplane used in the Kubernetes cluster.
+     *
+     * @param networkDataplane the networkDataplane value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withNetworkDataplane(NetworkDataplane networkDataplane) {
+        this.networkDataplane = networkDataplane;
         return this;
     }
 

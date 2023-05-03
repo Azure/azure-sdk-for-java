@@ -22,10 +22,10 @@ public class MemberNameConverterImplTests {
     @Test
     public void usesReflectionProperly() {
         if (PackageVersion.VERSION.getMinorVersion() >= 12) {
-            assertTrue(MemberNameConverterImpl.USE_REFLECTION_FOR_MEMBER_NAME,
+            assertTrue(new MemberNameConverterImpl(null).useJackson212,
                 "Jackson 2.12 or later was found on the classpath, expected reflection to be used for member name.");
         } else {
-            assertFalse(MemberNameConverterImpl.USE_REFLECTION_FOR_MEMBER_NAME,
+            assertFalse(new MemberNameConverterImpl(null).useJackson212,
                 "Jackson 2.11 or earlier was found on the classpath, expected reflection to not be used for member "
                     + "name.");
         }

@@ -9,9 +9,9 @@ import com.azure.containers.containerregistry.models.GetManifestResult;
 import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.containers.containerregistry.models.SetManifestOptions;
 import com.azure.containers.containerregistry.models.SetManifestResult;
+import com.azure.containers.containerregistry.models.UploadRegistryBlobResult;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
@@ -246,7 +246,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
         client = getContentClient("oci-artifact", httpClient);
 
-        long size = CHUNK_SIZE * 20;
+        long size = CHUNK_SIZE * 50;
         BinaryData data = BinaryData.fromStream(new TestInputStream(size), size);
         UploadRegistryBlobResult result = client.uploadBlob(data, Context.NONE);
 

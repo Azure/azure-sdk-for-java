@@ -1,25 +1,60 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/9be2712f-6a1b-458a-a96d-6781757d1be5?api-version=7.4",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleAssignments/3c7ad3a4-6b16-4798-914a-1a98e5d1930a?api-version=7.4",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "278099e4-d8df-11ed-9bda-0022488d0014",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "143",
-      "content-security-policy" : "default-src 'self'",
-      "x-content-type-options" : "nosniff",
-      "x-frame-options" : "SAMEORIGIN",
-      "content-type" : "application/json; charset=utf-8",
-      "retry-after" : "0",
-      "cache-control" : "no-cache",
-      "StatusCode" : "404",
-      "x-ms-request-id" : "f65a183a-c3d1-11ed-8971-0022488d0014",
-      "Body" : "{\"error\":{\"code\":\"RoleAssignmentNotFound\",\"message\":\"Requested role assignment not found (Activity ID: f65a183a-c3d1-11ed-8971-0022488d0014)\"}}",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "1"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "9be2712f-6a1b-458a-a96d-6781757d1be5" ]
+    {
+      "RequestUri": "https://REDACTED///providers/Microsoft.Authorization/roleAssignments/3c7ad3a4-6b16-4798-914a-1a98e5d1930a?api-version=7.4",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "143",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "279aace4-d8df-11ed-9bda-0022488d0014",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "RoleAssignmentNotFound",
+          "message": "Requested role assignment not found (Activity ID: 279aace4-d8df-11ed-9bda-0022488d0014)"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "3c7ad3a4-6b16-4798-914a-1a98e5d1930a"
+  }
 }

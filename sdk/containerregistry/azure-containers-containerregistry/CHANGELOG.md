@@ -4,11 +4,22 @@
 
 ### Features Added
 
-### Breaking Changes
+### Breaking Changes from version 1.1.0-beta.4
+
+- Added sanity check for manifest size at download time - if manifest is bigger than 4MB, `ServiceResponseException` will be thrown.
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.14 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 ## 1.1.0-beta.4 (2023-04-11)
 

@@ -25,7 +25,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -59,7 +58,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ge
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
@@ -536,10 +534,9 @@ public final class ContainerRegistryContentClient {
             // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/34400
             context = context.addData("azure-eagerly-read-response", true);
             Response<BinaryData> lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
-            validateResponseHeaderDigest(digest, lastChunk.getHeaders());
+            long blobSize = getBlobSize(lastChunk.getHeaders());
             long length = writeChunk(lastChunk, sha256, channel);
 
-            long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
             for (long p = length; p < blobSize; p += CHUNK_SIZE) {
                 range = new HttpRange(p, (long) CHUNK_SIZE);
                 lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);

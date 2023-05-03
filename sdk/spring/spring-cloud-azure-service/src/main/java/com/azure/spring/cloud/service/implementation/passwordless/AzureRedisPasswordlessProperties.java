@@ -18,14 +18,17 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
 
     private static final String REDIS_SCOPE_AZURE = "https://*.cacheinfra.windows.net:10225/appid/.default";
     private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
+    /**
+     * @deprecated AZURE_GERMANY is deprecated. Please use other Redis scopes.
+     */
+    @Deprecated
+    static final String REDIS_SCOPE_AZURE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
     private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
 
     private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
         {
             put(AzureProfileOptionsProvider.CloudType.AZURE, REDIS_SCOPE_AZURE);
             put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, REDIS_SCOPE_AZURE_CHINA);
-            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, REDIS_SCOPE_AZURE_GERMANY);
             put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, REDIS_SCOPE_AZURE_US_GOVERNMENT);
         }
     };

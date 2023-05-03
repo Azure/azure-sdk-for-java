@@ -7,36 +7,36 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for SshPublicKeys Delete. */
 public final class SshPublicKeysDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/sshPublicKeyExamples/SshPublicKey_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: SshPublicKeys_Delete_MaximumSet_Gen.
+     * Sample code: SshPublicKey_Delete_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void sshPublicKeysDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getSshPublicKeys()
-            .deleteWithResponse("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/sshPublicKeyExamples/SshPublicKeys_Delete_MinimumSet_Gen.json
-     */
-    /**
-     * Sample code: SshPublicKeys_Delete_MinimumSet_Gen.
-     *
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void sshPublicKeysDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void sshPublicKeyDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
             .serviceClient()
             .getSshPublicKeys()
             .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/sshPublicKeyExamples/SshPublicKey_Delete_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: SshPublicKey_Delete_MaximumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void sshPublicKeyDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .deleteWithResponse("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

@@ -50,7 +50,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
-        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(targets, CALL_CALLBACK_URL).block();
+        CreateCallResult createCallResult = callAutomationAsyncClient.createGroupCall(targets, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
     }
 
@@ -70,7 +70,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             .setSipHeaders(sipHeaders)
             .setVoipHeaders(voipHeaders);
 
-        Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
+        Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createGroupCallWithResponse(callOptions).block();
 
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
@@ -139,8 +139,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                 new AbstractMap.SimpleEntry<>("", 204)
             ))
         );
-        
-        Map<String, String> voipHeaders = new HashMap<String, String>(); 
+
+        Map<String, String> voipHeaders = new HashMap<String, String>();
         CallInvite target = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), voipHeaders);
 
         callAutomationAsyncClient.redirectCall(CALL_INCOMING_CALL_CONTEXT, target);

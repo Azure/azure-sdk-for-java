@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/eb83f61948a31a69ba1e641c235f66edfc2f0425/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/33883b827facd6567cbe03e3853634d59633b970/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -118,11 +118,23 @@ directive:
     from: TextSource
     to: TextSourceInternal
 - rename-model:
+    from: SsmlSource
+    to: SsmlSourceInternal
+- rename-model:
     from: PlayOptions
     to: PlayOptionsInternal
 - rename-model:
     from: StartCallRecordingRequest
     to: StartCallRecordingRequestInternal
+- rename-model:
+    from: ContinuousDtmfRecognitionOptions
+    to: ContinuousDtmfRecognitionOptionsInternal
+- rename-model:
+    from: SendDtmfOptions
+    to: SendDtmfOptionsInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
 - rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
@@ -138,6 +150,9 @@ directive:
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
+- rename-model:
+    from: SpeechOptions
+    to: SpeechOptionsInternal
 - rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
@@ -163,11 +178,20 @@ directive:
     from: ChoiceResult
     to: ChoiceResultInternal
 - rename-model:
+    from: SpeechResult
+    to: SpeechResultInternal
+- rename-model:
     from: ExternalStorage
     to: ExternalStorageInternal
 - rename-model:
     from: BlobStorage
     to: BlobStorageInternal
+- rename-model:
+    from: ContinuousDtmfRecognitionRequest
+    to: ContinuousDtmfRecognitionRequestInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -185,6 +209,12 @@ directive:
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
 - remove-model: RecognizeCanceled
+- remove-model: ContinuousDtmfRecognitionToneReceived
+- remove-model: ToneInfo
+- remove-model: ContinuousDtmfRecognitionToneFailed
+- remove-model: ContinuousDtmfRecognitionStopped
+- remove-model: SendDtmfCompleted
+- remove-model: SendDtmfFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

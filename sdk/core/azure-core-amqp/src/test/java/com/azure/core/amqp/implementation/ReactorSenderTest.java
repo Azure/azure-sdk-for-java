@@ -56,6 +56,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -103,6 +105,9 @@ public class ReactorSenderTest {
     private ReactorDispatcher reactorDispatcher;
     @Mock
     private Scheduler scheduler;
+
+    @Captor
+    private ArgumentCaptor<byte[]> messageBytesCaptor;
 
     @Captor
     private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
@@ -155,7 +160,8 @@ public class ReactorSenderTest {
             .setMode(AmqpRetryMode.EXPONENTIAL);
 
         message = Proton.message();
-        message.setMessageId("id");
+        message.setMessageId("my-message-id");
+        message.setGroupId("my-group-id");
         message.setBody(new AmqpValue("hello"));
     }
 
@@ -245,7 +251,7 @@ public class ReactorSenderTest {
     public void testSendWithTransactionDeliverySet() throws IOException {
         // Arrange
         // This is specific to this message and needs to align with this message.
-        when(sender.send(any(byte[].class), anyInt(), anyInt())).thenReturn(26);
+        when(sender.send(any(byte[].class), anyInt(), anyInt())).thenReturn(59);
         doAnswer(invocationOnMock -> {
             final Runnable argument = invocationOnMock.getArgument(0);
             argument.run();
@@ -324,7 +330,24 @@ public class ReactorSenderTest {
 
         // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
-        verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        verify(spyReactorSender, times(2)).send(messageBytesCaptor.capture(), anyInt(),
+            anyInt(), isNull());
+
+        assertFalse(messageBytesCaptor.getAllValues().isEmpty());
+
+        messageBytesCaptor.getAllValues().forEach(delivery -> {
+            final Message actual = Proton.message();
+            actual.decode(delivery, 0, delivery.length);
+
+            final Object actualMessageId = actual.getMessageId();
+            final String actualGroupId = actual.getGroupId();
+
+            assertNotNull(actualMessageId);
+            assertTrue(actualMessageId instanceof String);
+            assertEquals(message.getMessageId(), actualMessageId);
+
+            assertEquals(message.getGroupId(), actualGroupId);
+        });
     }
 
     @Test

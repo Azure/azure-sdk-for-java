@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachines PowerOff. */
 public final class VirtualMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_PowerOff_MinimumSet_Gen.
+     * Sample code: VirtualMachine_PowerOff_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesPowerOffMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachinePowerOffMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -24,14 +24,14 @@ public final class VirtualMachinesPowerOffSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_PowerOff_MaximumSet_Gen.
+     * Sample code: VirtualMachine_PowerOff_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesPowerOffMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void virtualMachinePowerOffMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

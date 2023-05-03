@@ -8,9 +8,7 @@ import com.azure.cosmos.implementation.Exceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -74,13 +72,7 @@ public class AsyncCacheNonBlocking<TKey, TValue> {
         TKey key,
         Function<TValue, Mono<TValue>> singleValueInitFunc,
         Function<TValue, Boolean> forceRefresh) {
-
-        return Mono.create(sink ->
-            Mono.fromFuture(CompletableFuture.runAsync(() -> getAsyncInternal(key, singleValueInitFunc, forceRefresh)
-                .subscribeOn(CosmosSchedulers.ASYNC_CACHE_BACKGROUND_REFRESH_BOUNDED_ELASTIC)
-                .subscribe(sink::success,
-                    sink::error
-                ))));
+        return Mono.fromFuture(() -> getAsyncInternal(key, singleValueInitFunc, forceRefresh).toFuture(), true);
     }
 
     private Mono<TValue> getAsyncInternal(TKey key, Function<TValue, Mono<TValue>> singleValueInitFunc, Function<TValue, Boolean> forceRefresh) {

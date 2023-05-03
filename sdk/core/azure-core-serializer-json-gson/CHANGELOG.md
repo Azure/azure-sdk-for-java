@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Implement `azure-json` service provider interface with a GSON-based implementation.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -19,7 +20,7 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -32,6 +33,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +101,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+        private CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -236,8 +238,8 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
-            this.cosmosEndToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
+            this.cosmosE2EOperationRetryPolicyConfig = endToEndOperationLatencyPolicyConfig;
             return this;
         }
 
@@ -259,22 +261,23 @@ public interface AsyncDocumentClient {
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
-                masterKeyOrResourceToken,
-                permissionFeed,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs,
-                cosmosAuthorizationTokenResolver,
-                credential,
-                tokenCredential,
-                sessionCapturingOverride,
-                transportClientSharing,
-                contentResponseOnWriteEnabled,
-                state,
-                apiType,
-                clientTelemetryConfig,
-                clientCorrelationId,
-                cosmosEndToEndOperationLatencyPolicyConfig);
+                    masterKeyOrResourceToken,
+                    permissionFeed,
+                    connectionPolicy,
+                    desiredConsistencyLevel,
+                    configs,
+                    cosmosAuthorizationTokenResolver,
+                    credential,
+                    tokenCredential,
+                    sessionCapturingOverride,
+                    transportClientSharing,
+                    contentResponseOnWriteEnabled,
+                    state,
+                    apiType,
+                    clientTelemetryConfig,
+                    clientCorrelationId,
+                    cosmosE2EOperationRetryPolicyConfig
+            );
 
             client.init(state, null);
             return client;
@@ -1552,14 +1555,14 @@ public interface AsyncDocumentClient {
     void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono);
 
     /**
-     * Warm up caches and open connections for containers specified by
-     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * Submits open connection tasks and warms up caches for replicas for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} and in
      * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
-     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
-     * @return A flux of {@link OpenConnectionResponse}.
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and
+     *                                     no. of proactive connection regions
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     ConsistencyLevel getDefaultConsistencyLevelOfAccount();
 
@@ -1569,4 +1572,18 @@ public interface AsyncDocumentClient {
      * @param injectorProvider the fault injector provider.
      */
     void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
+
+    /**
+     * Mark the openConnectionAndInitCaches completed.
+     *
+     * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
+     */
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+
+    /**
+     * Mark the openConnectionAndInitCaches to start.
+     *
+     * @param cosmosContainerIdentities the {@link CosmosContainerIdentity} list.
+     */
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 }

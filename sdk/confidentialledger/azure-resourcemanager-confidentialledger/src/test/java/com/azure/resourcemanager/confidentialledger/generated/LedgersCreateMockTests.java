@@ -37,7 +37,7 @@ public final class LedgersCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"runningState\":\"Active\",\"properties\":{\"ledgerName\":\"bin\",\"ledgerUri\":\"pu\",\"identityServiceUri\":\"mryw\",\"ledgerInternalNamespace\":\"zoqftiyqzrnkcqvy\",\"ledgerType\":\"Private\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"dqgbiqylihkaetc\":\"nhwlrsffrzpwvl\",\"ymuctqhjfbebrj\":\"tvfcivfsn\"},\"location\":\"ewrmjmwvvjektc\",\"id\":\"xerf\",\"name\":\"wutttxfvjrbi\",\"type\":\"phxepcyvahf\"}";
+            "{\"properties\":{\"ledgerName\":\"cciw\",\"ledgerUri\":\"juqk\",\"identityServiceUri\":\"sa\",\"ledgerInternalNamespace\":\"wkuofoskghsauu\",\"runningState\":\"Unknown\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"idyjrrfbyaosvexc\",\"tags\":{\"vleggzfbuhfmvfax\":\"pclhocohslk\"},\"id\":\"ffeii\",\"name\":\"hl\",\"type\":\"m\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,22 +68,31 @@ public final class LedgersCreateMockTests {
         ConfidentialLedger response =
             manager
                 .ledgers()
-                .define("u")
-                .withRegion("pocipazyxoegu")
-                .withExistingResourceGroup("hslkevleggzf")
-                .withTags(mapOf("mrbpizcdrqj", "npiucgygevqznty", "yhxdeoejzicwi", "dpydn", "bkh", "sjttgzfbish"))
-                .withRunningState(RunningState.PAUSED)
+                .define("tuo")
+                .withRegion("wqsmbsur")
+                .withExistingResourceGroup("yhltrpmopjmcm")
+                .withTags(
+                    mapOf(
+                        "dystkiiuxhqyud",
+                        "moryocfsfksym",
+                        "rq",
+                        "o",
+                        "oczvy",
+                        "b",
+                        "watkpnpulexxb",
+                        "fqrvkdvjsllrmvvd"))
                 .withProperties(
                     new LedgerProperties()
-                        .withLedgerType(LedgerType.PUBLIC)
+                        .withRunningState(RunningState.RESUMING)
+                        .withLedgerType(LedgerType.PRIVATE)
                         .withAadBasedSecurityPrincipals(Arrays.asList())
                         .withCertBasedSecurityPrincipals(Arrays.asList()))
                 .create();
 
-        Assertions.assertEquals("ewrmjmwvvjektc", response.location());
-        Assertions.assertEquals(RunningState.ACTIVE, response.runningState());
-        Assertions.assertEquals(LedgerType.PRIVATE, response.properties().ledgerType());
-        Assertions.assertEquals("nhwlrsffrzpwvl", response.tags().get("dqgbiqylihkaetc"));
+        Assertions.assertEquals("idyjrrfbyaosvexc", response.location());
+        Assertions.assertEquals("pclhocohslk", response.tags().get("vleggzfbuhfmvfax"));
+        Assertions.assertEquals(RunningState.UNKNOWN, response.properties().runningState());
+        Assertions.assertEquals(LedgerType.UNKNOWN, response.properties().ledgerType());
     }
 
     @SuppressWarnings("unchecked")

@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -23,6 +22,7 @@ import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThresholdBasedSpeculation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -125,6 +126,9 @@ public class ReplicatedResourceClient {
                     forceRefreshAndTimeout.getValue3().toString());
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
+
+            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
 
             if (shouldSpeculate(request)){
                 return getStoreResponseMonoWithSpeculation(request, forceRefreshAndTimeout);
@@ -233,6 +237,14 @@ public class ReplicatedResourceClient {
             forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
     }
 
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,
             boolean isInRetry, boolean forceRefresh) {
 
@@ -252,8 +264,8 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

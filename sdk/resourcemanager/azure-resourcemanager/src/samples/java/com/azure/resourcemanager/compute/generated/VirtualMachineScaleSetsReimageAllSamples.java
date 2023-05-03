@@ -10,14 +10,14 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets ReimageAll. */
 public final class VirtualMachineScaleSetsReimageAllSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ReimageAll_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ReimageAll_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_ReimageAll_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_ReimageAll_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsReimageAllMaximumSetGen(
+    public static void virtualMachineScaleSetReimageAllMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -32,14 +32,14 @@ public final class VirtualMachineScaleSetsReimageAllSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_ReimageAll_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ReimageAll_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_ReimageAll_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_ReimageAll_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsReimageAllMinimumSetGen(
+    public static void virtualMachineScaleSetReimageAllMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

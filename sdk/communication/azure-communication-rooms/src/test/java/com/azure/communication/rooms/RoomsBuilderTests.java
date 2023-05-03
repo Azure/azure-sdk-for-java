@@ -24,7 +24,7 @@ public class RoomsBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
     static final String MOCK_ACCESS_KEY = "P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
     static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
-
+    
     static class NoOpHttpClient implements HttpClient {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {

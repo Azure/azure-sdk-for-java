@@ -15,31 +15,29 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.DataAction;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
+import com.azure.security.keyvault.administration.implementation.models.Permission;
+import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentProperties;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
-import com.azure.security.keyvault.administration.implementation.models.RoleScope;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
-import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentPropertiesWithScope;
-import com.azure.security.keyvault.administration.implementation.models.Permission;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionProperties;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultDataAction;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
+import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultPermission;
+import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
-import com.azure.security.keyvault.administration.models.KeyVaultPermission;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionType;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
-import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleType;
 import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultLongRunningOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.SetRoleDefinitionOptions;
 import reactor.core.publisher.Mono;
 
@@ -111,14 +109,8 @@ class KeyVaultAdministrationUtil {
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'roleDefinitionId'"));
 
-        RoleAssignmentProperties roleAssignmentProperties =
-            new RoleAssignmentProperties()
-                .setRoleDefinitionId(roleDefinitionId)
-                .setPrincipalId(principalId);
-        RoleAssignmentCreateParameters parameters =
-            new RoleAssignmentCreateParameters()
-                .setProperties(roleAssignmentProperties);
-        return parameters;
+        RoleAssignmentProperties roleAssignmentProperties = new RoleAssignmentProperties(roleDefinitionId, principalId);
+        return new RoleAssignmentCreateParameters(roleAssignmentProperties);
     }
 
     static RoleDefinitionCreateParameters validateAndGetRoleDefinitionCreateParameters(SetRoleDefinitionOptions options) {
@@ -132,14 +124,6 @@ class KeyVaultAdministrationUtil {
             String.format(KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.PARAMETER_REQUIRED),
                 "'options.getRoleDefinitionName()'"));
 
-        List<RoleScope> assignableScopes = null;
-
-        if (options.getAssignableScopes() != null) {
-            assignableScopes = options.getAssignableScopes().stream()
-                .map(keyVaultRoleScope -> RoleScope.fromString(keyVaultRoleScope.toString()))
-                .collect(Collectors.toList());
-        }
-
         List<Permission> permissions = null;
 
         if (options.getPermissions() != null) {
@@ -147,25 +131,18 @@ class KeyVaultAdministrationUtil {
                 .map(keyVaultPermission -> new Permission()
                     .setActions(keyVaultPermission.getActions())
                     .setNotActions(keyVaultPermission.getNotActions())
-                    .setDataActions(keyVaultPermission.getDataActions().stream()
-                        .map(allowedDataAction -> DataAction.fromString(allowedDataAction.toString()))
-                        .collect(Collectors.toList()))
-                    .setNotDataActions(keyVaultPermission.getNotDataActions().stream()
-                        .map(notDataAction -> DataAction.fromString(notDataAction.toString()))
-                        .collect(Collectors.toList())))
+                    .setDataActions(keyVaultPermission.getDataActions())
+                    .setNotDataActions(keyVaultPermission.getNotDataActions()))
                 .collect(Collectors.toList());
         }
 
         RoleDefinitionProperties roleDefinitionProperties =
             new RoleDefinitionProperties()
                 .setRoleName(options.getRoleDefinitionName())
-                .setAssignableScopes(assignableScopes)
+                .setAssignableScopes(options.getAssignableScopes())
                 .setDescription(options.getDescription())
                 .setPermissions(permissions);
-        RoleDefinitionCreateParameters parameters =
-            new RoleDefinitionCreateParameters()
-                .setProperties(roleDefinitionProperties);
-        return parameters;
+        return new RoleDefinitionCreateParameters(roleDefinitionProperties);
     }
 
     static void validateRoleAssignmentParameters(KeyVaultRoleScope roleScope, String roleAssignmentName) {
