@@ -256,7 +256,7 @@ public final class MicrosoftCognitiveLanguageServiceTextAnalysisImplBuilder
     @Generated
     public MicrosoftCognitiveLanguageServiceTextAnalysisImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-10-01-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-04-01";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MicrosoftCognitiveLanguageServiceTextAnalysisImpl client =

@@ -13,6 +13,24 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
     /** Static value Abbreviation for RelationType. */
     public static final RelationType ABBREVIATION = fromString("Abbreviation");
 
+    /** Static value BodySiteOfCondition for RelationType. */
+    public static final RelationType BODY_SITE_OF_CONDITION = fromString("BodySiteOfCondition");
+
+    /** Static value BodySiteOfTreatment for RelationType. */
+    public static final RelationType BODY_SITE_OF_TREATMENT = fromString("BodySiteOfTreatment");
+
+    /** Static value CourseOfCondition for RelationType. */
+    public static final RelationType COURSE_OF_CONDITION = fromString("CourseOfCondition");
+
+    /** Static value CourseOfExamination for RelationType. */
+    public static final RelationType COURSE_OF_EXAMINATION = fromString("CourseOfExamination");
+
+    /** Static value CourseOfMedication for RelationType. */
+    public static final RelationType COURSE_OF_MEDICATION = fromString("CourseOfMedication");
+
+    /** Static value CourseOfTreatment for RelationType. */
+    public static final RelationType COURSE_OF_TREATMENT = fromString("CourseOfTreatment");
+
     /** Static value DirectionOfBodyStructure for RelationType. */
     public static final RelationType DIRECTION_OF_BODY_STRUCTURE = fromString("DirectionOfBodyStructure");
 
@@ -28,14 +46,32 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
     /** Static value DosageOfMedication for RelationType. */
     public static final RelationType DOSAGE_OF_MEDICATION = fromString("DosageOfMedication");
 
+    /** Static value ExaminationFindsCondition for RelationType. */
+    public static final RelationType EXAMINATION_FINDS_CONDITION = fromString("ExaminationFindsCondition");
+
+    /** Static value ExpressionOfGene for RelationType. */
+    public static final RelationType EXPRESSION_OF_GENE = fromString("ExpressionOfGene");
+
+    /** Static value ExpressionOfVariant for RelationType. */
+    public static final RelationType EXPRESSION_OF_VARIANT = fromString("ExpressionOfVariant");
+
     /** Static value FormOfMedication for RelationType. */
     public static final RelationType FORM_OF_MEDICATION = fromString("FormOfMedication");
+
+    /** Static value FrequencyOfCondition for RelationType. */
+    public static final RelationType FREQUENCY_OF_CONDITION = fromString("FrequencyOfCondition");
 
     /** Static value FrequencyOfMedication for RelationType. */
     public static final RelationType FREQUENCY_OF_MEDICATION = fromString("FrequencyOfMedication");
 
     /** Static value FrequencyOfTreatment for RelationType. */
     public static final RelationType FREQUENCY_OF_TREATMENT = fromString("FrequencyOfTreatment");
+
+    /** Static value MutationTypeOfGene for RelationType. */
+    public static final RelationType MUTATION_TYPE_OF_GENE = fromString("MutationTypeOfGene");
+
+    /** Static value MutationTypeOfVariant for RelationType. */
+    public static final RelationType MUTATION_TYPE_OF_VARIANT = fromString("MutationTypeOfVariant");
 
     /** Static value QualifierOfCondition for RelationType. */
     public static final RelationType QUALIFIER_OF_CONDITION = fromString("QualifierOfCondition");
@@ -45,6 +81,9 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
 
     /** Static value RouteOfMedication for RelationType. */
     public static final RelationType ROUTE_OF_MEDICATION = fromString("RouteOfMedication");
+
+    /** Static value ScaleOfCondition for RelationType. */
+    public static final RelationType SCALE_OF_CONDITION = fromString("ScaleOfCondition");
 
     /** Static value TimeOfCondition for RelationType. */
     public static final RelationType TIME_OF_CONDITION = fromString("TimeOfCondition");
@@ -72,6 +111,9 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
 
     /** Static value ValueOfExamination for RelationType. */
     public static final RelationType VALUE_OF_EXAMINATION = fromString("ValueOfExamination");
+
+    /** Static value VariantOfGene for RelationType. */
+    public static final RelationType VARIANT_OF_GENE = fromString("VariantOfGene");
 
     /**
      * Creates or finds a RelationType from its string representation.

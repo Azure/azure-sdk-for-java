@@ -43,7 +43,7 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
 
     /** {@inheritDoc} */
     @Override
-    public ExtractiveSummarizationResult setErrors(List<InputError> errors) {
+    public ExtractiveSummarizationResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }

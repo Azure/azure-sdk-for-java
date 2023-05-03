@@ -19,6 +19,9 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
     /** Static value Gender for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory GENDER = fromString("Gender");
 
+    /** Static value Ethnicity for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory ETHNICITY = fromString("Ethnicity");
+
     /** Static value ExaminationName for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory EXAMINATION_NAME = fromString("ExaminationName");
 
@@ -43,11 +46,20 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
     /** Static value Time for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory TIME = fromString("Time");
 
+    /** Static value Course for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory COURSE = fromString("Course");
+
     /** Static value GeneOrProtein for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory GENE_OR_PROTEIN = fromString("GeneOrProtein");
 
     /** Static value Variant for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory VARIANT = fromString("Variant");
+
+    /** Static value Expression for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory EXPRESSION = fromString("Expression");
+
+    /** Static value MutationType for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory MUTATION_TYPE = fromString("MutationType");
 
     /** Static value AdministrativeEvent for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory ADMINISTRATIVE_EVENT = fromString("AdministrativeEvent");
@@ -66,6 +78,9 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
 
     /** Static value ConditionQualifier for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory CONDITION_QUALIFIER = fromString("ConditionQualifier");
+
+    /** Static value ConditionScale for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory CONDITION_SCALE = fromString("ConditionScale");
 
     /** Static value MedicationClass for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory MEDICATION_CLASS = fromString("MedicationClass");
@@ -87,6 +102,21 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
 
     /** Static value TreatmentName for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory TREATMENT_NAME = fromString("TreatmentName");
+
+    /** Static value Allergen for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory ALLERGEN = fromString("Allergen");
+
+    /** Static value Employment for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory EMPLOYMENT = fromString("Employment");
+
+    /** Static value LivingStatus for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory LIVING_STATUS = fromString("LivingStatus");
+
+    /** Static value SubstanceUse for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory SUBSTANCE_USE = fromString("SubstanceUse");
+
+    /** Static value SubstanceUseAmount for HealthcareEntityCategory. */
+    public static final HealthcareEntityCategory SUBSTANCE_USE_AMOUNT = fromString("SubstanceUseAmount");
 
     /**
      * Creates or finds a HealthcareEntityCategory from its string representation.
