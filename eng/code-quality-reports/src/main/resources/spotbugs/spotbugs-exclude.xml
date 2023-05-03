@@ -154,6 +154,10 @@
         <Method name="getX509Thumbprint"/>
       </And>
       <And>
+        <Class name="com.azure.core.implementation.jackson.JacksonJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
+      <And>
         <Class name="com.azure.json.implementation.DefaultJsonReader"/>
         <Method name="getBinary"/>
       </And>
