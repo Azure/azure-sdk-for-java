@@ -270,6 +270,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     @Override
+    protected void hookOnComplete() {
+        dispose("Upstream signaled completion", null);
+    }
+
+    @Override
     protected void hookOnCancel() {
         this.dispose();
     }
@@ -397,4 +402,3 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         return this.workQueue.size();
     }
 }
-

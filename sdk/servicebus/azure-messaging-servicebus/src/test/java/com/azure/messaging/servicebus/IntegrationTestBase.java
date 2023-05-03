@@ -6,13 +6,14 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -22,30 +23,35 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.Closeable;
+import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
@@ -63,7 +69,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
-
+    private List<AutoCloseable> toClose = new ArrayList<>();
     private String testName;
     private final Scheduler scheduler = Schedulers.parallel();
 
@@ -78,12 +84,22 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
+        GlobalOpenTelemetry.resetForTest();
+        Method testMethod = testInfo.getTestMethod().orElseGet(null);
+        testName = String.format("%s-%s",
+            testMethod == null ? "unknown" : testMethod.getName(),
+            testInfo.getDisplayName());
 
-        testName = testInfo.getDisplayName();
+        logger.info("========= SET-UP [{}] =========", testName);
+
         assumeTrue(getTestMode() == TestMode.RECORD);
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
+        toClose = new ArrayList<>();
+        OpenTelemetrySdk.builder()
+            .setTracerProvider(
+                SdkTracerProvider.builder().addSpanProcessor(new LoggingSpanProcessor(logger)).build())
+            .buildAndRegisterGlobal();
         beforeTest();
     }
 
@@ -101,9 +117,13 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
+        logger.info("========= TEARDOWN [{}] =========", testName);
         StepVerifier.resetDefaultTimeout();
         afterTest();
+
+        logger.info("Disposing of subscriptions, consumers and clients.");
+        dispose();
+        GlobalOpenTelemetry.resetForTest();
     }
 
     /**
@@ -338,6 +358,24 @@ public abstract class IntegrationTestBase extends TestBase {
         );
     }
 
+    protected <T extends AutoCloseable> T toClose(T closeable) {
+        toClose.add(closeable);
+        return closeable;
+    }
+
+    protected Disposable toClose(Disposable closeable) {
+        toClose.add(() -> closeable.dispose());
+        return closeable;
+    }
+
+    /**
+     * Disposes of registered with {@code toClose} method resources.
+     */
+    protected void dispose() {
+        dispose(toClose.toArray(new AutoCloseable[0]));
+        toClose.clear();
+    }
+
     /**
      * Disposes of any {@link Closeable} resources.
      *
@@ -375,21 +413,45 @@ public abstract class IntegrationTestBase extends TestBase {
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled, AmqpMessageBody amqpMessageBody) {
         final ServiceBusMessage message = new ServiceBusMessage(amqpMessageBody);
         message.setMessageId(messageId);
-        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
     protected ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
         message.setMessageId(messageId);
-        logger.info("Message id '{}'.", messageId);
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {
-        Assertions.assertNotNull(context);
-        Assertions.assertNotNull(context.getMessage());
-        assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);
+    protected void logMessage(ServiceBusMessage message, String entity, String description) {
+        logMessage(message.getMessageId(), -1, message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
+    }
+
+    protected void logMessage(ServiceBusReceivedMessage message, String entity, String description) {
+        if (message == null) {
+            logMessage(null, -1, entity, null, description);
+        } else {
+            logMessage(message.getMessageId(), message.getSequenceNumber(), message.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description);
+        }
+    }
+
+    private void logMessage(String id, long seqNo, Object positionId, String entity, String description) {
+        logger.atInfo()
+            .addKeyValue("test", testName)
+            .addKeyValue("entity", entity)
+            .addKeyValue("sequenceNo", seqNo)
+            .addKeyValue("messageId", id)
+            .addKeyValue("positionId", positionId)
+            .log(description == null ? "logging messages" : description);
+    }
+
+    protected void logMessages(List<ServiceBusMessage> messages, String entity, String description) {
+        messages.forEach(m -> logMessage(m.getMessageId(), -1, m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+    }
+
+    protected List<ServiceBusReceivedMessage> logReceivedMessages(IterableStream<ServiceBusReceivedMessage> messages, String entity, String description) {
+        List<ServiceBusReceivedMessage> list = messages.stream().collect(Collectors.toList());
+        list.forEach(m -> logMessage(m.getMessageId(), m.getSequenceNumber(), m.getApplicationProperties().get(MESSAGE_POSITION_ID), entity, description));
+        return list;
     }
 
     protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {

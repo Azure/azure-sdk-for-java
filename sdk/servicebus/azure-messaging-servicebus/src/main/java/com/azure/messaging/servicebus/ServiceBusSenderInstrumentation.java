@@ -12,8 +12,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer.REACTOR_PARENT_TRACE_CONTEXT_KEY;
-
 /**
  * Contains convenience methods to instrument specific sender calls with traces and metrics.
  */
@@ -39,18 +37,23 @@ class ServiceBusSenderInstrumentation {
         }
 
         if (tracer.isEnabled()) {
-            return publisher
-                .doOnEach(signal -> {
-                    Context span = signal.getContextView().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, Context.NONE);
-                    meter.reportBatchSend(batch.size(), signal.getThrowable(), span);
-                    tracer.endSpan(signal.getThrowable(), span, null);
-                })
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, tracer.startSpanWithLinks(spanName,
-                    ServiceBusTracer.OperationName.PUBLISH, batch,
-                    ServiceBusMessage::getContext, Context.NONE)));
+            return Mono.defer(() -> {
+                Context span = tracer.startSpanWithLinks(spanName, ServiceBusTracer.OperationName.PUBLISH, batch,
+                    ServiceBusMessage::getContext, Context.NONE);
+                return publisher
+                    .doOnEach(signal -> {
+                        meter.reportBatchSend(batch.size(), signal.getThrowable(), false, span);
+                        tracer.endSpan(signal.getThrowable(), span, null);
+                    })
+                    .doOnCancel(() -> {
+                        meter.reportBatchSend(batch.size(), null, true, span);
+                        tracer.cancelSpan(span);
+                    });
+            });
         } else {
             return publisher
-                .doOnEach(signal -> meter.reportBatchSend(batch.size(), signal.getThrowable(), Context.NONE));
+                .doOnEach(signal -> meter.reportBatchSend(batch.size(), signal.getThrowable(), false, Context.NONE))
+                .doOnCancel(() -> meter.reportBatchSend(batch.size(), null, true, Context.NONE));
         }
     }
 }

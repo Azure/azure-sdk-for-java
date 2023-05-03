@@ -169,6 +169,14 @@
         <Class name="com.azure.json.reflect.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
+      <And>
+        <Class name="com.azure.core.serializer.json.gson.implementation.GsonJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
+      <And>
+        <Class name="com.azure.core.serializer.json.jackson.implementation.JacksonJsonReader"/>
+        <Method name="getBinary"/>
+      </And>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -896,9 +904,12 @@
   </Match>
 
   <!-- Tracking work-item: https://github.com/Azure/azure-sdk-for-java/issues/9037 -->
+  <!-- For ProactiveOpenConnectionsProcessor, it is okay to not synchronize the sink
+       when subscribing to it -->
   <Match>
     <Or>
       <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics"/>
+      <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor"/>
       <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
