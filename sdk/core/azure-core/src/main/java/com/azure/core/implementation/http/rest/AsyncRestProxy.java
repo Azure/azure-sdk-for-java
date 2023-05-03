@@ -4,7 +4,6 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
