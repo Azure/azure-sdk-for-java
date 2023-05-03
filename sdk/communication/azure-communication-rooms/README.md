@@ -172,6 +172,9 @@ Use the `listParticipants` function to list all participants from an existing ro
 ```java readme-sample-listRoomParticipantsWithRoomId
 try {
     PagedIterable<RoomParticipant> allParticipants = roomsClient.listParticipants("<Room Id>");
+    for(RoomParticipant participant : allParticipants) {
+        System.out.println(participant.getCommunicationIdentifier().getRawId() + " (" + participant.getRole() + ")");
+    }
 } catch (RuntimeException ex) {
     System.out.println(ex);
 }
