@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Access rights of the access policy. */
-public enum AccessRight {
+public enum ShareFileHandleAccessRights {
     /** Enum value Read. */
     READ("Read"),
 
@@ -21,7 +21,7 @@ public enum AccessRight {
     /** The actual serialized value for a AccessRight instance. */
     private final String value;
 
-    AccessRight(String value) {
+    ShareFileHandleAccessRights(String value) {
         this.value = value;
     }
 
@@ -32,12 +32,12 @@ public enum AccessRight {
      * @return the parsed AccessRight object, or null if unable to parse.
      */
     @JsonCreator
-    public static AccessRight fromString(String value) {
+    public static ShareFileHandleAccessRights fromString(String value) {
         if (value == null) {
             return null;
         }
-        AccessRight[] items = AccessRight.values();
-        for (AccessRight item : items) {
+        ShareFileHandleAccessRights[] items = ShareFileHandleAccessRights.values();
+        for (ShareFileHandleAccessRights item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

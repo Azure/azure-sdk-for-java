@@ -10,21 +10,9 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
-import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
-import com.azure.storage.file.share.implementation.models.FileProperty;
-import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
-import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
-import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
-import com.azure.storage.file.share.implementation.models.ShareItemInternal;
-import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
-import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.implementation.models.*;
+import com.azure.storage.file.share.models.*;
 import com.azure.storage.file.share.models.HandleItem;
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
-import com.azure.storage.file.share.models.ShareFileItemProperties;
-import com.azure.storage.file.share.models.ShareItem;
-import com.azure.storage.file.share.models.ShareProperties;
-import com.azure.storage.file.share.models.ShareProtocols;
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -208,6 +196,14 @@ public class ModelHelper {
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 
+    public static List<ShareFileHandleAccessRights> transformAccessRightsList(List<AccessRight> accessRightList) {
+        List<ShareFileHandleAccessRights> result = new ArrayList<>();
+        accessRightList.forEach(item -> {
+            result.add(ShareFileHandleAccessRights.fromString(item.toString()));
+        });
+        return result;
+    }
+
     public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
         return new HandleItem()
             .setHandleId(handleItem.getHandleId())
@@ -218,7 +214,7 @@ public class ModelHelper {
             .setParentId(handleItem.getParentId())
             .setLastReconnectTime(handleItem.getLastReconnectTime())
             .setOpenTime(handleItem.getOpenTime())
-            .setAccessRightList(handleItem.getAccessRightList());
+            .setAccessRightList(transformAccessRightsList(handleItem.getAccessRightList()));
     }
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {

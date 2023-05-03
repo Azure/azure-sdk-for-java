@@ -68,10 +68,10 @@ public final class HandleItem {
 
     private static final class AccessRightListWrapper {
         @JacksonXmlProperty(localName = "AccessRight")
-        private final List<AccessRight> items;
+        private final List<ShareFileHandleAccessRights> items;
 
         @JsonCreator
-        private AccessRightListWrapper(@JacksonXmlProperty(localName = "AccessRight") List<AccessRight> items) {
+        private AccessRightListWrapper(@JacksonXmlProperty(localName = "AccessRight") List<ShareFileHandleAccessRights> items) {
             this.items = items;
         }
     }
@@ -266,9 +266,9 @@ public final class HandleItem {
      *
      * @return the accessRightList value.
      */
-    public List<AccessRight> getAccessRightList() {
+    public List<ShareFileHandleAccessRights> getAccessRightList() {
         if (this.accessRightList == null) {
-            this.accessRightList = new AccessRightListWrapper(new ArrayList<AccessRight>());
+            this.accessRightList = new AccessRightListWrapper(new ArrayList<>());
         }
         return this.accessRightList.items;
     }
@@ -279,7 +279,7 @@ public final class HandleItem {
      * @param accessRightList the accessRightList value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem setAccessRightList(List<AccessRight> accessRightList) {
+    public HandleItem setAccessRightList(List<ShareFileHandleAccessRights> accessRightList) {
         this.accessRightList = new AccessRightListWrapper(accessRightList);
         return this;
     }
