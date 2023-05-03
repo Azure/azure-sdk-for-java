@@ -1,36 +1,32 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.serializer.json.gson.implementation;
+package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
+import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Objects;
 
+// Copied from azure-core-serializer-json-jackson
 /**
- * GSON-based implementation of {@link JsonWriter}.
+ * Jackson-based implementation of {@link JsonWriter}.
  */
-public final class GsonJsonWriter extends JsonWriter {
-    private static final ClientLogger LOGGER = new ClientLogger(GsonJsonWriter.class);
+final class JacksonJsonWriter extends JsonWriter {
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonJsonWriter.class);
 
-    private final com.google.gson.stream.JsonWriter writer;
+    private final JsonGenerator generator;
 
     // Initial state is always root.
     private JsonWriteContext context = JsonWriteContext.ROOT;
 
-    /**
-     * Creates an instance of {@link JsonWriter} based on the passed GSON {@link com.google.gson.stream.JsonWriter}.
-     *
-     * @param writer The GSON JSON writer.
-     */
-    public GsonJsonWriter(com.google.gson.stream.JsonWriter writer) {
-        this.writer = Objects.requireNonNull(writer,
-            "Cannot create a GSON-based instance of com.azure.json.JsonWriter with a null GSON JsonWriter");
+    JacksonJsonWriter(JsonGenerator generator) {
+        this.generator = Objects.requireNonNull(generator,
+            "Cannot create a Jackson-based instance of com.azure.json.JsonWriter with a null Jackson JsonGenerator.");
     }
 
     @Override
@@ -45,20 +41,20 @@ public final class GsonJsonWriter extends JsonWriter {
                 + "before the writer can be closed. Current writing state is '" + context.getWriteState() + "'."));
         }
 
-        writer.flush();
-        writer.close();
+        generator.flush();
+        generator.close();
     }
 
     @Override
     public JsonWriter flush() throws IOException {
-        writer.flush();
+        generator.flush();
         return this;
     }
 
     @Override
     public JsonWriter writeStartObject() throws IOException {
         context.validateToken(JsonToken.START_OBJECT);
-        writer.beginObject();
+        generator.writeStartObject();
 
         context = context.updateContext(JsonToken.START_OBJECT);
         return this;
@@ -67,7 +63,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeEndObject() throws IOException {
         context.validateToken(JsonToken.END_OBJECT);
-        writer.endObject();
+        generator.writeEndObject();
 
         context = context.updateContext(JsonToken.END_OBJECT);
         return this;
@@ -76,7 +72,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeStartArray() throws IOException {
         context.validateToken(JsonToken.START_ARRAY);
-        writer.beginArray();
+        generator.writeStartArray();
 
         context = context.updateContext(JsonToken.START_ARRAY);
         return this;
@@ -85,7 +81,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeEndArray() throws IOException {
         context.validateToken(JsonToken.END_ARRAY);
-        writer.endArray();
+        generator.writeEndArray();
 
         context = context.updateContext(JsonToken.END_ARRAY);
         return this;
@@ -96,7 +92,7 @@ public final class GsonJsonWriter extends JsonWriter {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
 
         context.validateToken(JsonToken.FIELD_NAME);
-        writer.name(fieldName);
+        generator.writeFieldName(fieldName);
 
         context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
@@ -105,7 +101,11 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBinary(byte[] value) throws IOException {
         context.validateToken(JsonToken.STRING);
-        writeBinaryInternal(value);
+        if (value == null) {
+            generator.writeNull();
+        } else {
+            generator.writeBinary(value);
+        }
 
         context = context.updateContext(JsonToken.STRING);
         return this;
@@ -114,7 +114,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBoolean(boolean value) throws IOException {
         context.validateToken(JsonToken.BOOLEAN);
-        writer.value(value);
+        generator.writeBoolean(value);
 
         context = context.updateContext(JsonToken.BOOLEAN);
         return this;
@@ -123,7 +123,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeDouble(double value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        writer.value(value);
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -132,7 +132,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeFloat(float value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        writer.value(value);
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -141,7 +141,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeInt(int value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        writer.value(value);
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -150,7 +150,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeLong(long value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        writer.value(value);
+        generator.writeNumber(value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -159,7 +159,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeNull() throws IOException {
         context.validateToken(JsonToken.NULL);
-        writer.nullValue();
+        generator.writeNull();
 
         context = context.updateContext(JsonToken.NULL);
         return this;
@@ -168,7 +168,7 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeString(String value) throws IOException {
         context.validateToken(JsonToken.STRING);
-        writer.value(value);
+        generator.writeString(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
@@ -179,17 +179,9 @@ public final class GsonJsonWriter extends JsonWriter {
         Objects.requireNonNull(value, "'value' cannot be null.");
 
         context.validateToken(JsonToken.STRING);
-        writer.jsonValue(value);
+        generator.writeRawValue(value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
-    }
-
-    private void writeBinaryInternal(byte[] value) throws IOException {
-        if (value == null) {
-            writer.nullValue();
-        } else {
-            writer.value(Base64.getEncoder().encodeToString(value));
-        }
     }
 }

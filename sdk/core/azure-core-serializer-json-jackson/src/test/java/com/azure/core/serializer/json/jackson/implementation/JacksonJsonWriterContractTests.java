@@ -5,6 +5,7 @@ package com.azure.core.serializer.json.jackson.implementation;
 
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayOutputStream;
@@ -22,6 +23,18 @@ public class JacksonJsonWriterContractTests extends JsonWriterContractTests {
     public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
         this.writer = AzureJsonUtils.createWriter(outputStream, null);
+    }
+
+    @AfterEach
+    public void afterEach() throws IOException {
+        if (writer != null) {
+            try {
+                writer.close();
+            } catch (IllegalStateException ignored) {
+                // Closing the JsonWriter may throw an IllegalStateException if the current writing state isn't valid
+                // for closing, ignore it in test.
+            }
+        }
     }
 
     @Override

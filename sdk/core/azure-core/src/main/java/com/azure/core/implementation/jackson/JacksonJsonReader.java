@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.serializer.json.jackson.implementation;
+package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonOptions;
@@ -12,10 +12,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 import java.util.Objects;
 
+// Copied from azure-core-serializer-json-jackson, with minor edits.
 /**
  * Jackson-based implementation of {@link JsonReader}.
  */
-public final class JacksonJsonReader extends JsonReader {
+final class JacksonJsonReader extends JsonReader {
     private static final ClientLogger LOGGER = new ClientLogger(JacksonJsonReader.class);
 
     private final JsonParser parser;
