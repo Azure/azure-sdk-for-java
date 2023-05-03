@@ -41,14 +41,10 @@ are needed to create a DefaultAzureCredential object.
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key.
 
 ```java readme-sample-createRoomsClientWithConnectionString
-public RoomsClient createRoomsClientWithConnectionString() {
-    // You can find your connection string from your resource in the Azure Portal
-    String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
+// Find your connection string from your resource in the Azure Portal
+String connectionString = "https://<resource-name>.communication.azure.com/;<access-key>";
 
-    RoomsClient roomsClient = new RoomsClientBuilder().connectionString(connectionString).buildClient();
-
-    return roomsClient;
-}
+RoomsClient roomsClient = new RoomsClientBuilder().connectionString(connectionString).buildClient();
 ```
 
 ## Key concepts
@@ -68,141 +64,126 @@ public RoomsClient createRoomsClientWithConnectionString() {
 ## Examples
 
 ### Create a new room
-Use the `createRoom` function to create a new Room on Azure Communication Service.
+Use the `createRoom` function to create a new room.
 
 ```java readme-sample-createRoomWithValidInput
-public void createRoomWithValidInput() {
-    OffsetDateTime validFrom = OffsetDateTime.now();
-    OffsetDateTime validUntil = validFrom.plusDays(30);
-    List<RoomParticipant> participants = new ArrayList<>();
+OffsetDateTime validFrom = OffsetDateTime.now();
+OffsetDateTime validUntil = validFrom.plusDays(30);
+List<RoomParticipant> participants = new ArrayList<>();
 
-    // Add two participants
-    participant1 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 1>")).setRole(ParticipantRole.ATTENDEE);
-    participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.CONSUMER);
+// Add two participants
+participant1 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 1>")).setRole(ParticipantRole.ATTENDEE);
+participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.CONSUMER);
 
-    participants.add(participant1);
-    participants.add(participant2);
+participants.add(participant1);
+participants.add(participant2);
 
-    // Create Room options
-    CreateRoomOptions roomOptions = new CreateRoomOptions()
-            .setValidFrom(validFrom)
-            .setValidUntil(validUntil)
-            .setParticipants(participants);
+// Create Room options
+CreateRoomOptions roomOptions = new CreateRoomOptions()
+        .setValidFrom(validFrom)
+        .setValidUntil(validUntil)
+        .setParticipants(participants);
 
-    RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
-    CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
-    System.out.println("Room Id: " + roomResult.getRoomId());
-}
+CommunicationRoom roomResult = roomsClient.createRoom(roomOptions);
 ```
 
 ### Update an existing room
-Use the `updateRoom` function to update an existing Room on Azure Communication Service.
-
+Use the `updateRoom` function to update an existing room.
 ```java readme-sample-updateRoomWithRoomId
-public void updateRoomWithRoomId() {
-    OffsetDateTime validFrom = OffsetDateTime.now();
-    OffsetDateTime validUntil = validFrom.plusDays(30);
+OffsetDateTime validFrom = OffsetDateTime.now();
+OffsetDateTime validUntil = validFrom.plusDays(30);
 
-    // Update Room options
-    UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
-            .setValidFrom(validFrom)
-            .setValidUntil(validUntil);
+// Update Room options
+UpdateRoomOptions updateRoomOptions = new UpdateRoomOptions()
+        .setValidFrom(validFrom)
+        .setValidUntil(validUntil);
 
-    RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
-    try {
-        CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id in String>", updateRoomOptions);
-        System.out.println("Room Id: " + roomResult.getRoomId());
-    } catch (RuntimeException ex) {
-        System.out.println(ex);
-    }
+try {
+    CommunicationRoom roomResult = roomsClient.updateRoom("<Room Id>", updateRoomOptions);
+    System.out.println("Room Id: " + roomResult.getRoomId());
+} catch (RuntimeException ex) {
+    System.out.println(ex);
 }
 ```
 
 ### Get an existing room
-Use the `getRoom` function to get an existing Room on Azure Communication Service.
+Use the `getRoom` function to get an existing room.
 
 ```java readme-sample-getRoomWithRoomId
-public void getRoomWithRoomId() {
-    RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
-    try {
-        CommunicationRoom roomResult = roomsClient.getRoom("<Room Id in String>");
-        System.out.println("Room Id: " + roomResult.getRoomId());
-    } catch (RuntimeException ex) {
-        System.out.println(ex);
-    }
+try {
+    CommunicationRoom roomResult = roomsClient.getRoom("<Room Id>");
+    System.out.println("Room Id: " + roomResult.getRoomId());
+} catch (RuntimeException ex) {
+    System.out.println(ex);
 }
 ```
 
 ### Delete an existing room
-Use the `deleteRoom` function to delete an existing Room on Azure Communication Service.
+Use the `deleteRoom` function to delete a created room.
 
 ```java readme-sample-deleteRoomWithRoomId
-public void deleteRoomWithRoomId() {
-    RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
-    try {
-        roomsClient.deleteRoom("<Room Id in String>");
-    } catch (RuntimeException ex) {
-        System.out.println(ex);
-    }
+try {
+    roomsClient.deleteRoom("<Room Id>");
+} catch (RuntimeException ex) {
+    System.out.println(ex);
 }
 ```
 
 ### Add or Update participants an existing room
-Use the `addOrUpdateParticipants` function to add or update participants in an existing Room on Azure Communication Service.
+Use the `addOrUpdateParticipants` function to add or update participants in an existing room.
 
 ```java readme-sample-addOrUpdateRoomParticipantsWithRoomId
-public void addOrUpdateRoomParticipantsWithRoomId() {
-    List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
+List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
+// New participant to add
+RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
 
-    // New participant to add
-    RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
+// Existing participant to update, assume participant2 is part of the room as a
+// consumer
+participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.ATTENDEE);
 
-    // Existing participant to update, assume participant2 is part of the room as a
-    // consumer
-    participant2 = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 2>")).setRole(ParticipantRole.ATTENDEE);
+participantsToaddOrUpdate.add(participantToAdd); // Adding new participant to room
+participantsToaddOrUpdate.add(participant2); // Update participant from Consumer -> Attendee
 
-    participantsToaddOrUpdate.add(participantToAdd); // Adding new participant to room
-    participantsToaddOrUpdate.add(participant2); // Update participant from Consumer -> Attendee
-
-    RoomsClient roomsClient = createRoomsClientWithConnectionString();
-
-    try {
-        AddOrUpdateParticipantsResult addOrUpdateResult = roomsClient.addOrUpdateParticipants("<Room Id>", participantsToaddOrUpdate);
-    } catch (RuntimeException ex) {
-        System.out.println(ex);
-    }
+try {
+    AddOrUpdateParticipantsResult addOrUpdateResult = roomsClient.addOrUpdateParticipants("<Room Id>", participantsToaddOrUpdate);
+} catch (RuntimeException ex) {
+    System.out.println(ex);
 }
 ```
 
 ### Remove participants from an existing room
-Use the `removeParticipants` function to remove participants from an existing Room on Azure Communication Service.
+Use the `removeParticipants` function to remove participants from an existing room.
 
 ```java readme-sample-removeRoomParticipantsWithRoomId
-public void removeRoomParticipantsWithRoomId() {
-    List<CommunicationIdentifier> participantsToRemove = new ArrayList<>();
+List<CommunicationIdentifier> participantsToRemove = new ArrayList<>();
 
-    participantsToRemove.add(participant1.getCommunicationIdentifier());
-    participantsToRemove.add(participant2.getCommunicationIdentifier());
+participantsToRemove.add(participant1.getCommunicationIdentifier());
+participantsToRemove.add(participant2.getCommunicationIdentifier());
 
-    RoomsClient roomsClient = createRoomsClientWithConnectionString();
+try {
+    RemoveParticipantsResult removeResult = roomsClient.removeParticipants("<Room Id>", participantsToRemove);
+} catch (RuntimeException ex) {
+    System.out.println(ex);
+}
+```
 
-    try {
-        RemoveParticipantsResult removeResult = roomsClient.removeParticipants("<Room Id>", participantsToRemove);
-    } catch (RuntimeException ex) {
-        System.out.println(ex);
+### List all participants from an existing room
+Use the `listParticipants` function to list all participants from an existing room.
+```java readme-sample-listRoomParticipantsWithRoomId
+try {
+    PagedIterable<RoomParticipant> allParticipants = roomsClient.listParticipants("<Room Id>");
+    for (RoomParticipant participant : allParticipants) {
+        System.out.println(participant.getCommunicationIdentifier().getRawId() + " (" + participant.getRole() + ")");
     }
+} catch (RuntimeException ex) {
+    System.out.println(ex);
 }
 ```
 
 ## Troubleshooting
 
-1. If creating a client fails, verify if you have the right connection string.
+1. If creating a client fails, verify if you have the right authentication.
 2. For room creation failures the communication error should in most case give a brief description of the issue.
-3. For participants update failures, make sure the participants are present in the room using the get participants.
 
 ## Next steps
 
@@ -225,4 +206,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [api_documentation]: https://aka.ms/java-docs
+[next_steps]: https://learn.microsoft.com/azure/communication-services/concepts/rooms/room-concept
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)
+
