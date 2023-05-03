@@ -7,14 +7,12 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class DevCenterGetProjectTests extends DevCenterClientTestBase {
     @Test
     public void testDevCenterGetProjectTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
         RequestOptions requestOptions = new RequestOptions();
 
         Response<BinaryData> response = devCenterClient.getProjectWithResponse(projectName, requestOptions);

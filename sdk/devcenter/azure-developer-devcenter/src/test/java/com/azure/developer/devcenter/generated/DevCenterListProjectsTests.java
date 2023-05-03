@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 public final class DevCenterListProjectsTests extends DevCenterClientTestBase {
     @Test
     public void testDevCenterListProjectsTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
         RequestOptions requestOptions = new RequestOptions();
 
         PagedIterable<BinaryData> response = devCenterClient.listProjects(requestOptions);

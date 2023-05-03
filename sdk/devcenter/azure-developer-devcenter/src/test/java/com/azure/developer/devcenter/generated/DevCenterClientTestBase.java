@@ -8,9 +8,14 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
 import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.developer.devcenter.DevBoxesClient;
@@ -19,6 +24,9 @@ import com.azure.developer.devcenter.DevCenterClient;
 import com.azure.developer.devcenter.DevCenterClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
+
+import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
 class DevCenterClientTestBase extends TestBase {
@@ -27,6 +35,14 @@ class DevCenterClientTestBase extends TestBase {
     protected DevBoxesClient devBoxesClient;
 
     protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
+
+    protected String DevEnvironmentName = "envname";
+
+    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
+
+    protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "myCatalog");
+
+    protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "myEnvType");
 
     @Override
     protected void beforeTest() {
@@ -83,5 +99,55 @@ class DevCenterClientTestBase extends TestBase {
             deploymentEnvironmentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         deploymentEnvironmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
+    }
+
+    protected String getFirstEnvironmentDefinition() {
+        RequestOptions requestOptions = new RequestOptions();
+
+        PagedIterable<BinaryData> response =
+            deploymentEnvironmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions);
+
+        Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
+
+        String environmentDefinitionName = "";
+        for (BinaryData data : response) {
+            var envDefinition = data.toObject(LinkedHashMap.class);
+            environmentDefinitionName = (String) envDefinition.get("name");
+            break;
+        }
+
+        if (environmentDefinitionName.isEmpty()) {
+            Assertions.fail("Couldn't find environment definitions in a project");
+        }
+
+        return environmentDefinitionName;
+    }
+
+    protected String createEnvironment() {
+        String environmentName = getFirstEnvironmentDefinition();
+
+        BinaryData environmentBody = BinaryData.fromString(
+            "{\"catalogItemName\":\"" + environmentName
+                + "\", \"catalogName\":\"" + catalogName
+                + "\", \"environmentType\":\"" + envTypeName + "\"}");
+
+        RequestOptions requestOptions = new RequestOptions();
+        SyncPoller<BinaryData, BinaryData> createOperation =
+            deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
+                projectName, "me", DevEnvironmentName, environmentBody, requestOptions);
+
+        Assertions.assertEquals(
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
+
+        return DevEnvironmentName;
+    }
+
+    protected void deleteEnvironment(String environmentName) {
+        RequestOptions requestOptions = new RequestOptions();
+        SyncPoller<BinaryData, Void> deleteOperation =
+            deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", environmentName, requestOptions);
+
+        Assertions.assertEquals(
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
     }
 }
