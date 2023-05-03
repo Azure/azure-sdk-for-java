@@ -80,7 +80,7 @@ public final class HandleItem {
      * The AccessRightList property.
      */
     @JsonProperty(value = "AccessRightList")
-    private AccessRightListWrapper accessRightList;
+    private AccessRightListWrapper accessRights;
 
     /** Creates an instance of HandleItem class. */
     public HandleItem() {}
@@ -262,25 +262,25 @@ public final class HandleItem {
     }
 
     /**
-     * Get the accessRightList property: The AccessRightList property.
+     * Get the accessRightList property: The {@link ShareFileHandleAccessRights} property.
      *
-     * @return the accessRightList value.
+     * @return the accessRights list value.
      */
-    public List<ShareFileHandleAccessRights> getAccessRightList() {
-        if (this.accessRightList == null) {
-            this.accessRightList = new AccessRightListWrapper(new ArrayList<>());
+    public List<ShareFileHandleAccessRights> getAccessRights() {
+        if (this.accessRights == null) {
+            this.accessRights = new AccessRightListWrapper(new ArrayList<>());
         }
-        return this.accessRightList.items;
+        return this.accessRights.items;
     }
 
     /**
-     * Set the accessRightList property: The AccessRightList property.
+     * Set the accessRights property: The {@link ShareFileHandleAccessRights} property.
      *
-     * @param accessRightList the accessRightList value to set.
+     * @param accessRights the accessRights list to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem setAccessRightList(List<ShareFileHandleAccessRights> accessRightList) {
-        this.accessRightList = new AccessRightListWrapper(accessRightList);
+    public HandleItem setAccessRights(List<ShareFileHandleAccessRights> accessRights) {
+        this.accessRights = new AccessRightListWrapper(accessRights);
         return this;
     }
 }

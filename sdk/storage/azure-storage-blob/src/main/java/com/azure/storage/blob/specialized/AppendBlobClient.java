@@ -602,6 +602,6 @@ public final class AppendBlobClient extends BlobClientBase {
      * @return the max number of blocks that can be uploaded in an append blob.
      */
     public int getMaxBlocks() {
-        return MAX_BLOCKS;
+        return MAX_APPEND_BLOCKS;
     }
 }

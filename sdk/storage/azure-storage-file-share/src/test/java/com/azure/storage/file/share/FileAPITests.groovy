@@ -2592,7 +2592,7 @@ class FileAPITests extends APISpec {
         def list = fileClient.listHandles().asList()
 
         then:
-        list.get(0).getAccessRightList()[0] == ShareFileHandleAccessRights.WRITE
+        list.get(0).getAccessRights()[0] == ShareFileHandleAccessRights.WRITE
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")
