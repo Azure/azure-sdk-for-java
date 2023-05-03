@@ -14,6 +14,7 @@ import com.azure.core.amqp.exception.OperationCancelledException;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -288,6 +289,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
                             return batchBufferOverflowError(maxMessageSize);
                         }
                         buffer.append(sectionBytes);
+                    } else {
+                        logger.info("Ignoring the empty message org.apache.qpid.proton.message.message@{} in the batch.",
+                            Integer.toHexString(System.identityHashCode(message)));
                     }
                 }
 
@@ -341,7 +345,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     }
 
     private Mono<Void> batchBufferOverflowError(int maxMessageSize) {
-        return Mono.error(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+        return FluxUtil.monoError(logger, new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
             String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb", maxMessageSize / 1024),
             new BufferOverflowException(), handler.getErrorContext(sender)));
     }
