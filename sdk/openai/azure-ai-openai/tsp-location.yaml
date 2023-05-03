@@ -3,3 +3,4 @@ additionalDirectories:
     - specification/cognitiveservices/OpenAI.Authoring
 commit: 04d976d8092f5fe247e479bb27112580541d4ffb
 repo: srnagar/azure-rest-api-specs
+cleanup: false

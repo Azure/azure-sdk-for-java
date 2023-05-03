@@ -380,7 +380,6 @@ public final class OpenAIClient {
      * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<ChatCompletions> getChatCompletionsStream(String deploymentId,
                                                           ChatCompletionsOptions chatCompletionsOptions) {
