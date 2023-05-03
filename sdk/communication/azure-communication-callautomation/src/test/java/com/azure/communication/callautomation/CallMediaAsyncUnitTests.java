@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
@@ -37,8 +38,8 @@ public class CallMediaAsyncUnitTests {
     private FileSource playFileSource;
     private TextSource playTextSource;
     private SsmlSource playSsmlSource;
-
     private PlayOptions playOptions;
+    private PlayToAllOptions playToAllOptions;
 
     @BeforeEach
     public void setup() {
@@ -60,59 +61,71 @@ public class CallMediaAsyncUnitTests {
 
         playSsmlSource = new SsmlSource();
         playSsmlSource.setSsmlText("<speak></speak>");
-
-        playOptions = new PlayOptions()
-            .setLoop(false)
-            .setOperationContext("operationContext");
     }
 
     @Test
     public void playFileWithResponseTest() {
+        playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+            .setLoop(false)
+            .setOperationContext("operationContext");
+
         StepVerifier.create(
-            callMedia.playWithResponse(playFileSource,
-                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
+            callMedia.playWithResponse(playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void playFileToAllWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playFileSource)
+            .setLoop(false)
+            .setOperationContext("operationContext");
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playFileSource, playOptions))
+                callMedia.playToAllWithResponse(playToAllOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void playTextWithResponseTest() {
+        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+            .setLoop(false)
+            .setOperationContext("operationContext");
         StepVerifier.create(
-            callMedia.playWithResponse(playTextSource,
-                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
+            callMedia.playWithResponse(playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void playTextToAllWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playTextSource)
+            .setLoop(false)
+            .setOperationContext("operationContext");
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playTextSource, playOptions))
+            callMedia.playToAllWithResponse(playToAllOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void playSsmlWithResponseTest() {
+        playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+            .setLoop(false)
+            .setOperationContext("operationContext");
         StepVerifier.create(
-            callMedia.playWithResponse(playSsmlSource,
-                Collections.singletonList(new CommunicationUserIdentifier("id")), playOptions))
+            callMedia.playWithResponse(playOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
 
     @Test
     public void playSsmlToAllWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playSsmlSource)
+            .setLoop(false)
+            .setOperationContext("operationContext");
         StepVerifier.create(
-                callMedia.playToAllWithResponse(playSsmlSource, playOptions))
+            callMedia.playToAllWithResponse(playToAllOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }

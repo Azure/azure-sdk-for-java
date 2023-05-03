@@ -9,14 +9,14 @@
 
 ### Breaking Changes
 
-- Removed `participants` from `CommunicationRoom` model.
-- Removed `roomJoinPolicy`, all rooms are invite-only by default.
-- `updateRoom` no longer accepts participant list as input.
-- Replaced `addParticipants` and `updateParticipants` with `addOrUpdateParticipants`
-- Renamed `RoleType` to `ParticipantRole`
-- Renamed `getParticipants` to `listParticipants`
-- Renamed `CreatedOn` to `CreatedAt` in `CommunicationRoom`
-- `removeParticipants` now takes in a `Iterable<CommunicationIdentifier>` instead of `Iterable<RoomParticipant>`
+- Changed: `updateRoom` no longer accepts participant list as input.
+- Changed: Replaced `addParticipants` and `updateParticipants` with `addOrUpdateParticipants`.
+- Changed: Renamed `RoleType` to `ParticipantRole`.
+- Changed: Renamed `getParticipants` to `listParticipants`.
+- Changed: Renamed `CreatedOn` to `CreatedAt` in `CommunicationRoom`.
+- Changed: `removeParticipants` now takes in a `Iterable<CommunicationIdentifier>` instead of `Iterable<RoomParticipant>`.
+- Removed: `participants` from `CommunicationRoom` model.
+- Removed: `roomJoinPolicy` so all rooms are invite-only by default.
 
 ### Bugs Fixed
 

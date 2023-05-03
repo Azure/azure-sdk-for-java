@@ -32,6 +32,8 @@ final class ObjectMapperFactory {
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(innerMapper))
             .addModule(FlatteningDeserializer.getModule(innerMapper))
+            .addModule(JsonSerializableSerializer.getModule())
+            .addModule(JsonSerializableDeserializer.getModule())
             .build();
     }
 
@@ -54,6 +56,8 @@ final class ObjectMapperFactory {
     public ObjectMapper createHeaderMapper() {
         return initializeMapperBuilder(JsonMapper.builder())
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .addModule(JsonSerializableSerializer.getModule())
+            .addModule(JsonSerializableDeserializer.getModule())
             .build();
     }
 

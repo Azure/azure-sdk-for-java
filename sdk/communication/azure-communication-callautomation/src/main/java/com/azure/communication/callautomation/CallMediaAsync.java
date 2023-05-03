@@ -22,6 +22,7 @@ import com.azure.communication.callautomation.implementation.models.RecognizeInp
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
@@ -76,7 +77,8 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return playWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
+        PlayOptions options = new PlayOptions(playSource, playTo);
+        return playWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -89,37 +91,34 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playToAll(PlaySource playSource) {
-        return playToAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
+        PlayToAllOptions options = new PlayToAllOptions(playSource);
+        return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play
      *
-     * @param playSource A {@link PlaySource} representing the source to play.
-     * @param playTo the targets to play to
      * @param options play options.
      * @return Response for successful play request.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                 PlayOptions options) {
-        return playWithResponseInternal(playSource, playTo, options, null);
+    public Mono<Response<Void>> playWithResponse(PlayOptions options) {
+        return playWithResponseInternal(options, null);
     }
 
     /**
      * Play to all participants
      *
-     * @param playSource A {@link PlaySource} representing the source to play.
-     * @param options play options.
+     * @param options play to all options.
      * @return Response for successful playAll request.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playToAllWithResponse(PlaySource playSource, PlayOptions options) {
-        return playWithResponseInternal(playSource, Collections.emptyList(), options, null);
+    public Mono<Response<Void>> playToAllWithResponse(PlayToAllOptions options) {
+        return playToAllWithResponseInternal(options, null);
     }
 
     /**
@@ -196,12 +195,11 @@ public final class CallMediaAsync {
         }
     }
 
-    Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                  PlayOptions options, Context context) {
+    Mono<Response<Void>> playWithResponseInternal(PlayOptions options, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                PlayRequest request = getPlayRequest(playSource, playTo, options);
+                PlayRequest request = getPlayRequest(options);
                 return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue);
             });
 
@@ -210,34 +208,44 @@ public final class CallMediaAsync {
         }
     }
 
-    PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo, PlayOptions options) {
+    Mono<Response<Void>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
+        try {
+            PlayOptions playOptions = new PlayOptions(options.getPlaySource(), Collections.emptyList());
+            playOptions.setLoop(options.isLoop());
+            playOptions.setOperationContext(options.getOperationContext());
+
+            return playWithResponseInternal(playOptions, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    PlayRequest getPlayRequest(PlayOptions options) {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal();
-        if (playSource instanceof FileSource) {
-            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
-        } else if (playSource instanceof TextSource) {
-            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
-        } else if (playSource instanceof SsmlSource) {
-            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) playSource);
+        if (options.getPlaySource() instanceof FileSource) {
+            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) options.getPlaySource());
+        } else if (options.getPlaySource() instanceof TextSource) {
+            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) options.getPlaySource());
+        } else if (options.getPlaySource() instanceof SsmlSource) {
+            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) options.getPlaySource());
         }
 
         if (playSourceInternal.getSourceType() != null) {
             PlayRequest request = new PlayRequest()
                 .setPlaySourceInfo(playSourceInternal)
                 .setPlayTo(
-                    playTo
+                    options.getPlayTo()
                         .stream()
                         .map(CommunicationIdentifierConverter::convert)
                         .collect(Collectors.toList()));
 
-            if (options != null) {
-                request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
-                request.setOperationContext(options.getOperationContext());
-            }
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setOperationContext(options.getOperationContext());
 
             return request;
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException(playSource.getClass().getCanonicalName()));
+        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySource().getClass().getCanonicalName()));
     }
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {

@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.gson.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -17,6 +18,8 @@ import java.util.Objects;
  * GSON-based implementation of {@link JsonReader}.
  */
 public final class GsonJsonReader extends JsonReader {
+    private static final ClientLogger LOGGER = new ClientLogger(GsonJsonReader.class);
+
     private final com.google.gson.stream.JsonReader reader;
 
     private final byte[] jsonBytes;
@@ -227,8 +230,8 @@ public final class GsonJsonReader extends JsonReader {
             String json = readRemainingFieldsAsJsonObject();
             return AzureJsonUtils.createReader(json, jsonOptions);
         } else {
-            throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
-                + "starting location. Starting location: " + currentToken());
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Cannot buffer a JSON object from a non-object, "
+                + "non-field name starting location. Starting location: " + currentToken()));
         }
     }
 
@@ -240,7 +243,7 @@ public final class GsonJsonReader extends JsonReader {
     @Override
     public JsonReader reset() throws IOException {
         if (!resetSupported) {
-            throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'reset' isn't supported by this JsonReader."));
         }
 
         return (jsonBytes != null)
@@ -288,7 +291,7 @@ public final class GsonJsonReader extends JsonReader {
                 return JsonToken.END_DOCUMENT;
 
             default:
-                throw new IllegalStateException("Unsupported token type: '" + token + "'.");
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Unsupported token type: '" + token + "'."));
         }
     }
 }

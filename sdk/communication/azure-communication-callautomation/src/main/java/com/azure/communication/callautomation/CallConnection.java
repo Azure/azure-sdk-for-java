@@ -141,13 +141,13 @@ public final class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CallInvite} representing the targetParticipant participant of this transfer.
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the targetParticipant participant of this transfer.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferCallToParticipant(CallInvite targetParticipant) {
+    public TransferCallResult transferCallToParticipant(CommunicationIdentifier targetParticipant) {
         return callConnectionAsync.transferCallToParticipant(targetParticipant).block();
     }
 
