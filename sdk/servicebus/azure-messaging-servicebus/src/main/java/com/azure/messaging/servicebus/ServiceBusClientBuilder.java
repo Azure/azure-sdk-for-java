@@ -64,6 +64,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
+import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 
 /**
@@ -1433,8 +1435,8 @@ public final class ServiceBusClientBuilder implements
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
 
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
+            final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
             final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
@@ -1513,8 +1515,8 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
-                maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
+            final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
+                maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
 
             final String clientIdentifier;
             if (clientOptions instanceof AmqpClientOptions) {
@@ -1995,7 +1997,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
+            final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
             final String clientIdentifier;

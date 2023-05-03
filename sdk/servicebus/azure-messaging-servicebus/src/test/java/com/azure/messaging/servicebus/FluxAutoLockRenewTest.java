@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -77,7 +78,7 @@ public class FluxAutoLockRenewTest {
         receivedMessage.setLockToken(LOCK_TOKEN_UUID);
         receivedMessage.setLockedUntil(lockedUntil);
         renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(10));
-        defaultReceiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+        defaultReceiverOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, true);
     }
 
@@ -143,7 +144,7 @@ public class FluxAutoLockRenewTest {
         assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, null));
 
-        ReceiverOptions zeroLockDurationOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+        ReceiverOptions zeroLockDurationOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             DISABLE_AUTO_LOCK_RENEW_DURATION, true);
         assertThrows(IllegalArgumentException.class, () -> new FluxAutoLockRenew(messageSource,
             zeroLockDurationOptions, messageLockContainer, renewalFunction));
@@ -478,7 +479,7 @@ public class FluxAutoLockRenewTest {
             actualTokenRenewCalledTimes.getAndIncrement();
             return Mono.just(OffsetDateTime.now().plusSeconds(1));
         };
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+        ReceiverOptions receiverOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, enableAutoComplete);
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             receiverOptions, messageLockContainer, lockTokenRenewFunction);

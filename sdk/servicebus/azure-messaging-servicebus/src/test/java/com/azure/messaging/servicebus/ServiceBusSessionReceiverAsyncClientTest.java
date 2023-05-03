@@ -44,6 +44,8 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
+import static com.azure.messaging.servicebus.ReceiverOptions.createUnnamedSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -151,11 +153,11 @@ class ServiceBusSessionReceiverAsyncClientTest {
     @Test
     void acceptSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null, SESSION_IDLE_TIMEOUT);
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
         final String sessionId = linkName;
         final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
+        ReceiverOptions receiverOptions = createNamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, sessionId);
 
         final Message message = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
@@ -202,8 +204,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
     @Test
     void acceptNextSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
-            false, null, null, SESSION_IDLE_TIMEOUT);
+        ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
+            false, null, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
@@ -327,12 +329,13 @@ class ServiceBusSessionReceiverAsyncClientTest {
     @Test
     void specificSessionReceive() {
         // Arrange
-        final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
-            Duration.ZERO, false, null, null, SESSION_IDLE_TIMEOUT);
+        final ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1,
+            Duration.ZERO, false, 1, SESSION_IDLE_TIMEOUT);
 
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
         final String sessionId = "my-session-id";
+
         final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
 
         final Message message = mock(Message.class);
