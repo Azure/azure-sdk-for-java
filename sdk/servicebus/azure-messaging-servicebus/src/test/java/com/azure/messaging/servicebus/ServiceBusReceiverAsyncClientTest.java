@@ -125,8 +125,6 @@ class ServiceBusReceiverAsyncClientTest {
     private static final String SESSION_ID = "my-session-id";
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
-    private static final ReceiverOptions DEFAULT_RECEIVE_OPTIONS = createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, PREFETCH,
-        null, false);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
     private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
