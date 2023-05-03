@@ -69,7 +69,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
      *     Duration#ZERO} to disable session lock renewal.
      * @param sessionIdleTimeout Timeout after which session receiver will be disposed if there are no more messages
-     *                           and the receiver is idle. Set it to {@code null} to not dispose reciever.
+     *                           and the receiver is idle. Set it to {@code null} to not dispose receiver.
      */
     ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
