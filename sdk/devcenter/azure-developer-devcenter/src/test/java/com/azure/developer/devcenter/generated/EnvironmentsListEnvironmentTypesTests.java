@@ -7,22 +7,31 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class EnvironmentsListEnvironmentTypesTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testEnvironmentsListEnvironmentTypesTests() {
+        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
+        String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "myEnvType");
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response =
-                deploymentEnvironmentsClient.listEnvironmentTypes("myProject", requestOptions);
+
+        PagedIterable<BinaryData> response = deploymentEnvironmentsClient.listEnvironmentTypes(projectName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"devtestenv\",\"deploymentTargetId\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"status\":\"Enabled\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        int numberOfEnvTypes = 0;
+        for(BinaryData data: response)
+        {
+            numberOfEnvTypes++;
+            var envType = data.toObject(LinkedHashMap.class);
+            Assertions.assertEquals(envType.get("name"), envTypeName);
+        }
+
+        Assertions.assertEquals(1, numberOfEnvTypes);
     }
 }

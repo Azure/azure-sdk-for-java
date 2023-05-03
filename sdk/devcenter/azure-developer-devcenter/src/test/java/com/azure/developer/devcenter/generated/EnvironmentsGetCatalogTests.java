@@ -7,20 +7,24 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class EnvironmentsGetCatalogTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testEnvironmentsGetCatalogTests() {
+        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
+        String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "myCatalog");
+
         RequestOptions requestOptions = new RequestOptions();
+
         Response<BinaryData> response =
-                deploymentEnvironmentsClient.getCatalogWithResponse("myProject", "foo", requestOptions);
+                deploymentEnvironmentsClient.getCatalogWithResponse(projectName, catalogName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"foo\"}").toObject(Object.class),
+                BinaryData.fromString(String.format("{\"name\":\"%s\"}", catalogName)).toObject(Object.class),
                 response.getValue().toObject(Object.class));
     }
 }
