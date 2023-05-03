@@ -4,16 +4,13 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
-import com.azure.core.amqp.AmqpRetryPolicy;
-import org.junit.jupiter.api.AfterEach;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -34,25 +31,12 @@ public class AmqpChannelProcessorIsolatedTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     private final TestObject connection1 = new TestObject();
 
-    @Mock
-    private AmqpRetryPolicy retryPolicy;
     private AmqpChannelProcessor<TestObject> channelProcessor;
-    private AutoCloseable mocksCloseable;
 
     @BeforeEach
     void setup() {
-        mocksCloseable = MockitoAnnotations.openMocks(this);
-        channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates, retryPolicy, new HashMap<>());
-    }
-
-    @AfterEach
-    void teardown() throws Exception {
-        // Tear down any inline mocks to avoid memory leaks.
-        // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
-        Mockito.framework().clearInlineMock(this);
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
+        channelProcessor = new AmqpChannelProcessor<>("namespace-test", TestObject::getStates,
+            new FixedAmqpRetryPolicy(new AmqpRetryOptions()), new HashMap<>());
     }
 
     @Test

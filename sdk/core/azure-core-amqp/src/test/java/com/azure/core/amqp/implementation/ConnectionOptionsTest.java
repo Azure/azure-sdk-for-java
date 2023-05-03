@@ -9,14 +9,12 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import org.apache.qpid.proton.engine.SslDomain;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -25,24 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
  * Tests for {@link ConnectionOptions}.
  */
 public class ConnectionOptionsTest {
-    @Mock
-    private TokenCredential tokenCredential;
-    @Mock
-    private Scheduler scheduler;
-    private AutoCloseable mocksCloseable;
-
-    @BeforeEach
-    public void beforeEach() {
-        mocksCloseable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    public void afterEach() throws Exception {
-        if (mocksCloseable != null) {
-            mocksCloseable.close();
-        }
-    }
-
     @Test
     public void propertiesSet() {
         // Arrange
@@ -54,6 +34,8 @@ public class ConnectionOptionsTest {
         final SslDomain.VerifyMode verifyMode = SslDomain.VerifyMode.VERIFY_PEER;
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         final ClientOptions clientOptions = new ClientOptions();
+        final TokenCredential tokenCredential = new MockTokenCredential();
+        final Scheduler scheduler = Schedulers.boundedElastic();
 
         // Act
         final ConnectionOptions actual = new ConnectionOptions(hostname, tokenCredential,

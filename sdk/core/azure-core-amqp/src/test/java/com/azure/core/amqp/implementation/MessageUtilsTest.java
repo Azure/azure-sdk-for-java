@@ -7,7 +7,6 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
-import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
@@ -49,6 +48,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,8 +60,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests utility methods in {@link MessageUtilsTest}.
@@ -103,8 +101,9 @@ public class MessageUtilsTest {
      *
      * @return Unsupported messaged bodies.
      */
-    public static Stream<AmqpMessageBodyType> getUnsupportedMessageBody() {
-        return Stream.of(AmqpMessageBodyType.VALUE, AmqpMessageBodyType.SEQUENCE);
+    public static Stream<AmqpMessageBody> getUnsupportedMessageBody() {
+        return Stream.of(AmqpMessageBody.fromValue(new Object()),
+            AmqpMessageBody.fromSequence(Collections.emptyList()));
     }
 
     /**
@@ -264,10 +263,7 @@ public class MessageUtilsTest {
      */
     @MethodSource("getUnsupportedMessageBody")
     @ParameterizedTest
-    public void toProtonJMessageUnsupportedMessageBody(AmqpMessageBodyType bodyType) {
-        final AmqpMessageBody messageBody = mock(AmqpMessageBody.class);
-        when(messageBody.getBodyType()).thenReturn(bodyType);
-
+    public void toProtonJMessageUnsupportedMessageBody(AmqpMessageBody messageBody) {
         final AmqpAnnotatedMessage message = new AmqpAnnotatedMessage(messageBody);
 
         // Act & Assert
@@ -320,10 +316,7 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeFromModifiedDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState state =
-            mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
-
-        when(state.getType()).thenReturn(DeliveryStateType.Modified);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState state = new Modified();
 
         // Act
         final DeliveryOutcome actual = MessageUtils.toDeliveryOutcome(state);
@@ -369,10 +362,7 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeFromRejectedDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState state =
-            mock(org.apache.qpid.proton.amqp.transport.DeliveryState.class);
-
-        when(state.getType()).thenReturn(DeliveryStateType.Rejected);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState state = new Rejected();
 
         // Act
         final DeliveryOutcome actual = MessageUtils.toDeliveryOutcome(state);
@@ -425,10 +415,7 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeDeclaredDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState = mock(
-            org.apache.qpid.proton.amqp.transport.DeliveryState.class);
-
-        when(deliveryState.getType()).thenReturn(DeliveryStateType.Declared);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState = new Declared();
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> MessageUtils.toDeliveryOutcome(deliveryState));
@@ -513,10 +500,7 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeTransactionDeliveryStateNotSameClass() {
         // Arrange
-        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState = mock(
-            org.apache.qpid.proton.amqp.transport.DeliveryState.class);
-
-        when(deliveryState.getType()).thenReturn(DeliveryStateType.Transactional);
+        final org.apache.qpid.proton.amqp.transport.DeliveryState deliveryState = new TransactionalState();
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> MessageUtils.toDeliveryOutcome(deliveryState));
@@ -604,7 +588,7 @@ public class MessageUtilsTest {
     @Test
     public void toDeliveryOutcomeUnsupportedOutcome() {
         // Arrange
-        final Outcome outcome = mock(Outcome.class);
+        final Outcome outcome = new Outcome() { };
 
         // Act & Assert
         assertThrows(UnsupportedOperationException.class, () -> MessageUtils.toDeliveryOutcome(outcome));
