@@ -19,11 +19,13 @@ public final class MuteParticipantsRequestInternal {
     private List<CommunicationIdentifierModel> targetParticipants;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of MuteParticipantsRequestInternal class. */
+    public MuteParticipantsRequestInternal() {}
 
     /**
      * Get the targetParticipants property: Participants to be muted from the call. Only ACS Users are supported.

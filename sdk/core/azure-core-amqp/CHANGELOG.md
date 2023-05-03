@@ -15,6 +15,7 @@
 ### Bugs Fixed
 
 - Addressing IllegalStateException due to double free of Connection reference by the Transport.
+- Fixes bug where `Message.messageId` and `Message.groupId` are not set on the uber message when sending a collection of messages.
 
 ### Other Changes
 

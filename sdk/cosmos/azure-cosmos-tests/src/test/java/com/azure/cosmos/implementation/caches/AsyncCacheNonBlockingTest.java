@@ -3,9 +3,14 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.guava25.base.Function;
+import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -16,6 +21,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AsyncCacheNonBlockingTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(AsyncCacheNonBlockingTest.class);
     private static final int TIMEOUT = 20000;
 
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
@@ -116,5 +123,52 @@ public class AsyncCacheNonBlockingTest {
         //since the refresh happens asynchronously, so wait for sometime
         Thread.sleep(500);
         assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
+    }
+
+    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    public void getAndCancelAsync() throws InterruptedException {
+        AtomicInteger numberOfCacheRefreshes = new AtomicInteger(0);
+        final Function<Integer, Mono<Integer>> refreshFunc = key -> Mono.just(key * 2)
+            .doOnNext(t -> {
+                numberOfCacheRefreshes.incrementAndGet();
+            });
+
+        AsyncCacheNonBlocking<Integer, Integer> cache = new AsyncCacheNonBlocking<>();
+        // populate the cache
+        int cacheKey = 0;
+        cache.getAsync(cacheKey, value -> refreshFunc.apply(cacheKey), forceRefresh -> false).block();
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(1);
+
+        // New function created to refresh the cache by sending forceRefresh true
+        Function<Integer, Mono<Integer>> refreshFunc1 = key -> {
+            numberOfCacheRefreshes.incrementAndGet();
+            return Mono.just(key * 2 + 1);
+        };
+
+        Mono<Integer> monoAsync = cache.getAsync(cacheKey, value -> refreshFunc1.apply(cacheKey), forceRefresh -> true)
+            .doOnCancel(() -> logger.info("Subscription Cancelled"));
+
+        StepVerifier.create(monoAsync)
+            .expectSubscription()
+            .thenCancel()
+            .verify();
+
+        // As we are cancelling the subscription immediately, we will not have the response
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(2);
+
+        for (int i = 0; i < 10; i++) {
+            int finalI = i;
+            cache.getAsync(finalI, value -> refreshFunc1.apply(finalI), forceRefresh -> true)
+                .doOnCancel(() -> logger.info("Subscription Cancelled : {}", finalI))
+                .doOnSubscribe(Subscription::cancel)
+                .subscribeOn(Schedulers.parallel())
+                .subscribe();
+        }
+
+        Thread.sleep(2 * 1000);
+
+        // Even though the subscription got cancelled, the cache task would run in background so might take some
+        // time to finish so giving it some time
+        assertThat(numberOfCacheRefreshes.get()).isEqualTo(12);
     }
 }
