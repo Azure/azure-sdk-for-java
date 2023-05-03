@@ -169,7 +169,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
             if (!receiverOptions.isRollingSessionReceiver()) {
-                receiveFlux = getSession(schedulers.get(0), null);
+                receiveFlux = getSession(schedulers.get(0), false);
             } else {
                 receiveFlux = Flux.merge(processor, receiverOptions.getMaxConcurrentSessions());
             }
@@ -341,10 +341,10 @@ class ServiceBusSessionManager implements AutoCloseable {
      * {@code scheduler}.
      *
      * @param scheduler Scheduler to coordinate received methods on.
-     * @param sessionIdleTimeout Timeout to dispose receiver when it idles (no new messages are received). Set to {@code null} to disable disposing.
+     * @param disposeOnIdle true to dispose receiver when it idles; false otherwise.
      * @return A Mono that completes with an unnamed session receiver.
      */
-    private Flux<ServiceBusMessageContext> getSession(Scheduler scheduler, Duration sessionIdleTimeout) {
+    private Flux<ServiceBusMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
         return getActiveLink().flatMap(link -> link.getSessionId()
             .map(sessionId -> sessionReceivers.compute(sessionId, (key, existing) -> {
                 if (existing != null) {
@@ -353,7 +353,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration, sessionIdleTimeout);
+                    maxSessionLockRenewDuration, disposeOnIdle ? sessionIdleTimeout : null);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()
@@ -404,11 +404,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 return;
             }
 
-            Duration sessionIdleTimeout = receiverOptions.getSessionIdleTimeout();
-            if (sessionIdleTimeout == null) {
-                sessionIdleTimeout = operationTimeout;
-            }
-            Flux<ServiceBusMessageContext> session = getSession(scheduler, sessionIdleTimeout);
+            Flux<ServiceBusMessageContext> session = getSession(scheduler, true);
 
             sessionReceiveSink.next(session);
         }

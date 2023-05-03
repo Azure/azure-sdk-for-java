@@ -22,22 +22,22 @@ final class ReceiverOptions {
     private final Duration sessionIdleTimeout;
 
     public static ReceiverOptions createNonSessionOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-                                                          boolean enableAutoComplete) {
+        boolean enableAutoComplete) {
         return new ReceiverOptions(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null, null);
     }
 
     public static ReceiverOptions createNamedSessionOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-                                                          boolean enableAutoComplete, String sessionId) {
+        boolean enableAutoComplete, String sessionId) {
         return new ReceiverOptions(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, sessionId, null, null);
     }
 
     public static ReceiverOptions createUnnamedSessionOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-                                                            boolean enableAutoComplete, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
+        boolean enableAutoComplete, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
         return new ReceiverOptions(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
     }
 
     private ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
-                    boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
+        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions, Duration sessionIdleTimeout) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
         this.enableAutoComplete = enableAutoComplete;
