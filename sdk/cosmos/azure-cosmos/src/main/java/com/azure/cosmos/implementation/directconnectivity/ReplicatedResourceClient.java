@@ -112,9 +112,9 @@ public class ReplicatedResourceClient {
                     forceRefreshAndTimeout.getValue3().toString());
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
-            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                        forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
 
+            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
         };
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> funcDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {
@@ -144,16 +144,14 @@ public class ReplicatedResourceClient {
                     return prepareRequestAsyncDelegate.apply(readRequestClone).flatMap(responseReq -> {
                         logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                         responseReq.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                        return invokeAsync(responseReq, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                                forceRefreshAndTimeout.getValue1(),
-                                forceRefreshAndTimeout.getValue0());
+                        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                            forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
                     });
                 } else {
                     logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                     readRequestClone.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                    return invokeAsync(readRequestClone, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                            forceRefreshAndTimeout.getValue1(),
-                            forceRefreshAndTimeout.getValue0());
+                    return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                        forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
                 }
 
             };

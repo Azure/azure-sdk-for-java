@@ -132,6 +132,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
+    private CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -786,6 +787,24 @@ public class CosmosClientBuilder implements
     public CosmosClientBuilder openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
         this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         return this;
+    }
+
+    /**
+     * Sets the {@link CosmosE2EOperationRetryPolicyConfig} on the client
+     * @param cosmosE2EOperationRetryPolicyConfig the {@link CosmosE2EOperationRetryPolicyConfig}
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig){
+        this.cosmosE2EOperationRetryPolicyConfig = cosmosE2EOperationRetryPolicyConfig;
+        return this;
+    }
+
+    /**
+     * Gets the {@link CosmosE2EOperationRetryPolicyConfig}
+     * @return the {@link CosmosE2EOperationRetryPolicyConfig}
+     */
+    CosmosE2EOperationRetryPolicyConfig getEndToEndOperationConfig() {
+        return this.cosmosE2EOperationRetryPolicyConfig;
     }
 
     /**
