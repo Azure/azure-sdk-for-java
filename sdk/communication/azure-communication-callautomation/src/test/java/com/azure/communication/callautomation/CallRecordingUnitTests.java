@@ -3,15 +3,20 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
+import com.azure.communication.common.PhoneNumberIdentifier;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.azure.core.exception.HttpResponseException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,10 +37,18 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
             recordingOperationsResponses
         );
         callRecording = callAutomationClient.getCallRecording();
+        StartRecordingOptions startRecordingOptions = new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            .setRecordingStateCallbackUrl("https://localhost/");
+
+        ChannelAffinity channelAffinity = new ChannelAffinity()
+            .setParticipant(new PhoneNumberIdentifier("RECORDING_ID"))
+            .setChannel(0);
+
+        List<ChannelAffinity> channelAffinities = Arrays.asList(channelAffinity);
+        startRecordingOptions.setChannelAffinity(channelAffinities);
 
         validateRecording(
-            callRecording.start(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                .setRecordingStateCallbackUrl("https://localhost/")),
+            callRecording.start(startRecordingOptions),
             RecordingState.ACTIVE
         );
 
