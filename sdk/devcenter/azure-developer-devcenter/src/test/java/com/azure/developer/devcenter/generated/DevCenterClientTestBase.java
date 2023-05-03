@@ -44,6 +44,8 @@ class DevCenterClientTestBase extends TestBase {
 
     protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "myEnvType");
 
+    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "myPool");
+
     @Override
     protected void beforeTest() {
         DevCenterClientBuilder devCenterClientbuilder =

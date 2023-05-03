@@ -17,8 +17,6 @@ import java.util.LinkedHashMap;
 public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
     @Test
     public void testDevBoxesGetPoolTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
-        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "myPool");
         RequestOptions requestOptions = new RequestOptions();
 
         Response<BinaryData> response = devBoxesClient.getPoolWithResponse(projectName, poolName, requestOptions);
