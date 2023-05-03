@@ -115,7 +115,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
-        } else if (interceptorManager.isRecordMode()) {
+        } else {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
             credential = new ClientSecretCredentialBuilder()
