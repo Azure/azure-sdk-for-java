@@ -1042,7 +1042,7 @@ public final class ServiceBusClientBuilder implements
         /**
          * Sets the maximum amount of time to wait for a message to be received for the currently active session.
          * After this time has elapsed, the processor will close the session and attempt to process another session.
-         * If not specified, the try timeout will be used.
+         * If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.
          *
          * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
@@ -1287,7 +1287,7 @@ public final class ServiceBusClientBuilder implements
         /**
          * Sets the maximum amount of time to wait for a message to be received for the currently active session.
          * After this time has elapsed, the processor will close the session and attempt to process another session.
-         * If not specified, the try timeout will be used.
+         * If not specified, the {@link AmqpRetryOptions#getTryTimeout()} will be used.
          *
          * @param sessionIdleTimeout Session idle timeout.
          * @return The updated {@link ServiceBusSessionReceiverClientBuilder} object.

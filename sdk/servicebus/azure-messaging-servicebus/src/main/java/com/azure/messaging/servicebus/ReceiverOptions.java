@@ -20,6 +20,7 @@ class ReceiverOptions {
     private final Integer maxConcurrentSessions;
     private final Duration maxLockRenewDuration;
     private final Duration sessionIdleTimeout;
+
     ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
         boolean enableAutoComplete) {
         this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null, null);

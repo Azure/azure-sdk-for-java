@@ -72,7 +72,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      *     Duration#ZERO} to disable session lock renewal.
      */
     ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
-        AmqpRetryOptions retryOptions, int prefetch, boolean disposeOnIdle, Scheduler scheduler,
+        AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
         Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout) {
 
         this.receiveLink = receiveLink;
