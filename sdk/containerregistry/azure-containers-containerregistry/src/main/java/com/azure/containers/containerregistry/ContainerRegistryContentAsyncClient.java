@@ -21,6 +21,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -51,6 +52,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.UP
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentLength;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
@@ -507,7 +509,9 @@ public final class ContainerRegistryContentAsyncClient {
         long blobSize = getBlobSize(firstResponse.getHeaders());
         List<Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>>> others = new ArrayList<>();
         others.add(Mono.just(firstResponse));
-        for (long p = firstResponse.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+
+        long contentLength = getContentLength(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_LENGTH));
+        for (long p = contentLength; p < blobSize; p += CHUNK_SIZE) {
             HttpRange range = new HttpRange(p, (long) CHUNK_SIZE);
             others.add(blobsImpl.getChunkWithResponseAsync(repositoryName, digest, range.toString(), context));
         }
