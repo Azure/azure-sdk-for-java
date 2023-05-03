@@ -64,12 +64,12 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      * @param messageSerializer Serializes and deserializes messages from Service Bus.
      * @param retryOptions Retry options for the receiver.
      * @param prefetch Number of messages to prefetch from session.
-     * @param disposeOnIdle true to dispose the session receiver if there are no more messages and the receiver is
-     *     idle.
      * @param scheduler The scheduler to publish messages on.
      * @param renewSessionLock Function to renew the session lock.
      * @param maxSessionLockRenewDuration Maximum time to renew the session lock for. {@code null} or {@link
      *     Duration#ZERO} to disable session lock renewal.
+     * @param sessionIdleTimeout Timeout after which session receiver will be disposed if there are no more messages
+     *                           and the receiver is idle. Set it to {@code null} to not dispose reciever.
      */
     ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
@@ -146,7 +146,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
 
         // Creates a subscription that disposes/closes the receiver when there are no more messages in the session and
         // receiver is idle.
-        if (disposeOnIdle) {
+        if (sessionIdleTimeout != null) {
             this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
                 .map((String lockToken) -> Mono.delay(sessionIdleTimeout)))
                 .subscribe(item -> {

@@ -1432,6 +1432,7 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions, sessionIdleTimeout);
 

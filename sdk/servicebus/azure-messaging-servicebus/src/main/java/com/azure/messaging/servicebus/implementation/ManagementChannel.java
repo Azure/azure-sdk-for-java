@@ -54,10 +54,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_ADD_RULE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_RULES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
@@ -68,7 +66,6 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DISPOSITION_STATUS_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
