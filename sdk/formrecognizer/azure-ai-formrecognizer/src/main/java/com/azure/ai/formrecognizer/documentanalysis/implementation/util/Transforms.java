@@ -210,9 +210,9 @@ public class Transforms {
                         .map(innerDocumentCell -> {
                             DocumentTableCell documentTableCell = new DocumentTableCell();
                             DocumentTableCellHelper.setBoundingRegions(documentTableCell,
-                                toBoundingRegions(innerDocumentTable.getBoundingRegions()));
+                                toBoundingRegions(innerDocumentCell.getBoundingRegions()));
                             DocumentTableCellHelper.setSpans(documentTableCell,
-                                toDocumentSpans(innerDocumentTable.getSpans()));
+                                toDocumentSpans(innerDocumentCell.getSpans()));
                             DocumentTableCellHelper.setContent(documentTableCell, innerDocumentCell.getContent());
                             DocumentTableCellHelper.setColumnIndex(documentTableCell,
                                 innerDocumentCell.getColumnIndex());
@@ -266,14 +266,13 @@ public class Transforms {
     }
 
     public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
-        ErrorResponseException errorResponseException = throwable;
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-            error = (errorResponseException.getValue().getError());
+        if (throwable.getValue() != null && throwable.getValue().getError() != null) {
+            error = (throwable.getValue().getError());
         }
         return new HttpResponseException(
-            errorResponseException.getMessage(),
-            errorResponseException.getResponse(),
+            throwable.getMessage(),
+            throwable.getResponse(),
             toResponseError(error)
         );
     }

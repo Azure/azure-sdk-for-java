@@ -2,6 +2,9 @@
 
 ## 4.0.7 (2023-05-10)
 
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
 ### Other Changes
 
 #### Dependency Updates
