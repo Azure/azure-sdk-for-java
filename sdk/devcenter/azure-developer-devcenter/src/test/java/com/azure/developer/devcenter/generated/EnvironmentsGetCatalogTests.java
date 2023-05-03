@@ -15,9 +15,6 @@ import org.junit.jupiter.api.Test;
 public final class EnvironmentsGetCatalogTests extends DevCenterClientTestBase {
     @Test
     public void testEnvironmentsGetCatalogTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
-        String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "myCatalog");
-
         RequestOptions requestOptions = new RequestOptions();
 
         Response<BinaryData> response =

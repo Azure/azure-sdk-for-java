@@ -17,7 +17,6 @@ import java.util.LinkedHashMap;
 public final class EnvironmentsListEnvironmentDefinitionsTests extends DevCenterClientTestBase {
     @Test
     public void testEnvironmentsListEnvironmentDefinitionsTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
         RequestOptions requestOptions = new RequestOptions();
 
         PagedIterable<BinaryData> response =  deploymentEnvironmentsClient.listEnvironmentDefinitions(projectName, requestOptions);

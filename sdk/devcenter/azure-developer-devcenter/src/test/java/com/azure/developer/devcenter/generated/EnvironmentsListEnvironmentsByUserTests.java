@@ -11,18 +11,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class EnvironmentsListEnvironmentsByUserTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testEnvironmentsListEnvironmentsByUserTests() {
+        String environmentName = createEnvironment();
+
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
-                deploymentEnvironmentsClient.listEnvironments("myProject", "me", requestOptions);
+            deploymentEnvironmentsClient.listEnvironments(projectName, "me", requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        int numberOfEnvironments = 0;
+        for (BinaryData data : response) {
+            numberOfEnvironments++;
+            var envType = data.toObject(LinkedHashMap.class);
+            Assertions.assertEquals(envType.get("name"), environmentName);
+        }
+
+        Assertions.assertEquals(1, numberOfEnvironments);
+        deleteEnvironment(environmentName);
     }
 }

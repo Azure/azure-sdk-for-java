@@ -7,16 +7,12 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class EnvironmentsListCatalogsByProjectTests extends DevCenterClientTestBase {
     @Test
     public void testEnvironmentsListCatalogsByProjectTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
-        String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "myCatalog");
         RequestOptions requestOptions = new RequestOptions();
 
         PagedIterable<BinaryData> response = deploymentEnvironmentsClient.listCatalogs(projectName, requestOptions);

@@ -17,16 +17,13 @@ import java.util.LinkedHashMap;
 public final class EnvironmentsListEnvironmentTypesTests extends DevCenterClientTestBase {
     @Test
     public void testEnvironmentsListEnvironmentTypesTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
-        String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "myEnvType");
         RequestOptions requestOptions = new RequestOptions();
 
         PagedIterable<BinaryData> response = deploymentEnvironmentsClient.listEnvironmentTypes(projectName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
         int numberOfEnvTypes = 0;
-        for(BinaryData data: response)
-        {
+        for (BinaryData data : response) {
             numberOfEnvTypes++;
             var envType = data.toObject(LinkedHashMap.class);
             Assertions.assertEquals(envType.get("name"), envTypeName);
