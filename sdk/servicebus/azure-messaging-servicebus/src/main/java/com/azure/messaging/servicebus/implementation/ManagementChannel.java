@@ -231,8 +231,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 // set mandatory properties on AMQP message body
                 final Map<String, Object> requestBodyMap = new HashMap<>();
 
-                final Long[] longs = numbers.toArray(new Long[0]);
-                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, longs);
+                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, numbers.toArray(new Long[0]));
 
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
                     UnsignedInteger.valueOf(receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
@@ -551,7 +550,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
         DeliveryState deliveryState) {
-
         return channel.sendWithAck(message, deliveryState)
             .handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
