@@ -9,11 +9,11 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -118,28 +118,47 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
+    protected CommunicationIdentityClient setupSyncClient(CommunicationIdentityClientBuilder builder, String testName){
+        return builder.buildClient();
+    }
+
     protected CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicy(builder, testName).buildClient();
+        return addSyncLoggingPolicy(builder, testName).buildClient();
     }
 
     protected CommunicationIdentityAsyncClient setupAsyncClient(CommunicationIdentityClientBuilder builder, String testName) {
-        return addLoggingPolicy(builder, testName).buildAsyncClient();
+        return addAsyncLoggingPolicy(builder, testName).buildAsyncClient();
     }
 
-    private CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+    private CommunicationIdentityClientBuilder addSyncLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
         return builder.addPolicy((context, next) -> logHeaders(testName, next));
     }
 
-    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process()
-                .flatMap(httpResponse -> {
-                    final HttpResponse bufferedResponse = httpResponse.buffer();
+    private CommunicationIdentityClientBuilder addAsyncLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+        return builder.addPolicy((context, next) -> logHeadersAsync(testName, next));
+    }
 
-                    // Should sanitize printed reponse url
-                    System.out.println("MS-CV header for " + testName + " request "
-                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                    return Mono.just(bufferedResponse);
-                });
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        Mono<HttpResponse> responseMono = next.process();
+        HttpResponse response = responseMono.block();
+
+        // Should sanitize printed reponse url
+        System.out.println("MS-CV header for " + testName + " request " + response.getRequest().getUrl()
+            + ": " + response.getHeaderValue("MS-CV"));
+
+        return Mono.just(response);
+    }
+
+    private Mono<HttpResponse> logHeadersAsync(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -207,4 +226,17 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         assertFalse(userIdentifier.getId().isEmpty());
     }
 
+    protected HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
+
+    protected HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
+    }
 }

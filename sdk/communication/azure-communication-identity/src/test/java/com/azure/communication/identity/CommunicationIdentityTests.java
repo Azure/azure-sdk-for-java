@@ -29,15 +29,19 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void createIdentityClientUsingConnectionString() {
         // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
-        client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(
+            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+        );
+
+        client = setupSyncClient(builder, "");
+
+        //client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
         assertNotNull(client);
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
     }
-
 
     @Test
     public void createUser() {
