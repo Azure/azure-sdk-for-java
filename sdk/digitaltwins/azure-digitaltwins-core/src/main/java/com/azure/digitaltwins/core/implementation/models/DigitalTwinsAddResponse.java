@@ -7,9 +7,10 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
+import java.util.Map;
 
 /** Contains all response data for the add operation. */
-public final class DigitalTwinsAddResponse extends ResponseBase<DigitalTwinsAddHeaders, Object> {
+public final class DigitalTwinsAddResponse extends ResponseBase<DigitalTwinsAddHeaders, Map<String, Object>> {
     /**
      * Creates an instance of DigitalTwinsAddResponse.
      *
@@ -20,13 +21,17 @@ public final class DigitalTwinsAddResponse extends ResponseBase<DigitalTwinsAddH
      * @param headers the deserialized headers of the HTTP response.
      */
     public DigitalTwinsAddResponse(
-            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Object value, DigitalTwinsAddHeaders headers) {
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            Map<String, Object> value,
+            DigitalTwinsAddHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public Object getValue() {
+    public Map<String, Object> getValue() {
         return super.getValue();
     }
 }
