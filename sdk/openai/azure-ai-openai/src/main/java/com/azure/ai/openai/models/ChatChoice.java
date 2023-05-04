@@ -37,7 +37,7 @@ public final class ChatChoice {
      * The delta message content for a streaming response.
      */
     @JsonProperty(value = "delta")
-    private ChatMessage delta;
+    private ChatMessageDelta delta;
 
     /**
      * Creates an instance of ChatChoice class.
@@ -85,7 +85,7 @@ public final class ChatChoice {
      *
      * @return the delta value.
      */
-    public ChatMessage getDelta() {
+    public ChatMessageDelta getDelta() {
         return this.delta;
     }
 }

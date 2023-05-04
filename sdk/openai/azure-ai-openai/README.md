@@ -161,7 +161,7 @@ Please refer to the service documentation for a conceptual discussion of [text c
 
 ```java readme-sample-getEmbedding
 EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
-    new StringInputModel("Your text string goes here"));
+    Arrays.asList("Your text string goes here"));
 
 Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
 
