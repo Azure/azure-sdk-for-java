@@ -90,6 +90,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
@@ -98,9 +100,13 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
 

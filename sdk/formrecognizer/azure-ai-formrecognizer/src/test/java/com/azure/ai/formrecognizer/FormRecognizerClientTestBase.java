@@ -173,8 +173,12 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isRecordMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
 
