@@ -1,16 +1,11 @@
 # Release History
 
-## 1.1.0-beta.5 (Unreleased)
-
-### Features Added
+## 1.1.0 (2023-05-11)
 
 ### Breaking Changes from version 1.1.0-beta.4
 
 - Added sanity check for manifest size at download time - if manifest is bigger than 4MB, `ServiceResponseException` will be thrown.
-
-### Bugs Fixed
-
-### Other Changes
+- Added sanity check for `Content-Length` header presence on the response when downloading blobs - if it's not present, `ServiceResponseException` will be thrown. 
 
 ## 1.0.14 (2023-04-21)
 
