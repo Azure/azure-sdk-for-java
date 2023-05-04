@@ -52,7 +52,9 @@ public final class OpenAIClient {
      * {
      *     user: String (Optional)
      *     model: String (Optional)
-     *     input: InputModelBase (Required)
+     *     input (Required): [
+     *         String (Required)
+     *     ]
      * }
      * }</pre>
      *
@@ -228,7 +230,10 @@ public final class OpenAIClient {
      *             }
      *             index: int (Required)
      *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
-     *             delta (Optional): (recursive schema, see delta above)
+     *             delta (Optional): {
+     *                 role: String(system/assistant/user) (Optional)
+     *                 content: String (Optional)
+     *             }
      *         }
      *     ]
      *     usage (Required): {
@@ -352,6 +357,7 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<Completions> getCompletionsStream(
             String deploymentId, CompletionsOptions completionsOptions) {
+        completionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         if(!this.client.getIsAzure()) {
             completionsOptions.setModel(deploymentId);
@@ -392,5 +398,36 @@ public final class OpenAIClient {
                         deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .getValue()
                 .toObject(ChatCompletions.class);
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     *
+     * @param deploymentId deployment id of the deployed model.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
+     *     generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<ChatCompletions> getChatCompletionsStream(
+            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
+        chatCompletionsOptions.setStream(true);
+        RequestOptions requestOptions = new RequestOptions();
+        Flux<ByteBuffer> responseStream =
+                getChatCompletionsWithResponse(
+                                deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                        .getValue()
+                        .toFluxByteBuffer();
+        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
+                new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+        return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
     }
 }

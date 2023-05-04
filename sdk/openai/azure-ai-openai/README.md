@@ -19,6 +19,8 @@ Use the client library for Azure OpenAI to:
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
+- [Azure OpenAI access][azure_openai_access]
+- [Quickstart: Get started generating text using Azure OpenAI Service][quickstart]
 
 ### Adding the package to your product
 
@@ -116,6 +118,7 @@ OpenAIClient client = new OpenAIClientBuilder()
 The following sections provide several code snippets covering some of the most common OpenAI service tasks, including:
 
 * [Create text completions](#text-completions "Text completions")
+* [Create chat completions](#chat-completions "Chat completions")
 * [Create embeddings](#text-embeddings "Text Embeddings")
 
 ### Text completions
@@ -131,6 +134,8 @@ for (Choice choice : completions.getChoices()) {
     System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
 }
 ```
+
+### Chat completions
 
 ``` java readme-sample-getChatCompletions
 List<ChatMessage> chatMessages = new ArrayList<>();
@@ -156,7 +161,7 @@ Please refer to the service documentation for a conceptual discussion of [text c
 
 ```java readme-sample-getEmbedding
 EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
-    new StringInputModel("Your text string goes here"));
+    Arrays.asList("Your text string goes here"));
 
 Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
 
@@ -203,6 +208,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
 [azure_subscription]: https://azure.microsoft.com/free/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
@@ -211,6 +217,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
+[quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/feature/open-ai/sdk/openai/azure-ai-openai/src
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/feature/open-ai/sdk/openai/azure-ai-openai/src/samples
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java

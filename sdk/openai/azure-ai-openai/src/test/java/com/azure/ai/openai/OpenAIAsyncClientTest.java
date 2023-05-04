@@ -18,6 +18,7 @@ import reactor.test.StepVerifier;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
@@ -45,7 +46,21 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsFromPrompt(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsStream(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)).last())
+                .assertNext(completions -> {
+                    assertNotNull(completions.getId());
+                    assertNotNull(completions.getChoices());
+                    assertFalse(completions.getChoices().isEmpty());
+                    assertNotNull(completions.getChoices().get(0).getText());
+                })
+                .verifyComplete();
+        });
+    }
+
+    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsFromSinglePromptRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, prompt))
@@ -84,6 +99,23 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
                 })
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStream(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)).last())
+                .assertNext(chatCompletions -> {
+                    assertNotNull(chatCompletions.getId());
+                    assertNotNull(chatCompletions.getChoices());
+                    assertFalse(chatCompletions.getChoices().isEmpty());
+                    assertNotNull(chatCompletions.getChoices().get(0).getDelta());
+                })
+                .verifyComplete();
+
         });
     }
 

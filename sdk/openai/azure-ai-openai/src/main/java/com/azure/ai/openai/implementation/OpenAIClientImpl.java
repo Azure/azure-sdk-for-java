@@ -157,7 +157,9 @@ public final class OpenAIClientImpl {
      * {
      *     user: String (Optional)
      *     model: String (Optional)
-     *     input: InputModelBase (Required)
+     *     input (Required): [
+     *         String (Required)
+     *     ]
      * }
      * }</pre>
      *
@@ -218,7 +220,9 @@ public final class OpenAIClientImpl {
      * {
      *     user: String (Optional)
      *     model: String (Optional)
-     *     input: InputModelBase (Required)
+     *     input (Required): [
+     *         String (Required)
+     *     ]
      * }
      * }</pre>
      *
@@ -489,7 +493,10 @@ public final class OpenAIClientImpl {
      *             }
      *             index: int (Required)
      *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
-     *             delta (Optional): (recursive schema, see delta above)
+     *             delta (Optional): {
+     *                 role: String(system/assistant/user) (Optional)
+     *                 content: String (Optional)
+     *             }
      *         }
      *     ]
      *     usage (Required): {
@@ -574,7 +581,10 @@ public final class OpenAIClientImpl {
      *             }
      *             index: int (Required)
      *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
-     *             delta (Optional): (recursive schema, see delta above)
+     *             delta (Optional): {
+     *                 role: String(system/assistant/user) (Optional)
+     *                 content: String (Optional)
+     *             }
      *         }
      *     ]
      *     usage (Required): {

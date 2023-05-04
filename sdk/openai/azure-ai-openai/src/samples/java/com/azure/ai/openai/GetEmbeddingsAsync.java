@@ -6,9 +6,9 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.EmbeddingsUsage;
-import com.azure.ai.openai.models.StringInputModel;
 import com.azure.core.credential.AzureKeyCredential;
 
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,7 +30,7 @@ public class GetEmbeddingsAsync {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildAsyncClient();
 
-        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(new StringInputModel("Your text string goes here"));
+        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Arrays.asList("Your text string goes here"));
         client.getEmbeddings(deploymentOrModelId, embeddingsOptions).subscribe(
             embeddings -> {
                 for (EmbeddingItem item : embeddings.getData()) {
