@@ -32,6 +32,8 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -222,6 +224,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
+    private static final Duration EXPIRED_RENEWAL_CLEANUP_INTERVAL = Duration.ofMinutes(2);
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
@@ -283,7 +286,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.isSessionEnabled = false;
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
-        this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
+        this.renewalContainer = new LockContainer<>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, renewal -> {
             LOGGER.atVerbose()
                 .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
                 .addKeyValue("status", renewal.getStatus())
@@ -296,7 +299,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
-    // Client to work with a session-enabled entity.
+    // Client to work with a session-enabled entity (client to receive from one-session or receive from multiple-sessions).
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
                                   ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
                                   ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
@@ -315,7 +318,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.isSessionEnabled = true;
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
-        this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
+        this.renewalContainer = new LockContainer<>(EXPIRED_RENEWAL_CLEANUP_INTERVAL, renewal -> {
             LOGGER.atInfo()
                 .addKeyValue(SESSION_ID_KEY, renewal.getSessionId())
                 .addKeyValue("status", renewal.getStatus())
@@ -829,9 +832,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
-        if (supportsNewStack()) {
-            // TODO: anu Apply publishOn or allow use to do it.
-            return receiveUsingNewStack();
+        if (connectionCacheWrapper.isNewStack()) {
+            if (isSessionEnabled) {
+                return fluxError(LOGGER, new IllegalStateException("Session-Receive and New-Stack combination is unexpected."));
+            } else {
+                return nonSessionReactiveReceiveOnNewStack();
+            }
         }
         // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
         // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
@@ -841,18 +847,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // If receiverOptions.prefetchCount is 0 (default value),
         // the request will add a link credit so one message is retrieved from the service.
         return receiveMessagesNoBackPressure().limitRate(1, 0);
-    }
-
-    boolean supportsNewStack() {
-        // Session-enabled entity support is not in the first phase.
-        return !isSessionEnabled && connectionCacheWrapper.isNewStack();
-    }
-
-    Flux<ServiceBusReceivedMessage> receiveUsingNewStack() {
-        if (!supportsNewStack()) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("receiveUsingNewStack is unsupported (Requires non-session entity and not disabling new stack)."));
-        }
-        return getOrCreateConsumer().receive();
     }
 
     @SuppressWarnings("try")
@@ -1711,5 +1705,95 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     boolean isRenewalContainerClosed() {
         return this.renewalContainer.isClosed();
+    }
+
+    boolean isSessionEnabled() {
+        return isSessionEnabled;
+    }
+
+    boolean isAutoLockRenewRequested() {
+        return receiverOptions.isAutoLockRenewEnabled();
+    }
+
+    boolean isNewStack() {
+        return connectionCacheWrapper.isNewStack();
+    }
+
+    Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveOnNewStack() {
+        assert !isSessionEnabled && connectionCacheWrapper.isNewStack();
+        return getOrCreateConsumer().receive();
+    }
+
+    Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveOnNewStack() {
+        assert !isSessionEnabled && connectionCacheWrapper.isNewStack();
+        // TODO: apply auto-complete etc.
+        return getOrCreateConsumer().receive();
+    }
+
+    Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveOnNewStack() {
+        assert !isSessionEnabled && connectionCacheWrapper.isNewStack();
+        return getOrCreateConsumer().receive();
+    }
+
+    /**
+     * Begin the recurring lock renewal of the given message.
+     *
+     * @param messageContext the message to keep renewing.
+     * @return {@link Disposable} that when disposed of, results in stopping the recurring renewal.
+     */
+    Disposable beginLockRenewal(ServiceBusMessageContext messageContext) {
+        if (isSessionEnabled) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Renewing message lock is an invalid operation when working with sessions."));
+        }
+        final Duration maxRenewalDuration = receiverOptions.getMaxLockRenewDuration();
+        Objects.requireNonNull(maxRenewalDuration,"'receivingOptions.maxAutoLockRenewDuration' is required for recurring lock renewal.");
+
+        final ServiceBusReceivedMessage message = messageContext.getMessage();
+        if (message == null) {
+            return Disposables.disposed();
+        }
+
+        final String lockToken = message.getLockToken();
+        if (Objects.isNull(lockToken)) {
+            LOGGER.atWarning()
+                .addKeyValue(SEQUENCE_NUMBER_KEY, message.getSequenceNumber())
+                .log("Unexpected, LockToken is required for recurring lock renewal.");
+            return Disposables.disposed();
+        }
+
+        final OffsetDateTime initialExpireAt = message.getLockedUntil();
+        if (Objects.isNull(initialExpireAt)) {
+            LOGGER.atWarning()
+                .addKeyValue(SEQUENCE_NUMBER_KEY, message.getSequenceNumber())
+                .log("Unexpected, LockedUntil is required for recurring lock renewal.");
+            return Disposables.disposed();
+        }
+
+        // A Mono, when subscribed, requests the broker to renew the message once and updates the message's lockedUntil
+        // field to reflect the new expiration time.
+        final Mono<OffsetDateTime> renewalMono = this.renewMessageLock(lockToken)
+            .map(nextExpireAt -> {
+                message.setLockedUntil(nextExpireAt);
+                return nextExpireAt;
+        });
+
+        // The operation performing recurring renewal by subscribing to 'renewalMono' before the message expires each time.
+        // The periodic renewal stops when the object is disposed of, or when the 'maxRenewalDuration' elapses.
+        final LockRenewalOperation recurringRenewal = new LockRenewalOperation(lockToken, maxRenewalDuration, false, __ -> renewalMono, initialExpireAt);
+        // TODO: anu ^ - (alloc improvement)
+        //  Update LockRenewalOperation::Ctr to take Mono<OffsetDateTime> instead of a Function<String, Mono<OffsetDateTime>>
+        try {
+            // Track the recurring renewal operation in client scope so that it can be disposed of (to prevent memory leak)
+            // 1. when the client closes, or
+            // 2. when the lock is identified as expired i.e., no renewal happened, so lock lifetime past the current time.
+            renewalContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxRenewalDuration), recurringRenewal);
+        } catch (Exception e) {
+            LOGGER.atInfo()
+                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                .log("Exception occurred while updating lockContainer.", e);
+        }
+
+        // TODO: anu, maybe have LockRenewalOperation implement Disposable so the following inline interface impl can be removed.
+        return Disposables.composite(() -> recurringRenewal.close(), () -> renewalContainer.remove(lockToken));
     }
 }
