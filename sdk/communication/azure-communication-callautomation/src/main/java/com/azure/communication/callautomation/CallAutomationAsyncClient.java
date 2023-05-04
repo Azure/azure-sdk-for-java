@@ -9,6 +9,7 @@ import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
@@ -19,6 +20,7 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
@@ -71,7 +73,7 @@ public final class CallAutomationAsyncClient {
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
-    private final CommunicationIdentifierModel sourceIdentity;
+    private final CommunicationUserIdentifierModel sourceIdentity;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
@@ -79,10 +81,10 @@ public final class CallAutomationAsyncClient {
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
+        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint().toString(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceUrl = callServiceClient.getEndpoint();
-        this.sourceIdentity = sourceIdentity == null ? null : CommunicationIdentifierConverter.convert(sourceIdentity);
+        this.resourceUrl = callServiceClient.getEndpoint().toString();
+        this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
     //region Pre-call Actions
@@ -91,7 +93,7 @@ public final class CallAutomationAsyncClient {
      * @return {@link CommunicationUserIdentifier} represent source
      */
     public CommunicationUserIdentifier getSourceIdentity() {
-        return sourceIdentity == null ? null : (CommunicationUserIdentifier) CommunicationIdentifierConverter.convert(sourceIdentity);
+        return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
     /**
@@ -314,7 +316,8 @@ public final class CallAutomationAsyncClient {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
-                .setAnsweredByIdentifier(sourceIdentity);
+                .setAnsweredByIdentifier(sourceIdentity)
+                .setOperationContext(answerCallOptions.getOperationContext());
 
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =

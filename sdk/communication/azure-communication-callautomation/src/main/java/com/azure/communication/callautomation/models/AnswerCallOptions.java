@@ -29,6 +29,11 @@ public final class AnswerCallOptions {
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     private String azureCognitiveServicesUrl;
+    
+    /**
+     * The operational context
+     */
+    private String operationContext;
 
     /**
      * Constructor
@@ -77,6 +82,15 @@ public final class AnswerCallOptions {
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
     }
+    
+    /**
+     * Get the operationContext.
+     *
+     * @return the operationContext
+     */
+    public String getOperationContext() {
+        return operationContext;
+    }
 
     /**
      * Set the media streaming configuration.
@@ -98,6 +112,17 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
         this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
+        return this;
+    }
+    
+     /**
+     * Set the operationContext.
+     *
+     * @param operationContext the operationContext to set
+     * @return the AddParticipantOptions object itself.
+     */
+    public AnswerCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

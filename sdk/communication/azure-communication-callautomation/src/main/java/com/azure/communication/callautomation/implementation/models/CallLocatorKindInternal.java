@@ -8,21 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The call locator kind. */
+/** Defines values for CallLocatorKindInternal. */
 public final class CallLocatorKindInternal extends ExpandableStringEnum<CallLocatorKindInternal> {
     /** Static value groupCallLocator for CallLocatorKindInternal. */
     public static final CallLocatorKindInternal GROUP_CALL_LOCATOR = fromString("groupCallLocator");
 
     /** Static value serverCallLocator for CallLocatorKindInternal. */
     public static final CallLocatorKindInternal SERVER_CALL_LOCATOR = fromString("serverCallLocator");
-
-    /**
-     * Creates a new instance of CallLocatorKindInternal value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CallLocatorKindInternal() {}
 
     /**
      * Creates or finds a CallLocatorKindInternal from its string representation.

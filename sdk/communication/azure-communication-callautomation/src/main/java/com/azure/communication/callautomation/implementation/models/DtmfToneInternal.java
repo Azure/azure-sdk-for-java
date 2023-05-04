@@ -59,14 +59,6 @@ public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInterna
     public static final DtmfToneInternal ASTERISK = fromString("asterisk");
 
     /**
-     * Creates a new instance of DtmfToneInternal value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public DtmfToneInternal() {}
-
-    /**
      * Creates or finds a DtmfToneInternal from its string representation.
      *
      * @param name a name to look for.

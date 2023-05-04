@@ -26,6 +26,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -60,7 +61,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> startRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StartCallRecordingRequestInternal startCallRecording,
                 @HeaderParam("Accept") String accept,
@@ -72,7 +73,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> getRecordingProperties(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -82,7 +83,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -92,7 +93,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> pauseRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -102,7 +103,7 @@ public final class CallRecordingsImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> resumeRecording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -198,6 +199,20 @@ public final class CallRecordingsImpl {
      * Start recording the call.
      *
      * @param startCallRecording The request body of start call recording request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecordingStateResponseInternal startRecording(StartCallRecordingRequestInternal startCallRecording) {
+        return startRecordingAsync(startCallRecording).block();
+    }
+
+    /**
+     * Start recording the call.
+     *
+     * @param startCallRecording The request body of start call recording request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -208,20 +223,6 @@ public final class CallRecordingsImpl {
     public Response<RecordingStateResponseInternal> startRecordingWithResponse(
             StartCallRecordingRequestInternal startCallRecording, Context context) {
         return startRecordingWithResponseAsync(startCallRecording, context).block();
-    }
-
-    /**
-     * Start recording the call.
-     *
-     * @param startCallRecording The request body of start call recording request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponseInternal startRecording(StartCallRecordingRequestInternal startCallRecording) {
-        return startRecordingWithResponse(startCallRecording, Context.NONE).getValue();
     }
 
     /**
@@ -294,6 +295,20 @@ public final class CallRecordingsImpl {
      * Get call recording properties.
      *
      * @param recordingId The recording id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return call recording properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RecordingStateResponseInternal getRecordingProperties(String recordingId) {
+        return getRecordingPropertiesAsync(recordingId).block();
+    }
+
+    /**
+     * Get call recording properties.
+     *
+     * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -304,20 +319,6 @@ public final class CallRecordingsImpl {
     public Response<RecordingStateResponseInternal> getRecordingPropertiesWithResponse(
             String recordingId, Context context) {
         return getRecordingPropertiesWithResponseAsync(recordingId, context).block();
-    }
-
-    /**
-     * Get call recording properties.
-     *
-     * @param recordingId The recording id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return call recording properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingStateResponseInternal getRecordingProperties(String recordingId) {
-        return getRecordingPropertiesWithResponse(recordingId, Context.NONE).getValue();
     }
 
     /**
@@ -388,6 +389,19 @@ public final class CallRecordingsImpl {
      * Stop recording the call.
      *
      * @param recordingId The recording id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopRecording(String recordingId) {
+        stopRecordingAsync(recordingId).block();
+    }
+
+    /**
+     * Stop recording the call.
+     *
+     * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -397,19 +411,6 @@ public final class CallRecordingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
         return stopRecordingWithResponseAsync(recordingId, context).block();
-    }
-
-    /**
-     * Stop recording the call.
-     *
-     * @param recordingId The recording id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void stopRecording(String recordingId) {
-        stopRecordingWithResponse(recordingId, Context.NONE);
     }
 
     /**
@@ -480,6 +481,19 @@ public final class CallRecordingsImpl {
      * Pause recording the call.
      *
      * @param recordingId The recording id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void pauseRecording(String recordingId) {
+        pauseRecordingAsync(recordingId).block();
+    }
+
+    /**
+     * Pause recording the call.
+     *
+     * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -489,19 +503,6 @@ public final class CallRecordingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
         return pauseRecordingWithResponseAsync(recordingId, context).block();
-    }
-
-    /**
-     * Pause recording the call.
-     *
-     * @param recordingId The recording id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void pauseRecording(String recordingId) {
-        pauseRecordingWithResponse(recordingId, Context.NONE);
     }
 
     /**
@@ -572,6 +573,19 @@ public final class CallRecordingsImpl {
      * Resume recording the call.
      *
      * @param recordingId The recording id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resumeRecording(String recordingId) {
+        resumeRecordingAsync(recordingId).block();
+    }
+
+    /**
+     * Resume recording the call.
+     *
+     * @param recordingId The recording id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -581,18 +595,5 @@ public final class CallRecordingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resumeRecordingWithResponse(String recordingId, Context context) {
         return resumeRecordingWithResponseAsync(recordingId, context).block();
-    }
-
-    /**
-     * Resume recording the call.
-     *
-     * @param recordingId The recording id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resumeRecording(String recordingId) {
-        resumeRecordingWithResponse(recordingId, Context.NONE);
     }
 }

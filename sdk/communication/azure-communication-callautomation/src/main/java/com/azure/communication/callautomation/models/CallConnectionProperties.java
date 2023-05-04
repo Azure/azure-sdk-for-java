@@ -5,9 +5,11 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Immutable;
 
@@ -21,13 +23,15 @@ import java.util.stream.Collectors;
 public final class CallConnectionProperties {
     private final String callConnectionId;
     private final String serverCallId;
-    private final CommunicationIdentifier sourceIdentity;
+    private final CommunicationUserIdentifier sourceIdentity;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private final String sourceDisplayName;
     private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
     private final String callbackUrl;
     private final String mediaSubscriptionId;
+    private final CommunicationUserIdentifier answeredByIdentifier;
+    private final String correlationId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
@@ -53,6 +57,8 @@ public final class CallConnectionProperties {
         this.callConnectionState = null;
         this.callbackUrl = null;
         this.mediaSubscriptionId = null;
+        this.answeredByIdentifier = null;
+        this.correlationId = null;
     }
 
     /**
@@ -62,7 +68,7 @@ public final class CallConnectionProperties {
      */
     CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
-        this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
+        this.sourceIdentity = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
         this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
@@ -70,6 +76,8 @@ public final class CallConnectionProperties {
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
         this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
+        this.answeredByIdentifier = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredByIdentifier());
+        this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
     }
 
     /**
@@ -86,7 +94,7 @@ public final class CallConnectionProperties {
      *
      * @return sourceIdentity value.
      */
-    public CommunicationIdentifier getSourceIdentity() {
+    public CommunicationUserIdentifier getSourceIdentity() {
         return sourceIdentity;
     }
 
@@ -151,5 +159,21 @@ public final class CallConnectionProperties {
      */
     public String getMediaSubscriptionId() {
         return mediaSubscriptionId;
+    }
+    
+    /**
+     *  Get identity that answered the call
+     * @return identity that answered the call
+     */
+    public CommunicationUserIdentifier getAnsweredByIdentifier() {
+        return answeredByIdentifier;
+    }
+    
+    /**
+     * Get correlationId for the call
+     * @return correlationId for the call
+     */
+    public String getCorrelationId() {
+        return correlationId;
     }
 }

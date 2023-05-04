@@ -306,6 +306,7 @@ public final class CallAutomationClientBuilder implements
      * specified by additionalPolicies will be applied after them
      *
      * @return The updated {@link CallAutomationClientBuilder} object.
+     * @throws MalformedURLException If endpoint cannot be parsed as an URL
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
@@ -319,6 +320,7 @@ public final class CallAutomationClientBuilder implements
      * additionalPolicies will be applied after them.
      *
      * @return Updated {@link CallAutomationClientBuilder} object.
+     * @throws MalformedURLException If endpoint cannot be parsed as an URL
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
@@ -388,7 +390,12 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
         clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
-        return clientBuilder.buildClient();
+        try {
+            
+            return clientBuilder.buildClient();
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new RuntimeException(ex));
+        }
     }
 
     /**
