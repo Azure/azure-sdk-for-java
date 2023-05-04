@@ -58,14 +58,16 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
-     * @deprecated due to refactoring of code.
+     * @deprecated use {@link AppendBlobClient#getMaxAppendBlockBytes()}.
      */
     @Deprecated
     public static final int MAX_APPEND_BLOCK_BYTES = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES;
 
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
+     * @deprecated use {@link AppendBlobClient#getMaxBlocks()}.
      */
+    @Deprecated
     public static final int MAX_BLOCKS = AppendBlobAsyncClient.MAX_BLOCKS;
 
     /**
@@ -78,6 +80,11 @@ public final class AppendBlobClient extends BlobClientBase {
      * For versions 2022-11-02 and above.
      */
     static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = AppendBlobAsyncClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
+
+    /**
+     * Indicates the maximum number of blocks allowed in an append blob.
+     */
+    static final int MAX_APPEND_BLOCKS = AppendBlobAsyncClient.MAX_APPEND_BLOCKS;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -587,5 +594,14 @@ public final class AppendBlobClient extends BlobClientBase {
         } else {
             return MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
         }
+    }
+
+    /**
+     * Get the maximum number of blocks allowed in an append blob.
+     *
+     * @return the max number of blocks that can be uploaded in an append blob.
+     */
+    public int getMaxBlocks() {
+        return MAX_APPEND_BLOCKS;
     }
 }

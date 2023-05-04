@@ -17,7 +17,6 @@ import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
-import com.azure.storage.file.share.models.AccessRight
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList
 import com.azure.storage.file.share.models.DownloadRetryOptions
 import com.azure.storage.file.share.models.FileLastWrittenMode
@@ -25,6 +24,7 @@ import com.azure.storage.file.share.models.NtfsFileAttributes
 import com.azure.storage.file.share.models.PermissionCopyModeType
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileCopyInfo
+import com.azure.storage.file.share.models.ShareFileHandleAccessRights
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareFileRange
 
@@ -2592,7 +2592,7 @@ class FileAPITests extends APISpec {
         def list = fileClient.listHandles().asList()
 
         then:
-        list.get(0).getAccessRightList()[0] == AccessRight.WRITE
+        list.get(0).getAccessRights()[0] == ShareFileHandleAccessRights.WRITE
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2019_07_07")

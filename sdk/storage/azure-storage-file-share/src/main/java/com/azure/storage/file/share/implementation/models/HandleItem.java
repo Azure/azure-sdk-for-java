@@ -6,7 +6,7 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.storage.file.share.models.AccessRight;
+import com.azure.storage.file.share.models.ShareFileHandleAccessRights;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -69,10 +69,11 @@ public final class HandleItem {
 
     private static final class AccessRightListWrapper {
         @JacksonXmlProperty(localName = "AccessRight")
-        private final List<AccessRight> items;
+        private final List<ShareFileHandleAccessRights> items;
 
         @JsonCreator
-        private AccessRightListWrapper(@JacksonXmlProperty(localName = "AccessRight") List<AccessRight> items) {
+        private AccessRightListWrapper(
+                @JacksonXmlProperty(localName = "AccessRight") List<ShareFileHandleAccessRights> items) {
             this.items = items;
         }
     }
@@ -267,9 +268,9 @@ public final class HandleItem {
      *
      * @return the accessRightList value.
      */
-    public List<AccessRight> getAccessRightList() {
+    public List<ShareFileHandleAccessRights> getAccessRightList() {
         if (this.accessRightList == null) {
-            this.accessRightList = new AccessRightListWrapper(new ArrayList<AccessRight>());
+            this.accessRightList = new AccessRightListWrapper(new ArrayList<ShareFileHandleAccessRights>());
         }
         return this.accessRightList.items;
     }
@@ -280,7 +281,7 @@ public final class HandleItem {
      * @param accessRightList the accessRightList value to set.
      * @return the HandleItem object itself.
      */
-    public HandleItem setAccessRightList(List<AccessRight> accessRightList) {
+    public HandleItem setAccessRightList(List<ShareFileHandleAccessRights> accessRightList) {
         this.accessRightList = new AccessRightListWrapper(accessRightList);
         return this;
     }
