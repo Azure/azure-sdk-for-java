@@ -26,24 +26,7 @@ import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimi
  */
 @Fluent
 public final class SubscriptionProperties {
-    private Duration lockDuration;
-    private final boolean requiresSession;
-    private Duration defaultMessageTimeToLive;
-    private boolean deadLetteringOnMessageExpiration;
-    private boolean deadLetteringOnFilterEvaluationExceptions;
-    private int messageCount;
-    private int maxDeliveryCount;
-    private boolean enableBatchedOperations;
-    private EntityStatus status;
-    private String forwardTo;
-    private final OffsetDateTime createdAt;
-    private final OffsetDateTime updatedAt;
-    private final OffsetDateTime accessedAt;
-    private final MessageCountDetailsImpl messageCountDetails;
-    private String userMetadata;
-    private String forwardDeadLetteredMessagesTo;
-    private Duration autoDeleteOnIdle;
-    private final EntityAvailabilityStatusImpl entityAvailabilityStatus;
+    private final SubscriptionDescriptionImpl description;
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
@@ -55,26 +38,7 @@ public final class SubscriptionProperties {
 
             @Override
             public SubscriptionDescriptionImpl toImplementation(SubscriptionProperties subscription) {
-                return new SubscriptionDescriptionImpl()
-                    .setAccessedAt(subscription.getAccessedAt())
-                    .setAutoDeleteOnIdle(subscription.getAutoDeleteOnIdle())
-                    .setCreatedAt(subscription.getCreatedAt())
-                    .setDeadLetteringOnFilterEvaluationExceptions(
-                        subscription.isDeadLetteringOnFilterEvaluationExceptions())
-                    .setDeadLetteringOnMessageExpiration(subscription.isDeadLetteringOnMessageExpiration())
-                    .setDefaultMessageTimeToLive(subscription.getDefaultMessageTimeToLive())
-                    .setEnableBatchedOperations(subscription.enableBatchedOperations)
-                    .setEntityAvailabilityStatus(subscription.entityAvailabilityStatus)
-                    .setForwardTo(subscription.getForwardTo())
-                    .setForwardDeadLetteredMessagesTo(subscription.getForwardDeadLetteredMessagesTo())
-                    .setLockDuration(subscription.getLockDuration())
-                    .setMaxDeliveryCount(subscription.getMaxDeliveryCount())
-                    .setMessageCount(subscription.messageCount)
-                    .setMessageCountDetails(subscription.getMessageCountDetails())
-                    .setStatus(subscription.getStatus())
-                    .setRequiresSession(subscription.isSessionRequired())
-                    .setUpdatedAt(subscription.getUpdatedAt())
-                    .setUserMetadata(subscription.getUserMetadata());
+                return subscription.description;
             }
 
             @Override
@@ -99,25 +63,7 @@ public final class SubscriptionProperties {
      */
     SubscriptionProperties(SubscriptionDescriptionImpl description) {
         Objects.requireNonNull(description, "'description' cannot be null.");
-        this.accessedAt = description.getAccessedAt();
-        this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
-        this.createdAt = description.getCreatedAt();
-        this.defaultMessageTimeToLive = description.getDefaultMessageTimeToLive();
-        this.deadLetteringOnMessageExpiration = toPrimitive(description.isDeadLetteringOnMessageExpiration());
-        this.deadLetteringOnFilterEvaluationExceptions =
-            toPrimitive(description.isDeadLetteringOnFilterEvaluationExceptions());
-        this.enableBatchedOperations = toPrimitive(description.isEnableBatchedOperations());
-        this.entityAvailabilityStatus = description.getEntityAvailabilityStatus();
-        this.forwardTo = description.getForwardTo();
-        this.forwardDeadLetteredMessagesTo = description.getForwardDeadLetteredMessagesTo();
-        this.lockDuration = description.getLockDuration();
-        this.maxDeliveryCount = toPrimitive(description.getMaxDeliveryCount());
-        this.messageCount = toPrimitive(description.getMessageCount());
-        this.messageCountDetails = description.getMessageCountDetails();
-        this.requiresSession = toPrimitive(description.isRequiresSession());
-        this.status = description.getStatus();
-        this.updatedAt = description.getUpdatedAt();
-        this.userMetadata = description.getUserMetadata();
+        this.description = description;
     }
 
     /**
@@ -167,7 +113,7 @@ public final class SubscriptionProperties {
      * @return the lockDuration value.
      */
     public Duration getLockDuration() {
-        return this.lockDuration;
+        return description.getLockDuration();
     }
 
     /**
@@ -179,7 +125,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setLockDuration(Duration lockDuration) {
-        this.lockDuration = lockDuration;
+        description.setLockDuration(lockDuration);
         return this;
     }
 
@@ -189,7 +135,19 @@ public final class SubscriptionProperties {
      * @return the requiresSession value.
      */
     public boolean isSessionRequired() {
-        return this.requiresSession;
+        return toPrimitive(description.isRequiresSession());
+    }
+
+    /**
+     * Set the requiresSession property: A value that indicates whether the subscription supports the concept of
+     * sessions.
+     *
+     * @param requiresSession the requiresSession value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionProperties setSessionRequired(boolean requiresSession) {
+        description.setRequiresSession(requiresSession);
+        return this;
     }
 
     /**
@@ -200,7 +158,7 @@ public final class SubscriptionProperties {
      * @return the defaultMessageTimeToLive value.
      */
     public Duration getDefaultMessageTimeToLive() {
-        return this.defaultMessageTimeToLive;
+        return description.getDefaultMessageTimeToLive();
     }
 
     /**
@@ -212,7 +170,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+        description.setDefaultMessageTimeToLive(defaultMessageTimeToLive);
         return this;
     }
 
@@ -223,7 +181,7 @@ public final class SubscriptionProperties {
      * @return the deadLetteringOnMessageExpiration value.
      */
     public boolean isDeadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
+        return toPrimitive(description.isDeadLetteringOnMessageExpiration());
     }
 
     /**
@@ -234,7 +192,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setDeadLetteringOnMessageExpiration(boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
+        description.setDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpiration);
         return this;
     }
 
@@ -245,7 +203,7 @@ public final class SubscriptionProperties {
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
     public boolean isDeadLetteringOnFilterEvaluationExceptions() {
-        return this.deadLetteringOnFilterEvaluationExceptions;
+        return toPrimitive(description.isDeadLetteringOnFilterEvaluationExceptions());
     }
 
     /**
@@ -257,7 +215,7 @@ public final class SubscriptionProperties {
      */
     public SubscriptionProperties setEnableDeadLetteringOnFilterEvaluationExceptions(
             boolean deadLetteringOnFilterEvaluationExceptions) {
-        this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
+        description.setDeadLetteringOnFilterEvaluationExceptions(deadLetteringOnFilterEvaluationExceptions);
         return this;
     }
 
@@ -267,7 +225,7 @@ public final class SubscriptionProperties {
      * @return the messageCount value.
      */
     int getMessageCount() {
-        return this.messageCount;
+        return toPrimitive(description.getMessageCount());
     }
 
     /**
@@ -277,7 +235,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     SubscriptionProperties setMessageCount(int messageCount) {
-        this.messageCount = messageCount;
+        description.setMessageCount(messageCount);
         return this;
     }
 
@@ -288,7 +246,7 @@ public final class SubscriptionProperties {
      * @return the maxDeliveryCount value.
      */
     public int getMaxDeliveryCount() {
-        return this.maxDeliveryCount;
+        return toPrimitive(description.getMaxDeliveryCount());
     }
 
     /**
@@ -299,7 +257,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setMaxDeliveryCount(int maxDeliveryCount) {
-        this.maxDeliveryCount = maxDeliveryCount;
+        description.setMaxDeliveryCount(maxDeliveryCount);
         return this;
     }
 
@@ -310,7 +268,7 @@ public final class SubscriptionProperties {
      * @return the enableBatchedOperations value.
      */
     public boolean isBatchedOperationsEnabled() {
-        return this.enableBatchedOperations;
+        return toPrimitive(description.isEnableBatchedOperations());
     }
 
     /**
@@ -321,7 +279,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
-        this.enableBatchedOperations = enableBatchedOperations;
+        description.setEnableBatchedOperations(enableBatchedOperations);
         return this;
     }
 
@@ -331,7 +289,7 @@ public final class SubscriptionProperties {
      * @return the status value.
      */
     public EntityStatus getStatus() {
-        return this.status;
+        return description.getStatus();
     }
 
     /**
@@ -341,7 +299,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setStatus(EntityStatus status) {
-        this.status = status;
+        description.setStatus(status);
         return this;
     }
 
@@ -352,7 +310,7 @@ public final class SubscriptionProperties {
      * @return the forwardTo value.
      */
     public String getForwardTo() {
-        return this.forwardTo;
+        return description.getForwardTo();
     }
 
     /**
@@ -363,7 +321,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
+        description.setForwardTo(forwardTo);
         return this;
     }
 
@@ -373,7 +331,7 @@ public final class SubscriptionProperties {
      * @return the createdAt value.
      */
     OffsetDateTime getCreatedAt() {
-        return this.createdAt;
+        return description.getCreatedAt();
     }
 
     /**
@@ -382,7 +340,7 @@ public final class SubscriptionProperties {
      * @return the updatedAt value.
      */
     OffsetDateTime getUpdatedAt() {
-        return this.updatedAt;
+        return description.getUpdatedAt();
     }
 
     /**
@@ -392,7 +350,7 @@ public final class SubscriptionProperties {
      * @return the accessedAt value.
      */
     OffsetDateTime getAccessedAt() {
-        return this.accessedAt;
+        return description.getAccessedAt();
     }
 
     /**
@@ -401,7 +359,7 @@ public final class SubscriptionProperties {
      * @return the messageCountDetails value.
      */
     MessageCountDetailsImpl getMessageCountDetails() {
-        return this.messageCountDetails;
+        return description.getMessageCountDetails();
     }
 
     /**
@@ -410,7 +368,7 @@ public final class SubscriptionProperties {
      * @return the userMetadata value.
      */
     public String getUserMetadata() {
-        return this.userMetadata;
+        return description.getUserMetadata();
     }
 
     /**
@@ -420,7 +378,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setUserMetadata(String userMetadata) {
-        this.userMetadata = userMetadata;
+        description.setUserMetadata(userMetadata);
         return this;
     }
 
@@ -431,7 +389,7 @@ public final class SubscriptionProperties {
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String getForwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
+        return description.getForwardDeadLetteredMessagesTo();
     }
 
     /**
@@ -442,7 +400,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        description.setForwardDeadLetteredMessagesTo(forwardDeadLetteredMessagesTo);
         return this;
     }
 
@@ -453,7 +411,7 @@ public final class SubscriptionProperties {
      * @return the autoDeleteOnIdle value.
      */
     public Duration getAutoDeleteOnIdle() {
-        return this.autoDeleteOnIdle;
+        return description.getAutoDeleteOnIdle();
     }
 
     /**
@@ -464,7 +422,7 @@ public final class SubscriptionProperties {
      * @return the SubscriptionProperties object itself.
      */
     public SubscriptionProperties setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        description.setAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
@@ -474,6 +432,6 @@ public final class SubscriptionProperties {
      * @return the entityAvailabilityStatus value.
      */
     EntityAvailabilityStatusImpl getEntityAvailabilityStatus() {
-        return this.entityAvailabilityStatus;
+        return description.getEntityAvailabilityStatus();
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -669,7 +670,7 @@ public final class EntityHelper {
      * @param headerName name of the header to be added
      * @param context current request context
      */
-    public static void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
+    public static void addSupplementaryAuthHeader(HttpHeaderName headerName, String entity, Context context) {
         context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
             .ifPresent(headers -> {
                 if (headers instanceof HttpHeaders) {
@@ -809,8 +810,9 @@ public final class EntityHelper {
         return result;
     }
 
-    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(
-        String topicName, Response<Object> response, SubscriptionDescriptionEntryImpl entry) {
+    public static SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(String topicName,
+        Response<SubscriptionDescriptionEntryImpl> response) {
+        final SubscriptionDescriptionEntryImpl entry = response.getValue();
 
         // This was an empty response (ie. 204).
         if (entry == null) {

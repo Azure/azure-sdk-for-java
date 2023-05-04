@@ -71,7 +71,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class ServiceBusManagementSerializerTest {
     private static final String TITLE_KEY = "";
 
-    private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
 
     /**
      * Verify we can deserialize XML request when creating a queue.
@@ -100,7 +100,7 @@ class ServiceBusManagementSerializerTest {
         expected.getAuthorizationRules().add(rule);
 
         // Act
-        final QueueDescriptionEntryImpl entry = serializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -137,7 +137,7 @@ class ServiceBusManagementSerializerTest {
             .setPartitioningEnabled(true);
 
         // Act
-        final QueueDescriptionEntryImpl entry = serializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -170,7 +170,7 @@ class ServiceBusManagementSerializerTest {
             .setTransferDeadLetterMessageCount(123);
 
         // Act
-        final QueueDescriptionEntryImpl entry = serializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
         final QueueProperties properties = EntityHelper.toModel(entry.getContent().getQueueDescription());
         final QueueRuntimeProperties actual = new QueueRuntimeProperties(properties);
 
@@ -199,7 +199,7 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("QueueDescriptionFeed-Errors.xml");
 
         // Act
-        final QueueDescriptionFeedImpl actual = serializer.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
 
         // Assert
         assertNotNull(actual);
@@ -277,7 +277,7 @@ class ServiceBusManagementSerializerTest {
             .setEntry(entries);
 
         // Act
-        final QueueDescriptionFeedImpl actual = serializer.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
@@ -327,7 +327,7 @@ class ServiceBusManagementSerializerTest {
         final NamespaceType namespaceType = NamespaceType.MESSAGING;
 
         // Act
-        final NamespacePropertiesEntryImpl entry = serializer.deserialize(contents, NamespacePropertiesEntryImpl.class);
+        final NamespacePropertiesEntryImpl entry = SERIALIZER.deserialize(contents, NamespacePropertiesEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -363,7 +363,7 @@ class ServiceBusManagementSerializerTest {
             .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = serializer.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -392,7 +392,7 @@ class ServiceBusManagementSerializerTest {
                 .setMaxDeliveryCount(7));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = serializer.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -423,7 +423,7 @@ class ServiceBusManagementSerializerTest {
             .setTransferDeadLetterMessageCount(2);
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = serializer.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
         final SubscriptionRuntimeProperties actual = new SubscriptionRuntimeProperties(
             EntityHelper.toModel(entry.getContent().getSubscriptionDescription()));
 
@@ -517,7 +517,7 @@ class ServiceBusManagementSerializerTest {
         final int expectedNumberOfEntries = 11;
 
         // Act
-        final SubscriptionDescriptionFeedImpl actual = serializer.deserialize(contents, SubscriptionDescriptionFeedImpl.class);
+        final SubscriptionDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, SubscriptionDescriptionFeedImpl.class);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
@@ -580,7 +580,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -611,7 +611,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -639,7 +639,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -704,7 +704,7 @@ class ServiceBusManagementSerializerTest {
             .setUpdated(OffsetDateTime.parse("2020-08-28T14:59:16Z"));
 
         // Act
-        final RuleDescriptionFeedImpl actual = serializer.deserialize(contents, RuleDescriptionFeedImpl.class);
+        final RuleDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionFeedImpl.class);
 
         // Assert
         assertNotNull(actual);
@@ -737,7 +737,7 @@ class ServiceBusManagementSerializerTest {
         final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -766,7 +766,7 @@ class ServiceBusManagementSerializerTest {
             .setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);

@@ -27,7 +27,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-use: ['@autorest/java@4.1.16', '@autorest/modelerfour@4.25.0']
+use: ['@autorest/java@4.1.17', '@autorest/modelerfour@4.25.0']
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0f7b134efb524de6aadc6965d4e8fd2a78929989/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
@@ -45,4 +45,29 @@ context-client-method-parameter: true
 customization-class: src/main/java/AdministrationClientCustomization.java
 enable-xml: true
 enable-sync-stack: true
+generic-response-type: true
+custom-strongly-typed-header-deserialization: true
+disable-client-builder: true
+```
+
+### Change Return Types of REST Methods
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths
+    transform: >
+      delete $["/{topicName}/subscriptions"].get.responses["200"].schema.type;
+      $["/{topicName}/subscriptions"].get.responses["200"].schema["$ref"] = "#/definitions/SubscriptionDescriptionFeed";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}"].get.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}"].get.responses["200"].schema["$ref"] = "#/definitions/SubscriptionDescriptionEntry";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}"].put.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}"].put.responses["200"].schema["$ref"] = "#/definitions/SubscriptionDescriptionEntry";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}"].put.responses["201"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}"].put.responses["201"].schema["$ref"] = "#/definitions/SubscriptionDescriptionEntry";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}"].delete.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}"].delete.responses["200"].schema["$ref"] = "#/definitions/SubscriptionDescriptionEntry";
 ```

@@ -155,7 +155,7 @@ public final class ServiceBusAdministrationClient {
      * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
     ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient,
-                                   ServiceBusManagementSerializer serializer) {
+        ServiceBusManagementSerializer serializer) {
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
@@ -167,10 +167,9 @@ public final class ServiceBusAdministrationClient {
      *
      * @param queueName Name of the queue to create.
      * @return The created queue.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@code queueName} null or an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@code queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
@@ -186,10 +185,9 @@ public final class ServiceBusAdministrationClient {
      * @param queueName Name of the queue to create.
      * @param queueOptions Information about the queue to create.
      * @return The created queue.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@code queueName} null or an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
@@ -206,17 +204,16 @@ public final class ServiceBusAdministrationClient {
      * @param queueOptions Information about the queue to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The created queue in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@code queueName} null or an empty string.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueProperties#getName() queueName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> createQueueWithResponse(String queueName, CreateQueueOptions queueOptions,
-                                                             Context context) {
+        Context context) {
         validateQueueName(queueName);
         if (queueOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'queueOptions' cannot be null."));
@@ -247,8 +244,7 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of the subscription associated with the rule.
      * @param ruleName Name of the rule.
      * @return Information about the created rule.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are null or empty strings.
@@ -267,8 +263,7 @@ public final class ServiceBusAdministrationClient {
      * @param ruleName Name of the rule.
      * @param ruleOptions Information about the rule to create.
      * @return Information about the created rule.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are null or empty strings.
@@ -277,7 +272,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleProperties createRule(String topicName, String ruleName, String subscriptionName,
-                                     CreateRuleOptions ruleOptions) {
+        CreateRuleOptions ruleOptions) {
         return createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions, null).getValue();
     }
 
@@ -290,8 +285,7 @@ public final class ServiceBusAdministrationClient {
      * @param ruleOptions Information about the rule to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The created rule in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code ruleName} are null or empty strings.
@@ -300,8 +294,8 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> createRuleWithResponse(String topicName, String subscriptionName,
-                                                           String ruleName, CreateRuleOptions ruleOptions,
-                                                           Context context) {
+        String ruleName, CreateRuleOptions ruleOptions,
+        Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
         validateRuleName(ruleName);
@@ -319,10 +313,8 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
-     *
      * @return Information about the created subscription.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null or empty strings.
@@ -339,11 +331,9 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
-     *
      * @param subscriptionOptions Information about the subscription to create.
      * @return Information about the created subscription.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
@@ -364,12 +354,10 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
      * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
-     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
-     *                    If null, then pass-through filter will be created.
-     *
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule. If null, then pass-through
+     * filter will be created.
      * @return Information about the created subscription.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
@@ -378,8 +366,8 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionProperties createSubscription(String topicName, String subscriptionName, String ruleName,
-                                                     CreateSubscriptionOptions subscriptionOptions,
-                                                     CreateRuleOptions ruleOptions) {
+        CreateSubscriptionOptions subscriptionOptions,
+        CreateRuleOptions ruleOptions) {
         return createSubscriptionWithResponse(topicName, subscriptionName, ruleName, subscriptionOptions,
             ruleOptions, null).getValue();
     }
@@ -391,10 +379,8 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of the subscription.
      * @param subscriptionOptions Information about the subscription to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
      * @return The created subscription in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws NullPointerException if {@code subscriptionOptions} is null.
@@ -424,27 +410,24 @@ public final class ServiceBusAdministrationClient {
 
         final CreateSubscriptionBodyImpl createEntity =
             getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
-        return deserializeSubscription(topicName,
-            managementClient.getSubscriptions().putWithResponse(topicName, subscriptionName, createEntity,
-                null, contextWithHeaders));
+        return getSubscriptionPropertiesSimpleResponse(topicName, managementClient.getSubscriptions()
+            .putWithResponse(topicName, subscriptionName, createEntity, null, contextWithHeaders));
 
     }
 
     /**
-     * Creates a subscription with default rule configured and returns the created subscription
-     * in addition to the HTTP response.
+     * Creates a subscription with default rule configured and returns the created subscription in addition to the HTTP
+     * response.
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
      * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
-     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
-     *                    If null, then pass-through filter will be created.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule. If null, then pass-through
+     * filter will be created.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
      * @return The created subscription in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If the request body was invalid, the quota is exceeded, or an error occurred
      * processing the request.
      * @throws NullPointerException if {@code subscriptionOptions} is null.
@@ -453,10 +436,10 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
-                                                                           String ruleName,
-                                                                           CreateSubscriptionOptions subscriptionOptions,
-                                                                           CreateRuleOptions ruleOptions,
-                                                                           Context context) {
+        String ruleName,
+        CreateSubscriptionOptions subscriptionOptions,
+        CreateRuleOptions ruleOptions,
+        Context context) {
         if (ruleOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'CreateRuleOptions' cannot be null."));
         }
@@ -475,10 +458,9 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of the topic to create.
      * @return Information about the created topic.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error occurred
+     * processing the request.
      * @throws NullPointerException if {@code topicName} is null.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
@@ -495,10 +477,9 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of the topic to create.
      * @param topicOptions Information about the topic to create.
      * @return Information about the created topic.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the topicOptions quota is exceeded, or an
-     * error occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the topicOptions quota is exceeded, or an error
+     * occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws NullPointerException if {@code topicOptions} is null.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
@@ -516,19 +497,18 @@ public final class ServiceBusAdministrationClient {
      * @param topicOptions Information about the topic to create.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The created topic in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
-     *     string.
+     * string.
      * @throws NullPointerException if {@code topicOptions} is null.
      * @throws ResourceExistsException if a topic exists with the same {@code topicName}.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicProperties> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
-                                                             Context context) {
+        Context context) {
         validateTopicName(topicName);
         if (topicOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
@@ -543,8 +523,7 @@ public final class ServiceBusAdministrationClient {
      * Deletes a queue the matching {@code queueName}.
      *
      * @param queueName Name of queue to delete.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
@@ -561,8 +540,7 @@ public final class ServiceBusAdministrationClient {
      * @param queueName Name of queue to delete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response when the queue is successfully deleted.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or is an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
@@ -582,11 +560,10 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic associated with rule to delete.
      * @param subscriptionName Name of the subscription associated with the rule to delete.
      * @param ruleName Name of rule to delete.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null or
-     *      an empty string.
+     * an empty string.
      * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -602,16 +579,15 @@ public final class ServiceBusAdministrationClient {
      * @param ruleName Name of rule to delete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
-     *  @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null or
-     *      an empty string.
+     * @throws IllegalArgumentException if {@code topicName}, {@code subscriptionName}, or {@code ruleName} is null or
+     * an empty string.
      * @throws ResourceNotFoundException if the {@code ruleName} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRuleWithResponse(String topicName, String subscriptionName,
-                                                 String ruleName, Context context) {
+        String ruleName, Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
         validateRuleName(ruleName);
@@ -627,8 +603,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of topic associated with subscription to delete.
      * @param subscriptionName Name of subscription to delete.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
@@ -646,8 +621,7 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of subscription to delete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
@@ -657,9 +631,8 @@ public final class ServiceBusAdministrationClient {
     public Response<Void> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
         validateSubscriptionName(subscriptionName);
         validateTopicName(topicName);
-        final Response<Object> response =
-            managementClient.getSubscriptions().deleteWithResponse(topicName, subscriptionName,
-                enableSyncContext(context));
+        final Response<SubscriptionDescriptionEntryImpl> response = managementClient.getSubscriptions()
+            .deleteWithResponse(topicName, subscriptionName, enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), null);
     }
@@ -668,8 +641,7 @@ public final class ServiceBusAdministrationClient {
      * Deletes a topic the matching {@code topicName}.
      *
      * @param topicName Name of topic to delete.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
@@ -686,8 +658,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic to delete.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
@@ -706,8 +677,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param queueName Name of queue to get information about.
      * @return Information about the queue.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
@@ -724,8 +694,7 @@ public final class ServiceBusAdministrationClient {
      * @param queueName Name of queue to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Information about the queue and the associated HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
@@ -756,8 +725,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param queueName Name of the queue.
      * @return {@code true} if the queue exists; otherwise {@code false}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      */
@@ -773,8 +741,7 @@ public final class ServiceBusAdministrationClient {
      * @param queueName Name of the queue.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response and {@code true} if the queue exists; otherwise {@code false}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      */
@@ -789,8 +756,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param queueName Name of queue to get information about.
      * @return Runtime properties about the queue.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
@@ -807,8 +773,7 @@ public final class ServiceBusAdministrationClient {
      * @param queueName Name of queue to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Runtime properties about the queue and the associated HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
@@ -838,8 +803,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Information about the namespace and the associated HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -858,9 +822,9 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets a rule from the service namespace.
-     * Only following data types are deserialized in Filters and Action parameters - string, int, long, boolean, double,
-     * and OffsetDateTime. Other data types would return its string value.
+     * Gets a rule from the service namespace. Only following data types are deserialized in Filters and Action
+     * parameters - string, int, long, boolean, double, and OffsetDateTime. Other data types would return its string
+     * value.
      *
      * @param topicName The name of the topic relative to service bus namespace.
      * @param subscriptionName The subscription name the rule belongs to.
@@ -873,20 +837,19 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Gets a rule from the service namespace.
-     * Only following data types are deserialized in Filters and Action parameters - string, int, long, bool, double,
-     * and OffsetDateTime. Other data types would return its string value.
+     * Gets a rule from the service namespace. Only following data types are deserialized in Filters and Action
+     * parameters - string, int, long, bool, double, and OffsetDateTime. Other data types would return its string
+     * value.
      *
      * @param topicName The name of the topic relative to service bus namespace.
      * @param subscriptionName The subscription name the rule belongs to.
      * @param ruleName The name of the rule to retrieve.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     *
      * @return The associated rule with the corresponding HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName,
-                                                        String ruleName, Context context) {
+        String ruleName, Context context) {
         final Response<Object> objectResponse =
             rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true,
                 enableSyncContext(context));
@@ -900,8 +863,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      * @return Information about the subscription.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are empty strings.
      * @throws NullPointerException if {@code topicName} or {@code subscriptionName} are null.
@@ -920,25 +882,24 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of subscription to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Information about the subscription and the associated HTTP response.
-
      * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} are null or empty strings.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> getSubscriptionWithResponse(String topicName,
-                                                                        String subscriptionName, Context context) {
+        String subscriptionName, Context context) {
         return getSubscriptionInternal(topicName, subscriptionName, context);
     }
 
     private Response<SubscriptionProperties> getSubscriptionInternal(String topicName,
-                                                                     String subscriptionName, Context context) {
+        String subscriptionName, Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
 
-        final Response<Object> response = managementClient.getSubscriptions()
+        final Response<SubscriptionDescriptionEntryImpl> response = managementClient.getSubscriptions()
             .getWithResponse(topicName, subscriptionName, true, enableSyncContext(context));
-        return deserializeSubscription(topicName, response);
+        return getSubscriptionPropertiesSimpleResponse(topicName, response);
     }
 
     /**
@@ -947,7 +908,6 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @return {@code true} if the subscription exists.
-     *
      * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      * @throws NullPointerException if {@code subscriptionName} is null.
@@ -965,14 +925,13 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of the subscription.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response and {@code true} if the subscription exists; otherwise {@code false}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
-                                                               Context context) {
+        Context context) {
         final Response<SubscriptionProperties> subscriptionWithResponse =
             getSubscriptionInternal(topicName, subscriptionName, context);
         return getEntityExistsWithResponse(subscriptionWithResponse);
@@ -984,8 +943,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic associated with subscription.
      * @param subscriptionName Name of subscription to get information about.
      * @return Runtime properties about the subscription.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code subscriptionName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code subscriptionName} does not exist.
@@ -1003,8 +961,7 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName Name of subscription to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Runtime properties about the subscription.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code subscriptionName} is an empty string.
      * @throws NullPointerException if {@code subscriptionName} is null.
@@ -1031,8 +988,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of topic to get information about.
      * @return Information about the topic.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
@@ -1049,7 +1005,6 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Information about the topic and the associated HTTP response.
-     *
      * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
@@ -1080,8 +1035,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of the topic.
      * @return {@code true} if the topic exists.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      */
@@ -1097,8 +1051,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of the topic.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The HTTP response and {@code true} if the topic exists; otherwise {@code false}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or an empty string.
      */
@@ -1113,8 +1066,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName Name of topic to get information about.
      * @return Runtime properties about the topic.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or  an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
@@ -1131,7 +1083,6 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of topic to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Runtime properties about the topic and the associated HTTP response.
-     *
      * @throws ServiceBusManagementErrorException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code topicName} is null or  an empty string.
      * @throws ResourceNotFoundException if the {@code topicName} does not exist.
@@ -1162,8 +1113,7 @@ public final class ServiceBusAdministrationClient {
      * Fetches all the queues in the Service Bus namespace.
      *
      * @return A PagedIterable of {@link QueueProperties queues} in the Service Bus namespace.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List Queues, Subscriptions, or
      * Authorization Rules</a>
      */
@@ -1177,8 +1127,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A PagedIterable of {@link QueueProperties queues} in the Service Bus namespace.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List Queues, Subscriptions, or
      * Authorization Rules</a>
      */
@@ -1221,8 +1170,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName The topic name under which all the rules need to be retrieved.
      * @param subscriptionName The name of the subscription for which all rules need to be retrieved.
      * @return An iterable of {@link RuleProperties rules} for the {@code topicName} and {@code subscriptionName}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, rules, or
@@ -1240,8 +1188,7 @@ public final class ServiceBusAdministrationClient {
      * @param subscriptionName The name of the subscription for which all rules need to be retrieved.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return An iterable of {@link RuleProperties rules} for the {@code topicName} and {@code subscriptionName}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException if {@code topicName} or {@code subscriptionName} is null.
      * @throws IllegalArgumentException if {@code topicName} or {@code subscriptionName} is an empty string.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, rules, or
@@ -1261,7 +1208,7 @@ public final class ServiceBusAdministrationClient {
     }
 
     private PagedResponse<RuleProperties> listRules(String topicName, String subscriptionName, int skip,
-                                                    Context context) {
+        Context context) {
         final Response<Object> response =
             managementClient.listRulesWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
@@ -1287,8 +1234,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName The topic name under which all the subscriptions need to be retrieved.
      * @return A paged iterable of {@link SubscriptionProperties subscriptions} for the {@code topicName}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException if {@code topicName} is null.
      * @throws IllegalArgumentException if {@code topicName} is an empty string.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
@@ -1305,8 +1251,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName The topic name under which all the subscriptions need to be retrieved.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A paged iterable of {@link SubscriptionProperties subscriptions} for the {@code topicName}.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @throws NullPointerException if {@code topicName} is null.
      * @throws IllegalArgumentException if {@code topicName} is an empty string.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
@@ -1326,11 +1271,10 @@ public final class ServiceBusAdministrationClient {
     }
 
     private PagedResponse<SubscriptionProperties> listSubscriptions(String topicName, int skip,
-                                                                    Context context) {
-        final Response<Object> response =
-            managementClient.listSubscriptionsWithResponse(topicName, skip, NUMBER_OF_ELEMENTS,
-                enableSyncContext(context));
-        final SubscriptionDescriptionFeedImpl feed = deserialize(response.getValue(), SubscriptionDescriptionFeedImpl.class);
+        Context context) {
+        final Response<SubscriptionDescriptionFeedImpl> response = managementClient.listSubscriptionsWithResponse(
+            topicName, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context));
+        final SubscriptionDescriptionFeedImpl feed = response.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
@@ -1352,8 +1296,7 @@ public final class ServiceBusAdministrationClient {
      * Fetches all the topics in the Service Bus namespace.
      *
      * @return A paged iterable of {@link TopicProperties topics} in the Service Bus namespace.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      * authorization rules</a>
      */
@@ -1367,8 +1310,7 @@ public final class ServiceBusAdministrationClient {
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A paged iterable of {@link TopicProperties topics} in the Service Bus namespace.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List entities, subscriptions, or
      * authorization rules</a>
      */
@@ -1409,8 +1351,8 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
-     * The suggested flow is:
+     * all the properties are replaced. If a property is not set the service default value is used. The suggested flow
+     * is:
      * <ol>
      *     <li>{@link #getQueue(String) Get queue description.}</li>
      *     <li>Update the required elements.</li>
@@ -1427,13 +1369,12 @@ public final class ServiceBusAdministrationClient {
      * <li>{@link QueueProperties#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @param queue Information about the queue to update. You must provide all the property values that are desired
-     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param queue Information about the queue to update. You must provide all the property values that are desired on
+     * the updated entity. Any values not provided are set to the service default values.
      * @return The updated queue.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error occurred
+     * processing the request.
      * @throws NullPointerException if {@code queue} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
@@ -1445,8 +1386,8 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a queue with the given {@link QueueProperties}. The {@link QueueProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
-     * The suggested flow is:
+     * all the properties are replaced. If a property is not set the service default value is used. The suggested flow
+     * is:
      * <ol>
      *     <li>{@link #getQueue(String) Get queue description.}</li>
      *     <li>Update the required elements.</li>
@@ -1463,14 +1404,13 @@ public final class ServiceBusAdministrationClient {
      * <li>{@link QueueProperties#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @param queue Information about the queue to update. You must provide all the property values that are desired
-     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param queue Information about the queue to update. You must provide all the property values that are desired on
+     * the updated entity. Any values not provided are set to the service default values.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The updated queue with its HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error occurred
+     * processing the request.
      * @throws NullPointerException if {@code queue} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
@@ -1506,8 +1446,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a rule with the given {@link RuleProperties}. The {@link RuleProperties} must be fully populated as all
-     * the properties are replaced. If a property is not set the service default value is used.
-     * The suggested flow is:
+     * the properties are replaced. If a property is not set the service default value is used. The suggested flow is:
      * <ol>
      *     <li>{@link #getRule(String, String, String) Get rule description.}</li>
      *     <li>Update the required elements.</li>
@@ -1516,13 +1455,12 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName The topic name under which the rule is updated.
      * @param subscriptionName The name of the subscription for which the rule is updated.
-     * @param rule Information about the rule to update. You must provide all the property values that are desired
-     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param rule Information about the rule to update. You must provide all the property values that are desired on
+     * the updated entity. Any values not provided are set to the service default values.
      * @return The updated rule.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@link RuleProperties#getName()} is null or an empty string.
      * @throws NullPointerException if {@code rule} is null.
      */
@@ -1533,8 +1471,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a rule with the given {@link RuleProperties}. The {@link RuleProperties} must be fully populated as all
-     * the properties are replaced. If a property is not set the service default value is used.
-     * The suggested flow is:
+     * the properties are replaced. If a property is not set the service default value is used. The suggested flow is:
      * <ol>
      *     <li>{@link #getRule(String, String, String) Get rule description.}</li>
      *     <li>Update the required elements.</li>
@@ -1543,21 +1480,20 @@ public final class ServiceBusAdministrationClient {
      *
      * @param topicName The topic name under which the rule is updated.
      * @param subscriptionName The name of the subscription for which the rule is updated.
-     * @param rule Information about the rule to update. You must provide all the property values that are desired
-     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param rule Information about the rule to update. You must provide all the property values that are desired on
+     * the updated entity. Any values not provided are set to the service default values.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return A Mono that returns the updated rule in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the rule quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@link RuleProperties#getName()} is null or an empty string.
      * @throws NullPointerException if {@code rule} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> updateRuleWithResponse(String topicName, String subscriptionName,
-                                                           RuleProperties rule, Context context) {
+        RuleProperties rule, Context context) {
         if (rule == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'rule' cannot be null"));
         }
@@ -1571,8 +1507,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
-     * fully populated as all the properties are replaced. If a property is not set the service default value is
-     * used.
+     * fully populated as all the properties are replaced. If a property is not set the service default value is used.
      * The suggested flow is:
      * <ol>
      *     <li>{@link #getSubscription(String, String) Get subscription description.}</li>
@@ -1588,15 +1523,14 @@ public final class ServiceBusAdministrationClient {
      * <li>{@link SubscriptionProperties#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @param subscription Information about the subscription to update. You must provide all the property values
-     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     * @param subscription Information about the subscription to update. You must provide all the property values that
+     * are desired on the updated entity. Any values not provided are set to the service default values.
      * @return Updated subscription in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
-     * error occurred processing the request.
-     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or {@link
-     *      SubscriptionProperties#getSubscriptionName()} is null or an empty string.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an error
+     * occurred processing the request.
+     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or
+     * {@link SubscriptionProperties#getSubscriptionName()} is null or an empty string.
      * @throws NullPointerException if {@code subscription} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -1607,8 +1541,7 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a subscription with the given {@link SubscriptionProperties}. The {@link SubscriptionProperties} must be
-     * fully populated as all the properties are replaced. If a property is not set the service default value is
-     * used.
+     * fully populated as all the properties are replaced. If a property is not set the service default value is used.
      * The suggested flow is:
      * <ol>
      *     <li>{@link #getSubscription(String, String) Get subscription description.}</li>
@@ -1624,16 +1557,15 @@ public final class ServiceBusAdministrationClient {
      * <li>{@link SubscriptionProperties#setMaxDeliveryCount(int) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @param subscription Information about the subscription to update. You must provide all the property values
-     *     that are desired on the updated entity. Any values not provided are set to the service default values.
+     * @param subscription Information about the subscription to update. You must provide all the property values that
+     * are desired on the updated entity. Any values not provided are set to the service default values.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return Updated subscription in addition to the HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an
-     * error occurred processing the request.
-     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or {@link
-     *      SubscriptionProperties#getSubscriptionName()} is null or an empty string.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the subscription quota is exceeded, or an error
+     * occurred processing the request.
+     * @throws IllegalArgumentException if {@link SubscriptionProperties#getTopicName()} or
+     * {@link SubscriptionProperties#getSubscriptionName()} is null or an empty string.
      * @throws NullPointerException if {@code subscription} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
@@ -1663,17 +1595,15 @@ public final class ServiceBusAdministrationClient {
         final CreateSubscriptionBodyImpl createEntity = getUpdateSubscriptionBody(subscription);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-        Response<Object> response =
-            managementClient.getSubscriptions()
-                .putWithResponse(topicName, subscription.getSubscriptionName(), createEntity,
-                    "*", contextWithHeaders);
-        return deserializeSubscription(topicName, response);
+        Response<SubscriptionDescriptionEntryImpl> response = managementClient.getSubscriptions()
+            .putWithResponse(topicName, subscription.getSubscriptionName(), createEntity, "*", contextWithHeaders);
+        return getSubscriptionPropertiesSimpleResponse(topicName, response);
     }
 
     /**
      * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
-     * The suggested flow is:
+     * all the properties are replaced. If a property is not set the service default value is used. The suggested flow
+     * is:
      * <ol>
      *     <li>{@link #getTopic(String) Get topic description.}</li>
      *     <li>Update the required elements.</li>
@@ -1688,15 +1618,14 @@ public final class ServiceBusAdministrationClient {
      * </li>
      * </ul>
      *
-     * @param topic Information about the topic to update. You must provide all the property values that are desired
-     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param topic Information about the topic to update. You must provide all the property values that are desired on
+     * the updated entity. Any values not provided are set to the service default values.
      * @return The updated topic.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
-     *     string.
+     * string.
      * @throws NullPointerException if {@code topic} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
@@ -1708,8 +1637,8 @@ public final class ServiceBusAdministrationClient {
 
     /**
      * Updates a topic with the given {@link TopicProperties}. The {@link TopicProperties} must be fully populated as
-     * all the properties are replaced. If a property is not set the service default value is used.
-     * The suggested flow is:
+     * all the properties are replaced. If a property is not set the service default value is used. The suggested flow
+     * is:
      * <ol>
      *     <li>{@link #getTopic(String) Get topic description.}</li>
      *     <li>Update the required elements.</li>
@@ -1724,16 +1653,15 @@ public final class ServiceBusAdministrationClient {
      * </li>
      * </ul>
      *
-     * @param topic Information about the topic to update. You must provide all the property values that are desired
-     *     on the updated entity. Any values not provided are set to the service default values.
+     * @param topic Information about the topic to update. You must provide all the property values that are desired on
+     * the updated entity. Any values not provided are set to the service default values.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return The updated topic with its HTTP response.
-     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
-     *     namespace.
-     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error
-     *     occurred processing the request.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the namespace.
+     * @throws HttpResponseException If the request body was invalid, the topic quota is exceeded, or an error occurred
+     * processing the request.
      * @throws IllegalArgumentException if {@link TopicProperties#getName() topic.getName()} is null or an empty
-     *     string.
+     * string.
      * @throws NullPointerException if {@code topic} is null.
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-topic">Update Topic</a>
@@ -1778,11 +1706,6 @@ public final class ServiceBusAdministrationClient {
         final RuleDescriptionEntryImpl entry = deserialize(response.getValue(), RuleDescriptionEntryImpl.class);
 
         return getRulePropertiesSimpleResponse(response, entry);
-    }
-
-    private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
-        final SubscriptionDescriptionEntryImpl entry = deserialize(response.getValue(), SubscriptionDescriptionEntryImpl.class);
-        return getSubscriptionPropertiesSimpleResponse(topicName, response, entry);
     }
 
     private Response<TopicProperties> deserializeTopic(Response<Object> response) {

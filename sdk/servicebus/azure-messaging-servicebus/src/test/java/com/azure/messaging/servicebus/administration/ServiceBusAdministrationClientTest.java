@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
@@ -17,6 +18,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
@@ -53,8 +55,6 @@ class ServiceBusAdministrationClientTest {
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
     @Mock
-    private Response<Object> voidResponse;
-    @Mock
     private EntitiesImpl entitys;
     @Mock
     private RulesImpl rules;
@@ -63,7 +63,6 @@ class ServiceBusAdministrationClientTest {
     @Mock
     private ServiceBusManagementSerializer serializer;
 
-    @Mock
     private QueueProperties queuePropertiesResult;
 
     @Mock
@@ -109,7 +108,8 @@ class ServiceBusAdministrationClientTest {
         when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
         when(serviceClient.getRules()).thenReturn(rules);
 
-        when(queuePropertiesResult.getName()).thenReturn(queueName);
+        queuePropertiesResult = EntityHelper.toModel(new QueueDescriptionImpl());
+        EntityHelper.setQueueName(queuePropertiesResult, queueName);
         when(mockQueueDesc.getMaxDeliveryCount()).thenReturn(10);
         when(queueDescriptionEntry.getContent()).thenReturn(queueDescriptionEntryContent);
         when(queueDescriptionEntry.getTitle()).thenReturn(queueName);
@@ -179,6 +179,7 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteQueue() {
         // Arrange
+        Response<Object> voidResponse = new SimpleResponse<>(null, 0, null, null);
         when(entitys.deleteWithResponse(eq(queueName), any())).thenReturn(voidResponse);
 
         // Act
@@ -191,8 +192,8 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteQueueWithResponse() {
         // Arrange
+        Response<Object> voidResponse = new SimpleResponse<>(null, 204, null, null);
         when(entitys.deleteWithResponse(any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
 
         // Act
         final Response<Void> actual = client.deleteQueueWithResponse(queueName, context);
@@ -204,6 +205,7 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteRule() {
         // Arrange
+        Response<Object> voidResponse = new SimpleResponse<>(null, 0, null, null);
         when(rules.deleteWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any())).thenReturn(
             voidResponse);
 
@@ -217,8 +219,8 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteRuleWithResponse() {
         // Arrange
+        Response<Object> voidResponse = new SimpleResponse<>(null, 204, null, null);
         when(rules.deleteWithResponse(any(), any(), any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
 
         // Act
         final Response<Void> actual = client.deleteRuleWithResponse(topicName, subscriptionName, ruleName, context);
@@ -230,8 +232,8 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteSubscription() {
         // Arrange
+        Response<SubscriptionDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 204, null, null);
         when(subscriptions.deleteWithResponse(eq(topicName), eq(subscriptionName), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
 
         // Act
         client.deleteSubscription(topicName, subscriptionName);
@@ -243,8 +245,8 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteSubscriptionWithResponse() {
         // Arrange
+        Response<SubscriptionDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 204, null, null);
         when(subscriptions.deleteWithResponse(any(), any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
 
         // Act
         final Response<Void> actual = client.deleteSubscriptionWithResponse(topicName, subscriptionName, context);
@@ -256,6 +258,7 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteTopic() {
         // Arrange
+        Response<Object> voidResponse = new SimpleResponse<>(null, 0, null, null);
         when(entitys.deleteWithResponse(any(), any())).thenReturn(voidResponse);
 
         // Act
@@ -268,8 +271,8 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteTopicWithResponse() {
         // Arrange
+        Response<Object> voidResponse = new SimpleResponse<>(null, 204, null, null);
         when(entitys.deleteWithResponse(any(), any())).thenReturn(voidResponse);
-        when(voidResponse.getStatusCode()).thenReturn(HttpResponseStatus.NO_CONTENT.code());
 
         // Act
         final Response<Void> actual = client.deleteTopicWithResponse(topicName, context);
@@ -361,14 +364,12 @@ class ServiceBusAdministrationClientTest {
             objectResponse);
         final List<QueueProperties> queues = Arrays.asList(queuePropertiesResult);
 
-        final List<QueueProperties> firstPage = queues;
-        final List<QueueProperties> secondPage = queues;
         // Act
         final PagedIterable<QueueProperties> queueDescriptions = client.listQueues(context);
 
         // Assert
         final long size = queueDescriptions.stream().count();
-        final long expectedSize = firstPage.size() + secondPage.size();
+        final long expectedSize = queues.size() + queues.size();
 
         assertEquals(expectedSize, size);
     }
