@@ -3,19 +3,12 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.models.ToneInfo;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContinuousDtmfRecognitionToneReceived model. */
+/** The ContinuousDtmfRecognitionToneFailed model. */
 @Immutable
-public final class ContinuousDtmfRecognitionToneReceivedEventData extends CallAutomationEventData {
-
-    /*
-     * Information about Tone.
-     */
-    @JsonProperty(value = "toneInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private ToneInfo toneInfo;
+public final class ContinuousDtmfRecognitionToneFailed extends CallAutomationEventBase {
 
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
@@ -26,17 +19,8 @@ public final class ContinuousDtmfRecognitionToneReceivedEventData extends CallAu
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
-    public ContinuousDtmfRecognitionToneReceivedEventData() {
-        toneInfo = null;
+    public ContinuousDtmfRecognitionToneFailed() {
         resultInformation = null;
-    }
-
-    /**
-     * getter for toneInfo property
-     * @return return toneInfo value
-     */
-    public ToneInfo getToneInfo() {
-        return toneInfo;
     }
 
     /**
