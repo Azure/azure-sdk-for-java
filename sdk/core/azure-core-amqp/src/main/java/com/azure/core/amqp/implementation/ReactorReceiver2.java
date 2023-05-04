@@ -217,7 +217,7 @@ public class ReactorReceiver2 implements AmqpReceiveLink, AsyncCloseable, AutoCl
     }
 
     @Override
-    public void scheduleCredit(Supplier<Long> creditSupplier) {
+    public void addCredit(Supplier<Long> creditSupplier) {
         if (isDisposed()) {
             throw new RejectedExecutionException(String.format(
                 "connectionId[%s] linkName[%s] Cannot schedule credit flow post the link closure.",

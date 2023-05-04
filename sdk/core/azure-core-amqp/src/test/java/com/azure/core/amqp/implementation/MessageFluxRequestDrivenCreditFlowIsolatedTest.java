@@ -77,7 +77,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
             Assertions.assertNotNull(creditSupplier);
             initialFlow.addAndGet(creditSupplier.get());
             return null;
-        }).when(receiver).scheduleCredit(any());
+        }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> messageFlux)
@@ -120,7 +120,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
                 secondFlow.set(creditSupplier.get());
             }
             return null;
-        }).when(receiver).scheduleCredit(any());
+        }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> messageFlux)
@@ -171,7 +171,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
                 secondFlow.set(creditSupplier.get());
             }
             return null;
-        }).when(receiver).scheduleCredit(any());
+        }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> messageFlux)
@@ -228,7 +228,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
                 fourthFlow.set(creditSupplier.get());
             }
             return null;
-        }).when(receiver).scheduleCredit(any());
+        }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> messageFlux)
@@ -273,7 +273,7 @@ public class MessageFluxRequestDrivenCreditFlowIsolatedTest {
             Assertions.assertNotNull(creditSupplier);
             flows.add(creditSupplier.get());
             return null;
-        }).when(receiver).scheduleCredit(any());
+        }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> messageFlux)
