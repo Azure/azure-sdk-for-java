@@ -46,20 +46,20 @@ public class GetChatCompletionsStreamAsyncSample {
 
         client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages))
             .subscribe(chatCompletions -> {
-                    System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
-                    for (ChatChoice choice : chatCompletions.getChoices()) {
-                        ChatMessage message = choice.getMessage();
-                        System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                        System.out.println("Message:");
-                        System.out.println(message.getContent());
-                    }
+                System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+                for (ChatChoice choice : chatCompletions.getChoices()) {
+                    ChatMessage message = choice.getMessage();
+                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
+                    System.out.println("Message:");
+                    System.out.println(message.getContent());
+                }
 
-                    System.out.println();
-                    CompletionsUsage usage = chatCompletions.getUsage();
-                    System.out.printf("Usage: number of prompt token is %d, "
-                            + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                        usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
-                },
+                System.out.println();
+                CompletionsUsage usage = chatCompletions.getUsage();
+                System.out.printf("Usage: number of prompt token is %d, "
+                        + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+            },
                 error -> System.err.println("There was an error getting chat completions." + error),
                 () -> System.out.println("Completed called getChatCompletions."));
 

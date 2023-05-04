@@ -3,8 +3,6 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,14 +68,9 @@ public final class OpenAIServerSentEvents<T> {
                         }
 
                         if (isValidJson(completionJson)) {
-
-                            try {
-                                T value = SERIALIZER.readValue(completionJson, type);
-                                values.add(value);
-                                lastLine.set("");
-                            } catch (Exception e) {
-                                System.out.println("Exception" + currentLine +  e);
-                            }
+                            T value = SERIALIZER.readValue(completionJson, type);
+                            values.add(value);
+                            lastLine.set("");
                         } else {
                             lastLine.set(currentLine);
                             expectEmptyLine.set(false);

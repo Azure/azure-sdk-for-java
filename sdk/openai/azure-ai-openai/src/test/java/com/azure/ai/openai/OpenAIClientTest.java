@@ -16,7 +16,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;

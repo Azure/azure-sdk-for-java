@@ -57,7 +57,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertNotNull(completions.getChoices().get(0).getText());
                 })
                 .verifyComplete();
-    }            
+        });
+    }
 
     public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
