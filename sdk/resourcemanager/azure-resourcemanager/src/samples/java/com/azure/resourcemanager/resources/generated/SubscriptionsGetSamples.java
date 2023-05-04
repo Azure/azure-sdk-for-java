@@ -20,6 +20,6 @@ public final class SubscriptionsGetSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .getWithResponse(com.azure.core.util.Context.NONE);
+            .getWithResponse("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", com.azure.core.util.Context.NONE);
     }
 }

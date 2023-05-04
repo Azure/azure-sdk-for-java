@@ -24,6 +24,7 @@ public final class SubscriptionsCheckZonePeersSamples {
             .subscriptionClient()
             .getSubscriptions()
             .checkZonePeersWithResponse(
+                "8d65815f-a5b6-402f-9298-045155da7d74",
                 new CheckZonePeersRequest()
                     .withLocation("eastus")
                     .withSubscriptionIds(Arrays.asList("subscriptions/11111111-1111-1111-1111-111111111111")),

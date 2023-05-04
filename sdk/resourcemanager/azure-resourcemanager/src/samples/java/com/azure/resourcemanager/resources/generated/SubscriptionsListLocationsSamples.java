@@ -20,7 +20,7 @@ public final class SubscriptionsListLocationsSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .listLocations(true, com.azure.core.util.Context.NONE);
+            .listLocations("a1ffc958-d2c7-493e-9f1e-125a0477f536", true, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,6 +37,6 @@ public final class SubscriptionsListLocationsSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .listLocations(null, com.azure.core.util.Context.NONE);
+            .listLocations("a1ffc958-d2c7-493e-9f1e-125a0477f536", null, com.azure.core.util.Context.NONE);
     }
 }
