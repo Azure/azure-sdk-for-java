@@ -5,7 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
-- Removed `Dynamic Classification` feature, which was introduced in the previous beta release.
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features, 
+  which were introduced in the previous beta releases.
 
 ### Bugs Fixed
 
