@@ -1,14 +1,11 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.1 (2023-05-04)
 
 ### Other Changes
+
+- Changed `UncheckedIOException` to `IOException` in `JsonReader.reset` method as it's checked with `IOException`.
+- Changed max nesting depth in `JsonReader.readUntyped` from 1000 to 999.
 
 ## 1.0.0 (2023-04-07)
 
