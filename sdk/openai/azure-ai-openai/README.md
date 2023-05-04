@@ -118,8 +118,8 @@ OpenAIClient client = new OpenAIClientBuilder()
 The following sections provide several code snippets covering some of the most common OpenAI service tasks, including:
 
 * [Create text completions](#text-completions "Text completions")
+* [Create chat completions](#chat-completions "Chat completions")
 * [Create embeddings](#text-embeddings "Text Embeddings")
-* [Chat Completions](#chat-completions "Chat completions")
 
 ### Text completions
 
