@@ -325,7 +325,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         void drain(Message dataSignal) {
             // By incrementing wip, indicate the drain-loop that there is a signal to handle
             // (signals are - the readiness of a new mediator, request for messages from the downstream,
-            // the arrival of a message, operator termination by the upstream),
+            // the arrival of a message, operator termination by the upstream, current link terminated),
             if (WIP.getAndIncrement(this) != 0) {
                 if (dataSignal != null && cancelled) {
                     // but it is identified that the tombstone is placed on the drain-loop, so drop the data
@@ -588,7 +588,6 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 onError(e);
                 // See the above Note on 'onError' about why the downstream termination is guaranteed immediately
                 // after control 'return' to drain-loop.
-                return;
             }
         }
 
