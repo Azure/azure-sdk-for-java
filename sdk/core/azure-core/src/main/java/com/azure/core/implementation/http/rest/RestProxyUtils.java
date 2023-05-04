@@ -134,7 +134,7 @@ public final class RestProxyUtils {
             InputStream inputStream = inputStreamContent.toStream();
             LengthValidatingInputStream lengthValidatingInputStream =
                 new LengthValidatingInputStream(inputStream, expectedLength);
-            return BinaryData.fromStream(lengthValidatingInputStream);
+            return BinaryData.fromStream(lengthValidatingInputStream, expectedLength);
         } else {
             if (length == null) {
                 byte[] b = (bdc).toBytes();

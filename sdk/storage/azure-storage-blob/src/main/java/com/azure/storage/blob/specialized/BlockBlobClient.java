@@ -663,7 +663,7 @@ public final class BlockBlobClient extends BlobClientBase {
         BinaryData data = options.getData();
         if (data == null) {
             if (options.getDataStream() != null) {
-                data = BinaryData.fromStream(options.getDataStream());
+                data = BinaryData.fromStream(options.getDataStream(), options.getLength());
             } else {
                 data = BinaryData.fromFlux(options.getDataFlux()).block();
             }
