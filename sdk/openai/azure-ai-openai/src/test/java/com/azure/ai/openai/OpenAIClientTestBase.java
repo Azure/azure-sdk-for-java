@@ -72,6 +72,12 @@ public abstract class OpenAIClientTestBase extends TestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
+    void getCompletionsFromSinglePromptRunner(BiConsumer<String, String> testRunner) {
+        String deploymentId = "text-davinci-003";
+        String prompt = "Say this is a test";
+        testRunner.accept(deploymentId, prompt);
+    }
+
     static void assertCompletions(int[] index, CompletionsLogProbabilityModel[] logprobs,
         CompletionsFinishReason[] finishReason, Completions actual) {
         assertNotNull(actual.getId());
