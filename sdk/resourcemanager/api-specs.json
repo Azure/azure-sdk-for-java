@@ -264,8 +264,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2022-12 --name-for-ungrouped-operations=ResourceName",
-    "note": "Remove OperationsClient from SubscriptionClient."
+    "args": "--tag=package-subscriptions-2022-12 --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations"
   },
   "subscriptions-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

@@ -18,22 +18,6 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {SubscriptionClientImpl.class})
 public final class SubscriptionClientBuilder {
     /*
-     * The ID of the target subscription. The value must be an UUID.
-     */
-    private String subscriptionId;
-
-    /**
-     * Sets The ID of the target subscription. The value must be an UUID.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the SubscriptionClientBuilder.
-     */
-    public SubscriptionClientBuilder subscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /*
      * server parameter
      */
     private String endpoint;
@@ -133,12 +117,7 @@ public final class SubscriptionClientBuilder {
                 : SerializerFactory.createDefaultManagementSerializerAdapter();
         SubscriptionClientImpl client =
             new SubscriptionClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+                localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
         return client;
     }
 }
