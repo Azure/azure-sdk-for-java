@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class DevBoxesGetDevBoxByUserTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesGetDevBoxByUserTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getDevBoxWithResponse("myProject", "me", "MyDevBox", requestOptions);
+                devBoxesClient.getDevBoxWithResponse(projectName, "me", DevBoxName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"MyDevBox\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"poolName\":\"LargeDevWorkStationPool\",\"projectName\":\"ContosoProject\",\"provisioningState\":\"Succeeded\",\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}},\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        Assertions.assertEquals(DevBoxName, response.getValue().toObject(LinkedHashMap.class).get("name"));
+
+        deleteDevBox();
     }
 }

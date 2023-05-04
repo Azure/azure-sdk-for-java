@@ -11,16 +11,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class DevBoxesGetRemoteConnectionTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesGetRemoteConnectionTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", requestOptions);
+                devBoxesClient.getRemoteConnectionWithResponse(projectName, "me", DevBoxName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString("{\"webUrl\":\"https://connectionUrl\"}").toObject(Object.class),
-                response.getValue().toObject(Object.class));
+
+        var connectionStringData = response.getValue().toObject(LinkedHashMap.class);
+        Assertions.assertNotNull(connectionStringData.get("webUrl"));
+
+        deleteDevBox();
     }
 }

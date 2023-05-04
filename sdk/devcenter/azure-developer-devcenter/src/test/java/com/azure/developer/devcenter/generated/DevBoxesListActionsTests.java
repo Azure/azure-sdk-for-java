@@ -11,17 +11,26 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesListActionsTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listActions("myProject", "me", "myDevBox", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listActions(projectName, "me", DevBoxName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"idle-hibernateondisconnect\",\"actionType\":\"Stop\",\"next\":{\"scheduledTime\":\"2022-09-30T15:23:00Z\"},\"sourceId\":\"/projects/myProject/pools/myPool\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        int numberOfActions = 0;
+        for (BinaryData data : response) {
+            numberOfActions++;
+            var devBoxData = data.toObject(LinkedHashMap.class);
+            Assertions.assertEquals("schedule-default", devBoxData.get("name"));
+        }
+
+        Assertions.assertEquals(1, numberOfActions);
+
+        deleteDevBox();
     }
 }

@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 
 public final class DevBoxesListSchedulesByPoolTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesListSchedulesByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = devBoxesClient.listSchedules(projectName, poolName, requestOptions);

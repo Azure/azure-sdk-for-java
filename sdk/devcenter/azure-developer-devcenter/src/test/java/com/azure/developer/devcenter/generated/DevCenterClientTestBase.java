@@ -38,6 +38,8 @@ class DevCenterClientTestBase extends TestBase {
 
     protected String DevEnvironmentName = "envname";
 
+    protected String DevBoxName = "mydevbox";
+
     protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
 
     protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "myCatalog");
@@ -151,5 +153,35 @@ class DevCenterClientTestBase extends TestBase {
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
+    }
+
+    protected void createDevBox()
+    {
+        BinaryData body = BinaryData.fromString(String.format("{\"poolName\": \"%s\"}", poolName));
+        RequestOptions requestOptions = new RequestOptions();
+
+        try {
+            SyncPoller<BinaryData, BinaryData> response =
+                devBoxesClient.beginCreateDevBox(projectName, "me", DevBoxName, body, requestOptions);
+
+            Assertions.assertEquals(
+                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void deleteDevBox() {
+        /*
+
+        RequestOptions requestOptions = new RequestOptions();
+
+        SyncPoller<BinaryData, Void> response =
+            devBoxesClient.beginDeleteDevBox(projectName, "me", DevBoxName, requestOptions);
+
+        Assertions.assertEquals(
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+
+         */
     }
 }
