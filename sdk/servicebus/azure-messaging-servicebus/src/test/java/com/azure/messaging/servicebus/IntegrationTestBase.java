@@ -10,7 +10,9 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.AsyncCloseable;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -24,6 +26,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.junit.jupiter.api.AfterAll;
@@ -66,7 +69,7 @@ public abstract class IntegrationTestBase extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
-
+    protected ClientOptions optionsWithTracing;
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final Configuration GLOBAL_CONFIGURATION = TestUtils.getGlobalConfiguration();
     private List<AutoCloseable> toClose = new ArrayList<>();
@@ -84,7 +87,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        GlobalOpenTelemetry.resetForTest();
         Method testMethod = testInfo.getTestMethod().orElseGet(null);
         testName = String.format("%s-%s",
             testMethod == null ? "unknown" : testMethod.getName(),
@@ -96,10 +98,12 @@ public abstract class IntegrationTestBase extends TestBase {
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
         toClose = new ArrayList<>();
-        OpenTelemetrySdk.builder()
+        GlobalOpenTelemetry.resetForTest();
+        OpenTelemetry otel = OpenTelemetrySdk.builder()
             .setTracerProvider(
                 SdkTracerProvider.builder().addSpanProcessor(new LoggingSpanProcessor(logger)).build())
-            .buildAndRegisterGlobal();
+            .build();
+        optionsWithTracing = new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider()));
         beforeTest();
     }
 
@@ -238,6 +242,7 @@ public abstract class IntegrationTestBase extends TestBase {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retryOptions(RETRY_OPTIONS)
+            .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
@@ -304,8 +309,7 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, int entityIndex,
-        boolean sharedConnection) {
+        MessagingEntityType entityType, int entityIndex, boolean sharedConnection, AmqpRetryOptions retryOptions) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
@@ -314,6 +318,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
                 return builder
+                    .retryOptions(retryOptions)
                     .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                     .queueName(queueName);
@@ -323,7 +328,9 @@ public abstract class IntegrationTestBase extends TestBase {
                 final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-                return builder.sessionReceiver()
+                return builder
+                    .retryOptions(retryOptions)
+                    .sessionReceiver()
                     .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                     .topicName(topicName).subscriptionName(subscriptionName);
             default:
@@ -471,7 +478,7 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
+    protected ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
         ServiceBusClientBuilder builder;
         if (sharedConnection && sharedBuilder == null) {
             sharedBuilder = getBuilder(useCredentials);

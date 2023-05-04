@@ -3,11 +3,24 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
-/** The PlayOptionsInternal model. */
+import java.util.List;
+
+/** The PlayOptions model. */
 @Fluent
 public final class PlayOptions {
+    /*
+     * A {@link PlaySource} representing the source to play.
+     */
+    private final PlaySource playSource;
+
+    /*
+     * The targets to play to
+     */
+    private final List<CommunicationIdentifier> playTo;
+
     /*
      * The option to play the provided audio source in loop when set to true
      */
@@ -17,6 +30,34 @@ public final class PlayOptions {
      * The operation context
      */
     private String operationContext;
+
+    /**
+     * Constructor
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo The targets to play to.
+     */
+    public PlayOptions(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        this.playSource = playSource;
+        this.playTo = playTo;
+    }
+
+    /**
+     * Get the play source.
+     *
+     * @return the playSource value.
+     */
+    public PlaySource getPlaySource() {
+        return this.playSource;
+    }
+
+    /**
+     * Get the list of targets to play to.
+     *
+     * @return the playTo value.
+     */
+    public List<CommunicationIdentifier> getPlayTo() {
+        return this.playTo;
+    }
 
     /**
      * Get the loop property: The option to play the provided audio source in loop when set to true.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CallConnectionStateModelInternal. */
+/** The state of the call connection. */
 public final class CallConnectionStateModelInternal extends ExpandableStringEnum<CallConnectionStateModelInternal> {
     /** Static value unknown for CallConnectionStateModelInternal. */
     public static final CallConnectionStateModelInternal UNKNOWN = fromString("unknown");
@@ -30,6 +30,14 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
 
     /** Static value disconnected for CallConnectionStateModelInternal. */
     public static final CallConnectionStateModelInternal DISCONNECTED = fromString("disconnected");
+
+    /**
+     * Creates a new instance of CallConnectionStateModelInternal value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CallConnectionStateModelInternal() {}
 
     /**
      * Creates or finds a CallConnectionStateModelInternal from its string representation.

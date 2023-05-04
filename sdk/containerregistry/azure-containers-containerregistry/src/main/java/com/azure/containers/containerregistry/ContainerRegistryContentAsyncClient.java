@@ -21,7 +21,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -53,10 +52,8 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.co
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -507,9 +504,7 @@ public final class ContainerRegistryContentAsyncClient {
 
     private Flux<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>> getAllChunks(
         ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData> firstResponse, String digest, Context context) {
-        validateResponseHeaderDigest(digest, firstResponse.getHeaders());
-
-        long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+        long blobSize = getBlobSize(firstResponse.getHeaders());
         List<Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>>> others = new ArrayList<>();
         others.add(Mono.just(firstResponse));
         for (long p = firstResponse.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {

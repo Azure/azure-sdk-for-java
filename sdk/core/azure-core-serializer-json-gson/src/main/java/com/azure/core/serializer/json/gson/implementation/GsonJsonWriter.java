@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.gson.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
@@ -15,6 +16,8 @@ import java.util.Objects;
  * GSON-based implementation of {@link JsonWriter}.
  */
 public final class GsonJsonWriter extends JsonWriter {
+    private static final ClientLogger LOGGER = new ClientLogger(GsonJsonWriter.class);
+
     private final com.google.gson.stream.JsonWriter writer;
 
     // Initial state is always root.
@@ -38,8 +41,8 @@ public final class GsonJsonWriter extends JsonWriter {
     @Override
     public void close() throws IOException {
         if (context != JsonWriteContext.COMPLETED) {
-            throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
-                + "closed. Current writing state is '" + context.getWriteState() + "'.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Writing of the JSON object must be completed "
+                + "before the writer can be closed. Current writing state is '" + context.getWriteState() + "'."));
         }
 
         writer.flush();

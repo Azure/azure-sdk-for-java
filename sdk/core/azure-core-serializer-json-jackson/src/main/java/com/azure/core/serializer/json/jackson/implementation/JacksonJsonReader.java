@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -15,6 +16,8 @@ import java.util.Objects;
  * Jackson-based implementation of {@link JsonReader}.
  */
 public final class JacksonJsonReader extends JsonReader {
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonJsonReader.class);
+
     private final JsonParser parser;
     private final byte[] jsonBytes;
     private final String jsonString;
@@ -119,8 +122,8 @@ public final class JacksonJsonReader extends JsonReader {
             String json = readRemainingFieldsAsJsonObject();
             return AzureJsonUtils.createReader(json, jsonOptions);
         } else {
-            throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
-                + "starting location. Starting location: " + currentToken());
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Cannot buffer a JSON object from a non-object, "
+                + "non-field name starting location. Starting location: " + currentToken()));
         }
     }
 
@@ -132,7 +135,7 @@ public final class JacksonJsonReader extends JsonReader {
     @Override
     public JsonReader reset() throws IOException {
         if (!resetSupported) {
-            throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
+            throw LOGGER.logExceptionAsError(new IllegalStateException("'reset' isn't supported by this JsonReader."));
         }
 
         return (jsonBytes != null)
@@ -183,7 +186,8 @@ public final class JacksonJsonReader extends JsonReader {
                 return JsonToken.NULL;
 
             default:
-                throw new IllegalStateException("Unsupported token type: '" + nextToken + "'.");
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Unsupported token type: '" + nextToken + "'."));
         }
     }
 }
