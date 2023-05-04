@@ -60,7 +60,7 @@ public interface AmqpReceiveLink extends AmqpLink {
      * @throws RejectedExecutionException if the scheduler rejects the scheduling attempt (e.g., the scheduler is closed).
      * @throws UncheckedIOException if an IO error occurs when scheduling.
      */
-    void scheduleCredit(Supplier<Long> creditSupplier);
+    void addCredit(Supplier<Long> creditSupplier);
 
     /**
      * Gets the current number of credits this link has.
