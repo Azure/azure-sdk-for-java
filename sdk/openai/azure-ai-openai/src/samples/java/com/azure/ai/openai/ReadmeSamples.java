@@ -15,7 +15,6 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.StringInputModel;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -25,6 +24,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -121,7 +121,7 @@ public final class ReadmeSamples {
     public void getEmbedding() {
         // BEGIN: readme-sample-getEmbedding
         EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(
-            new StringInputModel("Your text string goes here"));
+            Arrays.asList("Your text string goes here"));
 
         Embeddings embeddings = client.getEmbeddings("{deploymentOrModelId}", embeddingsOptions);
 

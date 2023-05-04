@@ -7,6 +7,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * The configuration information for an embeddings request. Embeddings measure the relatedness of text strings and are
@@ -38,7 +39,7 @@ public final class EmbeddingsOptions {
      * as we have observed inferior results when newlines are present.
      */
     @JsonProperty(value = "input", required = true)
-    private InputModelBase input;
+    private List<String> input;
 
     /**
      * Creates an instance of EmbeddingsOptions class.
@@ -46,7 +47,7 @@ public final class EmbeddingsOptions {
      * @param input the input value to set.
      */
     @JsonCreator
-    public EmbeddingsOptions(@JsonProperty(value = "input", required = true) InputModelBase input) {
+    public EmbeddingsOptions(@JsonProperty(value = "input", required = true) List<String> input) {
         this.input = input;
     }
 
@@ -103,7 +104,7 @@ public final class EmbeddingsOptions {
      *
      * @return the input value.
      */
-    public InputModelBase getInput() {
+    public List<String> getInput() {
         return this.input;
     }
 }

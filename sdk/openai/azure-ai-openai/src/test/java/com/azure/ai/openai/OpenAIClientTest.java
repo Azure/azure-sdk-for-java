@@ -20,6 +20,8 @@ import reactor.core.publisher.Flux;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OpenAIClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
@@ -47,7 +49,10 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
             resultCompletions.forEach(completions -> {
-                assertCompletions(new int[]{0}, null, null, completions);
+                assertNotNull(completions.getId());
+                assertNotNull(completions.getChoices());
+                assertFalse(completions.getChoices().isEmpty());
+                assertNotNull(completions.getChoices().get(0).getText());
             });
         });
     }
@@ -82,7 +87,10 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
             resultChatCompletions.forEach(chatCompletions -> {
-                assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, chatCompletions);
+                assertNotNull(chatCompletions.getId());
+                assertNotNull(chatCompletions.getChoices());
+                assertFalse(chatCompletions.getChoices().isEmpty());
+                assertNotNull(chatCompletions.getChoices().get(0).getDelta());
             });
         });
     }

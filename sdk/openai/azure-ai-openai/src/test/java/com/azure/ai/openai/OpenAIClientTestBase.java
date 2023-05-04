@@ -15,7 +15,6 @@ import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.StringInputModel;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -26,6 +25,7 @@ import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -144,7 +144,7 @@ public abstract class OpenAIClientTestBase extends TestBase {
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         String deploymentId = "embedding";
-        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(new StringInputModel("Your text string goes here"));
+        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Arrays.asList("Your text string goes here"));
         testRunner.accept(deploymentId, embeddingsOptions);
     }
 

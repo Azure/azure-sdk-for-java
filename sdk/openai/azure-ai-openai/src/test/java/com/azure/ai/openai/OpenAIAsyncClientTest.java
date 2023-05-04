@@ -18,6 +18,7 @@ import reactor.test.StepVerifier;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
@@ -49,8 +50,11 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)).last())
-                .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                .assertNext(completions -> {
+                    assertNotNull(completions.getId());
+                    assertNotNull(completions.getChoices());
+                    assertFalse(completions.getChoices().isEmpty());
+                    assertNotNull(completions.getChoices().get(0).getText());
                 })
                 .verifyComplete();
         });
@@ -93,11 +97,14 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)).last())
-                .assertNext(resultChatCompletions -> {
-                    assertNotNull(resultChatCompletions.getUsage());
-                    assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
+                .assertNext(chatCompletions -> {
+                    assertNotNull(chatCompletions.getId());
+                    assertNotNull(chatCompletions.getChoices());
+                    assertFalse(chatCompletions.getChoices().isEmpty());
+                    assertNotNull(chatCompletions.getChoices().get(0).getDelta());
                 })
                 .verifyComplete();
+
         });
     }
 

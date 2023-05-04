@@ -7,6 +7,7 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
+import com.azure.ai.openai.models.ChatMessageDelta;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
@@ -50,7 +51,7 @@ public class GetChatCompletionsStreamSample {
         chatCompletionsStream.forEach(chatCompletions -> {
             System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
             for (ChatChoice choice : chatCompletions.getChoices()) {
-                ChatMessage message = choice.getMessage();
+                ChatMessageDelta message = choice.getDelta();
                 System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
                 System.out.println("Message:");
                 System.out.println(message.getContent());

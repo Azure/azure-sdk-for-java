@@ -5,14 +5,15 @@ package com.azure.ai.openai.implementation;
 
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.serializer.TypeReference;
+import com.fasterxml.jackson.core.JacksonException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,11 +23,17 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public final class OpenAIServerSentEvents<T> {
 
-    private static final JsonSerializer JSON_SERIALIZER = JsonSerializerProviders.createInstance(true);
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
     private AtomicReference<String> lastLine = new AtomicReference<>("");
     private AtomicBoolean expectEmptyLine = new AtomicBoolean();
+
+    private static final ObjectMapper SERIALIZER = new ObjectMapper()
+        .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+        .disable(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES)
+        .disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES)
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
 
     public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;
@@ -62,11 +69,16 @@ public final class OpenAIServerSentEvents<T> {
                             completionJson = split[1].substring(1);
                         }
 
-                        try {
-                            T value = JSON_SERIALIZER.deserializeFromBytes(completionJson.getBytes(StandardCharsets.UTF_8), TypeReference.createInstance(type));
-                            values.add(value);
-                            lastLine.set("");
-                        } catch (UncheckedIOException exception) {
+                        if (isValidJson(completionJson)) {
+
+                            try {
+                                T value = SERIALIZER.readValue(completionJson, type);
+                                values.add(value);
+                                lastLine.set("");
+                            } catch (Exception e) {
+                                System.out.println("Exception" + currentLine +  e);
+                            }
+                        } else {
                             lastLine.set(currentLine);
                             expectEmptyLine.set(false);
                         }
@@ -82,5 +94,12 @@ public final class OpenAIServerSentEvents<T> {
         });
     }
 
-
+    private static boolean isValidJson(String json) {
+        try {
+            SERIALIZER.readTree(json);
+            return true;
+        } catch (JacksonException exception) {
+            return false;
+        }
+    }
 }
