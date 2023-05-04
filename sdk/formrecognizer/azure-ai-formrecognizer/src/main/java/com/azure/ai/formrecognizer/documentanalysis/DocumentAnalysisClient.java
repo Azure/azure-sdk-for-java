@@ -47,11 +47,15 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
- * This class provides a synchronous client that contains the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are analyzing information from documents and images using custom-built document
- * analysis models, prebuilt models for invoices, receipts, identity documents and business cards, and the layout model.
- *
- * <p><strong>Instantiating an asynchronous Document Analysis Client</strong></p>
+ * This class provides a synchronous client to connect to the Form Recognizer Azure Cognitive Service to analyze information
+ * from documents and images and extract it into structured data.
+ * <p>It provides methods for analyzing with prebuilt models (receipts, business cards, invoices,
+ * identity documents, and others), analyzing layout from documents, analyzing general document types,
+ * and analyzing custom documents with custom-built models.
+ * </p>
+ * See <a href="https://aka.ms/azsdk/formrecognizer/models">here</a> to see a full list of models supported by the service.
+ * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
+ * <p><strong>Sample: Instantiating an asynchronous Document Analysis Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.instantiation -->
  * <pre>
@@ -63,6 +67,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.instantiation -->
  *
  * @see DocumentAnalysisClientBuilder
+ * @see DocumentAnalysisClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {

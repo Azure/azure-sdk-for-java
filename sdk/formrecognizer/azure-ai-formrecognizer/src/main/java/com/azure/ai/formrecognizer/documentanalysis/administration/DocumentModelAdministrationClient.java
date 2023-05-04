@@ -80,7 +80,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * This class provides a synchronous client to connect with the Form Recognizer Azure Cognitive Service for
  * building and managing models.
  *
- * <p>It provides methods for building models, as well as methods for viewing and deleting models,
+ * <p>It provides methods for building models, viewing and deleting models,
  * viewing model operations, accessing resource details, copying models to another
  * Form Recognizer resource, and composing a new model from a collection of existing models.
  * </p>
