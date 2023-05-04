@@ -9,11 +9,9 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcesso
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
-import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import java.util.Map;
 import java.util.Objects;
@@ -22,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
@@ -353,10 +350,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private synchronized void receiveMessages() {
-        final boolean isSupported = receiveUsingNewStackIfSupported();
-        if (isSupported) {
-            return;
-        }
         if (receiverSubscriptions.size() > 0) {
             // For the case of start -> stop -> start again
             receiverSubscriptions.keySet().forEach(subscription -> subscription.request(1L));
@@ -444,52 +437,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
             receiverClient.receiveMessagesWithContext()
                 .subscribe(subscribers[0]);
         }
-    }
-
-    private boolean receiveUsingNewStackIfSupported() {
-        final ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
-        final boolean isSupported = receiverClient.supportsNewStack();
-        if (!isSupported) {
-            return false;
-        }
-
-        final Function<ServiceBusReceivedMessage, Publisher<Void>> onMessage = message -> {
-            return Mono.fromRunnable(() -> {
-                final ServiceBusMessageContext messageContext = new ServiceBusMessageContext(message);
-                if (messageContext.hasError()) {
-                    handleError(messageContext.getThrowable());
-                } else {
-                    try {
-                        processMessage.accept(new ServiceBusReceivedMessageContext(receiverClient, messageContext));
-                    } catch (Exception ex) {
-                        messageContext.getMessage().setContext(
-                            messageContext.getMessage().getContext().addData(PROCESS_ERROR_KEY, ex));
-                        handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
-
-                        if (!processorOptions.isDisableAutoComplete()) {
-                            LOGGER.warning("Error when processing message. Abandoning message.", ex);
-                            abandonMessage(messageContext, receiverClient);
-                        }
-                    }
-                }
-            }).subscribeOn(Schedulers.boundedElastic()).then();
-        };
-
-        receiverClient.receiveUsingNewStack()
-            .flatMap(onMessage, processorOptions.getMaxConcurrentCalls(), 1)
-            .subscribe(__ -> { },
-                e -> {
-                    if (isRunning.get()) {
-                        restartMessageReceiver(null /**TODO (anu): handle disposable **/);
-                    }
-                },
-                () -> {
-                    if (isRunning.get()) {
-                        restartMessageReceiver(null /**TODO (anu): handle disposable **/);
-                    }
-                });
-
-        return true;
     }
 
     private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
