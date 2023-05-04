@@ -42,14 +42,10 @@ public final class StartCallRecordingRequestInternal {
     private RecordingFormatInternal recordingFormatType;
 
     /*
-     * The sequential order in which audio channels are assigned to
-     * participants in the unmixed recording.
-     * When 'recordingChannelType' is set to 'unmixed' and
-     * `audioChannelParticipantOrdering is not specified,
-     * the audio channel to participant mapping will be automatically assigned
-     * based on the order in which participant
-     * first audio was detected.  Channel to participant mapping details can be
-     * found in the metadata of the recording.
+     * The sequential order in which audio channels are assigned to participants in the unmixed recording.
+     * When 'recordingChannelType' is set to 'unmixed' and `audioChannelParticipantOrdering is not specified,
+     * the audio channel to participant mapping will be automatically assigned based on the order in which participant
+     * first audio was detected.  Channel to participant mapping details can be found in the metadata of the recording.
      */
     @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
@@ -59,6 +55,9 @@ public final class StartCallRecordingRequestInternal {
      */
     @JsonProperty(value = "externalStorage")
     private ExternalStorageInternal externalStorage;
+
+    /** Creates an instance of StartCallRecordingRequestInternal class. */
+    public StartCallRecordingRequestInternal() {}
 
     /**
      * Get the callLocator property: The call locator.

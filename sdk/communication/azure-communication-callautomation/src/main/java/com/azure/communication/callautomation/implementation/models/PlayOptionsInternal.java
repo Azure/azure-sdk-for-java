@@ -16,6 +16,9 @@ public final class PlayOptionsInternal {
     @JsonProperty(value = "loop", required = true)
     private boolean loop;
 
+    /** Creates an instance of PlayOptionsInternal class. */
+    public PlayOptionsInternal() {}
+
     /**
      * Get the loop property: The option to play the provided audio source in loop when set to true.
      *

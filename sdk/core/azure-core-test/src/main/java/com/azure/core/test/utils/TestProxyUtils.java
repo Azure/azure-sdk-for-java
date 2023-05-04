@@ -35,12 +35,14 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.models.TestProxySanitizerType.HEADER;
+import static com.azure.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 
 /**
  * Utility functions for interaction with the test proxy.
  */
 public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
+    private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
 
     private static final List<String> JSON_PROPERTIES_TO_REDACT
         = new ArrayList<String>(
@@ -50,7 +52,6 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
-            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -86,9 +87,10 @@ public class TestProxyUtils {
      * @param proxyUrl The {@link URL} the proxy lives at.
      * @param xRecordingId The x-recording-id value for the current session.
      * @param mode The current test proxy mode.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode) {
+    public static void changeHeaders(HttpRequest request, URL proxyUrl, String xRecordingId, String mode, boolean skipRecordingRequestBody) {
         HttpHeader upstreamUri = request.getHeaders().get(X_RECORDING_UPSTREAM_BASE_URI);
 
         UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
@@ -110,6 +112,9 @@ public class TestProxyUtils {
                 headers.set(X_RECORDING_UPSTREAM_BASE_URI, originalUrl.toString());
                 headers.set(X_RECORDING_MODE, mode);
                 headers.set(X_RECORDING_ID, xRecordingId);
+                if (mode.equals(RECORD_MODE) && skipRecordingRequestBody) {
+                    headers.set(X_RECORDING_SKIP, "request-body");
+                }
             }
 
             request.setUrl(proxyUrlBuilder.toUrl());
@@ -124,12 +129,13 @@ public class TestProxyUtils {
      * @return The modified response.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static HttpResponse revertUrl(HttpResponse response) {
+    public static HttpResponse resetTestProxyData(HttpResponse response) {
+        HttpRequest responseRequest = response.getRequest();
+        HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
-            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders()
-                .getValue(X_RECORDING_UPSTREAM_BASE_URI))
+            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI))
                 .toUrl();
-            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            UrlBuilder currentUrl = UrlBuilder.parse(responseRequest.getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
             int port = originalUrl.getPort();
@@ -138,7 +144,12 @@ public class TestProxyUtils {
             } else {
                 currentUrl.setPort(port);
             }
-            response.getRequest().setUrl(currentUrl.toUrl());
+            responseRequest.setUrl(currentUrl.toUrl());
+
+            requestHeaders.remove(X_RECORDING_UPSTREAM_BASE_URI);
+            requestHeaders.remove(X_RECORDING_MODE);
+            requestHeaders.remove(X_RECORDING_SKIP);
+            requestHeaders.remove(X_RECORDING_ID);
             return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);

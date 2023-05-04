@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resourceconnector.models.Provider;
 /** Samples for Appliances CreateOrUpdate. */
 public final class AppliancesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesCreate_Update.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesCreate_Update.json
      */
     /**
      * Sample code: Create/Update Appliance.

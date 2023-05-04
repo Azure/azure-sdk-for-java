@@ -592,7 +592,7 @@ public abstract class JsonReader implements Closeable {
 
     private Object readUntypedHelper(int depth) throws IOException {
         // Keep track of array and object nested depth to prevent a StackOverflowError from occurring.
-        if (depth >= 1000) {
+        if (depth >= 999) {
             throw new IllegalStateException("Untyped object exceeded allowed object nested depth of 1000.");
         }
 

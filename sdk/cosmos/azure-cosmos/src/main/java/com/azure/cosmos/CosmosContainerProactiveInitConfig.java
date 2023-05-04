@@ -6,8 +6,10 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -19,14 +21,20 @@ public final class CosmosContainerProactiveInitConfig {
             .CosmosContainerIdentityHelper
             .getCosmosContainerIdentityAccessor();
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
+    private final Map<String, Integer> containerLinkToMinConnectionsMap;
     private final int numProactiveConnectionRegions;
+    private final Duration aggressiveWarmupDuration;
 
     CosmosContainerProactiveInitConfig(
         List<CosmosContainerIdentity> cosmosContainerIdentities,
-        int numProactiveConnectionRegions) {
-
+        int numProactiveConnectionRegions,
+        Map<String, Integer> containerLinkToMinConnectionsMap,
+        Duration aggressiveWarmupDuration
+    ) {
         this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
+        this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
+        this.aggressiveWarmupDuration = aggressiveWarmupDuration;
     }
 
     /**
@@ -71,6 +79,16 @@ public final class CosmosContainerProactiveInitConfig {
         return numProactiveConnectionRegions;
     }
 
+    /**
+     * Gets the duration within which connections will be opened aggressively and in a blocking manner and outside
+     * which connections will be opened defensively and in a non-blocking manner
+     *
+     * @return the aggressive proactive connection establishment duration
+     * */
+    Duration getAggressiveWarmupDuration() {
+        return this.aggressiveWarmupDuration;
+    }
+
     @Override
     public String toString() {
 
@@ -90,4 +108,15 @@ public final class CosmosContainerProactiveInitConfig {
                     .collect(Collectors.joining(",")),
                 numProactiveConnectionRegions);
     }
+
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.setCosmosContainerProactiveInitConfigAccessor(new ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor() {
+            @Override
+            public Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
+                return cosmosContainerProactiveInitConfig.containerLinkToMinConnectionsMap;
+            }
+        });
+    }
+
+    static { initialize(); }
 }

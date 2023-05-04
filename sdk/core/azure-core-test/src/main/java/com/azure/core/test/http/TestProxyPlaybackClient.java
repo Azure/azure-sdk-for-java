@@ -113,20 +113,38 @@ public class TestProxyPlaybackClient implements HttpClient {
     }
 
     /**
+     * Method is invoked before the request is sent.
+     *
+     * @param request The request context.
+     * @throws RuntimeException if playback was started before request is sent.
+     */
+    private void beforeSendingRequest(HttpRequest request) {
+        if (xRecordingId == null) {
+            throw new RuntimeException("Playback was not started before a request was sent.");
+        }
+        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "playback", false);
+    }
+
+    /**
+     * Method is invoked after the response is received.
+     *
+     * @param response The response received.
+     * @return The transformed response.
+     */
+    private HttpResponse afterReceivedResponse(HttpResponse response) {
+        TestProxyUtils.checkForTestProxyErrors(response);
+        return TestProxyUtils.resetTestProxyData(response);
+    }
+
+    /**
      * Redirects the request to the test-proxy to retrieve the playback response.
      * @param request The HTTP request to send.
      * @return The HTTP response.
      */
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
-        if (xRecordingId == null) {
-            throw new RuntimeException("Playback was not started before a request was sent.");
-        }
-        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "playback");
-        return client.send(request).map(response -> {
-            TestProxyUtils.checkForTestProxyErrors(response);
-            return TestProxyUtils.revertUrl(response);
-        });
+        beforeSendingRequest(request);
+        return client.send(request).map(this::afterReceivedResponse);
     }
 
     /**
@@ -136,13 +154,9 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        if (xRecordingId == null) {
-            throw new RuntimeException("Playback was not started before a request was sent.");
-        }
-        TestProxyUtils.changeHeaders(request, proxyUrl, xRecordingId, "playback");
+        beforeSendingRequest(request);
         HttpResponse response = client.sendSync(request, context);
-        TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.revertUrl(response);
+        return afterReceivedResponse(response);
     }
 
     /**
