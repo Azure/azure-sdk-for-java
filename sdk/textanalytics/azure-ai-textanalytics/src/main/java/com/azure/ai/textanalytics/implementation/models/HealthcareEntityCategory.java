@@ -119,6 +119,14 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
     public static final HealthcareEntityCategory SUBSTANCE_USE_AMOUNT = fromString("SubstanceUseAmount");
 
     /**
+     * Creates a new instance of HealthcareEntityCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthcareEntityCategory() {}
+
+    /**
      * Creates or finds a HealthcareEntityCategory from its string representation.
      *
      * @param name a name to look for.

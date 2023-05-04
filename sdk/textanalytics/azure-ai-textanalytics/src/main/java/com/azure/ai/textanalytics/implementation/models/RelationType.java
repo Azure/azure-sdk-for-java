@@ -116,6 +116,14 @@ public final class RelationType extends ExpandableStringEnum<RelationType> {
     public static final RelationType VARIANT_OF_GENE = fromString("VariantOfGene");
 
     /**
+     * Creates a new instance of RelationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RelationType() {}
+
+    /**
      * Creates or finds a RelationType from its string representation.
      *
      * @param name a name to look for.

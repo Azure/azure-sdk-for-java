@@ -12,19 +12,12 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class ExtractSummaryResult extends TextAnalyticsResult {
-    private DetectedLanguage detectedLanguage;
     private IterableStream<SummarySentence> sentences;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
         ExtractSummaryResultPropertiesHelper.setAccessor(
             new ExtractSummaryResultPropertiesHelper.ExtractSummaryResultAccessor() {
-                @Override
-                public void setDetectedLanguage(ExtractSummaryResult documentResult,
-                    DetectedLanguage detectedLanguage) {
-                    documentResult.setDetectedLanguage(detectedLanguage);
-                }
-
                 @Override
                 public void setSentences(ExtractSummaryResult documentResult,
                     IterableStream<SummarySentence> sentences) {
@@ -51,16 +44,6 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain an object of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
-     */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
-    }
-
-    /**
      * Get the extractive summarization sentence collection.
      *
      * @return The extractive summarization sentence collection.
@@ -80,10 +63,6 @@ public final class ExtractSummaryResult extends TextAnalyticsResult {
      */
     public IterableStream<TextAnalyticsWarning> getWarnings() {
         return this.warnings;
-    }
-
-    private void setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
     }
 
     private void setSentences(IterableStream<SummarySentence> sentences) {
