@@ -10,7 +10,6 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
-import com.azure.storage.file.share.implementation.models.AccessRight;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.FileProperty;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
@@ -21,7 +20,6 @@ import com.azure.storage.file.share.implementation.models.SharePropertiesInterna
 import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
-import com.azure.storage.file.share.models.ShareFileHandleAccessRights;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
@@ -210,14 +208,6 @@ public class ModelHelper {
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
     }
 
-    public static List<ShareFileHandleAccessRights> transformAccessRightsList(List<AccessRight> accessRightList) {
-        List<ShareFileHandleAccessRights> result = new ArrayList<>();
-        accessRightList.forEach(item -> {
-            result.add(ShareFileHandleAccessRights.fromString(item.toString()));
-        });
-        return result;
-    }
-
     public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
         return new HandleItem()
             .setHandleId(handleItem.getHandleId())
@@ -228,7 +218,7 @@ public class ModelHelper {
             .setParentId(handleItem.getParentId())
             .setLastReconnectTime(handleItem.getLastReconnectTime())
             .setOpenTime(handleItem.getOpenTime())
-            .setAccessRights(transformAccessRightsList(handleItem.getAccessRightList()));
+            .setAccessRights(handleItem.getAccessRightList());
     }
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
