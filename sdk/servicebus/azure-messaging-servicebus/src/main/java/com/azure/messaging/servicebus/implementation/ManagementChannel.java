@@ -425,18 +425,17 @@ public class ManagementChannel implements ServiceBusManagementNode {
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
         String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
-        final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             logger.atVerbose()
-                .addKeyValue("lockTokens", () -> Arrays.toString(lockTokens))
+                .addKeyValue("lockToken", lockToken)
                 .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                 .addKeyValue(SESSION_ID_KEY, sessionId)
-                .log("Update disposition of deliveries.");
+                .log("Scheduling disposition.");
 
             final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
 
             final Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
             requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
 
             if (deadLetterReason != null) {
