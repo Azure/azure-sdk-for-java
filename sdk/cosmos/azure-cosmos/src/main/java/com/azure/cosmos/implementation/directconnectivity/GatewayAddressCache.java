@@ -257,7 +257,7 @@ public class GatewayAddressCache implements IAddressCache {
                 this.serverPartitionAddressCache
                         .getAsync(partitionKeyRangeIdentity, Mono::just, cachedAddresses -> false).map(Utils.ValueHolder::new);
 
-        Map<Uri, PartitionKeyRangeIdentity> addressUrisWoRefreshToPkrMap = new HashMap<>();
+        final Set<Uri> addressUrisBeforeRefresh = new HashSet<>();
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs =
                 this.serverPartitionAddressCache
@@ -278,11 +278,10 @@ public class GatewayAddressCache implements IAddressCache {
 
         return addressesWoRefreshObs
                 .flatMap(valueHolder -> {
-                    if (valueHolder.v != null && valueHolder.v.length > 0) {
-                        for (AddressInformation addressInformation : valueHolder.v) {
-                            addressUrisWoRefreshToPkrMap.put(addressInformation.getPhysicalUri(), partitionKeyRangeIdentity);
-                        }
-                    }
+                    Arrays
+                            .stream(valueHolder.v)
+                            .map(AddressInformation::getPhysicalUri)
+                            .forEach(addressUrisBeforeRefresh::add);
                     return Mono.empty();
                 })
                 .then(addressesObs)
@@ -308,7 +307,6 @@ public class GatewayAddressCache implements IAddressCache {
                                 cachedAddresses -> this.getAddressesForRangeId(request, partitionKeyRangeIdentity, true, cachedAddresses));
                     }
 
-                    Set<Uri> addressUrisBeforeRefresh = addressUrisWoRefreshToPkrMap.keySet();
                     Set<Uri> addressUrisAfterRefresh = Arrays
                             .stream(addressesValueHolder.v)
                             .map(AddressInformation::getPhysicalUri)
