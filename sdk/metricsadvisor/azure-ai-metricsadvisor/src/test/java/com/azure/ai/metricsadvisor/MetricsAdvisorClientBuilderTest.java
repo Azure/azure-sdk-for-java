@@ -191,7 +191,7 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if(!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(getEmailSanitizers());
         }
         if (interceptorManager.isRecordMode()) {
