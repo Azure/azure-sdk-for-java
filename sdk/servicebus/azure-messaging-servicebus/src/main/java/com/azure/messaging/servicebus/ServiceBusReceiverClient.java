@@ -820,8 +820,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         if (!syncSubscribed.getAndSet(true)) {
             // The 'subscribeWith' has side effects hence must not be called from
             // the above updateFunction of AtomicReference::updateAndGet.
-            if (asyncClient.supportsNewStack()) {
-                asyncClient.receiveUsingNewStack().subscribeWith(messageSubscriber);
+            if (asyncClient.isNewStack()) {
+                if (asyncClient.isSessionEnabled()) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException("Session-Receive and New-Stack combination is unexpected."));
+                } else {
+                    asyncClient.nonSessionSyncReceiveOnNewStack().subscribeWith(messageSubscriber);
+                }
             } else {
                 asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
             }

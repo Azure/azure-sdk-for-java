@@ -698,7 +698,7 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    // Connection-caching for the legacy stack.
+    // Connection-caching for the Legacy-Stack.
     private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer) {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
@@ -721,7 +721,7 @@ public final class ServiceBusClientBuilder implements
                         connectionOptions.getAuthorizationScope());
                     final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
-                    // For the legacy stack, tell the connection to continue creating receivers on legacy stack.
+                    // For the Legacy-Stack, tell the connection to continue creating receivers on legacy stack.
                     final boolean useLegacyReceiver = true;
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
                         connectionOptions, provider, handlerProvider, linkProvider, tokenManagerProvider, serializer,
@@ -783,7 +783,7 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    // Connection-caching for the new stack.
+    // Connection-caching for the New-Stack.
     private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
@@ -880,28 +880,35 @@ public final class ServiceBusClientBuilder implements
         return entityPath;
     }
 
-    // // Temporary type for Builders to work with the new stack. Type will be removed once migration to new stack is completed.
+    // Temporary type for Builders to work with the New-Stack. Type will be removed once migration to new stack is completed.
     private static final class NewStackSupport {
         private static final String NON_SESSION_ASYNC_RECEIVE_CONFIG_KEY = "com.azure.messaging.servicebus.nonSession.asyncReceive.v2";
+        private static final String NON_SESSION_SYNC_RECEIVE_CONFIG_KEY = "com.azure.messaging.servicebus.nonSession.syncReceive.v2";
         private static final String SEND_MANAGE_RULES_CONFIG_KEY = "com.azure.messaging.servicebus.sendAndManageRules.v2";
         private final AtomicReference<Boolean> nonSessionAsyncReceiveApiFlag = new AtomicReference<>();
+        private final AtomicReference<Boolean> nonSessionSyncReceiveApiFlag = new AtomicReference<>();
         private final AtomicReference<Boolean> nonReceiveApiFlag = new AtomicReference<>();
 
         private final Object connectionLock = new Object();
         private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
         private final AtomicInteger openClients = new AtomicInteger();
 
-        // Check if the user explicitly opted out Non-Session Async[Reactor|Processor]Client from using the new stack.
+        // Non-Session Async[Reactor|Processor]Client is on the new stack by default, check if it is opted-out.
         boolean isNonSessionAsyncReceiveApiOptedOut(Configuration configuration) {
             return checkApiOptedOut(configuration, NON_SESSION_ASYNC_RECEIVE_CONFIG_KEY, nonSessionAsyncReceiveApiFlag);
         }
 
-        // Check if the user explicitly opted out Sender and RuleManager Client from using the new stack.
-        boolean isSendAndManageRulesApiOptedOut(Configuration configuration) {
+        // Non-Session SyncClient is on the legacy stack by default, check if it is opted-in to the new stack.
+        boolean isNonSessionSyncReceiveApiOptedIn(Configuration configuration) {
+            return checkApiOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_CONFIG_KEY, nonSessionSyncReceiveApiFlag);
+        }
+
+        // Sender and RuleManager Client is on the new stack by default, check if it is opted-out.
+        boolean isSenderAndManageRulesApiOptedOut(Configuration configuration) {
             return checkApiOptedOut(configuration, SEND_MANAGE_RULES_CONFIG_KEY, nonReceiveApiFlag);
         }
 
-        // Obtain the shared connection-cache based on the new stack.
+        // Obtain the shared connection-cache based on the New-Stack.
         ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(ConnectionOptions connectionOptions,
             MessageSerializer serializer, boolean crossEntityTransactions) {
             synchronized (connectionLock) {
@@ -958,6 +965,19 @@ public final class ServiceBusClientBuilder implements
             }
             final boolean isOptedOut = !apiFlag.get();
             return isOptedOut;
+        }
+
+        private boolean checkApiOptedIn(Configuration configuration, String apiConfigKey, AtomicReference<Boolean> apiFlag) {
+            if (apiFlag.get() != null) {
+                return apiFlag.get();
+            }
+            if (configuration == null) {
+                apiFlag.set(false);
+            } else {
+                apiFlag.compareAndSet(null, configuration.get(apiConfigKey, false));
+            }
+            final boolean isOptedIn = apiFlag.get();
+            return isOptedIn;
         }
 
         private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
@@ -1036,16 +1056,18 @@ public final class ServiceBusClientBuilder implements
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}.
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
-        // Build Async-Client for sending.
+        // Build Sender-Client.
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            if (newStackSupport.isSendAndManageRulesApiOptedOut(configuration)) {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
-                onClientClose = ServiceBusClientBuilder.this::onClientClose;
-            } else {
+            final boolean isSenderOnNewStack = !newStackSupport.isSenderAndManageRulesApiOptedOut(configuration);
+            if (isSenderOnNewStack) {
+                // Sender Client (async|sync) on the New-Stack.
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
                 onClientClose = ServiceBusClientBuilder.this.newStackSupport::onClientClose;
+            } else {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
@@ -1637,7 +1659,7 @@ public final class ServiceBusClientBuilder implements
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        // Common function to build Session-Enabled Receiver-Async-Client - For Async[Reactor|Processor]Client Or to back SyncClient.
+        // Common function to build Session-Enabled Receiver-Client - For Async[Reactor|Processor]Client Or to back SyncClient.
         private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
@@ -1657,7 +1679,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            // Note: Support for Session-Enabled Clients on the new stack is not in the first phase, using ServiceBusConnectionProcessor from the old stack.
+            // Note: Support for Session-Enabled Clients on the New-Stack is not in the first phase, using ServiceBusConnectionProcessor from the old stack.
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = createUnnamedSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, maxConcurrentSessions, sessionIdleTimeout);
@@ -2148,13 +2170,26 @@ public final class ServiceBusClientBuilder implements
 
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            // Support for Non-Session SyncClient on new stack is not in the first phase.
-            if (syncConsumer || newStackSupport.isNonSessionAsyncReceiveApiOptedOut(configuration)) {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
-                onClientClose = ServiceBusClientBuilder.this::onClientClose;
+            if (syncConsumer) {
+                final boolean syncReceiveOnNewStack = newStackSupport.isNonSessionSyncReceiveApiOptedIn(configuration);
+                if (syncReceiveOnNewStack) {
+                    // "Non-Session" Sync Receiver-Client on the New-Stack.
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this.newStackSupport::onClientClose;
+                } else {
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this::onClientClose;
+                }
             } else {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
-                onClientClose = ServiceBusClientBuilder.this.newStackSupport::onClientClose;
+                final boolean asyncReceiveOnNewStack = !newStackSupport.isNonSessionAsyncReceiveApiOptedOut(configuration);
+                if (asyncReceiveOnNewStack) {
+                    // "Non-Session" Async[Reactor|Processor] Receiver-Client on the New-Stack.
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this.newStackSupport::onClientClose;
+                } else {
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                    onClientClose = ServiceBusClientBuilder.this::onClientClose;
+                }
             }
             final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount, 
                 maxAutoLockRenewDuration, enableAutoComplete);
@@ -2222,7 +2257,7 @@ public final class ServiceBusClientBuilder implements
          * thrown if the Service Bus {@link #connectionString(String) connectionString} contains an {@code EntityPath}
          * that does not match one set in {@link #topicName(String) topicName}.
          */
-        // Build Async-Client for managing rules.
+        // Function to build RuleManager-Client.
         public ServiceBusRuleManagerAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 null);
@@ -2230,12 +2265,14 @@ public final class ServiceBusClientBuilder implements
                 null);
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            if (newStackSupport.isSendAndManageRulesApiOptedOut(configuration)) {
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
-                onClientClose = ServiceBusClientBuilder.this::onClientClose;
-            } else {
+            final boolean isManageRulesOnNewStack = !newStackSupport.isSenderAndManageRulesApiOptedOut(configuration);
+            if (isManageRulesOnNewStack) {
+                // RuleManager Client (async|sync) on the New-Stack.
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
                 onClientClose = ServiceBusClientBuilder.this.newStackSupport::onClientClose;
+            } else {
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer));
+                onClientClose = ServiceBusClientBuilder.this::onClientClose;
             }
 
             return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionCacheWrapper,
