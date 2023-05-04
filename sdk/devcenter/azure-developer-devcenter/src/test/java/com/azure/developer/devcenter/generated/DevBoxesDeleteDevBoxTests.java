@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 public final class DevBoxesDeleteDevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testDevBoxesDeleteDevBoxTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
 
         SyncPoller<BinaryData, Void> response =
