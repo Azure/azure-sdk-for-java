@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Storage/storageAccounts/lock1weidxu/providers/Microsoft.Resources/tags/default?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Storage/storageAccounts/lock1weidxu/providers/Microsoft.Resources/tags/default?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fdf4940a-c7cb-4495-9592-0f75f0a55d47",
@@ -53,7 +53,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Storage/storageAccounts/lock1weidxu/providers/Microsoft.Resources/tags/default?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Storage/storageAccounts/lock1weidxu/providers/Microsoft.Resources/tags/default?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "87e0c1f5-0f0f-4f6a-b991-45eaed1c7d4c",
@@ -79,7 +79,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Storage/storageAccounts/lock1weidxu/providers/Microsoft.Resources/tags/default?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Storage/storageAccounts/lock1weidxu/providers/Microsoft.Resources/tags/default?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8aacc9bf-99db-4e7a-97a8-8567e4998fe2",

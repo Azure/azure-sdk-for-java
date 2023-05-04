@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "701f03a0-1457-4e13-bcec-371b75880993",
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "842e31f9-6a4b-4e08-8a39-ba18b546679f",
@@ -46,7 +46,7 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084217Z:363098c7-8da1-4ac4-94b9-6d91a3ecc5a9",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2021-01-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2022-09-01",
       "x-ms-request-id" : "363098c7-8da1-4ac4-94b9-6d91a3ecc5a9",
       "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab\",\"name\":\"dpE83281ab\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateHash\":\"16777920307673510031\",\"mode\":\"Complete\",\"provisioningState\":\"Accepted\",\"timestamp\":\"2021-08-26T08:42:16.030046Z\",\"duration\":\"PT2.1407686S\",\"correlationId\":\"363098c7-8da1-4ac4-94b9-6d91a3ecc5a9\",\"providers\":[{\"namespace\":\"Microsoft.Storage\",\"resourceTypes\":[{\"resourceType\":\"storageAccounts\",\"locations\":[\"eastus\"]}]}],\"dependencies\":[]}}",
       "Content-Type" : "application/json; charset=utf-8"
@@ -54,7 +54,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ec51a7e5-6c61-4139-ac35-e0edf99e647d"
@@ -79,7 +79,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "15ed2988-d1a1-426f-9ceb-2c62ad388e7d"
@@ -104,7 +104,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab/operationStatuses/08585716395515883334?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "def970f9-1382-4ce3-98fa-f042ef13f954"
@@ -129,7 +129,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab/providers/Microsoft.Resources/deployments/dpE83281ab?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "acd9318a-a2c7-4d20-8a1c-696511d73149"
@@ -154,7 +154,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "36f66e09-c950-4daf-bb8f-3c2b6d9dbfac",
@@ -180,7 +180,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4c623991-0cb4-42ab-ba2f-da567acd427d",
@@ -199,7 +199,7 @@
       "Cache-Control" : "no-cache",
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20210826T084257Z:83a8413c-631b-49b5-ae47-4d001018ed12",
       "Expires" : "-1",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab/operationStatuses/08585716395122082270?api-version=2021-01-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab/operationStatuses/08585716395122082270?api-version=2022-09-01",
       "x-ms-request-id" : "83a8413c-631b-49b5-ae47-4d001018ed12",
       "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab\",\"name\":\"dpF83281ab\",\"type\":\"Microsoft.Resources/deployments\",\"properties\":{\"templateHash\":\"16777920307673510031\",\"mode\":\"Complete\",\"provisioningState\":\"Accepted\",\"timestamp\":\"2021-08-26T08:42:55.7829972Z\",\"duration\":\"PT2.5136176S\",\"correlationId\":\"83a8413c-631b-49b5-ae47-4d001018ed12\",\"providers\":[{\"namespace\":\"Microsoft.Storage\",\"resourceTypes\":[{\"resourceType\":\"storageAccounts\",\"locations\":[\"eastus\"]}]}],\"dependencies\":[]}}",
       "Content-Type" : "application/json; charset=utf-8"
@@ -207,7 +207,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab/operationStatuses/08585716395122082270?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab/operationStatuses/08585716395122082270?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f29a44a8-1acd-4e21-b769-22262d354a57"
@@ -232,7 +232,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e/providers/Microsoft.Resources/deployments/dpF83281ab?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "330a1d73-e748-46df-9243-e3e4ceeaee0a",
@@ -284,7 +284,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg50541e?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3349d13d-056b-423e-b12a-29fcdc2df5ae",
@@ -309,7 +309,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg83281ab?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (15.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "09e2bcc5-a170-42ba-b551-634f123aada5",
