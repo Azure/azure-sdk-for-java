@@ -82,7 +82,6 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRules;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTitleValue;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopics;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateTopicBody;
@@ -2075,13 +2074,13 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (entry.getContent().getQueueDescription() == null) {
             final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
             if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
-                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle().getContent());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             }
         }
 
         final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
-        final String queueName = getTitleValue(entry.getTitle());
+        final String queueName = entry.getTitle().getContent();
         EntityHelper.setQueueName(result, queueName);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
@@ -2106,13 +2105,13 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (entry.getContent().getTopicDescription() == null) {
             final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
             if (entryQueue != null && entryQueue.getContent() != null && entryQueue.getContent().getQueueDescription() != null) {
-                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle().getContent());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
             }
         }
 
         final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
-        final String topicName = getTitleValue(entry.getTitle());
+        final String topicName = entry.getTitle().getContent();
         EntityHelper.setTopicName(result, topicName);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);

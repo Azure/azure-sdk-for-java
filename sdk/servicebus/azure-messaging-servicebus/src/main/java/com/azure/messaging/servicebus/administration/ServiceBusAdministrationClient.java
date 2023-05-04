@@ -1687,7 +1687,7 @@ public final class ServiceBusAdministrationClient {
             final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
             if (entryTopic != null && entryTopic.getContent() != null
                 && entryTopic.getContent().getTopicDescription() != null) {
-                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle().getContent());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     null);
             }
@@ -1710,7 +1710,7 @@ public final class ServiceBusAdministrationClient {
             final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
             if (entryQueue != null && entryQueue.getContent() != null
                 && entryQueue.getContent().getQueueDescription() != null) {
-                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle().getContent());
                 return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                     null);
             }

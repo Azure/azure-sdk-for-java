@@ -25,8 +25,8 @@ public final class RuleDescriptionFeedImpl {
     /*
      * The entity type for the feed.
      */
-    @JsonProperty(value = "title")
-    private Object title;
+    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
+    private TitleImpl title;
 
     /*
      * Datetime of the query.
@@ -74,7 +74,7 @@ public final class RuleDescriptionFeedImpl {
      *
      * @return the title value.
      */
-    public Object getTitle() {
+    public TitleImpl getTitle() {
         return this.title;
     }
 
@@ -84,7 +84,7 @@ public final class RuleDescriptionFeedImpl {
      * @param title the title value to set.
      * @return the RuleDescriptionFeed object itself.
      */
-    public RuleDescriptionFeedImpl setTitle(Object title) {
+    public RuleDescriptionFeedImpl setTitle(TitleImpl title) {
         this.title = title;
         return this;
     }

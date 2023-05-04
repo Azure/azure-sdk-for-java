@@ -100,13 +100,18 @@ directive:
   - from: swagger-document
     where: $.definitions
     transform: >
-      let titlePropertyCreator = function (description) {
+      $.Title = {
         "type": "object",
+        "xml": {
+          "name": "title",
+          "namespace": "http://www.w3.org/2005/Atom"
+        },
         "properties": {
           "type": {
             "xml": {
               "attribute": true,
-              "name": "type"
+              "name": "type",
+              "namespace": "http://www.w3.org/2005/Atom"
             },
             "type": "string",
             "description": "The type of the title."
@@ -114,13 +119,20 @@ directive:
           "content": {
             "xml": {
               "x-ms-text": true,
-              "namespace": "http://www.w3.org/2005/Atom"
             },
             "type": "string",
-            "description": description
+            "description": "The title."
           }
         }
       };
       
-      $.NamespacePropertiesEntry.properties.title = titlePropertyCreator("The name of the namespace.");
+      $.NamespacePropertiesEntry.properties.title["$ref"] = "#/definitions/Title";
+      $.QueueDescriptionEntry.properties.title["$ref"] = "#/definitions/Title";
+      $.QueueDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
+      $.TopicDescriptionEntry.properties.title["$ref"] = "#/definitions/Title";
+      $.TopicDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
+      $.SubscriptionDescriptionEntry.properties.title["$ref"] = "#/definitions/Title";
+      $.SubscriptionDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
+      $.RuleDescriptionEntry.properties.title["$ref"] = "#/definitions/Title";
+      $.RuleDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
 ```

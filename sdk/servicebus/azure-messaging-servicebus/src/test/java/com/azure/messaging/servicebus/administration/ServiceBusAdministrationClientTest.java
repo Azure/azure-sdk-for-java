@@ -18,7 +18,9 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
@@ -112,7 +114,7 @@ class ServiceBusAdministrationClientTest {
         EntityHelper.setQueueName(queuePropertiesResult, queueName);
         when(mockQueueDesc.getMaxDeliveryCount()).thenReturn(10);
         when(queueDescriptionEntry.getContent()).thenReturn(queueDescriptionEntryContent);
-        when(queueDescriptionEntry.getTitle()).thenReturn(queueName);
+        when(queueDescriptionEntry.getTitle()).thenReturn(new TitleImpl().setContent(queueName));
 
         when(serializer.deserialize(anyString(), eq(QueueDescriptionEntryImpl.class))).thenReturn(queueDescriptionEntry);
 
@@ -205,9 +207,9 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteRule() {
         // Arrange
-        Response<Object> voidResponse = new SimpleResponse<>(null, 0, null, null);
-        when(rules.deleteWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any())).thenReturn(
-            voidResponse);
+        Response<RuleDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 0, null, null);
+        when(rules.deleteWithResponse(eq(topicName), eq(subscriptionName), eq(ruleName), any()))
+            .thenReturn(voidResponse);
 
         // Act
         client.deleteRule(topicName, subscriptionName, ruleName);
@@ -219,7 +221,7 @@ class ServiceBusAdministrationClientTest {
     @Test
     void deleteRuleWithResponse() {
         // Arrange
-        Response<Object> voidResponse = new SimpleResponse<>(null, 204, null, null);
+        Response<RuleDescriptionEntryImpl> voidResponse = new SimpleResponse<>(null, 204, null, null);
         when(rules.deleteWithResponse(any(), any(), any(), any())).thenReturn(voidResponse);
 
         // Act

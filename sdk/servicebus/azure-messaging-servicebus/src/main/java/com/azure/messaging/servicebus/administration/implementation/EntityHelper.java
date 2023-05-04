@@ -63,7 +63,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -769,7 +768,7 @@ public final class EntityHelper {
     }
 
     public static QueueProperties getQueueProperties(QueueDescriptionEntryImpl e) {
-        final String queueName = getTitleValue(e.getTitle());
+        final String queueName = e.getTitle().getContent();
         final QueueProperties queueProperties = EntityHelper.toModel(
             e.getContent().getQueueDescription());
 
@@ -797,7 +796,7 @@ public final class EntityHelper {
                                                                    SubscriptionDescriptionEntryImpl entry) {
         final SubscriptionProperties subscription = EntityHelper.toModel(
             entry.getContent().getSubscriptionDescription());
-        final String subscriptionName = getTitleValue(entry.getTitle());
+        final String subscriptionName = entry.getTitle().getContent();
         EntityHelper.setSubscriptionName(subscription, subscriptionName);
         EntityHelper.setTopicName(subscription, topicName);
         return subscription;
@@ -805,7 +804,7 @@ public final class EntityHelper {
 
     public static TopicProperties getTopicProperties(TopicDescriptionEntryImpl entry) {
         final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
-        final String topicName = getTitleValue(entry.getTitle());
+        final String topicName = entry.getTitle().getContent();
         EntityHelper.setTopicName(result, topicName);
         return result;
     }
@@ -822,7 +821,7 @@ public final class EntityHelper {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
         final SubscriptionProperties subscription = getSubscriptionProperties(topicName, entry);
-        final String subscriptionName = getTitleValue(entry.getTitle());
+        final String subscriptionName = entry.getTitle().getContent();
         EntityHelper.setSubscriptionName(subscription, subscriptionName);
         EntityHelper.setTopicName(subscription, topicName);
 
@@ -844,35 +843,6 @@ public final class EntityHelper {
         final RuleDescriptionImpl description = entry.getContent().getRuleDescription();
         final RuleProperties result = EntityHelper.toModel(description);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    /**
-     * Given an XML title element, returns the XML text inside. Jackson deserializes Objects as LinkedHashMaps. XML text
-     * is represented as an entry with an empty string as the key.
-     * <p>
-     * For example, the text returned from this {@code <title text="text/xml">QueueName</title>} is "QueueName".
-     *
-     * @param responseTitle XML title element.
-     * @return The XML text inside the title. {@code null} is returned if there is no value.
-     */
-    @SuppressWarnings("unchecked")
-    public static String getTitleValue(Object responseTitle) {
-        if (responseTitle instanceof String) {
-            return (String) responseTitle;
-        }
-
-        if (!(responseTitle instanceof Map)) {
-            return null;
-        }
-
-        final Map<String, String> map;
-        try {
-            map = (Map<String, String>) responseTitle;
-            return map.get("");
-        } catch (ClassCastException error) {
-            LOGGER.warning("Unable to cast to Map<String,String>. Title: {}", responseTitle, error);
-            return null;
-        }
     }
 
     public static void validateQueueName(String queueName) {

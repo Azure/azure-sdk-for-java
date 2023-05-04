@@ -29,6 +29,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
@@ -153,7 +154,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -175,7 +176,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -202,7 +203,7 @@ class ServiceBusAdministrationAsyncClientTest {
         description.setForwardDeadLetteredMessagesTo(forwardToEntity);
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -251,7 +252,7 @@ class ServiceBusAdministrationAsyncClientTest {
         // Arrange
         final QueueDescriptionImpl expected = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl entry = new QueueDescriptionEntryImpl()
-            .setTitle(queueName)
+            .setTitle(new TitleImpl().setContent(queueName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expected));
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
@@ -271,7 +272,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
@@ -436,7 +437,7 @@ class ServiceBusAdministrationAsyncClientTest {
                 .setQueueDescription(description);
             return new QueueDescriptionEntryImpl()
                 .setContent(content)
-                .setTitle(name);
+                .setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
         final List<ResponseLinkImpl> links = Arrays.asList(
             new ResponseLinkImpl().setRel("self").setHref("foo"),
@@ -456,7 +457,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
             return new QueueDescriptionEntryImpl()
                 .setContent(content)
-                .setTitle(name);
+                .setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
         final List<ResponseLinkImpl> secondLinks = Arrays.asList(
             new ResponseLinkImpl().setRel("self").setHref("foo"),
@@ -493,7 +494,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
@@ -528,7 +529,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
         final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(updatedName)
+            .setTitle(new TitleImpl().setContent(updatedName))
             .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         when(entitys.putWithResponseAsync(eq(queueName),
