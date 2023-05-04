@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The pipeline policy that puts a UUID in the request header. Azure uses the request id as
@@ -32,17 +33,6 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
     private final HttpHeaderName requestIdHeaderName;
-
-    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
-        @Override
-        protected void beforeSendingRequest(HttpPipelineCallContext context) {
-            HttpHeaders headers = context.getHttpRequest().getHeaders();
-            String requestId = headers.getValue(requestIdHeaderName);
-            if (requestId == null) {
-                headers.set(requestIdHeaderName, UUID.randomUUID().toString());
-            }
-        }
-    };
 
     /**
      * Creates  {@link RequestIdPolicy} with provided {@code requestIdHeaderName}.
@@ -62,11 +52,22 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return inner.process(context, next);
+        setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
+        return next.process();
     }
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return inner.processSync(context, next);
+        setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
+        return next.processSync();
+    }
+
+    private static void setRequestIdHeader(HttpRequest request, HttpHeaderName requestIdHeaderName) {
+        HttpHeaders headers = request.getHeaders();
+        String requestId = headers.getValue(requestIdHeaderName);
+        if (requestId == null) {
+            headers.set(requestIdHeaderName, new UUID(ThreadLocalRandom.current().nextLong(),
+                ThreadLocalRandom.current().nextLong()).toString());
+        }
     }
 }
 
