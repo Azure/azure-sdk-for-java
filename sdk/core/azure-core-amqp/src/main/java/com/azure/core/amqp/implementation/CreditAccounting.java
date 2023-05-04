@@ -53,11 +53,11 @@ abstract class CreditAccounting {
      */
     protected void scheduleCredit(Supplier<Long> creditSupplier) {
         try {
-            receiver.scheduleCredit(creditSupplier);
+            receiver.addCredit(creditSupplier);
         } catch (RejectedExecutionException e) {
-            logger.info("RejectedExecutionException when attempting to schedule credit flow.", e);
+            logger.info("Credit schedule encountered rejected-error (normal during link termination or transition).", e);
         } catch (UncheckedIOException e) {
-            logger.info("UncheckedIOException when attempting to schedule credit flow.", e);
+            logger.info("Credit schedule encountered io-error (normal during link termination or transition).", e);
         }
     }
 }
