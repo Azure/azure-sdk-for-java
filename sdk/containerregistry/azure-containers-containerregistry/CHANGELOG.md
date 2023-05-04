@@ -6,6 +6,7 @@
 
 - Added sanity check for manifest size at download time - if manifest is bigger than 4MB, `ServiceResponseException` will be thrown.
 - Added sanity check for `Content-Length` header presence on the response when downloading blobs - if it's not present, `ServiceResponseException` will be thrown. 
+- Renamed `ManifestMediaType.OCI_MANIFEST` to `ManifestMediaType.OCI_IMAGE_MANIFEST`. 
 
 ## 1.0.14 (2023-04-21)
 
