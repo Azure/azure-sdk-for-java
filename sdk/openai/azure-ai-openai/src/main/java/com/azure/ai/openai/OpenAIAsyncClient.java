@@ -284,6 +284,9 @@ public final class OpenAIAsyncClient {
     public Mono<Embeddings> getEmbeddings(String deploymentId, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.serviceClient.getIsAzure()) {
+            embeddingsOptions.setModel(deploymentId);
+        }
         return getEmbeddingsWithResponse(deploymentId, BinaryData.fromObject(embeddingsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
@@ -310,6 +313,9 @@ public final class OpenAIAsyncClient {
     public Mono<Completions> getCompletions(String deploymentId, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.serviceClient.getIsAzure()) {
+            completionsOptions.setModel(deploymentId);
+        }
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
@@ -385,9 +391,16 @@ public final class OpenAIAsyncClient {
             String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
         // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.serviceClient.getIsAzure()) {
+            chatCompletionsOptions.setModel(deploymentId);
+        }
         return getChatCompletionsWithResponse(
                         deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+    }
+
+    public boolean getIsAzure() {
+        return this.serviceClient.getIsAzure();
     }
 }

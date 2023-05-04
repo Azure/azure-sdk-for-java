@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestBase {
 
-    OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
             .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -60,10 +60,10 @@ public abstract class OpenAIClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void getCompletions(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void getCompletionsWithResponse(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion);
 
     void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
         String deploymentId = "text-davinci-003";
@@ -104,10 +104,10 @@ public abstract class OpenAIClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void getChatCompletions(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void getChatCompletionsWithResponse(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion);
 
     void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
         String deploymentId = "gpt-35-turbo";
@@ -143,10 +143,10 @@ public abstract class OpenAIClientTestBase extends TestBase {
     }
 
     @Test
-    public abstract void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void getEmbeddings(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void getEmbeddingsWithResponse(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion);
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         String deploymentId = "embedding";

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OpenAIClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
 
-    private OpenAIClient getOpenAIClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    private OpenAIClient getOpenAIClient(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         return getOpenAIClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, serviceVersion)
             .buildClient();
@@ -30,7 +30,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getCompletions(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             Completions resultCompletions = client.getCompletions(deploymentId, new CompletionsOptions(prompt));
@@ -40,7 +40,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getCompletionsWithResponse(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             Response<BinaryData> response = client.getCompletionsWithResponse(deploymentId,
@@ -53,7 +53,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getChatCompletions(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
@@ -63,7 +63,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getChatCompletionsWithResponse(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             Response<BinaryData> response = client.getChatCompletionsWithResponse(deploymentId,
@@ -76,7 +76,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getEmbeddings(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
@@ -86,7 +86,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getEmbeddingsWithResponse(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Response<BinaryData> response = client.getEmbeddingsWithResponse(deploymentId,
@@ -99,7 +99,7 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getCompletionsFromPrompt(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
             Completions completions = client.getCompletions(deploymentId, prompts);

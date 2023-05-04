@@ -273,11 +273,13 @@ public final class OpenAIClient {
      * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
      *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Embeddings getEmbeddings(String deploymentId, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.client.getIsAzure()) {
+            embeddingsOptions.setModel(deploymentId);
+        }
         return getEmbeddingsWithResponse(deploymentId, BinaryData.fromObject(embeddingsOptions), requestOptions)
                 .getValue()
                 .toObject(Embeddings.class);
@@ -299,11 +301,13 @@ public final class OpenAIClient {
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      *     that continues from or "completes" provided prompt data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Completions getCompletions(String deploymentId, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.client.getIsAzure()) {
+            completionsOptions.setModel(deploymentId);
+        }
         return getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
                 .getValue()
                 .toObject(Completions.class);
@@ -349,6 +353,9 @@ public final class OpenAIClient {
     public IterableStream<Completions> getCompletionsStream(
             String deploymentId, CompletionsOptions completionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.client.getIsAzure()) {
+            completionsOptions.setModel(deploymentId);
+        }
         Flux<ByteBuffer> responseStream =
                 getCompletionsWithResponse(deploymentId, BinaryData.fromObject(completionsOptions), requestOptions)
                         .getValue()
@@ -374,11 +381,13 @@ public final class OpenAIClient {
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatCompletions getChatCompletions(String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
         // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if(!this.client.getIsAzure()) {
+            chatCompletionsOptions.setModel(deploymentId);
+        }
         return getChatCompletionsWithResponse(
                         deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
                 .getValue()

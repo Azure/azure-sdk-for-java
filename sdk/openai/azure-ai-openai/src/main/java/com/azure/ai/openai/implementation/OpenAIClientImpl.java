@@ -4,19 +4,10 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
+import com.azure.ai.openai.AzureOpenAIServiceVersion;
+import com.azure.ai.openai.OpenAIServiceBase;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
@@ -30,8 +21,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
@@ -39,7 +30,13 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the OpenAIClient type. */
 public final class OpenAIClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final OpenAIClientService service;
+    private final OpenAIServiceBase service;
+
+    private final boolean isAzure;
+
+    public boolean getIsAzure() {
+        return isAzure;
+    }
 
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
@@ -58,14 +55,14 @@ public final class OpenAIClientImpl {
     }
 
     /** Service version. */
-    private final OpenAIServiceVersion serviceVersion;
+    private final ServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public OpenAIServiceVersion getServiceVersion() {
+    public ServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -99,15 +96,17 @@ public final class OpenAIClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
+     * @param isAzure set to true for Azure backend service; false for public OpenAI
      */
-    public OpenAIClientImpl(String endpoint, OpenAIServiceVersion serviceVersion) {
+    public OpenAIClientImpl(String endpoint, AzureOpenAIServiceVersion serviceVersion, boolean isAzure) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                serviceVersion);
+                serviceVersion,
+                isAzure);
     }
 
     /**
@@ -117,9 +116,10 @@ public final class OpenAIClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      * @param serviceVersion Service version.
+     * @param isAzure set to true for Azure backend service; false for public OpenAI
      */
-    public OpenAIClientImpl(HttpPipeline httpPipeline, String endpoint, OpenAIServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    public OpenAIClientImpl(HttpPipeline httpPipeline, String endpoint, AzureOpenAIServiceVersion serviceVersion, boolean isAzure) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion, isAzure);
     }
 
     /**
@@ -135,82 +135,17 @@ public final class OpenAIClientImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            OpenAIServiceVersion serviceVersion) {
+            ServiceVersion serviceVersion,
+            boolean isAzure) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(OpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
-    }
+        this.isAzure = isAzure;
 
-    /**
-     * The interface defining all the services for OpenAIClient to be used by the proxy service to perform REST calls.
-     */
-    @Host("{endpoint}/openai")
-    @ServiceInterface(name = "OpenAIClient")
-    public interface OpenAIClientService {
-        @Post("/deployments/{deploymentId}/embeddings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEmbeddings(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData embeddingsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCompletions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData completionsOptions,
-                RequestOptions requestOptions,
-                Context context);
-
-        @Post("/deployments/{deploymentId}/chat/completions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getChatCompletions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("deploymentId") String deploymentId,
-                @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData chatCompletionsOptions,
-                RequestOptions requestOptions,
-                Context context);
+        this.service = isAzure ?
+            RestProxy.create(AzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter()) :
+            RestProxy.create(OpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**

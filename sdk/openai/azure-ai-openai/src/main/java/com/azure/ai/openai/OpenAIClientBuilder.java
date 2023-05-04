@@ -18,23 +18,11 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.*;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
@@ -198,7 +186,7 @@ public final class OpenAIClientBuilder
     /*
      * Service version
      */
-    @Generated private OpenAIServiceVersion serviceVersion;
+    private ServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -206,9 +194,23 @@ public final class OpenAIClientBuilder
      * @param serviceVersion the serviceVersion value.
      * @return the OpenAIClientBuilder.
      */
-    @Generated
-    public OpenAIClientBuilder serviceVersion(OpenAIServiceVersion serviceVersion) {
+    public OpenAIClientBuilder serviceVersion(ServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /*
+     * Flag defining whether the underlying service should be Azure
+     */
+    private boolean isAzure = true;
+
+    /**
+     * Sets which backend service we should point to
+     *
+     * @param isAzure set to true for Azure backend service; false for public OpenAI
+     */
+    public OpenAIClientBuilder isAzure(boolean isAzure) {
+        this.isAzure = isAzure;
         return this;
     }
 
@@ -234,14 +236,17 @@ public final class OpenAIClientBuilder
      *
      * @return an instance of OpenAIClientImpl.
      */
-    @Generated
     private OpenAIClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        OpenAIServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : OpenAIServiceVersion.getLatest();
+        ServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : AzureOpenAIServiceVersion.getLatest();
         OpenAIClientImpl client =
                 new OpenAIClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                    localPipeline,
+                    JacksonAdapter.createDefaultSerializerAdapter(),
+                    endpoint,
+                    localServiceVersion,
+                    isAzure);
         return client;
     }
 
