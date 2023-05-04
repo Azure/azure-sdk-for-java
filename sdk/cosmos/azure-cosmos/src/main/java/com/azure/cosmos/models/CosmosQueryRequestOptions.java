@@ -325,21 +325,13 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Gets the {@link CosmosE2EOperationRetryPolicyConfig}
-     * @return the CosmosEndToEndOperationLatencyPolicyConfig
-     */
-    CosmosE2EOperationRetryPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
-        return cosmosE2EOperationRetryPolicyConfig;
-    }
-
-    /**
      * Sets the {@link CosmosE2EOperationRetryPolicyConfig} to be used for the request. If the config is already set
      *      * on the client, then this will override the client level config for this request
      *
      * @param cosmosE2EOperationRetryPolicyConfig the {@link CosmosE2EOperationRetryPolicyConfig}
      * @return the CosmosQueryRequestOptions
      */
-    public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig) {
+    public CosmosQueryRequestOptions setCosmosE2EOperationRetryPolicyConfig(CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig) {
         this.cosmosE2EOperationRetryPolicyConfig = cosmosE2EOperationRetryPolicyConfig;
         return this;
     }
@@ -827,7 +819,16 @@ public class CosmosQueryRequestOptions {
 
                     fluxOptions.setMaxItemCount(requestOptions.getMaxItemCount());
                 }
+
+                @Override
+                public CosmosE2EOperationRetryPolicyConfig getE2EOperationRetryConfig(CosmosQueryRequestOptions options) {
+                    return options.getE2EOperationRetryConfig();
+                }
             });
+    }
+
+    private CosmosE2EOperationRetryPolicyConfig getE2EOperationRetryConfig() {
+        return cosmosE2EOperationRetryPolicyConfig;
     }
 
     static { initialize(); }

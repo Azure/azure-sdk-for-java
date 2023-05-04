@@ -2,18 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.speculativeprocessors;
 
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 
 import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 
 public interface SpeculativeProcessor {
+    int NONE = 0;
+    int THRESHOLD_BASED = 1;
+    int THOMPSON_SAMPLING_BASED = 2;
 
     List<URI> getRegionsForPureExploration();
-    List<URI> getRegionsToSpeculate(CosmosEndToEndOperationLatencyPolicyConfig config, List<URI> availableReadEndpoints);
+    List<URI> getRegionsToSpeculate(CosmosE2EOperationRetryPolicyConfig config, List<URI> availableReadEndpoints);
 
-    Duration getThreshold(CosmosEndToEndOperationLatencyPolicyConfig config);
+    Duration getThreshold(CosmosE2EOperationRetryPolicyConfig config);
 
     boolean shouldIncludeOriginalRequestRegion();
 

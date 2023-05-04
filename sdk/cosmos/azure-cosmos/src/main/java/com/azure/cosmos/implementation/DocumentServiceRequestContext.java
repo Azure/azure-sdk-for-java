@@ -5,13 +5,13 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 
 import java.net.URI;
 import java.util.List;
@@ -44,7 +44,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
-    private CosmosEndToEndOperationLatencyPolicyConfig endToEndEndOperationLatencyPolicy;
+    private CosmosE2EOperationRetryPolicyConfig endToEndEndOperationLatencyPolicy;
 
     public DocumentServiceRequestContext() {}
 
@@ -130,11 +130,11 @@ public class DocumentServiceRequestContext implements Cloneable {
         return context;
     }
 
-    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+    public CosmosE2EOperationRetryPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
         return endToEndEndOperationLatencyPolicy;
     }
 
-    public void setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+    public void setEndToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndEndOperationLatencyPolicy = endToEndOperationLatencyPolicyConfig;
     }
 }

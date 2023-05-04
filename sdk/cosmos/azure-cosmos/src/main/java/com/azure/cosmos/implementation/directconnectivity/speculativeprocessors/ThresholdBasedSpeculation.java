@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.speculativeprocessors;
 
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 
 import java.net.URI;
 import java.time.Duration;
@@ -16,12 +16,12 @@ public class ThresholdBasedSpeculation implements SpeculativeProcessor{
     }
 
     @Override
-    public List<URI> getRegionsToSpeculate(CosmosEndToEndOperationLatencyPolicyConfig config, List<URI> availableReadEndpoints) {
+    public List<URI> getRegionsToSpeculate(CosmosE2EOperationRetryPolicyConfig config, List<URI> availableReadEndpoints) {
         return availableReadEndpoints;
     }
 
     @Override
-    public Duration getThreshold(CosmosEndToEndOperationLatencyPolicyConfig config) {
+    public Duration getThreshold(CosmosE2EOperationRetryPolicyConfig config) {
         return Duration.ofMillis(Configs.speculationThreshold());
     }
 

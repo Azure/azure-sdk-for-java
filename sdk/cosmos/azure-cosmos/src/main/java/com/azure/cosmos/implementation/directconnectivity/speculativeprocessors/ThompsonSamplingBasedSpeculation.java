@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.speculativeprocessors;
 
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
 import org.apache.commons.math3.distribution.GammaDistribution;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class ThomsonSamplingBasedSpeculation implements SpeculativeProcessor {
+public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
 
     public static final float EXPLORE_PROBABILITY = 0.1f;
     private static final int DEFAULT_WINDOW_SIZE = 10;
@@ -36,7 +36,7 @@ public class ThomsonSamplingBasedSpeculation implements SpeculativeProcessor {
     private final EnumeratedIntegerDistribution shouldExploreDist;
 
 
-    public ThomsonSamplingBasedSpeculation(List<URI> endpoints) {
+    public ThompsonSamplingBasedSpeculation(List<URI> endpoints) {
         this.endpoints = endpoints;
         localRegion = endpoints.get(0);
         int numRegions = endpoints.size();
@@ -115,12 +115,12 @@ public class ThomsonSamplingBasedSpeculation implements SpeculativeProcessor {
     }
 
     @Override
-    public List<URI> getRegionsToSpeculate(CosmosEndToEndOperationLatencyPolicyConfig config, List<URI> availableReadEndpoints) {
+    public List<URI> getRegionsToSpeculate(CosmosE2EOperationRetryPolicyConfig config, List<URI> availableReadEndpoints) {
         return List.of(getSelection());
     }
 
     @Override
-    public Duration getThreshold(CosmosEndToEndOperationLatencyPolicyConfig config) {
+    public Duration getThreshold(CosmosE2EOperationRetryPolicyConfig config) {
         return Duration.ZERO;
     }
 

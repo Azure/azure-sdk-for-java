@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -18,12 +19,11 @@ import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.SpeculativeProcessor;
-import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThomsonSamplingBasedSpeculation;
+import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThompsonSamplingBasedSpeculation;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThresholdBasedSpeculation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
-import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -34,7 +34,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -95,10 +94,19 @@ public class ReplicatedResourceClient {
             serviceConfigReader,
             useMultipleWriteLocations);
         this.enableReadRequestsFallback = enableReadRequestsFallback;
-        this.speculativeProcessor = new ThomsonSamplingBasedSpeculation(this.transportClient
-            .getGlobalEndpointManager()
-            .getAvailableReadEndpoints());
-//        this.speculativeProcessor = new ThresholdBasedSpeculation();
+
+        switch (Configs.getSpeculationType()) {
+            case SpeculativeProcessor.THRESHOLD_BASED:
+                this.speculativeProcessor = new ThresholdBasedSpeculation();
+                break;
+            case SpeculativeProcessor.THOMPSON_SAMPLING_BASED:
+                this.speculativeProcessor = new ThompsonSamplingBasedSpeculation(this.transportClient
+                    .getGlobalEndpointManager()
+                    .getAvailableReadEndpoints());
+                break;
+            default:
+                this.speculativeProcessor = null;
+        }
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -127,9 +135,6 @@ public class ReplicatedResourceClient {
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
 
-            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
-
             if (shouldSpeculate(request)){
                 return getStoreResponseMonoWithSpeculation(request, forceRefreshAndTimeout);
             }
@@ -143,7 +148,6 @@ public class ReplicatedResourceClient {
             } else {
                 return mainFuncDelegate.apply(forceRefreshAndTimeout, request);
             }
-
         };
 
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffFuncDelegate = null;
@@ -163,7 +167,7 @@ public class ReplicatedResourceClient {
     }
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
 
         if (speculativeProcessor.getRegionsForPureExploration() != null
@@ -222,14 +226,15 @@ public class ReplicatedResourceClient {
     }
 
     private boolean shouldSpeculate(RxDocumentServiceRequest request) {
-        if (!request.isReadOnlyRequest() ) {
+        if (speculativeProcessor == null) {
             return false;
         }
-        if (request.getResourceType() != ResourceType.Document) {
+        if (!request.isReadOnlyRequest() && request.getResourceType() != ResourceType.Document) {
             return false;
         }
-        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-        return true || config != null && config.isEnabled();
+
+        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        return config != null && config.isEnabled();
     }
 
     private Mono<StoreResponse> getStoreResponseMono(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
