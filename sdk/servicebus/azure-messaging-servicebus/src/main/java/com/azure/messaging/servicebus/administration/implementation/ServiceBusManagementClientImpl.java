@@ -26,6 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import reactor.core.publisher.Mono;
@@ -215,7 +216,7 @@ public final class ServiceBusManagementClientImpl {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> listRules(
+        Mono<Response<RuleDescriptionFeedImpl>> listRules(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -228,7 +229,7 @@ public final class ServiceBusManagementClientImpl {
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> listRulesSync(
+        Response<RuleDescriptionFeedImpl> listRulesSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("topicName") String topicName,
                 @PathParam("subscriptionName") String subscriptionName,
@@ -406,7 +407,7 @@ public final class ServiceBusManagementClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> listRulesWithResponseAsync(
+    public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(
             String topicName, String subscriptionName, Integer skip, Integer top) {
         final String accept = "application/xml, application/atom+xml";
         return FluxUtil.withContext(
@@ -439,7 +440,7 @@ public final class ServiceBusManagementClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> listRulesWithResponseAsync(
+    public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(
             String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.listRules(
@@ -461,7 +462,8 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> listRulesAsync(String topicName, String subscriptionName, Integer skip, Integer top) {
+    public Mono<RuleDescriptionFeedImpl> listRulesAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top) {
         return listRulesWithResponseAsync(topicName, subscriptionName, skip, top)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -482,7 +484,7 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Object> listRulesAsync(
+    public Mono<RuleDescriptionFeedImpl> listRulesAsync(
             String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
         return listRulesWithResponseAsync(topicName, subscriptionName, skip, top, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -504,7 +506,7 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Object> listRulesWithResponse(
+    public Response<RuleDescriptionFeedImpl> listRulesWithResponse(
             String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.listRulesSync(
@@ -526,7 +528,7 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Object listRules(String topicName, String subscriptionName, Integer skip, Integer top) {
+    public RuleDescriptionFeedImpl listRules(String topicName, String subscriptionName, Integer skip, Integer top) {
         return listRulesWithResponse(topicName, subscriptionName, skip, top, Context.NONE).getValue();
     }
 

@@ -303,9 +303,8 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'ruleOptions' cannot be null."));
         }
         final CreateRuleBodyImpl createEntity = getCreateRuleBody(ruleName, ruleOptions);
-        return deserializeRule(
-            managementClient.getRules().putWithResponse(topicName, subscriptionName, ruleName, createEntity,
-                null, enableSyncContext(context)));
+        return getRulePropertiesSimpleResponse(managementClient.getRules()
+            .putWithResponse(topicName, subscriptionName, ruleName, createEntity, null, enableSyncContext(context)));
     }
 
     /**
@@ -592,7 +591,7 @@ public final class ServiceBusAdministrationClient {
         validateSubscriptionName(subscriptionName);
         validateRuleName(ruleName);
 
-        final Response<Object> response =
+        final Response<RuleDescriptionEntryImpl> response =
             rulesClient.deleteWithResponse(topicName, subscriptionName, ruleName, enableSyncContext(context));
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
             response.getHeaders(), null);
@@ -850,10 +849,8 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName,
         String ruleName, Context context) {
-        final Response<Object> objectResponse =
-            rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true,
-                enableSyncContext(context));
-        return deserializeRule(objectResponse);
+        return getRulePropertiesSimpleResponse(rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true,
+            enableSyncContext(context)));
     }
 
 
@@ -1209,14 +1206,12 @@ public final class ServiceBusAdministrationClient {
 
     private PagedResponse<RuleProperties> listRules(String topicName, String subscriptionName, int skip,
         Context context) {
-        final Response<Object> response =
-            managementClient.listRulesWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
-                enableSyncContext(context));
-        final RuleDescriptionFeedImpl feed = deserialize(response.getValue(), RuleDescriptionFeedImpl.class);
+        final Response<RuleDescriptionFeedImpl> response = managementClient.listRulesWithResponse(topicName,
+            subscriptionName, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context));
+        final RuleDescriptionFeedImpl feed = response.getValue();
 
         if (feed == null) {
-            LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
-                NUMBER_OF_ELEMENTS);
+            LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip, NUMBER_OF_ELEMENTS);
             return null;
         }
 
@@ -1499,10 +1494,10 @@ public final class ServiceBusAdministrationClient {
         }
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-        final Response<Object> response =
+        final Response<RuleDescriptionEntryImpl> response =
             managementClient.getRules().putWithResponse(topicName, subscriptionName, rule.getName(),
                 getUpdateRuleBody(rule), "*", enableSyncContext(context));
-        return deserializeRule(response);
+        return getRulePropertiesSimpleResponse(response);
     }
 
     /**
@@ -1700,12 +1695,6 @@ public final class ServiceBusAdministrationClient {
 
         final QueueProperties result = getQueueProperties(entry);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    private Response<RuleProperties> deserializeRule(Response<Object> response) {
-        final RuleDescriptionEntryImpl entry = deserialize(response.getValue(), RuleDescriptionEntryImpl.class);
-
-        return getRulePropertiesSimpleResponse(response, entry);
     }
 
     private Response<TopicProperties> deserializeTopic(Response<Object> response) {

@@ -50,7 +50,7 @@ custom-strongly-typed-header-deserialization: true
 disable-client-builder: true
 ```
 
-### Change Return Types of REST Methods
+### Change Return Types of Subscription REST Methods
 ```yaml
 directive:
   - from: swagger-document
@@ -70,4 +70,57 @@ directive:
 
       delete $["/{topicName}/subscriptions/{subscriptionName}"].delete.responses["200"].schema.type;
       $["/{topicName}/subscriptions/{subscriptionName}"].delete.responses["200"].schema["$ref"] = "#/definitions/SubscriptionDescriptionEntry";
+```
+
+### Change Return Types of Rules REST Methods
+```yaml
+directive:
+  - from: swagger-document
+    where: $.paths
+    transform: >
+      delete $["/{topicName}/subscriptions/{subscriptionName}/rules"].get.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}/rules"].get.responses["200"].schema["$ref"] = "#/definitions/RuleDescriptionFeed";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].get.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].get.responses["200"].schema["$ref"] = "#/definitions/RuleDescriptionEntry";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].put.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].put.responses["200"].schema["$ref"] = "#/definitions/RuleDescriptionEntry";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].put.responses["201"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].put.responses["201"].schema["$ref"] = "#/definitions/RuleDescriptionEntry";
+
+      delete $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].delete.responses["200"].schema.type;
+      $["/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}"].delete.responses["200"].schema["$ref"] = "#/definitions/RuleDescriptionEntry";
+```
+
+### Change Title Properties to Non-Object
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      let titlePropertyCreator = function (description) {
+        "type": "object",
+        "properties": {
+          "type": {
+            "xml": {
+              "attribute": true,
+              "name": "type"
+            },
+            "type": "string",
+            "description": "The type of the title."
+          },
+          "content": {
+            "xml": {
+              "x-ms-text": true,
+              "namespace": "http://www.w3.org/2005/Atom"
+            },
+            "type": "string",
+            "description": description
+          }
+        }
+      };
+      
+      $.NamespacePropertiesEntry.properties.title = titlePropertyCreator("The name of the namespace.");
 ```

@@ -34,7 +34,6 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
@@ -80,7 +79,6 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateSubscriptionBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateTopicBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getQueues;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRulePropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRules;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
@@ -1382,7 +1380,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, ruleName, createEntity,
                     null, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
-                .map(this::deserializeRule);
+                .map(EntityHelper::getRulePropertiesSimpleResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1643,7 +1641,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
-                .map(this::deserializeRule);
+                .map(EntityHelper::getRulePropertiesSimpleResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1952,7 +1950,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, rule.getName(),
                     ruleBody, "*", getContext(context))
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
-                .map(this::deserializeRule);
+                .map(EntityHelper::getRulePropertiesSimpleResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -2090,19 +2088,6 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Converts a Response into its corresponding {@link RuleDescriptionEntryImpl} then mapped into
-     * {@link RuleProperties}.
-     *
-     * @param response HTTP Response to deserialize.
-     * @return The corresponding HTTP response with convenience properties set.
-     */
-    private Response<RuleProperties> deserializeRule(Response<Object> response) {
-        final RuleDescriptionEntryImpl entry = deserialize(response.getValue(), RuleDescriptionEntryImpl.class);
-
-        return getRulePropertiesSimpleResponse(response, entry);
-    }
-
-    /**
      * Converts a Response into its corresponding {@link TopicDescriptionEntryImpl} then mapped into
      * {@link QueueProperties}.
      *
@@ -2176,10 +2161,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<RuleDescriptionFeedImpl> feedResponse = deserialize(response,
-                    RuleDescriptionFeedImpl.class);
-
-                final RuleDescriptionFeedImpl feed = feedResponse.getValue();
+                final RuleDescriptionFeedImpl feed = response.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
                         NUMBER_OF_ELEMENTS);
@@ -2189,7 +2171,7 @@ public final class ServiceBusAdministrationAsyncClient {
                 final List<RuleProperties> entities = getRules(feed);
 
                 try {
-                    return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
+                    return Mono.just(extractPage(response, entities, feed.getLink()));
                 } catch (MalformedURLException | UnsupportedEncodingException error) {
                     return Mono.error(new RuntimeException(
                         "Could not parse response into FeedPage<RuleDescription>", error));

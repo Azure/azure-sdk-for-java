@@ -831,7 +831,8 @@ public final class EntityHelper {
     }
 
     public static SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(
-        Response<Object> response, RuleDescriptionEntryImpl entry) {
+        Response<RuleDescriptionEntryImpl> response) {
+        final RuleDescriptionEntryImpl entry = response.getValue();
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
