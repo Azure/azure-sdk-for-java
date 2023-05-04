@@ -119,3 +119,6 @@ stress-test-addons*
 
 # Temp typespec files
 TempTypeSpecFiles/
+
+# User-specific Workspace
+.user_workspace/
