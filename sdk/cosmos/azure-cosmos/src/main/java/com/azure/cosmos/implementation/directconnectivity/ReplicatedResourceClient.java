@@ -136,6 +136,7 @@ public class ReplicatedResourceClient {
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
 
             if (shouldSpeculate(request)){
+                logger.info("Speculating request {}", request);
                 return getStoreResponseMonoWithSpeculation(request, forceRefreshAndTimeout);
             }
 
@@ -167,20 +168,20 @@ public class ReplicatedResourceClient {
     }
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
+        List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
         if (speculativeProcessor.getRegionsForPureExploration() != null
             && !speculativeProcessor.getRegionsForPureExploration().isEmpty()) {
             explore(request, forceRefreshAndTimeout);
         }
-        List<RxDocumentServiceRequest> requests = new ArrayList<>();
+
         if (speculativeProcessor.shouldIncludeOriginalRequestRegion()) {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
             requests.add(request);
         }
 
-//        logger.info("Starting speculative processing on {} regions", speculativeProcessor.getRegionsToSpeculate(config, this.transportClient.getGlobalEndpointManager().getAvailableReadEndpoints()));
         for (URI endpoint : speculativeProcessor.getRegionsToSpeculate(config, this.transportClient
             .getGlobalEndpointManager().getAvailableReadEndpoints())) {
 
@@ -191,6 +192,7 @@ public class ReplicatedResourceClient {
                 monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout).delaySubscription(speculativeProcessor.getThreshold(config)));
             }
         }
+
         return Mono.firstWithValue(monoList).map(storeResponse ->
             {
                 for (RxDocumentServiceRequest r : requests) {
@@ -200,11 +202,9 @@ public class ReplicatedResourceClient {
                         speculativeProcessor.onResponseReceived(r.requestContext.locationEndpointToRoute,
                             diagnostics.getDuration());
                     }
-
                 }
                 return storeResponse;
-            }
-        );
+            });
     }
 
     private void explore(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
@@ -233,7 +233,7 @@ public class ReplicatedResourceClient {
             return false;
         }
 
-        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
         return config != null && config.isEnabled();
     }
 

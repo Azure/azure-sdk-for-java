@@ -1034,7 +1034,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public RxDocumentServiceRequest clone() {
         RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(), this.resourceId, true, this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
-        rxDocumentServiceRequest.setContentBytes(rxDocumentServiceRequest.contentAsByteArray);
+        rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1050,6 +1050,8 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
         rxDocumentServiceRequest.requestContext = this.requestContext.clone();
+        rxDocumentServiceRequest.feedRange = this.feedRange;
+        rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         return rxDocumentServiceRequest;
     }
 
