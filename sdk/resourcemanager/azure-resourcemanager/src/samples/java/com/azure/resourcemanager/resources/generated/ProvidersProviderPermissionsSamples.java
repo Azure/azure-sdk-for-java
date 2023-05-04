@@ -4,10 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for ProviderResourceTypes List. */
-public final class ProviderResourceTypesListSamples {
+/** Samples for Providers ProviderPermissions. */
+public final class ProvidersProviderPermissionsSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetProviderResourceTypes.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetProviderPermissions.json
      */
     /**
      * Sample code: Get provider resource types.
@@ -19,7 +19,7 @@ public final class ProviderResourceTypesListSamples {
             .genericResources()
             .manager()
             .serviceClient()
-            .getProviderResourceTypes()
-            .listWithResponse("Microsoft.TestRP", null, com.azure.core.util.Context.NONE);
+            .getProviders()
+            .providerPermissionsWithResponse("Microsoft.TestRP", com.azure.core.util.Context.NONE);
     }
 }

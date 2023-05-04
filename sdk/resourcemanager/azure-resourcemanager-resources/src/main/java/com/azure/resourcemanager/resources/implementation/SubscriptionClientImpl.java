@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
@@ -18,6 +19,18 @@ import java.time.Duration;
 /** Initializes a new instance of the SubscriptionClientImpl type. */
 @ServiceClient(builder = SubscriptionClientBuilder.class)
 public final class SubscriptionClientImpl extends AzureServiceClient implements SubscriptionClient {
+    /** The ID of the target subscription. The value must be an UUID. */
+    private final String subscriptionId;
+
+    /**
+     * Gets The ID of the target subscription. The value must be an UUID.
+     *
+     * @return the subscriptionId value.
+     */
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
+
     /** server parameter. */
     private final String endpoint;
 
@@ -78,6 +91,18 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         return this.defaultPollInterval;
     }
 
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
     /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
 
@@ -121,6 +146,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     SubscriptionClientImpl(
@@ -128,13 +154,16 @@ public final class SubscriptionClientImpl extends AzureServiceClient implements 
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
+        String subscriptionId,
         String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
+        this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2022-12-01";
+        this.operations = new OperationsClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
         this.tenants = new TenantsClientImpl(this);
         this.resourceNames = new ResourceNamesClientImpl(this);

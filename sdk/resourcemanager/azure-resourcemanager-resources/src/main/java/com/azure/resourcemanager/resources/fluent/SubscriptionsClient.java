@@ -24,7 +24,6 @@ public interface SubscriptionsClient {
      * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param includeExtendedLocations Whether to include extended locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +31,7 @@ public interface SubscriptionsClient {
      * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Boolean includeExtendedLocations);
+    PagedFlux<LocationInner> listLocationsAsync(Boolean includeExtendedLocations);
 
     /**
      * Gets all available geo-locations.
@@ -40,14 +39,12 @@ public interface SubscriptionsClient {
      * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LocationInner> listLocationsAsync(String subscriptionId);
+    PagedFlux<LocationInner> listLocationsAsync();
 
     /**
      * Gets all available geo-locations.
@@ -55,14 +52,12 @@ public interface SubscriptionsClient {
      * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LocationInner> listLocations(String subscriptionId);
+    PagedIterable<LocationInner> listLocations();
 
     /**
      * Gets all available geo-locations.
@@ -70,7 +65,6 @@ public interface SubscriptionsClient {
      * <p>This operation provides all the locations that are available for resource providers; however, each resource
      * provider may support a subset of this list.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,38 +73,32 @@ public interface SubscriptionsClient {
      * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LocationInner> listLocations(
-        String subscriptionId, Boolean includeExtendedLocations, Context context);
+    PagedIterable<LocationInner> listLocations(Boolean includeExtendedLocations, Context context);
 
     /**
      * Gets details about a specified subscription.
      *
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId);
+    Mono<Response<SubscriptionInner>> getWithResponseAsync();
 
     /**
      * Gets details about a specified subscription.
      *
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SubscriptionInner> getAsync(String subscriptionId);
+    Mono<SubscriptionInner> getAsync();
 
     /**
      * Gets details about a specified subscription.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,19 +106,17 @@ public interface SubscriptionsClient {
      * @return details about a specified subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context);
+    Response<SubscriptionInner> getWithResponse(Context context);
 
     /**
      * Gets details about a specified subscription.
      *
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionInner get(String subscriptionId);
+    SubscriptionInner get();
 
     /**
      * Gets all subscriptions for a tenant.
@@ -167,7 +153,6 @@ public interface SubscriptionsClient {
     /**
      * Compares a subscriptions logical zone mapping.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param parameters Parameters for checking zone peers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,13 +161,11 @@ public interface SubscriptionsClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckZonePeersResultInner>> checkZonePeersWithResponseAsync(
-        String subscriptionId, CheckZonePeersRequest parameters);
+    Mono<Response<CheckZonePeersResultInner>> checkZonePeersWithResponseAsync(CheckZonePeersRequest parameters);
 
     /**
      * Compares a subscriptions logical zone mapping.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param parameters Parameters for checking zone peers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -190,12 +173,11 @@ public interface SubscriptionsClient {
      * @return result of the Check zone peers operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckZonePeersResultInner> checkZonePeersAsync(String subscriptionId, CheckZonePeersRequest parameters);
+    Mono<CheckZonePeersResultInner> checkZonePeersAsync(CheckZonePeersRequest parameters);
 
     /**
      * Compares a subscriptions logical zone mapping.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param parameters Parameters for checking zone peers.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -204,13 +186,11 @@ public interface SubscriptionsClient {
      * @return result of the Check zone peers operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckZonePeersResultInner> checkZonePeersWithResponse(
-        String subscriptionId, CheckZonePeersRequest parameters, Context context);
+    Response<CheckZonePeersResultInner> checkZonePeersWithResponse(CheckZonePeersRequest parameters, Context context);
 
     /**
      * Compares a subscriptions logical zone mapping.
      *
-     * @param subscriptionId The ID of the target subscription.
      * @param parameters Parameters for checking zone peers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,5 +198,5 @@ public interface SubscriptionsClient {
      * @return result of the Check zone peers operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckZonePeersResultInner checkZonePeers(String subscriptionId, CheckZonePeersRequest parameters);
+    CheckZonePeersResultInner checkZonePeers(CheckZonePeersRequest parameters);
 }

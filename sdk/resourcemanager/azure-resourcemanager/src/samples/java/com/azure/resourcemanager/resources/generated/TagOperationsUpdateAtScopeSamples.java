@@ -4,15 +4,16 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
 import com.azure.resourcemanager.resources.models.Tags;
+import com.azure.resourcemanager.resources.models.TagsPatchOperation;
+import com.azure.resourcemanager.resources.models.TagsPatchResource;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for TagOperations CreateOrUpdateAtScope. */
-public final class TagOperationsCreateOrUpdateAtScopeSamples {
+/** Samples for TagOperations UpdateAtScope. */
+public final class TagOperationsUpdateAtScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutTagsResource.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PatchTagsResource.json
      */
     /**
      * Sample code: Update tags on a resource.
@@ -25,9 +26,10 @@ public final class TagOperationsCreateOrUpdateAtScopeSamples {
             .manager()
             .serviceClient()
             .getTagOperations()
-            .createOrUpdateAtScope(
+            .updateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
-                new TagsResourceInner()
+                new TagsPatchResource()
+                    .withOperation(TagsPatchOperation.REPLACE)
                     .withProperties(
                         new Tags()
                             .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
@@ -35,7 +37,7 @@ public final class TagOperationsCreateOrUpdateAtScopeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutTagsSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PatchTagsSubscription.json
      */
     /**
      * Sample code: Update tags on a subscription.
@@ -48,9 +50,10 @@ public final class TagOperationsCreateOrUpdateAtScopeSamples {
             .manager()
             .serviceClient()
             .getTagOperations()
-            .createOrUpdateAtScope(
+            .updateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000",
-                new TagsResourceInner()
+                new TagsPatchResource()
+                    .withOperation(TagsPatchOperation.REPLACE)
                     .withProperties(
                         new Tags()
                             .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
