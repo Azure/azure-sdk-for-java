@@ -24,7 +24,6 @@ public class Uri {
     private volatile Instant lastUnhealthyPendingTimestamp;
     private volatile Instant lastUnhealthyTimestamp;
     private volatile boolean isPrimary;
-    private final AtomicBoolean isInUse;
 
     public static Uri create(String uriAsString) {
         return new Uri(uriAsString);
@@ -44,7 +43,6 @@ public class Uri {
         this.lastUnknownTimestamp = Instant.now();
         this.lastUnhealthyPendingTimestamp = null;
         this.lastUnhealthyTimestamp = null;
-        this.isInUse = new AtomicBoolean(true);
     }
 
     public URI getURI() {
