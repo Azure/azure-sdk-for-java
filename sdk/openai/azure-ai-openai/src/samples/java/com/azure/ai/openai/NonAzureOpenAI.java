@@ -24,6 +24,7 @@ public class NonAzureOpenAI {
 
         OpenAIServiceVersion openAIServiceVersion = OpenAIServiceVersion.V1;
 
+        // TODO move this somewhere else
         TokenCredential tokenCredential = request ->
             Mono.justOrEmpty(new AccessToken(openAIKey, OffsetDateTime.now().plusDays(180)));
 

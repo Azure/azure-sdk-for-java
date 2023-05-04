@@ -60,7 +60,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         });
     }
 
-    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void getCompletionsFromPrompt(HttpClient httpClient, AzureOpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsFromSinglePromptRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, prompt))
