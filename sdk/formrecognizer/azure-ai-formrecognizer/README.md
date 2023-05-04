@@ -281,7 +281,7 @@ for (int i = 0; i < tables.size(); i++) {
 }
 ```
 
-### Use a General Document Model 
+### Use a General Document Model
 Analyze key-value pairs, tables, styles, and selection marks from documents using the general document model provided by
 the Form Recognizer service.
 Select the General Document Model by passing modelId="prebuilt-document" into the beginAnalyzeDocumentFromUrl method as follows:
