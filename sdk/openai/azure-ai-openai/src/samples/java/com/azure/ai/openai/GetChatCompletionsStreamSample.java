@@ -57,7 +57,6 @@ public class GetChatCompletionsStreamSample {
                 System.out.println(message.getContent());
             }
 
-            System.out.println();
             CompletionsUsage usage = chatCompletions.getUsage();
             if (usage != null) {
                 System.out.printf("Usage: number of prompt token is %d, "
