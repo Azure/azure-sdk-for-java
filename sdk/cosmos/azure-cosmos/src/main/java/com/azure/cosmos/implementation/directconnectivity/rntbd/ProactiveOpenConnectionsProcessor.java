@@ -44,6 +44,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
     private final ReentrantReadWriteLock.ReadLock endpointsUnderMonitorMapReadLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
+    private final Set<String> addressUrisAsStringToExcludeFromOpenConnection;
     private final Object containersUnderOpenConnectionAndInitCachesLock;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
@@ -65,6 +66,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.endpointProvider = endpointProvider;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
+        this.addressUrisAsStringToExcludeFromOpenConnection = ConcurrentHashMap.newKeySet();
         this.containersUnderOpenConnectionAndInitCachesLock = new Object();
 
         concurrencySettings.put(
@@ -92,7 +94,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     private void submitOpenConnectionTaskOutsideLoopInternal(OpenConnectionTask openConnectionTask) {
-        Uri addressUri = openConnectionTask.getAddressUri();
         String addressUriAsString = openConnectionTask.getAddressUri().getURIAsString();
 
         // endpointProvider is closed when RntbdTransportClient
@@ -106,7 +107,7 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             return;
         }
 
-        if (!addressUri.IsInUse()) {
+        if (addressUrisAsStringToExcludeFromOpenConnection.contains(addressUriAsString)) {
             openConnectionTask.completeExceptionally(new TransportException(lenientFormat("Address: %s is not mapped to a physical partition",
                     addressUriAsString), null));
             return;
@@ -196,6 +197,14 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
                 this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
             }
         }
+    }
+
+    public void excludeAddressUriForOpenConnections(String addressUriAsString) {
+        this.addressUrisAsStringToExcludeFromOpenConnection.add(addressUriAsString);
+    }
+
+    public void includeAddressUriForOpenConnections(String addressUriAsString) {
+        this.addressUrisAsStringToExcludeFromOpenConnection.remove(addressUriAsString);
     }
 
     private Disposable getBackgroundOpenConnectionsPublisher() {
