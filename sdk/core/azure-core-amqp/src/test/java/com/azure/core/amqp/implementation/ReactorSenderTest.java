@@ -25,6 +25,7 @@ import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Sender;
@@ -107,7 +108,7 @@ public class ReactorSenderTest {
     private Scheduler scheduler;
 
     @Captor
-    private ArgumentCaptor<byte[]> messageBytesCaptor;
+    private ArgumentCaptor<ReadableBuffer> messageBufferCaptor;
 
     @Captor
     private  ArgumentCaptor<DeliveryState> deliveryStateArgumentCaptor;
@@ -318,7 +319,7 @@ public class ReactorSenderTest {
             reactorProvider, tokenManager, messageSerializer, options, scheduler, AmqpMetricsProvider.noop());
         final ReactorSender spyReactorSender = spy(reactorSender);
 
-        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), isNull());
+        doReturn(Mono.empty()).when(spyReactorSender).send(any(ReadableBuffer.class), anyInt(), isNull());
 
         // Act
         StepVerifier.create(spyReactorSender.send(Arrays.asList(message, message2)))
@@ -330,14 +331,13 @@ public class ReactorSenderTest {
 
         // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
-        verify(spyReactorSender, times(2)).send(messageBytesCaptor.capture(), anyInt(),
-            anyInt(), isNull());
+        verify(spyReactorSender, times(2)).send(messageBufferCaptor.capture(), anyInt(), isNull());
 
-        assertFalse(messageBytesCaptor.getAllValues().isEmpty());
+        assertFalse(messageBufferCaptor.getAllValues().isEmpty());
 
-        messageBytesCaptor.getAllValues().forEach(delivery -> {
+        messageBufferCaptor.getAllValues().forEach(delivery -> {
             final Message actual = Proton.message();
-            actual.decode(delivery, 0, delivery.length);
+            actual.decode(delivery);
 
             final Object actualMessageId = actual.getMessageId();
             final String actualGroupId = actual.getGroupId();

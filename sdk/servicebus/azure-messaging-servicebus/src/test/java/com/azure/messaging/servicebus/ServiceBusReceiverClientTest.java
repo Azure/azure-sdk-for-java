@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -86,7 +87,7 @@ class ServiceBusReceiverClientTest {
         MockitoAnnotations.initMocks(this);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
+        when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(asyncClient.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
         when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false));
