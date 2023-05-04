@@ -251,8 +251,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     @Override
-    public void scheduleCredit(Supplier<Long> creditSupplier) {
-        throw logger.logExceptionAsError(new IllegalStateException("scheduleCredit is not supported in ReactorReceiver."));
+    public void addCredit(Supplier<Long> creditSupplier) {
+        throw logger.logExceptionAsError(new IllegalStateException("addCredit(Supplier) is supported only in ReactorReceiver2."));
     }
 
     @Override

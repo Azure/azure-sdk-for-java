@@ -74,7 +74,7 @@ public class MessageFluxEmissionDrivenCreditFlowIsolatedTest {
             Assertions.assertNotNull(creditSupplier);
             initialFlow.addAndGet(creditSupplier.get());
             return null;
-        }).when(receiver).scheduleCredit(any());
+        }).when(receiver).addCredit(any());
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> messageFlux)
