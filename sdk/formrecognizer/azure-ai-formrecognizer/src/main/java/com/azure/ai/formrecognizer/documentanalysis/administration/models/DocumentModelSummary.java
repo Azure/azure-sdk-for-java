@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * Model summary for the built and prebuilt models.
+ * Summary information for the built and prebuilt models.
  */
 @Immutable
 public final class DocumentModelSummary {

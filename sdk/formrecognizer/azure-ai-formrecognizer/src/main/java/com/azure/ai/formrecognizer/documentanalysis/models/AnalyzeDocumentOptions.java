@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import java.util.List;
 
 /**
- * Options that may be passed when using analyze document API on Document Analysis client.
+ * The configurable options to be passed when using analyze document API on Document Analysis client.
  */
 @Fluent
 public final class AnalyzeDocumentOptions {

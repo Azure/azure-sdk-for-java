@@ -40,7 +40,7 @@ public class AnalyzeTaxW2 {
 
         File invoice = new File("./formrecognizer/azure-ai-formrecognizer/src/samples/resources/Sample-W2.jpg");
         Path filePath = invoice.toPath();
-        BinaryData invoiceData = BinaryData.fromFile(filePath);
+        BinaryData invoiceData = BinaryData.fromFile(filePath, (int) invoice.length());
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", invoiceData);

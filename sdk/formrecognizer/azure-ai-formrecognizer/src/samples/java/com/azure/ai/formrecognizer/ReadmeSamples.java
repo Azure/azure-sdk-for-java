@@ -112,7 +112,7 @@ public class ReadmeSamples {
         // analyze document layout using file input stream
         File layoutDocument = new File("local/file_path/filename.png");
         Path filePath = layoutDocument.toPath();
-        BinaryData layoutDocumentData = BinaryData.fromFile(filePath);
+        BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
         SyncPoller<OperationResult, AnalyzeResult> analyzeLayoutResultPoller =
             documentAnalysisClient.beginAnalyzeDocument("prebuilt-layout", layoutDocumentData);
@@ -544,7 +544,7 @@ public class ReadmeSamples {
     /**
      * Code snippet for analyzing data using prebuilt read model.
      */
-    public void prebuiltReadStream() {
+    public void prebuiltReadFile() {
         // BEGIN: readme-sample-prebuiltRead-file
         File document = new File("{local/file_path/fileName.jpg}");
         SyncPoller<OperationResult, AnalyzeResult> analyzeResultPoller =

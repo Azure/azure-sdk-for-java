@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.List;
 
 /**
- * Document analysis result.
+ * Model representing the document analysis result.
  */
 @Immutable
 public final class AnalyzeResult {

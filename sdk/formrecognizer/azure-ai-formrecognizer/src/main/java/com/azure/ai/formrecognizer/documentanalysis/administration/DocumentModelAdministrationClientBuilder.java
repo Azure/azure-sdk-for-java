@@ -47,7 +47,7 @@ import java.util.Objects;
  * the builder access credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Instantiating an asynchronous Document Model Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  * <pre>
@@ -56,7 +56,7 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  *
- * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Instantiating a synchronous Document Model Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
@@ -126,7 +126,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A FormRecognizerAdminClient with the options set from the builder.
+     * @return A DocumentModelAdministrationClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
      * {@link #credential(AzureKeyCredential)} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
@@ -187,7 +187,7 @@ public final class DocumentModelAdministrationClientBuilder implements
      * settings are ignored.
      * </p>
      *
-     * @return A DocumentTrainingAsyncClient with the options set from the builder.
+     * @return A DocumentModelAdministrationAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set or {@code audience} is null when using {@link #credential(TokenCredential)}.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.

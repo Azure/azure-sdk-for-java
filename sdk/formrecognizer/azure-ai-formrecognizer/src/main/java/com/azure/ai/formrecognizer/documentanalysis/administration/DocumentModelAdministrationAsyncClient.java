@@ -36,7 +36,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -66,18 +65,19 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.T
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getComposeDocumentModelRequest;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getInnerCopyAuthorization;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.toInnerDocTypes;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getComposeModelOptions;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides an asynchronous client that contains model management operations
- * that apply to Azure Form Recognizer.
- * Operations allowed by the client are creating, building of custom document analysis models, deleting models,
- * listing models, copying a custom-built model to another Form Recognizer account, composing models from
- * component models, getting operation information and getting resource details.
+ * This class provides an asynchronous client to connect with the Form Recognizer Azure Cognitive Service for
+ * building and managing models.
  *
- * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
+ * <p>It provides methods for building models, as well as methods for viewing and deleting models,
+ * viewing model operations, accessing resource details, copying models to another
+ * Form Recognizer resource, and composing a new model from a collection of existing models.
+ * </p>
+ *
+ * <p><strong>Sample: Instantiating an asynchronous Document Model Administration Client</strong></p>
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  * <pre>
  * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
@@ -125,36 +125,10 @@ public final class DocumentModelAdministrationAsyncClient {
      * @return A new {@link DocumentAnalysisAsyncClient} object.
      */
     public DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient() {
-        return new DocumentAnalysisClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline())
+        return new DocumentAnalysisClientBuilder().endpoint(formRecognizerClientImpl.getEndpoint())
+            .pipeline(formRecognizerClientImpl.getHttpPipeline())
             .audience(this.audience)
             .buildAsyncClient();
-    }
-
-    /**
-     * Gets the pipeline the client is using.
-     *
-     * @return the pipeline the client is using.
-     */
-    HttpPipeline getHttpPipeline() {
-        return formRecognizerClientImpl.getHttpPipeline();
-    }
-
-    /**
-     * Gets the endpoint the client is using.
-     *
-     * @return the endpoint the client is using.
-     */
-    String getEndpoint() {
-        return formRecognizerClientImpl.getEndpoint();
-    }
-
-    /**
-     * Gets the audience the client is using.
-     *
-     * @return the audience the client is using.
-     */
-    DocumentAnalysisAudience getAudience() {
-        return audience;
     }
 
     /**
@@ -327,7 +301,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginBuildDocumentModel(blobContainerUrl, buildMode, null, fileList, null, Context.NONE);
     }
 
-    PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(String blobContainerUrl,
+    private PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(String blobContainerUrl,
                                                                               DocumentModelBuildMode buildMode,
                                                                               String prefix,
                                                                               String fileList,
@@ -400,7 +374,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<ResourceDetails>> getResourceDetailsWithResponse(Context context) {
+    private Mono<Response<ResourceDetails>> getResourceDetailsWithResponse(Context context) {
         return miscellaneousImpl.getResourceInfoWithResponseAsync(context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, Transforms.toAccountProperties(response.getValue())));
@@ -455,7 +429,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<Void>> deleteDocumentModelWithResponse(String modelId, Context context) {
+    private Mono<Response<Void>> deleteDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
@@ -523,7 +497,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
+    private Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
         CopyAuthorizationOptions copyAuthorizationOptions,
         Context context) {
         copyAuthorizationOptions = copyAuthorizationOptions == null
@@ -640,7 +614,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginComposeDocumentModel(componentModelIds, composeDocumentModelOptions, Context.NONE);
     }
 
-    PollerFlux<OperationResult, DocumentModelDetails> beginComposeDocumentModel(List<String> componentModelIds,
+    private PollerFlux<OperationResult, DocumentModelDetails> beginComposeDocumentModel(List<String> componentModelIds,
                                                                                 ComposeDocumentModelOptions composeDocumentModelOptions, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(componentModelIds)) {
@@ -649,9 +623,8 @@ public final class DocumentModelAdministrationAsyncClient {
             String modelId = composeDocumentModelOptions.getModelId();
             modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
-            composeDocumentModelOptions = getComposeModelOptions(composeDocumentModelOptions);
-
-            final ComposeDocumentModelRequest composeRequest = getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
+            final ComposeDocumentModelRequest composeRequest
+                = getComposeDocumentModelRequest(componentModelIds, composeDocumentModelOptions, modelId);
 
             return new PollerFlux<OperationResult, DocumentModelDetails>(
                 DEFAULT_POLL_INTERVAL,
@@ -712,7 +685,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginCopyDocumentModelTo(sourceModelId, target, null);
     }
 
-    PollerFlux<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
+    private PollerFlux<OperationResult, DocumentModelDetails> beginCopyDocumentModelTo(String sourceModelId,
                                                                                DocumentModelCopyAuthorization target, Context context) {
         return new PollerFlux<OperationResult, DocumentModelDetails>(
             DEFAULT_POLL_INTERVAL,
@@ -818,7 +791,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<DocumentModelDetails>> getDocumentModelWithResponse(String modelId, Context context) {
+    private Mono<Response<DocumentModelDetails>> getDocumentModelWithResponse(String modelId, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                 + " be null or empty"));
@@ -894,7 +867,7 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    Mono<Response<OperationDetails>> getOperationWithResponse(String operationId, Context context) {
+    private Mono<Response<OperationDetails>> getOperationWithResponse(String operationId, Context context) {
         if (CoreUtils.isNullOrEmpty(operationId)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'operationId' is required and cannot"
                 + " be null or empty"));
@@ -1226,7 +1199,7 @@ public final class DocumentModelAdministrationAsyncClient {
         return beginBuildDocumentClassifier(docTypes, buildDocumentClassifierOptions, Context.NONE);
     }
 
-    PollerFlux<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions,
+    private PollerFlux<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> docTypes, BuildDocumentClassifierOptions buildDocumentClassifierOptions,
                                                                               Context context) {
 
         buildDocumentClassifierOptions =  buildDocumentClassifierOptions == null

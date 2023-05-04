@@ -113,7 +113,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     public void beginBuildModelWithFileList() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
-        String fileList = "";
+        String fileList = "sample.jsonl";
 
         DocumentModelDetails documentModelDetails
             = documentModelAdministrationClient.beginBuildDocumentModel(blobContainerUrl,

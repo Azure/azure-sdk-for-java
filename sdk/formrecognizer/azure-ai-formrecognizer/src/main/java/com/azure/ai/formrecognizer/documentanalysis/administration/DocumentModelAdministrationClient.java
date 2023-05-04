@@ -77,13 +77,15 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
- * This class provides a synchronous client that contains model management the operations that apply
- * to Azure Form Recognizer.
- * Operations allowed by the client are creating, building of custom document analysis models, deleting models,
- * listing models, copying a custom-built model to another Form Recognizer account, composing models from
- * component models, getting operation information and getting resource details.
+ * This class provides a synchronous client to connect with the Form Recognizer Azure Cognitive Service for
+ * building and managing models.
  *
- * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
+ * <p>It provides methods for building models, as well as methods for viewing and deleting models,
+ * viewing model operations, accessing resource details, copying models to another
+ * Form Recognizer resource, and composing a new model from a collection of existing models.
+ * </p>
+ *
+ * <p><strong>Sample: Instantiating a synchronous Document Model Administration Client</strong></p>
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
  * DocumentModelAdministrationClient documentModelAdministrationClient =
@@ -257,7 +259,7 @@ public final class DocumentModelAdministrationClient {
      * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.beginBuildDocumentModel#String-BuildMode-String -->
      * <pre>
      * String blobContainerUrl = &quot;&#123;SAS-URL-of-your-container-in-blob-storage&#125;&quot;;
-     * String fileList = &quot;&quot;;
+     * String fileList = &quot;sample.jsonl&quot;;
      *
      * DocumentModelDetails documentModelDetails
      *     = documentModelAdministrationClient.beginBuildDocumentModel&#40;blobContainerUrl,
@@ -296,7 +298,7 @@ public final class DocumentModelAdministrationClient {
         return beginBuildDocumentModelSync(blobContainerUrl, buildMode, null, fileList, null, Context.NONE);
     }
 
-    SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModelSync(String blobContainerUrl,
+    private SyncPoller<OperationResult, DocumentModelDetails> beginBuildDocumentModelSync(String blobContainerUrl,
                                                                                   DocumentModelBuildMode buildMode, String prefix, String fileList, BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
 
         BuildDocumentModelOptions finalBuildDocumentModelOptions
@@ -627,7 +629,7 @@ public final class DocumentModelAdministrationClient {
         return beginComposeDocumentModelSync(componentModelIds, composeDocumentModelOptions, context);
     }
 
-    SyncPoller<OperationResult, DocumentModelDetails> beginComposeDocumentModelSync(List<String> componentModelIds,
+    private SyncPoller<OperationResult, DocumentModelDetails> beginComposeDocumentModelSync(List<String> componentModelIds,
         ComposeDocumentModelOptions composeDocumentModelOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(componentModelIds)) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'componentModelIds' cannot be null or empty"));
@@ -738,7 +740,7 @@ public final class DocumentModelAdministrationClient {
         return beginCopyDocumentModelToSync(sourceModelId, target, context);
     }
 
-    SyncPoller<OperationResult, DocumentModelDetails> beginCopyDocumentModelToSync(String sourceModelId,
+    private SyncPoller<OperationResult, DocumentModelDetails> beginCopyDocumentModelToSync(String sourceModelId,
         DocumentModelCopyAuthorization target, Context context) {
         context = enableSyncRestProxy(getTracingContext(context));
         Context finalContext = context;
@@ -802,7 +804,7 @@ public final class DocumentModelAdministrationClient {
         return listDocumentModelsSync(context);
     }
 
-    PagedIterable<DocumentModelSummary> listDocumentModelsSync(Context context) {
+    private PagedIterable<DocumentModelSummary> listDocumentModelsSync(Context context) {
         context = enableSyncRestProxy(getTracingContext(context));
         Context finalContext = context;
         return new PagedIterable<>(() -> listFirstPageModelInfo(finalContext),
