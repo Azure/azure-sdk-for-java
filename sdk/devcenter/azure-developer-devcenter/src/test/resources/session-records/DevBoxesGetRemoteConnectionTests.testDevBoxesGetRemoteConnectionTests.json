@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/devboxes/mydevbox/remoteConnection?api-version=2023-01-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "7d0a3307-80df-42e3-9fb0-2b575a246804"
+    },
+    "Response" : {
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 03 May 2023 23:11:27 GMT",
+      "x-ms-correlation-request-id" : "b2270155-fd2b-498b-bbdb-2b64ed07a04b",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "X-Rate-Limit-Remaining" : "299",
+      "X-Rate-Limit-Limit" : "1m",
+      "X-Rate-Limit-Reset" : "2023-05-03T23:12:26.9771130Z",
+      "Content-Length" : "334",
+      "Body" : "{\n  \"webUrl\": \"https://deschutes-ppe.microsoft.com/webclient/0dbb4e98-d938-4a28-87bc-8f0753632182\",\n  \"rdpConnectionUrl\": \"ms-avd:connect?env=avdarm&resourceid=f0774346-0851-48cc-7eee-08db412c4af2&username=sdk_integration_test_1%40fidalgoppe010.onmicrosoft.com&version=0&workspaceId=a10f24e7-8ebc-414e-b94d-6e957c70164e&preview=yes\"\n}",
+      "x-ms-client-request-id" : "7d0a3307-80df-42e3-9fb0-2b575a246804",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
