@@ -10,11 +10,14 @@ import java.util.Collection;
 
 /** Defines values for AcsEmailDeliveryReportStatus. */
 public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {
-    /** Static value Failed for AcsEmailDeliveryReportStatus. */
-    public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
+    /** Static value Bounced for AcsEmailDeliveryReportStatus. */
+    public static final AcsEmailDeliveryReportStatus BOUNCED = fromString("Bounced");
 
     /** Static value Delivered for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus DELIVERED = fromString("Delivered");
+
+    /** Static value Failed for AcsEmailDeliveryReportStatus. */
+    public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
 
     /** Static value FilteredSpam for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus FILTERED_SPAM = fromString("FilteredSpam");
