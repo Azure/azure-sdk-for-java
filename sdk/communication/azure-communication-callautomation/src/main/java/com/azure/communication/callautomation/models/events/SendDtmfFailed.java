@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.azure.communication.callautomation.models.ResultInformation;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

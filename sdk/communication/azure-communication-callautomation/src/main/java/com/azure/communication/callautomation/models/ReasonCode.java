@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.models.events;
+package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
@@ -66,7 +66,7 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
      * @param reasonCode a reasonCode to look for.
      * @return the corresponding ResourceCode.
      */
-    static ReasonCode fromReasonCode(int reasonCode) {
+    public static ReasonCode fromReasonCode(int reasonCode) {
         return fromString(Integer.toString(reasonCode));
     }
 }

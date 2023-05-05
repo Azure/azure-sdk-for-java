@@ -3,13 +3,14 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.ReasonCode;
 import com.azure.communication.callautomation.models.events.*;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
-import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
+import com.azure.communication.callautomation.models.ReasonCode.Recognize;
 
 import org.junit.jupiter.api.Test;
 

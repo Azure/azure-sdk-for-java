@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.azure.communication.callautomation.models.ReasonCode;
+import com.azure.communication.callautomation.models.ResultInformation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**

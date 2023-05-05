@@ -209,6 +209,8 @@ directive:
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
 - remove-model: RecognizeCanceled
+- remove-model: RemoveParticipantFailed
+- remove-model: RemoveParticipantSucceeded
 - remove-model: ContinuousDtmfRecognitionToneReceived
 - remove-model: ToneInfo
 - remove-model: ContinuousDtmfRecognitionToneFailed
