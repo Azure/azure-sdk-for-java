@@ -32,8 +32,7 @@ public class SchemaRegistryApacheAvroDeserializationSample {
             .fullyQualifiedNamespace("{schema-registry-endpoint}")
             .buildAsyncClient();
 
-        // Create the serializer instance by configuring it with the schema registry client and
-        // enabling auto registering of new schemas
+        // Create the serializer instance by configuring it with the schema registry client
         SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
             .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaGroup("{schema-group}")
