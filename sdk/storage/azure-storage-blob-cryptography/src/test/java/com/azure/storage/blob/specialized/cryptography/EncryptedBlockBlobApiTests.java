@@ -1388,7 +1388,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         ProgressReceiver mockReceiver = mock(ProgressReceiver.class);
         int numBlocks = fileSize / (4 * 1024 * 1024);
-        AtomicLong prevCount = new AtomicLong();
 
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions().setProgressReceiver(mockReceiver),
@@ -1397,6 +1396,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // We should receive at least one notification reporting an intermediary value per block, but possibly more
         // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
         // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
+        if (numBlocks == 0) numBlocks++;
         verify(mockReceiver, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
