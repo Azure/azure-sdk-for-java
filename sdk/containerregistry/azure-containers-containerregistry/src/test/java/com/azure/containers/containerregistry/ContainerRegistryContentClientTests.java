@@ -451,8 +451,8 @@ public class ContainerRegistryContentClientTests {
                 }
 
                 HttpHeaders headers = new HttpHeaders()
-                    .add("Content-Range", contentRange != null
-                        ? contentRange :  String.format("bytes %s-%s/%s", start, end, contentLength));
+                    .add("Content-Range", contentRange != null ? contentRange : String.format("bytes %s-%s/%s", start, end, contentLength))
+                    .add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(response.length));
 
                 expectedStartPosition.set(start + CHUNK_SIZE);
                 return new MockHttpResponse(request, 206, headers, response);

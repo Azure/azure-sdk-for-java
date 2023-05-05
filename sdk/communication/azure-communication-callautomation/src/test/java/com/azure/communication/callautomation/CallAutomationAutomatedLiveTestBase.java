@@ -5,7 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.models.events.CallAutomationEventData;
+import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.HttpMethod;
@@ -44,7 +44,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     // Key: callerId + receiverId, Value: incomingCallContext
     protected ConcurrentHashMap<String, String> incomingCallContextStore;
     // Key: callConnectionId, Value: <Key: event Class, Value: instance of the event>
-    protected ConcurrentHashMap<String, ConcurrentHashMap<Type, CallAutomationEventData>> eventStore;
+    protected ConcurrentHashMap<String, ConcurrentHashMap<Type, CallAutomationEventBase>> eventStore;
     protected List<String> eventsToPersist;
     protected static final String SERVICEBUS_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SERVICEBUS_STRING",
@@ -167,7 +167,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
             incomingCallContextStore.put(uniqueId, incomingCallContext);
         } else {
-            CallAutomationEventData event = CallAutomationEventParser.parseEvents(body).get(0);
+            CallAutomationEventBase event = CallAutomationEventParser.parseEvents(body).get(0);
             assert event != null : "Event cannot be null";
             String callConnectionId = event.getCallConnectionId();
             if (!eventStore.containsKey(callConnectionId)) {
@@ -235,7 +235,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     @SuppressWarnings("unchecked")
-    protected <T extends CallAutomationEventData> T waitForEvent(Class<T> eventType, String callConnectionId, Duration timeOut) throws InterruptedException {
+    protected <T extends CallAutomationEventBase> T waitForEvent(Class<T> eventType, String callConnectionId, Duration timeOut) throws InterruptedException {
         LocalDateTime timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
         while (LocalDateTime.now().isBefore(timeOutTime)) {
             if (eventStore.get(callConnectionId) != null) {

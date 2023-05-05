@@ -496,6 +496,14 @@ public final class UtilsImpl {
             .log(new ServiceResponseException("Missing or invalid content-range header in response"));
     }
 
+    public static long getContentLength(HttpHeader contentLengthHeader) {
+        if (contentLengthHeader != null && contentLengthHeader.getValue() != null) {
+            return Long.parseLong(contentLengthHeader.getValue());
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Content-Length header in missing in the response"));
+    }
+
     /**
      * Checks if string represents tag or digest.
      *

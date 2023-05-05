@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg211501ad1?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg211501ad1?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "7d876324-3e12-4851-ae61-e55270e040c1",
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaismrg33149?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaismrg33149?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "3b24c451-3b9e-4a19-8d3c-87c8b2e51520",
@@ -323,7 +323,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaismrg33149?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaismrg33149?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "a1c398e7-3aae-4304-b9f9-9a8d4beac0d6",
@@ -429,7 +429,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg211501ad1?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg211501ad1?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "efd7e939-b4f7-4faf-8035-210adda0ea1f",
@@ -477,7 +477,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaismrg33149?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javaismrg33149?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.24.0-beta.1 (17.0.3.1; Mac OS X; 11.7.3)",
       "x-ms-client-request-id" : "52924825-2c53-454d-80f6-83bde89b8b82",

@@ -15,11 +15,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 
-/** The RemoveParticipantSucceededEventData model. */
+/** The AddParticipantSucceeded model. */
 @Immutable
-public final class RemoveParticipantSucceededEventData extends CallAutomationEventData {
+public final class AddParticipantSucceeded extends CallAutomationEventBase {
     /*
-     * Participant removed
+     * Participant added
      */
     @JsonIgnore
     private final CommunicationIdentifier participant;
@@ -31,7 +31,7 @@ public final class RemoveParticipantSucceededEventData extends CallAutomationEve
     private final ResultInformation resultInformation;
 
     @JsonCreator
-    private RemoveParticipantSucceededEventData(@JsonProperty("participant") Map<String, Object> participant) {
+    private AddParticipantSucceeded(@JsonProperty("participant") Map<String, Object> participant) {
         this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

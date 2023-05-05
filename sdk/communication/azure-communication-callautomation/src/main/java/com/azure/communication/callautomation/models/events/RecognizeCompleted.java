@@ -13,9 +13,9 @@ import com.azure.communication.callautomation.models.SpeechResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
 
-/** The RecognizeCompletedEventData model. */
+/** The RecognizeCompleted model. */
 @Immutable
-public final class RecognizeCompletedEventData extends CallAutomationEventDataWithReasonCode {
+public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonCode {
 
     /*
      * Determines the subtype of the recognize operation.

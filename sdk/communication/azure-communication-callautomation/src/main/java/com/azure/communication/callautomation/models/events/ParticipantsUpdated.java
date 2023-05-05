@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/** The ParticipantsUpdatedEventData model. */
+/** The ParticipantsUpdated model. */
 @Immutable
-public final class ParticipantsUpdatedEventData extends CallAutomationEventData {
+public final class ParticipantsUpdated extends CallAutomationEventBase {
     /*
      * List of current participants in the call.
      */
@@ -30,7 +30,7 @@ public final class ParticipantsUpdatedEventData extends CallAutomationEventData 
     private final int sequenceNumber;
 
     @JsonCreator
-    private ParticipantsUpdatedEventData(@JsonProperty("participants") List<Map<String, Object>> participants) {
+    private ParticipantsUpdated(@JsonProperty("participants") List<Map<String, Object>> participants) {
         this.sequenceNumber = 0;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
