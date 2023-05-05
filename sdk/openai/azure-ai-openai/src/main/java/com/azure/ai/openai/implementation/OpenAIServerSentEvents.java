@@ -43,7 +43,7 @@ public final class OpenAIServerSentEvents<T> {
             try {
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());
                 BufferedReader reader = new BufferedReader(new InputStreamReader(byteArrayInputStream, StandardCharsets.UTF_8));
-                String currentLine = reader.readLine();
+                String currentLine = getFirstDataLine(reader);
                 currentLine = lastLine.get() + currentLine;
                 List<T> values = new ArrayList<>();
                 while (currentLine != null) {
@@ -60,6 +60,12 @@ public final class OpenAIServerSentEvents<T> {
                         // The expected line format of the server sent event is data: {...}
                         String[] split = currentLine.split(":", 2);
                         if (split.length != 2) {
+                            String line = reader.readLine();
+                            if (line == null) {
+                                lastLine.set(currentLine);
+                                expectEmptyLine.set(false);
+                                return Flux.fromIterable(values);
+                            }
                             return Flux.error(new IllegalStateException("Invalid data format " + currentLine));
                         }
 
@@ -86,6 +92,20 @@ public final class OpenAIServerSentEvents<T> {
                 return Flux.error(e);
             }
         });
+    }
+
+    private String getFirstDataLine(BufferedReader reader) throws IOException {
+        String currentLine = reader.readLine();
+        if (currentLine != null && currentLine.isEmpty() && expectEmptyLine.get()) {
+            currentLine = reader.readLine();
+            if (currentLine != null && currentLine.isEmpty()) {
+                // this happens when the line separate of the last line of previous bytebuffer was split
+                // across byte buffer boundaries and this bytebuffer starts with two line separators.
+                currentLine = reader.readLine();
+            }
+            expectEmptyLine.set(false);
+        }
+        return currentLine;
     }
 
     private static boolean isValidJson(String json) {
