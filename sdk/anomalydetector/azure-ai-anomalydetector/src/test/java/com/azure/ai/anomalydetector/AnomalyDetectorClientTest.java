@@ -3,18 +3,18 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import java.io.StringReader;
 
 /**
  * Unit tests for {@link AnomalyDetectorClient}.
@@ -33,27 +33,21 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     @Test
     public void testDetectEntireSeriesWithResponse() {
         BinaryData request = getRequestBody();
-        Response<BinaryData> response = getClient().detectUnivariateEntireSeriesWithResponse(request, new RequestOptions());
-        System.out.println(response.toString());
+        UnivariateDetectionOptions options = request.toObject(UnivariateDetectionOptions.class);
+        UnivariateEntireDetectionResult result = getClient().detectUnivariateEntireSeries(options);
 
-        String responseBodyStr = response.getValue().toString();
-        JsonObject responseJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-
-        assertEquals(200, response.getStatusCode());
-        assertEquals(24, responseJsonObject.getJsonArray("expectedValues").size());
-        assertEquals(24, responseJsonObject.getJsonArray("isAnomaly").size());
-        assertEquals(24, responseJsonObject.getJsonArray("isPositiveAnomaly").size());
-        assertEquals(24, responseJsonObject.getJsonArray("lowerMargins").size());
-        assertEquals(24, responseJsonObject.getJsonArray("severity").size());
-        assertEquals(24, responseJsonObject.getJsonArray("upperMargins").size());
-
-        JsonArray isAnomalyJA = responseJsonObject.getJsonArray("isAnomaly");
-        for (int i = 0; i < isAnomalyJA.size(); i++) {
-            assertFalse(isAnomalyJA.getBoolean(i));
+        assertEquals(24, result.getExpectedValues().size());
+        assertEquals(24, result.getIsAnomaly().size());
+        assertEquals(24, result.getIsPositiveAnomaly().size());
+        assertEquals(24, result.getLowerMargins().size());
+        assertEquals(24, result.getSeverity().size());
+        assertEquals(24, result.getSeverity().size());
+        assertEquals(24, result.getUpperMargins().size());
+        for (Boolean isA : result.getIsAnomaly()) {
+            assertFalse(isA);
         }
-        JsonArray isPositiveAnomalyJA = responseJsonObject.getJsonArray("isPositiveAnomaly");
-        for (int i = 0; i < isPositiveAnomalyJA.size(); i++) {
-            assertFalse(isPositiveAnomalyJA.getBoolean(i));
+        for (Boolean isPA : result.getIsPositiveAnomaly()) {
+            assertFalse(isPA);
         }
     }
 
@@ -62,28 +56,19 @@ public class AnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     public void testLastPoint() {
         BinaryData request = getRequestBody();
 
-        Response<BinaryData> response = getClient().detectUnivariateLastPointWithResponse(request, new RequestOptions());
-        System.out.println(response.toString());
-
-        String responseBodyStr = response.getValue().toString();
-        JsonObject responseJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-        assertEquals(200, response.getStatusCode());
-        assertFalse(responseJsonObject.getBoolean("isAnomaly"));
-
+        UnivariateDetectionOptions options = request.toObject(UnivariateDetectionOptions.class);
+        UnivariateLastDetectionResult result = getClient().detectUnivariateLastPoint(options);
+        assertFalse(result.isAnomaly());
     }
 
     @Test
     public void testChangePoint() {
         BinaryData request = getRequestBody();
 
-        Response<BinaryData> response = getClient().detectUnivariateChangePointWithResponse(request, new RequestOptions());
-        System.out.println(response.toString());
-
-        String responseBodyStr = response.getValue().toString();
-        JsonObject responseJsonObject = Json.createReader(new StringReader(responseBodyStr)).readObject();
-        assertEquals(200, response.getStatusCode());
-        assertEquals(24, responseJsonObject.getJsonArray("confidenceScores").size());
-        assertEquals(24, responseJsonObject.getJsonArray("isChangePoint").size());
+        UnivariateChangePointDetectionOptions options = request.toObject(UnivariateChangePointDetectionOptions.class);
+        UnivariateChangePointDetectionResult result = getClient().detectUnivariateChangePoint(options);
+        assertEquals(24, result.getConfidenceScores().size());
+        assertEquals(24, result.getIsChangePoint().size());
     }
 
 
