@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
@@ -46,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -780,6 +782,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             SpanContext linkContext = links.get(i).getSpanContext();
             String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-01";
             assertEquals(messageTraceparent, linkTraceparent);
+            assertNotNull(links.get(i).getAttributes().get(AttributeKey.longKey(ServiceBusTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME)));
         }
     }
 
