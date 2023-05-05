@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsUpdatePr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to update Cosmos DB resource throughput. */
+/**
+ * Parameters to update Cosmos DB resource throughput.
+ */
 @Fluent
 public final class ThroughputSettingsUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,7 +21,9 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private ThroughputSettingsUpdateProperties innerProperties = new ThroughputSettingsUpdateProperties();
 
-    /** Creates an instance of ThroughputSettingsUpdateParameters class. */
+    /**
+     * Creates an instance of ThroughputSettingsUpdateParameters class.
+     */
     public ThroughputSettingsUpdateParameters() {
     }
 
@@ -32,14 +36,18 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThroughputSettingsUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThroughputSettingsUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -78,10 +86,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
         } else {
             innerProperties().validate();
         }

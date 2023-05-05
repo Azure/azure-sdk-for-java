@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Cassandra table partition key. */
+/**
+ * Cosmos DB Cassandra table partition key.
+ */
 @Fluent
 public final class CassandraPartitionKey {
     /*
@@ -16,7 +18,9 @@ public final class CassandraPartitionKey {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of CassandraPartitionKey class. */
+    /**
+     * Creates an instance of CassandraPartitionKey class.
+     */
     public CassandraPartitionKey() {
     }
 

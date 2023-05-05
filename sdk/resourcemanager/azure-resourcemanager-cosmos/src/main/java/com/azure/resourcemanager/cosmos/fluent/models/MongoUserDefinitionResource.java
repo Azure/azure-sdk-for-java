@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure Cosmos DB Mongo User Definition resource object. */
+/**
+ * Azure Cosmos DB Mongo User Definition resource object.
+ */
 @Fluent
 public final class MongoUserDefinitionResource {
     /*
@@ -48,7 +50,9 @@ public final class MongoUserDefinitionResource {
     @JsonProperty(value = "mechanisms")
     private String mechanisms;
 
-    /** Creates an instance of MongoUserDefinitionResource class. */
+    /**
+     * Creates an instance of MongoUserDefinitionResource class.
+     */
     public MongoUserDefinitionResource() {
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.fluent.models.ServiceResourceCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters for Create or Update Request for ServiceResource. */
+/**
+ * Parameters for Create or Update Request for ServiceResource.
+ */
 @Fluent
 public final class ServiceResourceCreateUpdateParameters {
     /*
@@ -17,7 +19,9 @@ public final class ServiceResourceCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private ServiceResourceCreateUpdateProperties innerProperties;
 
-    /** Creates an instance of ServiceResourceCreateUpdateParameters class. */
+    /**
+     * Creates an instance of ServiceResourceCreateUpdateParameters class.
+     */
     public ServiceResourceCreateUpdateParameters() {
     }
 

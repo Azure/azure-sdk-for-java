@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphGetResultsInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the graphs and their properties. */
+/**
+ * The List operation response, that contains the graphs and their properties.
+ */
 @Immutable
 public final class GremlinGraphListResult {
     /*
@@ -18,7 +20,9 @@ public final class GremlinGraphListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GremlinGraphGetResultsInner> value;
 
-    /** Creates an instance of GremlinGraphListResult class. */
+    /**
+     * Creates an instance of GremlinGraphListResult class.
+     */
     public GremlinGraphListResult() {
     }
 

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseCreateUpdat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB MongoDB database. */
+/**
+ * Parameters to create and update Cosmos DB MongoDB database.
+ */
 @Fluent
 public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,7 +21,9 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     @JsonProperty(value = "properties", required = true)
     private MongoDBDatabaseCreateUpdateProperties innerProperties = new MongoDBDatabaseCreateUpdateProperties();
 
-    /** Creates an instance of MongoDBDatabaseCreateUpdateParameters class. */
+    /**
+     * Creates an instance of MongoDBDatabaseCreateUpdateParameters class.
+     */
     public MongoDBDatabaseCreateUpdateParameters() {
     }
 
@@ -32,14 +36,18 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,10 +111,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MongoDBDatabaseCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model MongoDBDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

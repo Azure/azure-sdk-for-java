@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the regional restorable account. */
+/**
+ * Properties of the regional restorable account.
+ */
 @Fluent
 public final class ContinuousBackupRestoreLocation {
     /*
@@ -16,7 +18,9 @@ public final class ContinuousBackupRestoreLocation {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of ContinuousBackupRestoreLocation class. */
+    /**
+     * Creates an instance of ContinuousBackupRestoreLocation class.
+     */
     public ContinuousBackupRestoreLocation() {
     }
 

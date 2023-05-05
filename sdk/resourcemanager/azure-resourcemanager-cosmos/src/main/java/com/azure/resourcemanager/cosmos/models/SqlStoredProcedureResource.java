@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB SQL storedProcedure resource object. */
+/**
+ * Cosmos DB SQL storedProcedure resource object.
+ */
 @Fluent
 public class SqlStoredProcedureResource {
     /*
@@ -23,7 +25,9 @@ public class SqlStoredProcedureResource {
     @JsonProperty(value = "body")
     private String body;
 
-    /** Creates an instance of SqlStoredProcedureResource class. */
+    /**
+     * Creates an instance of SqlStoredProcedureResource class.
+     */
     public SqlStoredProcedureResource() {
     }
 
@@ -74,9 +78,7 @@ public class SqlStoredProcedureResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SqlStoredProcedureResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model SqlStoredProcedureResource"));
         }
     }
 

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to indicate the API type of the restorable database account. */
+/**
+ * Enum to indicate the API type of the restorable database account.
+ */
 public final class ApiType extends ExpandableStringEnum<ApiType> {
-    /** Static value MongoDB for ApiType. */
+    /**
+     * Static value MongoDB for ApiType.
+     */
     public static final ApiType MONGO_DB = fromString("MongoDB");
 
-    /** Static value Gremlin for ApiType. */
+    /**
+     * Static value Gremlin for ApiType.
+     */
     public static final ApiType GREMLIN = fromString("Gremlin");
 
-    /** Static value Cassandra for ApiType. */
+    /**
+     * Static value Cassandra for ApiType.
+     */
     public static final ApiType CASSANDRA = fromString("Cassandra");
 
-    /** Static value Table for ApiType. */
+    /**
+     * Static value Table for ApiType.
+     */
     public static final ApiType TABLE = fromString("Table");
 
-    /** Static value Sql for ApiType. */
+    /**
+     * Static value Sql for ApiType.
+     */
     public static final ApiType SQL = fromString("Sql");
 
-    /** Static value GremlinV2 for ApiType. */
+    /**
+     * Static value GremlinV2 for ApiType.
+     */
     public static final ApiType GREMLIN_V2 = fromString("GremlinV2");
 
     /**
      * Creates a new instance of ApiType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
 
     /**
      * Creates or finds a ApiType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApiType.
      */
@@ -50,7 +64,7 @@ public final class ApiType extends ExpandableStringEnum<ApiType> {
 
     /**
      * Gets known ApiType values.
-     *
+     * 
      * @return known ApiType values.
      */
     public static Collection<ApiType> values() {

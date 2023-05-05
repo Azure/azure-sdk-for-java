@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB options resource object. */
+/**
+ * Cosmos DB options resource object.
+ */
 @Fluent
 public class OptionsResource {
     /*
@@ -23,7 +25,9 @@ public class OptionsResource {
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
-    /** Creates an instance of OptionsResource class. */
+    /**
+     * Creates an instance of OptionsResource class.
+     */
     public OptionsResource() {
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.ServiceResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for the database account. */
+/**
+ * Properties for the database account.
+ */
 @Fluent
 public final class ServiceResourceInner extends ArmProxyResource {
     /*
@@ -18,7 +20,9 @@ public final class ServiceResourceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private ServiceResourceProperties properties;
 
-    /** Creates an instance of ServiceResourceInner class. */
+    /**
+     * Creates an instance of ServiceResourceInner class.
+     */
     public ServiceResourceInner() {
     }
 

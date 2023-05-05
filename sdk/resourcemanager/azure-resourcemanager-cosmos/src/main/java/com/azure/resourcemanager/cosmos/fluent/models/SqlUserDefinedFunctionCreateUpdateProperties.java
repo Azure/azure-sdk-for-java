@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update Azure Cosmos DB userDefinedFunction. */
+/**
+ * Properties to create and update Azure Cosmos DB userDefinedFunction.
+ */
 @Fluent
 public final class SqlUserDefinedFunctionCreateUpdateProperties {
     /*
@@ -26,7 +28,9 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /** Creates an instance of SqlUserDefinedFunctionCreateUpdateProperties class. */
+    /**
+     * Creates an instance of SqlUserDefinedFunctionCreateUpdateProperties class.
+     */
     public SqlUserDefinedFunctionCreateUpdateProperties() {
     }
 
@@ -79,10 +83,7 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model SqlUserDefinedFunctionCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model SqlUserDefinedFunctionCreateUpdateProperties"));
         } else {
             resource().validate();
         }

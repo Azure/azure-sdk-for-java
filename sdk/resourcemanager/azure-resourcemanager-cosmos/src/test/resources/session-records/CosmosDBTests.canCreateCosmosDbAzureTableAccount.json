@@ -1,91 +1,117 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdb5684680?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdb014866d?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "7bf13265-6bc1-410b-a546-d056536fb575",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "507a8a54-029d-49a3-9158-a66a9ddf725e",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 12 Apr 2023 08:40:39 GMT",
-      "x-ms-correlation-request-id" : "26a820ce-1a4e-4eda-a54b-0a249effb1fe",
+      "Date" : "Fri, 05 May 2023 06:16:14 GMT",
+      "x-ms-correlation-request-id" : "1dc6b837-dd86-4415-8f12-79e8c9a8aefb",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084040Z:26a820ce-1a4e-4eda-a54b-0a249effb1fe",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061614Z:1dc6b837-dd86-4415-8f12-79e8c9a8aefb",
       "Expires" : "-1",
       "Content-Length" : "238",
-      "x-ms-request-id" : "26a820ce-1a4e-4eda-a54b-0a249effb1fe",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680\",\"name\":\"rgcosmosdb5684680\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "x-ms-request-id" : "1dc6b837-dd86-4415-8f12-79e8c9a8aefb",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d\",\"name\":\"rgcosmosdb014866d\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "071880c4-89b3-4fe3-995c-c4f7d512217b",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "79be224f-da70-4c1e-88d6-52f08101aa48",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Wed, 12 Apr 2023 08:40:51 GMT",
-      "x-ms-correlation-request-id" : "2163ac4c-487f-4f63-914b-796466175022",
+      "Date" : "Fri, 05 May 2023 06:16:31 GMT",
+      "x-ms-correlation-request-id" : "1e44e11e-94d3-4b0d-b6cb-be91a60e0477",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084052Z:2163ac4c-487f-4f63-914b-796466175022",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061632Z:1e44e11e-94d3-4b0d-b6cb-be91a60e0477",
       "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "2397",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-      "x-ms-request-id" : "cff85f6b-7d13-44fe-b328-89c7876ebefa",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002\",\"name\":\"cosmosdb560912002\",\"location\":\"West Central US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Table\",\"tag1\":\"value1\"},\"systemData\":{\"createdAt\":\"2023-04-12T08:40:47.6332397Z\"},\"properties\":{\"provisioningState\":\"Creating\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Table, Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"analyticalStorageConfiguration\":{\"schemaType\":\"WellDefined\"},\"instanceId\":\"76979c9e-bf75-4706-bb17-bedcd7d48092\",\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":false,\"connectorOffer\":\"\",\"defaultIdentity\":\"\",\"networkAclBypass\":\"None\",\"disableLocalAuth\":false,\"enablePartitionMerge\":false,\"minimalTlsVersion\":\"Tls\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableTable\"}],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":\"Invalid\"}},\"networkAclBypassResourceIds\":[],\"keysMetadata\":{\"primaryMasterKey\":{\"generationTime\":\"2023-04-12T08:40:47.6332397Z\"},\"secondaryMasterKey\":{\"generationTime\":\"2023-04-12T08:40:47.6332397Z\"},\"primaryReadonlyMasterKey\":{\"generationTime\":\"2023-04-12T08:40:47.6332397Z\"},\"secondaryReadonlyMasterKey\":{\"generationTime\":\"2023-04-12T08:40:47.6332397Z\"}}},\"identity\":{\"type\":\"None\"}}",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002/operationResults/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+      "Content-Length" : "2344",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
+      "x-ms-request-id" : "45fa8c41-ff1d-4996-89d3-4eb03ebdac1d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9\",\"name\":\"cosmosdb6802031d9\",\"location\":\"West Central US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Table\",\"tag1\":\"value1\"},\"systemData\":{\"createdAt\":\"2023-05-05T06:16:26.0252776Z\"},\"properties\":{\"provisioningState\":\"Creating\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Table, Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"analyticalStorageConfiguration\":{\"schemaType\":\"WellDefined\"},\"instanceId\":\"75c4765b-112a-4854-8763-0a04782d6469\",\"databaseAccountOfferType\":\"Standard\",\"defaultIdentity\":\"\",\"networkAclBypass\":\"None\",\"disableLocalAuth\":false,\"enablePartitionMerge\":false,\"minimalTlsVersion\":\"Tls\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"provisioningState\":\"Creating\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableTable\"}],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":\"Invalid\"}},\"networkAclBypassResourceIds\":[],\"keysMetadata\":{\"primaryMasterKey\":{\"generationTime\":\"2023-05-05T06:16:26.0252776Z\"},\"secondaryMasterKey\":{\"generationTime\":\"2023-05-05T06:16:26.0252776Z\"},\"primaryReadonlyMasterKey\":{\"generationTime\":\"2023-05-05T06:16:26.0252776Z\"},\"secondaryReadonlyMasterKey\":{\"generationTime\":\"2023-05-05T06:16:26.0252776Z\"}}},\"identity\":{\"type\":\"None\"}}",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9/operationResults/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "cfbbee02-8ff8-4bb7-aa98-53e5da7123ed"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0d750c78-224d-4554-8d55-212c0363fdcd"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "d3f1c60e-52ba-40bf-b363-a34bfe9023f0",
-      "Date" : "Wed, 12 Apr 2023 08:41:22 GMT",
+      "x-ms-correlation-request-id" : "03e7268b-b88a-40ac-b98c-9c95fce1695b",
+      "Date" : "Fri, 05 May 2023 06:17:02 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084122Z:d3f1c60e-52ba-40bf-b363-a34bfe9023f0",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061703Z:03e7268b-b88a-40ac-b98c-9c95fce1695b",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "d3f1c60e-52ba-40bf-b363-a34bfe9023f0",
+      "x-ms-request-id" : "03e7268b-b88a-40ac-b98c-9c95fce1695b",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "7f3025f2-0c6c-493f-aedc-4557f2b4fea8"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "4df2e730-53f2-4575-821e-800524d879a2"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "38f0800f-de2c-49b4-ac28-9f99a1cb5c46",
+      "Date" : "Fri, 05 May 2023 06:17:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061734Z:38f0800f-de2c-49b4-ac28-9f99a1cb5c46",
+      "x-ms-gatewayversion" : "version=2.14.0",
+      "Content-Length" : "21",
+      "x-ms-request-id" : "38f0800f-de2c-49b4-ac28-9f99a1cb5c46",
+      "Body" : "{\"status\":\"Dequeued\"}",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8783ee24-7b06-4b62-a142-177b64aef495"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -94,24 +120,76 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11997",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "c5f74073-b80d-4efb-abda-eefec2b1a194",
-      "Date" : "Wed, 12 Apr 2023 08:41:52 GMT",
+      "x-ms-correlation-request-id" : "2d55e7d9-5d6f-44f6-8a03-a0c2ece6edc0",
+      "Date" : "Fri, 05 May 2023 06:18:03 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084153Z:c5f74073-b80d-4efb-abda-eefec2b1a194",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061804Z:2d55e7d9-5d6f-44f6-8a03-a0c2ece6edc0",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "c5f74073-b80d-4efb-abda-eefec2b1a194",
+      "x-ms-request-id" : "2d55e7d9-5d6f-44f6-8a03-a0c2ece6edc0",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "a0d7cfa1-66a2-467a-9dfe-7f4cd17075b3"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "29f1e098-8680-4a4e-9fb2-df51e5097803"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "422f13b8-2b0a-4791-85d5-efc85cbe9679",
+      "Date" : "Fri, 05 May 2023 06:18:34 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061834Z:422f13b8-2b0a-4791-85d5-efc85cbe9679",
+      "x-ms-gatewayversion" : "version=2.14.0",
+      "Content-Length" : "21",
+      "x-ms-request-id" : "422f13b8-2b0a-4791-85d5-efc85cbe9679",
+      "Body" : "{\"status\":\"Dequeued\"}",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a1017468-99e0-45b4-8b41-eadebf498457"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "1a3c5875-b2ce-4310-90e1-06bbc6c2e625",
+      "Date" : "Fri, 05 May 2023 06:19:04 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061904Z:1a3c5875-b2ce-4310-90e1-06bbc6c2e625",
+      "x-ms-gatewayversion" : "version=2.14.0",
+      "Content-Length" : "21",
+      "x-ms-request-id" : "1a3c5875-b2ce-4310-90e1-06bbc6c2e625",
+      "Body" : "{\"status\":\"Dequeued\"}",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "1f8c3ada-6b77-4c9f-8851-ed4629422bd8"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -120,128 +198,24 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11994",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "af266a86-9117-4cd6-a0f0-714fec2aef63",
-      "Date" : "Wed, 12 Apr 2023 08:42:23 GMT",
+      "x-ms-correlation-request-id" : "614d1c77-b06e-42b8-b9b7-fcbbafc5d514",
+      "Date" : "Fri, 05 May 2023 06:19:35 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084223Z:af266a86-9117-4cd6-a0f0-714fec2aef63",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T061935Z:614d1c77-b06e-42b8-b9b7-fcbbafc5d514",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "af266a86-9117-4cd6-a0f0-714fec2aef63",
+      "x-ms-request-id" : "614d1c77-b06e-42b8-b9b7-fcbbafc5d514",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "42891938-423f-4cc8-9b77-2830cc8e7ee6"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "933fac6a-ee46-417d-93dd-f4143f90119e",
-      "Date" : "Wed, 12 Apr 2023 08:42:53 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084254Z:933fac6a-ee46-417d-93dd-f4143f90119e",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "933fac6a-ee46-417d-93dd-f4143f90119e",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "505a1d8e-cfc1-4208-babc-69fa117fe376"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "340c855e-0211-434d-b757-0a0db0a06184",
-      "Date" : "Wed, 12 Apr 2023 08:43:24 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084324Z:340c855e-0211-434d-b757-0a0db0a06184",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "340c855e-0211-434d-b757-0a0db0a06184",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "aeca38e2-83fe-404d-9c6e-b7f4124480eb"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "37993807-7952-461c-bba8-ea580a004b1c",
-      "Date" : "Wed, 12 Apr 2023 08:43:54 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084354Z:37993807-7952-461c-bba8-ea580a004b1c",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "37993807-7952-461c-bba8-ea580a004b1c",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "42e1c84f-71f0-47ef-a8fd-fdc6cedcd724"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "38796a7a-7e7f-4f9d-b2f8-9365be78ebcf",
-      "Date" : "Wed, 12 Apr 2023 08:44:24 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084424Z:38796a7a-7e7f-4f9d-b2f8-9365be78ebcf",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "38796a7a-7e7f-4f9d-b2f8-9365be78ebcf",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "c1aa6872-286a-43a9-aa47-c8bcdbeb6552"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9c45f948-05bb-4a3e-974d-0acd3070f62f"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -250,24 +224,24 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11993",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "bfaa0fbe-d917-4a70-b039-0f4e067a7f37",
-      "Date" : "Wed, 12 Apr 2023 08:44:55 GMT",
+      "x-ms-correlation-request-id" : "4df0d1d8-fd64-4ab9-8071-b7939ced8706",
+      "Date" : "Fri, 05 May 2023 06:20:05 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084455Z:bfaa0fbe-d917-4a70-b039-0f4e067a7f37",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062006Z:4df0d1d8-fd64-4ab9-8071-b7939ced8706",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "bfaa0fbe-d917-4a70-b039-0f4e067a7f37",
+      "x-ms-request-id" : "4df0d1d8-fd64-4ab9-8071-b7939ced8706",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "8701c683-1a99-43c3-9da1-0ec415ad2710"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b574eb4c-6e88-4c6f-a916-b01496b6730f"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -276,154 +250,102 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11992",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "8be60c15-b76a-4124-81ac-8728221de7bc",
-      "Date" : "Wed, 12 Apr 2023 08:45:25 GMT",
+      "x-ms-correlation-request-id" : "f21f6417-631e-4999-90b1-06505eced1b2",
+      "Date" : "Fri, 05 May 2023 06:20:35 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084526Z:8be60c15-b76a-4124-81ac-8728221de7bc",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062036Z:f21f6417-631e-4999-90b1-06505eced1b2",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "8be60c15-b76a-4124-81ac-8728221de7bc",
+      "x-ms-request-id" : "f21f6417-631e-4999-90b1-06505eced1b2",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "f374409f-8a09-4131-952c-5e5423663d1f"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5ec2a2cc-c84c-4fa6-9f92-720637a52c63"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11981",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "a2d41936-70b9-4171-88a9-8b09f45e8259",
-      "Date" : "Wed, 12 Apr 2023 08:45:55 GMT",
+      "x-ms-correlation-request-id" : "4550c5b8-b0ae-4a1a-912c-682c31f7d39a",
+      "Date" : "Fri, 05 May 2023 06:21:06 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084556Z:a2d41936-70b9-4171-88a9-8b09f45e8259",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062106Z:4550c5b8-b0ae-4a1a-912c-682c31f7d39a",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "a2d41936-70b9-4171-88a9-8b09f45e8259",
+      "x-ms-request-id" : "4550c5b8-b0ae-4a1a-912c-682c31f7d39a",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "b87f8a39-81ff-4f5f-a20e-8e7ac5c9d565"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d31675eb-92eb-45d3-845e-06c4c4a11494"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11980",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "8db5e084-9a9a-482b-adf2-5f1d8f37e6d3",
-      "Date" : "Wed, 12 Apr 2023 08:46:26 GMT",
+      "x-ms-correlation-request-id" : "69284d4a-0401-4349-a4b0-b03ea1617060",
+      "Date" : "Fri, 05 May 2023 06:21:36 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084627Z:8db5e084-9a9a-482b-adf2-5f1d8f37e6d3",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062136Z:69284d4a-0401-4349-a4b0-b03ea1617060",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "8db5e084-9a9a-482b-adf2-5f1d8f37e6d3",
+      "x-ms-request-id" : "69284d4a-0401-4349-a4b0-b03ea1617060",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "3fdf362a-081f-4045-83e9-8293748b4d59"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "caad5d31-f402-4ebb-b46b-849ea0d4a91e"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11979",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "3e9b13d4-cc7c-4e0c-9b5e-b18a67949f34",
-      "Date" : "Wed, 12 Apr 2023 08:46:56 GMT",
+      "x-ms-correlation-request-id" : "aacc5104-3879-42e3-bc95-e6ba156e4263",
+      "Date" : "Fri, 05 May 2023 06:22:06 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084657Z:3e9b13d4-cc7c-4e0c-9b5e-b18a67949f34",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062207Z:aacc5104-3879-42e3-bc95-e6ba156e4263",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "3e9b13d4-cc7c-4e0c-9b5e-b18a67949f34",
+      "x-ms-request-id" : "aacc5104-3879-42e3-bc95-e6ba156e4263",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "c5652fa0-214a-4520-9e2e-4fd916104759"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "7ae959b5-b9cb-4a13-8ed3-5a38e3fa09e6",
-      "Date" : "Wed, 12 Apr 2023 08:47:27 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084727Z:7ae959b5-b9cb-4a13-8ed3-5a38e3fa09e6",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "7ae959b5-b9cb-4a13-8ed3-5a38e3fa09e6",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "4d171e31-03e6-48a1-bd2d-9c03ce9ce78e"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11976",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "89f19a8a-7c49-4853-bbb0-6057be4e38dc",
-      "Date" : "Wed, 12 Apr 2023 08:47:57 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084758Z:89f19a8a-7c49-4853-bbb0-6057be4e38dc",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "89f19a8a-7c49-4853-bbb0-6057be4e38dc",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "12415172-80c2-4497-a367-dad6f1f9ec58"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "40ea0d40-2a00-4542-95ad-7fe145ded976"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -432,24 +354,102 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11988",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "0bdd6b02-ef8c-4218-aef2-e85a1d17d283",
-      "Date" : "Wed, 12 Apr 2023 08:48:28 GMT",
+      "x-ms-correlation-request-id" : "84a37d5a-0c80-4fb2-bba7-76053d12fb57",
+      "Date" : "Fri, 05 May 2023 06:22:37 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084828Z:0bdd6b02-ef8c-4218-aef2-e85a1d17d283",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062237Z:84a37d5a-0c80-4fb2-bba7-76053d12fb57",
       "x-ms-gatewayversion" : "version=2.14.0",
       "Content-Length" : "21",
-      "x-ms-request-id" : "0bdd6b02-ef8c-4218-aef2-e85a1d17d283",
+      "x-ms-request-id" : "84a37d5a-0c80-4fb2-bba7-76053d12fb57",
       "Body" : "{\"status\":\"Dequeued\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "99dd2fc2-47c1-418a-9929-93767e1520ba"
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5d28bf19-994f-4e61-ac01-975204b80650"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "18d9b45b-642e-4025-ba78-d0d4fee93c88",
+      "Date" : "Fri, 05 May 2023 06:23:07 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062308Z:18d9b45b-642e-4025-ba78-d0d4fee93c88",
+      "x-ms-gatewayversion" : "version=2.14.0",
+      "Content-Length" : "21",
+      "x-ms-request-id" : "18d9b45b-642e-4025-ba78-d0d4fee93c88",
+      "Body" : "{\"status\":\"Dequeued\"}",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ca168556-d26d-41df-8d29-9c703e59f086"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "859ca9e2-1279-4e31-8908-9b32e65bbceb",
+      "Date" : "Fri, 05 May 2023 06:23:38 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062339Z:859ca9e2-1279-4e31-8908-9b32e65bbceb",
+      "x-ms-gatewayversion" : "version=2.14.0",
+      "Content-Length" : "21",
+      "x-ms-request-id" : "859ca9e2-1279-4e31-8908-9b32e65bbceb",
+      "Body" : "{\"status\":\"Dequeued\"}",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/45fa8c41-ff1d-4996-89d3-4eb03ebdac1d?api-version=2023-04-15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "16218003-0bde-4de3-a8d2-46954afc4641"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "8e1b4ac2-3b92-4e10-b3b8-652034018b06",
+      "Date" : "Fri, 05 May 2023 06:24:10 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-store, no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062410Z:8e1b4ac2-3b92-4e10-b3b8-652034018b06",
+      "x-ms-gatewayversion" : "version=2.14.0",
+      "Content-Length" : "22",
+      "x-ms-request-id" : "8e1b4ac2-3b92-4e10-b3b8-652034018b06",
+      "Body" : "{\"status\":\"Succeeded\"}",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9?api-version=2023-04-15",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8a4ce5a9-10ab-4e61-991b-c288441e2ca8"
     },
     "Response" : {
       "Server" : "Microsoft-HTTPAPI/2.0",
@@ -458,128 +458,24 @@
       "retry-after" : "0",
       "x-ms-ratelimit-remaining-subscription-reads" : "11987",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "efa503b5-4868-4acc-aa4d-21684d94b07a",
-      "Date" : "Wed, 12 Apr 2023 08:48:58 GMT",
+      "x-ms-correlation-request-id" : "719793ae-c2b1-4b86-941d-effc64a68213",
+      "Date" : "Fri, 05 May 2023 06:24:11 GMT",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084859Z:efa503b5-4868-4acc-aa4d-21684d94b07a",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062411Z:719793ae-c2b1-4b86-941d-effc64a68213",
       "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "efa503b5-4868-4acc-aa4d-21684d94b07a",
-      "Body" : "{\"status\":\"Dequeued\"}",
+      "Content-Length" : "3320",
+      "x-ms-request-id" : "719793ae-c2b1-4b86-941d-effc64a68213",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9\",\"name\":\"cosmosdb6802031d9\",\"location\":\"West Central US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Table\",\"tag1\":\"value1\"},\"systemData\":{\"createdAt\":\"2023-05-05T06:20:20.6361144Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdb6802031d9.documents.azure.com:443/\",\"tableEndpoint\":\"https://cosmosdb6802031d9.table.cosmos.azure.com:443/\",\"sqlEndpoint\":\"https://cosmosdb6802031d9.documents.azure.com:443/\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Table, Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"analyticalStorageConfiguration\":{\"schemaType\":\"WellDefined\"},\"instanceId\":\"75c4765b-112a-4854-8763-0a04782d6469\",\"databaseAccountOfferType\":\"Standard\",\"defaultIdentity\":\"FirstPartyIdentity\",\"networkAclBypass\":\"None\",\"disableLocalAuth\":false,\"enablePartitionMerge\":false,\"minimalTlsVersion\":\"Tls\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb6802031d9-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb6802031d9-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0},{\"id\":\"cosmosdb6802031d9-westus\",\"locationName\":\"West US\",\"failoverPriority\":1}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableTable\"}],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":\"Geo\"}},\"networkAclBypassResourceIds\":[],\"keysMetadata\":{\"primaryMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"},\"secondaryMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"},\"primaryReadonlyMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"},\"secondaryReadonlyMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"}}},\"identity\":{\"type\":\"None\"}}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9?api-version=2023-04-15",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "a581c919-89ed-4e92-9281-147f75933abd"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "ad1f29ff-9212-462c-b7c5-629a40bcc85c",
-      "Date" : "Wed, 12 Apr 2023 08:49:29 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T084929Z:ad1f29ff-9212-462c-b7c5-629a40bcc85c",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "ad1f29ff-9212-462c-b7c5-629a40bcc85c",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "b845c789-1c24-4f83-a050-1985f38917f1"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "206de6b4-4b1b-4352-93b3-21fb65ed9dc8",
-      "Date" : "Wed, 12 Apr 2023 08:50:00 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T085000Z:206de6b4-4b1b-4352-93b3-21fb65ed9dc8",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "21",
-      "x-ms-request-id" : "206de6b4-4b1b-4352-93b3-21fb65ed9dc8",
-      "Body" : "{\"status\":\"Dequeued\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westcentralus/operationsStatus/cff85f6b-7d13-44fe-b328-89c7876ebefa?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "3b7fb452-5a74-40cd-9402-41f72a8b337b"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11971",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "70dff238-e204-4311-8a10-4b6f93d882c8",
-      "Date" : "Wed, 12 Apr 2023 08:50:30 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T085031Z:70dff238-e204-4311-8a10-4b6f93d882c8",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "22",
-      "x-ms-request-id" : "70dff238-e204-4311-8a10-4b6f93d882c8",
-      "Body" : "{\"status\":\"Succeeded\"}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "e2f08246-cdcd-458a-a128-456d86823b38"
-    },
-    "Response" : {
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "05c31315-e80c-410a-a635-29014dc4596f",
-      "Date" : "Wed, 12 Apr 2023 08:50:30 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T085031Z:05c31315-e80c-410a-a635-29014dc4596f",
-      "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "3373",
-      "x-ms-request-id" : "05c31315-e80c-410a-a635-29014dc4596f",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002\",\"name\":\"cosmosdb560912002\",\"location\":\"West Central US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Table\",\"tag1\":\"value1\"},\"systemData\":{\"createdAt\":\"2023-04-12T08:45:57.9424447Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdb560912002.documents.azure.com:443/\",\"tableEndpoint\":\"https://cosmosdb560912002.table.cosmos.azure.com:443/\",\"sqlEndpoint\":\"https://cosmosdb560912002.documents.azure.com:443/\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Table, Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"analyticalStorageConfiguration\":{\"schemaType\":\"WellDefined\"},\"instanceId\":\"76979c9e-bf75-4706-bb17-bedcd7d48092\",\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":false,\"connectorOffer\":\"\",\"defaultIdentity\":\"FirstPartyIdentity\",\"networkAclBypass\":\"None\",\"disableLocalAuth\":false,\"enablePartitionMerge\":false,\"minimalTlsVersion\":\"Tls\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb560912002-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb560912002-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb560912002-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb560912002-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb560912002-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb560912002-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb560912002-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0},{\"id\":\"cosmosdb560912002-westus\",\"locationName\":\"West US\",\"failoverPriority\":1}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableTable\"}],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":\"Geo\"}},\"networkAclBypassResourceIds\":[],\"keysMetadata\":{\"primaryMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"},\"secondaryMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"},\"primaryReadonlyMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"},\"secondaryReadonlyMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"}}},\"identity\":{\"type\":\"None\"}}",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002?api-version=2023-03-15",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "4db6f51e-d3c6-4796-bb42-0dd01006ea3b",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.cosmos/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "ccf256c0-ec0c-4b19-a8b2-adf1f9eec2a3",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -587,45 +483,45 @@
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11968",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
       "StatusCode" : "200",
-      "Date" : "Wed, 12 Apr 2023 08:50:31 GMT",
-      "x-ms-correlation-request-id" : "5785fd60-c84a-4830-a8a1-4126b2f2b31c",
+      "Date" : "Fri, 05 May 2023 06:24:11 GMT",
+      "x-ms-correlation-request-id" : "141f462e-dfb0-4e5c-96ca-5ad8f8443d96",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-store, no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T085032Z:5785fd60-c84a-4830-a8a1-4126b2f2b31c",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062411Z:141f462e-dfb0-4e5c-96ca-5ad8f8443d96",
       "x-ms-gatewayversion" : "version=2.14.0",
-      "Content-Length" : "3373",
-      "x-ms-request-id" : "5785fd60-c84a-4830-a8a1-4126b2f2b31c",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb5684680/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb560912002\",\"name\":\"cosmosdb560912002\",\"location\":\"West Central US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Table\",\"tag1\":\"value1\"},\"systemData\":{\"createdAt\":\"2023-04-12T08:45:57.9424447Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdb560912002.documents.azure.com:443/\",\"tableEndpoint\":\"https://cosmosdb560912002.table.cosmos.azure.com:443/\",\"sqlEndpoint\":\"https://cosmosdb560912002.documents.azure.com:443/\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Table, Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"analyticalStorageConfiguration\":{\"schemaType\":\"WellDefined\"},\"instanceId\":\"76979c9e-bf75-4706-bb17-bedcd7d48092\",\"databaseAccountOfferType\":\"Standard\",\"enableCassandraConnector\":false,\"connectorOffer\":\"\",\"defaultIdentity\":\"FirstPartyIdentity\",\"networkAclBypass\":\"None\",\"disableLocalAuth\":false,\"enablePartitionMerge\":false,\"minimalTlsVersion\":\"Tls\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb560912002-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb560912002-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb560912002-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb560912002-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb560912002-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb560912002-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb560912002-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdb560912002-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0},{\"id\":\"cosmosdb560912002-westus\",\"locationName\":\"West US\",\"failoverPriority\":1}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableTable\"}],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":\"Geo\"}},\"networkAclBypassResourceIds\":[],\"keysMetadata\":{\"primaryMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"},\"secondaryMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"},\"primaryReadonlyMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"},\"secondaryReadonlyMasterKey\":{\"generationTime\":\"2023-04-12T08:45:57.9424447Z\"}}},\"identity\":{\"type\":\"None\"}}",
+      "Content-Length" : "3320",
+      "x-ms-request-id" : "141f462e-dfb0-4e5c-96ca-5ad8f8443d96",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcosmosdb014866d/providers/Microsoft.DocumentDB/databaseAccounts/cosmosdb6802031d9\",\"name\":\"cosmosdb6802031d9\",\"location\":\"West Central US\",\"type\":\"Microsoft.DocumentDB/databaseAccounts\",\"kind\":\"GlobalDocumentDB\",\"tags\":{\"defaultExperience\":\"Table\",\"tag1\":\"value1\"},\"systemData\":{\"createdAt\":\"2023-05-05T06:20:20.6361144Z\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"documentEndpoint\":\"https://cosmosdb6802031d9.documents.azure.com:443/\",\"tableEndpoint\":\"https://cosmosdb6802031d9.table.cosmos.azure.com:443/\",\"sqlEndpoint\":\"https://cosmosdb6802031d9.documents.azure.com:443/\",\"publicNetworkAccess\":\"Enabled\",\"enableAutomaticFailover\":false,\"enableMultipleWriteLocations\":false,\"enablePartitionKeyMonitor\":false,\"isVirtualNetworkFilterEnabled\":false,\"virtualNetworkRules\":[],\"EnabledApiTypes\":\"Table, Sql\",\"disableKeyBasedMetadataWriteAccess\":false,\"enableFreeTier\":false,\"enableAnalyticalStorage\":false,\"analyticalStorageConfiguration\":{\"schemaType\":\"WellDefined\"},\"instanceId\":\"75c4765b-112a-4854-8763-0a04782d6469\",\"databaseAccountOfferType\":\"Standard\",\"defaultIdentity\":\"FirstPartyIdentity\",\"networkAclBypass\":\"None\",\"disableLocalAuth\":false,\"enablePartitionMerge\":false,\"minimalTlsVersion\":\"Tls\",\"consistencyPolicy\":{\"defaultConsistencyLevel\":\"Eventual\",\"maxIntervalInSeconds\":5,\"maxStalenessPrefix\":100},\"configurationOverrides\":{},\"writeLocations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false}],\"readLocations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb6802031d9-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"locations\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-eastus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":0,\"isZoneRedundant\":false},{\"id\":\"cosmosdb6802031d9-westus\",\"locationName\":\"West US\",\"documentEndpoint\":\"https://cosmosdb6802031d9-westus.documents.azure.com:443/\",\"provisioningState\":\"Succeeded\",\"failoverPriority\":1,\"isZoneRedundant\":false}],\"failoverPolicies\":[{\"id\":\"cosmosdb6802031d9-eastus\",\"locationName\":\"East US\",\"failoverPriority\":0},{\"id\":\"cosmosdb6802031d9-westus\",\"locationName\":\"West US\",\"failoverPriority\":1}],\"cors\":[],\"capabilities\":[{\"name\":\"EnableTable\"}],\"ipRules\":[],\"backupPolicy\":{\"type\":\"Periodic\",\"periodicModeProperties\":{\"backupIntervalInMinutes\":240,\"backupRetentionIntervalInHours\":8,\"backupStorageRedundancy\":\"Geo\"}},\"networkAclBypassResourceIds\":[],\"keysMetadata\":{\"primaryMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"},\"secondaryMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"},\"primaryReadonlyMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"},\"secondaryReadonlyMasterKey\":{\"generationTime\":\"2023-05-05T06:20:20.6361144Z\"}}},\"identity\":{\"type\":\"None\"}}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdb5684680?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgcosmosdb014866d?api-version=2021-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.26.0-beta.1 (17.0.3.1; Mac OS X; 13.3)",
-      "x-ms-client-request-id" : "afd60b69-2b44-46ae-a055-1cd2408dec48",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.26.0 (18.0.2.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a3a2fa3d-07c5-47a1-ba2f-e4e4ff12c125",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "StatusCode" : "202",
-      "Date" : "Wed, 12 Apr 2023 08:50:33 GMT",
-      "x-ms-correlation-request-id" : "b2e2c109-e402-4f30-baba-ed075d6941bb",
+      "Date" : "Fri, 05 May 2023 06:24:16 GMT",
+      "x-ms-correlation-request-id" : "032380f4-88ce-4ec0-8cda-771576871df3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Retry-After" : "0",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "JAPANEAST:20230412T085034Z:b2e2c109-e402-4f30-baba-ed075d6941bb",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230505T062417Z:032380f4-88ce-4ec0-8cda-771576871df3",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "x-ms-request-id" : "b2e2c109-e402-4f30-baba-ed075d6941bb",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0NPU01PU0RCNTY4NDY4MC1XRVNUQ0VOVFJBTFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0Y2VudHJhbHVzIn0?api-version=2021-01-01"
+      "x-ms-request-id" : "032380f4-88ce-4ec0-8cda-771576871df3",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0NPU01PU0RCMDE0ODY2RC1XRVNUQ0VOVFJBTFVTIiwiam9iTG9jYXRpb24iOiJ3ZXN0Y2VudHJhbHVzIn0?api-version=2021-01-01"
     },
     "Exception" : null
   } ],
-  "variables" : [ "rgcosmosdb5684680", "cosmosdb560912002" ]
+  "variables" : [ "rgcosmosdb014866d", "cosmosdb6802031d9" ]
 }

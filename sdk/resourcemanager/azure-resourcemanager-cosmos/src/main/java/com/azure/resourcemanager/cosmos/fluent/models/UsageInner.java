@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.MetricName;
 import com.azure.resourcemanager.cosmos.models.UnitType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The usage data for a usage request. */
+/**
+ * The usage data for a usage request.
+ */
 @Immutable
 public class UsageInner {
     /*
@@ -42,7 +44,9 @@ public class UsageInner {
     @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long currentValue;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
     }
 

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the resource at the time the operation was called. */
+/**
+ * The status of the resource at the time the operation was called.
+ */
 public final class ManagedCassandraProvisioningState extends ExpandableStringEnum<ManagedCassandraProvisioningState> {
-    /** Static value Creating for ManagedCassandraProvisioningState. */
+    /**
+     * Static value Creating for ManagedCassandraProvisioningState.
+     */
     public static final ManagedCassandraProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for ManagedCassandraProvisioningState. */
+    /**
+     * Static value Updating for ManagedCassandraProvisioningState.
+     */
     public static final ManagedCassandraProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ManagedCassandraProvisioningState. */
+    /**
+     * Static value Deleting for ManagedCassandraProvisioningState.
+     */
     public static final ManagedCassandraProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for ManagedCassandraProvisioningState. */
+    /**
+     * Static value Succeeded for ManagedCassandraProvisioningState.
+     */
     public static final ManagedCassandraProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ManagedCassandraProvisioningState. */
+    /**
+     * Static value Failed for ManagedCassandraProvisioningState.
+     */
     public static final ManagedCassandraProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ManagedCassandraProvisioningState. */
+    /**
+     * Static value Canceled for ManagedCassandraProvisioningState.
+     */
     public static final ManagedCassandraProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of ManagedCassandraProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class ManagedCassandraProvisioningState extends ExpandableStringEnu
 
     /**
      * Creates or finds a ManagedCassandraProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedCassandraProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class ManagedCassandraProvisioningState extends ExpandableStringEnu
 
     /**
      * Gets known ManagedCassandraProvisioningState values.
-     *
+     * 
      * @return known ManagedCassandraProvisioningState values.
      */
     public static Collection<ManagedCassandraProvisioningState> values() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of notebook workspace resources. */
+/**
+ * A list of notebook workspace resources.
+ */
 @Fluent
 public final class NotebookWorkspaceListResult {
     /*
@@ -18,7 +20,9 @@ public final class NotebookWorkspaceListResult {
     @JsonProperty(value = "value")
     private List<NotebookWorkspaceInner> value;
 
-    /** Creates an instance of NotebookWorkspaceListResult class. */
+    /**
+     * Creates an instance of NotebookWorkspaceListResult class.
+     */
     public NotebookWorkspaceListResult() {
     }
 

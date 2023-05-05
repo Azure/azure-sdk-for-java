@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesOption
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Cassandra table. */
+/**
+ * The properties of an Azure Cosmos DB Cassandra table.
+ */
 @Fluent
 public final class CassandraTableGetProperties {
     /*
@@ -24,7 +26,9 @@ public final class CassandraTableGetProperties {
     @JsonProperty(value = "options")
     private CassandraTableGetPropertiesOptions options;
 
-    /** Creates an instance of CassandraTableGetProperties class. */
+    /**
+     * Creates an instance of CassandraTableGetProperties class.
+     */
     public CassandraTableGetProperties() {
     }
 

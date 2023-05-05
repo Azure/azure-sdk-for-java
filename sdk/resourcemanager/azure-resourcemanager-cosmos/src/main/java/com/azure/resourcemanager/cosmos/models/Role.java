@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The set of roles permitted through this Role Definition. */
+/**
+ * The set of roles permitted through this Role Definition.
+ */
 @Fluent
 public final class Role {
     /*
@@ -22,7 +24,9 @@ public final class Role {
     @JsonProperty(value = "role")
     private String role;
 
-    /** Creates an instance of Role class. */
+    /**
+     * Creates an instance of Role class.
+     */
     public Role() {
     }
 

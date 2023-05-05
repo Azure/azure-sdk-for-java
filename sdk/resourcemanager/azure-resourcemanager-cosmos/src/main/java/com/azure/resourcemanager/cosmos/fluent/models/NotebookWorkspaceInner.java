@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A notebook workspace resource. */
+/**
+ * A notebook workspace resource.
+ */
 @Immutable
 public final class NotebookWorkspaceInner extends ArmProxyResource {
     /*
@@ -17,7 +19,9 @@ public final class NotebookWorkspaceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private NotebookWorkspaceProperties innerProperties;
 
-    /** Creates an instance of NotebookWorkspaceInner class. */
+    /**
+     * Creates an instance of NotebookWorkspaceInner class.
+     */
     public NotebookWorkspaceInner() {
     }
 

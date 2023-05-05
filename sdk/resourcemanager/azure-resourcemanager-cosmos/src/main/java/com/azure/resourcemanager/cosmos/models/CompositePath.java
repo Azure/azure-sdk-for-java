@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CompositePath model. */
+/**
+ * The CompositePath model.
+ */
 @Fluent
 public final class CompositePath {
     /*
@@ -23,13 +25,15 @@ public final class CompositePath {
     @JsonProperty(value = "order")
     private CompositePathSortOrder order;
 
-    /** Creates an instance of CompositePath class. */
+    /**
+     * Creates an instance of CompositePath class.
+     */
     public CompositePath() {
     }
 
     /**
-     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
+     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
      *
      * @return the path value.
      */
@@ -38,8 +42,8 @@ public final class CompositePath {
     }
 
     /**
-     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with root
-     * and end with wildcard (/path/*).
+     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with
+     * root and end with wildcard (/path/*).
      *
      * @param path the path value to set.
      * @return the CompositePath object itself.

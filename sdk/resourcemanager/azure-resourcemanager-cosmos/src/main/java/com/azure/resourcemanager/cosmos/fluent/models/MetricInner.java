@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Metric data. */
+/**
+ * Metric data.
+ */
 @Immutable
 public class MetricInner {
     /*
@@ -51,7 +53,9 @@ public class MetricInner {
     @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricValue> metricValues;
 
-    /** Creates an instance of MetricInner class. */
+    /**
+     * Creates an instance of MetricInner class.
+     */
     public MetricInner() {
     }
 

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Gremlin graph. */
+/**
+ * The properties of an Azure Cosmos DB Gremlin graph.
+ */
 @Fluent
 public final class GremlinGraphGetProperties {
     /*
@@ -24,7 +26,9 @@ public final class GremlinGraphGetProperties {
     @JsonProperty(value = "options")
     private GremlinGraphGetPropertiesOptions options;
 
-    /** Creates an instance of GremlinGraphGetProperties class. */
+    /**
+     * Creates an instance of GremlinGraphGetProperties class.
+     */
     public GremlinGraphGetProperties() {
     }
 

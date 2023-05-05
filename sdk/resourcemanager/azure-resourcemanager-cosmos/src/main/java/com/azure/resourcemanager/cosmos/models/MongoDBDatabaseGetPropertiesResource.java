@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MongoDBDatabaseGetPropertiesResource model. */
+/**
+ * The MongoDBDatabaseGetPropertiesResource model.
+ */
 @Fluent
 public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseResource {
     /*
@@ -28,7 +30,9 @@ public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseR
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of MongoDBDatabaseGetPropertiesResource class. */
+    /**
+     * Creates an instance of MongoDBDatabaseGetPropertiesResource class.
+     */
     public MongoDBDatabaseGetPropertiesResource() {
     }
 
@@ -60,7 +64,9 @@ public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseR
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseGetPropertiesResource withId(String id) {
         super.withId(id);

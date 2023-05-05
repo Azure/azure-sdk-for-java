@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The failover policy for a given region of a database account. */
+/**
+ * The failover policy for a given region of a database account.
+ */
 @Fluent
 public final class FailoverPolicy {
     /*
@@ -31,7 +33,9 @@ public final class FailoverPolicy {
     @JsonProperty(value = "failoverPriority")
     private Integer failoverPriority;
 
-    /** Creates an instance of FailoverPolicy class. */
+    /**
+     * Creates an instance of FailoverPolicy class.
+     */
     public FailoverPolicy() {
     }
 
@@ -67,8 +71,8 @@ public final class FailoverPolicy {
 
     /**
      * Get the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
-     * must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
+     * values must be unique for each of the regions in which the database account exists.
      *
      * @return the failoverPriority value.
      */
@@ -78,8 +82,8 @@ public final class FailoverPolicy {
 
     /**
      * Set the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
-     * must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
+     * values must be unique for each of the regions in which the database account exists.
      *
      * @param failoverPriority the failoverPriority value to set.
      * @return the FailoverPolicy object itself.

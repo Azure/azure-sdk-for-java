@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Network ACL Rule object. */
+/**
+ * Virtual Network ACL Rule object.
+ */
 @Fluent
 public final class VirtualNetworkRule {
     /*
@@ -23,7 +25,9 @@ public final class VirtualNetworkRule {
     @JsonProperty(value = "ignoreMissingVNetServiceEndpoint")
     private Boolean ignoreMissingVNetServiceEndpoint;
 
-    /** Creates an instance of VirtualNetworkRule class. */
+    /**
+     * Creates an instance of VirtualNetworkRule class.
+     */
     public VirtualNetworkRule() {
     }
 

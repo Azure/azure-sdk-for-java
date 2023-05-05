@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sort order for composite paths. */
+/**
+ * Sort order for composite paths.
+ */
 public final class CompositePathSortOrder extends ExpandableStringEnum<CompositePathSortOrder> {
-    /** Static value ascending for CompositePathSortOrder. */
+    /**
+     * Static value ascending for CompositePathSortOrder.
+     */
     public static final CompositePathSortOrder ASCENDING = fromString("ascending");
 
-    /** Static value descending for CompositePathSortOrder. */
+    /**
+     * Static value descending for CompositePathSortOrder.
+     */
     public static final CompositePathSortOrder DESCENDING = fromString("descending");
 
     /**
      * Creates a new instance of CompositePathSortOrder value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CompositePathSortOrder extends ExpandableStringEnum<Composite
 
     /**
      * Creates or finds a CompositePathSortOrder from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CompositePathSortOrder.
      */
@@ -38,7 +44,7 @@ public final class CompositePathSortOrder extends ExpandableStringEnum<Composite
 
     /**
      * Gets known CompositePathSortOrder values.
-     *
+     * 
      * @return known CompositePathSortOrder values.
      */
     public static Collection<CompositePathSortOrder> values() {

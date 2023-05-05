@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB MongoDB database resource object. */
+/**
+ * Cosmos DB MongoDB database resource object.
+ */
 @Fluent
 public class MongoDBDatabaseResource {
     /*
@@ -17,7 +19,9 @@ public class MongoDBDatabaseResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of MongoDBDatabaseResource class. */
+    /**
+     * Creates an instance of MongoDBDatabaseResource class.
+     */
     public MongoDBDatabaseResource() {
     }
 
@@ -48,9 +52,7 @@ public class MongoDBDatabaseResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model MongoDBDatabaseResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model MongoDBDatabaseResource"));
         }
     }
 

@@ -37,7 +37,9 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlResourcesClient.
+ */
 public interface SqlResourcesClient {
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
@@ -47,8 +49,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response
-     *     with {@link PagedFlux}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SqlDatabaseGetResultsInner> listSqlDatabasesAsync(String resourceGroupName, String accountName);
@@ -61,8 +62,7 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response
-     *     with {@link PagedIterable}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(String resourceGroupName, String accountName);
@@ -76,12 +76,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response
-     *     with {@link PagedIterable}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(
-        String resourceGroupName, String accountName, Context context);
+    PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
@@ -92,12 +90,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabaseWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
@@ -108,12 +104,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name on successful
-     *     completion of {@link Mono}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlDatabaseGetResultsInner> getSqlDatabaseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<SqlDatabaseGetResultsInner> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
@@ -125,12 +119,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with
-     *     {@link Response}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlDatabaseGetResultsInner> getSqlDatabaseWithResponse(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    Response<SqlDatabaseGetResultsInner> getSqlDatabaseWithResponse(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
@@ -159,11 +151,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabaseWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
@@ -178,11 +166,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
+    PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
@@ -197,11 +181,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
+    SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
@@ -217,12 +197,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-        Context context);
+    SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
@@ -237,11 +212,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlDatabaseGetResultsInner> createUpdateSqlDatabaseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
+    Mono<SqlDatabaseGetResultsInner> createUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
@@ -256,11 +227,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlDatabaseGetResultsInner createUpdateSqlDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
+    SqlDatabaseGetResultsInner createUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
@@ -276,12 +243,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlDatabaseGetResultsInner createUpdateSqlDatabase(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
-        Context context);
+    SqlDatabaseGetResultsInner createUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
@@ -295,8 +257,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabaseWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
@@ -310,8 +271,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
@@ -325,8 +285,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
-        String resourceGroupName, String accountName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
@@ -341,8 +300,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
@@ -386,8 +344,7 @@ public interface SqlResourcesClient {
     void deleteSqlDatabase(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
-     * name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -395,16 +352,13 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
-     *     provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
-     * name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -412,16 +366,13 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
-     *     provided name on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
-     * name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -430,16 +381,13 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
-     *     provided name along with {@link Response}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputWithResponse(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    Response<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputWithResponse(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
-     * name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -447,12 +395,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
-     *     provided name.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getSqlDatabaseThroughput(
-        String resourceGroupName, String accountName, String databaseName);
+    ThroughputSettingsGetResultsInner getSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -464,15 +410,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -487,12 +428,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlDatabaseThroughputAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -507,12 +443,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlDatabaseThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -528,13 +459,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlDatabaseThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -549,11 +474,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateSqlDatabaseThroughputAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<ThroughputSettingsGetResultsInner> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -568,11 +489,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
@@ -588,12 +505,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context);
+    ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -604,12 +516,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscaleWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -623,8 +533,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -638,8 +547,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -654,9 +562,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlDatabaseToAutoscale(
-            String resourceGroupName, String accountName, String databaseName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -670,8 +576,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -685,8 +590,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(
-        String resourceGroupName, String accountName, String databaseName);
+    ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
@@ -701,8 +605,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -713,12 +616,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -732,9 +633,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlDatabaseToManualThroughputAsync(
-            String resourceGroupName, String accountName, String databaseName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -748,8 +647,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -764,9 +662,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlDatabaseToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -780,8 +676,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -795,8 +690,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName);
+    ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
@@ -811,8 +705,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
@@ -823,12 +716,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     *     {@link PagedFlux}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
@@ -839,12 +730,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlContainerGetResultsInner> listSqlContainers(
-        String resourceGroupName, String accountName, String databaseName);
+    PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
@@ -856,12 +745,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlContainerGetResultsInner> listSqlContainers(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
@@ -873,12 +760,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
@@ -890,12 +775,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account on successful completion of {@link
-     *     Mono}.
+     * @return the SQL container under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlContainerGetResultsInner> getSqlContainerAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<SqlContainerGetResultsInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
@@ -911,8 +794,7 @@ public interface SqlResourcesClient {
      * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlContainerGetResultsInner> getSqlContainerWithResponse(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    Response<SqlContainerGetResultsInner> getSqlContainerWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
@@ -927,8 +809,7 @@ public interface SqlResourcesClient {
      * @return the SQL container under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlContainerGetResultsInner getSqlContainer(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    SqlContainerGetResultsInner getSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -944,12 +825,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -965,12 +841,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainerAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
+    PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -986,12 +857,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
+    SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -1008,13 +874,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-        Context context);
+    SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -1030,12 +890,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
+    Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -1051,12 +906,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlContainerGetResultsInner createUpdateSqlContainer(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
+    SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
@@ -1073,13 +923,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlContainerGetResultsInner createUpdateSqlContainer(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-        Context context);
+    SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -1094,8 +938,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -1110,8 +953,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -1126,8 +968,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -1143,8 +984,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -1159,8 +999,7 @@ public interface SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteSqlContainerAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
@@ -1189,8 +1028,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlContainer(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
@@ -1202,12 +1040,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
@@ -1219,12 +1055,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account on successful
-     *     completion of {@link Mono}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getSqlContainerThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<ThroughputSettingsGetResultsInner> getSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
@@ -1237,12 +1071,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
-     *     {@link Response}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getSqlContainerThroughputWithResponse(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    Response<ThroughputSettingsGetResultsInner> getSqlContainerThroughputWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
@@ -1257,8 +1089,7 @@ public interface SqlResourcesClient {
      * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getSqlContainerThroughput(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    ThroughputSettingsGetResultsInner getSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1271,16 +1102,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1296,13 +1121,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughputAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1318,13 +1137,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1341,14 +1154,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughput(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1364,12 +1170,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1385,12 +1186,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateSqlContainerThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
@@ -1407,13 +1203,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateSqlContainerThroughput(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context);
+    ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1425,12 +1215,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1445,9 +1233,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscaleAsync(
-            String resourceGroupName, String accountName, String databaseName, String containerName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1462,9 +1248,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscale(
-            String resourceGroupName, String accountName, String databaseName, String containerName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1480,9 +1264,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscale(
-            String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1497,8 +1279,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1513,8 +1294,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
@@ -1530,8 +1310,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1543,12 +1322,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1563,9 +1340,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughputAsync(
-            String resourceGroupName, String accountName, String databaseName, String containerName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1580,9 +1355,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName, String containerName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1598,9 +1371,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughput(
-            String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1615,8 +1386,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1631,8 +1401,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
@@ -1648,8 +1417,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
@@ -1660,12 +1428,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeysAsync(
-        String resourceGroupName, String accountName, String databaseName);
+    PagedFlux<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeysAsync(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
@@ -1676,12 +1442,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(
-        String resourceGroupName, String accountName, String databaseName);
+    PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(String resourceGroupName, String accountName, String databaseName);
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
@@ -1693,12 +1457,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(
-        String resourceGroupName, String accountName, String databaseName, Context context);
+    PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(String resourceGroupName, String accountName, String databaseName, Context context);
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
@@ -1710,12 +1472,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKeyWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName);
+    Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKeyWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName);
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
@@ -1727,12 +1487,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database on successful completion of {@link
-     *     Mono}.
+     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyAsync(
-        String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName);
+    Mono<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName);
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
@@ -1748,12 +1506,7 @@ public interface SqlResourcesClient {
      * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String clientEncryptionKeyName,
-        Context context);
+    Response<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyWithResponse(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, Context context);
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
@@ -1768,12 +1521,10 @@ public interface SqlResourcesClient {
      * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientEncryptionKeyGetResultsInner getClientEncryptionKey(
-        String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName);
+    ClientEncryptionKeyGetResultsInner getClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1786,16 +1537,10 @@ public interface SqlResourcesClient {
      * @return client Encryption Key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKeyWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String clientEncryptionKeyName,
-        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKeyWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1808,17 +1553,10 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
-        beginCreateUpdateClientEncryptionKeyAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String clientEncryptionKeyName,
-            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
+    PollerFlux<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1831,17 +1569,10 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
-        beginCreateUpdateClientEncryptionKey(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String clientEncryptionKeyName,
-            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
+    SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1855,18 +1586,10 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
-        beginCreateUpdateClientEncryptionKey(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String clientEncryptionKeyName,
-            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
-            Context context);
+    SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1879,16 +1602,10 @@ public interface SqlResourcesClient {
      * @return client Encryption Key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ClientEncryptionKeyGetResultsInner> createUpdateClientEncryptionKeyAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String clientEncryptionKeyName,
-        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
+    Mono<ClientEncryptionKeyGetResultsInner> createUpdateClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1901,16 +1618,10 @@ public interface SqlResourcesClient {
      * @return client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String clientEncryptionKeyName,
-        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
+    ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters);
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
-     * (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1924,13 +1635,7 @@ public interface SqlResourcesClient {
      * @return client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String clientEncryptionKeyName,
-        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
-        Context context);
+    ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context);
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -1942,12 +1647,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SqlStoredProcedureGetResultsInner> listSqlStoredProceduresAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PagedFlux<SqlStoredProcedureGetResultsInner> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -1959,12 +1662,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -1977,12 +1678,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -1995,16 +1694,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedureWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -2017,16 +1710,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account on successful completion of
-     *     {@link Mono}.
+     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    Mono<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -2043,13 +1730,7 @@ public interface SqlResourcesClient {
      * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        Context context);
+    Response<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context);
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
@@ -2065,12 +1746,7 @@ public interface SqlResourcesClient {
      * @return the SQL storedProcedure under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlStoredProcedureGetResultsInner getSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    SqlStoredProcedureGetResultsInner getSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2087,13 +1763,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedureWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2110,14 +1780,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
-        beginCreateUpdateSqlStoredProcedureAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String storedProcedureName,
-            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
+    PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2134,14 +1797,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
-        beginCreateUpdateSqlStoredProcedure(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String storedProcedureName,
-            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
+    SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2159,15 +1815,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
-        beginCreateUpdateSqlStoredProcedure(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String storedProcedureName,
-            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
-            Context context);
+    SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2184,13 +1832,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlStoredProcedureGetResultsInner> createUpdateSqlStoredProcedureAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
+    Mono<SqlStoredProcedureGetResultsInner> createUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2207,13 +1849,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
+    SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
@@ -2231,14 +1867,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
-        Context context);
+    SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2254,12 +1883,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedureWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2275,12 +1899,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2296,12 +1915,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2318,13 +1932,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2340,12 +1948,7 @@ public interface SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteSqlStoredProcedureAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    Mono<Void> deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2360,12 +1963,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName);
+    void deleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
@@ -2381,13 +1979,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlStoredProcedure(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String storedProcedureName,
-        Context context);
+    void deleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context);
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2399,12 +1991,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctionsAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PagedFlux<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctionsAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2416,12 +2006,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2434,12 +2022,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2452,16 +2038,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunctionWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2474,16 +2054,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account on successful completion
-     *     of {@link Mono}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    Mono<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2497,17 +2071,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link
-     *     Response}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        Context context);
+    Response<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context);
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
@@ -2523,12 +2090,7 @@ public interface SqlResourcesClient {
      * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlUserDefinedFunctionGetResultsInner getSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    SqlUserDefinedFunctionGetResultsInner getSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2538,22 +2100,14 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB userDefinedFunction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunctionWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2563,22 +2117,14 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
-        beginCreateUpdateSqlUserDefinedFunctionAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String userDefinedFunctionName,
-            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
+    PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2588,22 +2134,14 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
-        beginCreateUpdateSqlUserDefinedFunction(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String userDefinedFunctionName,
-            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
+    SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2613,8 +2151,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2622,15 +2159,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
-        beginCreateUpdateSqlUserDefinedFunction(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            String userDefinedFunctionName,
-            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
-            Context context);
+    SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2640,21 +2169,14 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlUserDefinedFunctionGetResultsInner> createUpdateSqlUserDefinedFunctionAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
+    Mono<SqlUserDefinedFunctionGetResultsInner> createUpdateSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2664,21 +2186,14 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
+    SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
@@ -2688,8 +2203,7 @@ public interface SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
-     *     userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2697,14 +2211,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
-        Context context);
+    SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2720,12 +2227,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunctionWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2741,12 +2243,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2762,12 +2259,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2784,13 +2276,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2806,12 +2292,7 @@ public interface SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteSqlUserDefinedFunctionAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    Mono<Void> deleteSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2826,12 +2307,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName);
+    void deleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
@@ -2847,13 +2323,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlUserDefinedFunction(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String userDefinedFunctionName,
-        Context context);
+    void deleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context);
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2865,12 +2335,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with
-     *     {@link PagedFlux}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SqlTriggerGetResultsInner> listSqlTriggersAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PagedFlux<SqlTriggerGetResultsInner> listSqlTriggersAsync(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2882,12 +2350,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(
-        String resourceGroupName, String accountName, String databaseName, String containerName);
+    PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(String resourceGroupName, String accountName, String databaseName, String containerName);
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2900,12 +2366,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
+    PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(String resourceGroupName, String accountName, String databaseName, String containerName, Context context);
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2918,12 +2382,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlTriggerGetResultsInner>> getSqlTriggerWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    Mono<Response<SqlTriggerGetResultsInner>> getSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2936,12 +2398,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL trigger under an existing Azure Cosmos DB database account on successful completion of {@link
-     *     Mono}.
+     * @return the SQL trigger under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlTriggerGetResultsInner> getSqlTriggerAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    Mono<SqlTriggerGetResultsInner> getSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2958,13 +2418,7 @@ public interface SqlResourcesClient {
      * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlTriggerGetResultsInner> getSqlTriggerWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        Context context);
+    Response<SqlTriggerGetResultsInner> getSqlTriggerWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context);
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
@@ -2980,8 +2434,7 @@ public interface SqlResourcesClient {
      * @return the SQL trigger under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlTriggerGetResultsInner getSqlTrigger(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    SqlTriggerGetResultsInner getSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -2998,13 +2451,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTriggerWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -3021,13 +2468,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
+    PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -3044,13 +2485,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
+    SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -3068,14 +2503,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-        Context context);
+    SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -3092,13 +2520,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlTriggerGetResultsInner> createUpdateSqlTriggerAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
+    Mono<SqlTriggerGetResultsInner> createUpdateSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -3115,13 +2537,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlTriggerGetResultsInner createUpdateSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
+    SqlTriggerGetResultsInner createUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters);
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
@@ -3139,14 +2555,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlTriggerGetResultsInner createUpdateSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
-        Context context);
+    SqlTriggerGetResultsInner createUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3162,8 +2571,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlTriggerWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3179,8 +2587,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3196,8 +2603,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3214,13 +2620,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3236,8 +2636,7 @@ public interface SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteSqlTriggerAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    Mono<Void> deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3252,8 +2651,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlTrigger(
-        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
+    void deleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
@@ -3269,13 +2667,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlTrigger(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        String triggerName,
-        Context context);
+    void deleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
@@ -3286,12 +2678,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(
-        String roleDefinitionId, String resourceGroupName, String accountName);
+    Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
@@ -3305,8 +2695,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(
-        String roleDefinitionId, String resourceGroupName, String accountName);
+    Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
@@ -3321,8 +2710,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(
-        String roleDefinitionId, String resourceGroupName, String accountName, Context context);
+    Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(String roleDefinitionId, String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
@@ -3336,8 +2724,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(
-        String roleDefinitionId, String resourceGroupName, String accountName);
+    SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3349,15 +2736,10 @@ public interface SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(
-        String roleDefinitionId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3372,12 +2754,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinitionAsync(
-            String roleDefinitionId,
-            String resourceGroupName,
-            String accountName,
-            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+    PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3392,12 +2769,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinition(
-            String roleDefinitionId,
-            String resourceGroupName,
-            String accountName,
-            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+    SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3413,13 +2785,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
-        beginCreateUpdateSqlRoleDefinition(
-            String roleDefinitionId,
-            String resourceGroupName,
-            String accountName,
-            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
-            Context context);
+    SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3434,11 +2800,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(
-        String roleDefinitionId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+    Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3453,11 +2815,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(
-        String roleDefinitionId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
+    SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
@@ -3473,12 +2831,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(
-        String roleDefinitionId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
-        Context context);
+    SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
@@ -3492,8 +2845,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(
-        String roleDefinitionId, String resourceGroupName, String accountName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
@@ -3507,8 +2859,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(
-        String roleDefinitionId, String resourceGroupName, String accountName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
@@ -3522,8 +2873,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
-        String roleDefinitionId, String resourceGroupName, String accountName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
@@ -3538,8 +2888,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
-        String roleDefinitionId, String resourceGroupName, String accountName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
@@ -3580,8 +2929,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlRoleDefinition(
-        String roleDefinitionId, String resourceGroupName, String accountName, Context context);
+    void deleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
@@ -3594,8 +2942,7 @@ public interface SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(
-        String resourceGroupName, String accountName);
+    PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName);
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
@@ -3608,8 +2955,7 @@ public interface SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(
-        String resourceGroupName, String accountName);
+    PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(String resourceGroupName, String accountName);
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
@@ -3623,8 +2969,7 @@ public interface SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(
-        String resourceGroupName, String accountName, Context context);
+    PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
@@ -3638,8 +2983,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(
-        String roleAssignmentId, String resourceGroupName, String accountName);
+    Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
@@ -3653,8 +2997,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(
-        String roleAssignmentId, String resourceGroupName, String accountName);
+    Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
@@ -3669,8 +3012,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(
-        String roleAssignmentId, String resourceGroupName, String accountName, Context context);
+    Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(String roleAssignmentId, String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
@@ -3684,8 +3026,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(
-        String roleAssignmentId, String resourceGroupName, String accountName);
+    SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3700,11 +3041,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(
-        String roleAssignmentId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3719,12 +3056,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignmentAsync(
-            String roleAssignmentId,
-            String resourceGroupName,
-            String accountName,
-            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+    PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3739,12 +3071,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignment(
-            String roleAssignmentId,
-            String resourceGroupName,
-            String accountName,
-            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+    SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3760,13 +3087,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
-        beginCreateUpdateSqlRoleAssignment(
-            String roleAssignmentId,
-            String resourceGroupName,
-            String accountName,
-            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
-            Context context);
+    SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3781,11 +3102,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(
-        String roleAssignmentId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+    Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3800,11 +3117,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(
-        String roleAssignmentId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
+    SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters);
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
@@ -3820,12 +3133,7 @@ public interface SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(
-        String roleAssignmentId,
-        String resourceGroupName,
-        String accountName,
-        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
-        Context context);
+    SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
@@ -3839,8 +3147,7 @@ public interface SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(
-        String roleAssignmentId, String resourceGroupName, String accountName);
+    Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
@@ -3854,8 +3161,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(
-        String roleAssignmentId, String resourceGroupName, String accountName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
@@ -3869,8 +3175,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
-        String roleAssignmentId, String resourceGroupName, String accountName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
@@ -3885,8 +3190,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
-        String roleAssignmentId, String resourceGroupName, String accountName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
@@ -3927,8 +3231,7 @@ public interface SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteSqlRoleAssignment(
-        String roleAssignmentId, String resourceGroupName, String accountName, Context context);
+    void deleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
@@ -3941,8 +3244,7 @@ public interface SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(
-        String resourceGroupName, String accountName);
+    PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName);
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
@@ -3955,8 +3257,7 @@ public interface SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
-        String resourceGroupName, String accountName);
+    PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(String resourceGroupName, String accountName);
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
@@ -3970,8 +3271,7 @@ public interface SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
-        String resourceGroupName, String accountName, Context context);
+    PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -3987,12 +3287,7 @@ public interface SqlResourcesClient {
      * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ContinuousBackupRestoreLocation location);
+    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -4008,13 +3303,7 @@ public interface SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
-        beginRetrieveContinuousBackupInformationAsync(
-            String resourceGroupName,
-            String accountName,
-            String databaseName,
-            String containerName,
-            ContinuousBackupRestoreLocation location);
+    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -4030,12 +3319,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ContinuousBackupRestoreLocation location);
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -4052,13 +3336,7 @@ public interface SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ContinuousBackupRestoreLocation location,
-        Context context);
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -4074,12 +3352,7 @@ public interface SqlResourcesClient {
      * @return backup information of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ContinuousBackupRestoreLocation location);
+    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -4095,12 +3368,7 @@ public interface SqlResourcesClient {
      * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupInformationInner retrieveContinuousBackupInformation(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ContinuousBackupRestoreLocation location);
+    BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a container resource.
@@ -4117,11 +3385,5 @@ public interface SqlResourcesClient {
      * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupInformationInner retrieveContinuousBackupInformation(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String containerName,
-        ContinuousBackupRestoreLocation location,
-        Context context);
+    BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context);
 }

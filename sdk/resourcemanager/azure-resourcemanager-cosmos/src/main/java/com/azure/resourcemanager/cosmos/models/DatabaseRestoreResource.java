@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specific Databases to restore. */
+/**
+ * Specific Databases to restore.
+ */
 @Fluent
 public final class DatabaseRestoreResource {
     /*
@@ -23,7 +25,9 @@ public final class DatabaseRestoreResource {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
-    /** Creates an instance of DatabaseRestoreResource class. */
+    /**
+     * Creates an instance of DatabaseRestoreResource class.
+     */
     public DatabaseRestoreResource() {
     }
 

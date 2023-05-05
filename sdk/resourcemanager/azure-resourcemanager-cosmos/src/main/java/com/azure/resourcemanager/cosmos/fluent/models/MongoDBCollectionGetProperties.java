@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesOpt
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB MongoDB collection. */
+/**
+ * The properties of an Azure Cosmos DB MongoDB collection.
+ */
 @Fluent
 public final class MongoDBCollectionGetProperties {
     /*
@@ -24,7 +26,9 @@ public final class MongoDBCollectionGetProperties {
     @JsonProperty(value = "options")
     private MongoDBCollectionGetPropertiesOptions options;
 
-    /** Creates an instance of MongoDBCollectionGetProperties class. */
+    /**
+     * Creates an instance of MongoDBCollectionGetProperties class.
+     */
     public MongoDBCollectionGetProperties() {
     }
 

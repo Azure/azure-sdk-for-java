@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of new failover policies for the failover priority change. */
+/**
+ * The list of new failover policies for the failover priority change.
+ */
 @Fluent
 public final class FailoverPolicies {
     /*
@@ -18,7 +20,9 @@ public final class FailoverPolicies {
     @JsonProperty(value = "failoverPolicies", required = true)
     private List<FailoverPolicy> failoverPolicies;
 
-    /** Creates an instance of FailoverPolicies class. */
+    /**
+     * Creates an instance of FailoverPolicies class.
+     */
     public FailoverPolicies() {
     }
 
@@ -49,10 +53,7 @@ public final class FailoverPolicies {
      */
     public void validate() {
         if (failoverPolicies() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverPolicies in model FailoverPolicies"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property failoverPolicies in model FailoverPolicies"));
         } else {
             failoverPolicies().forEach(e -> e.validate());
         }

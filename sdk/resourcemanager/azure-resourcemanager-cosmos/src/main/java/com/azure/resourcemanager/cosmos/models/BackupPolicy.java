@@ -10,12 +10,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The object representing the policy for taking backups on an account. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = BackupPolicy.class)
+/**
+ * The object representing the policy for taking backups on an account.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = BackupPolicy.class)
 @JsonTypeName("BackupPolicy")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Periodic", value = PeriodicModeBackupPolicy.class),
@@ -29,7 +27,9 @@ public class BackupPolicy {
     @JsonProperty(value = "migrationState")
     private BackupPolicyMigrationState migrationState;
 
-    /** Creates an instance of BackupPolicy class. */
+    /**
+     * Creates an instance of BackupPolicy class.
+     */
     public BackupPolicy() {
     }
 

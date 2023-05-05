@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Gremlin database resource object. */
+/**
+ * Cosmos DB Gremlin database resource object.
+ */
 @Fluent
 public class GremlinDatabaseResource {
     /*
@@ -17,7 +19,9 @@ public class GremlinDatabaseResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of GremlinDatabaseResource class. */
+    /**
+     * Creates an instance of GremlinDatabaseResource class.
+     */
     public GremlinDatabaseResource() {
     }
 
@@ -48,9 +52,7 @@ public class GremlinDatabaseResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model GremlinDatabaseResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model GremlinDatabaseResource"));
         }
     }
 

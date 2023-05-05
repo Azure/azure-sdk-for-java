@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The object representing periodic mode backup policy. */
+/**
+ * The object representing periodic mode backup policy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Periodic")
 @Fluent
@@ -20,7 +22,9 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
     @JsonProperty(value = "periodicModeProperties")
     private PeriodicModeProperties periodicModeProperties;
 
-    /** Creates an instance of PeriodicModeBackupPolicy class. */
+    /**
+     * Creates an instance of PeriodicModeBackupPolicy class.
+     */
     public PeriodicModeBackupPolicy() {
     }
 
@@ -44,7 +48,9 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PeriodicModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
         super.withMigrationState(migrationState);

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TableGetPropertiesResource model. */
+/**
+ * The TableGetPropertiesResource model.
+ */
 @Fluent
 public final class TableGetPropertiesResource extends TableResource {
     /*
@@ -28,7 +30,9 @@ public final class TableGetPropertiesResource extends TableResource {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of TableGetPropertiesResource class. */
+    /**
+     * Creates an instance of TableGetPropertiesResource class.
+     */
     public TableGetPropertiesResource() {
     }
 
@@ -60,7 +64,9 @@ public final class TableGetPropertiesResource extends TableResource {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TableGetPropertiesResource withId(String id) {
         super.withId(id);

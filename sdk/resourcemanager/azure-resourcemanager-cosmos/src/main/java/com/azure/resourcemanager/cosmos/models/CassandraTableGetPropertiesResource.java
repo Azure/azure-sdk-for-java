@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CassandraTableGetPropertiesResource model. */
+/**
+ * The CassandraTableGetPropertiesResource model.
+ */
 @Fluent
 public final class CassandraTableGetPropertiesResource extends CassandraTableResource {
     /*
@@ -28,7 +30,9 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of CassandraTableGetPropertiesResource class. */
+    /**
+     * Creates an instance of CassandraTableGetPropertiesResource class.
+     */
     public CassandraTableGetPropertiesResource() {
     }
 
@@ -60,28 +64,36 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withDefaultTtl(Integer defaultTtl) {
         super.withDefaultTtl(defaultTtl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withSchema(CassandraSchema schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withAnalyticalStorageTtl(Integer analyticalStorageTtl) {
         super.withAnalyticalStorageTtl(analyticalStorageTtl);

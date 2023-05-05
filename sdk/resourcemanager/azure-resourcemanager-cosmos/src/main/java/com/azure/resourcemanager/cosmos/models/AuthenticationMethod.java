@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication, so should
- * not be used except in emergencies. 'Cassandra' is the default password based authentication. The default is
- * 'Cassandra'.
+ * Which authentication method Cassandra should use to authenticate clients. 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default password based authentication. The default is 'Cassandra'.
  */
 public final class AuthenticationMethod extends ExpandableStringEnum<AuthenticationMethod> {
-    /** Static value None for AuthenticationMethod. */
+    /**
+     * Static value None for AuthenticationMethod.
+     */
     public static final AuthenticationMethod NONE = fromString("None");
 
-    /** Static value Cassandra for AuthenticationMethod. */
+    /**
+     * Static value Cassandra for AuthenticationMethod.
+     */
     public static final AuthenticationMethod CASSANDRA = fromString("Cassandra");
 
-    /** Static value Ldap for AuthenticationMethod. */
+    /**
+     * Static value Ldap for AuthenticationMethod.
+     */
     public static final AuthenticationMethod LDAP = fromString("Ldap");
 
     /**
      * Creates a new instance of AuthenticationMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +38,7 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
 
     /**
      * Creates or finds a AuthenticationMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationMethod.
      */
@@ -45,7 +49,7 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
 
     /**
      * Gets known AuthenticationMethod values.
-     *
+     * 
      * @return known AuthenticationMethod values.
      */
     public static Collection<AuthenticationMethod> values() {

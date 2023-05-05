@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ClientEncryptionKeyGetPropertiesResource model. */
+/**
+ * The ClientEncryptionKeyGetPropertiesResource model.
+ */
 @Fluent
 public final class ClientEncryptionKeyGetPropertiesResource extends ClientEncryptionKeyResource {
     /*
@@ -28,7 +30,9 @@ public final class ClientEncryptionKeyGetPropertiesResource extends ClientEncryp
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ClientEncryptionKeyGetPropertiesResource class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyGetPropertiesResource class.
+     */
     public ClientEncryptionKeyGetPropertiesResource() {
     }
 
@@ -60,28 +64,36 @@ public final class ClientEncryptionKeyGetPropertiesResource extends ClientEncryp
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClientEncryptionKeyGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClientEncryptionKeyGetPropertiesResource withEncryptionAlgorithm(String encryptionAlgorithm) {
         super.withEncryptionAlgorithm(encryptionAlgorithm);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClientEncryptionKeyGetPropertiesResource withWrappedDataEncryptionKey(byte[] wrappedDataEncryptionKey) {
         super.withWrappedDataEncryptionKey(wrappedDataEncryptionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClientEncryptionKeyGetPropertiesResource withKeyWrapMetadata(KeyWrapMetadata keyWrapMetadata) {
         super.withKeyWrapMetadata(keyWrapMetadata);

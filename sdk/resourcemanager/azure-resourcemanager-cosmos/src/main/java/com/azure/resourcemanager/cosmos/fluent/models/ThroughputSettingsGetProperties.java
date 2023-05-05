@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB resource throughput. */
+/**
+ * The properties of an Azure Cosmos DB resource throughput.
+ */
 @Fluent
 public final class ThroughputSettingsGetProperties {
     /*
@@ -17,7 +19,9 @@ public final class ThroughputSettingsGetProperties {
     @JsonProperty(value = "resource")
     private ThroughputSettingsGetPropertiesResource resource;
 
-    /** Creates an instance of ThroughputSettingsGetProperties class. */
+    /**
+     * Creates an instance of ThroughputSettingsGetProperties class.
+     */
     public ThroughputSettingsGetProperties() {
     }
 

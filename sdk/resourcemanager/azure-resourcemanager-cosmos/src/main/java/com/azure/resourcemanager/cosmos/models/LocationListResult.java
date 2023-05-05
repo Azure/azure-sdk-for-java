@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.LocationGetResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains Cosmos DB locations and their properties. */
+/**
+ * The List operation response, that contains Cosmos DB locations and their properties.
+ */
 @Immutable
 public final class LocationListResult {
     /*
@@ -18,7 +20,9 @@ public final class LocationListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<LocationGetResultInner> value;
 
-    /** Creates an instance of LocationListResult class. */
+    /**
+     * Creates an instance of LocationListResult class.
+     */
     public LocationListResult() {
     }
 

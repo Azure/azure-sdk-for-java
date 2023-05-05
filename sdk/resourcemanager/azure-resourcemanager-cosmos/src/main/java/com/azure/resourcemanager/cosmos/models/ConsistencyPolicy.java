@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The consistency policy for the Cosmos DB database account. */
+/**
+ * The consistency policy for the Cosmos DB database account.
+ */
 @Fluent
 public final class ConsistencyPolicy {
     /*
@@ -33,7 +35,9 @@ public final class ConsistencyPolicy {
     @JsonProperty(value = "maxIntervalInSeconds")
     private Integer maxIntervalInSeconds;
 
-    /** Creates an instance of ConsistencyPolicy class. */
+    /**
+     * Creates an instance of ConsistencyPolicy class.
+     */
     public ConsistencyPolicy() {
     }
 
@@ -114,10 +118,7 @@ public final class ConsistencyPolicy {
      */
     public void validate() {
         if (defaultConsistencyLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
         }
     }
 

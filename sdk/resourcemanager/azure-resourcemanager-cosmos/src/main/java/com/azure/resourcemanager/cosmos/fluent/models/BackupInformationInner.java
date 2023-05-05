@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupInformation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Backup information of a resource. */
+/**
+ * Backup information of a resource.
+ */
 @Immutable
 public final class BackupInformationInner {
     /*
@@ -17,7 +19,9 @@ public final class BackupInformationInner {
     @JsonProperty(value = "continuousBackupInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ContinuousBackupInformation continuousBackupInformation;
 
-    /** Creates an instance of BackupInformationInner class. */
+    /**
+     * Creates an instance of BackupInformationInner class.
+     */
     public BackupInformationInner() {
     }
 

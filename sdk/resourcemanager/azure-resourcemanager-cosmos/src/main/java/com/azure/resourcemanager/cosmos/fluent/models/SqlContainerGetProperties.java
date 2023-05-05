@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB container. */
+/**
+ * The properties of an Azure Cosmos DB container.
+ */
 @Fluent
 public final class SqlContainerGetProperties {
     /*
@@ -24,7 +26,9 @@ public final class SqlContainerGetProperties {
     @JsonProperty(value = "options")
     private SqlContainerGetPropertiesOptions options;
 
-    /** Creates an instance of SqlContainerGetProperties class. */
+    /**
+     * Creates an instance of SqlContainerGetProperties class.
+     */
     public SqlContainerGetProperties() {
     }
 

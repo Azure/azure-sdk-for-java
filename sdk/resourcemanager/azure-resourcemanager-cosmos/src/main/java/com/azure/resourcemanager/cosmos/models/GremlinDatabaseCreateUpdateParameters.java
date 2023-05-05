@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.GremlinDatabaseCreateUpdat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB Gremlin database. */
+/**
+ * Parameters to create and update Cosmos DB Gremlin database.
+ */
 @Fluent
 public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,7 +21,9 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
     @JsonProperty(value = "properties", required = true)
     private GremlinDatabaseCreateUpdateProperties innerProperties = new GremlinDatabaseCreateUpdateProperties();
 
-    /** Creates an instance of GremlinDatabaseCreateUpdateParameters class. */
+    /**
+     * Creates an instance of GremlinDatabaseCreateUpdateParameters class.
+     */
     public GremlinDatabaseCreateUpdateParameters() {
     }
 
@@ -32,14 +36,18 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinDatabaseCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,10 +111,7 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model GremlinDatabaseCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model GremlinDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoUserDefinitionResourc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters to create and update an Azure Cosmos DB Mongo User Definition. */
+/**
+ * Parameters to create and update an Azure Cosmos DB Mongo User Definition.
+ */
 @Fluent
 public final class MongoUserDefinitionCreateUpdateParameters {
     /*
@@ -18,7 +20,9 @@ public final class MongoUserDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
 
-    /** Creates an instance of MongoUserDefinitionCreateUpdateParameters class. */
+    /**
+     * Creates an instance of MongoUserDefinitionCreateUpdateParameters class.
+     */
     public MongoUserDefinitionCreateUpdateParameters() {
     }
 

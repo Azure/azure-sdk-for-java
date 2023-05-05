@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specific Databases to restore. */
+/**
+ * Specific Databases to restore.
+ */
 @Immutable
 public final class RestorableTableResourcesGetResultInner {
     /*
@@ -28,7 +30,9 @@ public final class RestorableTableResourcesGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableTableResourcesGetResultInner class. */
+    /**
+     * Creates an instance of RestorableTableResourcesGetResultInner class.
+     */
     public RestorableTableResourcesGetResultInner() {
     }
 

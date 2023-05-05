@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Properties for MaterializedViewsBuilderServiceResource. */
+/**
+ * Properties for MaterializedViewsBuilderServiceResource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("MaterializedViewsBuilder")
 @Fluent
@@ -21,7 +23,9 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaterializedViewsBuilderRegionalServiceResource> locations;
 
-    /** Creates an instance of MaterializedViewsBuilderServiceResourceProperties class. */
+    /**
+     * Creates an instance of MaterializedViewsBuilderServiceResourceProperties class.
+     */
     public MaterializedViewsBuilderServiceResourceProperties() {
     }
 
@@ -34,14 +38,18 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
         return this.locations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaterializedViewsBuilderServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MaterializedViewsBuilderServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);

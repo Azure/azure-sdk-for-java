@@ -5,19 +5,52 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The object representing continuous mode backup policy. */
+/**
+ * The object representing continuous mode backup policy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Continuous")
 @Fluent
 public final class ContinuousModeBackupPolicy extends BackupPolicy {
-    /** Creates an instance of ContinuousModeBackupPolicy class. */
+    /*
+     * Configuration values for continuous mode backup
+     */
+    @JsonProperty(value = "continuousModeProperties")
+    private ContinuousModeProperties continuousModeProperties;
+
+    /**
+     * Creates an instance of ContinuousModeBackupPolicy class.
+     */
     public ContinuousModeBackupPolicy() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the continuousModeProperties property: Configuration values for continuous mode backup.
+     *
+     * @return the continuousModeProperties value.
+     */
+    public ContinuousModeProperties continuousModeProperties() {
+        return this.continuousModeProperties;
+    }
+
+    /**
+     * Set the continuousModeProperties property: Configuration values for continuous mode backup.
+     *
+     * @param continuousModeProperties the continuousModeProperties value to set.
+     * @return the ContinuousModeBackupPolicy object itself.
+     */
+    public ContinuousModeBackupPolicy withContinuousModeProperties(ContinuousModeProperties continuousModeProperties) {
+        this.continuousModeProperties = continuousModeProperties;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContinuousModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
         super.withMigrationState(migrationState);
@@ -32,5 +65,8 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
     @Override
     public void validate() {
         super.validate();
+        if (continuousModeProperties() != null) {
+            continuousModeProperties().validate();
+        }
     }
 }

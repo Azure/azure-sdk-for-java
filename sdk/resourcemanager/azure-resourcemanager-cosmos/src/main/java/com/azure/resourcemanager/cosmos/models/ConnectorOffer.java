@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The cassandra connector offer type for the Cosmos DB C* database account. */
+/**
+ * The cassandra connector offer type for the Cosmos DB C* database account.
+ */
 public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
-    /** Static value Small for ConnectorOffer. */
+    /**
+     * Static value Small for ConnectorOffer.
+     */
     public static final ConnectorOffer SMALL = fromString("Small");
 
     /**
      * Creates a new instance of ConnectorOffer value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
 
     /**
      * Creates or finds a ConnectorOffer from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectorOffer.
      */
@@ -35,7 +39,7 @@ public final class ConnectorOffer extends ExpandableStringEnum<ConnectorOffer> {
 
     /**
      * Gets known ConnectorOffer values.
-     *
+     * 
      * @return known ConnectorOffer values.
      */
     public static Collection<ConnectorOffer> values() {

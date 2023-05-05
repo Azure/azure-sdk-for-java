@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specification of which command to run where. */
+/**
+ * Specification of which command to run where.
+ */
 @Fluent
 public final class CommandPostBody {
     /*
@@ -44,7 +46,9 @@ public final class CommandPostBody {
     @JsonProperty(value = "readwrite")
     private Boolean readwrite;
 
-    /** Creates an instance of CommandPostBody class. */
+    /**
+     * Creates an instance of CommandPostBody class.
+     */
     public CommandPostBody() {
     }
 
@@ -159,14 +163,10 @@ public final class CommandPostBody {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property command in model CommandPostBody"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property command in model CommandPostBody"));
         }
         if (host() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property host in model CommandPostBody"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property host in model CommandPostBody"));
         }
     }
 

@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the status of a service. */
+/**
+ * Describes the status of a service.
+ */
 public final class ServiceStatus extends ExpandableStringEnum<ServiceStatus> {
-    /** Static value Creating for ServiceStatus. */
+    /**
+     * Static value Creating for ServiceStatus.
+     */
     public static final ServiceStatus CREATING = fromString("Creating");
 
-    /** Static value Running for ServiceStatus. */
+    /**
+     * Static value Running for ServiceStatus.
+     */
     public static final ServiceStatus RUNNING = fromString("Running");
 
-    /** Static value Updating for ServiceStatus. */
+    /**
+     * Static value Updating for ServiceStatus.
+     */
     public static final ServiceStatus UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ServiceStatus. */
+    /**
+     * Static value Deleting for ServiceStatus.
+     */
     public static final ServiceStatus DELETING = fromString("Deleting");
 
-    /** Static value Error for ServiceStatus. */
+    /**
+     * Static value Error for ServiceStatus.
+     */
     public static final ServiceStatus ERROR = fromString("Error");
 
-    /** Static value Stopped for ServiceStatus. */
+    /**
+     * Static value Stopped for ServiceStatus.
+     */
     public static final ServiceStatus STOPPED = fromString("Stopped");
 
     /**
      * Creates a new instance of ServiceStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class ServiceStatus extends ExpandableStringEnum<ServiceStatus> {
 
     /**
      * Creates or finds a ServiceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceStatus.
      */
@@ -50,7 +64,7 @@ public final class ServiceStatus extends ExpandableStringEnum<ServiceStatus> {
 
     /**
      * Gets known ServiceStatus values.
-     *
+     * 
      * @return known ServiceStatus values.
      */
     public static Collection<ServiceStatus> values() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB region to online or offline. */
+/**
+ * Cosmos DB region to online or offline.
+ */
 @Fluent
 public final class RegionForOnlineOffline {
     /*
@@ -17,7 +19,9 @@ public final class RegionForOnlineOffline {
     @JsonProperty(value = "region", required = true)
     private String region;
 
-    /** Creates an instance of RegionForOnlineOffline class. */
+    /**
+     * Creates an instance of RegionForOnlineOffline class.
+     */
     public RegionForOnlineOffline() {
     }
 
@@ -48,9 +52,7 @@ public final class RegionForOnlineOffline {
      */
     public void validate() {
         if (region() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property region in model RegionForOnlineOffline"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property region in model RegionForOnlineOffline"));
         }
     }
 

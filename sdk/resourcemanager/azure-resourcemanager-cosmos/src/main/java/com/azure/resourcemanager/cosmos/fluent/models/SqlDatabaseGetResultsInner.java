@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB SQL database. */
+/**
+ * An Azure Cosmos DB SQL database.
+ */
 @Fluent
 public final class SqlDatabaseGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,7 +22,9 @@ public final class SqlDatabaseGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlDatabaseGetProperties innerProperties;
 
-    /** Creates an instance of SqlDatabaseGetResultsInner class. */
+    /**
+     * Creates an instance of SqlDatabaseGetResultsInner class.
+     */
     public SqlDatabaseGetResultsInner() {
     }
 
@@ -33,14 +37,18 @@ public final class SqlDatabaseGetResultsInner extends ArmResourceProperties {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
