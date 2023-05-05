@@ -57,17 +57,6 @@
     },
     {
       "Agent": {
-        "windows-2022": { "OSVmImage": "windows-2022", "Pool": "azsdk-pool-mms-win-2022-general" }
-      },
-      "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "jdk-httpclient",
-      "TestFromSource": false,
-      "RunAggregateReports": true,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
-    },
-    {
-      "Agent": {
         "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
       "JavaTestVersion": "1.17",
