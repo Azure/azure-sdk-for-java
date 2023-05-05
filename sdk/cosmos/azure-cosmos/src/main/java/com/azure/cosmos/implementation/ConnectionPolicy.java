@@ -47,6 +47,9 @@ public final class ConnectionPolicy {
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
     private boolean tcpHealthCheckTimeoutDetectionEnabled;
+    private int minConnectionsPerEndpoint;
+    private int defensiveWarmupConcurrency;
+    private int aggressiveWarmupConcurrency;
 
     /**
      * Constructor.
@@ -104,6 +107,9 @@ public final class ConnectionPolicy {
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
         this.tcpHealthCheckTimeoutDetectionEnabled = true;
+        this.minConnectionsPerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.defensiveWarmupConcurrency = Configs.getDefensiveWarmupConcurrency();
+        this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
     /**
@@ -599,6 +605,9 @@ public final class ConnectionPolicy {
             ", ioThreadPriority=" + ioThreadPriority +
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
+            ", minConnectionsPerEndpoint=" + minConnectionsPerEndpoint +
+            ", defensiveWarmupConcurrency=" + defensiveWarmupConcurrency +
+            ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }
 }

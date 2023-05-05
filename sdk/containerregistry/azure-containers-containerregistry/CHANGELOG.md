@@ -4,7 +4,9 @@
 
 ### Features Added
 
-### Breaking Changes
+### Breaking Changes from version 1.1.0-beta.4
+
+- Added sanity check for manifest size at download time - if manifest is bigger than 4MB, `ServiceResponseException` will be thrown.
 
 ### Bugs Fixed
 

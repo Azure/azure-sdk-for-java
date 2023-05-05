@@ -8,8 +8,11 @@ import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -55,14 +58,14 @@ public interface RxStoreModel {
     void enableThroughputControl(ThroughputControlStore throughputControlStore);
 
     /**
-     * Warm up caches and open connections for containers specified by
-     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas in
+     * Submits open connection tasks and warms up caches for replicas for containers specified by
+     * {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} and in
      * {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()} preferred regions.
      *
-     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
-     * @return A flux of {@link OpenConnectionResponse}.
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and
+     *                                     no. of proactive connection regions
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
+    Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig);
 
     /***
      * Configure fault injector provider.
@@ -70,4 +73,6 @@ public interface RxStoreModel {
      * @param injectorProvider the fault injector provider.
      */
     void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider);
+    void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+    void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 }

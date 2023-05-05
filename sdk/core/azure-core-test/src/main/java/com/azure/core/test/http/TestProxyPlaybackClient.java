@@ -133,7 +133,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.revertUrl(response);
+        return TestProxyUtils.resetTestProxyData(response);
     }
 
     /**

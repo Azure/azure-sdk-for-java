@@ -110,10 +110,14 @@ public class BlobNioTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(
                 Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
+            // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
+            // in SAS tokens.
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setComparingBodies(false)
                 .setExcludedHeaders(Arrays.asList("x-ms-copy-source", "If-Match", "x-ms-range", "If-Modified-Since",
-                    "If-Unmodified-Since"))));
+                    "If-Unmodified-Since"))
+                .setQueryOrderingIgnored(true)
+                .setIgnoredQueryParameters(Arrays.asList("sv"))));
         }
     }
 

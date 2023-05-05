@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `sessionIdleTimeout` method to configure session idle timeout on `ServiceBusSessionProcessorClientBuilder`. After this time has elapsed,
+  the processor will close the session and attempt to process another session. ([#34700](https://github.com/Azure/azure-sdk-for-java/issues/34700))
+
 ### Breaking Changes
 
 ### Bugs Fixed
