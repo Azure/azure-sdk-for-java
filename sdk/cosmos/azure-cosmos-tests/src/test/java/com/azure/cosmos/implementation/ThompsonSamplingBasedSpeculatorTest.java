@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThompsonSamplingBasedSpeculation;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public class ThompsonSamplingBasedSpeculatorTest {
     ConcurrentDoubleHistogram histogram;
 
     List<URI> regions = new ArrayList<>(
-        List.of(URI.create("https://test1"), URI.create("https://test2"), URI.create("https://test3"))
+        ImmutableList.of(URI.create("https://test1"), URI.create("https://test2"), URI.create("https://test3"))
     );
 
     public ThompsonSamplingBasedSpeculatorTest() {

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.math.distribution.Enumerate
 import com.azure.cosmos.implementation.apachecommons.math.distribution.EnumeratedIntegerDistribution;
 import com.azure.cosmos.implementation.apachecommons.math.distribution.GammaDistribution;
 import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.net.URI;
 import java.time.Duration;
@@ -109,14 +110,14 @@ public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
     @Override
     public List<URI> getRegionsForPureExploration() {
         if (shouldExplore()) {
-            return List.of(getRegionToExplore());
+            return ImmutableList.of(getRegionToExplore());
         }
-        return List.of();
+        return ImmutableList.of();
     }
 
     @Override
     public List<URI> getRegionsToSpeculate(CosmosE2EOperationRetryPolicyConfig config, List<URI> availableReadEndpoints) {
-        return List.of(getSelection());
+        return ImmutableList.of(getSelection());
     }
 
     @Override
