@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.models.events;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The base event interface. */
-public abstract class CallAutomationEventData {
+public abstract class CallAutomationEventBase {
     /*
      * Call connection ID.
      */
@@ -32,7 +32,7 @@ public abstract class CallAutomationEventData {
     @JsonProperty(value = "operationContext")
     private final String operationContext;
 
-    CallAutomationEventData() {
+    CallAutomationEventBase() {
         this.serverCallId = null;
         this.callConnectionId = null;
         this.correlationId = null;

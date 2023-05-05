@@ -6,17 +6,21 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallTransferAcceptedEventData model. */
+/** The ContinuousDtmfRecognitionStopped model. */
 @Immutable
-public final class CallTransferAcceptedEventData extends CallAutomationEventData {
+public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventBase {
+
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    private CallTransferAcceptedEventData() {
-        this.resultInformation = null;
+    /**
+     * Constructor for ContinuousDtmfRecognitionToneReceived
+     */
+    public ContinuousDtmfRecognitionStopped() {
+        resultInformation = null;
     }
 
     /**
