@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Channel affinity for a participant. */
 @Fluent
@@ -14,7 +13,6 @@ public final class ChannelAffinity {
      * Channel number to which bitstream from a particular participant will be
      * written.
      */
-    @JsonProperty(value = "channel")
     private Integer channel;
 
     /*
@@ -22,7 +20,6 @@ public final class ChannelAffinity {
      * the channel
      * represented by the channel number.
      */
-    @JsonProperty(value = "participant", required = true)
     private CommunicationIdentifier participant;
 
     /**
