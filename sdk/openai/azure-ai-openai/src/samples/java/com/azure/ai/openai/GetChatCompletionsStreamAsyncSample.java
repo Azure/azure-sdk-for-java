@@ -30,13 +30,9 @@ public class GetChatCompletionsStreamAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-//        String azureOpenaiKey = "{azure-open-ai-key}";
-//        String endpoint = "{azure-open-ai-endpoint}";
-//        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
-
-        String azureOpenaiKey = "098accc8dc564a26bf9d2bb1a04bfb0a";
-        String endpoint = "https://openai-shared.openai.azure.com/";
-        String deploymentOrModelId = "gpt-35-turbo";
+        String azureOpenaiKey = "{azure-open-ai-key}";
+        String endpoint = "{azure-open-ai-endpoint}";
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
