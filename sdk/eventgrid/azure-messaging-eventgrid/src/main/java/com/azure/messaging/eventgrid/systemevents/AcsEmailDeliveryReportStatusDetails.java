@@ -16,6 +16,9 @@ public final class AcsEmailDeliveryReportStatusDetails {
     @JsonProperty(value = "statusMessage")
     private String statusMessage;
 
+    /** Creates an instance of AcsEmailDeliveryReportStatusDetails class. */
+    public AcsEmailDeliveryReportStatusDetails() {}
+
     /**
      * Get the statusMessage property: Detailed status message.
      *
