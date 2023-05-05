@@ -228,12 +228,6 @@ public abstract class IdentityClientBase {
             applicationBuilder.executorService(options.getExecutorService());
         }
 
-        if (!options.isCp1Disabled()) {
-            Set<String> set = new HashSet<>(1);
-            set.add("CP1");
-            applicationBuilder.clientCapabilities(set);
-        }
-
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -387,11 +381,6 @@ public abstract class IdentityClientBase {
         OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
-
-        if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
-        }
         return builder.build();
     }
 
