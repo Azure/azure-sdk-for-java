@@ -96,7 +96,7 @@ org.apache.qpid:qpid-jms-client;2.0.0
 org.apache.tinkerpop:gremlin-driver;3.2.4
 org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;2.1.0
-org.codehaus.groovy:groovy-jsr223;4.0.7
+org.codehaus.groovy:groovy-jsr223;4.0.10
 org.codehaus.janino:janino;3.1.9
 org.conscrypt:conscrypt-openjdk-uber;2.2.1
 org.glassfish.tyrus:tyrus-client;1.16
