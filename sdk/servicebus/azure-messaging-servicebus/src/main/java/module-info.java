@@ -13,7 +13,6 @@ module com.azure.messaging.servicebus {
 
     opens com.azure.messaging.servicebus.administration.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
     opens com.azure.messaging.servicebus.administration.models to com.fasterxml.jackson.databind, com.azure.core;
-    exports com.azure.messaging.servicebus.implementation.instrumentation;
 
     uses com.azure.core.util.tracing.Tracer;
 }
