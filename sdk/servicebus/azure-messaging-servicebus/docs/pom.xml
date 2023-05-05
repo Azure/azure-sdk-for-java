@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-jsr223</artifactId>
-            <version>4.0.7</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
+            <version>4.0.10</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
             <scope>runtime</scope>
         </dependency>
 
