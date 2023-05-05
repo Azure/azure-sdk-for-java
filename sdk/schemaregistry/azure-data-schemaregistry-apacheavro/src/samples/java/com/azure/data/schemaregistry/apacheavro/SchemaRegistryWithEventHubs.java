@@ -91,6 +91,13 @@ public class SchemaRegistryWithEventHubs {
     }
 
 
+    /**
+     * Demonstrates how to deserialize an EventData that was serialized using {@link SchemaRegistryApacheAvroSerializer}
+     * and published to Event Hubs.
+     *
+     * @param tokenCredential Token credential used to authenticate with Schema Registry and Event Hubs.
+     * @param serializer Schema Registry serializer.
+     */
     private static void consumeEventsFromEventHubs(TokenCredential tokenCredential,
         SchemaRegistryApacheAvroSerializer serializer) {
 
