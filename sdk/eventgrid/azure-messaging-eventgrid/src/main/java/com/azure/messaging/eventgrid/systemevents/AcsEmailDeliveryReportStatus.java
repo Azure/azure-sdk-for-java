@@ -10,16 +10,16 @@ import java.util.Collection;
 
 /** The status of the email. Any value other than Delivered is considered failed. */
 public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {
-    /** Hard bounce detected while sending the email. */
+    /** Static value Bounced for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus BOUNCED = fromString("Bounced");
 
     /** The email was delivered. */
     public static final AcsEmailDeliveryReportStatus DELIVERED = fromString("Delivered");
 
-    /** The email failed to be delivered. */
+    /** Static value Failed for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
 
-    /** The message was identified spam and was rejected or blocked (not quarantined). */
+    /** Static value FilteredSpam for AcsEmailDeliveryReportStatus. */
     public static final AcsEmailDeliveryReportStatus FILTERED_SPAM = fromString("FilteredSpam");
 
     /**

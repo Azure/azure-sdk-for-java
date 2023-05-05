@@ -30,7 +30,8 @@ public final class AcsEmailDeliveryReportReceivedEventData {
     private String messageId;
 
     /*
-     * The status of the email. Any value other than Delivered is considered failed.
+     * The status of the email. Any value other than Delivered is considered
+     * failed.
      */
     @JsonProperty(value = "status")
     private AcsEmailDeliveryReportStatus status;
