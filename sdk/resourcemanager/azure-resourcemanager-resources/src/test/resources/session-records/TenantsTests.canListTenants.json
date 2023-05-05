@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/tenants?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/tenants?api-version=2022-12-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e8cead85-2709-4d74-99e0-c89e38ad01bc",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.27.0-beta.1 (17.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d36b2541-a0f2-45e2-8147-727927c5bed7",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "140",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "e9409a13-e5d6-431c-8132-54f12746e189",
-      "Date" : "Tue, 11 May 2021 02:12:54 GMT",
+      "Date" : "Thu, 04 May 2023 08:24:29 GMT",
+      "x-ms-correlation-request-id" : "22f8d310-f4d1-4925-bada-281090d08bdf",
       "x-ms-ratelimit-remaining-tenant-reads" : "11999",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210511T021255Z:e9409a13-e5d6-431c-8132-54f12746e189",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20230504T082430Z:22f8d310-f4d1-4925-bada-281090d08bdf",
       "Expires" : "-1",
-      "x-ms-request-id" : "e9409a13-e5d6-431c-8132-54f12746e189",
+      "Content-Length" : "140",
+      "x-ms-request-id" : "22f8d310-f4d1-4925-bada-281090d08bdf",
       "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"tenantCategory\":\"Home\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
