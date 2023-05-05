@@ -9,6 +9,7 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.models.BlobStorageInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
+import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.ExternalStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
@@ -19,6 +20,7 @@ import com.azure.communication.callautomation.implementation.models.StartCallRec
 import com.azure.communication.callautomation.models.BlobStorage;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
+import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
@@ -161,6 +163,12 @@ public final class CallRecordingAsync {
                 .stream().map(CommunicationIdentifierConverter::convert)
                 .collect(Collectors.toList());
             request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
+        }
+        if (options.getChannelAffinity() != null) {
+            List<ChannelAffinityInternal> channelAffinityInternals = options.getChannelAffinity()
+                .stream().map(this::getChannelAffinityInternal)
+                .collect(Collectors.toList());
+            request.setChannelAffinity(channelAffinityInternals);
         }
         if (options.getExternalStorage() != null) {
             ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
@@ -564,5 +572,15 @@ public final class CallRecordingAsync {
 
     private BlobStorageInternal getBlobStorageInternalFromBlobStorage(BlobStorage blobStorage) {
         return new BlobStorageInternal().setContainerUri(blobStorage.getContainerUrl());
+    }
+
+    private ChannelAffinityInternal getChannelAffinityInternal(ChannelAffinity channelAffinity) {
+        ChannelAffinityInternal channelAffinityInternal = new ChannelAffinityInternal();
+        CommunicationIdentifierModel communicationIdentifierModel = CommunicationIdentifierConverter.convert(channelAffinity.getParticipant());
+        channelAffinityInternal.setParticipant(communicationIdentifierModel);
+        if (channelAffinity.getChannel() != null) {
+            channelAffinityInternal.setChannel(channelAffinity.getChannel());
+        }
+        return channelAffinityInternal;
     }
 }
