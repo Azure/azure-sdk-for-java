@@ -55,30 +55,6 @@ public class SchemaRegistryWithEventHubs {
         consumeEventsFromEventHubs(tokenCredential, serializer);
     }
 
-    private static void consumeEventsFromEventHubs(TokenCredential tokenCredential,
-        SchemaRegistryApacheAvroSerializer serializer) {
-
-        EventHubConsumerClient consumerClient = new EventHubClientBuilder()
-            .credential("{event-hub-namespace}", "{event-hub-name}", tokenCredential)
-            .consumerGroup("{my-consumer-group}")
-            .buildConsumerClient();
-
-        // Receive up to 10 events within 20 seconds.  When 20 seconds elapses, the method returns the number of events
-        // it received so far.
-        IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("1",
-            10, EventPosition.earliest(), Duration.ofSeconds(20));
-
-        for (PartitionEvent partitionEvent : events) {
-            PlayingCard suit = serializer.deserialize(partitionEvent.getData(),
-                TypeReference.createInstance(PlayingCard.class));
-
-            System.out.printf("Suit: %s, Value [%d]%n", suit.getPlayingCardSuit(), suit.getCardValue());
-        }
-
-        // Dispose of the client.
-        consumerClient.close();
-    }
-
     /**
      * Demonstrates how to serialize PlayingCard objects into EventData and publish them to an Event Hub.
      *
@@ -112,5 +88,30 @@ public class SchemaRegistryWithEventHubs {
 
         // Dispose of the client.
         producerClient.close();
+    }
+
+
+    private static void consumeEventsFromEventHubs(TokenCredential tokenCredential,
+        SchemaRegistryApacheAvroSerializer serializer) {
+
+        EventHubConsumerClient consumerClient = new EventHubClientBuilder()
+            .credential("{event-hub-namespace}", "{event-hub-name}", tokenCredential)
+            .consumerGroup("{my-consumer-group}")
+            .buildConsumerClient();
+
+        // Receive up to 10 events within 20 seconds.  When 20 seconds elapses, the method returns the number of events
+        // it received so far.
+        IterableStream<PartitionEvent> events = consumerClient.receiveFromPartition("1",
+            10, EventPosition.earliest(), Duration.ofSeconds(20));
+
+        for (PartitionEvent partitionEvent : events) {
+            PlayingCard playingCard = serializer.deserialize(partitionEvent.getData(),
+                TypeReference.createInstance(PlayingCard.class));
+
+            System.out.printf("Suit: %s, Value [%d]%n", playingCard.getPlayingCardSuit(), playingCard.getCardValue());
+        }
+
+        // Dispose of the client.
+        consumerClient.close();
     }
 }
