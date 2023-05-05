@@ -9,7 +9,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterEach;
@@ -42,7 +41,6 @@ public class ServiceBusSessionReceiverTest {
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverTest.class);
-    private static final ServiceBusTracer NOOP_TRACER = new ServiceBusTracer(null, NAMESPACE, ENTITY_PATH);
     private static final Duration NO_SESSION_IDLE_TIMEOUT = null;
 
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
@@ -108,7 +106,7 @@ public class ServiceBusSessionReceiverTest {
         // Act
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT, NOOP_TRACER);
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Assert
         assertEquals(sessionId, sessionReceiver.getSessionId());
@@ -156,7 +154,7 @@ public class ServiceBusSessionReceiverTest {
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT, NOOP_TRACER);
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Act & Assert
         try {
@@ -226,7 +224,7 @@ public class ServiceBusSessionReceiverTest {
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, waitTime, NOOP_TRACER);
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, waitTime);
 
         // Act & Assert
         try {
@@ -285,7 +283,7 @@ public class ServiceBusSessionReceiverTest {
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
             messageSerializer, retryOptions, 1, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT, NOOP_TRACER);
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Act & Assert
         try {

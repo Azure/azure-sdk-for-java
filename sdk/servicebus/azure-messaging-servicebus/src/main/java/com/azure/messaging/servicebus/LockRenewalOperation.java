@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -49,8 +47,8 @@ class LockRenewalOperation implements AutoCloseable {
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, ServiceBusTracer tracer, Context context) {
-        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, OffsetDateTime.now(), tracer, context);
+        Function<String, Mono<OffsetDateTime>> renewalOperation) {
+        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, OffsetDateTime.now());
     }
 
     /**
@@ -63,12 +61,9 @@ class LockRenewalOperation implements AutoCloseable {
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil, ServiceBusTracer tracer,
-        Context context) {
+        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
-        Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
-
-        this.renewalOperation = t -> tracer.traceMonoWithLink("ServiceBus.renewMessageLock", renewalOperation.apply(t), null, context);
+        this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
         this.isSession = isSession;
 
         Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");

@@ -97,10 +97,29 @@ public class ServiceBusTracer {
     /**
      * Traces arbitrary mono that operates with received message as input, e.g. renewLock. No special send or receive semantics is applied.
      */
-    public <T> Mono<T> traceMonoWithLink(String spanName, Mono<T> publisher, ServiceBusReceivedMessage message, Context parent) {
+    public <T> Mono<T> traceRenewMessageLock(Mono<T> publisher, ServiceBusReceivedMessage message) {
         if (isEnabled()) {
             return Mono.defer(() -> {
-                Context span = startSpanWithLink(spanName, null, message, parent);
+                Context span = startSpanWithLink("ServiceBus.renewMessageLock", null, message, Context.NONE);
+                return publisher.doOnEach(signal -> {
+                    if (signal.isOnComplete() || signal.isOnError()) {
+                        endSpan(signal.getThrowable(), span, null);
+                    }
+                })
+                .doOnCancel(() -> cancelSpan(span));
+            });
+        }
+
+        return publisher;
+    }
+
+    /**
+     * Traces session lock renewal.
+     */
+    public <T> Mono<T> traceRenewSessionLock(Mono<T> publisher) {
+        if (isEnabled()) {
+            return Mono.defer(() -> {
+                Context span = startSpanWithLink("ServiceBus.renewSessionLock", null, null, Context.NONE);
                 return publisher.doOnEach(signal -> {
                     if (signal.isOnComplete() || signal.isOnError()) {
                         endSpan(signal.getThrowable(), span, null);

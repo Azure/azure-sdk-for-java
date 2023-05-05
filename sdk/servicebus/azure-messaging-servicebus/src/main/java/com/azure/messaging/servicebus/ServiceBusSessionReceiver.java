@@ -5,14 +5,12 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.AsyncCloseable;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -75,8 +73,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      */
     ServiceBusSessionReceiver(ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout,
-        ServiceBusTracer tracer) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout) {
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
         this.retryOptions = retryOptions;
@@ -177,7 +174,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 return;
             }
             this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId.get(),
-                maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil, tracer, Context.NONE));
+                maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
     }
 

@@ -12,7 +12,6 @@ import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -1046,8 +1045,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         }
 
-        return renewMessageLock(message.getLockToken())
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
+        return tracer.traceRenewMessageLock(renewMessageLock(message.getLockToken())
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK)), message);
     }
 
     /**
@@ -1108,7 +1107,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         final LockRenewalOperation operation = new LockRenewalOperation(message.getLockToken(), maxLockRenewalDuration,
-            false, ignored -> renewMessageLock(message), tracer, message.getContext());
+            false, ignored -> renewMessageLock(message));
         renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
             operation);
 
@@ -1595,10 +1594,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
         final String linkName = sessionManager.getLinkName(sessionId);
 
-        return connectionProcessor
+
+        return tracer.traceRenewSessionLock(connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                     .flatMap(channel -> channel.renewSessionLock(sessionId, linkName))
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK)));
     }
 
     Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
@@ -1619,7 +1619,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'sessionId' cannot be empty."));
         }
         final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration,
-            true, this::renewSessionLock, tracer, Context.NONE);
+            true, this::renewSessionLock);
 
         renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
         return operation.getCompletionOperation();

@@ -154,13 +154,13 @@ final class FluxAutoLockRenew extends FluxOperator<ServiceBusMessageContext, Ser
                 }
 
                 final Function<String, Mono<OffsetDateTime>> onRenewLockUpdateMessage = onRenewLock.andThen(updated ->
-                    updated.map(newLockedUntil -> {
+                    tracer.traceRenewMessageLock(updated.map(newLockedUntil -> {
                         message.setLockedUntil(newLockedUntil);
                         return newLockedUntil;
-                    }));
+                    }), message));
 
                 renewOperation = new LockRenewalOperation(lockToken, maxAutoLockRenewal, false,
-                    onRenewLockUpdateMessage, lockedUntil, tracer, message.getContext());
+                    onRenewLockUpdateMessage, lockedUntil);
 
                 try {
                     messageLockContainer.addOrUpdate(lockToken, OffsetDateTime.now().plus(maxAutoLockRenewal),

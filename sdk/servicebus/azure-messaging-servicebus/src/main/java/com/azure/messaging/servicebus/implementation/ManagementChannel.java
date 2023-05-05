@@ -80,7 +80,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private final String fullyQualifiedNamespace;
     private final ClientLogger logger;
     private final String entityPath;
-
     private volatile boolean isDisposed;
 
     ManagementChannel(Mono<RequestResponseChannel> createChannel, String fullyQualifiedNamespace, String entityPath,

@@ -196,12 +196,12 @@ class ServiceBusSessionManager implements AutoCloseable {
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-                return channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
+                return tracer.traceRenewSessionLock(channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
                     if (receiver != null) {
                         receiver.setSessionLockedUntil(offsetDateTime);
                     }
                     sink.next(offsetDateTime);
-                });
+                }));
             }));
     }
 
@@ -357,7 +357,7 @@ class ServiceBusSessionManager implements AutoCloseable {
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration, disposeOnIdle ? sessionIdleTimeout : null, tracer);
+                    maxSessionLockRenewDuration, disposeOnIdle ? sessionIdleTimeout : null);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()
