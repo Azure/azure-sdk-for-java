@@ -99,7 +99,7 @@ public class DownloadImage {
         // BEGIN: com.azure.containers.containerregistry.getManifestTag
         GetManifestResult latestResult = contentClient.getManifest("latest");
         if (ManifestMediaType.DOCKER_MANIFEST.equals(latestResult.getManifestMediaType())
-            || ManifestMediaType.OCI_MANIFEST.equals(latestResult.getManifestMediaType())) {
+            || ManifestMediaType.OCI_IMAGE_MANIFEST.equals(latestResult.getManifestMediaType())) {
             OciImageManifest manifest = latestResult.getManifest().toObject(OciImageManifest.class);
         } else {
             throw new IllegalArgumentException("Unexpected manifest type: " + latestResult.getManifestMediaType());
