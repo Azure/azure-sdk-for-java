@@ -154,7 +154,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .build();
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        options.setCosmosE2EOperationRetryPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
         TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
 
@@ -246,7 +246,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             // Enabling at client level and disabling at the query item operation level should not fail the request even
             // with injected delay
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                .setCosmosE2EOperationRetryPolicyConfig(
                     new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
                         .enable(false)
                         .build());
