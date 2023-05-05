@@ -3,8 +3,6 @@
 
 package com.azure.ai.openai.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,8 +32,6 @@ public final class OpenAIServerSentEvents<T> {
         .disable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES)
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
-
-    private static final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
 
     public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;
@@ -87,8 +83,6 @@ public final class OpenAIServerSentEvents<T> {
                 }
                 return Flux.fromIterable(values);
             } catch (IOException e) {
-                LOGGER.log(LogLevel.VERBOSE, () -> new String(byteBuffer.rewind().array()));
-                LOGGER.logThrowableAsError(e);
                 return Flux.error(e);
             }
         });
