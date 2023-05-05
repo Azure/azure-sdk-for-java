@@ -41,6 +41,7 @@ public class ServiceBusSessionReceiverTest {
     private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverTest.class);
+    private static final Duration NO_SESSION_IDLE_TIMEOUT = null;
 
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
     private final TestPublisher<Message> messagePublisher = TestPublisher.createCold();
@@ -99,14 +100,13 @@ public class ServiceBusSessionReceiverTest {
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        final boolean disposeOnIdle = false;
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
 
         // Act
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
-            messageSerializer, retryOptions, 1, disposeOnIdle, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration);
+            messageSerializer, retryOptions, 1, scheduler,
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Assert
         assertEquals(sessionId, sessionReceiver.getSessionId());
@@ -150,12 +150,11 @@ public class ServiceBusSessionReceiverTest {
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        final boolean disposeOnIdle = false;
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
-            messageSerializer, retryOptions, 1, disposeOnIdle, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration);
+            messageSerializer, retryOptions, 1, scheduler,
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Act & Assert
         try {
@@ -220,13 +219,12 @@ public class ServiceBusSessionReceiverTest {
         final Duration waitTime = Duration.ofSeconds(3);
         final Duration halfWaitTime = Duration.ofSeconds(waitTime.getSeconds() / 2);
         final Duration timeout = Duration.ofSeconds(waitTime.getSeconds() * 3);
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(waitTime);
-        final boolean disposeOnIdle = true;
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(10));
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
-            messageSerializer, retryOptions, 1, disposeOnIdle, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration);
+            messageSerializer, retryOptions, 1, scheduler,
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, waitTime);
 
         // Act & Assert
         try {
@@ -281,12 +279,11 @@ public class ServiceBusSessionReceiverTest {
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
-        final boolean disposeOnIdle = false;
         final Scheduler scheduler = Schedulers.boundedElastic();
         final Duration maxSessionRenewalDuration = Duration.ofMinutes(5);
         final ServiceBusSessionReceiver sessionReceiver = new ServiceBusSessionReceiver(amqpReceiveLink,
-            messageSerializer, retryOptions, 1, disposeOnIdle, scheduler,
-            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration);
+            messageSerializer, retryOptions, 1, scheduler,
+            unused -> renewSessionLock(Duration.ofMinutes(1)), maxSessionRenewalDuration, NO_SESSION_IDLE_TIMEOUT);
 
         // Act & Assert
         try {

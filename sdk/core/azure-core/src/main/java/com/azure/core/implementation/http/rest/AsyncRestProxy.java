@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -36,6 +35,9 @@ import java.util.function.Function;
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class AsyncRestProxy extends RestProxyBase {
+
+    private static final String TEXT_EVENT_STREAM = "text/event-stream";
+
     /**
      * Create a RestProxy.
      *
@@ -178,13 +180,14 @@ public class AsyncRestProxy extends RestProxyBase {
             // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(sourceResponse.getBody());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
-            HttpHeader httpHeader = sourceResponse.getHeaders().get(HttpHeaderName.CONTENT_TYPE);
+            String contentType = sourceResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             // Mono<BinaryData>
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            if (httpHeader != null && "text/event-stream".equals(httpHeader.getValue())) {
+            if (TEXT_EVENT_STREAM.equals(contentType)) {
+                // if the response content type is a stream, create a BinaryData instance with bufferContent set to false.
                 asyncResult = BinaryData.fromFlux(sourceResponse.getBody(), null, false);
             } else {
                 asyncResult = BinaryData.fromFlux(sourceResponse.getBody());

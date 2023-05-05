@@ -3,12 +3,11 @@
 package com.azure.cosmos.spark
 
 // scalastyle:off underscore.import
-import com.azure.cosmos.implementation.HttpConstants
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
-import com.azure.cosmos.{models, _}
 import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import com.azure.cosmos._
 import reactor.core.scheduler.Scheduler
 
 import scala.collection.mutable
@@ -30,9 +29,9 @@ import reactor.core.scala.publisher.{SFlux, SMono}
 import reactor.core.scheduler.Schedulers
 
 import java.util.UUID
-import java.util.concurrent.{Semaphore, TimeUnit}
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger, AtomicLong, AtomicReference}
 import java.util.concurrent.locks.ReentrantLock
+import java.util.concurrent.{Semaphore, TimeUnit}
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
@@ -92,6 +91,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
       maxConcurrentPartitions
     )
+  ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
   private val operationContext = initializeOperationContext()
   private val cosmosPatchHelperOpt = writeConfig.itemWriteStrategy match {

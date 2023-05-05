@@ -92,7 +92,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
 public class EncryptedBlobAsyncClient extends BlobAsyncClient {
-    static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**
@@ -108,6 +107,26 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     private final EncryptionVersion encryptionVersion;
 
     private final boolean requiresEncryption;
+
+    EncryptionScope getEncryptionScopeInternal() {
+        return encryptionScope;
+    }
+
+    AsyncKeyEncryptionKey getKeyWrapper() {
+        return keyWrapper;
+    }
+
+    String getKeyWrapAlgorithm() {
+        return keyWrapAlgorithm;
+    }
+
+    EncryptionVersion getEncryptionVersion() {
+        return encryptionVersion;
+    }
+
+    boolean isRequiresEncryption() {
+        return requiresEncryption;
+    }
 
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
