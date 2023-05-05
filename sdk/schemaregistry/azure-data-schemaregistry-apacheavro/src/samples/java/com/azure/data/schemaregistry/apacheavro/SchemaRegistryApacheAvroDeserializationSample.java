@@ -50,7 +50,7 @@ public class SchemaRegistryApacheAvroDeserializationSample {
         // MessageContent.
         MessageContent message = getMessageToDeserialize(serializer);
 
-        PlayingCard deserializedMessage = serializer.deserialize(eventData,
+        PlayingCard deserializedMessage = serializer.deserialize(message,
             TypeReference.createInstance(PlayingCard.class));
     }
 
