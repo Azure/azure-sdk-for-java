@@ -86,7 +86,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization -->
  *
  * @see DocumentModelAdministrationClientBuilder
- * @see DocumentModelAdministrationAsyncClient
+ * @see DocumentModelAdministrationClient
  */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
 public final class DocumentModelAdministrationAsyncClient {

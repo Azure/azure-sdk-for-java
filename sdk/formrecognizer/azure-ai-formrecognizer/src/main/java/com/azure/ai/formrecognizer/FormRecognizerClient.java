@@ -29,9 +29,10 @@ import java.util.List;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
 /**
- * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
- * input documents, recognizing layout information and analyzing custom forms for predefined data.
+ * This class provides a synchronous client to connect to the Form Recognizer Azure Cognitive Service to recognize
+ * information from forms and images and extract it into structured data.
+ * <p>It provides methods to analyze receipts, business cards, invoices, to recognize form content, and to
+ * extract fields from custom forms with models trained on custom form types.</p>
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
  * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerClient.instantiation -->
@@ -44,6 +45,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.instantiation -->
 
  * @see FormRecognizerClientBuilder
+ * @see FormRecognizerAsyncClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)
 public final class FormRecognizerClient {

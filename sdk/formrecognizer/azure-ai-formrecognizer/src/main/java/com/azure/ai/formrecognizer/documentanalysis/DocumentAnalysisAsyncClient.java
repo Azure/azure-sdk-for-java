@@ -62,7 +62,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
  *
  * @see DocumentAnalysisClientBuilder
- * @see DocumentAnalysisAsyncClient
+ * @see DocumentAnalysisClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class, isAsync = true)
 public final class DocumentAnalysisAsyncClient {

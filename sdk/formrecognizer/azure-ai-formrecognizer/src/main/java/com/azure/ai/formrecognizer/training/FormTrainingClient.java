@@ -27,11 +27,11 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * This class provides a synchronous client that contains model management the operations that apply
- * to Azure Form Recognizer.
- * Operations allowed by the client are creating, training of custom models, deleting models, listing models and getting
- * subscription account information.
- *
+ * This class provides a synchronous client to connect with the Form Recognizer Azure Cognitive Service to train models
+ * from custom forms.
+ * <p>It provides methods for training models on the forms you provide, for viewing and deleting models, accessing
+ * account properties, copying models to another Form Recognizer resource, and composing models from a collection of
+ * existing models trained with labels.</p>
  * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
  * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingClient.initialization -->
  * <pre>
@@ -40,7 +40,7 @@ import java.util.List;
  * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingClient.initialization -->
  *
  * @see FormTrainingClientBuilder
- * @see FormTrainingClient
+ * @see FormTrainingAsyncClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class)
 public final class FormTrainingClient {

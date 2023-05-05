@@ -67,7 +67,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.instantiation -->
  *
  * @see DocumentAnalysisClientBuilder
- * @see DocumentAnalysisClient
+ * @see DocumentAnalysisAsyncClient
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {

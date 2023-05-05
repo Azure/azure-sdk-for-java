@@ -63,11 +63,11 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides an asynchronous client that contains model management operations
- * that apply to Azure Form Recognizer.
- * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
- * subscription account information.
- *
+ * This class provides an asynchronous client to connect with the Form Recognizer Azure Cognitive Service to train models
+ * from custom forms.
+ * <p>It provides methods for training models on the forms you provide, for viewing and deleting models, accessing
+ * account properties, copying models to another Form Recognizer resource, and composing models from a collection of
+ * existing models trained with labels.</p>
  * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
  * <!-- src_embed com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.initialization -->
  * <pre>
@@ -76,7 +76,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <!-- end com.azure.ai.formrecognizer.v3.training.FormTrainingAsyncClient.initialization -->
  *
  * @see FormTrainingClientBuilder
- * @see FormTrainingAsyncClient
+ * @see FormTrainingClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
 public final class FormTrainingAsyncClient {

@@ -94,7 +94,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  *
  * @see DocumentModelAdministrationClientBuilder
- * @see DocumentModelAdministrationClient
+ * @see DocumentModelAdministrationAsyncClient
  */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class)
 public final class DocumentModelAdministrationClient {

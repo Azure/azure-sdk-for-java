@@ -54,9 +54,10 @@ import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOp
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are recognizing receipt, business card, invoice and identity document data from
- * input documents, extracting layout information, analyzing custom forms for predefined data.
+ * This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service to recognize
+ * information from forms and images and extract it into structured data.
+ * <p>It provides methods to analyze receipts, business cards, invoices, to recognize form content, and to
+ * extract fields from custom forms with models trained on custom form types.</p>
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
  * <!-- src_embed com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.instantiation -->
@@ -69,6 +70,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerAsyncClient.instantiation -->
  *
  * @see FormRecognizerClientBuilder
+ * @see FormRecognizerClient
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
 public final class FormRecognizerAsyncClient {
