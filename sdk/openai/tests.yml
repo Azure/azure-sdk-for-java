@@ -3,7 +3,8 @@ trigger: none
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      ServiceDirectory: openai
+      Location: eastus
+      DisableAzureResourceCreation: true
       # Temporary static resource will be used for a while until service allows to create source dynamically.
       EnvVars:
         AZURE_OPENAI_ENDPOINT: $(java-openai-shared-endpoint)
