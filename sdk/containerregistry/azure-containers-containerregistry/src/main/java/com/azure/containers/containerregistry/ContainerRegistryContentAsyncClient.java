@@ -52,11 +52,10 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.UP
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createSha256;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getBlobSize;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.getContentLength;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getLocation;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -507,12 +506,12 @@ public final class ContainerRegistryContentAsyncClient {
 
     private Flux<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>> getAllChunks(
         ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData> firstResponse, String digest, Context context) {
-        validateResponseHeaderDigest(digest, firstResponse.getHeaders());
-
-        long blobSize = getBlobSize(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
+        long blobSize = getBlobSize(firstResponse.getHeaders());
         List<Mono<ResponseBase<ContainerRegistryBlobsGetChunkHeaders, BinaryData>>> others = new ArrayList<>();
         others.add(Mono.just(firstResponse));
-        for (long p = firstResponse.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
+
+        long contentLength = getContentLength(firstResponse.getHeaders().get(HttpHeaderName.CONTENT_LENGTH));
+        for (long p = contentLength; p < blobSize; p += CHUNK_SIZE) {
             HttpRange range = new HttpRange(p, (long) CHUNK_SIZE);
             others.add(blobsImpl.getChunkWithResponseAsync(repositoryName, digest, range.toString(), context));
         }

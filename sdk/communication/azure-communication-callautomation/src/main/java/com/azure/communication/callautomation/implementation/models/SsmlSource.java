@@ -16,6 +16,9 @@ public final class SsmlSource {
     @JsonProperty(value = "ssmlText", required = true)
     private String ssmlText;
 
+    /** Creates an instance of SsmlSource class. */
+    public SsmlSource() {}
+
     /**
      * Get the ssmlText property: Ssml string for the cognitive service to be played.
      *

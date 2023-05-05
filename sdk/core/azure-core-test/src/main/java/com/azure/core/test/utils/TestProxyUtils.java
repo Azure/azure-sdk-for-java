@@ -52,7 +52,6 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
-            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -130,12 +129,13 @@ public class TestProxyUtils {
      * @return The modified response.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static HttpResponse revertUrl(HttpResponse response) {
+    public static HttpResponse resetTestProxyData(HttpResponse response) {
+        HttpRequest responseRequest = response.getRequest();
+        HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
-            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders()
-                .getValue(X_RECORDING_UPSTREAM_BASE_URI))
+            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI))
                 .toUrl();
-            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            UrlBuilder currentUrl = UrlBuilder.parse(responseRequest.getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
             int port = originalUrl.getPort();
@@ -144,7 +144,12 @@ public class TestProxyUtils {
             } else {
                 currentUrl.setPort(port);
             }
-            response.getRequest().setUrl(currentUrl.toUrl());
+            responseRequest.setUrl(currentUrl.toUrl());
+
+            requestHeaders.remove(X_RECORDING_UPSTREAM_BASE_URI);
+            requestHeaders.remove(X_RECORDING_MODE);
+            requestHeaders.remove(X_RECORDING_SKIP);
+            requestHeaders.remove(X_RECORDING_ID);
             return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);

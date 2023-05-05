@@ -37,6 +37,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -69,6 +70,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.CoreUtils.bytesToHexString;
+import static com.azure.core.util.CoreUtils.extractSizeFromContentRange;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -93,6 +95,7 @@ public final class UtilsImpl {
 
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
+    public static final int MAX_MANIFEST_SIZE = 4 * 1024 * 1024;
     public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.uploadBlob";
     public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.downloadBlob";
 
@@ -149,7 +152,7 @@ public final class UtilsImpl {
             retryPolicy,
             retryOptions,
             buildCredentialsPolicy(credentialsPipeline, credential, audience, endpoint, serviceVersion),
-            new ContainerRegistryRedirectPolicy(),
+            new RedirectPolicy(),
             perCallPolicies,
             perRetryPolicies,
             httpClient,
@@ -172,7 +175,7 @@ public final class UtilsImpl {
                                               RetryPolicy retryPolicy,
                                               RetryOptions retryOptions,
                                               ContainerRegistryCredentialsPolicy credentialPolicy,
-                                              ContainerRegistryRedirectPolicy redirectPolicy,
+                                              RedirectPolicy redirectPolicy,
                                               List<HttpPipelinePolicy> perCallPolicies,
                                               List<HttpPipelinePolicy> perRetryPolicies,
                                               HttpClient httpClient,
@@ -231,7 +234,6 @@ public final class UtilsImpl {
     public static MessageDigest createSha256() {
         try {
             return MessageDigest.getInstance("SHA-256");
-
         } catch (NoSuchAlgorithmException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -248,6 +250,7 @@ public final class UtilsImpl {
     }
 
     public static Response<GetManifestResult> toGetManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+        checkManifestSize(rawResponse.getHeaders());
         String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
 
@@ -264,6 +267,30 @@ public final class UtilsImpl {
             rawResponse.getStatusCode(),
             rawResponse.getHeaders(),
             ConstructorAccessors.createGetManifestResult(digest, responseMediaType, rawResponse.getValue()));
+    }
+
+    private static long checkManifestSize(HttpHeaders headers) {
+        // part of the service threat model - if manifest does not have proper content length or manifest is too big
+        // it indicates a malicious or faulty service and should not be trusted.
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (CoreUtils.isNullOrEmpty(contentLengthString)) {
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("Response does not include `Content-Length` header"));
+        }
+
+        try {
+            long contentLength = Long.parseLong(contentLengthString);
+            if (contentLength > MAX_MANIFEST_SIZE) {
+                throw LOGGER.atError()
+                    .addKeyValue("contentLength", contentLengthString)
+                    .log(new ServiceResponseException("Manifest size is bigger than 4MB"));
+            }
+
+            return contentLength;
+        } catch (NumberFormatException | NullPointerException e) {
+            throw LOGGER.atError()
+                .addKeyValue("contentLength", contentLengthString)
+                .log(new ServiceResponseException("Could not parse `Content-Length` header"));
+        }
     }
 
     /**
@@ -455,15 +482,26 @@ public final class UtilsImpl {
         return locationHeader;
     }
 
-    public static long getBlobSize(HttpHeader contentRangeHeader) {
+    public static long getBlobSize(HttpHeaders headers) {
+        HttpHeader contentRangeHeader = headers.get(HttpHeaderName.CONTENT_RANGE);
         if (contentRangeHeader != null) {
-            int slashInd = contentRangeHeader.getValue().indexOf('/');
-            if (slashInd > 0) {
-                return Long.parseLong(contentRangeHeader.getValue().substring(slashInd + 1));
+            long size = extractSizeFromContentRange(contentRangeHeader.getValue());
+            if (size > 0) {
+                return size;
             }
         }
 
-        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
+        throw LOGGER.atError()
+            .addKeyValue("contentRange", contentRangeHeader)
+            .log(new ServiceResponseException("Missing or invalid content-range header in response"));
+    }
+
+    public static long getContentLength(HttpHeader contentLengthHeader) {
+        if (contentLengthHeader != null && contentLengthHeader.getValue() != null) {
+            return Long.parseLong(contentLengthHeader.getValue());
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Content-Length header in missing in the response"));
     }
 
     /**

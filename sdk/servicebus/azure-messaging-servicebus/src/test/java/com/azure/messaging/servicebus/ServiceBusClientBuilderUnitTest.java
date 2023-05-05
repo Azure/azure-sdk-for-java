@@ -7,6 +7,8 @@ import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -51,44 +53,148 @@ public class ServiceBusClientBuilderUnitTest {
                 .processMessage(x -> { })
                 .processError(x -> { })
                 .buildProcessorClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .sessionReceiver()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildAsyncClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .processor()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .processMessage(x -> { })
+                .processError(x -> { })
+                .buildProcessorClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .sessionReceiver()
+                .sessionIdleTimeout(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildAsyncClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .processor()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .processMessage(x -> { })
+                .processError(x -> { })
+                .buildProcessorClient());
+    }
+
+    @Test
+    public void testThrowsIfNegativeMaxLockDuration() {
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .sessionReceiver()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildAsyncClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .receiver()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .processor()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .processMessage(x -> { })
+                .processError(x -> { })
+                .buildProcessorClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .sessionProcessor()
+                .maxAutoLockRenewDuration(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildProcessorClient());
+    }
+
+    @Test
+    public void testThrowsIfNegativeSessionIdle() {
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .sessionReceiver()
+                .sessionIdleTimeout(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildAsyncClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> createMinimalValidClientBuilder()
+                .sessionProcessor()
+                .sessionIdleTimeout(Duration.ofSeconds(-1))
+                .queueName("fakequeue")
+                .buildProcessorClient());
     }
 
     @Test
     public void testBuildsWithTokenCredentialIfFullyQualifiedNameIsProvided() {
-        new ServiceBusClientBuilder()
-                .credential(FAKE_TOKEN_CREDENTIAL)
-                .fullyQualifiedNamespace(NAMESPACE_NAME)
+        createMinimalValidClientBuilder()
                 .sender()
                 .queueName("fakequeue")
                 .buildClient();
-        new ServiceBusClientBuilder()
-                .credential(FAKE_TOKEN_CREDENTIAL)
-                .fullyQualifiedNamespace(NAMESPACE_NAME)
+        createMinimalValidClientBuilder()
                 .receiver()
                 .queueName("fakequeue")
                 .buildClient();
-        new ServiceBusClientBuilder()
-                .credential(FAKE_TOKEN_CREDENTIAL)
-                .fullyQualifiedNamespace(NAMESPACE_NAME)
+        createMinimalValidClientBuilder()
                 .sessionProcessor()
                 .queueName("fakequeue")
                 .processMessage(x -> { })
                 .processError(x -> { })
                 .buildProcessorClient();
-        new ServiceBusClientBuilder()
-                .credential(FAKE_TOKEN_CREDENTIAL)
-                .fullyQualifiedNamespace(NAMESPACE_NAME)
+        createMinimalValidClientBuilder()
                 .sessionReceiver()
                 .queueName("fakequeue")
                 .buildClient();
-        new ServiceBusClientBuilder()
-                .credential(FAKE_TOKEN_CREDENTIAL)
-                .fullyQualifiedNamespace(NAMESPACE_NAME)
+        createMinimalValidClientBuilder()
                 .processor()
                 .queueName("fakequeue")
                 .processMessage(x -> { })
                 .processError(x -> { })
                 .buildProcessorClient();
+    }
+
+    @Test
+    public void testBuildsWithSessionIdle() {
+        createMinimalValidClientBuilder()
+            .sessionReceiver()
+            .sessionIdleTimeout(null)
+            .queueName("fakequeue")
+            .buildAsyncClient();
+        createMinimalValidClientBuilder()
+            .sessionProcessor()
+            .sessionIdleTimeout(null)
+            .queueName("fakequeue")
+            .processMessage(x -> { })
+            .processError(x -> { })
+            .buildProcessorClient();
+        createMinimalValidClientBuilder()
+            .sessionReceiver()
+            .sessionIdleTimeout(Duration.ZERO)
+            .queueName("fakequeue")
+            .buildAsyncClient();
+        createMinimalValidClientBuilder()
+            .sessionProcessor()
+            .sessionIdleTimeout(Duration.ZERO)
+            .queueName("fakequeue")
+            .processMessage(x -> { })
+            .processError(x -> { })
+            .buildProcessorClient();
+        createMinimalValidClientBuilder()
+            .sessionReceiver()
+            .sessionIdleTimeout(Duration.ofSeconds(1))
+            .queueName("fakequeue")
+            .buildAsyncClient();
+        createMinimalValidClientBuilder()
+            .sessionProcessor()
+            .sessionIdleTimeout(Duration.ofSeconds(1))
+            .queueName("fakequeue")
+            .processMessage(x -> { })
+            .processError(x -> { })
+            .buildProcessorClient();
     }
 
     @Test
@@ -104,5 +210,11 @@ public class ServiceBusClientBuilderUnitTest {
 
         // Assert
         assertNotNull(builder.buildAsyncClient());
+    }
+
+    private static ServiceBusClientBuilder createMinimalValidClientBuilder() {
+        return new ServiceBusClientBuilder()
+            .credential(FAKE_TOKEN_CREDENTIAL)
+            .fullyQualifiedNamespace(NAMESPACE_NAME);
     }
 }

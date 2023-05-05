@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
 
 ### Other Changes
 

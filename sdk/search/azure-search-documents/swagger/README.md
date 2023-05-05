@@ -23,7 +23,7 @@ npm install -g autorest
 ### Generation
 
 There are two swaggers for Azure Search, `searchindex` and `searchservice`. They always under same package version, e.g. 
-`--tag=package-2021-04-30-Preview-searchindex` and `--tag=package-2021-04-30-Preview-searchservice`.
+`--tag=searchindex` and `--tag=searchservice`.
 
 ```ps
 cd <swagger-folder>
@@ -33,8 +33,8 @@ autorest
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --tag=package-2021-04-30-Preview-searchindex
-autorest --tag=package-2021-04-30-Preview-searchservice
+autorest --tag=searchindex
+autorest --tag=searchservice
 ```
 ## Configuration
 
@@ -46,11 +46,11 @@ opt-in-extensible-enums: true
 openapi-type: data-plane
 ```
 
-### Tag: package-2021-04-30-Preview-searchindex
+### Tag: searchindex
 
-These settings apply only when `--tag=package-2021-04-30-Preview-searchindex` is specified on the command line.
+These settings apply only when `--tag=searchindex` is specified on the command line.
 
-``` yaml $(tag) == 'package-2021-04-30-Preview-searchindex'
+``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/932e261a870475e1a29115f62def7bb84e4d7b38/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchindex.json
@@ -60,11 +60,11 @@ custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions
 customization-class: src/main/java/SearchIndexCustomizations.java
 ```
 
-### Tag: package-2021-04-30-Preview-searchservice
+### Tag: searchservice
 
-These settings apply only when `--tag=package-2021-04-30-Preview-searchservice` is specified on the commandSearchServiceCounters line.
+These settings apply only when `--tag=searchservice` is specified on the commandSearchServiceCounters line.
 
-``` yaml $(tag) == 'package-2021-04-30-Preview-searchservice'
+``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/904899a23a417768ce1ec1d5f89f33817f8ef8ad/specification/search/data-plane/Azure.Search/preview/2021-04-30-Preview/searchservice.json
@@ -129,7 +129,7 @@ This swagger is ready for C# and Java.
 ``` yaml
 output-folder: ../
 java: true
-use: '@autorest/java@4.1.13'
+use: '@autorest/java@4.1.17'
 enable-sync-stack: true
 generate-client-interfaces: false
 context-client-method-parameter: true

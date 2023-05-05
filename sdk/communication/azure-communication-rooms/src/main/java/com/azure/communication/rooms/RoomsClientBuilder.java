@@ -9,6 +9,11 @@ import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -36,7 +41,7 @@ import java.util.Objects;
  * RoomsClientBuilder that creates RoomsAsyncClient and RoomsClient.
  */
 @ServiceClientBuilder(serviceClients = {RoomsClient.class, RoomsAsyncClient.class})
-public final class RoomsClientBuilder {
+public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientBuilder>, ConnectionStringTrait<RoomsClientBuilder>, TokenCredentialTrait<RoomsClientBuilder>, AzureKeyCredentialTrait<RoomsClientBuilder>, EndpointTrait<RoomsClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-rooms.properties";
