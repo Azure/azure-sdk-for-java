@@ -127,7 +127,7 @@ public final class StorageTaskCompletedEventData {
      *
      * @return the summaryReportBlobUrl value.
      */
-    public URL getSummaryReportBlobUrl() {
+    public String getSummaryReportBlobUrl() {
         return this.summaryReportBlobUrl;
     }
 
@@ -137,7 +137,7 @@ public final class StorageTaskCompletedEventData {
      * @param summaryReportBlobUrl the summaryReportBlobUrl value to set.
      * @return the StorageTaskCompletedEventData object itself.
      */
-    public StorageTaskCompletedEventData setSummaryReportBlobUrl(URL summaryReportBlobUrl) {
+    public StorageTaskCompletedEventData setSummaryReportBlobUrl(String summaryReportBlobUrl) {
         this.summaryReportBlobUrl = summaryReportBlobUrl;
         return this;
     }
