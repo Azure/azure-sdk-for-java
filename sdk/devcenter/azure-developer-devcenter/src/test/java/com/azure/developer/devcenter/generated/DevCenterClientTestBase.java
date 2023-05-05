@@ -160,20 +160,14 @@ class DevCenterClientTestBase extends TestBase {
         BinaryData body = BinaryData.fromString(String.format("{\"poolName\": \"%s\"}", poolName));
         RequestOptions requestOptions = new RequestOptions();
 
-        try {
-            SyncPoller<BinaryData, BinaryData> response =
-                devBoxesClient.beginCreateDevBox(projectName, "me", DevBoxName, body, requestOptions);
+        SyncPoller<BinaryData, BinaryData> response =
+            devBoxesClient.beginCreateDevBox(projectName, "me", DevBoxName, body, requestOptions);
 
-            Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+        Assertions.assertEquals(
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }
 
     protected void deleteDevBox() {
-        /*
-
         RequestOptions requestOptions = new RequestOptions();
 
         SyncPoller<BinaryData, Void> response =
@@ -181,7 +175,5 @@ class DevCenterClientTestBase extends TestBase {
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
-
-         */
     }
 }
