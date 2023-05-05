@@ -100,15 +100,13 @@ Create an OpenAI client with proxy options.
 final String hostname = "{your-host-name}";
 final int port = 447; // your port number
 
-ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-    new InetSocketAddress(hostname, port));
-HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-    .proxy(proxyOptions)
-    .build();
+ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(hostname, port))
+    .setCredentials("{username}", "{password}");
 
 OpenAIClient client = new OpenAIClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
+    .clientOptions(new HttpClientOptions().setProxyOptions(proxyOptions))
     .buildClient();
 ```
 
@@ -117,9 +115,11 @@ OpenAIClient client = new OpenAIClientBuilder()
 ## Examples
 The following sections provide several code snippets covering some of the most common OpenAI service tasks, including:
 
-* [Create text completions](#text-completions "Text completions")
-* [Create chat completions](#chat-completions "Chat completions")
-* [Create embeddings](#text-embeddings "Text Embeddings")
+* [Text completions sample](#text-completions "Text completions")
+* [Streaming text completions sample](#streaming-text-completions "Streaming text completions")
+* [Chat completions sample](#chat-completions "Chat completions")
+* [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
+* [Embeddings sample](#text-embeddings "Text Embeddings")
 
 ### Text completions
 
@@ -133,6 +133,23 @@ System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), comple
 for (Choice choice : completions.getChoices()) {
     System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
 }
+```
+
+### Streaming text completions
+
+```java readme-sample-getCompletionsStream
+List<String> prompt = new ArrayList<>();
+prompt.add("How to bake a cake?");
+
+IterableStream<Completions> completionsStream = client
+    .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
+
+completionsStream.forEach(completions -> {
+    System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+    for (Choice choice : completions.getChoices()) {
+        System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
+    }
+});
 ```
 
 ### Chat completions
@@ -156,6 +173,38 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 }
 ```
 Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
+
+### Streaming chat completions
+
+```java readme-sample-getChatCompletionsStream
+List<ChatMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
+chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
+chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
+chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+
+IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+    new ChatCompletionsOptions(chatMessages));
+
+chatCompletionsStream.forEach(chatCompletions -> {
+    System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+    for (ChatChoice choice : chatCompletions.getChoices()) {
+        ChatMessageDelta message = choice.getDelta();
+        if (message != null) {
+            System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
+            System.out.println("Message:");
+            System.out.println(message.getContent());
+        }
+    }
+
+    CompletionsUsage usage = chatCompletions.getUsage();
+    if (usage != null) {
+        System.out.printf("Usage: number of prompt token is %d, "
+                + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+            usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+    }
+});
+```
 
 ### Text embeddings
 
