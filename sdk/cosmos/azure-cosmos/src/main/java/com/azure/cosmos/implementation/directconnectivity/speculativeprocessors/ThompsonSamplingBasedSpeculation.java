@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.directconnectivity.speculativeprocessors;
 
 import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
-import org.apache.commons.math3.distribution.EnumeratedDistribution;
-import org.apache.commons.math3.distribution.EnumeratedIntegerDistribution;
-import org.apache.commons.math3.distribution.GammaDistribution;
-import org.apache.commons.math3.util.Pair;
+import com.azure.cosmos.implementation.apachecommons.math.distribution.EnumeratedDistribution;
+import com.azure.cosmos.implementation.apachecommons.math.distribution.EnumeratedIntegerDistribution;
+import com.azure.cosmos.implementation.apachecommons.math.distribution.GammaDistribution;
+import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 
 import java.net.URI;
 import java.time.Duration;
