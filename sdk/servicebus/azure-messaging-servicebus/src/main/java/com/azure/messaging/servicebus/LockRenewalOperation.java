@@ -33,6 +33,7 @@ class LockRenewalOperation implements AutoCloseable {
     private final AtomicReference<LockRenewalStatus> status = new AtomicReference<>(LockRenewalStatus.RUNNING);
     private final MonoProcessor<Void> cancellationProcessor = MonoProcessor.create();
     private final Mono<Void> completionMono;
+
     private final String lockToken;
     private final boolean isSession;
     private final Function<String, Mono<OffsetDateTime>> renewalOperation;

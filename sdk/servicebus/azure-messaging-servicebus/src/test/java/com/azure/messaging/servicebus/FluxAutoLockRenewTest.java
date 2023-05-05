@@ -6,7 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.StartSpanOptions;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -29,17 +32,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit test for {@link FluxAutoLockRenew}.
@@ -193,6 +207,95 @@ public class FluxAutoLockRenewTest {
 
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
+    }
+
+    @Test
+    public void lockRenewedMultipleTimeWithTracing() {
+        // Arrange
+        final int renewedForAtLeast = 3;
+        final int totalProcessingTimeSeconds = 5;
+        final AtomicInteger actualTokenRenewCalledTimes = new AtomicInteger();
+        final Function<String, Mono<OffsetDateTime>> lockTokenRenewFunction = lockToken -> {
+            actualTokenRenewCalledTimes.getAndIncrement();
+            return Mono.just(OffsetDateTime.now().plusSeconds(1));
+        };
+        final TestContainer messageLockContainer = new TestContainer();
+
+        Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any())).thenAnswer(
+            invocation -> invocation.getArgument(2, Context.class)
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "span"));
+
+        ServiceBusTracer sbTracer = new ServiceBusTracer(tracer, "ns", "entity");
+
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
+            defaultReceiverOptions, messageLockContainer, lockTokenRenewFunction, sbTracer);
+
+        // Act & Assert
+        StepVerifier.create(renewOperator.take(1))
+            .then(() -> {
+                messagesPublisher.next(message);
+            })
+            .assertNext(actual -> {
+                OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
+                try {
+                    TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
+                } catch (InterruptedException e) {
+                    LOGGER.warning("Exception while wait. ", e);
+                }
+                Assertions.assertNotNull(actual);
+                Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
+                Assertions.assertTrue(actual.getMessage().getLockedUntil().isAfter(previousLockedUntil));
+            })
+            .verifyComplete();
+
+        assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
+        assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
+
+        verify(tracer, times(actualTokenRenewCalledTimes.get())).extractContext(any());
+        verify(tracer, times(actualTokenRenewCalledTimes.get())).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, times(actualTokenRenewCalledTimes.get())).end(isNull(), isNull(), any(Context.class));
+    }
+
+    @Test
+    void renewFailsWithTracing() {
+        // Arrange
+        final TestContainer messageLockContainer = new TestContainer();
+
+        Tracer tracer = mock(Tracer.class);
+        when(tracer.isEnabled()).thenReturn(true);
+        when(tracer.start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any())).thenAnswer(
+            invocation -> invocation.getArgument(2, Context.class)
+                .addData(PARENT_TRACE_CONTEXT_KEY, "span"));
+        ServiceBusTracer sbTracer = new ServiceBusTracer(tracer, "ns", "entity");
+
+        CountDownLatch latch = new CountDownLatch(1);
+        RuntimeException toThrow = new RuntimeException("boo");
+
+        final Function<String, Mono<OffsetDateTime>> lockTokenRenewFunction = lockToken -> Mono.error(toThrow)
+            .map(i -> OffsetDateTime.now())
+            .doFinally(st -> latch.countDown());
+
+        final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
+            defaultReceiverOptions, messageLockContainer, lockTokenRenewFunction, sbTracer);
+
+        // Act & Assert
+        StepVerifier.create(renewOperator.take(1))
+            .then(() -> messagesPublisher.next(message))
+            .assertNext(actual -> {
+                try {
+                    assertTrue(latch.await(20, TimeUnit.SECONDS));
+                } catch (InterruptedException e) {
+                    fail(e);
+                }
+            })
+            .verifyComplete();
+
+        // Assert
+        verify(tracer, times(1)).extractContext(any());
+        verify(tracer, times(1)).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, times(1)).end(isNull(), same(toThrow), any(Context.class));
     }
 
     /**

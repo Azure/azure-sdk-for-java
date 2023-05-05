@@ -8,6 +8,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;
@@ -85,6 +86,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .connectionString(getConnectionString())
             .clientOptions(clientOptions)
             .receiver()
+            .maxAutoLockRenewDuration(Duration.ZERO)
             .queueName(getQueueName(0))
             .buildAsyncClient(false, false));
 
@@ -151,6 +153,90 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         assertClientSpan(completed.get(1), Collections.singletonList(received.get(1)), "ServiceBus.complete", "settle");
         assertParentFound(completed.get(1), processed);
+    }
+
+    @Test
+    public void receiveAndRenewLockWithDuration() throws InterruptedException {
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
+        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+
+        CountDownLatch processedFound = new CountDownLatch(1);
+        spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
+
+        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
+        StepVerifier.create(receiver.receiveMessages()
+            .take(1)
+            .doOnNext(msg -> received.set(msg))
+            .flatMap(msg -> receiver.renewMessageLock(msg, Duration.ofSeconds(10)).thenReturn(msg)))
+            .expectNextCount(1)
+            .verifyComplete();
+        assertTrue(processedFound.await(20, TimeUnit.SECONDS));
+
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+        List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
+        assertConsumerSpan(processed.get(0), received.get(), "ServiceBus.process");
+
+        List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewMessageLock");
+        assertClientSpan(renewLock.get(0), Collections.singletonList(received.get()), "ServiceBus.renewMessageLock", null);
+    }
+
+    @Test
+    public void receiveAndRenewSessionLockWithDuration() throws InterruptedException {
+        String sessionId = "10";
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES)
+            .setSessionId(sessionId);
+
+        OpenTelemetry otel = configureOTel(getFullyQualifiedDomainName(), getSessionQueueName(0));
+        sender = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider())))
+            .sender()
+            .queueName(getSessionQueueName(0))
+            .buildAsyncClient());
+
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider())))
+            .sessionReceiver()
+            .disableAutoComplete()
+            .queueName(getSessionQueueName(0))
+            .buildAsyncClient());
+
+        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+
+        CountDownLatch processedFound = new CountDownLatch(1);
+        spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
+
+        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
+        StepVerifier.create(
+            sessionReceiver
+                .acceptSession(sessionId)
+                .flatMapMany(rec -> rec
+                    .renewSessionLock()
+                    .thenMany(rec.receiveMessages()
+                        .take(1)
+                        .doOnNext(msg -> {
+                            received.set(msg);
+                            logger.atInfo()
+                                .addKeyValue("lockedUntil", msg.getLockedUntil())
+                                .addKeyValue("sessionId", msg.getSessionId())
+                                .log("message received");
+                        }))))
+            .expectNextCount(1)
+            .verifyComplete();
+        assertTrue(processedFound.await(20, TimeUnit.SECONDS));
+
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+        List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
+        assertConsumerSpan(processed.get(0), received.get(), "ServiceBus.process");
+
+        List<ReadableSpan> acceptSession = findSpans(spans, "ServiceBus.acceptSession");
+        assertClientSpan(acceptSession.get(0), Collections.emptyList(), "ServiceBus.acceptSession", null);
+
+        List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewSessionLock");
+        assertClientSpan(renewLock.get(0), Collections.emptyList(), "ServiceBus.renewSessionLock", null);
     }
 
     @Test
@@ -296,18 +382,11 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         StepVerifier.create(sender.sendMessage(message)).verifyComplete();
 
-        receiver = toClose(new ServiceBusClientBuilder()
-                .connectionString(getConnectionString())
-                .receiver()
-                .maxAutoLockRenewDuration(Duration.ZERO)
-                .queueName(getQueueName(0))
-                .buildAsyncClient(false, false));
-
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.process") && s.getSpanContext().getTraceId().equals(traceId));
         toClose(receiver.receiveMessages()
             .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
-            .flatMap(m -> receiver.renewMessageLock(m, Duration.ofSeconds(10)).thenReturn(m))
+            .flatMap(m -> receiver.renewMessageLock(m).thenReturn(m))
             .flatMap(m -> receiver.defer(m, new DeferOptions()).thenReturn(m))
             .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m))
             .subscribe(m -> {
@@ -329,7 +408,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertConsumerSpan(process.get(0), receivedMessage.get(), "ServiceBus.process");
 
         List<ReadableSpan> renewMessageLock = findSpans(spans, "ServiceBus.renewMessageLock", traceId);
-        assertClientSpan(renewMessageLock.get(0), Collections.emptyList(), "ServiceBus.renewMessageLock", null);
+        assertClientSpan(renewMessageLock.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.renewMessageLock", null);
         assertParent(renewMessageLock.get(0), process.get(0));
 
         // for correlation to work after first async call, we need to enable otel rector instrumentations,
@@ -746,6 +825,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .filter(s -> s.getName().equals(spanName))
             .filter(s -> s.getSpanContext().getTraceId().equals(traceId))
             .collect(Collectors.toList());
+    }
+
+    private OpenTelemetry configureOTel(String namespace, String entityName) {
+        GlobalOpenTelemetry.resetForTest();
+        spanProcessor = new TestSpanProcessor(namespace, entityName);
+        return OpenTelemetrySdk.builder().setTracerProvider(
+            SdkTracerProvider.builder()
+                .addSpanProcessor(spanProcessor)
+                .build()).build();
     }
 
     static class TestSpanProcessor implements SpanProcessor {

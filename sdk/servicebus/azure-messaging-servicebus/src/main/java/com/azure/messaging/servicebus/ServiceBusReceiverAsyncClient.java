@@ -1045,8 +1045,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         }
 
-        return tracer.traceRenewMessageLock(renewMessageLock(message.getLockToken())
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK)), message);
+        return tracer.traceRenewMessageLock(renewMessageLock(message.getLockToken()), message)
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -1595,10 +1595,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String linkName = sessionManager.getLinkName(sessionId);
 
 
-        return tracer.traceRenewSessionLock(connectionProcessor
+        return connectionProcessor
                     .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                    .flatMap(channel -> channel.renewSessionLock(sessionId, linkName))
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK)));
+                    .flatMap(channel -> tracer.traceMono("ServiceBus.renewSessionLock", channel.renewSessionLock(sessionId, linkName)))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {

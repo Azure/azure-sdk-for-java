@@ -196,12 +196,13 @@ class ServiceBusSessionManager implements AutoCloseable {
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-                return tracer.traceRenewSessionLock(channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
-                    if (receiver != null) {
-                        receiver.setSessionLockedUntil(offsetDateTime);
-                    }
-                    sink.next(offsetDateTime);
-                }));
+                return tracer.traceMono("ServiceBus.renewSessionLock", channel.renewSessionLock(sessionId, associatedLinkName))
+                    .handle((offsetDateTime, sink) -> {
+                        if (receiver != null) {
+                            receiver.setSessionLockedUntil(offsetDateTime);
+                        }
+                        sink.next(offsetDateTime);
+                    });
             }));
     }
 
