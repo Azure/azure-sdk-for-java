@@ -23,6 +23,9 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     @JsonProperty(value = "receivedTimestamp")
     private OffsetDateTime receivedTimestamp;
 
+    /** Creates an instance of AcsSmsReceivedEventData class. */
+    public AcsSmsReceivedEventData() {}
+
     /**
      * Get the message property: The SMS content.
      *

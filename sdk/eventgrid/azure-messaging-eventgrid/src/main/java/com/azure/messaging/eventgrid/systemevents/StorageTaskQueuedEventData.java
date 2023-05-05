@@ -23,6 +23,9 @@ public final class StorageTaskQueuedEventData {
     @JsonProperty(value = "taskExecutionId")
     private String taskExecutionId;
 
+    /** Creates an instance of StorageTaskQueuedEventData class. */
+    public StorageTaskQueuedEventData() {}
+
     /**
      * Get the queuedDateTime property: The time at which a storage task was queued.
      *

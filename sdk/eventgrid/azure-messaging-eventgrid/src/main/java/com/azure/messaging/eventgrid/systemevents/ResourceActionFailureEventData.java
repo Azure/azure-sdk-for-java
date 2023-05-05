@@ -90,6 +90,9 @@ public final class ResourceActionFailureEventData {
 
     static final ClientLogger LOGGER = new ClientLogger(ResourceActionFailureEventData.class);
 
+    /** Creates an instance of ResourceActionFailureEventData class. */
+    public ResourceActionFailureEventData() {}
+
     /**
      * Get the tenantId property: The tenant ID of the resource.
      *

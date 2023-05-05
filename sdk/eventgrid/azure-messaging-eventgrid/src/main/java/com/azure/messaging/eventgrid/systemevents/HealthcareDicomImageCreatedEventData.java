@@ -41,11 +41,14 @@ public final class HealthcareDicomImageCreatedEventData {
     private String serviceHostName;
 
     /*
-     * Sequence number of the DICOM Service within Azure Health Data Services.
-     * It is unique for every image creation and deletion within the service.
+     * Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation
+     * and deletion within the service.
      */
     @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
+
+    /** Creates an instance of HealthcareDicomImageCreatedEventData class. */
+    public HealthcareDicomImageCreatedEventData() {}
 
     /**
      * Get the partitionName property: Data partition name.

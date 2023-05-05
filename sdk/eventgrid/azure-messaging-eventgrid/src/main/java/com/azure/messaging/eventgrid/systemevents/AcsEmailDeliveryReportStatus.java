@@ -8,25 +8,36 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AcsEmailDeliveryReportStatus. */
+/** The status of the email. Any value other than Delivered is considered failed. */
 public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {
-    /** Static value Bounced for AcsEmailDeliveryReportStatus. */
+    /** Hard bounce detected while sending the email. */
     public static final AcsEmailDeliveryReportStatus BOUNCED = fromString("Bounced");
 
-    /** Static value Delivered for AcsEmailDeliveryReportStatus. */
+    /** The email was delivered. */
     public static final AcsEmailDeliveryReportStatus DELIVERED = fromString("Delivered");
 
-    /** Static value Failed for AcsEmailDeliveryReportStatus. */
+    /** The email failed to be delivered. */
     public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
 
-    /** Static value FilteredSpam for AcsEmailDeliveryReportStatus. */
+    /** The message was identified spam and was rejected or blocked (not quarantined). */
     public static final AcsEmailDeliveryReportStatus FILTERED_SPAM = fromString("FilteredSpam");
 
-    /** Static value Quarantined for AcsEmailDeliveryReportStatus. */
+    /**
+     * The message was quarantined (as spam, bulk mail, or phishing). For more information, see Quarantined email
+     * messages in EOP (EXCHANGE ONLINE PROTECTION).
+     */
     public static final AcsEmailDeliveryReportStatus QUARANTINED = fromString("Quarantined");
 
-    /** Static value Suppressed for AcsEmailDeliveryReportStatus. */
+    /** The email was suppressed. */
     public static final AcsEmailDeliveryReportStatus SUPPRESSED = fromString("Suppressed");
+
+    /**
+     * Creates a new instance of AcsEmailDeliveryReportStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AcsEmailDeliveryReportStatus() {}
 
     /**
      * Creates or finds a AcsEmailDeliveryReportStatus from its string representation.

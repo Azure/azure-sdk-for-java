@@ -52,6 +52,9 @@ public final class AcsIncomingCallEventData {
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
+    /** Creates an instance of AcsIncomingCallEventData class. */
+    public AcsIncomingCallEventData() {}
+
     /**
      * Get the toCommunicationIdentifier property: The communication identifier of the target user.
      *

@@ -8,13 +8,21 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageTaskCompletedStatus. */
+/** The status for a storage task. */
 public final class StorageTaskCompletedStatus extends ExpandableStringEnum<StorageTaskCompletedStatus> {
     /** Static value Succeeded for StorageTaskCompletedStatus. */
     public static final StorageTaskCompletedStatus SUCCEEDED = fromString("Succeeded");
 
     /** Static value Failed for StorageTaskCompletedStatus. */
     public static final StorageTaskCompletedStatus FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of StorageTaskCompletedStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageTaskCompletedStatus() {}
 
     /**
      * Creates or finds a StorageTaskCompletedStatus from its string representation.

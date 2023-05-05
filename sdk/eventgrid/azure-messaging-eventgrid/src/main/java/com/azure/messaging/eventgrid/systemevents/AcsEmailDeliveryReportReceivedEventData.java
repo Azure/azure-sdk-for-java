@@ -30,8 +30,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
     private String messageId;
 
     /*
-     * The status of the email. Any value other than Delivered is considered
-     * failed.
+     * The status of the email. Any value other than Delivered is considered failed.
      */
     @JsonProperty(value = "status")
     private AcsEmailDeliveryReportStatus status;
@@ -47,6 +46,9 @@ public final class AcsEmailDeliveryReportReceivedEventData {
      */
     @JsonProperty(value = "deliveryAttemptTimeStamp")
     private OffsetDateTime deliveryAttemptTimestamp;
+
+    /** Creates an instance of AcsEmailDeliveryReportReceivedEventData class. */
+    public AcsEmailDeliveryReportReceivedEventData() {}
 
     /**
      * Get the sender property: The Sender Email Address.

@@ -6,7 +6,6 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.net.URL;
 import java.time.OffsetDateTime;
 
 /** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event. */
@@ -40,7 +39,10 @@ public final class StorageTaskCompletedEventData {
      * The summary report blob url for a storage task
      */
     @JsonProperty(value = "summaryReportBlobUrl")
-    private URL summaryReportBlobUrl;
+    private String summaryReportBlobUrl;
+
+    /** Creates an instance of StorageTaskCompletedEventData class. */
+    public StorageTaskCompletedEventData() {}
 
     /**
      * Get the status property: The status for a storage task.

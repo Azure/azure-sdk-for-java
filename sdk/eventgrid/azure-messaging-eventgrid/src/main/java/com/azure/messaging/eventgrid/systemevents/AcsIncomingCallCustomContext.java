@@ -29,6 +29,9 @@ public final class AcsIncomingCallCustomContext {
     @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
+    /** Creates an instance of AcsIncomingCallCustomContext class. */
+    public AcsIncomingCallCustomContext() {}
+
     /**
      * Get the customHeaders property: Custom Headers for incoming call.
      *
