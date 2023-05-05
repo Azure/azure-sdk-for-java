@@ -111,7 +111,7 @@ public class ServiceBusMeter {
     /**
      * Reports sent messages count.
      */
-    public void reportBatchSend(int batchSize, Throwable throwable, boolean cancelled, Context context) {
+    void reportBatchSend(int batchSize, Throwable throwable, boolean cancelled, Context context) {
         if (isEnabled && sentMessagesCounter.isEnabled()) {
             TelemetryAttributes attributes = sendAttributesSuccess;
             if (throwable != null) {

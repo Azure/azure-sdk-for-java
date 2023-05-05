@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -46,7 +45,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -289,7 +287,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void sendPeekRenewLockAndDefer() throws InterruptedException {
+    public void sendReceiveRenewLockAndDefer() throws InterruptedException {
         String traceId = IdGenerator.random().generateTraceId();
         String traceparent = "00-" + traceId + "-" + IdGenerator.random().generateSpanId() + "-01";
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
@@ -298,11 +296,18 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         StepVerifier.create(sender.sendMessage(message)).verifyComplete();
 
+        receiver = toClose(new ServiceBusClientBuilder()
+                .connectionString(getConnectionString())
+                .receiver()
+                .maxAutoLockRenewDuration(Duration.ZERO)
+                .queueName(getQueueName(0))
+                .buildAsyncClient(false, false));
+
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.process") && s.getSpanContext().getTraceId().equals(traceId));
-        Disposable subscription = receiver.receiveMessages()
+        toClose(receiver.receiveMessages()
             .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
-            .flatMap(m -> receiver.renewMessageLock(m, Duration.ofSeconds(1)).thenReturn(m))
+            .flatMap(m -> receiver.renewMessageLock(m, Duration.ofSeconds(10)).thenReturn(m))
             .flatMap(m -> receiver.defer(m, new DeferOptions()).thenReturn(m))
             .flatMap(m -> receiver.receiveDeferredMessage(m.getSequenceNumber()).thenReturn(m))
             .subscribe(m -> {
@@ -310,8 +315,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     receivedMessage.compareAndSet(null, m);
                     latch.countDown();
                 }
-            });
-        toClose(subscription);
+            }));
         assertTrue(latch.await(50, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -325,7 +329,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertConsumerSpan(process.get(0), receivedMessage.get(), "ServiceBus.process");
 
         List<ReadableSpan> renewMessageLock = findSpans(spans, "ServiceBus.renewMessageLock", traceId);
-        assertClientSpan(renewMessageLock.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.renewMessageLock", null);
+        assertClientSpan(renewMessageLock.get(0), Collections.emptyList(), "ServiceBus.renewMessageLock", null);
         assertParent(renewMessageLock.get(0), process.get(0));
 
         // for correlation to work after first async call, we need to enable otel rector instrumentations,
@@ -697,7 +701,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             SpanContext linkContext = links.get(i).getSpanContext();
             String linkTraceparent = "00-" + linkContext.getTraceId() + "-" + linkContext.getSpanId() + "-01";
             assertEquals(messageTraceparent, linkTraceparent);
-            assertNotNull(links.get(i).getAttributes().get(AttributeKey.longKey(ServiceBusTracer.MESSAGE_ENQUEUED_TIME_ATTRIBUTE_NAME)));
         }
     }
 

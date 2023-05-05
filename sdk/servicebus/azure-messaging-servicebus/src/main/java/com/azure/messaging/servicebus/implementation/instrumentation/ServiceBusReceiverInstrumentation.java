@@ -61,7 +61,7 @@ public class ServiceBusReceiverInstrumentation {
             return Mono.defer(() -> {
                 long startTime = Instant.now().toEpochMilli();
                 Context span = tracer.startSpanWithLink(getSettlementSpanName(status), ServiceBusTracer.OperationName.SETTLE,
-                    message, messageContext, messageContext);
+                    message, messageContext);
                 return publisher
                     .doOnEach(signal -> {
                         meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), false, span);

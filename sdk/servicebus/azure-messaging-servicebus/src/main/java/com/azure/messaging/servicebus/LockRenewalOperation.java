@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -33,7 +35,6 @@ class LockRenewalOperation implements AutoCloseable {
     private final AtomicReference<LockRenewalStatus> status = new AtomicReference<>(LockRenewalStatus.RUNNING);
     private final MonoProcessor<Void> cancellationProcessor = MonoProcessor.create();
     private final Mono<Void> completionMono;
-
     private final String lockToken;
     private final boolean isSession;
     private final Function<String, Mono<OffsetDateTime>> renewalOperation;
@@ -48,8 +49,8 @@ class LockRenewalOperation implements AutoCloseable {
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation) {
-        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, OffsetDateTime.now());
+        Function<String, Mono<OffsetDateTime>> renewalOperation, ServiceBusTracer tracer, Context context) {
+        this(lockToken, maxLockRenewalDuration, isSession, renewalOperation, OffsetDateTime.now(), tracer, context);
     }
 
     /**
@@ -62,9 +63,12 @@ class LockRenewalOperation implements AutoCloseable {
      * @param renewalOperation The renewal operation to call.
      */
     LockRenewalOperation(String lockToken, Duration maxLockRenewalDuration, boolean isSession,
-        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil) {
+        Function<String, Mono<OffsetDateTime>> renewalOperation, OffsetDateTime tokenLockedUntil, ServiceBusTracer tracer,
+        Context context) {
         this.lockToken = Objects.requireNonNull(lockToken, "'lockToken' cannot be null.");
-        this.renewalOperation = Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
+        Objects.requireNonNull(renewalOperation, "'renewalOperation' cannot be null.");
+
+        this.renewalOperation = t -> tracer.traceMonoWithLink("ServiceBus.renewMessageLock", renewalOperation.apply(t), null, context);
         this.isSession = isSession;
 
         Objects.requireNonNull(tokenLockedUntil, "'lockedUntil cannot be null.'");

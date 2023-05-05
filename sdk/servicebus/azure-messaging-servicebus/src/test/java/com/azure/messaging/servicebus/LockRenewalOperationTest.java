@@ -3,7 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,6 +33,7 @@ class LockRenewalOperationTest {
     private static final String A_LOCK_TOKEN = "a-lock-token";
 
     private static final ClientLogger LOGGER = new ClientLogger(LockRenewalOperationTest.class);
+    private static final ServiceBusTracer TRACER = new ServiceBusTracer(null, "namespace", "entity");
     private LockRenewalOperation operation;
 
     @AfterEach
@@ -54,7 +57,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalArgumentException("did not expect : " + token));
 
         // Act
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil, TRACER, Context.NONE);
 
         // Assert
         if (isSession) {
@@ -104,7 +107,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalStateException("Should have fetched an item."));
         };
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, isSession, renewalOperation, lockedUntil, TRACER, Context.NONE);
 
         // Act
         StepVerifier.create(operation.getCompletionOperation())
@@ -142,7 +145,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalArgumentException("did not expect : " + token));
         };
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil, TRACER, Context.NONE);
 
         // Act
         StepVerifier.create(operation.getCompletionOperation())
@@ -184,7 +187,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalArgumentException("did not expect : " + token));
         };
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil, TRACER, Context.NONE);
 
         // Act
         StepVerifier.create(operation.getCompletionOperation())
@@ -225,7 +228,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalArgumentException("did not expect : " + token));
         };
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, lockedUntil, TRACER, Context.NONE);
 
         // Act
         Thread.sleep(renewalPeriod.toMillis());
@@ -262,7 +265,7 @@ class LockRenewalOperationTest {
                 : Mono.error(new IllegalArgumentException("did not expect : " + token));
         };
 
-        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation);
+        operation = new LockRenewalOperation(A_LOCK_TOKEN, maxDuration, false, renewalOperation, TRACER, Context.NONE);
 
         // Act
         Thread.sleep(totalSleepPeriod.toMillis());
