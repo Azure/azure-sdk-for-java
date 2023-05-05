@@ -1,0 +1,13 @@
+{
+  "name": "swagger",
+  "version": "0.1.0",
+  "type": "module",
+  "dependencies": {
+    "@azure-tools/typespec-java": "^0.6.2",
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/rest": "latest",
+    "@typespec/versioning": "latest"
+  },
+  "private": true
+}
