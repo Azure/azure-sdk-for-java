@@ -3,6 +3,8 @@
 
 package com.azure.ai.openai.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +35,8 @@ public final class OpenAIServerSentEvents<T> {
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
 
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIServerSentEvents.class);
+
     public OpenAIServerSentEvents(Flux<ByteBuffer> source, Class<T> type) {
         this.source = source;
         this.type = type;
@@ -57,18 +61,19 @@ public final class OpenAIServerSentEvents<T> {
 
                     if (!expectEmptyLine.get()) {
                         expectEmptyLine.set(true);
+                        // The expected line format of the server sent event is data: {...}
                         String[] split = currentLine.split(":", 2);
                         if (split.length != 2) {
                             return Flux.error(new IllegalStateException("Invalid data format " + currentLine));
                         }
 
-                        String completionJson = split[1];
+                        String dataValue = split[1];
                         if (split[1].startsWith(" ")) {
-                            completionJson = split[1].substring(1);
+                            dataValue = split[1].substring(1);
                         }
 
-                        if (isValidJson(completionJson)) {
-                            T value = SERIALIZER.readValue(completionJson, type);
+                        if (!dataValue.isEmpty() && isValidJson(dataValue)) {
+                            T value = SERIALIZER.readValue(dataValue, type);
                             values.add(value);
                             lastLine.set("");
                         } else {
@@ -82,6 +87,8 @@ public final class OpenAIServerSentEvents<T> {
                 }
                 return Flux.fromIterable(values);
             } catch (IOException e) {
+                LOGGER.log(LogLevel.VERBOSE, () -> new String(byteBuffer.rewind().array()));
+                LOGGER.logThrowableAsError(e);
                 return Flux.error(e);
             }
         });
@@ -92,6 +99,9 @@ public final class OpenAIServerSentEvents<T> {
             SERIALIZER.readTree(json);
             return true;
         } catch (JacksonException exception) {
+            // This can happen if the byte buffers are split resulting in a partial data line in this bytebuffer.
+            // So, concatenating the last line of this bytebuffer with the first line of the
+            // next bytebuffer should form a valid data event.
             return false;
         }
     }
