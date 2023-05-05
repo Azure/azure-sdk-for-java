@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 package com.azure.cosmos.implementation.apachecommons.math.distribution;
 
 import com.azure.cosmos.implementation.apachecommons.math.exception.NumberIsTooLargeException;

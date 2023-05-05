@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 package com.azure.cosmos.implementation.apachecommons.math.special;
 
 import com.azure.cosmos.implementation.apachecommons.math.analysis.UnivariateFunction;

@@ -15,6 +15,10 @@
  * limitations under the License.
  */
 
+/*
+ * Portions Copyright (c) Microsoft Corporation
+ */
+
 package com.azure.cosmos.implementation.apachecommons.math.util;
 
 import java.math.BigDecimal;
