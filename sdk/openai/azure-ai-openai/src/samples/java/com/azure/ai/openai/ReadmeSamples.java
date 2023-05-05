@@ -8,18 +8,20 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
+import com.azure.ai.openai.models.ChatMessageDelta;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.net.InetSocketAddress;
@@ -70,15 +72,13 @@ public final class ReadmeSamples {
         final String hostname = "{your-host-name}";
         final int port = 447; // your port number
 
-        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-            new InetSocketAddress(hostname, port));
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder()
-            .proxy(proxyOptions)
-            .build();
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(hostname, port))
+            .setCredentials("{username}", "{password}");
 
         OpenAIClient client = new OpenAIClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
+            .clientOptions(new HttpClientOptions().setProxyOptions(proxyOptions))
             .buildClient();
         // END: readme-sample-createOpenAIClientWithProxyOption
     }
@@ -95,6 +95,23 @@ public final class ReadmeSamples {
             System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
         }
         // END: readme-sample-getCompletions
+    }
+
+    public void getCompletionsStream() {
+        // BEGIN: readme-sample-getCompletionsStream
+        List<String> prompt = new ArrayList<>();
+        prompt.add("How to bake a cake?");
+
+        IterableStream<Completions> completionsStream = client
+            .getCompletionsStream("{deploymentOrModelId}", new CompletionsOptions(prompt));
+
+        completionsStream.forEach(completions -> {
+            System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
+            for (Choice choice : completions.getChoices()) {
+                System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
+            }
+        });
+        // END: readme-sample-getCompletionsStream
     }
 
     public void getChatCompletions() {
@@ -116,6 +133,38 @@ public final class ReadmeSamples {
             System.out.println(message.getContent());
         }
         // END: readme-sample-getChatCompletions
+    }
+
+    public void getChatCompletionsStream() {
+        // BEGIN: readme-sample-getChatCompletionsStream
+        List<ChatMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
+        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
+
+        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+            new ChatCompletionsOptions(chatMessages));
+
+        chatCompletionsStream.forEach(chatCompletions -> {
+            System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+            for (ChatChoice choice : chatCompletions.getChoices()) {
+                ChatMessageDelta message = choice.getDelta();
+                if (message != null) {
+                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
+                    System.out.println("Message:");
+                    System.out.println(message.getContent());
+                }
+            }
+
+            CompletionsUsage usage = chatCompletions.getUsage();
+            if (usage != null) {
+                System.out.printf("Usage: number of prompt token is %d, "
+                        + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+            }
+        });
+        // END: readme-sample-getChatCompletionsStream
     }
 
     public void getEmbedding() {

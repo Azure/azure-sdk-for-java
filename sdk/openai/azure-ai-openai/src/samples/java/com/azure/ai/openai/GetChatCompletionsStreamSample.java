@@ -52,9 +52,11 @@ public class GetChatCompletionsStreamSample {
             System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
             for (ChatChoice choice : chatCompletions.getChoices()) {
                 ChatMessageDelta message = choice.getDelta();
-                System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
-                System.out.println("Message:");
-                System.out.println(message.getContent());
+                if (message != null) {
+                    System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
+                    System.out.println("Message:");
+                    System.out.println(message.getContent());
+                }
             }
 
             CompletionsUsage usage = chatCompletions.getUsage();
