@@ -5,8 +5,8 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
 
-/** The RecognizeFailedEventData model. */
+/** The RecognizeFailed model. */
 @Fluent
-public final class RecognizeFailedEventData extends CallAutomationEventDataWithReasonCode {
+public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode {
 
 }

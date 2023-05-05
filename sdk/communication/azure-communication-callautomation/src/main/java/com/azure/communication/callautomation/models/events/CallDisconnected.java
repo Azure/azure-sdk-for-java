@@ -5,9 +5,9 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
 
-/** The CallDisconnectedEventData model. */
+/** The CallDisconnected model. */
 @Immutable
-public final class CallDisconnectedEventData extends CallAutomationEventData {
-    private CallDisconnectedEventData() {
+public final class CallDisconnected extends CallAutomationEventBase {
+    private CallDisconnected() {
     }
 }
