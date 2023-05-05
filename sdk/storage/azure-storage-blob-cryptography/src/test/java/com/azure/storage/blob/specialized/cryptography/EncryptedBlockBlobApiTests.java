@@ -90,7 +90,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
@@ -1396,7 +1395,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // We should receive at least one notification reporting an intermediary value per block, but possibly more
         // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
         // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
-        if (numBlocks == 0) numBlocks++;
+        if (numBlocks == 0) {
+            numBlocks++;
+        }
         verify(mockReceiver, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
@@ -1429,7 +1430,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // We should receive at least one notification reporting an intermediary value per block, but possibly more
         // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
         // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
-        if (numBlocks == 0) numBlocks++;
+        if (numBlocks == 0) {
+            numBlocks++;
+        }
         verify(mockListener, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
