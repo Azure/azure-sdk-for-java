@@ -34,7 +34,7 @@ public final class LedgersListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"runningState\":\"Resuming\",\"properties\":{\"ledgerName\":\"v\",\"ledgerUri\":\"sounqecanoaeu\",\"identityServiceUri\":\"hy\",\"ledgerInternalNamespace\":\"trpmo\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Succeeded\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"mddystkiiux\":\"s\",\"o\":\"qyud\"},\"location\":\"yocf\",\"id\":\"rq\",\"name\":\"b\",\"type\":\"oczvy\"}]}";
+            "{\"value\":[{\"properties\":{\"ledgerName\":\"hcbonqvpkvlr\",\"ledgerUri\":\"jease\",\"identityServiceUri\":\"heoflokeyyienjbd\",\"ledgerInternalNamespace\":\"tgrhpdjpjumas\",\"runningState\":\"Unknown\",\"ledgerType\":\"Public\",\"provisioningState\":\"Unknown\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"hb\",\"tags\":{\"jzzvdud\":\"e\",\"pwlbjnpg\":\"wdslfhotwmcy\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +63,11 @@ public final class LedgersListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ConfidentialLedger> response =
-            manager.ledgers().listByResourceGroup("cattpngjcrcczsq", "jh", com.azure.core.util.Context.NONE);
+            manager.ledgers().listByResourceGroup("c", "aqw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yocf", response.iterator().next().location());
-        Assertions.assertEquals(RunningState.RESUMING, response.iterator().next().runningState());
-        Assertions.assertEquals(LedgerType.UNKNOWN, response.iterator().next().properties().ledgerType());
-        Assertions.assertEquals("s", response.iterator().next().tags().get("mddystkiiux"));
+        Assertions.assertEquals("hb", response.iterator().next().location());
+        Assertions.assertEquals("e", response.iterator().next().tags().get("jzzvdud"));
+        Assertions.assertEquals(RunningState.UNKNOWN, response.iterator().next().properties().runningState());
+        Assertions.assertEquals(LedgerType.PUBLIC, response.iterator().next().properties().ledgerType());
     }
 }

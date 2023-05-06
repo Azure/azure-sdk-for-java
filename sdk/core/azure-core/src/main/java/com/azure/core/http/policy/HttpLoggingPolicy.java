@@ -16,6 +16,13 @@ import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
+import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.implementation.util.BinaryDataHelper;
+import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
+import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.SerializableContent;
+import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -215,28 +222,48 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
 
             if (httpLogDetailLevel.shouldLogBody() && shouldBodyBeLogged(contentType, contentLength)) {
-                AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream((int) contentLength);
-
-                // Add non-mutating operators to the data stream.
-                request.setBody(
-                    request.getBody()
-                        .doOnNext(byteBuffer -> {
-                            try {
-                                ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
-                            } catch (IOException ex) {
-                                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-                            }
-                        })
-                        .doFinally(ignored -> logBuilder.addKeyValue(LoggingKeys.BODY_KEY,
-                                prettyPrintIfNeeded(logger, prettyPrintBody, contentType,
-                                stream.toString(StandardCharsets.UTF_8)))
-                            .log(REQUEST_LOG_MESSAGE)));
+                logBody(request, (int) contentLength, logBuilder, logger, contentType);
                 return;
             }
 
             logBuilder.log(REQUEST_LOG_MESSAGE);
         }
     }
+
+    private void logBody(HttpRequest request, int contentLength, LoggingEventBuilder logBuilder, ClientLogger logger, String contentType) {
+        BinaryData data = request.getBodyAsBinaryData();
+        BinaryDataContent content = BinaryDataHelper.getContent(data);
+        if (content instanceof StringContent
+            || content instanceof ByteBufferContent
+            || content instanceof SerializableContent
+            || content instanceof ByteArrayContent) {
+            logBody(logBuilder, logger, contentType, content.toString());
+        } else if (content instanceof InputStreamContent) {
+            // TODO (limolkova) Implement sync version with logging stream wrapper
+            byte[] contentBytes = content.toBytes();
+            request.setBody(contentBytes);
+            logBody(logBuilder, logger, contentType, new String(contentBytes, StandardCharsets.UTF_8));
+        } else {
+            // Add non-mutating operators to the data stream.
+            AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
+            request.setBody(
+                content.toFluxByteBuffer()
+                    .doOnNext(byteBuffer -> {
+                        try {
+                            ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+                        } catch (IOException ex) {
+                            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+                        }
+                    })
+                    .doFinally(ignored -> logBody(logBuilder, logger, contentType, stream.toString(StandardCharsets.UTF_8))));
+        }
+    }
+
+    private void logBody(LoggingEventBuilder logBuilder, ClientLogger logger, String contentType, String data) {
+        logBuilder.addKeyValue(LoggingKeys.BODY_KEY, prettyPrintIfNeeded(logger, prettyPrintBody, contentType, data))
+            .log(REQUEST_LOG_MESSAGE);
+    }
+
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
         @Override
@@ -339,7 +366,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
         UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
 
-        ImplUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+        CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
             if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
                 urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
             } else {
@@ -552,6 +579,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             BinaryData content = actualResponse.getBodyAsBinaryData();
             doLog(content.toString());
             return content;
+        }
+
+        @Override
+        public void close() {
+            actualResponse.close();
         }
 
         private void doLog(String body) {

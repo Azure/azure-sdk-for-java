@@ -1301,7 +1301,7 @@
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.cloud-type",
       "type": "com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider$CloudType",
-      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
@@ -1590,7 +1590,7 @@
     {
       "name": "spring.datasource.azure.profile.cloud-type",
       "type": "java.lang.String",
-      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzureJdbcPasswordlessProperties"
     },
     {
@@ -1658,7 +1658,7 @@
     {
       "name": "spring.redis.azure.profile.cloud-type",
       "type": "java.lang.String",
-      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
+      "description": "Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties"
     },
     {

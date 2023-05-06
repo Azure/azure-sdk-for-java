@@ -33,7 +33,7 @@ public final class LedgersGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"runningState\":\"Unknown\",\"properties\":{\"ledgerName\":\"fhotw\",\"ledgerUri\":\"ynpwlbj\",\"identityServiceUri\":\"gacftadeh\",\"ledgerInternalNamespace\":\"ltyfsop\",\"ledgerType\":\"Private\",\"provisioningState\":\"Deleting\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"tags\":{\"vdcsitynn\":\"hybcibv\",\"f\":\"amdecte\"},\"location\":\"ofqweykhmenevfye\",\"id\":\"qsc\",\"name\":\"eypvhezrkg\",\"type\":\"hcjrefovgmk\"}";
+            "{\"properties\":{\"ledgerName\":\"nyktzlcuiy\",\"ledgerUri\":\"qyw\",\"identityServiceUri\":\"drvyn\",\"ledgerInternalNamespace\":\"gpphrcgyn\",\"runningState\":\"Pausing\",\"ledgerType\":\"Unknown\",\"provisioningState\":\"Canceled\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"ofsx\",\"tags\":{\"bmqj\":\"v\",\"lzu\":\"abcypmivk\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,14 +62,11 @@ public final class LedgersGetByResourceGroupWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfidentialLedger response =
-            manager
-                .ledgers()
-                .getByResourceGroupWithResponse("masxazjpqyegu", "lhbxxhejjzzvdud", com.azure.core.util.Context.NONE)
-                .getValue();
+            manager.ledgers().getByResourceGroupWithResponse("h", "qfbow", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("ofqweykhmenevfye", response.location());
-        Assertions.assertEquals(RunningState.UNKNOWN, response.runningState());
-        Assertions.assertEquals(LedgerType.PRIVATE, response.properties().ledgerType());
-        Assertions.assertEquals("hybcibv", response.tags().get("vdcsitynn"));
+        Assertions.assertEquals("ofsx", response.location());
+        Assertions.assertEquals("v", response.tags().get("bmqj"));
+        Assertions.assertEquals(RunningState.PAUSING, response.properties().runningState());
+        Assertions.assertEquals(LedgerType.UNKNOWN, response.properties().ledgerType());
     }
 }

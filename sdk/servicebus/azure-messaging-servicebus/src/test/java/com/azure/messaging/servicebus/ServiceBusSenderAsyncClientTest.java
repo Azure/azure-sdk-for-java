@@ -451,6 +451,88 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    void sendCancelledIsInstrumented() {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final TestMeter meter = new TestMeter();
+        when(tracer1.isEnabled()).thenReturn(true);
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(tracer1, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+
+        when(sendLink.send(any(Message.class))).thenAnswer(i -> Mono.delay(Duration.ofSeconds(10)).then());
+
+        when(tracer1.start(eq("ServiceBus.message"), any(), any(Context.class))).thenAnswer(
+            invocation -> invocation.getArgument(2, Context.class)
+                .addData(SPAN_CONTEXT_KEY, "span"));
+
+        when(tracer1.start(eq("ServiceBus.send"), any(), any(Context.class))).thenAnswer(
+            invocation -> invocation.getArgument(2, Context.class)
+                .addData(PARENT_TRACE_CONTEXT_KEY, "trace-context")
+        );
+
+        doAnswer(invocation -> null).when(tracer1).injectContext(any(), any(Context.class));
+
+        // Act
+        sender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(TEST_CONTENTS.toBytes())))
+            .toFuture().cancel(true);
+
+        // Assert
+        verify(tracer1, times(1))
+            .start(eq("ServiceBus.message"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer1, times(1))
+            .start(eq("ServiceBus.send"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer1, times(1)).end(eq("cancelled"), isNull(), any(Context.class));
+
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        assertNotNull(sentMessagesCounter);
+        assertEquals(1, sentMessagesCounter.getMeasurements().size());
+
+        TestMeasurement<Long> measurement1 = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(1, measurement1.getValue());
+
+        Map<String, Object> attributes1 = measurement1.getAttributes();
+        assertEquals(3, attributes1.size());
+        assertCommonMetricAttributes(attributes1, "cancelled");
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void sendCancelledMetricsOnly() {
+        // Arrange
+        final TestMeter meter = new TestMeter();
+        ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
+
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, instrumentation, serializer, onClientClose, null, CLIENT_IDENTIFIER);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
+            .thenReturn(Mono.just(sendLink));
+
+        when(sendLink.send(any(Message.class))).thenAnswer(i -> Mono.delay(Duration.ofSeconds(10)).then());
+
+        // Act
+        sender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(TEST_CONTENTS.toBytes())))
+            .toFuture().cancel(true);
+
+        TestCounter sentMessagesCounter = meter.getCounters().get("messaging.servicebus.messages.sent");
+        assertNotNull(sentMessagesCounter);
+        assertEquals(1, sentMessagesCounter.getMeasurements().size());
+
+        TestMeasurement<Long> measurement1 = sentMessagesCounter.getMeasurements().get(0);
+        assertEquals(1, measurement1.getValue());
+
+        Map<String, Object> attributes1 = measurement1.getAttributes();
+        assertEquals(3, attributes1.size());
+        assertCommonMetricAttributes(attributes1, "cancelled");
+    }
+
+    @Test
     void sendMessageReportsMetrics() {
         // Arrange
         TestMeter meter = new TestMeter();
@@ -481,9 +563,9 @@ class ServiceBusSenderAsyncClientTest {
         Map<String, Object> attributes1 = measurement1.getAttributes();
         Map<String, Object> attributes2 = measurement2.getAttributes();
         assertEquals(3, attributes1.size());
-        assertCommonMetricAttributes(attributes1, true);
+        assertCommonMetricAttributes(attributes1, "ok");
         assertEquals(3, attributes2.size());
-        assertCommonMetricAttributes(attributes2, true);
+        assertCommonMetricAttributes(attributes2, "ok");
     }
 
     @Test
@@ -519,7 +601,7 @@ class ServiceBusSenderAsyncClientTest {
 
         Map<String, Object> attributes = measurement.getAttributes();
         assertEquals(3, attributes.size());
-        assertCommonMetricAttributes(attributes, true);
+        assertCommonMetricAttributes(attributes, "ok");
         assertEquals(span, measurement.getContext());
     }
 
@@ -551,7 +633,7 @@ class ServiceBusSenderAsyncClientTest {
         assertEquals(2, measurement.getValue());
 
         assertEquals(3,  measurement.getAttributes().size());
-        assertCommonMetricAttributes(measurement.getAttributes(), true);
+        assertCommonMetricAttributes(measurement.getAttributes(), "ok");
     }
 
     @Test
@@ -579,7 +661,7 @@ class ServiceBusSenderAsyncClientTest {
 
         Map<String, Object> attributes = measurement.getAttributes();
         assertEquals(3, attributes.size());
-        assertCommonMetricAttributes(attributes, false);
+        assertCommonMetricAttributes(attributes, "error");
     }
 
     /**
@@ -901,10 +983,10 @@ class ServiceBusSenderAsyncClientTest {
         verify(onClientClose).run();
     }
 
-    private void assertCommonMetricAttributes(Map<String, Object> attributes, boolean success) {
+    private void assertCommonMetricAttributes(Map<String, Object> attributes, String status) {
         assertEquals(NAMESPACE, attributes.get("hostName"));
         assertEquals(ENTITY_NAME, attributes.get("entityName"));
-        assertEquals(success ? "ok" : "error", attributes.get("status"));
+        assertEquals(status, attributes.get("status"));
     }
 
     private void assertStartOptions(StartSpanOptions startOpts, SpanKind kind, int linkCount) {

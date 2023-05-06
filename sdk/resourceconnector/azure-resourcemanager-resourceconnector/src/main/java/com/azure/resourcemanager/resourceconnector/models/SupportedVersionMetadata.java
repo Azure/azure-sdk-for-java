@@ -16,6 +16,10 @@ public final class SupportedVersionMetadata {
     @JsonProperty(value = "catalogVersion", access = JsonProperty.Access.WRITE_ONLY)
     private SupportedVersionCatalogVersion catalogVersion;
 
+    /** Creates an instance of SupportedVersionMetadata class. */
+    public SupportedVersionMetadata() {
+    }
+
     /**
      * Get the catalogVersion property: The newer supported version catalog version.
      *

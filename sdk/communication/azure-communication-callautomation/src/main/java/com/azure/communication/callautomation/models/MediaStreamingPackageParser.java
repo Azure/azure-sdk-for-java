@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Parser of the different packages received as part of Media streaming.
  */
-public class MediaStreamingPackageParser {
+public final class MediaStreamingPackageParser {
     private static final ClientLogger LOGGER = new ClientLogger(MediaStreamingPackageParser.class);
 
     /***

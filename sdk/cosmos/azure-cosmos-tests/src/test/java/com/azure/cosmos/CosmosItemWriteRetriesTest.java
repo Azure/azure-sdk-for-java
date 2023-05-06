@@ -344,7 +344,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "createItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    @Test(groups = { "emulator" }, dataProvider = "createItemTestCaseProvider", timeOut = TIMEOUT * 10)
     public void createItem(
         boolean hasExplicitPK,
         boolean isContentResponseOnWriteEnabled,
@@ -426,7 +426,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         return createResponse.getItem().get("_etag").textValue();
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "replaceItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    @Test(groups = { "emulator" }, dataProvider = "replaceItemTestCaseProvider", timeOut = TIMEOUT * 10)
     public void replaceItem(
         boolean usePreconditionCheck,
         boolean isContentResponseOnWriteEnabled,
@@ -487,7 +487,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "upsertItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    @Test(groups = { "emulator" }, dataProvider = "upsertItemTestCaseProvider", timeOut = TIMEOUT * 10)
     public void upsertItem(
         boolean itemExistsAlready,
         boolean injectFailure,
@@ -534,7 +534,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "deleteItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    @Test(groups = { "emulator" }, dataProvider = "deleteItemTestCaseProvider", timeOut = TIMEOUT * 10)
     public void deleteItem(
         boolean injectFailure,
         Boolean suppressServiceRequests,
@@ -573,7 +573,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "patchItemTestCaseProvider", timeOut = TIMEOUT * 10000)
+    @Test(groups = { "emulator" }, dataProvider = "patchItemTestCaseProvider", timeOut = TIMEOUT * 10)
     public void patchItem(
         boolean injectFailure,
         Boolean suppressServiceRequests,

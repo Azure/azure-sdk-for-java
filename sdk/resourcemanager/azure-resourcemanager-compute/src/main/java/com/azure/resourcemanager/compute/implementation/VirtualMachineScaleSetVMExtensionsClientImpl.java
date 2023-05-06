@@ -70,8 +70,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
     public interface VirtualMachineScaleSetVMExtensionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -88,8 +87,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -106,8 +104,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -123,8 +120,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions/{vmExtensionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineScaleSetVMExtensionInner>> get(
@@ -141,8 +137,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/extensions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> list(
@@ -209,7 +204,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -283,7 +278,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -584,7 +579,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -658,7 +653,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -944,7 +939,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1005,7 +1000,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1224,7 +1219,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1292,7 +1287,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1413,7 +1408,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1471,7 +1466,7 @@ public final class VirtualMachineScaleSetVMExtensionsClientImpl implements Virtu
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
