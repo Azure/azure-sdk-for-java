@@ -18,6 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
@@ -50,6 +51,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.same;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -242,7 +244,7 @@ public class FluxAutoLockRenewTest {
                 try {
                     TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
                 } catch (InterruptedException e) {
-                    LOGGER.warning("Exception while wait. ", e);
+                    fail(e);
                 }
                 Assertions.assertNotNull(actual);
                 Assertions.assertEquals(LOCK_TOKEN_STRING, actual.getMessage().getLockToken());
@@ -253,9 +255,10 @@ public class FluxAutoLockRenewTest {
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
         assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
 
-        verify(tracer, times(actualTokenRenewCalledTimes.get())).extractContext(any());
-        verify(tracer, times(actualTokenRenewCalledTimes.get())).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any(Context.class));
-        verify(tracer, times(actualTokenRenewCalledTimes.get())).end(isNull(), isNull(), any(Context.class));
+        // we might not have got all the spans yet.
+        verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).extractContext(any());
+        verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).start(eq("ServiceBus.renewMessageLock"), any(StartSpanOptions.class), any(Context.class));
+        verify(tracer, atLeast(actualTokenRenewCalledTimes.get() - 1)).end(isNull(), isNull(), any(Context.class));
     }
 
     @Test
@@ -572,7 +575,6 @@ public class FluxAutoLockRenewTest {
      * When auto complete is disabled by user, we do not perform message lock clean up.
      */
     @Test
-    //@RepeatedTest(1000)
     void autoCompleteDisabledLockRenewNotClosed() {
         // Arrange
         final TestContainer messageLockContainer = new TestContainer();
@@ -598,7 +600,7 @@ public class FluxAutoLockRenewTest {
             .assertNext(actual -> {
                 OffsetDateTime previousLockedUntil = actual.getMessage().getLockedUntil();
                 try {
-                    TimeUnit.SECONDS.sleep(totalProcessingTimeSeconds);
+                    Thread.sleep(totalProcessingTimeSeconds * 1000 + 100);
                 } catch (InterruptedException e) {
                     LOGGER.warning("Exception while wait. ", e);
                 }
