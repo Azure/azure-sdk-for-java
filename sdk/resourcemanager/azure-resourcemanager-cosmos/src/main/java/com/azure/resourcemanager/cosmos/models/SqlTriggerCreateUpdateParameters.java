@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlTriggerCreateUpdateProp
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB trigger. */
+/**
+ * Parameters to create and update Cosmos DB trigger.
+ */
 @Fluent
 public final class SqlTriggerCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,7 +21,9 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
     @JsonProperty(value = "properties", required = true)
     private SqlTriggerCreateUpdateProperties innerProperties = new SqlTriggerCreateUpdateProperties();
 
-    /** Creates an instance of SqlTriggerCreateUpdateParameters class. */
+    /**
+     * Creates an instance of SqlTriggerCreateUpdateParameters class.
+     */
     public SqlTriggerCreateUpdateParameters() {
     }
 
@@ -32,14 +36,18 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,10 +111,7 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SqlTriggerCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model SqlTriggerCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

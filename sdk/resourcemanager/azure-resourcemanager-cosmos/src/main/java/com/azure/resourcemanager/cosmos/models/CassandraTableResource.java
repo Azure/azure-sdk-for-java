@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Cassandra table resource object. */
+/**
+ * Cosmos DB Cassandra table resource object.
+ */
 @Fluent
 public class CassandraTableResource {
     /*
@@ -35,7 +37,9 @@ public class CassandraTableResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
-    /** Creates an instance of CassandraTableResource class. */
+    /**
+     * Creates an instance of CassandraTableResource class.
+     */
     public CassandraTableResource() {
     }
 
@@ -126,9 +130,7 @@ public class CassandraTableResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model CassandraTableResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model CassandraTableResource"));
         }
         if (schema() != null) {
             schema().validate();

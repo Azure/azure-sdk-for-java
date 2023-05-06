@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableGremlinGraphPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB Gremlin graph event. */
+/**
+ * An Azure Cosmos DB Gremlin graph event.
+ */
 @Fluent
 public final class RestorableGremlinGraphGetResultInner {
     /*
@@ -35,7 +37,9 @@ public final class RestorableGremlinGraphGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableGremlinGraphGetResultInner class. */
+    /**
+     * Creates an instance of RestorableGremlinGraphGetResultInner class.
+     */
     public RestorableGremlinGraphGetResultInner() {
     }
 

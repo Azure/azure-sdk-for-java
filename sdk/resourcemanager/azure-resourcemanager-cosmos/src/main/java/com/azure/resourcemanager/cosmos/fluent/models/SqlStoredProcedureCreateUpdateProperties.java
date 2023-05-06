@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update Azure Cosmos DB storedProcedure. */
+/**
+ * Properties to create and update Azure Cosmos DB storedProcedure.
+ */
 @Fluent
 public final class SqlStoredProcedureCreateUpdateProperties {
     /*
@@ -26,7 +28,9 @@ public final class SqlStoredProcedureCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /** Creates an instance of SqlStoredProcedureCreateUpdateProperties class. */
+    /**
+     * Creates an instance of SqlStoredProcedureCreateUpdateProperties class.
+     */
     public SqlStoredProcedureCreateUpdateProperties() {
     }
 
@@ -79,10 +83,7 @@ public final class SqlStoredProcedureCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model SqlStoredProcedureCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model SqlStoredProcedureCreateUpdateProperties"));
         } else {
             resource().validate();
         }

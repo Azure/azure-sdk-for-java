@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The access keys for the given database account. */
+/**
+ * The access keys for the given database account.
+ */
 @Immutable
 public final class DatabaseAccountListKeysResultInner extends DatabaseAccountListReadOnlyKeysResultInner {
     /*
@@ -22,7 +24,9 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
     @JsonProperty(value = "secondaryMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryMasterKey;
 
-    /** Creates an instance of DatabaseAccountListKeysResultInner class. */
+    /**
+     * Creates an instance of DatabaseAccountListKeysResultInner class.
+     */
     public DatabaseAccountListKeysResultInner() {
     }
 

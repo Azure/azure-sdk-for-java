@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB Mongo DB Resource. */
+/**
+ * An Azure Cosmos DB Mongo DB Resource.
+ */
 @Fluent
 public final class PrivilegeResource {
     /*
@@ -22,7 +24,9 @@ public final class PrivilegeResource {
     @JsonProperty(value = "collection")
     private String collection;
 
-    /** Creates an instance of PrivilegeResource class. */
+    /**
+     * Creates an instance of PrivilegeResource class.
+     */
     public PrivilegeResource() {
     }
 

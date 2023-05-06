@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB indexing policy. */
+/**
+ * Cosmos DB indexing policy.
+ */
 @Fluent
 public final class IndexingPolicy {
     /*
@@ -47,7 +49,9 @@ public final class IndexingPolicy {
     @JsonProperty(value = "spatialIndexes")
     private List<SpatialSpec> spatialIndexes;
 
-    /** Creates an instance of IndexingPolicy class. */
+    /**
+     * Creates an instance of IndexingPolicy class.
+     */
     public IndexingPolicy() {
     }
 

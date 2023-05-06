@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.PrivateLinkResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private link resources. */
+/**
+ * A list of private link resources.
+ */
 @Fluent
 public final class PrivateLinkResourceListResult {
     /*
@@ -18,7 +20,9 @@ public final class PrivateLinkResourceListResult {
     @JsonProperty(value = "value")
     private List<PrivateLinkResourceInner> value;
 
-    /** Creates an instance of PrivateLinkResourceListResult class. */
+    /**
+     * Creates an instance of PrivateLinkResourceListResult class.
+     */
     public PrivateLinkResourceListResult() {
     }
 

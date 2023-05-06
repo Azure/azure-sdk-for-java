@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The connection info for the given notebook workspace. */
+/**
+ * The connection info for the given notebook workspace.
+ */
 @Immutable
 public final class NotebookWorkspaceConnectionInfoResultInner {
     /*
@@ -22,7 +24,9 @@ public final class NotebookWorkspaceConnectionInfoResultInner {
     @JsonProperty(value = "notebookServerEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String notebookServerEndpoint;
 
-    /** Creates an instance of NotebookWorkspaceConnectionInfoResultInner class. */
+    /**
+     * Creates an instance of NotebookWorkspaceConnectionInfoResultInner class.
+     */
     public NotebookWorkspaceConnectionInfoResultInner() {
     }
 

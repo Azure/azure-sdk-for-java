@@ -6,21 +6,29 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The CassandraTableGetPropertiesOptions model. */
+/**
+ * The CassandraTableGetPropertiesOptions model.
+ */
 @Fluent
 public final class CassandraTableGetPropertiesOptions extends OptionsResource {
-    /** Creates an instance of CassandraTableGetPropertiesOptions class. */
+    /**
+     * Creates an instance of CassandraTableGetPropertiesOptions class.
+     */
     public CassandraTableGetPropertiesOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesOptions withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesOptions withAutoscaleSettings(AutoscaleSettings autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);

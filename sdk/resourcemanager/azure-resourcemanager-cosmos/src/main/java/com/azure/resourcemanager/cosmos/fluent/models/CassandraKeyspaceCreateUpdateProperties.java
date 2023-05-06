@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update Azure Cosmos DB Cassandra keyspace. */
+/**
+ * Properties to create and update Azure Cosmos DB Cassandra keyspace.
+ */
 @Fluent
 public final class CassandraKeyspaceCreateUpdateProperties {
     /*
@@ -26,7 +28,9 @@ public final class CassandraKeyspaceCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /** Creates an instance of CassandraKeyspaceCreateUpdateProperties class. */
+    /**
+     * Creates an instance of CassandraKeyspaceCreateUpdateProperties class.
+     */
     public CassandraKeyspaceCreateUpdateProperties() {
     }
 
@@ -79,10 +83,7 @@ public final class CassandraKeyspaceCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model CassandraKeyspaceCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model CassandraKeyspaceCreateUpdateProperties"));
         } else {
             resource().validate();
         }

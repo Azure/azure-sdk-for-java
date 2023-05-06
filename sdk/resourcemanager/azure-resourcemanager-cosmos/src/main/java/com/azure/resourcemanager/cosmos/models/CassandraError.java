@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CassandraError model. */
+/**
+ * The CassandraError model.
+ */
 @Fluent
 public final class CassandraError {
     /*
@@ -34,7 +36,9 @@ public final class CassandraError {
     @JsonProperty(value = "additionalErrorInfo")
     private String additionalErrorInfo;
 
-    /** Creates an instance of CassandraError class. */
+    /**
+     * Creates an instance of CassandraError class.
+     */
     public CassandraError() {
     }
 

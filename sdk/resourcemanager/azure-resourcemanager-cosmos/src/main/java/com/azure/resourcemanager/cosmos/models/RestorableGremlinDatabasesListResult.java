@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableGremlinDatabaseG
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the Gremlin database events and their properties. */
+/**
+ * The List operation response, that contains the Gremlin database events and their properties.
+ */
 @Immutable
 public final class RestorableGremlinDatabasesListResult {
     /*
@@ -18,7 +20,9 @@ public final class RestorableGremlinDatabasesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableGremlinDatabaseGetResultInner> value;
 
-    /** Creates an instance of RestorableGremlinDatabasesListResult class. */
+    /**
+     * Creates an instance of RestorableGremlinDatabasesListResult class.
+     */
     public RestorableGremlinDatabasesListResult() {
     }
 

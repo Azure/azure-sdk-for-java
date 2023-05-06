@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The conflict resolution policy for the container. */
+/**
+ * The conflict resolution policy for the container.
+ */
 @Fluent
 public final class ConflictResolutionPolicy {
     /*
@@ -28,7 +30,9 @@ public final class ConflictResolutionPolicy {
     @JsonProperty(value = "conflictResolutionProcedure")
     private String conflictResolutionProcedure;
 
-    /** Creates an instance of ConflictResolutionPolicy class. */
+    /**
+     * Creates an instance of ConflictResolutionPolicy class.
+     */
     public ConflictResolutionPolicy() {
     }
 

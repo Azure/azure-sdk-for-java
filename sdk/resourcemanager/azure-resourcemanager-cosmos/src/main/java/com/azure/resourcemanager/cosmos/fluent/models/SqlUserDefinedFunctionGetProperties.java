@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB userDefinedFunction. */
+/**
+ * The properties of an Azure Cosmos DB userDefinedFunction.
+ */
 @Fluent
 public final class SqlUserDefinedFunctionGetProperties {
     /*
@@ -17,7 +19,9 @@ public final class SqlUserDefinedFunctionGetProperties {
     @JsonProperty(value = "resource")
     private SqlUserDefinedFunctionGetPropertiesResource resource;
 
-    /** Creates an instance of SqlUserDefinedFunctionGetProperties class. */
+    /**
+     * Creates an instance of SqlUserDefinedFunctionGetProperties class.
+     */
     public SqlUserDefinedFunctionGetProperties() {
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a notebook workspace resource. */
+/**
+ * Properties of a notebook workspace resource.
+ */
 @Immutable
 public final class NotebookWorkspaceProperties {
     /*
@@ -22,7 +24,9 @@ public final class NotebookWorkspaceProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
-    /** Creates an instance of NotebookWorkspaceProperties class. */
+    /**
+     * Creates an instance of NotebookWorkspaceProperties class.
+     */
     public NotebookWorkspaceProperties() {
     }
 

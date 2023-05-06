@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB MongoDB collection. */
+/**
+ * An Azure Cosmos DB MongoDB collection.
+ */
 @Fluent
 public final class MongoDBCollectionGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,7 +22,9 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
     @JsonProperty(value = "properties")
     private MongoDBCollectionGetProperties innerProperties;
 
-    /** Creates an instance of MongoDBCollectionGetResultsInner class. */
+    /**
+     * Creates an instance of MongoDBCollectionGetResultsInner class.
+     */
     public MongoDBCollectionGetResultsInner() {
     }
 
@@ -33,14 +37,18 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

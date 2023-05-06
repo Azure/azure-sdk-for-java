@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionError model. */
+/**
+ * The ConnectionError model.
+ */
 @Fluent
 public final class ConnectionError {
     /*
@@ -40,7 +42,9 @@ public final class ConnectionError {
     @JsonProperty(value = "exception")
     private String exception;
 
-    /** Creates an instance of ConnectionError class. */
+    /**
+     * Creates an instance of ConnectionError class.
+     */
     public ConnectionError() {
     }
 

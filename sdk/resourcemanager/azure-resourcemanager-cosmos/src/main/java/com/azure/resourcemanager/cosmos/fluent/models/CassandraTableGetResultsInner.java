@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesResour
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB Cassandra table. */
+/**
+ * An Azure Cosmos DB Cassandra table.
+ */
 @Fluent
 public final class CassandraTableGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,7 +22,9 @@ public final class CassandraTableGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private CassandraTableGetProperties innerProperties;
 
-    /** Creates an instance of CassandraTableGetResultsInner class. */
+    /**
+     * Creates an instance of CassandraTableGetResultsInner class.
+     */
     public CassandraTableGetResultsInner() {
     }
 
@@ -33,14 +37,18 @@ public final class CassandraTableGetResultsInner extends ArmResourceProperties {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

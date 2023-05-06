@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Identity for the resource. */
+/**
+ * Identity for the resource.
+ */
 @Fluent
 public final class ManagedServiceIdentity {
     /*
@@ -43,7 +45,9 @@ public final class ManagedServiceIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities;
 
-    /** Creates an instance of ManagedServiceIdentity class. */
+    /**
+     * Creates an instance of ManagedServiceIdentity class.
+     */
     public ManagedServiceIdentity() {
     }
 
@@ -58,8 +62,8 @@ public final class ManagedServiceIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id of the system assigned identity. This property will only be provided for
-     * a system assigned identity.
+     * Get the tenantId property: The tenant id of the system assigned identity. This property will only be provided
+     * for a system assigned identity.
      *
      * @return the tenantId value.
      */
@@ -110,8 +114,7 @@ public final class ManagedServiceIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedServiceIdentity object itself.
      */
-    public ManagedServiceIdentity withUserAssignedIdentities(
-        Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public ManagedServiceIdentity withUserAssignedIdentities(Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -123,14 +126,11 @@ public final class ManagedServiceIdentity {
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB MongoDB collection resource object. */
+/**
+ * Cosmos DB MongoDB collection resource object.
+ */
 @Fluent
 public final class MongoIndexKeys {
     /*
@@ -17,7 +19,9 @@ public final class MongoIndexKeys {
     @JsonProperty(value = "keys")
     private List<String> keys;
 
-    /** Creates an instance of MongoIndexKeys class. */
+    /**
+     * Creates an instance of MongoIndexKeys class.
+     */
     public MongoIndexKeys() {
     }
 

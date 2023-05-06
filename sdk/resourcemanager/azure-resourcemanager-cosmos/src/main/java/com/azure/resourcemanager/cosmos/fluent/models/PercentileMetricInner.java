@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Percentile Metric data. */
+/**
+ * Percentile Metric data.
+ */
 @Immutable
 public final class PercentileMetricInner {
     /*
@@ -51,7 +53,9 @@ public final class PercentileMetricInner {
     @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<PercentileMetricValue> metricValues;
 
-    /** Creates an instance of PercentileMetricInner class. */
+    /**
+     * Creates an instance of PercentileMetricInner class.
+     */
     public PercentileMetricInner() {
     }
 

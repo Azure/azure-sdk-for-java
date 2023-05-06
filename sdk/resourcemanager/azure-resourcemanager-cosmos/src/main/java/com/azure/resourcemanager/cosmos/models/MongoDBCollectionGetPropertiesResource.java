@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDBCollectionGetPropertiesResource model. */
+/**
+ * The MongoDBCollectionGetPropertiesResource model.
+ */
 @Fluent
 public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollectionResource {
     /*
@@ -30,7 +32,9 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of MongoDBCollectionGetPropertiesResource class. */
+    /**
+     * Creates an instance of MongoDBCollectionGetPropertiesResource class.
+     */
     public MongoDBCollectionGetPropertiesResource() {
     }
 
@@ -62,28 +66,36 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withShardKey(Map<String, String> shardKey) {
         super.withShardKey(shardKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withIndexes(List<MongoIndex> indexes) {
         super.withIndexes(indexes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetPropertiesResource withAnalyticalStorageTtl(Integer analyticalStorageTtl) {
         super.withAnalyticalStorageTtl(analyticalStorageTtl);

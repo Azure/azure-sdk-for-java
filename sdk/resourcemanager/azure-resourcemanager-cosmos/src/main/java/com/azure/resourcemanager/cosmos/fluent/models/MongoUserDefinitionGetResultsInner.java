@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Azure Cosmos DB User Definition. */
+/**
+ * An Azure Cosmos DB User Definition.
+ */
 @Fluent
 public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     /*
@@ -19,7 +21,9 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
 
-    /** Creates an instance of MongoUserDefinitionGetResultsInner class. */
+    /**
+     * Creates an instance of MongoUserDefinitionGetResultsInner class.
+     */
     public MongoUserDefinitionGetResultsInner() {
     }
 

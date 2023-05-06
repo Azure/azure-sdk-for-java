@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB resource throughput policy. */
+/**
+ * Cosmos DB resource throughput policy.
+ */
 @Fluent
 public final class ThroughputPolicyResource {
     /*
@@ -22,7 +24,9 @@ public final class ThroughputPolicyResource {
     @JsonProperty(value = "incrementPercent")
     private Integer incrementPercent;
 
-    /** Creates an instance of ThroughputPolicyResource class. */
+    /**
+     * Creates an instance of ThroughputPolicyResource class.
+     */
     public ThroughputPolicyResource() {
     }
 

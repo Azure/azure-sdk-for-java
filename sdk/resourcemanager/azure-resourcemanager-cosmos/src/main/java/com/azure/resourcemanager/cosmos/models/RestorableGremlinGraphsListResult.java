@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableGremlinGraphGetR
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the Gremlin graph events and their properties. */
+/**
+ * The List operation response, that contains the Gremlin graph events and their properties.
+ */
 @Immutable
 public final class RestorableGremlinGraphsListResult {
     /*
@@ -18,7 +20,9 @@ public final class RestorableGremlinGraphsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableGremlinGraphGetResultInner> value;
 
-    /** Creates an instance of RestorableGremlinGraphsListResult class. */
+    /**
+     * Creates an instance of RestorableGremlinGraphsListResult class.
+     */
     public RestorableGremlinGraphsListResult() {
     }
 

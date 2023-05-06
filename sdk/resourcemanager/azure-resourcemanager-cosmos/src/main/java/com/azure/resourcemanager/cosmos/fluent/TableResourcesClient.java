@@ -23,7 +23,9 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TableResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TableResourcesClient.
+ */
 public interface TableResourcesClient {
     /**
      * Lists the Tables under an existing Azure Cosmos DB database account.
@@ -33,8 +35,7 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties as paginated response with
-     *     {@link PagedFlux}.
+     * @return the List operation response, that contains the Table and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<TableGetResultsInner> listTablesAsync(String resourceGroupName, String accountName);
@@ -47,8 +48,7 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * @return the List operation response, that contains the Table and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TableGetResultsInner> listTables(String resourceGroupName, String accountName);
@@ -62,8 +62,7 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table and their properties as paginated response with
-     *     {@link PagedIterable}.
+     * @return the List operation response, that contains the Table and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TableGetResultsInner> listTables(String resourceGroupName, String accountName, Context context);
@@ -77,12 +76,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
@@ -93,8 +90,7 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name on successful
-     *     completion of {@link Mono}.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<TableGetResultsInner> getTableAsync(String resourceGroupName, String accountName, String tableName);
@@ -109,12 +105,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link
-     *     Response}.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TableGetResultsInner> getTableWithResponse(
-        String resourceGroupName, String accountName, String tableName, Context context);
+    Response<TableGetResultsInner> getTableWithResponse(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
@@ -143,11 +137,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB Table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Table.
@@ -162,11 +152,7 @@ public interface TableResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters);
+    PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTableAsync(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Table.
@@ -181,11 +167,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters);
+    SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Table.
@@ -201,12 +183,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters,
-        Context context);
+    SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters, Context context);
 
     /**
      * Create or update an Azure Cosmos DB Table.
@@ -221,11 +198,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB Table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TableGetResultsInner> createUpdateTableAsync(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters);
+    Mono<TableGetResultsInner> createUpdateTableAsync(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Table.
@@ -240,11 +213,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TableGetResultsInner createUpdateTable(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters);
+    TableGetResultsInner createUpdateTable(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Table.
@@ -260,12 +229,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TableGetResultsInner createUpdateTable(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        TableCreateUpdateParameters createUpdateTableParameters,
-        Context context);
+    TableGetResultsInner createUpdateTable(String resourceGroupName, String accountName, String tableName, TableCreateUpdateParameters createUpdateTableParameters, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
@@ -279,8 +243,7 @@ public interface TableResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
@@ -294,8 +257,7 @@ public interface TableResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(
-        String resourceGroupName, String accountName, String tableName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteTableAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
@@ -324,8 +286,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteTable(
-        String resourceGroupName, String accountName, String tableName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteTable(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Table.
@@ -377,12 +338,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
@@ -393,12 +352,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
-     *     on successful completion of {@link Mono}.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getTableThroughputAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<ThroughputSettingsGetResultsInner> getTableThroughputAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
@@ -410,12 +367,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name
-     *     along with {@link Response}.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getTableThroughputWithResponse(
-        String resourceGroupName, String accountName, String tableName, Context context);
+    Response<ThroughputSettingsGetResultsInner> getTableThroughputWithResponse(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
@@ -426,12 +381,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     *     name.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getTableThroughput(
-        String resourceGroupName, String accountName, String tableName);
+    ThroughputSettingsGetResultsInner getTableThroughput(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -443,15 +396,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -466,12 +414,7 @@ public interface TableResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateTableThroughputAsync(
-            String resourceGroupName,
-            String accountName,
-            String tableName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -486,12 +429,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateTableThroughput(
-            String resourceGroupName,
-            String accountName,
-            String tableName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -507,13 +445,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateTableThroughput(
-            String resourceGroupName,
-            String accountName,
-            String tableName,
-            ThroughputSettingsUpdateParameters updateThroughputParameters,
-            Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -528,11 +460,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -547,11 +475,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateTableThroughput(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateTableThroughput(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Table.
@@ -567,12 +491,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateTableThroughput(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context);
+    ThroughputSettingsGetResultsInner updateTableThroughput(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -583,12 +502,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -602,8 +519,7 @@ public interface TableResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -617,8 +533,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -633,8 +548,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -648,8 +562,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<ThroughputSettingsGetResultsInner> migrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -663,8 +576,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateTableToAutoscale(
-        String resourceGroupName, String accountName, String tableName);
+    ThroughputSettingsGetResultsInner migrateTableToAutoscale(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
@@ -679,8 +591,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateTableToAutoscale(
-        String resourceGroupName, String accountName, String tableName, Context context);
+    ThroughputSettingsGetResultsInner migrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -691,12 +602,10 @@ public interface TableResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -710,8 +619,7 @@ public interface TableResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -725,8 +633,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -741,9 +648,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateTableToManualThroughput(
-            String resourceGroupName, String accountName, String tableName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -757,8 +662,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(
-        String resourceGroupName, String accountName, String tableName);
+    Mono<ThroughputSettingsGetResultsInner> migrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -772,8 +676,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateTableToManualThroughput(
-        String resourceGroupName, String accountName, String tableName);
+    ThroughputSettingsGetResultsInner migrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
@@ -788,8 +691,7 @@ public interface TableResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateTableToManualThroughput(
-        String resourceGroupName, String accountName, String tableName, Context context);
+    ThroughputSettingsGetResultsInner migrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName, Context context);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -804,8 +706,7 @@ public interface TableResourcesClient {
      * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
-        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
+    Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -820,9 +721,7 @@ public interface TableResourcesClient {
      * @return the {@link PollerFlux} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
-        beginRetrieveContinuousBackupInformationAsync(
-            String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
+    PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -837,8 +736,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
-        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -854,12 +752,7 @@ public interface TableResourcesClient {
      * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        ContinuousBackupRestoreLocation location,
-        Context context);
+    SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location, Context context);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -874,8 +767,7 @@ public interface TableResourcesClient {
      * @return backup information of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
-        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
+    Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -890,8 +782,7 @@ public interface TableResourcesClient {
      * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupInformationInner retrieveContinuousBackupInformation(
-        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
+    BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location);
 
     /**
      * Retrieves continuous backup information for a table.
@@ -907,10 +798,5 @@ public interface TableResourcesClient {
      * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupInformationInner retrieveContinuousBackupInformation(
-        String resourceGroupName,
-        String accountName,
-        String tableName,
-        ContinuousBackupRestoreLocation location,
-        Context context);
+    BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location, Context context);
 }

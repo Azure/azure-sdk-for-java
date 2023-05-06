@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The metadata related to an access key for a given database account. */
+/**
+ * The metadata related to an access key for a given database account.
+ */
 @Immutable
 public final class AccountKeyMetadata {
     /*
@@ -18,7 +20,9 @@ public final class AccountKeyMetadata {
     @JsonProperty(value = "generationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime generationTime;
 
-    /** Creates an instance of AccountKeyMetadata class. */
+    /**
+     * Creates an instance of AccountKeyMetadata class.
+     */
     public AccountKeyMetadata() {
     }
 

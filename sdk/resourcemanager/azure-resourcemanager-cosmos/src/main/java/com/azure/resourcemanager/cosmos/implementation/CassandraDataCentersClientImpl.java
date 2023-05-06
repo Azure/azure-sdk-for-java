@@ -39,12 +39,18 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CassandraDataCentersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CassandraDataCentersClient.
+ */
 public final class CassandraDataCentersClientImpl implements CassandraDataCentersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CassandraDataCentersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBManagementClientImpl client;
 
     /**
@@ -53,9 +59,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @param client the instance of the service client containing this operation class.
      */
     CassandraDataCentersClientImpl(CosmosDBManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(CassandraDataCentersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CassandraDataCentersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,81 +70,35 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface CassandraDataCentersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListDataCenters>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListDataCenters>> list(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataCenterResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("dataCenterName") String dataCenterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DataCenterResourceInner>> get(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName, @PathParam("dataCenterName") String dataCenterName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("dataCenterName") String dataCenterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName, @PathParam("dataCenterName") String dataCenterName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("dataCenterName") String dataCenterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataCenterResourceInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdate(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName, @PathParam("dataCenterName") String dataCenterName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DataCenterResourceInner body, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("dataCenterName") String dataCenterName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DataCenterResourceInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName, @PathParam("dataCenterName") String dataCenterName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DataCenterResourceInner body, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -151,48 +109,31 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return list of managed Cassandra data centers and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCenterResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<DataCenterResourceInner>> listSinglePageAsync(String resourceGroupName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DataCenterResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DataCenterResourceInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -205,46 +146,32 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return list of managed Cassandra data centers and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataCenterResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<DataCenterResourceInner>> listSinglePageAsync(String resourceGroupName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
@@ -259,7 +186,8 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataCenterResourceInner> listAsync(String resourceGroupName, String clusterName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, clusterName));
     }
 
     /**
@@ -274,9 +202,9 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return list of managed Cassandra data centers and their properties as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataCenterResourceInner> listAsync(
-        String resourceGroupName, String clusterName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, context));
+    private PagedFlux<DataCenterResourceInner> listAsync(String resourceGroupName, String clusterName, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
     /**
@@ -287,8 +215,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of managed Cassandra data centers and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCenterResourceInner> list(String resourceGroupName, String clusterName) {
@@ -304,8 +231,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of managed Cassandra data centers and their properties as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of managed Cassandra data centers and their properties as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataCenterResourceInner> list(String resourceGroupName, String clusterName, Context context) {
@@ -321,27 +247,18 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the properties of a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataCenterResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String dataCenterName) {
+    public Mono<Response<DataCenterResourceInner>> getWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -350,19 +267,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
             return Mono.error(new IllegalArgumentException("Parameter dataCenterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            dataCenterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -376,27 +281,18 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the properties of a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataCenterResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+    private Mono<Response<DataCenterResourceInner>> getWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -406,16 +302,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                dataCenterName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -448,8 +335,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the properties of a managed Cassandra data center along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataCenterResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+    public Response<DataCenterResourceInner> getWithResponse(String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, dataCenterName, context).block();
     }
 
@@ -481,23 +367,15 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String dataCenterName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -506,19 +384,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
             return Mono.error(new IllegalArgumentException("Parameter dataCenterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            dataCenterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -535,23 +401,15 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -561,16 +419,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                dataCenterName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -585,13 +434,9 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String dataCenterName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName, String dataCenterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, dataCenterName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -607,14 +452,10 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, dataCenterName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, dataCenterName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -629,8 +470,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String dataCenterName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String dataCenterName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, dataCenterName).getSyncPoller();
     }
 
@@ -647,8 +487,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, dataCenterName, context).getSyncPoller();
     }
 
@@ -683,8 +522,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, dataCenterName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -722,8 +560,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -735,23 +572,15 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -765,26 +594,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
             body.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            dataCenterName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -797,27 +612,15 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -832,22 +635,11 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                dataCenterName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -859,23 +651,13 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdateAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body);
-        return this
-            .client
-            .<DataCenterResourceInner, DataCenterResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataCenterResourceInner.class,
-                DataCenterResourceInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body);
+        return this.client.<DataCenterResourceInner, DataCenterResourceInner>getLroResult(mono, this.client.getHttpPipeline(), DataCenterResourceInner.class, DataCenterResourceInner.class, this.client.getContext());
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -888,28 +670,14 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    private PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createUpdateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body, context);
-        return this
-            .client
-            .<DataCenterResourceInner, DataCenterResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataCenterResourceInner.class,
-                DataCenterResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body, context);
+        return this.client.<DataCenterResourceInner, DataCenterResourceInner>getLroResult(mono, this.client.getHttpPipeline(), DataCenterResourceInner.class, DataCenterResourceInner.class, context);
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -921,14 +689,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         return this.beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -941,20 +707,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
-        return this
-            .beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
+        return this.beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -966,16 +724,14 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataCenterResourceInner> createUpdateAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public Mono<DataCenterResourceInner> createUpdateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         return beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -988,20 +744,14 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataCenterResourceInner> createUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    private Mono<DataCenterResourceInner> createUpdateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         return beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -1013,14 +763,12 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCenterResourceInner createUpdate(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public DataCenterResourceInner createUpdate(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         return createUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).block();
     }
 
     /**
-     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some
-     * properties, use PATCH.
+     * Create or update a managed Cassandra data center. When updating, overwrite all properties. To update only some properties, use PATCH.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
@@ -1033,12 +781,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCenterResourceInner createUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    public DataCenterResourceInner createUpdate(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         return createUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).block();
     }
 
@@ -1055,23 +798,15 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -1085,20 +820,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
             body.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            dataCenterName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1116,27 +838,15 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (clusterName == null) {
             return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
@@ -1151,17 +861,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                dataCenterName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName, dataCenterName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -1177,18 +877,9 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body);
-        return this
-            .client
-            .<DataCenterResourceInner, DataCenterResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataCenterResourceInner.class,
-                DataCenterResourceInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body);
+        return this.client.<DataCenterResourceInner, DataCenterResourceInner>getLroResult(mono, this.client.getHttpPipeline(), DataCenterResourceInner.class, DataCenterResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -1205,23 +896,10 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link PollerFlux} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    private PollerFlux<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body, context);
-        return this
-            .client
-            .<DataCenterResourceInner, DataCenterResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataCenterResourceInner.class,
-                DataCenterResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, clusterName, dataCenterName, body, context);
+        return this.client.<DataCenterResourceInner, DataCenterResourceInner>getLroResult(mono, this.client.getHttpPipeline(), DataCenterResourceInner.class, DataCenterResourceInner.class, context);
     }
 
     /**
@@ -1237,8 +915,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
     }
 
@@ -1256,12 +933,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return the {@link SyncPoller} for polling of a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         return this.beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
     }
 
@@ -1278,8 +950,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataCenterResourceInner> updateAsync(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public Mono<DataCenterResourceInner> updateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         return beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1299,12 +970,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataCenterResourceInner> updateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    private Mono<DataCenterResourceInner> updateAsync(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         return beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1323,8 +989,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCenterResourceInner update(
-        String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
+    public DataCenterResourceInner update(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
         return updateAsync(resourceGroupName, clusterName, dataCenterName, body).block();
     }
 
@@ -1342,12 +1007,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @return a managed Cassandra data center.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCenterResourceInner update(
-        String resourceGroupName,
-        String clusterName,
-        String dataCenterName,
-        DataCenterResourceInner body,
-        Context context) {
+    public DataCenterResourceInner update(String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body, Context context) {
         return updateAsync(resourceGroupName, clusterName, dataCenterName, body, context).block();
     }
 }

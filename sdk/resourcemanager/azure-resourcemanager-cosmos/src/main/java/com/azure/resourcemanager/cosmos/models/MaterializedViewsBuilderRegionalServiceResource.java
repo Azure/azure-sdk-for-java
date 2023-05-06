@@ -6,10 +6,14 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** Resource for a regional service location. */
+/**
+ * Resource for a regional service location.
+ */
 @Immutable
 public final class MaterializedViewsBuilderRegionalServiceResource extends RegionalServiceResource {
-    /** Creates an instance of MaterializedViewsBuilderRegionalServiceResource class. */
+    /**
+     * Creates an instance of MaterializedViewsBuilderRegionalServiceResource class.
+     */
     public MaterializedViewsBuilderRegionalServiceResource() {
     }
 

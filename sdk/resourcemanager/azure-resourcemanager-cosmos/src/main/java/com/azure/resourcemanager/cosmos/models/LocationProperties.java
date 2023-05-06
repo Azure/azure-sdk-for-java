@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB location metadata. */
+/**
+ * Cosmos DB location metadata.
+ */
 @Immutable
 public final class LocationProperties {
     /*
@@ -47,7 +49,9 @@ public final class LocationProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
-    /** Creates an instance of LocationProperties class. */
+    /**
+     * Creates an instance of LocationProperties class.
+     */
     public LocationProperties() {
     }
 

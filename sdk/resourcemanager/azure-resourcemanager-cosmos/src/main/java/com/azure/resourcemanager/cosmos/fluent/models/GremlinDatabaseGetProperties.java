@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesOptio
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB SQL database. */
+/**
+ * The properties of an Azure Cosmos DB SQL database.
+ */
 @Fluent
 public final class GremlinDatabaseGetProperties {
     /*
@@ -24,7 +26,9 @@ public final class GremlinDatabaseGetProperties {
     @JsonProperty(value = "options")
     private GremlinDatabaseGetPropertiesOptions options;
 
-    /** Creates an instance of GremlinDatabaseGetProperties class. */
+    /**
+     * Creates an instance of GremlinDatabaseGetProperties class.
+     */
     public GremlinDatabaseGetProperties() {
     }
 

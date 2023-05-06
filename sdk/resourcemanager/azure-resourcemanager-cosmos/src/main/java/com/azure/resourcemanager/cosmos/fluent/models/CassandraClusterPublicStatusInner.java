@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cosmos.models.ManagedCassandraReaperStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a managed Cassandra cluster public status. */
+/**
+ * Properties of a managed Cassandra cluster public status.
+ */
 @Fluent
 public final class CassandraClusterPublicStatusInner {
     /*
@@ -45,7 +47,9 @@ public final class CassandraClusterPublicStatusInner {
     @JsonProperty(value = "dataCenters")
     private List<CassandraClusterPublicStatusDataCentersItem> dataCenters;
 
-    /** Creates an instance of CassandraClusterPublicStatusInner class. */
+    /**
+     * Creates an instance of CassandraClusterPublicStatusInner class.
+     */
     public CassandraClusterPublicStatusInner() {
     }
 
@@ -146,8 +150,7 @@ public final class CassandraClusterPublicStatusInner {
      * @param dataCenters the dataCenters value to set.
      * @return the CassandraClusterPublicStatusInner object itself.
      */
-    public CassandraClusterPublicStatusInner withDataCenters(
-        List<CassandraClusterPublicStatusDataCentersItem> dataCenters) {
+    public CassandraClusterPublicStatusInner withDataCenters(List<CassandraClusterPublicStatusDataCentersItem> dataCenters) {
         this.dataCenters = dataCenters;
         return this;
     }

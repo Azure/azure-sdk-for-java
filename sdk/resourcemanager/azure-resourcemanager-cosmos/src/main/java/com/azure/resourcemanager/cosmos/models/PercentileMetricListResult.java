@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.PercentileMetricInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list percentile metrics request. */
+/**
+ * The response to a list percentile metrics request.
+ */
 @Immutable
 public final class PercentileMetricListResult {
     /*
@@ -18,7 +20,9 @@ public final class PercentileMetricListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PercentileMetricInner> value;
 
-    /** Creates an instance of PercentileMetricListResult class. */
+    /**
+     * Creates an instance of PercentileMetricListResult class.
+     */
     public PercentileMetricListResult() {
     }
 

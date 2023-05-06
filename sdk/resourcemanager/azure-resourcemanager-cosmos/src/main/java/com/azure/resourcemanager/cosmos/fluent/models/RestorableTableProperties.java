@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableTablePropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Table event. */
+/**
+ * The properties of an Azure Cosmos DB Table event.
+ */
 @Fluent
 public final class RestorableTableProperties {
     /*
@@ -17,7 +19,9 @@ public final class RestorableTableProperties {
     @JsonProperty(value = "resource")
     private RestorableTablePropertiesResource resource;
 
-    /** Creates an instance of RestorableTableProperties class. */
+    /**
+     * Creates an instance of RestorableTableProperties class.
+     */
     public RestorableTableProperties() {
     }
 

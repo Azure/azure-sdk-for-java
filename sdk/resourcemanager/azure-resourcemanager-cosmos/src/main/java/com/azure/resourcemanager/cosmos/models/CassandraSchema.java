@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB Cassandra table schema. */
+/**
+ * Cosmos DB Cassandra table schema.
+ */
 @Fluent
 public final class CassandraSchema {
     /*
@@ -29,7 +31,9 @@ public final class CassandraSchema {
     @JsonProperty(value = "clusterKeys")
     private List<ClusterKey> clusterKeys;
 
-    /** Creates an instance of CassandraSchema class. */
+    /**
+     * Creates an instance of CassandraSchema class.
+     */
     public CassandraSchema() {
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB SQL trigger resource object. */
+/**
+ * Cosmos DB SQL trigger resource object.
+ */
 @Fluent
 public class SqlTriggerResource {
     /*
@@ -35,7 +37,9 @@ public class SqlTriggerResource {
     @JsonProperty(value = "triggerOperation")
     private TriggerOperation triggerOperation;
 
-    /** Creates an instance of SqlTriggerResource class. */
+    /**
+     * Creates an instance of SqlTriggerResource class.
+     */
     public SqlTriggerResource() {
     }
 
@@ -126,9 +130,7 @@ public class SqlTriggerResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SqlTriggerResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model SqlTriggerResource"));
         }
     }
 

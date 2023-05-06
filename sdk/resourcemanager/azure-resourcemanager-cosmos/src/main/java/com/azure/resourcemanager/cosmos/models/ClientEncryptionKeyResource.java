@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB client encryption key resource object. */
+/**
+ * Cosmos DB client encryption key resource object.
+ */
 @Fluent
 public class ClientEncryptionKeyResource {
     /*
@@ -35,7 +37,9 @@ public class ClientEncryptionKeyResource {
     @JsonProperty(value = "keyWrapMetadata")
     private KeyWrapMetadata keyWrapMetadata;
 
-    /** Creates an instance of ClientEncryptionKeyResource class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyResource class.
+     */
     public ClientEncryptionKeyResource() {
     }
 

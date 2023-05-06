@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedServiceIdentityUserAssignedIdentities model. */
+/**
+ * The ManagedServiceIdentityUserAssignedIdentities model.
+ */
 @Immutable
 public final class ManagedServiceIdentityUserAssignedIdentities {
     /*
@@ -22,7 +24,9 @@ public final class ManagedServiceIdentityUserAssignedIdentities {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of ManagedServiceIdentityUserAssignedIdentities class. */
+    /**
+     * Creates an instance of ManagedServiceIdentityUserAssignedIdentities class.
+     */
     public ManagedServiceIdentityUserAssignedIdentities() {
     }
 

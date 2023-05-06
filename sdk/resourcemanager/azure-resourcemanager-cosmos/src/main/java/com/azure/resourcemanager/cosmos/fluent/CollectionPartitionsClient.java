@@ -12,7 +12,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.PartitionMetricInner;
 import com.azure.resourcemanager.cosmos.fluent.models.PartitionUsageInner;
 
-/** An instance of this class provides access to all the operations defined in CollectionPartitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CollectionPartitionsClient.
+ */
 public interface CollectionPartitionsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
@@ -21,17 +23,14 @@ public interface CollectionPartitionsClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PartitionMetricInner> listMetricsAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter);
+    PagedFlux<PartitionMetricInner> listMetricsAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter);
 
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
@@ -40,17 +39,14 @@ public interface CollectionPartitionsClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartitionMetricInner> listMetrics(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter);
+    PagedIterable<PartitionMetricInner> listMetrics(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter);
 
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
@@ -59,9 +55,7 @@ public interface CollectionPartitionsClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
-     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
-     *     timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,13 +63,7 @@ public interface CollectionPartitionsClient {
      * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartitionMetricInner> listMetrics(
-        String resourceGroupName,
-        String accountName,
-        String databaseRid,
-        String collectionRid,
-        String filter,
-        Context context);
+    PagedIterable<PartitionMetricInner> listMetrics(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context);
 
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
@@ -84,16 +72,14 @@ public interface CollectionPartitionsClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PartitionUsageInner> listUsagesAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter);
+    PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter);
 
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
@@ -108,8 +94,7 @@ public interface CollectionPartitionsClient {
      * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PartitionUsageInner> listUsagesAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid);
+    PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid);
 
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
@@ -124,8 +109,7 @@ public interface CollectionPartitionsClient {
      * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartitionUsageInner> listUsages(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid);
+    PagedIterable<PartitionUsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid, String collectionRid);
 
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
@@ -134,8 +118,7 @@ public interface CollectionPartitionsClient {
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -143,11 +126,5 @@ public interface CollectionPartitionsClient {
      * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartitionUsageInner> listUsages(
-        String resourceGroupName,
-        String accountName,
-        String databaseRid,
-        String collectionRid,
-        String filter,
-        Context context);
+    PagedIterable<PartitionUsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context);
 }

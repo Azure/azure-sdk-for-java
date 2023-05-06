@@ -9,22 +9,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three maximum)
- * are supported for container create.
+ * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three maximum) are supported for container create.
  */
 public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
-    /** Static value Hash for PartitionKind. */
+    /**
+     * Static value Hash for PartitionKind.
+     */
     public static final PartitionKind HASH = fromString("Hash");
 
-    /** Static value Range for PartitionKind. */
+    /**
+     * Static value Range for PartitionKind.
+     */
     public static final PartitionKind RANGE = fromString("Range");
 
-    /** Static value MultiHash for PartitionKind. */
+    /**
+     * Static value MultiHash for PartitionKind.
+     */
     public static final PartitionKind MULTI_HASH = fromString("MultiHash");
 
     /**
      * Creates a new instance of PartitionKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +38,7 @@ public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
 
     /**
      * Creates or finds a PartitionKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PartitionKind.
      */
@@ -44,7 +49,7 @@ public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
 
     /**
      * Gets known PartitionKind values.
-     *
+     * 
      * @return known PartitionKind values.
      */
     public static Collection<PartitionKind> values() {

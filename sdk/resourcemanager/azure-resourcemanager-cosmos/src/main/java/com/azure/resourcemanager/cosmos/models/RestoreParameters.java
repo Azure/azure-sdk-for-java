@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Parameters to indicate the information about the restore. */
+/**
+ * Parameters to indicate the information about the restore.
+ */
 @Fluent
 public final class RestoreParameters {
     /*
@@ -49,7 +51,9 @@ public final class RestoreParameters {
     @JsonProperty(value = "tablesToRestore")
     private List<String> tablesToRestore;
 
-    /** Creates an instance of RestoreParameters class. */
+    /**
+     * Creates an instance of RestoreParameters class.
+     */
     public RestoreParameters() {
     }
 
@@ -152,8 +156,7 @@ public final class RestoreParameters {
      * @param gremlinDatabasesToRestore the gremlinDatabasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
-    public RestoreParameters withGremlinDatabasesToRestore(
-        List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore) {
+    public RestoreParameters withGremlinDatabasesToRestore(List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore) {
         this.gremlinDatabasesToRestore = gremlinDatabasesToRestore;
         return this;
     }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ManagedCassandraReaperStatus model. */
+/**
+ * The ManagedCassandraReaperStatus model.
+ */
 @Fluent
 public final class ManagedCassandraReaperStatus {
     /*
@@ -32,7 +34,9 @@ public final class ManagedCassandraReaperStatus {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> repairSchedules;
 
-    /** Creates an instance of ManagedCassandraReaperStatus class. */
+    /**
+     * Creates an instance of ManagedCassandraReaperStatus class.
+     */
     public ManagedCassandraReaperStatus() {
     }
 

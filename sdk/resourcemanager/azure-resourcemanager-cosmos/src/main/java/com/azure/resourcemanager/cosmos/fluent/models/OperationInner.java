@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** REST API operation. */
+/**
+ * REST API operation.
+ */
 @Fluent
 public final class OperationInner {
     /*
@@ -23,7 +25,9 @@ public final class OperationInner {
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 

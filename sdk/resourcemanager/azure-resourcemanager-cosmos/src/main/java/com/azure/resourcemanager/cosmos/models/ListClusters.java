@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of managed Cassandra clusters. */
+/**
+ * List of managed Cassandra clusters.
+ */
 @Fluent
 public final class ListClusters {
     /*
@@ -18,7 +20,9 @@ public final class ListClusters {
     @JsonProperty(value = "value")
     private List<ClusterResourceInner> value;
 
-    /** Creates an instance of ListClusters class. */
+    /**
+     * Creates an instance of ListClusters class.
+     */
     public ListClusters() {
     }
 

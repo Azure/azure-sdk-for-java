@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Client Encryption Key. */
+/**
+ * Client Encryption Key.
+ */
 @Fluent
 public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
     /*
@@ -18,7 +20,9 @@ public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private ClientEncryptionKeyGetProperties innerProperties;
 
-    /** Creates an instance of ClientEncryptionKeyGetResultsInner class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyGetResultsInner class.
+     */
     public ClientEncryptionKeyGetResultsInner() {
     }
 

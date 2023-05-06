@@ -23,7 +23,9 @@ import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties to update Azure Cosmos DB database accounts. */
+/**
+ * Properties to update Azure Cosmos DB database accounts.
+ */
 @Fluent
 public final class DatabaseAccountUpdateProperties {
     /*
@@ -193,7 +195,9 @@ public final class DatabaseAccountUpdateProperties {
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
 
-    /** Creates an instance of DatabaseAccountUpdateProperties class. */
+    /**
+     * Creates an instance of DatabaseAccountUpdateProperties class.
+     */
     public DatabaseAccountUpdateProperties() {
     }
 
@@ -422,8 +426,7 @@ public final class DatabaseAccountUpdateProperties {
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
-    public DatabaseAccountUpdateProperties withDisableKeyBasedMetadataWriteAccess(
-        Boolean disableKeyBasedMetadataWriteAccess) {
+    public DatabaseAccountUpdateProperties withDisableKeyBasedMetadataWriteAccess(Boolean disableKeyBasedMetadataWriteAccess) {
         this.disableKeyBasedMetadataWriteAccess = disableKeyBasedMetadataWriteAccess;
         return this;
     }
@@ -567,8 +570,7 @@ public final class DatabaseAccountUpdateProperties {
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
-    public DatabaseAccountUpdateProperties withAnalyticalStorageConfiguration(
-        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+    public DatabaseAccountUpdateProperties withAnalyticalStorageConfiguration(AnalyticalStorageConfiguration analyticalStorageConfiguration) {
         this.analyticalStorageConfiguration = analyticalStorageConfiguration;
         return this;
     }
@@ -732,8 +734,8 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
-     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
+     * for Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @return the minimalTlsVersion value.
      */
@@ -742,8 +744,8 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
-     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
+     * for Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountUpdateProperties object itself.

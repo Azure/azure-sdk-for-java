@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of the regional restorable account. */
+/**
+ * Properties of the regional restorable account.
+ */
 @Immutable
 public final class RestorableLocationResource {
     /*
@@ -35,7 +37,9 @@ public final class RestorableLocationResource {
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionTime;
 
-    /** Creates an instance of RestorableLocationResource class. */
+    /**
+     * Creates an instance of RestorableLocationResource class.
+     */
     public RestorableLocationResource() {
     }
 

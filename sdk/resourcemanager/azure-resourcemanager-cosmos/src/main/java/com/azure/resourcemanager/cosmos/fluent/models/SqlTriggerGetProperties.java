@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB trigger. */
+/**
+ * The properties of an Azure Cosmos DB trigger.
+ */
 @Fluent
 public final class SqlTriggerGetProperties {
     /*
@@ -17,7 +19,9 @@ public final class SqlTriggerGetProperties {
     @JsonProperty(value = "resource")
     private SqlTriggerGetPropertiesResource resource;
 
-    /** Creates an instance of SqlTriggerGetProperties class. */
+    /**
+     * Creates an instance of SqlTriggerGetProperties class.
+     */
     public SqlTriggerGetProperties() {
     }
 

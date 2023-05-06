@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Properties for DataTransferServiceResource. */
+/**
+ * Properties for DataTransferServiceResource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("DataTransfer")
 @Fluent
@@ -21,7 +23,9 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataTransferRegionalServiceResource> locations;
 
-    /** Creates an instance of DataTransferServiceResourceProperties class. */
+    /**
+     * Creates an instance of DataTransferServiceResourceProperties class.
+     */
     public DataTransferServiceResourceProperties() {
     }
 
@@ -34,14 +38,18 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
         return this.locations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataTransferServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataTransferServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);

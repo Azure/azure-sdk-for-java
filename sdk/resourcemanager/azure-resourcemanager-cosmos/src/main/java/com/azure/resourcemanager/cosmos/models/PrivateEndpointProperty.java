@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint which the connection belongs to. */
+/**
+ * Private endpoint which the connection belongs to.
+ */
 @Fluent
 public final class PrivateEndpointProperty {
     /*
@@ -16,7 +18,9 @@ public final class PrivateEndpointProperty {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of PrivateEndpointProperty class. */
+    /**
+     * Creates an instance of PrivateEndpointProperty class.
+     */
     public PrivateEndpointProperty() {
     }
 

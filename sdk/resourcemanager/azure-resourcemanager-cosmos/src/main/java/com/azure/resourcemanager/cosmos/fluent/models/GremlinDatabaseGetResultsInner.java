@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB Gremlin database. */
+/**
+ * An Azure Cosmos DB Gremlin database.
+ */
 @Fluent
 public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,7 +22,9 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
     @JsonProperty(value = "properties")
     private GremlinDatabaseGetProperties innerProperties;
 
-    /** Creates an instance of GremlinDatabaseGetResultsInner class. */
+    /**
+     * Creates an instance of GremlinDatabaseGetResultsInner class.
+     */
     public GremlinDatabaseGetResultsInner() {
     }
 
@@ -33,14 +37,18 @@ public final class GremlinDatabaseGetResultsInner extends ArmResourceProperties 
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinDatabaseGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinDatabaseGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

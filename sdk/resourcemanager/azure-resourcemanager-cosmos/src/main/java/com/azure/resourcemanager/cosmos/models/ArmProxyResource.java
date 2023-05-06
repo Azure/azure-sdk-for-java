@@ -13,7 +13,9 @@ import com.azure.core.management.ProxyResource;
  */
 @Immutable
 public class ArmProxyResource extends ProxyResource {
-    /** Creates an instance of ArmProxyResource class. */
+    /**
+     * Creates an instance of ArmProxyResource class.
+     */
     public ArmProxyResource() {
     }
 

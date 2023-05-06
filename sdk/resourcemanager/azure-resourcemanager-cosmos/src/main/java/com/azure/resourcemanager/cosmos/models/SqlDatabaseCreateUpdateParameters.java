@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseCreateUpdatePro
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB SQL database. */
+/**
+ * Parameters to create and update Cosmos DB SQL database.
+ */
 @Fluent
 public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,7 +21,9 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
     @JsonProperty(value = "properties", required = true)
     private SqlDatabaseCreateUpdateProperties innerProperties = new SqlDatabaseCreateUpdateProperties();
 
-    /** Creates an instance of SqlDatabaseCreateUpdateParameters class. */
+    /**
+     * Creates an instance of SqlDatabaseCreateUpdateParameters class.
+     */
     public SqlDatabaseCreateUpdateParameters() {
     }
 
@@ -32,14 +36,18 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,10 +111,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SqlDatabaseCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model SqlDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

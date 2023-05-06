@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure
- * Cosmos DB service.
+ * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
+ * Azure Cosmos DB service.
  */
 @Fluent
 public final class UniqueKeyPolicy {
@@ -21,7 +21,9 @@ public final class UniqueKeyPolicy {
     @JsonProperty(value = "uniqueKeys")
     private List<UniqueKey> uniqueKeys;
 
-    /** Creates an instance of UniqueKeyPolicy class. */
+    /**
+     * Creates an instance of UniqueKeyPolicy class.
+     */
     public UniqueKeyPolicy() {
     }
 

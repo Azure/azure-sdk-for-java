@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlDatabaseGetRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the SQL database events and their properties. */
+/**
+ * The List operation response, that contains the SQL database events and their properties.
+ */
 @Immutable
 public final class RestorableSqlDatabasesListResult {
     /*
@@ -18,7 +20,9 @@ public final class RestorableSqlDatabasesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableSqlDatabaseGetResultInner> value;
 
-    /** Creates an instance of RestorableSqlDatabasesListResult class. */
+    /**
+     * Creates an instance of RestorableSqlDatabasesListResult class.
+     */
     public RestorableSqlDatabasesListResult() {
     }
 

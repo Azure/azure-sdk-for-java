@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource for a regional service location. */
+/**
+ * Resource for a regional service location.
+ */
 @Immutable
 public final class GraphApiComputeRegionalServiceResource extends RegionalServiceResource {
     /*
@@ -16,7 +18,9 @@ public final class GraphApiComputeRegionalServiceResource extends RegionalServic
     @JsonProperty(value = "graphApiComputeEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String graphApiComputeEndpoint;
 
-    /** Creates an instance of GraphApiComputeRegionalServiceResource class. */
+    /**
+     * Creates an instance of GraphApiComputeRegionalServiceResource class.
+     */
     public GraphApiComputeRegionalServiceResource() {
     }
 

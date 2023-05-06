@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identity for the resource. */
+/**
+ * Identity for the resource.
+ */
 @Fluent
 public final class ManagedCassandraManagedServiceIdentity {
     /*
@@ -28,7 +30,9 @@ public final class ManagedCassandraManagedServiceIdentity {
     @JsonProperty(value = "type")
     private ManagedCassandraResourceIdentityType type;
 
-    /** Creates an instance of ManagedCassandraManagedServiceIdentity class. */
+    /**
+     * Creates an instance of ManagedCassandraManagedServiceIdentity class.
+     */
     public ManagedCassandraManagedServiceIdentity() {
     }
 

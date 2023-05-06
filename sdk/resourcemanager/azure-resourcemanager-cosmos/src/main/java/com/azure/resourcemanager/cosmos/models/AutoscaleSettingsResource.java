@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB provisioned throughput settings object. */
+/**
+ * Cosmos DB provisioned throughput settings object.
+ */
 @Fluent
 public final class AutoscaleSettingsResource {
     /*
@@ -28,7 +30,9 @@ public final class AutoscaleSettingsResource {
     @JsonProperty(value = "targetMaxThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetMaxThroughput;
 
-    /** Creates an instance of AutoscaleSettingsResource class. */
+    /**
+     * Creates an instance of AutoscaleSettingsResource class.
+     */
     public AutoscaleSettingsResource() {
     }
 

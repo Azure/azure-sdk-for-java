@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SqlTriggerGetPropertiesResource model. */
+/**
+ * The SqlTriggerGetPropertiesResource model.
+ */
 @Fluent
 public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
     /*
@@ -28,7 +30,9 @@ public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of SqlTriggerGetPropertiesResource class. */
+    /**
+     * Creates an instance of SqlTriggerGetPropertiesResource class.
+     */
     public SqlTriggerGetPropertiesResource() {
     }
 
@@ -60,28 +64,36 @@ public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerGetPropertiesResource withBody(String body) {
         super.withBody(body);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerGetPropertiesResource withTriggerType(TriggerType triggerType) {
         super.withTriggerType(triggerType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerGetPropertiesResource withTriggerOperation(TriggerOperation triggerOperation) {
         super.withTriggerOperation(triggerOperation);

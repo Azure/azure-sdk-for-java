@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Cassandra table column. */
+/**
+ * Cosmos DB Cassandra table column.
+ */
 @Fluent
 public final class Column {
     /*
@@ -22,7 +24,9 @@ public final class Column {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of Column class. */
+    /**
+     * Creates an instance of Column class.
+     */
     public Column() {
     }
 

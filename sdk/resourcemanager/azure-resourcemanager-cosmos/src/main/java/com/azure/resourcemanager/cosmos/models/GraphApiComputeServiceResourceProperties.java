@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Properties for GraphAPIComputeServiceResource. */
+/**
+ * Properties for GraphAPIComputeServiceResource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("GraphAPICompute")
 @Fluent
@@ -27,7 +29,9 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<GraphApiComputeRegionalServiceResource> locations;
 
-    /** Creates an instance of GraphApiComputeServiceResourceProperties class. */
+    /**
+     * Creates an instance of GraphApiComputeServiceResourceProperties class.
+     */
     public GraphApiComputeServiceResourceProperties() {
     }
 
@@ -60,14 +64,18 @@ public final class GraphApiComputeServiceResourceProperties extends ServiceResou
         return this.locations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GraphApiComputeServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GraphApiComputeServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);

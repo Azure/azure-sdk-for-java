@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleDefinitionResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters to create and update an Azure Cosmos DB SQL Role Definition. */
+/**
+ * Parameters to create and update an Azure Cosmos DB SQL Role Definition.
+ */
 @Fluent
 public final class SqlRoleDefinitionCreateUpdateParameters {
     /*
@@ -18,7 +20,9 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private SqlRoleDefinitionResource innerProperties;
 
-    /** Creates an instance of SqlRoleDefinitionCreateUpdateParameters class. */
+    /**
+     * Creates an instance of SqlRoleDefinitionCreateUpdateParameters class.
+     */
     public SqlRoleDefinitionCreateUpdateParameters() {
     }
 
@@ -32,7 +36,8 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
+     * account.
      *
      * @return the roleName value.
      */
@@ -41,7 +46,8 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
+     * account.
      *
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.

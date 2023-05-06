@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specific Databases to restore. */
+/**
+ * Specific Databases to restore.
+ */
 @Fluent
 public final class RestorableGremlinResourcesGetResultInner {
     /*
@@ -41,7 +43,9 @@ public final class RestorableGremlinResourcesGetResultInner {
     @JsonProperty(value = "graphNames")
     private List<String> graphNames;
 
-    /** Creates an instance of RestorableGremlinResourcesGetResultInner class. */
+    /**
+     * Creates an instance of RestorableGremlinResourcesGetResultInner class.
+     */
     public RestorableGremlinResourcesGetResultInner() {
     }
 

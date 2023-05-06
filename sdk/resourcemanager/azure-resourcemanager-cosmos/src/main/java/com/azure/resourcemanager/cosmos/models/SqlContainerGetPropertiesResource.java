@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SqlContainerGetPropertiesResource model. */
+/**
+ * The SqlContainerGetPropertiesResource model.
+ */
 @Fluent
 public final class SqlContainerGetPropertiesResource extends SqlContainerResource {
     /*
@@ -28,7 +30,9 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of SqlContainerGetPropertiesResource class. */
+    /**
+     * Creates an instance of SqlContainerGetPropertiesResource class.
+     */
     public SqlContainerGetPropertiesResource() {
     }
 
@@ -60,57 +64,72 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
         super.withIndexingPolicy(indexingPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withPartitionKey(ContainerPartitionKey partitionKey) {
         super.withPartitionKey(partitionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withDefaultTtl(Integer defaultTtl) {
         super.withDefaultTtl(defaultTtl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         super.withUniqueKeyPolicy(uniqueKeyPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public SqlContainerGetPropertiesResource withConflictResolutionPolicy(
-        ConflictResolutionPolicy conflictResolutionPolicy) {
+    public SqlContainerGetPropertiesResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
         super.withConflictResolutionPolicy(conflictResolutionPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withClientEncryptionPolicy(ClientEncryptionPolicy clientEncryptionPolicy) {
         super.withClientEncryptionPolicy(clientEncryptionPolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetPropertiesResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
         super.withAnalyticalStorageTtl(analyticalStorageTtl);

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The set of data plane operations permitted through this Role Definition. */
+/**
+ * The set of data plane operations permitted through this Role Definition.
+ */
 @Fluent
 public final class Permission {
     /*
@@ -23,7 +25,9 @@ public final class Permission {
     @JsonProperty(value = "notDataActions")
     private List<String> notDataActions;
 
-    /** Creates an instance of Permission class. */
+    /**
+     * Creates an instance of Permission class.
+     */
     public Permission() {
     }
 

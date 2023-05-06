@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Immutable
 public final class PrivateLinkResourceInner extends ArmProxyResource {
     /*
@@ -18,7 +20,9 @@ public final class PrivateLinkResourceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
-    /** Creates an instance of PrivateLinkResourceInner class. */
+    /**
+     * Creates an instance of PrivateLinkResourceInner class.
+     */
     public PrivateLinkResourceInner() {
     }
 

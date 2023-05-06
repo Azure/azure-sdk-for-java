@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SeedNode model. */
+/**
+ * The SeedNode model.
+ */
 @Fluent
 public final class SeedNode {
     /*
@@ -16,7 +18,9 @@ public final class SeedNode {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of SeedNode class. */
+    /**
+     * Creates an instance of SeedNode class.
+     */
     public SeedNode() {
     }
 
