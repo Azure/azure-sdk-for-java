@@ -5,16 +5,18 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.models.AvailabilityZoneMappings;
 import com.azure.resourcemanager.resources.models.LocationMetadata;
 import com.azure.resourcemanager.resources.models.LocationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Location information. */
 @Fluent
 public final class LocationInner {
     /*
      * The fully qualified ID of the location. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
+     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -55,13 +57,19 @@ public final class LocationInner {
     @JsonProperty(value = "metadata")
     private LocationMetadata metadata;
 
+    /*
+     * The availability zone mappings for this region.
+     */
+    @JsonProperty(value = "availabilityZoneMappings")
+    private List<AvailabilityZoneMappings> availabilityZoneMappings;
+
     /** Creates an instance of LocationInner class. */
     public LocationInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID of the location. For example,
-     * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
+     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      *
      * @return the id value.
      */
@@ -135,6 +143,26 @@ public final class LocationInner {
     }
 
     /**
+     * Get the availabilityZoneMappings property: The availability zone mappings for this region.
+     *
+     * @return the availabilityZoneMappings value.
+     */
+    public List<AvailabilityZoneMappings> availabilityZoneMappings() {
+        return this.availabilityZoneMappings;
+    }
+
+    /**
+     * Set the availabilityZoneMappings property: The availability zone mappings for this region.
+     *
+     * @param availabilityZoneMappings the availabilityZoneMappings value to set.
+     * @return the LocationInner object itself.
+     */
+    public LocationInner withAvailabilityZoneMappings(List<AvailabilityZoneMappings> availabilityZoneMappings) {
+        this.availabilityZoneMappings = availabilityZoneMappings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -142,6 +170,9 @@ public final class LocationInner {
     public void validate() {
         if (metadata() != null) {
             metadata().validate();
+        }
+        if (availabilityZoneMappings() != null) {
+            availabilityZoneMappings().forEach(e -> e.validate());
         }
     }
 }

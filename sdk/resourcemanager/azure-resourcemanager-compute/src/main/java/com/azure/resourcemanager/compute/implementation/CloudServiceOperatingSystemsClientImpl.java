@@ -62,8 +62,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
     public interface CloudServiceOperatingSystemsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsVersions"
-                + "/{osVersionName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsVersions/{osVersionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<OSVersionInner>> getOSVersion(
@@ -89,8 +88,7 @@ public final class CloudServiceOperatingSystemsClientImpl implements CloudServic
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsFamilies"
-                + "/{osFamilyName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/cloudServiceOsFamilies/{osFamilyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<OSFamilyInner>> getOSFamily(

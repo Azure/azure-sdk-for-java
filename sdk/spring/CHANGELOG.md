@@ -1,5 +1,78 @@
 # Release History
 
+## 4.8.0-beta.1 (unreleased)
+
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Breaking Changes
+- Deprecated `CloudType.AZURE_GERMANY`, `JDBC_SCOPE_AZURE_GERMANY`, `REDIS_SCOPE_AZURE_GERMANY`, `AzureEnvironmentProperties.AZURE_GERMANY` [#34682](https://github.com/Azure/azure-sdk-for-java/pull/34682).
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Deprecated `SERVICE_BUS_SCOPE_AZURE_GERMANY` [#34682](https://github.com/Azure/azure-sdk-for-java/pull/34682).
+
+## 5.1.0 (2023-04-26)
+- This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.2. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.12.
+- Upgrade `azure-resourcemanager` to 2.25.0.
+
+#### Features Added
+- Added the following artifacts into current bom file:
+    - spring-cloud-azure-starter-appconfiguration-config
+    - spring-cloud-azure-appconfiguration-config
+    - spring-cloud-azure-appconfiguration-config-web
+    - spring-cloud-azure-feature-management
+    - spring-cloud-azure-feature-management-web
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Make the domain-name option optional when configuring Event Hubs/Service Bus in non-public Azure cloud [#32034](https://github.com/Azure/azure-sdk-for-java/issues/32034).
+
+#### Bugs Fixed
+- Fixed `GraphClient` exceptions handling when switching `HttpURLConnection` to `RestTemplate`. [#32779](https://github.com/Azure/azure-sdk-for-java/issues/32779)
+
+#### Breaking Changes
+- Deprecated properties for AAD and AAD B2C. [#33751](https://github.com/Azure/azure-sdk-for-java/pull/33751).
+    - Deprecated properties `spring.cloud.azure.active-directory.jwt-connect-timeout`, `spring.cloud.azure.active-directory.jwt-read-timeout`, `spring.cloud.azure.active-directory.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
+    - Deprecated properties `spring.cloud.azure.active-directory.b2c.jwt-connect-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-read-timeout`, `spring.cloud.azure.active-directory.b2c.jwt-size-limit`, if you want to configure them, please provide a RestOperations bean.
+
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Bugs Fixed
+- Fixed Event Hubs Message header `source-type` from `kafka` to `amqp` when using `StreamBridge#send`. [#32777](https://github.com/Azure/azure-sdk-for-java/issues/32777)
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Make the default partition behavior of Spring Cloud Azure EventHubs binder be a round-robin assignment to align with Event Hubs.[#32816](https://github.com/Azure/azure-sdk-for-java/pull/32816).
+
+### Spring Cloud Azure Native Reachability
+This library is deprecated, and all the reachability metadata have been incorporated into each Spring Cloud Azure library's source code directly.
+
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Breaking Changes
+- Deprecated `CloudType.AZURE_GERMANY` and remove `AzureEnvironmentProperties.AZURE_GERMANY` [#34663](https://github.com/Azure/azure-sdk-for-java/pull/34663).
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web` modules.
+
+#### Bugs Fixed
+- Fixes issue where credential from Azure Spring global properties was being overridden [#34695](https://github.com/Azure/azure-sdk-for-java/pull/34695).
+
 ## 4.7.0 (2023-03-23)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.9. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>9) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)

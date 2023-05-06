@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -202,7 +203,7 @@ public class ClientSideRequestStatistics {
         URI targetEndpoint,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        String identifier = Utils
+        String identifier = UUID
             .randomUUID()
             .toString();
 

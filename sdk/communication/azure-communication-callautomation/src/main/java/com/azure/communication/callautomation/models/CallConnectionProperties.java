@@ -11,8 +11,6 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Immutable;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,16 +24,16 @@ public final class CallConnectionProperties {
     private final CommunicationIdentifier sourceIdentity;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private final String sourceDisplayName;
-    private final List<CommunicationIdentifier> targets;
+    private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
-    private final URI callbackUri;
+    private final String callbackUrl;
     private final String mediaSubscriptionId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
             new CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor() {
                 @Override
-                public CallConnectionProperties create(CallConnectionPropertiesInternal internalHeaders) throws URISyntaxException {
+                public CallConnectionProperties create(CallConnectionPropertiesInternal internalHeaders) {
                     return new CallConnectionProperties(internalHeaders);
                 }
             });
@@ -51,9 +49,9 @@ public final class CallConnectionProperties {
         this.sourceCallerIdNumber = null;
         this.sourceDisplayName = null;
         this.serverCallId = null;
-        this.targets = null;
+        this.targetParticipants = null;
         this.callConnectionState = null;
-        this.callbackUri = null;
+        this.callbackUrl = null;
         this.mediaSubscriptionId = null;
     }
 
@@ -61,17 +59,16 @@ public final class CallConnectionProperties {
      * Package-private constructor of the class, used internally.
      *
      * @param callConnectionPropertiesInternal The internal response of callConnectionProperties
-     * @throws URISyntaxException exception of invalid URI.
      */
-    CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) throws URISyntaxException {
+    CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
         this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
         this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
-        this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+        this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
-        this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
+        this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
         this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
     }
 
@@ -80,8 +77,8 @@ public final class CallConnectionProperties {
      *
      * @return list of targets
      */
-    public List<CommunicationIdentifier> getTargets() {
-        return targets;
+    public List<CommunicationIdentifier> getTargetParticipants() {
+        return targetParticipants;
     }
 
     /**
@@ -134,8 +131,8 @@ public final class CallConnectionProperties {
      *
      * @return callbackUri value.
      */
-    public URI getCallbackUri() {
-        return callbackUri;
+    public String getCallbackUrl() {
+        return callbackUrl;
     }
 
     /**

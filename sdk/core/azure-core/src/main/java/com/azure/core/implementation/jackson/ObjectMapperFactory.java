@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -19,9 +18,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  * Constructs and configures {@link ObjectMapper} instances.
  */
 final class ObjectMapperFactory {
-    // ObjectMapperFactory is a commonly used factory, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
-
     public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
@@ -36,6 +32,8 @@ final class ObjectMapperFactory {
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(innerMapper))
             .addModule(FlatteningDeserializer.getModule(innerMapper))
+            .addModule(JsonSerializableSerializer.getModule())
+            .addModule(JsonSerializableDeserializer.getModule())
             .build();
     }
 
@@ -58,6 +56,8 @@ final class ObjectMapperFactory {
     public ObjectMapper createHeaderMapper() {
         return initializeMapperBuilder(JsonMapper.builder())
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .addModule(JsonSerializableSerializer.getModule())
+            .addModule(JsonSerializableDeserializer.getModule())
             .build();
     }
 
