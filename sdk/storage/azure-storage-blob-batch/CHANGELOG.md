@@ -3,6 +3,7 @@
 ## 12.19.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2023-01-03 service version.
 
 ### Breaking Changes
 
