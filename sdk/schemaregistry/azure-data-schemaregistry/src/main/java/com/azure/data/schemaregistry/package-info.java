@@ -48,6 +48,10 @@
  *
  * <h2>Using the Client</h2>
  *
+ * <p>The samples below use the synchronous client, {@link com.azure.data.schemaregistry.SchemaRegistryClient}.
+ * More samples can be found in the class's Javadoc.  In addition, samples using the asynchronous
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient} can be found in the class's JavaDocs.</p>
+ *
  * <p><strong>Sample: Register a schema</strong></p>
  *
  * <p>The following code sample demonstrates registering an Avro schema.  The
