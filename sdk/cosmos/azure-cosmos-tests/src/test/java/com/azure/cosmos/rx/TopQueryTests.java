@@ -127,7 +127,7 @@ public class TopQueryTests extends TestSuiteBase {
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTopGreaterThanItemsContinuationTokens() throws Exception {
         String query = "SELECT TOP 2147483647 * FROM c";
         this.queryWithContinuationTokensAndPageSizes(query, new int[] {1}, 20);

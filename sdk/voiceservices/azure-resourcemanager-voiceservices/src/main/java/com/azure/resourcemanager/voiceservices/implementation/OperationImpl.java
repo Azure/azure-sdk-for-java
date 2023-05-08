@@ -13,10 +13,10 @@ import com.azure.resourcemanager.voiceservices.models.Origin;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        OperationInner innerObject, com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -45,7 +45,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 }

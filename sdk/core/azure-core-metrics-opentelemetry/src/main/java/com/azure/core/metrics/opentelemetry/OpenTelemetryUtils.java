@@ -43,7 +43,7 @@ class OpenTelemetryUtils {
         } else if (value instanceof Byte) {
             attributesBuilder.put(AttributeKey.longKey(key), (Byte) value);
         } else {
-            LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
+            LOGGER.warning("Could not populate attribute with key '{}', type '{}' is not supported.", key, value.getClass().getName());
         }
     }
     /**

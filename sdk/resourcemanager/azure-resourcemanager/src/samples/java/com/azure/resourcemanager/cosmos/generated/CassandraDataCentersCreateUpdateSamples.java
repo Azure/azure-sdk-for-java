@@ -10,7 +10,7 @@ import com.azure.resourcemanager.cosmos.models.DataCenterResourceProperties;
 /** Samples for CassandraDataCenters CreateUpdate. */
 public final class CassandraDataCentersCreateUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBManagedCassandraDataCenterCreate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBManagedCassandraDataCenterCreate.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraDataCenterCreate.

@@ -29,6 +29,10 @@ public final class NetworkRuleSetIpRule {
     @JsonProperty(value = "ipMask", required = true)
     private String ipMask;
 
+    /** Creates an instance of NetworkRuleSetIpRule class. */
+    public NetworkRuleSetIpRule() {
+    }
+
     /**
      * Get the filterName property: Name of the IP filter rule.
      *

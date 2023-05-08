@@ -13,17 +13,17 @@ public final class BenchmarkReferenceTests {
     public void testDeserialize() throws Exception {
         BenchmarkReference model =
             BinaryData
-                .fromString("{\"benchmark\":\"n\",\"reference\":\"miljpnwynud\"}")
+                .fromString("{\"benchmark\":\"vovjufycsjmlbe\",\"reference\":\"ej\"}")
                 .toObject(BenchmarkReference.class);
-        Assertions.assertEquals("n", model.benchmark());
-        Assertions.assertEquals("miljpnwynud", model.reference());
+        Assertions.assertEquals("vovjufycsjmlbe", model.benchmark());
+        Assertions.assertEquals("ej", model.reference());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BenchmarkReference model = new BenchmarkReference().withBenchmark("n").withReference("miljpnwynud");
+        BenchmarkReference model = new BenchmarkReference().withBenchmark("vovjufycsjmlbe").withReference("ej");
         model = BinaryData.fromObject(model).toObject(BenchmarkReference.class);
-        Assertions.assertEquals("n", model.benchmark());
-        Assertions.assertEquals("miljpnwynud", model.reference());
+        Assertions.assertEquals("vovjufycsjmlbe", model.benchmark());
+        Assertions.assertEquals("ej", model.reference());
     }
 }

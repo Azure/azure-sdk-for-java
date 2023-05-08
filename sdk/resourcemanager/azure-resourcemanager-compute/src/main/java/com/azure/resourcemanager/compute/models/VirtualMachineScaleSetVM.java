@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
@@ -290,6 +292,9 @@ public interface VirtualMachineScaleSetVM
 
     /** @return The network profile config for the vm. */
     VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration();
+
+    /** @return the time at which the Virtual Machine resource was created */
+    OffsetDateTime timeCreated();
 
     /** The template for an update operation, containing all the settings that can be modified. */
     interface Update extends Appliable<VirtualMachineScaleSetVM> {

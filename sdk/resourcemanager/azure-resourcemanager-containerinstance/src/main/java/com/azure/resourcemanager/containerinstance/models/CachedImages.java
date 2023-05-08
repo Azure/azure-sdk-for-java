@@ -23,6 +23,10 @@ public final class CachedImages {
     @JsonProperty(value = "image", required = true)
     private String image;
 
+    /** Creates an instance of CachedImages class. */
+    public CachedImages() {
+    }
+
     /**
      * Get the osType property: The OS type of the cached image.
      *

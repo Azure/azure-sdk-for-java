@@ -13,16 +13,16 @@ public final class DefenderForContainersAwsOfferingKubernetesScubaReaderTests {
     public void testDeserialize() throws Exception {
         DefenderForContainersAwsOfferingKubernetesScubaReader model =
             BinaryData
-                .fromString("{\"cloudRoleArn\":\"vkiwrsiwdyjqu\"}")
+                .fromString("{\"cloudRoleArn\":\"gxvrpjl\"}")
                 .toObject(DefenderForContainersAwsOfferingKubernetesScubaReader.class);
-        Assertions.assertEquals("vkiwrsiwdyjqu", model.cloudRoleArn());
+        Assertions.assertEquals("gxvrpjl", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersAwsOfferingKubernetesScubaReader model =
-            new DefenderForContainersAwsOfferingKubernetesScubaReader().withCloudRoleArn("vkiwrsiwdyjqu");
+            new DefenderForContainersAwsOfferingKubernetesScubaReader().withCloudRoleArn("gxvrpjl");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersAwsOfferingKubernetesScubaReader.class);
-        Assertions.assertEquals("vkiwrsiwdyjqu", model.cloudRoleArn());
+        Assertions.assertEquals("gxvrpjl", model.cloudRoleArn());
     }
 }

@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.implementation.CallConnectionsImpl
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ListParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
@@ -27,7 +26,6 @@ import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
@@ -35,19 +33,22 @@ import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
+import com.azure.core.exception.HttpResponseException;
 
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -59,7 +60,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * CallConnectionAsync for mid-call actions
  */
-public class CallConnectionAsync {
+public final class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
     private final CallMediasImpl callMediasInternal;
@@ -78,7 +79,7 @@ public class CallConnectionAsync {
     /**
      * Get call connection properties.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -90,7 +91,7 @@ public class CallConnectionAsync {
     /**
      * Get call connection properties.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -104,7 +105,6 @@ public class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return callConnectionInternal.getCallWithResponseAsync(callConnectionId, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
                     try {
                         return new SimpleResponse<>(response, CallConnectionPropertiesConstructorProxy.create(response.getValue()));
@@ -121,9 +121,9 @@ public class CallConnectionAsync {
      * Hangup a call.
      *
      * @param isForEveryone determine if the call is handed up for all participants.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful hangup request.
+     * @return Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangUp(boolean isForEveryone) {
@@ -135,9 +135,9 @@ public class CallConnectionAsync {
      * Hangup a call.
      *
      * @param hangUpOptions options to hang up
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful hangup request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hangUpWithResponse(HangUpOptions hangUpOptions) {
@@ -149,8 +149,7 @@ public class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
-                : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -159,35 +158,35 @@ public class CallConnectionAsync {
     /**
      * Get a specific participant.
      *
-     * @param participantMri MRI of the participants to retrieve.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant The participant to retrieve.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Result of getting a desired participant in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallParticipant> getParticipant(String participantMri) {
-        return getParticipantWithResponse(participantMri).flatMap(FluxUtil::toMono);
+    public Mono<CallParticipant> getParticipant(CommunicationIdentifier targetParticipant) {
+        return getParticipantWithResponse(targetParticipant).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get a specific participant.
      *
-     * @param participantMri MRI of the participants to retrieve.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant The participant to retrieve.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Response with the result of getting a desired participant in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallParticipant>> getParticipantWithResponse(String participantMri) {
-        return withContext(context -> getParticipantWithResponseInternal(participantMri, context));
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier targetParticipant) {
+        return withContext(context -> getParticipantWithResponseInternal(targetParticipant, context));
     }
 
-    Mono<Response<CallParticipant>> getParticipantWithResponseInternal(String participantMri, Context context) {
+    Mono<Response<CallParticipant>> getParticipantWithResponseInternal(CommunicationIdentifier targetParticipant, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
+            String participantMri = targetParticipant.getRawId();
             return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, participantMri, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
                     new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
@@ -198,9 +197,9 @@ public class CallConnectionAsync {
     /**
      * Get all participants.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Result of getting all participants in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ListParticipantsResult> listParticipants() {
@@ -210,9 +209,9 @@ public class CallConnectionAsync {
     /**
      * Get all participants.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Response with result of getting all participants in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListParticipantsResult>> listParticipantsWithResponse() {
@@ -224,7 +223,6 @@ public class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response,
                     ListParticipantsResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -235,51 +233,57 @@ public class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetCallInvite A {@link CallInvite} representing the target participant of this transfer.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the targetParticipant participant of this transfer.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws IllegalArgumentException if the targetParticipant is not ACS, phone nor teams user
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful call termination request.
+     * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferToParticipantCall(CallInvite targetCallInvite) {
-        return transferToParticipantCallWithResponse(new TransferToParticipantCallOptions(targetCallInvite)).flatMap(FluxUtil::toMono);
+    public Mono<TransferCallResult> transferCallToParticipant(CommunicationIdentifier targetParticipant) {
+        
+        if (targetParticipant instanceof CommunicationUserIdentifier) {
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+        } else if (targetParticipant instanceof PhoneNumberIdentifier) {
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((PhoneNumberIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+        } else if (targetParticipant instanceof MicrosoftTeamsUserIdentifier) {
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException("targetParticipant type is invalid."));
+        }
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
+     * @return Response with result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResult>> transferToParticipantCallWithResponse(
-        TransferToParticipantCallOptions transferToParticipantCallOptions) {
-        return withContext(context -> transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context));
+    public Mono<Response<TransferCallResult>> transferCallToParticipantWithResponse(
+        TransferCallToParticipantOptions transferCallToParticipantOptions) {
+        return withContext(context -> transferCallToParticipantWithResponseInternal(transferCallToParticipantOptions, context));
     }
 
-    Mono<Response<TransferCallResult>> transferToParticipantCallWithResponseInternal(
-        TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
+    Mono<Response<TransferCallResult>> transferCallToParticipantWithResponseInternal(
+        TransferCallToParticipantOptions transferCallToParticipantOptions, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetCallInvite().getTarget()))
-                .setOperationContext(transferToParticipantCallOptions.getOperationContext());
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(transferCallToParticipantOptions.getTargetParticipant()))
+                .setOperationContext(transferCallToParticipantOptions.getOperationContext());
 
-            CallInvite callInvite = transferToParticipantCallOptions.getTargetCallInvite();
-
-            if (callInvite.getSipHeaders() != null || callInvite.getVoipHeaders() != null) {
+            if (transferCallToParticipantOptions.getSipHeaders() != null || transferCallToParticipantOptions.getVoipHeaders() != null) {
                 request.setCustomContext(new CustomContext()
-                            .setSipHeaders(callInvite.getSipHeaders())
-                            .setVoipHeaders(callInvite.getVoipHeaders()));
+                            .setSipHeaders(transferCallToParticipantOptions.getSipHeaders())
+                            .setVoipHeaders(transferCallToParticipantOptions.getVoipHeaders()));
             }
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-            context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response ->
+            context).map(response ->
                     new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -290,9 +294,9 @@ public class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param participant participant to invite.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Result of adding a participant to the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AddParticipantResult> addParticipant(CallInvite participant) {
@@ -303,9 +307,9 @@ public class CallConnectionAsync {
      * Add a participant to the call.
      *
      * @param addParticipantOptions Options bag for addParticipant
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response with result of adding a participant to the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AddParticipantResult>> addParticipantWithResponse(AddParticipantOptions addParticipantOptions) {
@@ -316,9 +320,9 @@ public class CallConnectionAsync {
                                                                               Context context) {
         try {
             AddParticipantRequestInternal request = new AddParticipantRequestInternal()
-                .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getTarget()))
-                .setSourceDisplayName(addParticipantOptions.getTargetCallInvite().getSourceDisplayName())
-                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetCallInvite().getSourceCallIdNumber()))
+                .setParticipantToAdd(CommunicationIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getTargetParticipant()))
+                .setSourceDisplayName(addParticipantOptions.getTargetParticipant().getSourceDisplayName())
+                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(addParticipantOptions.getTargetParticipant().getSourceCallerIdNumber()))
                 .setOperationContext(addParticipantOptions.getOperationContext());
 
             // Need to do a null check since it is optional; it might be a null and breaks the get function as well as type casting.
@@ -327,17 +331,15 @@ public class CallConnectionAsync {
             }
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (addParticipantOptions.getTargetCallInvite().getSipHeaders() != null || addParticipantOptions.getTargetCallInvite().getVoipHeaders() != null) {
+            if (addParticipantOptions.getTargetParticipant().getSipHeaders() != null || addParticipantOptions.getTargetParticipant().getVoipHeaders() != null) {
                 CustomContext customContext = new CustomContext();
-                customContext.setSipHeaders(addParticipantOptions.getTargetCallInvite().getSipHeaders());
-                customContext.setVoipHeaders(addParticipantOptions.getTargetCallInvite().getVoipHeaders());
+                customContext.setSipHeaders(addParticipantOptions.getTargetParticipant().getSipHeaders());
+                customContext.setVoipHeaders(addParticipantOptions.getTargetParticipant().getVoipHeaders());
                 request.setCustomContext(customContext);
             }
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-            context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
+            context).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -347,9 +349,9 @@ public class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param participantToRemove participant to remove.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Result of removing a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemoveParticipantResult> removeParticipant(CommunicationIdentifier participantToRemove) {
@@ -360,9 +362,9 @@ public class CallConnectionAsync {
      * Remove a participant from the call.
      *
      * @param removeParticipantOptions Options bag for removeParticipant
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response with result of removing a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RemoveParticipantResult>> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions) {
@@ -378,9 +380,7 @@ public class CallConnectionAsync {
                 .setOperationContext(removeParticipantOptions.getOperationContext());
 
             return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, request,
-            context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
+            context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -421,9 +421,7 @@ public class CallConnectionAsync {
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
-                    context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+                    context).map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -464,9 +462,7 @@ public class CallConnectionAsync {
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
-                    context)
-                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-                .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+                    context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

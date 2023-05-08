@@ -20,6 +20,10 @@ public final class PrivateLinkResource extends Resource {
     @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
+    /** Creates an instance of PrivateLinkResource class. */
+    public PrivateLinkResource() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

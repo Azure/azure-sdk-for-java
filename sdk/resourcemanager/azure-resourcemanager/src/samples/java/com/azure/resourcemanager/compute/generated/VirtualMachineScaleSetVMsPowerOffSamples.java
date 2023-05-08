@@ -7,14 +7,14 @@ package com.azure.resourcemanager.compute.generated;
 /** Samples for VirtualMachineScaleSetVMs PowerOff. */
 public final class VirtualMachineScaleSetVMsPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PowerOff_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSetVM_PowerOff_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsPowerOffMaximumSetGen(
+    public static void virtualMachineScaleSetVMPowerOffMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -25,14 +25,14 @@ public final class VirtualMachineScaleSetVMsPowerOffSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_PowerOff_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_PowerOff_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSetVM_PowerOff_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsPowerOffMinimumSetGen(
+    public static void virtualMachineScaleSetVMPowerOffMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

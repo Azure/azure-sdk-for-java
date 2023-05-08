@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
+import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
@@ -68,8 +69,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /*
      * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
-     * status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a
-     * screenshot of the VM from the hypervisor.
+     * status. You can easily view the output of your console log. Azure also enables you to see a screenshot of the VM
+     * from the hypervisor.
      */
     @JsonProperty(value = "bootDiagnostics")
     private BootDiagnosticsInstanceView bootDiagnostics;
@@ -82,8 +83,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /*
      * Resource id of the dedicated host, on which the virtual machine is allocated through automatic placement, when
-     * the virtual machine is associated with a dedicated host group that has automatic placement enabled.
-     * <br><br>Minimum api-version: 2020-06-01.
+     * the virtual machine is associated with a dedicated host group that has automatic placement enabled. Minimum
+     * api-version: 2020-06-01.
      */
     @JsonProperty(value = "assignedHost", access = JsonProperty.Access.WRITE_ONLY)
     private String assignedHost;
@@ -93,6 +94,33 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
      */
     @JsonProperty(value = "placementGroupId")
     private String placementGroupId;
+
+    /*
+     * Specifies the host OS name of the virtual machine. <br><br> This name cannot be updated after the VM is created.
+     * <br><br> **Max-length (Windows):** 15 characters <br><br> **Max-length (Linux):** 64 characters. <br><br> For
+     * naming conventions and restrictions see [Azure infrastructure services implementation
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
+     */
+    @JsonProperty(value = "computerName")
+    private String computerName;
+
+    /*
+     * The Operating System running on the hybrid machine.
+     */
+    @JsonProperty(value = "osName")
+    private String osName;
+
+    /*
+     * The version of Operating System running on the hybrid machine.
+     */
+    @JsonProperty(value = "osVersion")
+    private String osVersion;
+
+    /*
+     * The hypervisor generation of the Virtual Machine [V1, V2]
+     */
+    @JsonProperty(value = "hyperVGeneration")
+    private HyperVGeneration hyperVGeneration;
 
     /** Creates an instance of VirtualMachineScaleSetVMInstanceViewInner class. */
     public VirtualMachineScaleSetVMInstanceViewInner() {
@@ -251,8 +279,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
-     * and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log.
-     * &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you
+     * to see a screenshot of the VM from the hypervisor.
      *
      * @return the bootDiagnostics value.
      */
@@ -262,8 +290,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
-     * and Screenshot to diagnose VM status. &lt;br&gt;&lt;br&gt; You can easily view the output of your console log.
-     * &lt;br&gt;&lt;br&gt; Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you
+     * to see a screenshot of the VM from the hypervisor.
      *
      * @param bootDiagnostics the bootDiagnostics value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
@@ -296,7 +324,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     /**
      * Get the assignedHost property: Resource id of the dedicated host, on which the virtual machine is allocated
      * through automatic placement, when the virtual machine is associated with a dedicated host group that has
-     * automatic placement enabled. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * automatic placement enabled. Minimum api-version: 2020-06-01.
      *
      * @return the assignedHost value.
      */
@@ -323,6 +351,94 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
      */
     public VirtualMachineScaleSetVMInstanceViewInner withPlacementGroupId(String placementGroupId) {
         this.placementGroupId = placementGroupId;
+        return this;
+    }
+
+    /**
+     * Get the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
+     * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
+     * restrictions see [Azure infrastructure services implementation
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
+     *
+     * @return the computerName value.
+     */
+    public String computerName() {
+        return this.computerName;
+    }
+
+    /**
+     * Set the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
+     * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
+     * restrictions see [Azure infrastructure services implementation
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
+     *
+     * @param computerName the computerName value to set.
+     * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
+     */
+    public VirtualMachineScaleSetVMInstanceViewInner withComputerName(String computerName) {
+        this.computerName = computerName;
+        return this;
+    }
+
+    /**
+     * Get the osName property: The Operating System running on the hybrid machine.
+     *
+     * @return the osName value.
+     */
+    public String osName() {
+        return this.osName;
+    }
+
+    /**
+     * Set the osName property: The Operating System running on the hybrid machine.
+     *
+     * @param osName the osName value to set.
+     * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
+     */
+    public VirtualMachineScaleSetVMInstanceViewInner withOsName(String osName) {
+        this.osName = osName;
+        return this;
+    }
+
+    /**
+     * Get the osVersion property: The version of Operating System running on the hybrid machine.
+     *
+     * @return the osVersion value.
+     */
+    public String osVersion() {
+        return this.osVersion;
+    }
+
+    /**
+     * Set the osVersion property: The version of Operating System running on the hybrid machine.
+     *
+     * @param osVersion the osVersion value to set.
+     * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
+     */
+    public VirtualMachineScaleSetVMInstanceViewInner withOsVersion(String osVersion) {
+        this.osVersion = osVersion;
+        return this;
+    }
+
+    /**
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine [V1, V2].
+     *
+     * @return the hyperVGeneration value.
+     */
+    public HyperVGeneration hyperVGeneration() {
+        return this.hyperVGeneration;
+    }
+
+    /**
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine [V1, V2].
+     *
+     * @param hyperVGeneration the hyperVGeneration value to set.
+     * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
+     */
+    public VirtualMachineScaleSetVMInstanceViewInner withHyperVGeneration(HyperVGeneration hyperVGeneration) {
+        this.hyperVGeneration = hyperVGeneration;
         return this;
     }
 

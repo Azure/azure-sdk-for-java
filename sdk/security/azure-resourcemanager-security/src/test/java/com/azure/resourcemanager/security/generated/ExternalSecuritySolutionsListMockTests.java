@@ -31,7 +31,7 @@ public final class ExternalSecuritySolutionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"jrmfqzwqd\",\"id\":\"xkeedcnwmy\",\"name\":\"xfqzkvemyzd\",\"type\":\"czaqpqifdbmpt\"}]}";
+            "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"we\",\"id\":\"yjshcyb\",\"name\":\"fuppoxprc\",\"type\":\"vo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

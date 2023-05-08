@@ -424,6 +424,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         return
     }
 
+    # Code customization packages should be excluded.
+    if ($_.FullName -like "*swagger*")
+    {
+        return
+    }
+
     if ($PomFilesIgnoreParent -contains $pomFile)
     {
         $xmlPomFile = New-Object xml

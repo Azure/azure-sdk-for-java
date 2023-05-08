@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class CancelJobRequest {
     /*
      * (Optional) A note that will be appended to the jobs' Notes collection
-     * with th current timestamp.
+     * with the current timestamp.
      */
     @JsonProperty(value = "note")
     private String note;
@@ -26,7 +26,7 @@ public final class CancelJobRequest {
     private String dispositionCode;
 
     /**
-     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @return the note value.
@@ -36,7 +36,7 @@ public final class CancelJobRequest {
     }
 
     /**
-     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with th current
+     * Set the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current
      * timestamp.
      *
      * @param note the note value to set.

@@ -58,6 +58,6 @@ public final class AutomationsDeleteByResourceGroupWithResponseMockTests {
 
         manager
             .automations()
-            .deleteByResourceGroupWithResponse("jjrlhiqlwix", "tbouguxtnd", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("yjmqrf", "iocuselqkr", com.azure.core.util.Context.NONE);
     }
 }

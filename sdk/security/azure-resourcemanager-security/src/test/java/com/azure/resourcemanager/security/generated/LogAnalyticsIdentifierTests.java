@@ -13,7 +13,7 @@ public final class LogAnalyticsIdentifierTests {
         LogAnalyticsIdentifier model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"LogAnalytics\",\"workspaceId\":\"d\",\"workspaceSubscriptionId\":\"ifrevk\",\"workspaceResourceGroup\":\"pezkis\",\"agentId\":\"jm\"}")
+                    "{\"type\":\"LogAnalytics\",\"workspaceId\":\"o\",\"workspaceSubscriptionId\":\"qocarkuzlbc\",\"workspaceResourceGroup\":\"dtsnxawqytllhdyz\",\"agentId\":\"ckze\"}")
                 .toObject(LogAnalyticsIdentifier.class);
     }
 

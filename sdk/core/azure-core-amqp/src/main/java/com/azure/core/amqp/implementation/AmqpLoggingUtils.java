@@ -16,8 +16,6 @@ import java.util.Objects;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_CONDITION_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
-import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
@@ -56,20 +54,35 @@ public final class AmqpLoggingUtils {
      * Adds {@link ErrorCondition} to the {@link LoggingEventBuilder}. Writes the {@code getCondition()} under {@code errorCondition} key
      * and {@code getDescription()} under {@code errorDescription} keys.
      *
-     * If errorCondition is {@code null} writes {@code n/a}.
+     * If errorCondition is {@code null} does not add properties.
 
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
     public static LoggingEventBuilder addErrorCondition(LoggingEventBuilder logBuilder, ErrorCondition errorCondition) {
-        if (errorCondition == null) {
-            return logBuilder
-                .addKeyValue(ERROR_CONDITION_KEY, NOT_APPLICABLE)
-                .addKeyValue(ERROR_DESCRIPTION_KEY, NOT_APPLICABLE);
+        if (errorCondition != null) {
+            if (errorCondition.getCondition() != null) {
+                logBuilder.addKeyValue(ERROR_CONDITION_KEY, errorCondition.getCondition());
+            }
+
+            if (errorCondition.getDescription() != null) {
+                logBuilder.addKeyValue(ERROR_CONDITION_KEY, errorCondition.getDescription());
+            }
         }
 
-        return logBuilder
-            .addKeyValue(ERROR_CONDITION_KEY, errorCondition.getCondition())
-            .addKeyValue(ERROR_DESCRIPTION_KEY,  errorCondition.getDescription());
+        return logBuilder;
+    }
+
+    /**
+     * Adds {@code key} and {@code value} to the {@link LoggingEventBuilder} if value is not null.
+     *
+     * @return updated {@link LoggingEventBuilder} for chaining.
+     */
+    public static LoggingEventBuilder addKeyValueIfNotNull(LoggingEventBuilder logBuilder, String key, String value) {
+        if (value != null) {
+            logBuilder.addKeyValue(key, value);
+        }
+
+        return logBuilder;
     }
 
     /**

@@ -66,8 +66,7 @@ public final class ServicesClientImpl implements ServicesClient {
     public interface ServicesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/services")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/services")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceListResult>> list(
@@ -81,8 +80,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/services/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/services/{serviceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -98,8 +96,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/services/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/services/{serviceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceInner>> get(
@@ -114,8 +111,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/services/{serviceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/services/{serviceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(

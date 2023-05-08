@@ -196,13 +196,13 @@ public final class LogsQueryHelper {
         return context;
     }
 
-    public static List<String> getAllWorkspaces(LogsQueryOptions body) {
-        List<String> allWorkspaces = new ArrayList<>();
-        if (!CoreUtils.isNullOrEmpty(body.getAdditionalWorkspaces())) {
-            allWorkspaces.addAll(body.getAdditionalWorkspaces());
+    public static List<String> getAllWorkspaces(LogsQueryOptions options) {
+        if (options != null) {
+            return options.getAdditionalWorkspaces();
         }
-        return allWorkspaces;
+        return null;
     }
+
 
     public static Response<LogsQueryResult> convertToLogQueryResult(Response<QueryResults> response) {
         QueryResults queryResults = response.getValue();

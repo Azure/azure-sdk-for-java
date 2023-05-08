@@ -206,7 +206,7 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -267,7 +267,7 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -474,7 +474,7 @@ public abstract class IdentityClientBase {
             }
             String processOutput = output.toString();
 
-            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
+            process.waitFor(this.options.getCredentialProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
@@ -567,18 +567,18 @@ public abstract class IdentityClientBase {
             String processOutput = output.toString();
 
             // wait until the process completes or the timeout (10 sec) is reached.
-            process.waitFor(this.options.getDeveloperCredentialTimeout().getSeconds(), TimeUnit.SECONDS);
+            process.waitFor(this.options.getCredentialProcessTimeout().getSeconds(), TimeUnit.SECONDS);
 
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo(processOutput);
-                    if (redactedOutput.contains("azd login") || redactedOutput.contains("not logged in")) {
+                    if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         throw LoggingUtil.logCredentialUnavailableException(
                                 LOGGER,
                                 options,
                                 new CredentialUnavailableException(
                                         "AzureDeveloperCliCredential authentication unavailable."
-                                        + " Please run 'azd login' to set up account."));
+                                        + " Please run 'azd auth login' to set up account."));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {

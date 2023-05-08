@@ -23,6 +23,10 @@ public final class ManagedHsmSku {
     @JsonProperty(value = "name", required = true)
     private ManagedHsmSkuName name;
 
+    /** Creates an instance of ManagedHsmSku class. */
+    public ManagedHsmSku() {
+    }
+
     /**
      * Get the family property: SKU Family of the managed HSM Pool.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.generated;
 /** Samples for RestorableMongodbDatabases List. */
 public final class RestorableMongodbDatabasesListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBRestorableMongodbDatabaseList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBRestorableMongodbDatabaseList.json
      */
     /**
      * Sample code: CosmosDBRestorableMongodbDatabaseList.

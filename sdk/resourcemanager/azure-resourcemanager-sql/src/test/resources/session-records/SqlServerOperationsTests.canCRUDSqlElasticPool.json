@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgsql6523551dff?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgsql6523551dff?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "d97a1b36-dff2-4f78-b36c-064eef6cc5e8",
@@ -1193,7 +1193,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgsql6523551dff?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgsql6523551dff?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "14fa46cd-8c39-4acb-a94a-ff029f9f7106",
