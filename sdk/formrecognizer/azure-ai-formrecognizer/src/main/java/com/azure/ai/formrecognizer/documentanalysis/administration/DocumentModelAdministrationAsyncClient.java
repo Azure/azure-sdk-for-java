@@ -132,6 +132,15 @@ public final class DocumentModelAdministrationAsyncClient {
     }
 
     /**
+     * Gets the endpoint the client is using.
+     *
+     * @return the endpoint the client is using.
+     */
+    String getEndpoint() {
+        return formRecognizerClientImpl.getEndpoint();
+    }
+
+    /**
      * Builds a custom document analysis model.
      * Models are built using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff', image/bmp.
