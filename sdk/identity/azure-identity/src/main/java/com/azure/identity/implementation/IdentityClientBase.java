@@ -376,7 +376,7 @@ public abstract class IdentityClientBase {
                 : clientId, credential);
 
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
