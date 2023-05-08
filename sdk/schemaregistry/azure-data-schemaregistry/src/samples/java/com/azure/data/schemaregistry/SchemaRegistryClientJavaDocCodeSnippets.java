@@ -93,14 +93,14 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
     public void registerSchemaAsync() {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
-        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema-avro
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         client.registerSchema("{schema-group}", "{schema-name}", schema, SchemaFormat.AVRO)
             .subscribe(properties -> {
                 System.out.printf("Schema id: %s, schema format: %s%n", properties.getId(),
                     properties.getFormat());
             });
-        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema
+        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema-avro
     }
 
     /**
@@ -118,9 +118,8 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         // END: com.azure.data.schemaregistry.schemaregistryclient.getschema
     }
 
-
     /**
-     * Gets schema by name, groupname, version.
+     * Gets schema by name, group name, version.
      */
     public void getSchemaWithResponse() {
         SchemaRegistryClient client = buildClient();
@@ -138,7 +137,6 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         System.out.println("Schema contents: " + schema.getDefinition());
         // END: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
     }
-
 
     /**
      * Gets schema by id using async client.
