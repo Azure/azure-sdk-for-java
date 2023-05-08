@@ -29,6 +29,9 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
 
     static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);
 
+    /** Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class. */
+    public MediaLiveEventChannelArchiveHeartbeatEventData() {}
+
     /**
      * Gets the duration of channel latency.
      *

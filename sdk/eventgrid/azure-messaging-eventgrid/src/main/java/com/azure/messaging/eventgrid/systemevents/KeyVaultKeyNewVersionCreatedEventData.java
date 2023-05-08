@@ -52,6 +52,9 @@ public final class KeyVaultKeyNewVersionCreatedEventData {
     @JsonProperty(value = "EXP")
     private Float exp;
 
+    /** Creates an instance of KeyVaultKeyNewVersionCreatedEventData class. */
+    public KeyVaultKeyNewVersionCreatedEventData() {}
+
     /**
      * Get the id property: The id of the object that triggered this event.
      *
