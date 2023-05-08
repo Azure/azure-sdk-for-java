@@ -26,7 +26,7 @@ public class OpenTelemetryMetricsOptions extends MetricsOptions {
      *
      * @return the value of implementation-specific metric provider, {@code null} by default.
      */
-    MeterProvider getOTelProvider() {
+    MeterProvider getOpenTelemetryProvider() {
         return provider;
     }
 

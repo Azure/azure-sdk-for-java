@@ -8,7 +8,6 @@ import com.azure.core.util.metrics.MeterProvider;
 
 import static com.azure.core.implementation.ImplUtils.getClassByName;
 
-
 /**
  * Metrics configuration options for clients.
  */
@@ -20,7 +19,7 @@ public class MetricsOptions {
         .build();
 
     private static final ConfigurationProperty<String> PROVIDER_NAME_PROPERTY = ConfigurationPropertyBuilder.ofString("metrics.provider.implementation")
-        .environmentVariableName(Configuration.PROPERTY_AZURE_METER_PROVIDER_IMPLEMENTATION)
+        .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_IMPLEMENTATION)
         .shared(true)
         .build();
     private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
@@ -52,7 +51,7 @@ public class MetricsOptions {
     private MetricsOptions(Configuration configuration) {
         isEnabled = !configuration.get(IS_DISABLED_PROPERTY);
         String className = configuration.get(PROVIDER_NAME_PROPERTY);
-        meterProvider = className != null ? getClassByName(className, MeterProvider.class) : null;
+        meterProvider = className != null ? getClassByName(className) : null;
     }
 
     /**

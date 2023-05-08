@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing API for long running operations.
+ * Package containing API for distributed tracing.
  */
 package com.azure.core.experimental.util.tracing;

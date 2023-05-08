@@ -54,7 +54,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerOTelProviderInEnvVar() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACER_PROVIDER_IMPLEMENTATION, "com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider");
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.tracing.opentelemetry.OpenTelemetryTracerProvider");
         Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
             .build();
 
@@ -84,7 +84,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerCustomProviderEnvVar() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACER_PROVIDER_IMPLEMENTATION, "com.azure.core.experimental.util.tracing.LoggingTracerProvider");
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.experimental.util.tracing.LoggingTracerProvider");
         Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
             .build();
 
@@ -116,7 +116,7 @@ public class TracerProviderTests {
     @Test
     public void createTracerProviderIncompatibleType() {
         TestConfigurationSource envSource = new TestConfigurationSource();
-        envSource.put(Configuration.PROPERTY_AZURE_TRACER_PROVIDER_IMPLEMENTATION, "com.azure.core.tracing.opentelemetry.TracerProviderTests");
+        envSource.put(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION, "com.azure.core.tracing.opentelemetry.TracerProviderTests");
         Configuration config = new ConfigurationBuilder(new TestConfigurationSource(), new TestConfigurationSource(), envSource)
             .build();
 

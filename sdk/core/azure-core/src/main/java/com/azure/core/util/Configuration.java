@@ -174,7 +174,7 @@ public class Configuration implements Cloneable {
      * {@link TracerProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link TracerProvider}.
      */
-    public static final String PROPERTY_AZURE_TRACER_PROVIDER_IMPLEMENTATION = "AZURE_TRACER_PROVIDER_IMPLEMENTATION";
+    public static final String PROPERTY_AZURE_TRACING_IMPLEMENTATION = "AZURE_TRACING_IMPLEMENTATION";
 
     /**
      * Disables metrics.
@@ -193,7 +193,7 @@ public class Configuration implements Cloneable {
      * {@link MeterProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
      * attempting to create an instance of {@link MeterProvider}.
      */
-    public static final String PROPERTY_AZURE_METER_PROVIDER_IMPLEMENTATION = "AZURE_METER_PROVIDER_IMPLEMENTATION";
+    public static final String PROPERTY_AZURE_METRICS_IMPLEMENTATION = "AZURE_METRICS_IMPLEMENTATION";
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it

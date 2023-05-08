@@ -27,7 +27,7 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      *
      * @return the value of implementation-specific metric provider, {@code null} by default.
      */
-    TracerProvider getOTelProvider() {
+    TracerProvider getOpenTelemetryProvider() {
         return provider;
     }
 

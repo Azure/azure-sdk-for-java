@@ -19,7 +19,7 @@ public class TracingOptions {
         .build();
 
     private static final ConfigurationProperty<String> PROVIDER_NAME_PROPERTY = ConfigurationPropertyBuilder.ofString("tracing.provider.implementation")
-        .environmentVariableName(Configuration.PROPERTY_AZURE_TRACER_PROVIDER_IMPLEMENTATION)
+        .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION)
         .shared(true)
         .build();
 
@@ -54,7 +54,7 @@ public class TracingOptions {
     private TracingOptions(Configuration configuration) {
         isEnabled = !configuration.get(IS_DISABLED_PROPERTY);
         String className = configuration.get(PROVIDER_NAME_PROPERTY);
-        tracerProvider = className != null ? getClassByName(className, TracerProvider.class) : null;
+        tracerProvider = className != null ? getClassByName(className) : null;
     }
 
     /**

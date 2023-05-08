@@ -351,7 +351,7 @@ public final class ImplUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> Class<? extends T> getClassByName(String className, Class<T> base) {
+    public static <T> Class<? extends T> getClassByName(String className) {
         Objects.requireNonNull("'className' cannot be null");
         try {
             return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
