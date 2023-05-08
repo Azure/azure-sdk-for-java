@@ -901,6 +901,13 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,REC_CATCH_EXCEPTION"/>
   </Match>
 
+  <!-- Exception needs to be caught here.-->
+  <Match>
+    <Class name="~com\.azure\.identity\.implementation\.IdentitySyncClient"/>
+    <Method name="authenticateWithWorkloadIdentityConfidentialClient"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- ClassLoader::getResourceAsStream can return null, ref: https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html -->
   <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient$Options$Builder"/>
