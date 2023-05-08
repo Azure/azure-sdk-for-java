@@ -43,7 +43,7 @@ final class ReceiverDeliveryHandler {
     private static final Supplier<Integer> EMPTY_CREDIT_SUPPLIER = () -> 0;
 
     private final AtomicBoolean isTerminated = new AtomicBoolean();
-    private final AtomicBoolean isEndpointTerminalState = new AtomicBoolean();
+    private final AtomicBoolean isLinkTerminatedWithError = new AtomicBoolean();
     private final Sinks.Many<Message> messages = Sinks.many().multicast().onBackpressureBuffer();
     private final String entityPath;
     private final String receiveLinkName;
@@ -154,10 +154,10 @@ final class ReceiverDeliveryHandler {
     }
 
     /**
-     * Function to notify when the amqp receive-link endpoint state become terminal (error-ed or completed).
+     * Function to notify when the amqp receive-link endpoint state become terminal error-ed state.
      */
-    void onEndpointTerminalState() {
-        isEndpointTerminalState.set(true);
+    void onLinkError() {
+        isLinkTerminatedWithError.set(true);
     }
 
     /**
@@ -373,17 +373,18 @@ final class ReceiverDeliveryHandler {
      * @param decodeError the error.
      */
     private void handleDeliveryDecodeError(RuntimeException decodeError) {
-        if (decodeError instanceof IllegalStateException && (isEndpointTerminalState.get() || isTerminated.get())) {
-            // As part of ReactorReceiver close(), it closes ReceiveLinkHandler and frees Receiver.
-            // The ReactorReceiver will attempt to schedule ReceiveLinkHandler::close() and Receiver::free() in
-            // the ProtonJ Reactor thread. If the scheduling fails, that ReceiveLinkHandler::close() and
-            // Receiver::free() will be called from the ReactorReceiver closure thread; hence, it is possible to
-            // race where the Delivery ProtonJ Reactor thread trying to decode may get released by Receiver::free(),
+        if (decodeError instanceof IllegalStateException && (isLinkTerminatedWithError.get() || isTerminated.get())) {
+            // As part of ReactorReceiver.close(), it closes ReceiveLinkHandler and frees Receiver.
+            // This ReactorReceiver.close() operation will attempt to schedule ReceiveLinkHandler.close() and Receiver.free()
+            // in the ProtonJ Reactor thread. If this scheduling fails, then the ReceiveLinkHandler.close() and
+            // Receiver.free() will be called from the thread that invoked ReactorReceiver.close(). Hence, it is possible
+            // to race where the Delivery ProtonJ Reactor thread trying to decode may get released by Receiver.free(),
             // causing IllegalStateException on decode.
             //
-            // As this happens in the closure route, the ReactorReceiver.endpointState raise close events
-            // Where retries hooks exist, we will not rethrow in this case as it will be propagated to
-            // the ProtonJ Reactor thread possibly hosting other healthy Receivers (and Senders).
+            // We will not rethrow in this case as it will be propagated to the ProtonJ Reactor thread possibly hosting
+            // other healthy Receivers and Senders.
+            //
+            // See the GitHub issue https://github.com/Azure/azure-sdk-for-java/issues/27716 and PR linked to it.
             emitError(new IllegalStateException("Cannot decode Delivery when ReactorReceiver instance is closed.",
                 decodeError));
         } else {
