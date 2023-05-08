@@ -305,7 +305,7 @@ public class ReceiverDeliveryHandlerTest {
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
             StepVerifier.create(handler.getMessages())
-                .then(() -> handler.onEndpointTerminalState())
+                .then(() -> handler.onLinkError())
                 .then(() -> handler.onDelivery(delivery))
                 .verifyErrorSatisfies(error -> {
                     Assertions.assertInstanceOf(IllegalStateException.class, error);
