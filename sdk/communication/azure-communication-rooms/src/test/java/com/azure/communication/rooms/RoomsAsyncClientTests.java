@@ -323,6 +323,64 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse(HttpClient httpClient) {
+        roomsAsyncClient = setupAsyncClient(httpClient,
+                "listRoomTestFirstRoomIsValidSuccess");
+        assertNotNull(roomsAsyncClient);
+
+        // Create empty room
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        Mono<CommunicationRoom> createCommunicationRoom = roomsAsyncClient.createRoom(createRoomOptions);
+
+        StepVerifier.create(createCommunicationRoom)
+                .assertNext(roomResult -> {
+                    assertEquals(true, roomResult.getRoomId() != null);
+                    assertEquals(true, roomResult.getCreatedAt() != null);
+                    assertEquals(true, roomResult.getValidFrom() != null);
+                    assertEquals(true, roomResult.getValidUntil() != null);
+                }).verifyComplete();
+
+        String roomId = createCommunicationRoom.block().getRoomId();
+
+        // Get created room
+        PagedFlux<CommunicationRoom> listRoomResponse = roomsAsyncClient.listRooms();
+
+        StepVerifier.create(listRoomResponse.count())
+                .expectNext(1L)
+                .verifyComplete();
+
+        StepVerifier.create(listRoomResponse)
+                .expectSubscription()
+                .thenConsumeWhile(room -> true, room -> {
+                    assertEquals(true, room.getRoomId() != null);
+                    assertEquals(true, room.getCreatedAt() != null);
+                    assertEquals(true, room.getValidFrom() != null);
+                    assertEquals(true, room.getValidUntil() != null);
+                })
+                .expectComplete()
+                .verify();
+
+        // Delete Room
+        Mono<Response<Void>> deleteResponse = roomsAsyncClient.deleteRoomWithResponse(roomId);
+        StepVerifier.create(deleteResponse)
+                .assertNext(result -> {
+                    assertEquals(result.getStatusCode(), 204);
+                }).verifyComplete();
+
+        // List rooms
+        PagedFlux<CommunicationRoom> listRoomResponse2 = roomsAsyncClient.listRooms();
+
+        // Expected 0 rooms
+        StepVerifier.create(listRoomResponse2.count())
+                .expectNext(0L)
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteParticipantsWithOutResponseStep(HttpClient httpClient) {
         roomsAsyncClient = setupAsyncClient(httpClient,
                 "deleteParticipantsWithOutResponseStep");

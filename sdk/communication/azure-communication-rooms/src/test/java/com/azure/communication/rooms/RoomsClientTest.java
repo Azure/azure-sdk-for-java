@@ -118,6 +118,40 @@ public class RoomsClientTest extends RoomsTestBase {
         assertEquals(deleteResponse.getStatusCode(), 204);
     }
 
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse");
+        assertNotNull(roomsClient);
+
+        // Create empty room
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
+        assertHappyPath(createCommunicationRoom);
+
+        String roomId = createCommunicationRoom.getRoomId();
+
+        // Check created room count, expected 1
+        PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
+        assertEquals(1, listRoomResponse.stream().count());
+
+        for (CommunicationRoom room : listRoomResponse) {
+            assertHappyPath(room);
+        }
+
+        // Delete Room
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+
+        // Created room count, expected 0
+        PagedIterable<CommunicationRoom> listRoomResponse2 = roomsClient.listRooms();
+        assertEquals(0, listRoomResponse2.stream().count());
+    }
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void addUpdateAndRemoveParticipantsOperationsSyncWithFullFlow(HttpClient httpClient) {
