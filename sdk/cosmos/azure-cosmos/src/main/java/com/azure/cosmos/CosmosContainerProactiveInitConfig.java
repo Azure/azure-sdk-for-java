@@ -4,10 +4,10 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,19 +21,17 @@ public final class CosmosContainerProactiveInitConfig {
             .CosmosContainerIdentityHelper
             .getCosmosContainerIdentityAccessor();
     private final List<CosmosContainerIdentity> cosmosContainerIdentities;
-    private final Map<String, Integer> containerLinkToMinConnectionsMap;
+    private final Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap;
     private final int numProactiveConnectionRegions;
     private final Duration aggressiveWarmupDuration;
 
     CosmosContainerProactiveInitConfig(
-        List<CosmosContainerIdentity> cosmosContainerIdentities,
         int numProactiveConnectionRegions,
-        Map<String, Integer> containerLinkToMinConnectionsMap,
-        Duration aggressiveWarmupDuration
-    ) {
-        this.cosmosContainerIdentities = Collections.unmodifiableList(cosmosContainerIdentities);
+        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap,
+        Duration aggressiveWarmupDuration) {
+        this.cosmosContainerIdentities = containerDirectConnectionMetadataMap.keySet().stream().toList();
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
-        this.containerLinkToMinConnectionsMap = containerLinkToMinConnectionsMap;
+        this.containerDirectConnectionMetadataMap = containerDirectConnectionMetadataMap;
         this.aggressiveWarmupDuration = aggressiveWarmupDuration;
     }
 
@@ -112,8 +110,8 @@ public final class CosmosContainerProactiveInitConfig {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.setCosmosContainerProactiveInitConfigAccessor(new ImplementationBridgeHelpers.CosmosContainerProactiveInitConfigHelper.CosmosContainerProactiveInitConfigAccessor() {
             @Override
-            public Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
-                return cosmosContainerProactiveInitConfig.containerLinkToMinConnectionsMap;
+            public Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> getContainerPropertiesMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig) {
+                return cosmosContainerProactiveInitConfig.containerDirectConnectionMetadataMap;
             }
         });
     }
