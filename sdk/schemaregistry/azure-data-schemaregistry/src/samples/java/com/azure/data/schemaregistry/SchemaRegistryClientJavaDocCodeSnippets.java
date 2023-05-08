@@ -149,7 +149,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
     public void getSchemaAsync() {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
-        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getschema
         client.getSchema("{schema-id}")
             .subscribe(schema -> {
                 System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
@@ -160,7 +160,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
             }, () -> {
                 System.out.println("Get schema completed.");
             });
-        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema
+        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getschema
     }
 
     /**
@@ -169,7 +169,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
     public void getSchemaWithResponseAsync() {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
-        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse
         client.getSchemaWithResponse("{group-name}",
                 "{schema-name}", 1, Context.NONE)
             .subscribe(response -> {
@@ -189,7 +189,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
             }, () -> {
                 System.out.println("Get schema with response completed.");
             });
-        // END: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
+        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse
     }
 
     /**
@@ -227,7 +227,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
     public void getSchemaPropertiesAsync() {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
-        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getschemaproperties
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
         client.getSchemaProperties("{schema-group}", "{schema-name}", schema, SchemaFormat.AVRO)
             .subscribe(properties -> {
@@ -239,7 +239,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
             }, () -> {
                 System.out.println("Get schema completed.");
             });
-        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties
+        // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getschemaproperties
     }
 
     private static SchemaRegistryAsyncClient buildAsyncClient() {

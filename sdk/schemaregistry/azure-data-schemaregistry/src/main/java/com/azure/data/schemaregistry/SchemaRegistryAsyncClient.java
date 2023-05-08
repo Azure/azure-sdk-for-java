@@ -43,6 +43,14 @@ import static com.azure.core.util.FluxUtil.monoError;
  * chooses the credential to used based on its running environment.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
+ * <pre>
+ * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;
+ *     .fullyQualifiedNamespace&#40;&quot;https:&#47;&#47;&lt;your-schema-registry-endpoint&gt;.servicebus.windows.net&quot;&#41;
+ *     .credential&#40;azureCredential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  *
  * <p><strong>Sample: Register a schema</strong></p>
@@ -60,6 +68,10 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .subscribe&#40;properties -&gt; &#123;
  *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, properties.getId&#40;&#41;,
  *             properties.getFormat&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error occurred registering schema: &quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         System.out.println&#40;&quot;Register schema completed.&quot;&#41;;
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema-avro -->
@@ -74,28 +86,73 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschema -->
  * <pre>
- * client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;.subscribe&#40;schema -&gt; &#123;
- *     System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
- *         schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
- *     System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
- * &#125;&#41;;
+ * client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;
+ *     .subscribe&#40;schema -&gt; &#123;
+ *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
+ *             schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error occurred getting schema: &quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         System.out.println&#40;&quot;Get schema completed.&quot;&#41;;
+ *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getschema -->
  *
  * <p><strong>Sample: Get a schema's properties</strong></p>
  *
  * <p>The following code sample demonstrates how to get a schema's properties given its schema contents.  Fetching
- * schema properties is useful in cases where developers want to get the unique schema id.</p>
+ * schema properties is useful in cases where developers want to get the unique schema id.
+ * {@link #getSchemaProperties(String, String, String, SchemaFormat)} is a non-blocking call, the program will move
+ * onto the next line of code after setting up the async operation.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschemaproperties -->
  * <pre>
  * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
- * client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema,
- *     SchemaFormat.AVRO&#41;.subscribe&#40;properties -&gt; &#123;
- *         System.out.println&#40;&quot;The schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ * client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema, SchemaFormat.AVRO&#41;
+ *     .subscribe&#40;properties -&gt; &#123;
+ *         System.out.println&#40;&quot;Schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Format: &quot; + properties.getFormat&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Version: &quot; + properties.getVersion&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error occurred getting schema: &quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         System.out.println&#40;&quot;Get schema completed.&quot;&#41;;
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getschemaproperties -->
+ *
+ * <p><strong>Sample: Get a schema with its HTTP response</strong></p>
+ *
+ * <p>The following code sample demonstrates how to get a schema using its group name, schema name, and version number.
+ * In addition, it gets the underlying HTTP response that backs this service call.  This is useful in cases where
+ * customers want more insight into the HTTP request/response.
+ * {@link #getSchemaWithResponse(String, String, int, Context)} is a non-blocking call, the program will move onto the
+ * next line of code after setting up the async operation.</p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse -->
+ * <pre>
+ * client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;,
+ *         &quot;&#123;schema-name&#125;&quot;, 1, Context.NONE&#41;
+ *     .subscribe&#40;response -&gt; &#123;
+ *         System.out.println&#40;&quot;Headers in HTTP response: &quot;&#41;;
+ *
+ *         for &#40;HttpHeader header : response.getHeaders&#40;&#41;&#41; &#123;
+ *             System.out.printf&#40;&quot;%s: %s%n&quot;, header.getName&#40;&#41;, header.getValue&#40;&#41;&#41;;
+ *         &#125;
+ *
+ *         SchemaRegistrySchema schema = response.getValue&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
+ *             schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         System.err.println&#40;&quot;Error occurred getting schema: &quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         System.out.println&#40;&quot;Get schema with response completed.&quot;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse -->
  *
  * @see SchemaRegistryClientBuilder
  * @see SchemaRegistryClient

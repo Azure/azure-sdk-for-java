@@ -78,7 +78,6 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  * <pre>
- * &#47;&#47; AAD credential to authorize with Schema Registry service.
  * DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .build&#40;&#41;;
  * SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder&#40;&#41;

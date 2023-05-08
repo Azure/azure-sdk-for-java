@@ -87,7 +87,6 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 ##### Async client
 
 ```java com.azure.data.schemaregistry.schemaregistryasyncclient.construct
-// AAD credential to authorize with Schema Registry service.
 DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
     .build();
 SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
@@ -170,7 +169,9 @@ String schemaContent = "{\n"
 SchemaProperties properties = client.getSchemaProperties("{schema-group}", "{schema-name}",
     schemaContent, SchemaFormat.AVRO);
 
-System.out.println("Retrieved schema id: " + properties.getId());
+System.out.println("Schema id: " + properties.getId());
+System.out.println("Format: " + properties.getFormat());
+System.out.println("Version: " + properties.getVersion());
 ```
 
 ## Troubleshooting

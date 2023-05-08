@@ -112,7 +112,9 @@ import java.util.Objects;
  * SchemaProperties properties = client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;,
  *     schemaContent, SchemaFormat.AVRO&#41;;
  *
- * System.out.println&#40;&quot;Retrieved schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Format: &quot; + properties.getFormat&#40;&#41;&#41;;
+ * System.out.println&#40;&quot;Version: &quot; + properties.getVersion&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties -->
  *
@@ -131,6 +133,7 @@ import java.util.Objects;
  * response.getHeaders&#40;&#41;.forEach&#40;header -&gt; System.out.printf&#40;&quot;%s: %s%n&quot;, header.getName&#40;&#41;, header.getValue&#40;&#41;&#41;&#41;;
  *
  * SchemaRegistrySchema schema = response.getValue&#40;&#41;;
+ *
  * System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
  *     schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
  * System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
