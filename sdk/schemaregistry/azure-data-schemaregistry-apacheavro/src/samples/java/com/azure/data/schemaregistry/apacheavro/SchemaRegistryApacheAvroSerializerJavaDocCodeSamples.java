@@ -31,7 +31,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
      * Demonstrates how to instantiate the serializer.
      */
     public void instantiate() {
-        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation
+        // BEGIN: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .credential(tokenCredential)
@@ -45,7 +45,7 @@ public class SchemaRegistryApacheAvroSerializerJavaDocCodeSamples {
             .autoRegisterSchemas(true)
             .schemaGroup("{schema-group}")
             .buildSerializer();
-        // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation
+        // END: com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct
     }
 
     /**

@@ -27,8 +27,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 /**
  * Schema Registry-based serializer implementation for Avro data format using Apache Avro.
  *
- * <p><strong>Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <p><strong>Sample: Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct -->
  * <pre>
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder&#40;&#41;
@@ -44,7 +45,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct -->
  *
  * <p><strong>Serialize an object</strong></p>
  * Serializes an Avro generated object into {@link MessageContent}. {@link #serialize(Object, TypeReference)} assumes

@@ -17,8 +17,14 @@ import java.util.Objects;
  * The builder for instantiating a {@link SchemaRegistryApacheAvroSerializer}. Additional code samples are in
  * {@link SchemaRegistryApacheAvroSerializer}.
  *
- * <p><strong>Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
- * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <p><strong>Sample: Creating a {@link SchemaRegistryApacheAvroSerializer}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the serializer and
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient}.  The credential used to create the async client is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.</p>
+ *
+ * <!-- src_embed com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct -->
  * <pre>
  * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder&#40;&#41;
@@ -34,7 +40,7 @@ import java.util.Objects;
  *     .schemaGroup&#40;&quot;&#123;schema-group&#125;&quot;&#41;
  *     .buildSerializer&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.instantiation -->
+ * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.construct -->
  *
  * @see SchemaRegistryApacheAvroSerializer
  */
@@ -49,7 +55,7 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
     private String schemaGroup;
 
     /**
-     * Instantiates instance of Builder class. Supplies client defaults.
+     * Instantiates instance of Builder class.  By
      */
     public SchemaRegistryApacheAvroSerializerBuilder() {
         this.autoRegisterSchemas = false;
@@ -57,15 +63,15 @@ public final class SchemaRegistryApacheAvroSerializerBuilder {
     }
 
     /**
-     * Specifies schema group for interacting with Azure Schema Registry service. This is optional unless {@link
-     * #autoRegisterSchemas(boolean) autoRegisterSchema} is set to {@code true}.
+     * <p>Specifies schema group for interacting with Azure Schema Registry service. This is optional unless
+     * {@link #autoRegisterSchemas(boolean) autoRegisterSchema} is set to {@code true}.</p>
      *
-     * If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
-     * request schema ID for matching data schema under specified group.
+     * <p>If auto-registering schemas, schema will be stored under this group. If not auto-registering, serializer will
+     * request schema ID for matching data schema under specified group.</p>
      *
-     * @param schemaGroup Azure Schema Registry schema group
+     * @param schemaGroup Schema Registry group name.
      *
-     * @return updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance
+     * @return The updated {@link SchemaRegistryApacheAvroSerializerBuilder} instance.
      */
     public SchemaRegistryApacheAvroSerializerBuilder schemaGroup(String schemaGroup) {
         this.schemaGroup = schemaGroup;

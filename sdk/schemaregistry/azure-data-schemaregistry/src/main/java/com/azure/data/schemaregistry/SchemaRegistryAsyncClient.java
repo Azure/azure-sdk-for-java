@@ -37,7 +37,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Sample: Construct a {@link SchemaRegistryAsyncClient}</strong></p>
  *
- * <p>The following code sample demonstrates the creation of the synchronous client
+ * <p>The following code sample demonstrates the creation of the asynchronous client
  * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient}.  The credential used is
  * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
  * chooses the credential to used based on its running environment.</p>
