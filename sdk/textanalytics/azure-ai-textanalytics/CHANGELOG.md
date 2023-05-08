@@ -4,6 +4,7 @@
 
 ### Features Added
 - Added `values()` methods to all ExpandableStringEnum models.
+- Added more values to enum class: `HealthcareEntityCategory` and `HealthcareEntityRelationType`.
 
 ### Breaking Changes
 > These changes do not impact the API of stable versions such as `5.2.0`. Only code written against the beta versions such as `5.3.0-beta.1` may be affected.
