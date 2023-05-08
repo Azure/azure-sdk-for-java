@@ -1,16 +1,12 @@
 # Release History
 
-## 1.9.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.9.0 (2023-05-08)
 
 ### Other Changes
-- renamed `disableInstanceDiscovery` to `disableAuthorityValidationAndInstanceDiscovery`.
 - renamed `DefaultAzureCredential.processTimeout` to `credentialProcessTimeout`.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
 ## 1.8.3 (2023-05-01)
 
