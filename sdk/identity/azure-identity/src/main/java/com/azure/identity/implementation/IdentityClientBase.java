@@ -32,6 +32,7 @@ import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -48,14 +49,18 @@ import reactor.core.publisher.Mono;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -74,8 +79,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -224,12 +231,6 @@ public abstract class IdentityClientBase {
             applicationBuilder.executorService(options.getExecutorService());
         }
 
-        if (!options.isCp1Disabled()) {
-            Set<String> set = new HashSet<>(1);
-            set.add("CP1");
-            applicationBuilder.clientCapabilities(set);
-        }
-
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
@@ -363,6 +364,42 @@ public abstract class IdentityClientBase {
         return applicationBuilder.build();
     }
 
+    ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
+            + "/" + tenantId;
+
+        // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
+        IClientCredential credential = ClientCredentialFactory
+            .createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
+        ConfidentialClientApplication.Builder applicationBuilder =
+            ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
+                : clientId, credential);
+
+        try {
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+        }
+
+        applicationBuilder.appTokenProvider(getWorkloadIdentityTokenProvider());
+
+
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            applicationBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            applicationBuilder.executorService(options.getExecutorService());
+        }
+
+        return applicationBuilder.build();
+    }
+
+    abstract Function<AppTokenProviderParameters, CompletableFuture<TokenProviderResult>> getWorkloadIdentityTokenProvider();
+
     DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request, Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder =
             DeviceCodeFlowParameters.builder(
@@ -383,11 +420,6 @@ public abstract class IdentityClientBase {
         OnBehalfOfParameters.OnBehalfOfParametersBuilder builder = OnBehalfOfParameters
             .builder(new HashSet<>(request.getScopes()), options.getUserAssertion())
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
-
-        if (request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            builder.claims(customClaimRequest);
-        }
         return builder.build();
     }
 
@@ -613,6 +645,42 @@ public abstract class IdentityClientBase {
         return token;
     }
 
+    AccessToken authenticateWithExchangeTokenHelper(TokenRequestContext request, String assertionToken) throws IOException {
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
+            + "/" + tenantId + "/oauth2/v2.0/token";
+
+        String urlParams = "client_assertion=" + assertionToken
+            + "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_id="
+            + clientId + "&grant_type=client_credentials&scope=" + urlEncode(request.getScopes().get(0));
+
+        byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
+        int postDataLength = postData.length;
+
+        HttpURLConnection connection = null;
+
+        URL url = getUrl(authorityUrl);
+
+        try {
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+            connection.setRequestProperty("User-Agent", userAgent);
+            connection.setDoOutput(true);
+            try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+                outputStream.write(postData);
+            }
+            connection.connect();
+
+            return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
+                SerializerEncoding.JSON);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
             String windowsSystemRoot = System.getenv("SystemRoot");
@@ -722,6 +790,14 @@ public abstract class IdentityClientBase {
             default:
                 return new Proxy(Proxy.Type.HTTP, options.getAddress());
         }
+    }
+
+    static String urlEncode(String value) throws IOException {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
+    }
+
+    static URL getUrl(String uri) throws MalformedURLException {
+        return new URL(uri);
     }
 
     /**
