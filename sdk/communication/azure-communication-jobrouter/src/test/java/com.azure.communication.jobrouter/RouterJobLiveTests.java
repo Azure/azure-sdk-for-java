@@ -13,7 +13,6 @@ import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.options.CloseJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
