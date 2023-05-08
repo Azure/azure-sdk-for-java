@@ -11,11 +11,10 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The pipeline policy that puts a UUID in the request header. Azure uses the request id as
@@ -65,8 +64,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         HttpHeaders headers = request.getHeaders();
         String requestId = headers.getValue(requestIdHeaderName);
         if (requestId == null) {
-            headers.set(requestIdHeaderName, new UUID(ThreadLocalRandom.current().nextLong(),
-                ThreadLocalRandom.current().nextLong()).toString());
+            headers.set(requestIdHeaderName, CoreUtils.randomUuid().toString());
         }
     }
 }

@@ -2338,7 +2338,10 @@
   <Match>
     <Or>
       <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
-      <Class name="com.azure.core.http.policy.RequestIdPolicy"/>
+      <And>
+        <Class name="com.azure.core.util.CoreUtils"/>
+        <Method name="randomUuid"/>
+      </And>
     </Or>
     <Bug pattern="PREDICTABLE_RANDOM"/>
   </Match>
