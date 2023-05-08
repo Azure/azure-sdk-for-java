@@ -186,6 +186,38 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-starter-appconfiguration
                 version: 5.1.0
+        - artifactId: spring-cloud-azure-starter-appconfiguration-config
+          groupId: com.azure.spring
+          versionGA: 4.7.0
+          versionPreview: 5.1.0
+          description: Microsoft's Spring Boot Starter helps developers to load properties
+            and manage features from Azure App Configuration service for Spring Application.
+          type: spring
+          links:
+            github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.7.0/sdk/spring/spring-cloud-azure-starter-appconfiguration-config
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-appconfiguration-config
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.7.0/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
+          springProperties:
+            starter: true
+            bom: spring-cloud-azure-dependencies
+            compatibilityRange: "[2.5.0,3.0.6]"
+            mappings:
+              - compatibilityRange: "[2.5.0,2.5.14]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-appconfiguration-config
+                version: 4.7.0
+              - compatibilityRange: "[2.6.0,2.6.14]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-appconfiguration-config
+                version: 4.7.0
+              - compatibilityRange: "[2.7.0,2.7.11]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-appconfiguration-config
+                version: 4.7.0
+              - compatibilityRange: "[3.0.0,3.0.6]"
+                groupId: com.azure.spring
+                artifactId: spring-cloud-azure-starter-appconfiguration-config
+                version: 5.1.0
 - name: Cosmos DB
   content:
     - name: Spring Data Cosmos
