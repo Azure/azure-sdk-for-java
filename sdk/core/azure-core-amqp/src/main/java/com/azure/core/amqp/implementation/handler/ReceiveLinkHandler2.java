@@ -175,12 +175,6 @@ public class ReceiveLinkHandler2 extends LinkHandler {
         super.onLinkFinal(event);
     }
 
-    @Override
-    protected void onEndpointTerminalState() {
-        deliveryHandler.onEndpointTerminalState();
-        super.onEndpointTerminalState();
-    }
-
     /**
      * Sets a {@link Supplier} to retrieve the credit value to be placed on the amqp receive-link
      * when the link has no credit left.
@@ -220,5 +214,11 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     public Mono<Void> preClose() {
         deliveryHandler.preClose();
         return unsettledDeliveries.terminateAndAwaitForDispositionsInProgressToComplete();
+    }
+
+    @Override
+    void onError(Throwable e) {
+        deliveryHandler.onLinkError();
+        super.onError(e);
     }
 }
