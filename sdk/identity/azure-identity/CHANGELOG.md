@@ -2,6 +2,12 @@
 
 ## 1.9.0 (2023-05-08)
 
+### Features Added
+
+#### Features Generally Available from v1.9.0-beta3
+- Added configurable timeout for developer credentials (Azure CLI, Azure Developer CLI)
+- Added `WorkloadIdentityCredential` to authenticate using workload identity in Azure Kubernetes.
+
 ### Other Changes
 - renamed `DefaultAzureCredential.processTimeout` to `credentialProcessTimeout`.
 
