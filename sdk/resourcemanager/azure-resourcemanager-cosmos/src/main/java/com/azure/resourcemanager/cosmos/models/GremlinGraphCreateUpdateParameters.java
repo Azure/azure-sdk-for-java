@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.GremlinGraphCreateUpdatePr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Parameters to create and update Cosmos DB Gremlin graph.
- */
+/** Parameters to create and update Cosmos DB Gremlin graph. */
 @Fluent
 public final class GremlinGraphCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -21,9 +19,7 @@ public final class GremlinGraphCreateUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private GremlinGraphCreateUpdateProperties innerProperties = new GremlinGraphCreateUpdateProperties();
 
-    /**
-     * Creates an instance of GremlinGraphCreateUpdateParameters class.
-     */
+    /** Creates an instance of GremlinGraphCreateUpdateParameters class. */
     public GremlinGraphCreateUpdateParameters() {
     }
 
@@ -36,18 +32,14 @@ public final class GremlinGraphCreateUpdateParameters extends ArmResourcePropert
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GremlinGraphCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GremlinGraphCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -111,7 +103,10 @@ public final class GremlinGraphCreateUpdateParameters extends ArmResourcePropert
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model GremlinGraphCreateUpdateParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model GremlinGraphCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

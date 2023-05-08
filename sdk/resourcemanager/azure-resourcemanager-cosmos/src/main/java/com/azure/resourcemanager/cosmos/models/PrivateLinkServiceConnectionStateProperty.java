@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Connection State of the Private Endpoint Connection.
- */
+/** Connection State of the Private Endpoint Connection. */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
     /*
@@ -30,9 +28,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
-    /**
-     * Creates an instance of PrivateLinkServiceConnectionStateProperty class.
-     */
+    /** Creates an instance of PrivateLinkServiceConnectionStateProperty class. */
     public PrivateLinkServiceConnectionStateProperty() {
     }
 

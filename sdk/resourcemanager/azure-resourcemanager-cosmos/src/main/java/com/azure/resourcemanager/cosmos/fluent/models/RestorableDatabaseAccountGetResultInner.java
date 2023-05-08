@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * A Azure Cosmos DB restorable database account.
- */
+/** A Azure Cosmos DB restorable database account. */
 @Fluent
 public final class RestorableDatabaseAccountGetResultInner {
     /*
@@ -46,9 +44,7 @@ public final class RestorableDatabaseAccountGetResultInner {
     @JsonProperty(value = "location")
     private String location;
 
-    /**
-     * Creates an instance of RestorableDatabaseAccountGetResultInner class.
-     */
+    /** Creates an instance of RestorableDatabaseAccountGetResultInner class. */
     public RestorableDatabaseAccountGetResultInner() {
     }
 

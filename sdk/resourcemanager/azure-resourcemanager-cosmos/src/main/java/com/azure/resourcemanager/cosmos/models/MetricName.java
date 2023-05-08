@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A metric name.
- */
+/** A metric name. */
 @Immutable
 public final class MetricName {
     /*
@@ -24,9 +22,7 @@ public final class MetricName {
     @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
-    /**
-     * Creates an instance of MetricName class.
-     */
+    /** Creates an instance of MetricName class. */
     public MetricName() {
     }
 

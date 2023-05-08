@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableDatabaseAccountG
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the restorable database accounts and their properties.
- */
+/** The List operation response, that contains the restorable database accounts and their properties. */
 @Immutable
 public final class RestorableDatabaseAccountsListResult {
     /*
@@ -20,9 +18,7 @@ public final class RestorableDatabaseAccountsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableDatabaseAccountGetResultInner> value;
 
-    /**
-     * Creates an instance of RestorableDatabaseAccountsListResult class.
-     */
+    /** Creates an instance of RestorableDatabaseAccountsListResult class. */
     public RestorableDatabaseAccountsListResult() {
     }
 

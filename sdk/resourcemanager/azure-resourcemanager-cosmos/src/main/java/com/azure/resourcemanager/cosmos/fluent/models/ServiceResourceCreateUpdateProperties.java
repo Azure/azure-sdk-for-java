@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.models.ServiceSize;
 import com.azure.resourcemanager.cosmos.models.ServiceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties in ServiceResourceCreateUpdateParameters.
- */
+/** Properties in ServiceResourceCreateUpdateParameters. */
 @Fluent
 public final class ServiceResourceCreateUpdateProperties {
     /*
@@ -32,9 +30,7 @@ public final class ServiceResourceCreateUpdateProperties {
     @JsonProperty(value = "serviceType")
     private ServiceType serviceType;
 
-    /**
-     * Creates an instance of ServiceResourceCreateUpdateProperties class.
-     */
+    /** Creates an instance of ServiceResourceCreateUpdateProperties class. */
     public ServiceResourceCreateUpdateProperties() {
     }
 

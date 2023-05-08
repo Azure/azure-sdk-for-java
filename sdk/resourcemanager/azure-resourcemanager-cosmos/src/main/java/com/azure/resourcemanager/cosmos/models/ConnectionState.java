@@ -8,43 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The kind of connection error that occurred.
- */
+/** The kind of connection error that occurred. */
 public final class ConnectionState extends ExpandableStringEnum<ConnectionState> {
-    /**
-     * Static value Unknown for ConnectionState.
-     */
+    /** Static value Unknown for ConnectionState. */
     public static final ConnectionState UNKNOWN = fromString("Unknown");
 
-    /**
-     * Static value OK for ConnectionState.
-     */
+    /** Static value OK for ConnectionState. */
     public static final ConnectionState OK = fromString("OK");
 
-    /**
-     * Static value OperatorToDataCenterNetworkError for ConnectionState.
-     */
-    public static final ConnectionState OPERATOR_TO_DATA_CENTER_NETWORK_ERROR = fromString("OperatorToDataCenterNetworkError");
+    /** Static value OperatorToDataCenterNetworkError for ConnectionState. */
+    public static final ConnectionState OPERATOR_TO_DATA_CENTER_NETWORK_ERROR =
+        fromString("OperatorToDataCenterNetworkError");
 
-    /**
-     * Static value DatacenterToDatacenterNetworkError for ConnectionState.
-     */
-    public static final ConnectionState DATACENTER_TO_DATACENTER_NETWORK_ERROR = fromString("DatacenterToDatacenterNetworkError");
+    /** Static value DatacenterToDatacenterNetworkError for ConnectionState. */
+    public static final ConnectionState DATACENTER_TO_DATACENTER_NETWORK_ERROR =
+        fromString("DatacenterToDatacenterNetworkError");
 
-    /**
-     * Static value InternalOperatorToDataCenterCertificateError for ConnectionState.
-     */
-    public static final ConnectionState INTERNAL_OPERATOR_TO_DATA_CENTER_CERTIFICATE_ERROR = fromString("InternalOperatorToDataCenterCertificateError");
+    /** Static value InternalOperatorToDataCenterCertificateError for ConnectionState. */
+    public static final ConnectionState INTERNAL_OPERATOR_TO_DATA_CENTER_CERTIFICATE_ERROR =
+        fromString("InternalOperatorToDataCenterCertificateError");
 
-    /**
-     * Static value InternalError for ConnectionState.
-     */
+    /** Static value InternalError for ConnectionState. */
     public static final ConnectionState INTERNAL_ERROR = fromString("InternalError");
 
     /**
      * Creates a new instance of ConnectionState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -53,7 +42,7 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
 
     /**
      * Creates or finds a ConnectionState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ConnectionState.
      */
@@ -64,7 +53,7 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
 
     /**
      * Gets known ConnectionState values.
-     * 
+     *
      * @return known ConnectionState values.
      */
     public static Collection<ConnectionState> values() {

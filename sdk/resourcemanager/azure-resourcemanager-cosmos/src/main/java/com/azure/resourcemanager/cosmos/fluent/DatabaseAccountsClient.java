@@ -32,10 +32,11 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in DatabaseAccountsClient.
- */
-public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccountGetResultsInner>, InnerSupportsListing<DatabaseAccountGetResultsInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in DatabaseAccountsClient. */
+public interface DatabaseAccountsClient
+    extends InnerSupportsGet<DatabaseAccountGetResultsInner>,
+        InnerSupportsListing<DatabaseAccountGetResultsInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
@@ -47,7 +48,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAccountGetResultsInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String accountName);
+    Mono<Response<DatabaseAccountGetResultsInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
@@ -74,7 +76,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAccountGetResultsInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<DatabaseAccountGetResultsInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
@@ -101,7 +104,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -115,7 +119,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdateAsync(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
+    PollerFlux<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdateAsync(
+        String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -129,7 +134,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdate(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
+    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdate(
+        String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -144,7 +150,11 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdate(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters, Context context);
+    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginUpdate(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountUpdateParameters updateParameters,
+        Context context);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -158,7 +168,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAccountGetResultsInner> updateAsync(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
+    Mono<DatabaseAccountGetResultsInner> updateAsync(
+        String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -172,7 +183,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountGetResultsInner update(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
+    DatabaseAccountGetResultsInner update(
+        String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -187,10 +199,15 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountGetResultsInner update(String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters, Context context);
+    DatabaseAccountGetResultsInner update(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountUpdateParameters updateParameters,
+        Context context);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -201,10 +218,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -215,10 +234,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
+    PollerFlux<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -229,10 +250,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdate(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
+    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdate(
+        String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -244,10 +267,15 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdate(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters, Context context);
+    SyncPoller<PollResult<DatabaseAccountGetResultsInner>, DatabaseAccountGetResultsInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountCreateUpdateParameters createUpdateParameters,
+        Context context);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -258,10 +286,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAccountGetResultsInner> createOrUpdateAsync(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
+    Mono<DatabaseAccountGetResultsInner> createOrUpdateAsync(
+        String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -272,10 +302,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountGetResultsInner createOrUpdate(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
+    DatabaseAccountGetResultsInner createOrUpdate(
+        String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters);
 
     /**
-     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -287,7 +319,11 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountGetResultsInner createOrUpdate(String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters, Context context);
+    DatabaseAccountGetResultsInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountCreateUpdateParameters createUpdateParameters,
+        Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB database account.
@@ -381,7 +417,9 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
     void delete(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -392,10 +430,13 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> failoverPriorityChangeWithResponseAsync(String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
+    Mono<Response<Flux<ByteBuffer>>> failoverPriorityChangeWithResponseAsync(
+        String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -406,10 +447,13 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginFailoverPriorityChangeAsync(String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
+    PollerFlux<PollResult<Void>, Void> beginFailoverPriorityChangeAsync(
+        String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -420,10 +464,13 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFailoverPriorityChange(String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
+    SyncPoller<PollResult<Void>, Void> beginFailoverPriorityChange(
+        String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -435,10 +482,13 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFailoverPriorityChange(String resourceGroupName, String accountName, FailoverPolicies failoverParameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFailoverPriorityChange(
+        String resourceGroupName, String accountName, FailoverPolicies failoverParameters, Context context);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -449,10 +499,13 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> failoverPriorityChangeAsync(String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
+    Mono<Void> failoverPriorityChangeAsync(
+        String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -465,7 +518,9 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
     void failoverPriorityChange(String resourceGroupName, String accountName, FailoverPolicies failoverParameters);
 
     /**
-     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -476,14 +531,16 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void failoverPriorityChange(String resourceGroupName, String accountName, FailoverPolicies failoverParameters, Context context);
+    void failoverPriorityChange(
+        String resourceGroupName, String accountName, FailoverPolicies failoverParameters, Context context);
 
     /**
      * Lists all the Azure Cosmos DB database accounts available under the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the database accounts and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the database accounts and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DatabaseAccountGetResultsInner> listAsync();
@@ -493,7 +550,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the database accounts and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the database accounts and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseAccountGetResultsInner> list();
@@ -505,7 +563,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the database accounts and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the database accounts and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseAccountGetResultsInner> list(Context context);
@@ -517,7 +576,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the database accounts and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the database accounts and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DatabaseAccountGetResultsInner> listByResourceGroupAsync(String resourceGroupName);
@@ -529,7 +589,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the database accounts and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the database accounts and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseAccountGetResultsInner> listByResourceGroup(String resourceGroupName);
@@ -542,7 +603,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the database accounts and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the database accounts and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseAccountGetResultsInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -555,10 +617,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the given database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the access keys for the given database account along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAccountListKeysResultInner>> listKeysWithResponseAsync(String resourceGroupName, String accountName);
+    Mono<Response<DatabaseAccountListKeysResultInner>> listKeysWithResponseAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
@@ -585,7 +649,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the access keys for the given database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAccountListKeysResultInner> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<DatabaseAccountListKeysResultInner> listKeysWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
@@ -608,10 +673,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the connection strings for the given database account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAccountListConnectionStringsResultInner>> listConnectionStringsWithResponseAsync(String resourceGroupName, String accountName);
+    Mono<Response<DatabaseAccountListConnectionStringsResultInner>> listConnectionStringsWithResponseAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
@@ -624,7 +691,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the connection strings for the given database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(String resourceGroupName, String accountName);
+    Mono<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
@@ -638,7 +706,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the connection strings for the given database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
@@ -665,7 +734,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> offlineRegionWithResponseAsync(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
+    Mono<Response<Flux<ByteBuffer>>> offlineRegionWithResponseAsync(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
@@ -679,7 +749,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginOfflineRegionAsync(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
+    PollerFlux<PollResult<Void>, Void> beginOfflineRegionAsync(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
@@ -693,7 +764,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginOfflineRegion(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
+    SyncPoller<PollResult<Void>, Void> beginOfflineRegion(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
@@ -708,7 +780,11 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginOfflineRegion(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline, Context context);
+    SyncPoller<PollResult<Void>, Void> beginOfflineRegion(
+        String resourceGroupName,
+        String accountName,
+        RegionForOnlineOffline regionParameterForOffline,
+        Context context);
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
@@ -722,7 +798,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> offlineRegionAsync(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
+    Mono<Void> offlineRegionAsync(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline);
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
@@ -749,7 +826,11 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void offlineRegion(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOffline, Context context);
+    void offlineRegion(
+        String resourceGroupName,
+        String accountName,
+        RegionForOnlineOffline regionParameterForOffline,
+        Context context);
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
@@ -763,7 +844,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> onlineRegionWithResponseAsync(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
+    Mono<Response<Flux<ByteBuffer>>> onlineRegionWithResponseAsync(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
@@ -777,7 +859,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginOnlineRegionAsync(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
+    PollerFlux<PollResult<Void>, Void> beginOnlineRegionAsync(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
@@ -791,7 +874,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginOnlineRegion(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
+    SyncPoller<PollResult<Void>, Void> beginOnlineRegion(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
@@ -806,7 +890,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginOnlineRegion(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline, Context context);
+    SyncPoller<PollResult<Void>, Void> beginOnlineRegion(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline, Context context);
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
@@ -820,7 +905,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> onlineRegionAsync(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
+    Mono<Void> onlineRegionAsync(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline);
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
@@ -847,7 +933,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void onlineRegion(String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline, Context context);
+    void onlineRegion(
+        String resourceGroupName, String accountName, RegionForOnlineOffline regionParameterForOnline, Context context);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -857,10 +944,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the read-only access keys for the given database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the read-only access keys for the given database account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAccountListReadOnlyKeysResultInner>> getReadOnlyKeysWithResponseAsync(String resourceGroupName, String accountName);
+    Mono<Response<DatabaseAccountListReadOnlyKeysResultInner>> getReadOnlyKeysWithResponseAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -887,7 +976,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the read-only access keys for the given database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAccountListReadOnlyKeysResultInner> getReadOnlyKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<DatabaseAccountListReadOnlyKeysResultInner> getReadOnlyKeysWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -910,10 +1000,12 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the read-only access keys for the given database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the read-only access keys for the given database account along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAccountListReadOnlyKeysResultInner>> listReadOnlyKeysWithResponseAsync(String resourceGroupName, String accountName);
+    Mono<Response<DatabaseAccountListReadOnlyKeysResultInner>> listReadOnlyKeysWithResponseAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -926,7 +1018,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the read-only access keys for the given database account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAccountListReadOnlyKeysResultInner> listReadOnlyKeysAsync(String resourceGroupName, String accountName);
+    Mono<DatabaseAccountListReadOnlyKeysResultInner> listReadOnlyKeysAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -940,7 +1033,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the read-only access keys for the given database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAccountListReadOnlyKeysResultInner> listReadOnlyKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<DatabaseAccountListReadOnlyKeysResultInner> listReadOnlyKeysWithResponse(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -967,7 +1061,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
+    Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
+        String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -981,7 +1076,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRegenerateKeyAsync(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
+    PollerFlux<PollResult<Void>, Void> beginRegenerateKeyAsync(
+        String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -995,7 +1091,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRegenerateKey(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
+    SyncPoller<PollResult<Void>, Void> beginRegenerateKey(
+        String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -1010,7 +1107,11 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRegenerateKey(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRegenerateKey(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountRegenerateKeyParameters keyToRegenerate,
+        Context context);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -1024,7 +1125,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> regenerateKeyAsync(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
+    Mono<Void> regenerateKeyAsync(
+        String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -1037,7 +1139,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void regenerateKey(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
+    void regenerateKey(
+        String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -1051,10 +1154,15 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void regenerateKey(String resourceGroupName, String accountName, DatabaseAccountRegenerateKeyParameters keyToRegenerate, Context context);
+    void regenerateKey(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountRegenerateKeyParameters keyToRegenerate,
+        Context context);
 
     /**
-     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
      *
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1066,7 +1174,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
     Mono<Response<Boolean>> checkNameExistsWithResponseAsync(String accountName);
 
     /**
-     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
      *
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1078,7 +1187,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
     Mono<Boolean> checkNameExistsAsync(String accountName);
 
     /**
-     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
      *
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -1091,7 +1201,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
     Response<Boolean> checkNameExistsWithResponse(String accountName, Context context);
 
     /**
-     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
      *
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1107,7 +1218,9 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1121,7 +1234,9 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1135,7 +1250,9 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1143,14 +1260,16 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the response to a list metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricInner> listMetrics(String resourceGroupName, String accountName, String filter, Context context);
+    PagedIterable<MetricInner> listMetrics(
+        String resourceGroupName, String accountName, String filter, Context context);
 
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1190,7 +1309,8 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1238,5 +1358,6 @@ public interface DatabaseAccountsClient extends InnerSupportsGet<DatabaseAccount
      * @return the response to a list metric definitions request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricDefinitionInner> listMetricDefinitions(String resourceGroupName, String accountName, Context context);
+    PagedIterable<MetricDefinitionInner> listMetricDefinitions(
+        String resourceGroupName, String accountName, Context context);
 }

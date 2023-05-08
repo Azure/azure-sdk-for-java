@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Type of the Trigger.
- */
+/** Type of the Trigger. */
 public final class TriggerType extends ExpandableStringEnum<TriggerType> {
-    /**
-     * Static value Pre for TriggerType.
-     */
+    /** Static value Pre for TriggerType. */
     public static final TriggerType PRE = fromString("Pre");
 
-    /**
-     * Static value Post for TriggerType.
-     */
+    /** Static value Post for TriggerType. */
     public static final TriggerType POST = fromString("Post");
 
     /**
      * Creates a new instance of TriggerType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +27,7 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
 
     /**
      * Creates or finds a TriggerType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TriggerType.
      */
@@ -44,7 +38,7 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
 
     /**
      * Gets known TriggerType values.
-     * 
+     *
      * @return known TriggerType values.
      */
     public static Collection<TriggerType> values() {

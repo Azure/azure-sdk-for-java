@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * .
- */
+/** . */
 @Fluent
 public final class ClientEncryptionIncludedPath {
     /*
@@ -37,9 +35,7 @@ public final class ClientEncryptionIncludedPath {
     @JsonProperty(value = "encryptionAlgorithm", required = true)
     private String encryptionAlgorithm;
 
-    /**
-     * Creates an instance of ClientEncryptionIncludedPath class.
-     */
+    /** Creates an instance of ClientEncryptionIncludedPath class. */
     public ClientEncryptionIncludedPath() {
     }
 
@@ -134,16 +130,28 @@ public final class ClientEncryptionIncludedPath {
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property path in model ClientEncryptionIncludedPath"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property path in model ClientEncryptionIncludedPath"));
         }
         if (clientEncryptionKeyId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property clientEncryptionKeyId in model ClientEncryptionIncludedPath"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property clientEncryptionKeyId in model ClientEncryptionIncludedPath"));
         }
         if (encryptionType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property encryptionType in model ClientEncryptionIncludedPath"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property encryptionType in model ClientEncryptionIncludedPath"));
         }
         if (encryptionAlgorithm() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property encryptionAlgorithm in model ClientEncryptionIncludedPath"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property encryptionAlgorithm in model ClientEncryptionIncludedPath"));
         }
     }
 

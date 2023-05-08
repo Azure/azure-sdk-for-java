@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlStoredProcedureGetResul
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the storedProcedures and their properties.
- */
+/** The List operation response, that contains the storedProcedures and their properties. */
 @Immutable
 public final class SqlStoredProcedureListResult {
     /*
@@ -20,9 +18,7 @@ public final class SqlStoredProcedureListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlStoredProcedureGetResultsInner> value;
 
-    /**
-     * Creates an instance of SqlStoredProcedureListResult class.
-     */
+    /** Creates an instance of SqlStoredProcedureListResult class. */
     public SqlStoredProcedureListResult() {
     }
 

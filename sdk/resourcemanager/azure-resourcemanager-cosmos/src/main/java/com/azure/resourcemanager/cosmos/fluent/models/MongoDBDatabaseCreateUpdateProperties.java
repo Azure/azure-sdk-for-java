@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to create and update Azure Cosmos DB MongoDB database.
- */
+/** Properties to create and update Azure Cosmos DB MongoDB database. */
 @Fluent
 public final class MongoDBDatabaseCreateUpdateProperties {
     /*
@@ -28,9 +26,7 @@ public final class MongoDBDatabaseCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /**
-     * Creates an instance of MongoDBDatabaseCreateUpdateProperties class.
-     */
+    /** Creates an instance of MongoDBDatabaseCreateUpdateProperties class. */
     public MongoDBDatabaseCreateUpdateProperties() {
     }
 
@@ -83,7 +79,10 @@ public final class MongoDBDatabaseCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model MongoDBDatabaseCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model MongoDBDatabaseCreateUpdateProperties"));
         } else {
             resource().validate();
         }

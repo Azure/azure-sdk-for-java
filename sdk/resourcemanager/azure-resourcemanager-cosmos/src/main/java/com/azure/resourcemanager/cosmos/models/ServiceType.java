@@ -8,33 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * ServiceType for the service.
- */
+/** ServiceType for the service. */
 public final class ServiceType extends ExpandableStringEnum<ServiceType> {
-    /**
-     * Static value SqlDedicatedGateway for ServiceType.
-     */
+    /** Static value SqlDedicatedGateway for ServiceType. */
     public static final ServiceType SQL_DEDICATED_GATEWAY = fromString("SqlDedicatedGateway");
 
-    /**
-     * Static value DataTransfer for ServiceType.
-     */
+    /** Static value DataTransfer for ServiceType. */
     public static final ServiceType DATA_TRANSFER = fromString("DataTransfer");
 
-    /**
-     * Static value GraphAPICompute for ServiceType.
-     */
+    /** Static value GraphAPICompute for ServiceType. */
     public static final ServiceType GRAPH_APICOMPUTE = fromString("GraphAPICompute");
 
-    /**
-     * Static value MaterializedViewsBuilder for ServiceType.
-     */
+    /** Static value MaterializedViewsBuilder for ServiceType. */
     public static final ServiceType MATERIALIZED_VIEWS_BUILDER = fromString("MaterializedViewsBuilder");
 
     /**
      * Creates a new instance of ServiceType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,7 +33,7 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
 
     /**
      * Creates or finds a ServiceType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ServiceType.
      */
@@ -54,7 +44,7 @@ public final class ServiceType extends ExpandableStringEnum<ServiceType> {
 
     /**
      * Gets known ServiceType values.
-     * 
+     *
      * @return known ServiceType values.
      */
     public static Collection<ServiceType> values() {

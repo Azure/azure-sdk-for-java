@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CassandraKeyspaceGetPropertiesResource model.
- */
+/** The CassandraKeyspaceGetPropertiesResource model. */
 @Fluent
 public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeyspaceResource {
     /*
@@ -30,9 +28,7 @@ public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeysp
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of CassandraKeyspaceGetPropertiesResource class.
-     */
+    /** Creates an instance of CassandraKeyspaceGetPropertiesResource class. */
     public CassandraKeyspaceGetPropertiesResource() {
     }
 
@@ -64,9 +60,7 @@ public final class CassandraKeyspaceGetPropertiesResource extends CassandraKeysp
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceGetPropertiesResource withId(String id) {
         super.withId(id);

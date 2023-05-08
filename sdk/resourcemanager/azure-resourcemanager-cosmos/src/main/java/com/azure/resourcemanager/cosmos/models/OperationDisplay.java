@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The object that represents the operation.
- */
+/** The object that represents the operation. */
 @Fluent
 public final class OperationDisplay {
     /*
@@ -36,9 +34,7 @@ public final class OperationDisplay {
     @JsonProperty(value = "Description")
     private String description;
 
-    /**
-     * Creates an instance of OperationDisplay class.
-     */
+    /** Creates an instance of OperationDisplay class. */
     public OperationDisplay() {
     }
 

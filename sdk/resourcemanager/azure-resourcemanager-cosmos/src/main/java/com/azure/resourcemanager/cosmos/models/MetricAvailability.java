@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The availability of the metric.
- */
+/** The availability of the metric. */
 @Immutable
 public final class MetricAvailability {
     /*
@@ -24,9 +22,7 @@ public final class MetricAvailability {
     @JsonProperty(value = "retention", access = JsonProperty.Access.WRITE_ONLY)
     private String retention;
 
-    /**
-     * Creates an instance of MetricAvailability class.
-     */
+    /** Creates an instance of MetricAvailability class. */
     public MetricAvailability() {
     }
 

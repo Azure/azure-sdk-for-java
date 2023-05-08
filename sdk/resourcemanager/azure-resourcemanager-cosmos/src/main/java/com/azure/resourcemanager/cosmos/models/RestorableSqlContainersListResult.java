@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlContainerGetR
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the SQL container events and their properties.
- */
+/** The List operation response, that contains the SQL container events and their properties. */
 @Immutable
 public final class RestorableSqlContainersListResult {
     /*
@@ -20,9 +18,7 @@ public final class RestorableSqlContainersListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableSqlContainerGetResultInner> value;
 
-    /**
-     * Creates an instance of RestorableSqlContainersListResult class.
-     */
+    /** Creates an instance of RestorableSqlContainersListResult class. */
     public RestorableSqlContainersListResult() {
     }
 

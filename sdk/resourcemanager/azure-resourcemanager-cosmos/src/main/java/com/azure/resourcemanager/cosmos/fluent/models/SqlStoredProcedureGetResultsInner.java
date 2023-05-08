@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB storedProcedure.
- */
+/** An Azure Cosmos DB storedProcedure. */
 @Fluent
 public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
     /*
@@ -21,9 +19,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
     @JsonProperty(value = "properties")
     private SqlStoredProcedureGetProperties innerProperties;
 
-    /**
-     * Creates an instance of SqlStoredProcedureGetResultsInner class.
-     */
+    /** Creates an instance of SqlStoredProcedureGetResultsInner class. */
     public SqlStoredProcedureGetResultsInner() {
     }
 
@@ -36,18 +32,14 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlStoredProcedureGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlStoredProcedureGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

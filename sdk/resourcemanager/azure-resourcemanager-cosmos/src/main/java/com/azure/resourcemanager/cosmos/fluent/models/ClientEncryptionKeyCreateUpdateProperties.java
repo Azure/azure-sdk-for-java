@@ -9,9 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to create and update ClientEncryptionKey.
- */
+/** Properties to create and update ClientEncryptionKey. */
 @Fluent
 public final class ClientEncryptionKeyCreateUpdateProperties {
     /*
@@ -20,9 +18,7 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
     @JsonProperty(value = "resource", required = true)
     private ClientEncryptionKeyResource resource;
 
-    /**
-     * Creates an instance of ClientEncryptionKeyCreateUpdateProperties class.
-     */
+    /** Creates an instance of ClientEncryptionKeyCreateUpdateProperties class. */
     public ClientEncryptionKeyCreateUpdateProperties() {
     }
 
@@ -53,7 +49,10 @@ public final class ClientEncryptionKeyCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model ClientEncryptionKeyCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model ClientEncryptionKeyCreateUpdateProperties"));
         } else {
             resource().validate();
         }

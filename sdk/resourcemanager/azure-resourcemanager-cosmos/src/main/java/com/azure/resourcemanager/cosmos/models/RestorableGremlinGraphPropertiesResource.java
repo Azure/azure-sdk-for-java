@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The resource of an Azure Cosmos DB Gremlin graph event.
- */
+/** The resource of an Azure Cosmos DB Gremlin graph event. */
 @Immutable
 public final class RestorableGremlinGraphPropertiesResource {
     /*
@@ -42,9 +40,7 @@ public final class RestorableGremlinGraphPropertiesResource {
     @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
-    /**
-     * Creates an instance of RestorableGremlinGraphPropertiesResource class.
-     */
+    /** Creates an instance of RestorableGremlinGraphPropertiesResource class. */
     public RestorableGremlinGraphPropertiesResource() {
     }
 

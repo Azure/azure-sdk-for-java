@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.SqlTriggerGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB trigger.
- */
+/** An Azure Cosmos DB trigger. */
 @Fluent
 public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
     /*
@@ -21,9 +19,7 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlTriggerGetProperties innerProperties;
 
-    /**
-     * Creates an instance of SqlTriggerGetResultsInner class.
-     */
+    /** Creates an instance of SqlTriggerGetResultsInner class. */
     public SqlTriggerGetResultsInner() {
     }
 
@@ -36,18 +32,14 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlTriggerGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlTriggerGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

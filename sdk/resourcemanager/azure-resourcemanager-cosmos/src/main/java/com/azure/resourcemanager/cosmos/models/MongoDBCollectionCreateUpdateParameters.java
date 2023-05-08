@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoDBCollectionCreateUpd
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Parameters to create and update Cosmos DB MongoDB collection.
- */
+/** Parameters to create and update Cosmos DB MongoDB collection. */
 @Fluent
 public final class MongoDBCollectionCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -21,9 +19,7 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     @JsonProperty(value = "properties", required = true)
     private MongoDBCollectionCreateUpdateProperties innerProperties = new MongoDBCollectionCreateUpdateProperties();
 
-    /**
-     * Creates an instance of MongoDBCollectionCreateUpdateParameters class.
-     */
+    /** Creates an instance of MongoDBCollectionCreateUpdateParameters class. */
     public MongoDBCollectionCreateUpdateParameters() {
     }
 
@@ -36,18 +32,14 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MongoDBCollectionCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MongoDBCollectionCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -111,7 +103,10 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model MongoDBCollectionCreateUpdateParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model MongoDBCollectionCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

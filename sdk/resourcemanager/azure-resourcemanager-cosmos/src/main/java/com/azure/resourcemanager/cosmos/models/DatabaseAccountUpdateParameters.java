@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Parameters for patching Azure Cosmos DB database account properties.
- */
+/** Parameters for patching Azure Cosmos DB database account properties. */
 @Fluent
 public final class DatabaseAccountUpdateParameters {
     /*
@@ -45,17 +43,15 @@ public final class DatabaseAccountUpdateParameters {
     @JsonProperty(value = "properties")
     private DatabaseAccountUpdateProperties innerProperties;
 
-    /**
-     * Creates an instance of DatabaseAccountUpdateParameters class.
-     */
+    /** Creates an instance of DatabaseAccountUpdateParameters class. */
     public DatabaseAccountUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
-     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
-     * resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For
-     * example, the default experience for a template type is set with "defaultExperience": "Cassandra". Current
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with "defaultExperience": "Cassandra". Current
      * "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
      *
      * @return the tags value.
@@ -66,9 +62,9 @@ public final class DatabaseAccountUpdateParameters {
 
     /**
      * Set the tags property: Tags are a list of key-value pairs that describe the resource. These tags can be used in
-     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
-     * resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For
-     * example, the default experience for a template type is set with "defaultExperience": "Cassandra". Current
+     * viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource.
+     * Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example,
+     * the default experience for a template type is set with "defaultExperience": "Cassandra". Current
      * "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
      *
      * @param tags the tags value to set.
@@ -383,7 +379,8 @@ public final class DatabaseAccountUpdateParameters {
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountUpdateParameters object itself.
      */
-    public DatabaseAccountUpdateParameters withDisableKeyBasedMetadataWriteAccess(Boolean disableKeyBasedMetadataWriteAccess) {
+    public DatabaseAccountUpdateParameters withDisableKeyBasedMetadataWriteAccess(
+        Boolean disableKeyBasedMetadataWriteAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
@@ -548,7 +545,8 @@ public final class DatabaseAccountUpdateParameters {
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountUpdateParameters object itself.
      */
-    public DatabaseAccountUpdateParameters withAnalyticalStorageConfiguration(AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+    public DatabaseAccountUpdateParameters withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
@@ -736,8 +734,8 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
-     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @return the minimalTlsVersion value.
      */
@@ -746,8 +744,8 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
-     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountUpdateParameters object itself.

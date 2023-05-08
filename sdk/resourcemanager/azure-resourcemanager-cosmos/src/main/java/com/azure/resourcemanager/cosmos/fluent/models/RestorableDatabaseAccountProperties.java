@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The properties of a restorable database account.
- */
+/** The properties of a restorable database account. */
 @Fluent
 public final class RestorableDatabaseAccountProperties {
     /*
@@ -52,9 +50,7 @@ public final class RestorableDatabaseAccountProperties {
     @JsonProperty(value = "restorableLocations", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableLocationResource> restorableLocations;
 
-    /**
-     * Creates an instance of RestorableDatabaseAccountProperties class.
-     */
+    /** Creates an instance of RestorableDatabaseAccountProperties class. */
     public RestorableDatabaseAccountProperties() {
     }
 

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An Azure Cosmos DB Role Assignment.
- */
+/** An Azure Cosmos DB Role Assignment. */
 @Fluent
 public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     /*
@@ -19,9 +17,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
 
-    /**
-     * Creates an instance of SqlRoleAssignmentGetResultsInner class.
-     */
+    /** Creates an instance of SqlRoleAssignmentGetResultsInner class. */
     public SqlRoleAssignmentGetResultsInner() {
     }
 

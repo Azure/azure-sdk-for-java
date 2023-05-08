@@ -23,9 +23,7 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in CassandraResourcesClient.
- */
+/** An instance of this class provides access to all the operations defined in CassandraResourcesClient. */
 public interface CassandraResourcesClient {
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
@@ -35,10 +33,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Cassandra keyspaces and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the Cassandra keyspaces and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CassandraKeyspaceGetResultsInner> listCassandraKeyspacesAsync(String resourceGroupName, String accountName);
+    PagedFlux<CassandraKeyspaceGetResultsInner> listCassandraKeyspacesAsync(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
@@ -48,10 +48,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Cassandra keyspaces and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the Cassandra keyspaces and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CassandraKeyspaceGetResultsInner> listCassandraKeyspaces(String resourceGroupName, String accountName);
+    PagedIterable<CassandraKeyspaceGetResultsInner> listCassandraKeyspaces(
+        String resourceGroupName, String accountName);
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
@@ -62,10 +64,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Cassandra keyspaces and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the Cassandra keyspaces and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CassandraKeyspaceGetResultsInner> listCassandraKeyspaces(String resourceGroupName, String accountName, Context context);
+    PagedIterable<CassandraKeyspaceGetResultsInner> listCassandraKeyspaces(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
@@ -76,10 +80,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CassandraKeyspaceGetResultsInner>> getCassandraKeyspaceWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<Response<CassandraKeyspaceGetResultsInner>> getCassandraKeyspaceWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
@@ -90,10 +96,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
+     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CassandraKeyspaceGetResultsInner> getCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<CassandraKeyspaceGetResultsInner> getCassandraKeyspaceAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
@@ -105,10 +113,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
+     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name along
+     *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CassandraKeyspaceGetResultsInner> getCassandraKeyspaceWithResponse(String resourceGroupName, String accountName, String keyspaceName, Context context);
+    Response<CassandraKeyspaceGetResultsInner> getCassandraKeyspaceWithResponse(
+        String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
@@ -122,7 +132,8 @@ public interface CassandraResourcesClient {
      * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraKeyspaceGetResultsInner getCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName);
+    CassandraKeyspaceGetResultsInner getCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -134,10 +145,15 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB Cassandra keyspace along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB Cassandra keyspace along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraKeyspaceWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraKeyspaceWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -152,7 +168,12 @@ public interface CassandraResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner> beginCreateUpdateCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
+    PollerFlux<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
+        beginCreateUpdateCassandraKeyspaceAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -167,7 +188,12 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner> beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
+    SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
+        beginCreateUpdateCassandraKeyspace(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -183,7 +209,13 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner> beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, Context context);
+    SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
+        beginCreateUpdateCassandraKeyspace(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+            Context context);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -198,7 +230,11 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra keyspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CassandraKeyspaceGetResultsInner> createUpdateCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
+    Mono<CassandraKeyspaceGetResultsInner> createUpdateCassandraKeyspaceAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -213,7 +249,11 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraKeyspaceGetResultsInner createUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
+    CassandraKeyspaceGetResultsInner createUpdateCassandraKeyspace(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
@@ -229,7 +269,12 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraKeyspaceGetResultsInner createUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName, CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, Context context);
+    CassandraKeyspaceGetResultsInner createUpdateCassandraKeyspace(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+        Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
@@ -243,7 +288,8 @@ public interface CassandraResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteCassandraKeyspaceWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<Response<Flux<ByteBuffer>>> deleteCassandraKeyspaceWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
@@ -257,7 +303,8 @@ public interface CassandraResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteCassandraKeyspaceAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
@@ -271,7 +318,8 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
@@ -286,7 +334,8 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
@@ -330,7 +379,8 @@ public interface CassandraResourcesClient {
     void deleteCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
-     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -338,13 +388,16 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughputWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
-     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -352,13 +405,16 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
+     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     *     provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<ThroughputSettingsGetResultsInner> getCassandraKeyspaceThroughputAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
-     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -367,13 +423,16 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
+     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getCassandraKeyspaceThroughputWithResponse(String resourceGroupName, String accountName, String keyspaceName, Context context);
+    Response<ThroughputSettingsGetResultsInner> getCassandraKeyspaceThroughputWithResponse(
+        String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
-     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -381,10 +440,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
+     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName);
+    ThroughputSettingsGetResultsInner getCassandraKeyspaceThroughput(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -392,14 +453,20 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughputWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -407,14 +474,20 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraKeyspaceThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -422,14 +495,20 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraKeyspaceThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -437,7 +516,8 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -445,7 +525,13 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraKeyspaceThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -453,14 +539,19 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateCassandraKeyspaceThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<ThroughputSettingsGetResultsInner> updateCassandraKeyspaceThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -468,14 +559,19 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateCassandraKeyspaceThroughput(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
@@ -483,7 +579,8 @@ public interface CassandraResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     Keyspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -491,7 +588,12 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
+    ThroughputSettingsGetResultsInner updateCassandraKeyspaceThroughput(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
@@ -502,113 +604,15 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateCassandraKeyspaceToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<Response<Flux<ByteBuffer>>> migrateCassandraKeyspaceToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraKeyspaceToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraKeyspaceToAutoscale(String resourceGroupName, String accountName, String keyspaceName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraKeyspaceToAutoscale(String resourceGroupName, String accountName, String keyspaceName, Context context);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateCassandraKeyspaceToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToAutoscale(String resourceGroupName, String accountName, String keyspaceName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToAutoscale(String resourceGroupName, String accountName, String keyspaceName, Context context);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateCassandraKeyspaceToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -619,7 +623,119 @@ public interface CassandraResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraKeyspaceToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraKeyspaceToAutoscaleAsync(
+            String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraKeyspaceToAutoscale(String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraKeyspaceToAutoscale(
+            String resourceGroupName, String accountName, String keyspaceName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ThroughputSettingsGetResultsInner> migrateCassandraKeyspaceToAutoscaleAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToAutoscale(
+        String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToAutoscale(
+        String resourceGroupName, String accountName, String keyspaceName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateCassandraKeyspaceToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraKeyspaceToManualThroughputAsync(
+            String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
@@ -633,7 +749,9 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraKeyspaceToManualThroughput(String resourceGroupName, String accountName, String keyspaceName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraKeyspaceToManualThroughput(
+            String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
@@ -648,7 +766,9 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraKeyspaceToManualThroughput(String resourceGroupName, String accountName, String keyspaceName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraKeyspaceToManualThroughput(
+            String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
@@ -662,7 +782,8 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateCassandraKeyspaceToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName);
+    Mono<ThroughputSettingsGetResultsInner> migrateCassandraKeyspaceToManualThroughputAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
@@ -676,7 +797,8 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToManualThroughput(String resourceGroupName, String accountName, String keyspaceName);
+    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToManualThroughput(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
@@ -691,7 +813,8 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToManualThroughput(String resourceGroupName, String accountName, String keyspaceName, Context context);
+    ThroughputSettingsGetResultsInner migrateCassandraKeyspaceToManualThroughput(
+        String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
@@ -702,10 +825,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Cassandra tables and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the Cassandra tables and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CassandraTableGetResultsInner> listCassandraTablesAsync(String resourceGroupName, String accountName, String keyspaceName);
+    PagedFlux<CassandraTableGetResultsInner> listCassandraTablesAsync(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
@@ -716,10 +841,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Cassandra tables and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the Cassandra tables and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CassandraTableGetResultsInner> listCassandraTables(String resourceGroupName, String accountName, String keyspaceName);
+    PagedIterable<CassandraTableGetResultsInner> listCassandraTables(
+        String resourceGroupName, String accountName, String keyspaceName);
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
@@ -731,10 +858,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Cassandra tables and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the Cassandra tables and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CassandraTableGetResultsInner> listCassandraTables(String resourceGroupName, String accountName, String keyspaceName, Context context);
+    PagedIterable<CassandraTableGetResultsInner> listCassandraTables(
+        String resourceGroupName, String accountName, String keyspaceName, Context context);
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
@@ -746,10 +875,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Cassandra table under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the Cassandra table under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CassandraTableGetResultsInner>> getCassandraTableWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<Response<CassandraTableGetResultsInner>> getCassandraTableWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
@@ -761,10 +892,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Cassandra table under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
+     * @return the Cassandra table under an existing Azure Cosmos DB database account on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CassandraTableGetResultsInner> getCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<CassandraTableGetResultsInner> getCassandraTableAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
@@ -780,7 +913,8 @@ public interface CassandraResourcesClient {
      * @return the Cassandra table under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CassandraTableGetResultsInner> getCassandraTableWithResponse(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+    Response<CassandraTableGetResultsInner> getCassandraTableWithResponse(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
@@ -795,7 +929,8 @@ public interface CassandraResourcesClient {
      * @return the Cassandra table under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraTableGetResultsInner getCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    CassandraTableGetResultsInner getCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -811,7 +946,12 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra table along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraTableWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
+    Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraTableWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -827,7 +967,13 @@ public interface CassandraResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner> beginCreateUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
+    PollerFlux<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
+        beginCreateUpdateCassandraTableAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -843,7 +989,13 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner> beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
+    SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
+        beginCreateUpdateCassandraTable(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -860,7 +1012,14 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner> beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters, Context context);
+    SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
+        beginCreateUpdateCassandraTable(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+            Context context);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -876,7 +1035,12 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra table on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CassandraTableGetResultsInner> createUpdateCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
+    Mono<CassandraTableGetResultsInner> createUpdateCassandraTableAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -892,7 +1056,12 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraTableGetResultsInner createUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
+    CassandraTableGetResultsInner createUpdateCassandraTable(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters);
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
@@ -909,7 +1078,13 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CassandraTableGetResultsInner createUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters, Context context);
+    CassandraTableGetResultsInner createUpdateCassandraTable(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+        Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
@@ -924,7 +1099,8 @@ public interface CassandraResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteCassandraTableWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<Response<Flux<ByteBuffer>>> deleteCassandraTableWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
@@ -939,7 +1115,8 @@ public interface CassandraResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteCassandraTableAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
@@ -954,7 +1131,8 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
@@ -970,7 +1148,8 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
@@ -985,7 +1164,8 @@ public interface CassandraResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteCassandraTableAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<Void> deleteCassandraTableAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
@@ -1014,10 +1194,12 @@ public interface CassandraResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteCassandraTable(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+    void deleteCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 
     /**
-     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1026,13 +1208,16 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraTableThroughputWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraTableThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
-     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1041,13 +1226,16 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
+     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     *     provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> getCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<ThroughputSettingsGetResultsInner> getCassandraTableThroughputAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
-     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1057,13 +1245,16 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
+     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ThroughputSettingsGetResultsInner> getCassandraTableThroughputWithResponse(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+    Response<ThroughputSettingsGetResultsInner> getCassandraTableThroughputWithResponse(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 
     /**
-     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     * provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1072,10 +1263,12 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
+     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner getCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    ThroughputSettingsGetResultsInner getCassandraTableThroughput(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1084,14 +1277,21 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateCassandraTableThroughputWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateCassandraTableThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1100,14 +1300,21 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraTableThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1116,14 +1323,21 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraTableThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1132,7 +1346,8 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1140,7 +1355,14 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraTableThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1149,14 +1371,20 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> updateCassandraTableThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    Mono<ThroughputSettingsGetResultsInner> updateCassandraTableThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1165,14 +1393,20 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+    ThroughputSettingsGetResultsInner updateCassandraTableThroughput(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
@@ -1181,7 +1415,8 @@ public interface CassandraResourcesClient {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
-     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra table.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra
+     *     table.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1189,7 +1424,13 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner updateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
+    ThroughputSettingsGetResultsInner updateCassandraTableThroughput(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
@@ -1201,120 +1442,15 @@ public interface CassandraResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateCassandraTableToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<Response<Flux<ByteBuffer>>> migrateCassandraTableToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraTableToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraTableToAutoscale(String resourceGroupName, String accountName, String keyspaceName, String tableName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraTableToAutoscale(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateCassandraTableToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraTableToAutoscale(String resourceGroupName, String accountName, String keyspaceName, String tableName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraTableToAutoscale(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param keyspaceName Cosmos DB keyspace name.
-     * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> migrateCassandraTableToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
-
-    /**
-     * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1326,7 +1462,127 @@ public interface CassandraResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraTableToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraTableToAutoscaleAsync(
+            String resourceGroupName, String accountName, String keyspaceName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraTableToAutoscale(
+            String resourceGroupName, String accountName, String keyspaceName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraTableToAutoscale(
+            String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ThroughputSettingsGetResultsInner> migrateCassandraTableToAutoscaleAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraTableToAutoscale(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraTableToAutoscale(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateCassandraTableToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraTableToManualThroughputAsync(
+            String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
@@ -1341,7 +1597,9 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraTableToManualThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraTableToManualThroughput(
+            String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
@@ -1357,7 +1615,9 @@ public interface CassandraResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateCassandraTableToManualThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraTableToManualThroughput(
+            String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
@@ -1372,7 +1632,8 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ThroughputSettingsGetResultsInner> migrateCassandraTableToManualThroughputAsync(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    Mono<ThroughputSettingsGetResultsInner> migrateCassandraTableToManualThroughputAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
@@ -1387,7 +1648,8 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraTableToManualThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName);
+    ThroughputSettingsGetResultsInner migrateCassandraTableToManualThroughput(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName);
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
@@ -1403,5 +1665,6 @@ public interface CassandraResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThroughputSettingsGetResultsInner migrateCassandraTableToManualThroughput(String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
+    ThroughputSettingsGetResultsInner migrateCassandraTableToManualThroughput(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context);
 }

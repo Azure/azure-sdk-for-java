@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AutoscaleSettings model.
- */
+/** The AutoscaleSettings model. */
 @Fluent
 public final class AutoscaleSettings {
     /*
@@ -18,9 +16,7 @@ public final class AutoscaleSettings {
     @JsonProperty(value = "maxThroughput")
     private Integer maxThroughput;
 
-    /**
-     * Creates an instance of AutoscaleSettings class.
-     */
+    /** Creates an instance of AutoscaleSettings class. */
     public AutoscaleSettings() {
     }
 

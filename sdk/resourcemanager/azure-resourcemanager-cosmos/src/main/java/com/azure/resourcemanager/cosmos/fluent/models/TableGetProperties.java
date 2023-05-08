@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.models.TableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of an Azure Cosmos Table.
- */
+/** The properties of an Azure Cosmos Table. */
 @Fluent
 public final class TableGetProperties {
     /*
@@ -26,9 +24,7 @@ public final class TableGetProperties {
     @JsonProperty(value = "options")
     private TableGetPropertiesOptions options;
 
-    /**
-     * Creates an instance of TableGetProperties class.
-     */
+    /** Creates an instance of TableGetProperties class. */
     public TableGetProperties() {
     }
 

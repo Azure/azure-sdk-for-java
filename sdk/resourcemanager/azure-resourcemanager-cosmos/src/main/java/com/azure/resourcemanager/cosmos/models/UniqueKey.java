@@ -19,9 +19,7 @@ public final class UniqueKey {
     @JsonProperty(value = "paths")
     private List<String> paths;
 
-    /**
-     * Creates an instance of UniqueKey class.
-     */
+    /** Creates an instance of UniqueKey class. */
     public UniqueKey() {
     }
 

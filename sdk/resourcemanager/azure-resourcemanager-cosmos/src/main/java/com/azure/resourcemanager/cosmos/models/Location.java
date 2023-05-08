@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A region in which the Azure Cosmos DB database account is deployed.
- */
+/** A region in which the Azure Cosmos DB database account is deployed. */
 @Fluent
 public final class Location {
     /*
@@ -57,9 +55,7 @@ public final class Location {
     @JsonProperty(value = "isZoneRedundant")
     private Boolean isZoneRedundant;
 
-    /**
-     * Creates an instance of Location class.
-     */
+    /** Creates an instance of Location class. */
     public Location() {
     }
 
@@ -104,8 +100,8 @@ public final class Location {
     }
 
     /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called.
-     * The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
+     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
+     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
@@ -119,8 +115,8 @@ public final class Location {
 
     /**
      * Get the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
-     * values must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @return the failoverPriority value.
      */
@@ -130,8 +126,8 @@ public final class Location {
 
     /**
      * Set the failoverPriority property: The failover priority of the region. A failover priority of 0 indicates a
-     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority
-     * values must be unique for each of the regions in which the database account exists.
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
      *
      * @param failoverPriority the failoverPriority value to set.
      * @return the Location object itself.

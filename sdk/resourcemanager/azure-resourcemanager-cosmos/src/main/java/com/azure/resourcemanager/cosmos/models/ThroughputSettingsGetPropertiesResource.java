@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ThroughputSettingsGetPropertiesResource model.
- */
+/** The ThroughputSettingsGetPropertiesResource model. */
 @Fluent
 public final class ThroughputSettingsGetPropertiesResource extends ThroughputSettingsResource {
     /*
@@ -30,9 +28,7 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of ThroughputSettingsGetPropertiesResource class.
-     */
+    /** Creates an instance of ThroughputSettingsGetPropertiesResource class. */
     public ThroughputSettingsGetPropertiesResource() {
     }
 
@@ -64,18 +60,14 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ThroughputSettingsGetPropertiesResource withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ThroughputSettingsGetPropertiesResource withAutoscaleSettings(AutoscaleSettingsResource autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);

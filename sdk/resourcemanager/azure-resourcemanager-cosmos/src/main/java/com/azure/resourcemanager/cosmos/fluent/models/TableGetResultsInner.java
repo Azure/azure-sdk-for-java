@@ -11,9 +11,7 @@ import com.azure.resourcemanager.cosmos.models.TableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB Table.
- */
+/** An Azure Cosmos DB Table. */
 @Fluent
 public final class TableGetResultsInner extends ArmResourceProperties {
     /*
@@ -22,9 +20,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private TableGetProperties innerProperties;
 
-    /**
-     * Creates an instance of TableGetResultsInner class.
-     */
+    /** Creates an instance of TableGetResultsInner class. */
     public TableGetResultsInner() {
     }
 
@@ -37,18 +33,14 @@ public final class TableGetResultsInner extends ArmResourceProperties {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TableGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TableGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

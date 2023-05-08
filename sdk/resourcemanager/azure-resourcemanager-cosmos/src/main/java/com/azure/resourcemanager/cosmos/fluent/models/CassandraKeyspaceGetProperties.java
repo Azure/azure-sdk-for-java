@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesOpt
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of an Azure Cosmos DB Cassandra keyspace.
- */
+/** The properties of an Azure Cosmos DB Cassandra keyspace. */
 @Fluent
 public final class CassandraKeyspaceGetProperties {
     /*
@@ -26,9 +24,7 @@ public final class CassandraKeyspaceGetProperties {
     @JsonProperty(value = "options")
     private CassandraKeyspaceGetPropertiesOptions options;
 
-    /**
-     * Creates an instance of CassandraKeyspaceGetProperties class.
-     */
+    /** Creates an instance of CassandraKeyspaceGetProperties class. */
     public CassandraKeyspaceGetProperties() {
     }
 

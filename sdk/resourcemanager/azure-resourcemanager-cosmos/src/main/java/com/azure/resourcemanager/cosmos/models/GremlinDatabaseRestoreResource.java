@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Specific Gremlin Databases to restore.
- */
+/** Specific Gremlin Databases to restore. */
 @Fluent
 public final class GremlinDatabaseRestoreResource {
     /*
@@ -25,9 +23,7 @@ public final class GremlinDatabaseRestoreResource {
     @JsonProperty(value = "graphNames")
     private List<String> graphNames;
 
-    /**
-     * Creates an instance of GremlinDatabaseRestoreResource class.
-     */
+    /** Creates an instance of GremlinDatabaseRestoreResource class. */
     public GremlinDatabaseRestoreResource() {
     }
 

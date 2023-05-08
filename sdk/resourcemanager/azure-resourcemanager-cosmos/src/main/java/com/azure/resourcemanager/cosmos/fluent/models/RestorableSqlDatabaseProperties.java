@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlDatabasePropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of an Azure Cosmos DB SQL database event.
- */
+/** The properties of an Azure Cosmos DB SQL database event. */
 @Fluent
 public final class RestorableSqlDatabaseProperties {
     /*
@@ -19,9 +17,7 @@ public final class RestorableSqlDatabaseProperties {
     @JsonProperty(value = "resource")
     private RestorableSqlDatabasePropertiesResource resource;
 
-    /**
-     * Creates an instance of RestorableSqlDatabaseProperties class.
-     */
+    /** Creates an instance of RestorableSqlDatabaseProperties class. */
     public RestorableSqlDatabaseProperties() {
     }
 

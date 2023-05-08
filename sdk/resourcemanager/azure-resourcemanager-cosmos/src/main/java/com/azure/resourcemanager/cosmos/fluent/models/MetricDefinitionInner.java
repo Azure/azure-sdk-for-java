@@ -12,9 +12,7 @@ import com.azure.resourcemanager.cosmos.models.UnitType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The definition of a metric.
- */
+/** The definition of a metric. */
 @Immutable
 public final class MetricDefinitionInner {
     /*
@@ -47,9 +45,7 @@ public final class MetricDefinitionInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private MetricName name;
 
-    /**
-     * Creates an instance of MetricDefinitionInner class.
-     */
+    /** Creates an instance of MetricDefinitionInner class. */
     public MetricDefinitionInner() {
     }
 

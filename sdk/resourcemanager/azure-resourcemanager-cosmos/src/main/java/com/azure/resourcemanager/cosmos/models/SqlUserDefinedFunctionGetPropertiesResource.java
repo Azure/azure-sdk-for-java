@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SqlUserDefinedFunctionGetPropertiesResource model.
- */
+/** The SqlUserDefinedFunctionGetPropertiesResource model. */
 @Fluent
 public final class SqlUserDefinedFunctionGetPropertiesResource extends SqlUserDefinedFunctionResource {
     /*
@@ -30,9 +28,7 @@ public final class SqlUserDefinedFunctionGetPropertiesResource extends SqlUserDe
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of SqlUserDefinedFunctionGetPropertiesResource class.
-     */
+    /** Creates an instance of SqlUserDefinedFunctionGetPropertiesResource class. */
     public SqlUserDefinedFunctionGetPropertiesResource() {
     }
 
@@ -64,18 +60,14 @@ public final class SqlUserDefinedFunctionGetPropertiesResource extends SqlUserDe
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlUserDefinedFunctionGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlUserDefinedFunctionGetPropertiesResource withBody(String body) {
         super.withBody(body);

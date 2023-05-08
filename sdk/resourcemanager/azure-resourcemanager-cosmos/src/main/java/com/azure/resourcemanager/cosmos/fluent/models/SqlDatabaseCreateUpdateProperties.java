@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to create and update Azure Cosmos DB SQL database.
- */
+/** Properties to create and update Azure Cosmos DB SQL database. */
 @Fluent
 public final class SqlDatabaseCreateUpdateProperties {
     /*
@@ -28,9 +26,7 @@ public final class SqlDatabaseCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /**
-     * Creates an instance of SqlDatabaseCreateUpdateProperties class.
-     */
+    /** Creates an instance of SqlDatabaseCreateUpdateProperties class. */
     public SqlDatabaseCreateUpdateProperties() {
     }
 
@@ -83,7 +79,10 @@ public final class SqlDatabaseCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model SqlDatabaseCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model SqlDatabaseCreateUpdateProperties"));
         } else {
             resource().validate();
         }

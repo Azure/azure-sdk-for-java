@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB SQL userDefinedFunction resource object.
- */
+/** Cosmos DB SQL userDefinedFunction resource object. */
 @Fluent
 public class SqlUserDefinedFunctionResource {
     /*
@@ -25,9 +23,7 @@ public class SqlUserDefinedFunctionResource {
     @JsonProperty(value = "body")
     private String body;
 
-    /**
-     * Creates an instance of SqlUserDefinedFunctionResource class.
-     */
+    /** Creates an instance of SqlUserDefinedFunctionResource class. */
     public SqlUserDefinedFunctionResource() {
     }
 
@@ -78,7 +74,10 @@ public class SqlUserDefinedFunctionResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model SqlUserDefinedFunctionResource"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property id in model SqlUserDefinedFunctionResource"));
         }
     }
 

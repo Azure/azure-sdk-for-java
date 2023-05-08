@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Response of /command api.
- */
+/** Response of /command api. */
 @Fluent
 public final class CommandOutputInner {
     /*
@@ -18,9 +16,7 @@ public final class CommandOutputInner {
     @JsonProperty(value = "commandOutput")
     private String commandOutput;
 
-    /**
-     * Creates an instance of CommandOutputInner class.
-     */
+    /** Creates an instance of CommandOutputInner class. */
     public CommandOutputInner() {
     }
 

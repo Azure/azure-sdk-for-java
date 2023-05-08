@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The paths that are included in indexing.
- */
+/** The paths that are included in indexing. */
 @Fluent
 public final class IncludedPath {
     /*
@@ -26,15 +24,13 @@ public final class IncludedPath {
     @JsonProperty(value = "indexes")
     private List<Indexes> indexes;
 
-    /**
-     * Creates an instance of IncludedPath class.
-     */
+    /** Creates an instance of IncludedPath class. */
     public IncludedPath() {
     }
 
     /**
-     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with
-     * root and end with wildcard (/path/*).
+     * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
+     * and end with wildcard (/path/*).
      *
      * @return the path value.
      */
@@ -43,8 +39,8 @@ public final class IncludedPath {
     }
 
     /**
-     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with
-     * root and end with wildcard (/path/*).
+     * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with root
+     * and end with wildcard (/path/*).
      *
      * @param path the path value to set.
      * @return the IncludedPath object itself.

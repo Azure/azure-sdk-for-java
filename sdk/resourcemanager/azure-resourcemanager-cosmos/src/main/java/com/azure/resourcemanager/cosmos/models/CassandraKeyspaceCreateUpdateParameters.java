@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.CassandraKeyspaceCreateUpd
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Parameters to create and update Cosmos DB Cassandra keyspace.
- */
+/** Parameters to create and update Cosmos DB Cassandra keyspace. */
 @Fluent
 public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -21,9 +19,7 @@ public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourcePr
     @JsonProperty(value = "properties", required = true)
     private CassandraKeyspaceCreateUpdateProperties innerProperties = new CassandraKeyspaceCreateUpdateProperties();
 
-    /**
-     * Creates an instance of CassandraKeyspaceCreateUpdateParameters class.
-     */
+    /** Creates an instance of CassandraKeyspaceCreateUpdateParameters class. */
     public CassandraKeyspaceCreateUpdateParameters() {
     }
 
@@ -36,18 +32,14 @@ public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourcePr
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -111,7 +103,10 @@ public final class CassandraKeyspaceCreateUpdateParameters extends ArmResourcePr
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model CassandraKeyspaceCreateUpdateParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model CassandraKeyspaceCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

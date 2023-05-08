@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SqlDatabaseGetPropertiesResource model.
- */
+/** The SqlDatabaseGetPropertiesResource model. */
 @Fluent
 public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource {
     /*
@@ -42,9 +40,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of SqlDatabaseGetPropertiesResource class.
-     */
+    /** Creates an instance of SqlDatabaseGetPropertiesResource class. */
     public SqlDatabaseGetPropertiesResource() {
     }
 
@@ -118,9 +114,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlDatabaseGetPropertiesResource withId(String id) {
         super.withId(id);

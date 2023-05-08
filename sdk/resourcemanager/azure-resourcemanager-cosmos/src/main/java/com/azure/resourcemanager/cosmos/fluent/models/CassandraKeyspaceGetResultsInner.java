@@ -11,9 +11,7 @@ import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceGetPropertiesRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB Cassandra keyspace.
- */
+/** An Azure Cosmos DB Cassandra keyspace. */
 @Fluent
 public final class CassandraKeyspaceGetResultsInner extends ArmResourceProperties {
     /*
@@ -22,9 +20,7 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
     @JsonProperty(value = "properties")
     private CassandraKeyspaceGetProperties innerProperties;
 
-    /**
-     * Creates an instance of CassandraKeyspaceGetResultsInner class.
-     */
+    /** Creates an instance of CassandraKeyspaceGetResultsInner class. */
     public CassandraKeyspaceGetResultsInner() {
     }
 
@@ -37,18 +33,14 @@ public final class CassandraKeyspaceGetResultsInner extends ArmResourcePropertie
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

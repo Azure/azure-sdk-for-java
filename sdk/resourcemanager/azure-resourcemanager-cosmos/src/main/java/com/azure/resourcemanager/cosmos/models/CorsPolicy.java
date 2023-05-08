@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CORS policy for the Cosmos DB database account.
- */
+/** The CORS policy for the Cosmos DB database account. */
 @Fluent
 public final class CorsPolicy {
     /*
@@ -44,9 +42,7 @@ public final class CorsPolicy {
     @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
 
-    /**
-     * Creates an instance of CorsPolicy class.
-     */
+    /** Creates an instance of CorsPolicy class. */
     public CorsPolicy() {
     }
 
@@ -165,7 +161,9 @@ public final class CorsPolicy {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property allowedOrigins in model CorsPolicy"));
         }
     }
 

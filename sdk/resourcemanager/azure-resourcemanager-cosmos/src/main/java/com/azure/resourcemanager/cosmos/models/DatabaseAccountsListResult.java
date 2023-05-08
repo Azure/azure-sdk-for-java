@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the database accounts and their properties.
- */
+/** The List operation response, that contains the database accounts and their properties. */
 @Immutable
 public final class DatabaseAccountsListResult {
     /*
@@ -20,9 +18,7 @@ public final class DatabaseAccountsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseAccountGetResultsInner> value;
 
-    /**
-     * Creates an instance of DatabaseAccountsListResult class.
-     */
+    /** Creates an instance of DatabaseAccountsListResult class. */
     public DatabaseAccountsListResult() {
     }
 

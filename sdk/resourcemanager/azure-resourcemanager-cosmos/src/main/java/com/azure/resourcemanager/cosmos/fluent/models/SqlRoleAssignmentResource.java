@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Azure Cosmos DB SQL Role Assignment resource object.
- */
+/** Azure Cosmos DB SQL Role Assignment resource object. */
 @Fluent
 public final class SqlRoleAssignmentResource {
     /*
@@ -31,9 +29,7 @@ public final class SqlRoleAssignmentResource {
     @JsonProperty(value = "principalId")
     private String principalId;
 
-    /**
-     * Creates an instance of SqlRoleAssignmentResource class.
-     */
+    /** Creates an instance of SqlRoleAssignmentResource class. */
     public SqlRoleAssignmentResource() {
     }
 

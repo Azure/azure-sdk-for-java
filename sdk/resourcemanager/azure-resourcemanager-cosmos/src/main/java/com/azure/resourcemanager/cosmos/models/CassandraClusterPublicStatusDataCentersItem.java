@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The CassandraClusterPublicStatusDataCentersItem model.
- */
+/** The CassandraClusterPublicStatusDataCentersItem model. */
 @Fluent
 public final class CassandraClusterPublicStatusDataCentersItem {
     /*
@@ -31,9 +29,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
     @JsonProperty(value = "nodes")
     private List<CassandraClusterPublicStatusDataCentersItemNode> nodes;
 
-    /**
-     * Creates an instance of CassandraClusterPublicStatusDataCentersItem class.
-     */
+    /** Creates an instance of CassandraClusterPublicStatusDataCentersItem class. */
     public CassandraClusterPublicStatusDataCentersItem() {
     }
 
@@ -92,7 +88,8 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      * @param nodes the nodes value to set.
      * @return the CassandraClusterPublicStatusDataCentersItem object itself.
      */
-    public CassandraClusterPublicStatusDataCentersItem withNodes(List<CassandraClusterPublicStatusDataCentersItemNode> nodes) {
+    public CassandraClusterPublicStatusDataCentersItem withNodes(
+        List<CassandraClusterPublicStatusDataCentersItemNode> nodes) {
         this.nodes = nodes;
         return this;
     }

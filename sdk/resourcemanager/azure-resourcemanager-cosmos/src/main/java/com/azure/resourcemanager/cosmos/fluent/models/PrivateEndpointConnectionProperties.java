@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of a private endpoint connection.
- */
+/** Properties of a private endpoint connection. */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
     /*
@@ -38,9 +36,7 @@ public final class PrivateEndpointConnectionProperties {
     @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
-    /**
-     * Creates an instance of PrivateEndpointConnectionProperties class.
-     */
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
     public PrivateEndpointConnectionProperties() {
     }
 
@@ -79,7 +75,8 @@ public final class PrivateEndpointConnectionProperties {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
-    public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
+        PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }

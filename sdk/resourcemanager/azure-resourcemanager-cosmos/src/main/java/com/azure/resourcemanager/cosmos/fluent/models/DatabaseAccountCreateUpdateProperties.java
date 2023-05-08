@@ -26,9 +26,7 @@ import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties to create and update Azure Cosmos DB database accounts.
- */
+/** Properties to create and update Azure Cosmos DB database accounts. */
 @Fluent
 public final class DatabaseAccountCreateUpdateProperties {
     /*
@@ -216,9 +214,7 @@ public final class DatabaseAccountCreateUpdateProperties {
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
 
-    /**
-     * Creates an instance of DatabaseAccountCreateUpdateProperties class.
-     */
+    /** Creates an instance of DatabaseAccountCreateUpdateProperties class. */
     public DatabaseAccountCreateUpdateProperties() {
         databaseAccountOfferType = "Standard";
     }
@@ -322,7 +318,8 @@ public final class DatabaseAccountCreateUpdateProperties {
      * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
-    public DatabaseAccountCreateUpdateProperties withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled) {
+    public DatabaseAccountCreateUpdateProperties withIsVirtualNetworkFilterEnabled(
+        Boolean isVirtualNetworkFilterEnabled) {
         this.isVirtualNetworkFilterEnabled = isVirtualNetworkFilterEnabled;
         return this;
     }
@@ -406,7 +403,8 @@ public final class DatabaseAccountCreateUpdateProperties {
      * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
-    public DatabaseAccountCreateUpdateProperties withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+    public DatabaseAccountCreateUpdateProperties withEnableMultipleWriteLocations(
+        Boolean enableMultipleWriteLocations) {
         this.enableMultipleWriteLocations = enableMultipleWriteLocations;
         return this;
     }
@@ -468,7 +466,8 @@ public final class DatabaseAccountCreateUpdateProperties {
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
-    public DatabaseAccountCreateUpdateProperties withDisableKeyBasedMetadataWriteAccess(Boolean disableKeyBasedMetadataWriteAccess) {
+    public DatabaseAccountCreateUpdateProperties withDisableKeyBasedMetadataWriteAccess(
+        Boolean disableKeyBasedMetadataWriteAccess) {
         this.disableKeyBasedMetadataWriteAccess = disableKeyBasedMetadataWriteAccess;
         return this;
     }
@@ -612,7 +611,8 @@ public final class DatabaseAccountCreateUpdateProperties {
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
-    public DatabaseAccountCreateUpdateProperties withAnalyticalStorageConfiguration(AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+    public DatabaseAccountCreateUpdateProperties withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
         this.analyticalStorageConfiguration = analyticalStorageConfiguration;
         return this;
     }
@@ -714,7 +714,8 @@ public final class DatabaseAccountCreateUpdateProperties {
      * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
      */
-    public DatabaseAccountCreateUpdateProperties withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
+    public DatabaseAccountCreateUpdateProperties withNetworkAclBypassResourceIds(
+        List<String> networkAclBypassResourceIds) {
         this.networkAclBypassResourceIds = networkAclBypassResourceIds;
         return this;
     }
@@ -816,8 +817,8 @@ public final class DatabaseAccountCreateUpdateProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
-     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @return the minimalTlsVersion value.
      */
@@ -826,8 +827,8 @@ public final class DatabaseAccountCreateUpdateProperties {
     }
 
     /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
-     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountCreateUpdateProperties object itself.
@@ -847,7 +848,10 @@ public final class DatabaseAccountCreateUpdateProperties {
             consistencyPolicy().validate();
         }
         if (locations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property locations in model DatabaseAccountCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property locations in model DatabaseAccountCreateUpdateProperties"));
         } else {
             locations().forEach(e -> e.validate());
         }

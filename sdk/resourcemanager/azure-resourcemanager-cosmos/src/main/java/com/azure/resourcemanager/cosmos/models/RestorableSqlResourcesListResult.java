@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlResourcesGetR
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the restorable SQL resources.
- */
+/** The List operation response, that contains the restorable SQL resources. */
 @Immutable
 public final class RestorableSqlResourcesListResult {
     /*
@@ -20,9 +18,7 @@ public final class RestorableSqlResourcesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableSqlResourcesGetResultInner> value;
 
-    /**
-     * Creates an instance of RestorableSqlResourcesListResult class.
-     */
+    /** Creates an instance of RestorableSqlResourcesListResult class. */
     public RestorableSqlResourcesListResult() {
     }
 

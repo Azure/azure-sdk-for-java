@@ -385,7 +385,6 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
     }
 
     @Test
-    @Disabled
     public void testPrivateEndpointCosmos() {
         String cosmosName = generateRandomResourceName("cosmos", 10);
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.COSMOS_SQL;

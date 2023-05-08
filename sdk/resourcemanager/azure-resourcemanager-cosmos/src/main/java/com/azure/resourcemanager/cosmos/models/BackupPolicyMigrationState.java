@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The object representing the state of the migration between the backup policies.
- */
+/** The object representing the state of the migration between the backup policies. */
 @Fluent
 public final class BackupPolicyMigrationState {
     /*
@@ -31,9 +29,7 @@ public final class BackupPolicyMigrationState {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
-    /**
-     * Creates an instance of BackupPolicyMigrationState class.
-     */
+    /** Creates an instance of BackupPolicyMigrationState class. */
     public BackupPolicyMigrationState() {
     }
 

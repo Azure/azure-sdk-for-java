@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The metric values for a single partition.
- */
+/** The metric values for a single partition. */
 @Immutable
 public final class PartitionMetricInner extends MetricInner {
     /*
@@ -24,9 +22,7 @@ public final class PartitionMetricInner extends MetricInner {
     @JsonProperty(value = "partitionKeyRangeId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionKeyRangeId;
 
-    /**
-     * Creates an instance of PartitionMetricInner class.
-     */
+    /** Creates an instance of PartitionMetricInner class. */
     public PartitionMetricInner() {
     }
 

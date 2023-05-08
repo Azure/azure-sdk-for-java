@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB Gremlin graph resource object.
- */
+/** Cosmos DB Gremlin graph resource object. */
 @Fluent
 public class GremlinGraphResource {
     /*
@@ -57,9 +55,7 @@ public class GremlinGraphResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
-    /**
-     * Creates an instance of GremlinGraphResource class.
-     */
+    /** Creates an instance of GremlinGraphResource class. */
     public GremlinGraphResource() {
     }
 
@@ -216,7 +212,9 @@ public class GremlinGraphResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();

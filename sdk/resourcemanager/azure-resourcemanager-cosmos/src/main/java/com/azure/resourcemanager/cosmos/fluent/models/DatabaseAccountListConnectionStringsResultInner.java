@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountConnectionString;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The connection strings for the given database account.
- */
+/** The connection strings for the given database account. */
 @Fluent
 public final class DatabaseAccountListConnectionStringsResultInner {
     /*
@@ -20,9 +18,7 @@ public final class DatabaseAccountListConnectionStringsResultInner {
     @JsonProperty(value = "connectionStrings")
     private List<DatabaseAccountConnectionString> connectionStrings;
 
-    /**
-     * Creates an instance of DatabaseAccountListConnectionStringsResultInner class.
-     */
+    /** Creates an instance of DatabaseAccountListConnectionStringsResultInner class. */
     public DatabaseAccountListConnectionStringsResultInner() {
     }
 
@@ -41,7 +37,8 @@ public final class DatabaseAccountListConnectionStringsResultInner {
      * @param connectionStrings the connectionStrings value to set.
      * @return the DatabaseAccountListConnectionStringsResultInner object itself.
      */
-    public DatabaseAccountListConnectionStringsResultInner withConnectionStrings(List<DatabaseAccountConnectionString> connectionStrings) {
+    public DatabaseAccountListConnectionStringsResultInner withConnectionStrings(
+        List<DatabaseAccountConnectionString> connectionStrings) {
         this.connectionStrings = connectionStrings;
         return this;
     }

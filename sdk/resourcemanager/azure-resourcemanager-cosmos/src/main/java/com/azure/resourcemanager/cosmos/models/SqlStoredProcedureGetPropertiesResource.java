@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SqlStoredProcedureGetPropertiesResource model.
- */
+/** The SqlStoredProcedureGetPropertiesResource model. */
 @Fluent
 public final class SqlStoredProcedureGetPropertiesResource extends SqlStoredProcedureResource {
     /*
@@ -30,9 +28,7 @@ public final class SqlStoredProcedureGetPropertiesResource extends SqlStoredProc
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of SqlStoredProcedureGetPropertiesResource class.
-     */
+    /** Creates an instance of SqlStoredProcedureGetPropertiesResource class. */
     public SqlStoredProcedureGetPropertiesResource() {
     }
 
@@ -64,18 +60,14 @@ public final class SqlStoredProcedureGetPropertiesResource extends SqlStoredProc
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlStoredProcedureGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlStoredProcedureGetPropertiesResource withBody(String body) {
         super.withBody(body);

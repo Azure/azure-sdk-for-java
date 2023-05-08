@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB table resource object.
- */
+/** Cosmos DB table resource object. */
 @Fluent
 public class TableResource {
     /*
@@ -19,9 +17,7 @@ public class TableResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /**
-     * Creates an instance of TableResource class.
-     */
+    /** Creates an instance of TableResource class. */
     public TableResource() {
     }
 
@@ -52,7 +48,9 @@ public class TableResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model TableResource"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model TableResource"));
         }
     }
 

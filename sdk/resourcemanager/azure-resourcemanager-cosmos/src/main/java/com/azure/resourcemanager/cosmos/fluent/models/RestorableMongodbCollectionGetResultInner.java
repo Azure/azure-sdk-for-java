@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbCollectionPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An Azure Cosmos DB MongoDB collection event.
- */
+/** An Azure Cosmos DB MongoDB collection event. */
 @Fluent
 public final class RestorableMongodbCollectionGetResultInner {
     /*
@@ -37,9 +35,7 @@ public final class RestorableMongodbCollectionGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /**
-     * Creates an instance of RestorableMongodbCollectionGetResultInner class.
-     */
+    /** Creates an instance of RestorableMongodbCollectionGetResultInner class. */
     public RestorableMongodbCollectionGetResultInner() {
     }
 
@@ -94,7 +90,8 @@ public final class RestorableMongodbCollectionGetResultInner {
      * @param resource the resource value to set.
      * @return the RestorableMongodbCollectionGetResultInner object itself.
      */
-    public RestorableMongodbCollectionGetResultInner withResource(RestorableMongodbCollectionPropertiesResource resource) {
+    public RestorableMongodbCollectionGetResultInner withResource(
+        RestorableMongodbCollectionPropertiesResource resource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RestorableMongodbCollectionProperties();
         }

@@ -50,9 +50,7 @@ public class ThroughputSettingsResource {
     @JsonProperty(value = "softAllowedMaximumThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private String softAllowedMaximumThroughput;
 
-    /**
-     * Creates an instance of ThroughputSettingsResource class.
-     */
+    /** Creates an instance of ThroughputSettingsResource class. */
     public ThroughputSettingsResource() {
     }
 

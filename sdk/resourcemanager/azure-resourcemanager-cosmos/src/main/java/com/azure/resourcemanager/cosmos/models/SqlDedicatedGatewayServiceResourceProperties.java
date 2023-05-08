@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Properties for SqlDedicatedGatewayServiceResource.
- */
+/** Properties for SqlDedicatedGatewayServiceResource. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("SqlDedicatedGateway")
 @Fluent
@@ -29,9 +27,7 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlDedicatedGatewayRegionalServiceResource> locations;
 
-    /**
-     * Creates an instance of SqlDedicatedGatewayServiceResourceProperties class.
-     */
+    /** Creates an instance of SqlDedicatedGatewayServiceResourceProperties class. */
     public SqlDedicatedGatewayServiceResourceProperties() {
     }
 
@@ -50,7 +46,8 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
      * @param sqlDedicatedGatewayEndpoint the sqlDedicatedGatewayEndpoint value to set.
      * @return the SqlDedicatedGatewayServiceResourceProperties object itself.
      */
-    public SqlDedicatedGatewayServiceResourceProperties withSqlDedicatedGatewayEndpoint(String sqlDedicatedGatewayEndpoint) {
+    public SqlDedicatedGatewayServiceResourceProperties withSqlDedicatedGatewayEndpoint(
+        String sqlDedicatedGatewayEndpoint) {
         this.sqlDedicatedGatewayEndpoint = sqlDedicatedGatewayEndpoint;
         return this;
     }
@@ -64,18 +61,14 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
         return this.locations;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlDedicatedGatewayServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlDedicatedGatewayServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);

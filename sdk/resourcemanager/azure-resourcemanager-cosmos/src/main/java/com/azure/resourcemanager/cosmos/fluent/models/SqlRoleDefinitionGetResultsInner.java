@@ -11,9 +11,7 @@ import com.azure.resourcemanager.cosmos.models.RoleDefinitionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * An Azure Cosmos DB SQL Role Definition.
- */
+/** An Azure Cosmos DB SQL Role Definition. */
 @Fluent
 public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     /*
@@ -22,9 +20,7 @@ public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private SqlRoleDefinitionResource innerProperties;
 
-    /**
-     * Creates an instance of SqlRoleDefinitionGetResultsInner class.
-     */
+    /** Creates an instance of SqlRoleDefinitionGetResultsInner class. */
     public SqlRoleDefinitionGetResultsInner() {
     }
 
@@ -38,8 +34,7 @@ public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      *
      * @return the roleName value.
      */
@@ -48,8 +43,7 @@ public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      *
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionGetResultsInner object itself.

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB SQL container resource object.
- */
+/** Cosmos DB SQL container resource object. */
 @Fluent
 public class SqlContainerResource {
     /*
@@ -63,9 +61,7 @@ public class SqlContainerResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Long analyticalStorageTtl;
 
-    /**
-     * Creates an instance of SqlContainerResource class.
-     */
+    /** Creates an instance of SqlContainerResource class. */
     public SqlContainerResource() {
     }
 
@@ -242,7 +238,9 @@ public class SqlContainerResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();

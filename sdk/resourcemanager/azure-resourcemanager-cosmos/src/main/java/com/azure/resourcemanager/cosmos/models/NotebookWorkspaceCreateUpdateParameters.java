@@ -6,14 +6,10 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
 
-/**
- * Parameters to create a notebook workspace resource.
- */
+/** Parameters to create a notebook workspace resource. */
 @Immutable
 public final class NotebookWorkspaceCreateUpdateParameters extends ArmProxyResource {
-    /**
-     * Creates an instance of NotebookWorkspaceCreateUpdateParameters class.
-     */
+    /** Creates an instance of NotebookWorkspaceCreateUpdateParameters class. */
     public NotebookWorkspaceCreateUpdateParameters() {
     }
 

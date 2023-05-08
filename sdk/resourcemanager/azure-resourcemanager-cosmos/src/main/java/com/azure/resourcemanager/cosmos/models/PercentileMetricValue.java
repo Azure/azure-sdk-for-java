@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents percentile metrics values.
- */
+/** Represents percentile metrics values. */
 @Immutable
 public final class PercentileMetricValue extends MetricValue {
     /*
@@ -54,9 +52,7 @@ public final class PercentileMetricValue extends MetricValue {
     @JsonProperty(value = "P99", access = JsonProperty.Access.WRITE_ONLY)
     private Double p99;
 
-    /**
-     * Creates an instance of PercentileMetricValue class.
-     */
+    /** Creates an instance of PercentileMetricValue class. */
     public PercentileMetricValue() {
     }
 

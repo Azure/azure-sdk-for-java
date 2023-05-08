@@ -8,8 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and
- * Gremlin graphs.
+ * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and Gremlin
+ * graphs.
  */
 @Immutable
 public class ExtendedResourceProperties {
@@ -31,9 +31,7 @@ public class ExtendedResourceProperties {
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of ExtendedResourceProperties class.
-     */
+    /** Creates an instance of ExtendedResourceProperties class. */
     public ExtendedResourceProperties() {
     }
 

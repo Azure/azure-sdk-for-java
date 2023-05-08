@@ -8,9 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.ClientEncryptionKeyCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-/**
- * Parameters to create and update ClientEncryptionKey.
- */
+
+/** Parameters to create and update ClientEncryptionKey. */
 @Fluent
 public final class ClientEncryptionKeyCreateUpdateParameters {
     /*
@@ -19,9 +18,7 @@ public final class ClientEncryptionKeyCreateUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private ClientEncryptionKeyCreateUpdateProperties innerProperties = new ClientEncryptionKeyCreateUpdateProperties();
 
-    /**
-     * Creates an instance of ClientEncryptionKeyCreateUpdateParameters class.
-     */
+    /** Creates an instance of ClientEncryptionKeyCreateUpdateParameters class. */
     public ClientEncryptionKeyCreateUpdateParameters() {
     }
 
@@ -64,7 +61,11 @@ public final class ClientEncryptionKeyCreateUpdateParameters {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ClientEncryptionKeyCreateUpdateParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model"
+                            + " ClientEncryptionKeyCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

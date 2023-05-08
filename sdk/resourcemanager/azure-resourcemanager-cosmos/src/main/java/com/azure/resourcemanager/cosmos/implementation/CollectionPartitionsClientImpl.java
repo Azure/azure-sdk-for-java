@@ -32,18 +32,12 @@ import com.azure.resourcemanager.cosmos.models.PartitionMetricListResult;
 import com.azure.resourcemanager.cosmos.models.PartitionUsagesResult;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in CollectionPartitionsClient.
- */
+/** An instance of this class provides access to all the operations defined in CollectionPartitionsClient. */
 public final class CollectionPartitionsClientImpl implements CollectionPartitionsClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final CollectionPartitionsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final CosmosDBManagementClientImpl client;
 
     /**
@@ -52,7 +46,9 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param client the instance of the service client containing this operation class.
      */
     CollectionPartitionsClientImpl(CosmosDBManagementClientImpl client) {
-        this.service = RestProxy.create(CollectionPartitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(CollectionPartitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,17 +59,39 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface CollectionPartitionsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions/metrics")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartitionMetricListResult>> listMetrics(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseRid") String databaseRid, @PathParam("collectionRid") String collectionRid, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PartitionMetricListResult>> listMetrics(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseRid") String databaseRid,
+            @PathParam("collectionRid") String collectionRid,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions/usages")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PartitionUsagesResult>> listUsages(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseRid") String databaseRid, @PathParam("collectionRid") String collectionRid, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PartitionUsagesResult>> listUsages(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseRid") String databaseRid,
+            @PathParam("collectionRid") String collectionRid,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -83,22 +101,33 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
+    private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -113,14 +142,25 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.getApiVersion(), filter, accept, context))
-            .<PagedResponse<PartitionMetricInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listMetrics(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseRid,
+                            collectionRid,
+                            this.client.getApiVersion(),
+                            filter,
+                            accept,
+                            context))
+            .<PagedResponse<PartitionMetricInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -131,23 +171,39 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context) {
+    private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -163,14 +219,22 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.getApiVersion(), filter, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listMetrics(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseRid,
+                collectionRid,
+                this.client.getApiVersion(),
+                filter,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -180,14 +244,17 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PartitionMetricInner> listMetricsAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
+    public PagedFlux<PartitionMetricInner> listMetricsAsync(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         return new PagedFlux<>(
             () -> listMetricsSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
@@ -199,7 +266,9 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -207,9 +276,17 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartitionMetricInner> listMetricsAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context) {
+    private PagedFlux<PartitionMetricInner> listMetricsAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
         return new PagedFlux<>(
-            () -> listMetricsSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
+            () ->
+                listMetricsSinglePageAsync(
+                    resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
     }
 
     /**
@@ -219,15 +296,19 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartitionMetricInner> listMetrics(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
-        return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
+    public PagedIterable<PartitionMetricInner> listMetrics(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
+        return new PagedIterable<>(
+            listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
     /**
@@ -237,7 +318,9 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,8 +328,15 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartitionMetricInner> listMetrics(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context) {
-        return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
+    public PagedIterable<PartitionMetricInner> listMetrics(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
     }
 
     /**
@@ -256,22 +346,32 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response to a list partition level usage request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
+    private Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -283,14 +383,25 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listUsages(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.getApiVersion(), filter, accept, context))
-            .<PagedResponse<PartitionUsageInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listUsages(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseRid,
+                            collectionRid,
+                            this.client.getApiVersion(),
+                            filter,
+                            accept,
+                            context))
+            .<PagedResponse<PartitionUsageInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -301,23 +412,38 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response to a list partition level usage request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context) {
+    private Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -330,14 +456,22 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listUsages(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseRid, collectionRid, this.client.getApiVersion(), filter, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listUsages(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseRid,
+                collectionRid,
+                this.client.getApiVersion(),
+                filter,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -347,14 +481,16 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
+    public PagedFlux<PartitionUsageInner> listUsagesAsync(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
@@ -372,7 +508,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+    public PagedFlux<PartitionUsageInner> listUsagesAsync(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
@@ -385,7 +522,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -393,9 +531,16 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PartitionUsageInner> listUsagesAsync(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context) {
+    private PagedFlux<PartitionUsageInner> listUsagesAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
         return new PagedFlux<>(
-            () -> listUsagesSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
+            () ->
+                listUsagesSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
     }
 
     /**
@@ -411,7 +556,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartitionUsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+    public PagedIterable<PartitionUsageInner> listUsages(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
         final String filter = null;
         return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
@@ -423,7 +569,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -431,7 +578,14 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartitionUsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter, Context context) {
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
+    public PagedIterable<PartitionUsageInner> listUsages(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
     }
 }

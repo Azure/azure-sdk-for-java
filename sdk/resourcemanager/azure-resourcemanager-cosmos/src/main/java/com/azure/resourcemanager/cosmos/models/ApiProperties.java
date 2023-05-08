@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ApiProperties model.
- */
+/** The ApiProperties model. */
 @Fluent
 public final class ApiProperties {
     /*
@@ -18,9 +16,7 @@ public final class ApiProperties {
     @JsonProperty(value = "serverVersion")
     private ServerVersion serverVersion;
 
-    /**
-     * Creates an instance of ApiProperties class.
-     */
+    /** Creates an instance of ApiProperties class. */
     public ApiProperties() {
     }
 

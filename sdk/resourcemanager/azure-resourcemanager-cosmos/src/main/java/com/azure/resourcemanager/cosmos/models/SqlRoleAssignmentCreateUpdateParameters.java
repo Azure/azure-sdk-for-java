@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters to create and update an Azure Cosmos DB SQL Role Assignment.
- */
+/** Parameters to create and update an Azure Cosmos DB SQL Role Assignment. */
 @Fluent
 public final class SqlRoleAssignmentCreateUpdateParameters {
     /*
@@ -19,9 +17,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
 
-    /**
-     * Creates an instance of SqlRoleAssignmentCreateUpdateParameters class.
-     */
+    /** Creates an instance of SqlRoleAssignmentCreateUpdateParameters class. */
     public SqlRoleAssignmentCreateUpdateParameters() {
     }
 

@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB resource auto-upgrade policy.
- */
+/** Cosmos DB resource auto-upgrade policy. */
 @Fluent
 public final class AutoUpgradePolicyResource {
     /*
@@ -18,9 +16,7 @@ public final class AutoUpgradePolicyResource {
     @JsonProperty(value = "throughputPolicy")
     private ThroughputPolicyResource throughputPolicy;
 
-    /**
-     * Creates an instance of AutoUpgradePolicyResource class.
-     */
+    /** Creates an instance of AutoUpgradePolicyResource class. */
     public AutoUpgradePolicyResource() {
     }
 

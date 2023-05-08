@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Ldap authentication method properties. This feature is in preview.
- */
+/** Ldap authentication method properties. This feature is in preview. */
 @Fluent
 public final class AuthenticationMethodLdapProperties {
     /*
@@ -61,9 +59,7 @@ public final class AuthenticationMethodLdapProperties {
     @JsonProperty(value = "connectionTimeoutInMs")
     private Integer connectionTimeoutInMs;
 
-    /**
-     * Creates an instance of AuthenticationMethodLdapProperties class.
-     */
+    /** Creates an instance of AuthenticationMethodLdapProperties class. */
     public AuthenticationMethodLdapProperties() {
     }
 

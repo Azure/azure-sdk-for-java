@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * Represents metrics values.
- */
+/** Represents metrics values. */
 @Immutable
 public class MetricValue {
     /*
@@ -49,9 +47,7 @@ public class MetricValue {
     @JsonProperty(value = "total", access = JsonProperty.Access.WRITE_ONLY)
     private Double total;
 
-    /**
-     * Creates an instance of MetricValue class.
-     */
+    /** Creates an instance of MetricValue class. */
     public MetricValue() {
     }
 

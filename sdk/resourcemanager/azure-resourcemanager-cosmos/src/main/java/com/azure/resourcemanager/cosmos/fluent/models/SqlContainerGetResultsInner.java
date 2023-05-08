@@ -11,9 +11,7 @@ import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB container.
- */
+/** An Azure Cosmos DB container. */
 @Fluent
 public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     /*
@@ -22,9 +20,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlContainerGetProperties innerProperties;
 
-    /**
-     * Creates an instance of SqlContainerGetResultsInner class.
-     */
+    /** Creates an instance of SqlContainerGetResultsInner class. */
     public SqlContainerGetResultsInner() {
     }
 
@@ -37,18 +33,14 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlContainerGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlContainerGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

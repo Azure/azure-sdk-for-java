@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The resource of an Azure Cosmos DB Table event.
- */
+/** The resource of an Azure Cosmos DB Table event. */
 @Immutable
 public final class RestorableTablePropertiesResource {
     /*
@@ -42,9 +40,7 @@ public final class RestorableTablePropertiesResource {
     @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
-    /**
-     * Creates an instance of RestorableTablePropertiesResource class.
-     */
+    /** Creates an instance of RestorableTablePropertiesResource class. */
     public RestorableTablePropertiesResource() {
     }
 

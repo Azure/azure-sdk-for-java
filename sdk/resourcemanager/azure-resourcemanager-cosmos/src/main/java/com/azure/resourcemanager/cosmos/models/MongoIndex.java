@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB MongoDB collection index key.
- */
+/** Cosmos DB MongoDB collection index key. */
 @Fluent
 public final class MongoIndex {
     /*
@@ -24,9 +22,7 @@ public final class MongoIndex {
     @JsonProperty(value = "options")
     private MongoIndexOptions options;
 
-    /**
-     * Creates an instance of MongoIndex class.
-     */
+    /** Creates an instance of MongoIndex class. */
     public MongoIndex() {
     }
 

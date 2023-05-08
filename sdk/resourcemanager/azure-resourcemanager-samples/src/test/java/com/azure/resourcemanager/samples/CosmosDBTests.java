@@ -9,7 +9,6 @@ import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithIPRange;
 import com.azure.resourcemanager.cosmos.samples.CreateCosmosDBWithKindMongoDB;
 import com.azure.resourcemanager.cosmos.samples.ManageHACosmosDB;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CosmosDBTests extends SamplesTestBase {
@@ -23,13 +22,11 @@ public class CosmosDBTests extends SamplesTestBase {
     }
 
     @Test
-    @Disabled
     public void testCreateCosmosDBWithIPRange() {
         Assertions.assertTrue(CreateCosmosDBWithIPRange.runSample(azureResourceManager));
     }
 
     @Test
-    @Disabled
     public void testCreateCosmosDBTableWithVirtualNetworkRule() {
         Assertions.assertTrue(CreateCosmosDBTableWithVirtualNetworkRule.runSample(azureResourceManager));
     }

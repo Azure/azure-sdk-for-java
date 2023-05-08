@@ -11,12 +11,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbResourcesGetResultInner;
 
-/**
- * An instance of this class provides access to all the operations defined in RestorableMongodbResourcesClient.
- */
+/** An instance of this class provides access to all the operations defined in RestorableMongodbResourcesClient. */
 public interface RestorableMongodbResourcesClient {
     /**
-     * Return a list of database and collection combo that exist on the account at the given timestamp and location. This helps in scenarios to validate what resources exist at given timestamp and location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
+     * Return a list of database and collection combo that exist on the account at the given timestamp and location.
+     * This helps in scenarios to validate what resources exist at given timestamp and location. This API requires
+     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
@@ -25,39 +25,49 @@ public interface RestorableMongodbResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RestorableMongodbResourcesGetResultInner> listAsync(String location, String instanceId, String restoreLocation, String restoreTimestampInUtc);
+    PagedFlux<RestorableMongodbResourcesGetResultInner> listAsync(
+        String location, String instanceId, String restoreLocation, String restoreTimestampInUtc);
 
     /**
-     * Return a list of database and collection combo that exist on the account at the given timestamp and location. This helps in scenarios to validate what resources exist at given timestamp and location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
+     * Return a list of database and collection combo that exist on the account at the given timestamp and location.
+     * This helps in scenarios to validate what resources exist at given timestamp and location. This API requires
+     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableMongodbResourcesGetResultInner> listAsync(String location, String instanceId);
 
     /**
-     * Return a list of database and collection combo that exist on the account at the given timestamp and location. This helps in scenarios to validate what resources exist at given timestamp and location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
+     * Return a list of database and collection combo that exist on the account at the given timestamp and location.
+     * This helps in scenarios to validate what resources exist at given timestamp and location. This API requires
+     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableMongodbResourcesGetResultInner> list(String location, String instanceId);
 
     /**
-     * Return a list of database and collection combo that exist on the account at the given timestamp and location. This helps in scenarios to validate what resources exist at given timestamp and location. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
+     * Return a list of database and collection combo that exist on the account at the given timestamp and location.
+     * This helps in scenarios to validate what resources exist at given timestamp and location. This API requires
+     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
@@ -67,8 +77,10 @@ public interface RestorableMongodbResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableMongodbResourcesGetResultInner> list(String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context);
+    PagedIterable<RestorableMongodbResourcesGetResultInner> list(
+        String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context);
 }

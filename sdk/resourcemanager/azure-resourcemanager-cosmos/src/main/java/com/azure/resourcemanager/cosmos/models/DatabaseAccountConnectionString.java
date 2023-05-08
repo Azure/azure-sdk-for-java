@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Connection string for the Cosmos DB account.
- */
+/** Connection string for the Cosmos DB account. */
 @Immutable
 public final class DatabaseAccountConnectionString {
     /*
@@ -36,9 +34,7 @@ public final class DatabaseAccountConnectionString {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private Type type;
 
-    /**
-     * Creates an instance of DatabaseAccountConnectionString class.
-     */
+    /** Creates an instance of DatabaseAccountConnectionString class. */
     public DatabaseAccountConnectionString() {
     }
 

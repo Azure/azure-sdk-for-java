@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB capability object.
- */
+/** Cosmos DB capability object. */
 @Fluent
 public final class Capability {
     /*
@@ -19,9 +17,7 @@ public final class Capability {
     @JsonProperty(value = "name")
     private String name;
 
-    /**
-     * Creates an instance of Capability class.
-     */
+    /** Creates an instance of Capability class. */
     public Capability() {
     }
 

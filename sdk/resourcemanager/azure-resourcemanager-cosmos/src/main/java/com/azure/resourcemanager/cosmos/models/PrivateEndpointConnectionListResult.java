@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.PrivateEndpointConnectionI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of private endpoint connections.
- */
+/** A list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     /*
@@ -20,9 +18,7 @@ public final class PrivateEndpointConnectionListResult {
     @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
 
-    /**
-     * Creates an instance of PrivateEndpointConnectionListResult class.
-     */
+    /** Creates an instance of PrivateEndpointConnectionListResult class. */
     public PrivateEndpointConnectionListResult() {
     }
 

@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Certificate model.
- */
+/** The Certificate model. */
 @Fluent
 public final class Certificate {
     /*
@@ -18,9 +16,7 @@ public final class Certificate {
     @JsonProperty(value = "pem")
     private String pem;
 
-    /**
-     * Creates an instance of Certificate class.
-     */
+    /** Creates an instance of Certificate class. */
     public Certificate() {
     }
 

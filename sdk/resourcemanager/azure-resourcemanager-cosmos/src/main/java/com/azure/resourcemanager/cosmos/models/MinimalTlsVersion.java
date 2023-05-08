@@ -9,27 +9,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only work with Tls 1.2.
+ * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only
+ * work with Tls 1.2.
  */
 public final class MinimalTlsVersion extends ExpandableStringEnum<MinimalTlsVersion> {
-    /**
-     * Static value Tls for MinimalTlsVersion.
-     */
+    /** Static value Tls for MinimalTlsVersion. */
     public static final MinimalTlsVersion TLS = fromString("Tls");
 
-    /**
-     * Static value Tls11 for MinimalTlsVersion.
-     */
+    /** Static value Tls11 for MinimalTlsVersion. */
     public static final MinimalTlsVersion TLS11 = fromString("Tls11");
 
-    /**
-     * Static value Tls12 for MinimalTlsVersion.
-     */
+    /** Static value Tls12 for MinimalTlsVersion. */
     public static final MinimalTlsVersion TLS12 = fromString("Tls12");
 
     /**
      * Creates a new instance of MinimalTlsVersion value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +33,7 @@ public final class MinimalTlsVersion extends ExpandableStringEnum<MinimalTlsVers
 
     /**
      * Creates or finds a MinimalTlsVersion from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding MinimalTlsVersion.
      */
@@ -49,7 +44,7 @@ public final class MinimalTlsVersion extends ExpandableStringEnum<MinimalTlsVers
 
     /**
      * Gets known MinimalTlsVersion values.
-     * 
+     *
      * @return known MinimalTlsVersion values.
      */
     public static Collection<MinimalTlsVersion> values() {

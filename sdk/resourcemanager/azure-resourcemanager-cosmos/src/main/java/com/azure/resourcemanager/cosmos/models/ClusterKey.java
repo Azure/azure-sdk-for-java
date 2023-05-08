@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB Cassandra table cluster key.
- */
+/** Cosmos DB Cassandra table cluster key. */
 @Fluent
 public final class ClusterKey {
     /*
@@ -24,9 +22,7 @@ public final class ClusterKey {
     @JsonProperty(value = "orderBy")
     private String orderBy;
 
-    /**
-     * Creates an instance of ClusterKey class.
-     */
+    /** Creates an instance of ClusterKey class. */
     public ClusterKey() {
     }
 

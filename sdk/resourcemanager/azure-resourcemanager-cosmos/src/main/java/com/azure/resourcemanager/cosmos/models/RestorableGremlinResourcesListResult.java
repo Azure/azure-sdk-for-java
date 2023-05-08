@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableGremlinResources
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the restorable Gremlin resources.
- */
+/** The List operation response, that contains the restorable Gremlin resources. */
 @Immutable
 public final class RestorableGremlinResourcesListResult {
     /*
@@ -20,9 +18,7 @@ public final class RestorableGremlinResourcesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableGremlinResourcesGetResultInner> value;
 
-    /**
-     * Creates an instance of RestorableGremlinResourcesListResult class.
-     */
+    /** Creates an instance of RestorableGremlinResourcesListResult class. */
     public RestorableGremlinResourcesListResult() {
     }
 

@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to create and update Azure Cosmos DB trigger.
- */
+/** Properties to create and update Azure Cosmos DB trigger. */
 @Fluent
 public final class SqlTriggerCreateUpdateProperties {
     /*
@@ -28,9 +26,7 @@ public final class SqlTriggerCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /**
-     * Creates an instance of SqlTriggerCreateUpdateProperties class.
-     */
+    /** Creates an instance of SqlTriggerCreateUpdateProperties class. */
     public SqlTriggerCreateUpdateProperties() {
     }
 
@@ -83,7 +79,10 @@ public final class SqlTriggerCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model SqlTriggerCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model SqlTriggerCreateUpdateProperties"));
         } else {
             resource().validate();
         }

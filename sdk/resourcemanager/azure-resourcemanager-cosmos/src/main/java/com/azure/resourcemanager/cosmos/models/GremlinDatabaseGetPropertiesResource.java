@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The GremlinDatabaseGetPropertiesResource model.
- */
+/** The GremlinDatabaseGetPropertiesResource model. */
 @Fluent
 public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseResource {
     /*
@@ -30,9 +28,7 @@ public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseR
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of GremlinDatabaseGetPropertiesResource class.
-     */
+    /** Creates an instance of GremlinDatabaseGetPropertiesResource class. */
     public GremlinDatabaseGetPropertiesResource() {
     }
 
@@ -64,9 +60,7 @@ public final class GremlinDatabaseGetPropertiesResource extends GremlinDatabaseR
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GremlinDatabaseGetPropertiesResource withId(String id) {
         super.withId(id);

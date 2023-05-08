@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.TableGetResultsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the Table and their properties.
- */
+/** The List operation response, that contains the Table and their properties. */
 @Immutable
 public final class TableListResult {
     /*
@@ -20,9 +18,7 @@ public final class TableListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<TableGetResultsInner> value;
 
-    /**
-     * Creates an instance of TableListResult class.
-     */
+    /** Creates an instance of TableListResult class. */
     public TableListResult() {
     }
 

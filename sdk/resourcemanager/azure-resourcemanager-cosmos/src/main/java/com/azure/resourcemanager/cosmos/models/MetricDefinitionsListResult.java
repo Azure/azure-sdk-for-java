@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.MetricDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response to a list metric definitions request.
- */
+/** The response to a list metric definitions request. */
 @Immutable
 public final class MetricDefinitionsListResult {
     /*
@@ -20,9 +18,7 @@ public final class MetricDefinitionsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricDefinitionInner> value;
 
-    /**
-     * Creates an instance of MetricDefinitionsListResult class.
-     */
+    /** Creates an instance of MetricDefinitionsListResult class. */
     public MetricDefinitionsListResult() {
     }
 

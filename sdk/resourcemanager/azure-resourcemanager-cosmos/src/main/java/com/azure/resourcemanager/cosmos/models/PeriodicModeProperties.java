@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Configuration values for periodic mode backup.
- */
+/** Configuration values for periodic mode backup. */
 @Fluent
 public final class PeriodicModeProperties {
     /*
@@ -30,9 +28,7 @@ public final class PeriodicModeProperties {
     @JsonProperty(value = "backupStorageRedundancy")
     private BackupStorageRedundancy backupStorageRedundancy;
 
-    /**
-     * Creates an instance of PeriodicModeProperties class.
-     */
+    /** Creates an instance of PeriodicModeProperties class. */
     public PeriodicModeProperties() {
     }
 

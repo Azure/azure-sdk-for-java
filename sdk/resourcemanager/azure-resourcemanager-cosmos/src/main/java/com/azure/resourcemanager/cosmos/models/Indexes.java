@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The indexes for the path.
- */
+/** The indexes for the path. */
 @Fluent
 public final class Indexes {
     /*
@@ -30,9 +28,7 @@ public final class Indexes {
     @JsonProperty(value = "kind")
     private IndexKind kind;
 
-    /**
-     * Creates an instance of Indexes class.
-     */
+    /** Creates an instance of Indexes class. */
     public Indexes() {
     }
 

@@ -11,9 +11,7 @@ import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesResource
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB Gremlin graph.
- */
+/** An Azure Cosmos DB Gremlin graph. */
 @Fluent
 public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
     /*
@@ -22,9 +20,7 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private GremlinGraphGetProperties innerProperties;
 
-    /**
-     * Creates an instance of GremlinGraphGetResultsInner class.
-     */
+    /** Creates an instance of GremlinGraphGetResultsInner class. */
     public GremlinGraphGetResultsInner() {
     }
 
@@ -37,18 +33,14 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GremlinGraphGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GremlinGraphGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);

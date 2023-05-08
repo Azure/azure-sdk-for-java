@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The CassandraClusterPublicStatusDataCentersItemNode model.
- */
+/** The CassandraClusterPublicStatusDataCentersItemNode model. */
 @Fluent
 public final class CassandraClusterPublicStatusDataCentersItemNode {
     /*
@@ -118,9 +116,7 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
     @JsonProperty(value = "cpuUsage")
     private Double cpuUsage;
 
-    /**
-     * Creates an instance of CassandraClusterPublicStatusDataCentersItemNode class.
-     */
+    /** Creates an instance of CassandraClusterPublicStatusDataCentersItemNode class. */
     public CassandraClusterPublicStatusDataCentersItemNode() {
     }
 

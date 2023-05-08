@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableTableGetResultIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the Table events and their properties.
- */
+/** The List operation response, that contains the Table events and their properties. */
 @Immutable
 public final class RestorableTablesListResult {
     /*
@@ -20,9 +18,7 @@ public final class RestorableTablesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableTableGetResultInner> value;
 
-    /**
-     * Creates an instance of RestorableTablesListResult class.
-     */
+    /** Creates an instance of RestorableTablesListResult class. */
     public RestorableTablesListResult() {
     }
 

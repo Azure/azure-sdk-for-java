@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to create and update Azure Cosmos DB Gremlin database.
- */
+/** Properties to create and update Azure Cosmos DB Gremlin database. */
 @Fluent
 public final class GremlinDatabaseCreateUpdateProperties {
     /*
@@ -28,9 +26,7 @@ public final class GremlinDatabaseCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /**
-     * Creates an instance of GremlinDatabaseCreateUpdateProperties class.
-     */
+    /** Creates an instance of GremlinDatabaseCreateUpdateProperties class. */
     public GremlinDatabaseCreateUpdateProperties() {
     }
 
@@ -83,7 +79,10 @@ public final class GremlinDatabaseCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model GremlinDatabaseCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model GremlinDatabaseCreateUpdateProperties"));
         } else {
             resource().validate();
         }

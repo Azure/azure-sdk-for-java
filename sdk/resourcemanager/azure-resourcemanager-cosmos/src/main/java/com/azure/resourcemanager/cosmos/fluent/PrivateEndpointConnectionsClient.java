@@ -18,9 +18,7 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
- */
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public interface PrivateEndpointConnectionsClient {
     /**
      * List all private endpoint connections on a Cosmos DB account.
@@ -60,7 +58,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listByDatabaseAccount(String resourceGroupName, String accountName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listByDatabaseAccount(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets a private endpoint connection.
@@ -74,7 +73,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Gets a private endpoint connection.
@@ -88,7 +88,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Gets a private endpoint connection.
@@ -103,7 +104,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 
     /**
      * Gets a private endpoint connection.
@@ -117,7 +119,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -132,7 +135,11 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -147,7 +154,11 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -162,7 +173,11 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -178,7 +193,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
+    SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -193,7 +213,11 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -208,7 +232,11 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject a private endpoint connection with a given name.
@@ -224,7 +252,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
+    PrivateEndpointConnectionInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.
@@ -238,7 +271,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
@@ -252,7 +286,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
@@ -266,7 +301,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection with a given name.
@@ -281,7 +317,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes a private endpoint connection with a given name.

@@ -27,9 +27,7 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of OperationListResult class.
-     */
+    /** Creates an instance of OperationListResult class. */
     public OperationListResult() {
     }
 

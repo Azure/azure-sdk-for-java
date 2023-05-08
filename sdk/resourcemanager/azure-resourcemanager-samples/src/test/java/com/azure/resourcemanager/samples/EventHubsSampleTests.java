@@ -6,7 +6,6 @@ import com.azure.resourcemanager.eventhubs.samples.ManageEventHub;
 import com.azure.resourcemanager.eventhubs.samples.ManageEventHubEvents;
 import com.azure.resourcemanager.eventhubs.samples.ManageEventHubGeoDisasterRecovery;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class EventHubsSampleTests extends SamplesTestBase {
@@ -16,7 +15,6 @@ public class EventHubsSampleTests extends SamplesTestBase {
     }
 
     @Test
-    @Disabled
     public void testManageEventHubEvents() {
         Assertions.assertTrue(ManageEventHubEvents.runSample(azureResourceManager));
     }

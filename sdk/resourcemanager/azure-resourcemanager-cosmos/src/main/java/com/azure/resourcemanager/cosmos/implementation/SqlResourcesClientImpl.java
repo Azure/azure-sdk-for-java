@@ -65,18 +65,12 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in SqlResourcesClient.
- */
+/** An instance of this class provides access to all the operations defined in SqlResourcesClient. */
 public final class SqlResourcesClientImpl implements SqlResourcesClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final SqlResourcesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final CosmosDBManagementClientImpl client;
 
     /**
@@ -85,7 +79,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param client the instance of the service client containing this operation class.
      */
     SqlResourcesClientImpl(CosmosDBManagementClientImpl client) {
-        this.service = RestProxy.create(SqlResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(SqlResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -96,245 +91,644 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface SqlResourcesService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlDatabaseListResult>> listSqlDatabases(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlDatabaseListResult>> listSqlDatabases(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabase(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabase(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabase(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughput(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughput(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscale(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscale(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughput(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlContainerListResult>> listSqlContainers(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlContainerListResult>> listSqlContainers(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlContainerGetResultsInner>> getSqlContainer(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlContainerGetResultsInner>> getSqlContainer(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainer(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainer(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlContainer(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlContainer(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughput(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughput(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ThroughputSettingsUpdateParameters updateThroughputParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscale(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscale(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughput(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughput(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClientEncryptionKeysListResult>> listClientEncryptionKeys(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ClientEncryptionKeysListResult>> listClientEncryptionKeys(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKey(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKey(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKey(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKey(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json")
+                ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlStoredProcedureListResult>> listSqlStoredProcedures(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlStoredProcedureListResult>> listSqlStoredProcedures(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedure(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("storedProcedureName") String storedProcedureName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedure(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("storedProcedureName") String storedProcedureName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedure(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("storedProcedureName") String storedProcedureName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedure(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("storedProcedureName") String storedProcedureName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json")
+                SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedure(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("storedProcedureName") String storedProcedureName, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedure(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("storedProcedureName") String storedProcedureName,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlUserDefinedFunctionListResult>> listSqlUserDefinedFunctions(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlUserDefinedFunctionListResult>> listSqlUserDefinedFunctions(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunction(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("userDefinedFunctionName") String userDefinedFunctionName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunction(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("userDefinedFunctionName") String userDefinedFunctionName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunction(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("userDefinedFunctionName") String userDefinedFunctionName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunction(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("userDefinedFunctionName") String userDefinedFunctionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json")
+                SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunction(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("userDefinedFunctionName") String userDefinedFunctionName, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunction(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("userDefinedFunctionName") String userDefinedFunctionName,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlTriggerListResult>> listSqlTriggers(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlTriggerListResult>> listSqlTriggers(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlTriggerGetResultsInner>> getSqlTrigger(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlTriggerGetResultsInner>> getSqlTrigger(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTrigger(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTrigger(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlTrigger(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlTrigger(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @PathParam("triggerName") String triggerName,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinition(@HostParam("$host") String endpoint, @PathParam("roleDefinitionId") String roleDefinitionId, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinition(
+            @HostParam("$host") String endpoint,
+            @PathParam("roleDefinitionId") String roleDefinitionId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinition(@HostParam("$host") String endpoint, @PathParam("roleDefinitionId") String roleDefinitionId, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinition(
+            @HostParam("$host") String endpoint,
+            @PathParam("roleDefinitionId") String roleDefinitionId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json")
+                SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinition(@HostParam("$host") String endpoint, @PathParam("roleDefinitionId") String roleDefinitionId, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinition(
+            @HostParam("$host") String endpoint,
+            @PathParam("roleDefinitionId") String roleDefinitionId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlRoleDefinitionListResult>> listSqlRoleDefinitions(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlRoleDefinitionListResult>> listSqlRoleDefinitions(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignment(@HostParam("$host") String endpoint, @PathParam("roleAssignmentId") String roleAssignmentId, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignment(
+            @HostParam("$host") String endpoint,
+            @PathParam("roleAssignmentId") String roleAssignmentId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignment(@HostParam("$host") String endpoint, @PathParam("roleAssignmentId") String roleAssignmentId, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignment(
+            @HostParam("$host") String endpoint,
+            @PathParam("roleAssignmentId") String roleAssignmentId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json")
+                SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignment(@HostParam("$host") String endpoint, @PathParam("roleAssignmentId") String roleAssignmentId, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignment(
+            @HostParam("$host") String endpoint,
+            @PathParam("roleAssignmentId") String roleAssignmentId,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlRoleAssignmentListResult>> listSqlRoleAssignments(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SqlRoleAssignmentListResult>> listSqlRoleAssignments(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/retrieveContinuousBackupInformation")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/retrieveContinuousBackupInformation")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformation(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ContinuousBackupRestoreLocation location, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ContinuousBackupRestoreLocation location,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -345,31 +739,48 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the SQL databases and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlDatabaseGetResultsInner>> listSqlDatabasesSinglePageAsync(String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<SqlDatabaseGetResultsInner>> listSqlDatabasesSinglePageAsync(
+        String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlDatabases(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlDatabaseGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlDatabases(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlDatabaseGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -382,32 +793,46 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the SQL databases and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlDatabaseGetResultsInner>> listSqlDatabasesSinglePageAsync(String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<SqlDatabaseGetResultsInner>> listSqlDatabasesSinglePageAsync(
+        String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlDatabases(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlDatabases(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -418,12 +843,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SqlDatabaseGetResultsInner> listSqlDatabasesAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listSqlDatabasesSinglePageAsync(resourceGroupName, accountName));
+        return new PagedFlux<>(() -> listSqlDatabasesSinglePageAsync(resourceGroupName, accountName));
     }
 
     /**
@@ -435,12 +860,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlDatabaseGetResultsInner> listSqlDatabasesAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listSqlDatabasesSinglePageAsync(resourceGroupName, accountName, context));
+    private PagedFlux<SqlDatabaseGetResultsInner> listSqlDatabasesAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listSqlDatabasesSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
@@ -451,7 +877,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(String resourceGroupName, String accountName) {
@@ -467,10 +894,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the SQL databases and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the SQL databases and their properties as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<SqlDatabaseGetResultsInner> listSqlDatabases(
+        String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listSqlDatabasesAsync(resourceGroupName, accountName, context));
     }
 
@@ -483,18 +912,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -503,7 +941,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlDatabase(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlDatabase(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -517,18 +967,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<Response<SqlDatabaseGetResultsInner>> getSqlDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -538,7 +997,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlDatabase(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlDatabase(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -550,10 +1018,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlDatabaseGetResultsInner> getSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<SqlDatabaseGetResultsInner> getSqlDatabaseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         return getSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -568,10 +1038,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
+     * @return the SQL database under an existing Azure Cosmos DB database account with the provided name along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlDatabaseGetResultsInner> getSqlDatabaseWithResponse(String resourceGroupName, String accountName, String databaseName, Context context) {
+    public Response<SqlDatabaseGetResultsInner> getSqlDatabaseWithResponse(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return getSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
@@ -587,7 +1059,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL database under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlDatabaseGetResultsInner getSqlDatabase(String resourceGroupName, String accountName, String databaseName) {
+    public SqlDatabaseGetResultsInner getSqlDatabase(
+        String resourceGroupName, String accountName, String databaseName) {
         return getSqlDatabaseWithResponse(resourceGroupName, accountName, databaseName, Context.NONE).getValue();
     }
 
@@ -604,15 +1077,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabaseWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -621,12 +1105,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (createUpdateSqlDatabaseParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlDatabaseParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlDatabaseParameters is required and cannot be null."));
         } else {
             createUpdateSqlDatabaseParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlDatabase(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), createUpdateSqlDatabaseParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlDatabase(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlDatabaseParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -644,15 +1144,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlDatabaseWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -661,13 +1173,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (createUpdateSqlDatabaseParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlDatabaseParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlDatabaseParameters is required and cannot be null."));
         } else {
             createUpdateSqlDatabaseParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlDatabase(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), createUpdateSqlDatabaseParameters, accept, context);
+        return service
+            .createUpdateSqlDatabase(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                createUpdateSqlDatabaseParameters,
+                accept,
+                context);
     }
 
     /**
@@ -683,9 +1208,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters);
-        return this.client.<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlDatabaseGetResultsInner.class, SqlDatabaseGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner>
+        beginCreateUpdateSqlDatabaseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlDatabaseWithResponseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters);
+        return this
+            .client
+            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlDatabaseGetResultsInner.class,
+                SqlDatabaseGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -702,10 +1241,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
+    private PollerFlux<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner>
+        beginCreateUpdateSqlDatabaseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context);
-        return this.client.<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlDatabaseGetResultsInner.class, SqlDatabaseGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlDatabaseWithResponseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context);
+        return this
+            .client
+            .<SqlDatabaseGetResultsInner, SqlDatabaseGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlDatabaseGetResultsInner.class,
+                SqlDatabaseGetResultsInner.class,
+                context);
     }
 
     /**
@@ -721,8 +1275,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -739,8 +1300,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+        Context context) {
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -756,8 +1325,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlDatabaseGetResultsInner> createUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
+    public Mono<SqlDatabaseGetResultsInner> createUpdateSqlDatabaseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -776,8 +1350,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlDatabaseGetResultsInner> createUpdateSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
-        return beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
+    private Mono<SqlDatabaseGetResultsInner> createUpdateSqlDatabaseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+        Context context) {
+        return beginCreateUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -795,8 +1375,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlDatabaseGetResultsInner createUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return createUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters).block();
+    public SqlDatabaseGetResultsInner createUpdateSqlDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
+        return createUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters)
+            .block();
     }
 
     /**
@@ -813,8 +1399,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlDatabaseGetResultsInner createUpdateSqlDatabase(String resourceGroupName, String accountName, String databaseName, SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
-        return createUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context).block();
+    public SqlDatabaseGetResultsInner createUpdateSqlDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters,
+        Context context) {
+        return createUpdateSqlDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateSqlDatabaseParameters, context)
+            .block();
     }
 
     /**
@@ -829,15 +1422,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -845,7 +1446,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (databaseName == null) {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
-        return FluxUtil.withContext(context -> service.deleteSqlDatabase(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlDatabase(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -862,15 +1474,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabaseWithResponseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -879,7 +1499,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.deleteSqlDatabase(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), context);
+        return service
+            .deleteSqlDatabase(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
@@ -894,9 +1522,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -912,10 +1545,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlDatabaseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -930,7 +1567,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(String resourceGroupName, String accountName, String databaseName) {
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
+        String resourceGroupName, String accountName, String databaseName) {
         return this.beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
     }
 
@@ -947,7 +1585,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(String resourceGroupName, String accountName, String databaseName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlDatabase(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return this.beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
     }
 
@@ -982,7 +1621,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlDatabaseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<Void> deleteSqlDatabaseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return beginDeleteSqlDatabaseAsync(resourceGroupName, accountName, databaseName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1020,7 +1660,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     }
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1028,18 +1669,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1048,12 +1698,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlDatabaseThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlDatabaseThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1062,18 +1725,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<Response<ThroughputSettingsGetResultsInner>> getSqlDatabaseThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1083,11 +1755,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlDatabaseThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlDatabaseThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1095,16 +1777,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
+     *     provided name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         return getSqlDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1113,15 +1798,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name along with {@link Response}.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
+     *     provided name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputWithResponse(String resourceGroupName, String accountName, String databaseName, Context context) {
+    public Response<ThroughputSettingsGetResultsInner> getSqlDatabaseThroughputWithResponse(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return getSqlDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
     /**
-     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
+     * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -1129,11 +1817,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided name.
+     * @return the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the
+     *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName) {
-        return getSqlDatabaseThroughputWithResponse(resourceGroupName, accountName, databaseName, Context.NONE).getValue();
+    public ThroughputSettingsGetResultsInner getSqlDatabaseThroughput(
+        String resourceGroupName, String accountName, String databaseName) {
+        return getSqlDatabaseThroughputWithResponse(resourceGroupName, accountName, databaseName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1146,18 +1837,30 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1166,12 +1869,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (updateThroughputParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
         } else {
             updateThroughputParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateSqlDatabaseThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), updateThroughputParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateSqlDatabaseThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            updateThroughputParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1186,18 +1905,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateSqlDatabaseThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1206,13 +1938,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (updateThroughputParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
         } else {
             updateThroughputParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateSqlDatabaseThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), updateThroughputParameters, accept, context);
+        return service
+            .updateSqlDatabaseThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                updateThroughputParameters,
+                accept,
+                context);
     }
 
     /**
@@ -1228,9 +1973,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlDatabaseThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateSqlDatabaseThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1247,10 +2006,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlDatabaseThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateSqlDatabaseThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
     }
 
     /**
@@ -1266,8 +2040,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlDatabaseThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1284,8 +2066,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlDatabaseThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1301,8 +2092,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters)
+    public Mono<ThroughputSettingsGetResultsInner> updateSqlDatabaseThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1321,8 +2117,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> updateSqlDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
+    private Mono<ThroughputSettingsGetResultsInner> updateSqlDatabaseThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1340,8 +2142,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return updateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters).block();
+    public ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return updateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters)
+            .block();
     }
 
     /**
@@ -1358,8 +2166,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return updateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, updateThroughputParameters, context).block();
+    public ThroughputSettingsGetResultsInner updateSqlDatabaseThroughput(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateSqlDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
+            .block();
     }
 
     /**
@@ -1371,18 +2186,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1391,7 +2215,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.migrateSqlDatabaseToAutoscale(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateSqlDatabaseToAutoscale(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1405,18 +2241,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1426,7 +2271,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.migrateSqlDatabaseToAutoscale(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context);
+        return service
+            .migrateSqlDatabaseToAutoscale(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -1441,9 +2295,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlDatabaseToAutoscaleWithResponseAsync(resourceGroupName, accountName, databaseName);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlDatabaseToAutoscaleWithResponseAsync(resourceGroupName, accountName, databaseName);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1459,10 +2322,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToAutoscaleAsync(
+            String resourceGroupName, String accountName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlDatabaseToAutoscaleWithResponseAsync(resourceGroupName, accountName, databaseName, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlDatabaseToAutoscaleWithResponseAsync(resourceGroupName, accountName, databaseName, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
     }
 
     /**
@@ -1477,8 +2350,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
-        return this.beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
+        return this
+            .beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
+            .getSyncPoller();
     }
 
     /**
@@ -1494,8 +2370,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName, Context context) {
-        return this.beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToAutoscale(
+            String resourceGroupName, String accountName, String databaseName, Context context) {
+        return this
+            .beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1510,7 +2390,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         return beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1529,7 +2410,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToAutoscaleAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return beginMigrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1547,7 +2429,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
+    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(
+        String resourceGroupName, String accountName, String databaseName) {
         return migrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName).block();
     }
 
@@ -1564,7 +2447,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName, Context context) {
+    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToAutoscale(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return migrateSqlDatabaseToAutoscaleAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
@@ -1577,18 +2461,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1597,7 +2490,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.migrateSqlDatabaseToManualThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateSqlDatabaseToManualThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1611,18 +2516,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateSqlDatabaseToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1632,7 +2546,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.migrateSqlDatabaseToManualThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context);
+        return service
+            .migrateSqlDatabaseToManualThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -1647,9 +2570,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlDatabaseToManualThroughputWithResponseAsync(resourceGroupName, accountName, databaseName);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToManualThroughputAsync(
+            String resourceGroupName, String accountName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlDatabaseToManualThroughputWithResponseAsync(resourceGroupName, accountName, databaseName);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1665,10 +2598,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToManualThroughputAsync(
+            String resourceGroupName, String accountName, String databaseName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlDatabaseToManualThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlDatabaseToManualThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
     }
 
     /**
@@ -1683,8 +2627,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
-        return this.beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return this
+            .beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
+            .getSyncPoller();
     }
 
     /**
@@ -1700,8 +2647,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName, Context context) {
-        return this.beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlDatabaseToManualThroughput(
+            String resourceGroupName, String accountName, String databaseName, Context context) {
+        return this
+            .beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1716,7 +2667,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+    public Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         return beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1735,7 +2687,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1753,7 +2706,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
+    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(
+        String resourceGroupName, String accountName, String databaseName) {
         return migrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName).block();
     }
 
@@ -1770,7 +2724,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName, Context context) {
+    public ThroughputSettingsGetResultsInner migrateSqlDatabaseToManualThroughput(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return migrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
@@ -1783,18 +2738,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the containers and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(String resourceGroupName, String accountName, String databaseName) {
+    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1803,14 +2767,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlContainers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlContainerGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlContainers(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlContainerGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1824,18 +2797,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the containers and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1845,14 +2827,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlContainers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlContainers(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -1864,12 +2852,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseName) {
-        return new PagedFlux<>(
-            () -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName));
+    public PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(
+        String resourceGroupName, String accountName, String databaseName) {
+        return new PagedFlux<>(() -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName));
     }
 
     /**
@@ -1882,10 +2871,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return new PagedFlux<>(
             () -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName, context));
     }
@@ -1899,10 +2890,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName, String databaseName) {
+    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(
+        String resourceGroupName, String accountName, String databaseName) {
         return new PagedIterable<>(listSqlContainersAsync(resourceGroupName, accountName, databaseName));
     }
 
@@ -1916,10 +2909,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName, String databaseName, Context context) {
+    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return new PagedIterable<>(listSqlContainersAsync(resourceGroupName, accountName, databaseName, context));
     }
 
@@ -1933,18 +2928,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1956,7 +2960,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlContainer(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1971,18 +2988,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1995,7 +3021,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlContainer(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -2008,10 +3044,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
+     * @return the SQL container under an existing Azure Cosmos DB database account on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlContainerGetResultsInner> getSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<SqlContainerGetResultsInner> getSqlContainerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2030,8 +3068,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlContainerGetResultsInner> getSqlContainerWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
+    public Response<SqlContainerGetResultsInner> getSqlContainerWithResponse(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .block();
     }
 
     /**
@@ -2047,8 +3087,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL container under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner getSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return getSqlContainerWithResponse(resourceGroupName, accountName, databaseName, containerName, Context.NONE).getValue();
+    public SqlContainerGetResultsInner getSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return getSqlContainerWithResponse(resourceGroupName, accountName, databaseName, containerName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2065,15 +3107,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2085,12 +3139,29 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (createUpdateSqlContainerParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlContainerParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
         } else {
             createUpdateSqlContainerParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), createUpdateSqlContainerParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlContainer(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlContainerParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2109,15 +3180,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2129,13 +3213,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (createUpdateSqlContainerParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlContainerParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
         } else {
             createUpdateSqlContainerParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), createUpdateSqlContainerParameters, accept, context);
+        return service
+            .createUpdateSqlContainer(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                createUpdateSqlContainerParameters,
+                accept,
+                context);
     }
 
     /**
@@ -2152,9 +3250,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters);
-        return this.client.<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlContainerGetResultsInner.class, SqlContainerGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainerAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlContainerWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters);
+        return this
+            .client
+            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlContainerGetResultsInner.class,
+                SqlContainerGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2172,10 +3285,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
+    private PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainerAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters, context);
-        return this.client.<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlContainerGetResultsInner.class, SqlContainerGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlContainerWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                createUpdateSqlContainerParameters,
+                context);
+        return this
+            .client
+            .<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlContainerGetResultsInner.class,
+                SqlContainerGetResultsInner.class,
+                context);
     }
 
     /**
@@ -2192,8 +3326,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainer(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return this
+            .beginCreateUpdateSqlContainerAsync(
+                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2211,8 +3354,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner> beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainer(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateSqlContainerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                createUpdateSqlContainerParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -2229,8 +3387,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
+    public Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return beginCreateUpdateSqlContainerAsync(
+                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2250,8 +3414,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
-        return beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters, context)
+    private Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+        Context context) {
+        return beginCreateUpdateSqlContainerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                createUpdateSqlContainerParameters,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2270,8 +3446,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return createUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters).block();
+    public SqlContainerGetResultsInner createUpdateSqlContainer(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return createUpdateSqlContainerAsync(
+                resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters)
+            .block();
     }
 
     /**
@@ -2289,8 +3472,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
-        return createUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, createUpdateSqlContainerParameters, context).block();
+    public SqlContainerGetResultsInner createUpdateSqlContainer(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+        Context context) {
+        return createUpdateSqlContainerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                createUpdateSqlContainerParameters,
+                context)
+            .block();
     }
 
     /**
@@ -2306,15 +3502,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2325,7 +3529,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (containerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
-        return FluxUtil.withContext(context -> service.deleteSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlContainer(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2343,15 +3559,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2363,7 +3587,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.deleteSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), context);
+        return service
+            .deleteSqlContainer(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
@@ -2379,9 +3612,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2398,10 +3636,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -2417,8 +3659,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return this.beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return this
+            .beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
+            .getSyncPoller();
     }
 
     /**
@@ -2435,8 +3680,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return this.beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return this
+            .beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2452,7 +3700,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<Void> deleteSqlContainerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2472,7 +3721,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<Void> deleteSqlContainerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2490,7 +3740,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public void deleteSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).block();
     }
 
@@ -2507,7 +3758,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    public void deleteSqlContainer(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
     }
 
@@ -2521,18 +3773,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2544,7 +3805,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlContainerThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2559,18 +3833,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2583,7 +3866,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlContainerThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -2596,10 +3889,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> getSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<ThroughputSettingsGetResultsInner> getSqlContainerThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return getSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -2615,11 +3910,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with {@link Response}.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThroughputSettingsGetResultsInner> getSqlContainerThroughputWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return getSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
+    public Response<ThroughputSettingsGetResultsInner> getSqlContainerThroughputWithResponse(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return getSqlContainerThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, context)
+            .block();
     }
 
     /**
@@ -2635,8 +3934,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return getSqlContainerThroughputWithResponse(resourceGroupName, accountName, databaseName, containerName, Context.NONE).getValue();
+    public ThroughputSettingsGetResultsInner getSqlContainerThroughput(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return getSqlContainerThroughputWithResponse(
+                resourceGroupName, accountName, databaseName, containerName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2650,18 +3952,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2673,12 +3988,29 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (updateThroughputParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
         } else {
             updateThroughputParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), updateThroughputParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateSqlContainerThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            updateThroughputParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2694,18 +4026,32 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2717,13 +4063,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (updateThroughputParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
         } else {
             updateThroughputParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), updateThroughputParameters, accept, context);
+        return service
+            .updateSqlContainerThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                updateThroughputParameters,
+                accept,
+                context);
     }
 
     /**
@@ -2740,9 +4100,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateSqlContainerThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2760,10 +4135,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughputAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateSqlContainerThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
     }
 
     /**
@@ -2780,8 +4171,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return this
+            .beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2799,8 +4199,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        return this
+            .beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2817,8 +4227,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
+    public Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2838,8 +4254,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
+    private Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2858,8 +4281,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters).block();
+    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return updateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters)
+            .block();
     }
 
     /**
@@ -2877,8 +4307,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context).block();
+    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateSqlContainerThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, updateThroughputParameters, context)
+            .block();
     }
 
     /**
@@ -2891,18 +4329,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2914,7 +4361,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.migrateSqlContainerToAutoscale(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateSqlContainerToAutoscale(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2929,18 +4389,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -2953,7 +4422,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.migrateSqlContainerToAutoscale(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+        return service
+            .migrateSqlContainerToAutoscale(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -2969,9 +4448,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToAutoscaleWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscaleAsync(
+            String resourceGroupName, String accountName, String databaseName, String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlContainerToAutoscaleWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2988,10 +4478,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscaleAsync(
+            String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToAutoscaleWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlContainerToAutoscaleWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
     }
 
     /**
@@ -3007,8 +4508,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return this.beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscale(
+            String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return this
+            .beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
+            .getSyncPoller();
     }
 
     /**
@@ -3025,8 +4530,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return this.beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName, context).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscale(
+            String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return this
+            .beginMigrateSqlContainerToAutoscaleAsync(
+                resourceGroupName, accountName, databaseName, containerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3042,7 +4552,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -3062,8 +4573,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName, context)
+    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return beginMigrateSqlContainerToAutoscaleAsync(
+                resourceGroupName, accountName, databaseName, containerName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3081,7 +4594,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName).block();
     }
 
@@ -3099,8 +4613,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .block();
     }
 
     /**
@@ -3113,18 +4629,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3136,7 +4661,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.migrateSqlContainerToManualThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .migrateSqlContainerToManualThroughput(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3151,18 +4689,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3175,7 +4722,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.migrateSqlContainerToManualThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+        return service
+            .migrateSqlContainerToManualThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -3191,9 +4748,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToManualThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughputAsync(
+            String resourceGroupName, String accountName, String databaseName, String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlContainerToManualThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -3210,10 +4778,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughputAsync(
+            String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToManualThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class, ThroughputSettingsGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            migrateSqlContainerToManualThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class,
+                context);
     }
 
     /**
@@ -3229,8 +4808,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughput(
+            String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName)
+            .getSyncPoller();
     }
 
     /**
@@ -3247,8 +4831,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner> beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName, context).getSyncPoller();
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughput(
+            String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3264,8 +4853,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName)
+    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToManualThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3284,8 +4875,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName, context)
+    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return beginMigrateSqlContainerToManualThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -3303,8 +4896,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName).block();
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName)
+            .block();
     }
 
     /**
@@ -3321,8 +4916,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return migrateSqlContainerToManualThroughputAsync(
+                resourceGroupName, accountName, databaseName, containerName, context)
+            .block();
     }
 
     /**
@@ -3334,18 +4932,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the client encryption keys and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClientEncryptionKeyGetResultsInner>> listClientEncryptionKeysSinglePageAsync(String resourceGroupName, String accountName, String databaseName) {
+    private Mono<PagedResponse<ClientEncryptionKeyGetResultsInner>> listClientEncryptionKeysSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3354,14 +4961,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listClientEncryptionKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ClientEncryptionKeyGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClientEncryptionKeys(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ClientEncryptionKeyGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3375,18 +4991,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the client encryption keys and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClientEncryptionKeyGetResultsInner>> listClientEncryptionKeysSinglePageAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private Mono<PagedResponse<ClientEncryptionKeyGetResultsInner>> listClientEncryptionKeysSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3396,14 +5021,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listClientEncryptionKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listClientEncryptionKeys(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -3415,10 +5046,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeysAsync(String resourceGroupName, String accountName, String databaseName) {
+    public PagedFlux<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeysAsync(
+        String resourceGroupName, String accountName, String databaseName) {
         return new PagedFlux<>(
             () -> listClientEncryptionKeysSinglePageAsync(resourceGroupName, accountName, databaseName));
     }
@@ -3433,10 +5066,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeysAsync(String resourceGroupName, String accountName, String databaseName, Context context) {
+    private PagedFlux<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeysAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
         return new PagedFlux<>(
             () -> listClientEncryptionKeysSinglePageAsync(resourceGroupName, accountName, databaseName, context));
     }
@@ -3450,10 +5085,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(String resourceGroupName, String accountName, String databaseName) {
+    public PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(
+        String resourceGroupName, String accountName, String databaseName) {
         return new PagedIterable<>(listClientEncryptionKeysAsync(resourceGroupName, accountName, databaseName));
     }
 
@@ -3467,11 +5104,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the client encryption keys and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the client encryption keys and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(String resourceGroupName, String accountName, String databaseName, Context context) {
-        return new PagedIterable<>(listClientEncryptionKeysAsync(resourceGroupName, accountName, databaseName, context));
+    public PagedIterable<ClientEncryptionKeyGetResultsInner> listClientEncryptionKeys(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return new PagedIterable<>(
+            listClientEncryptionKeysAsync(resourceGroupName, accountName, databaseName, context));
     }
 
     /**
@@ -3484,18 +5124,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKeyWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName) {
+    public Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKeyWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3504,10 +5153,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (clientEncryptionKeyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getClientEncryptionKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, clientEncryptionKeyName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getClientEncryptionKey(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            clientEncryptionKeyName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3522,18 +5186,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response} on successful completion of {@link Mono}.
+     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKeyWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, Context context) {
+    private Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKeyWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3542,11 +5219,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (clientEncryptionKeyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getClientEncryptionKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, clientEncryptionKeyName, this.client.getApiVersion(), accept, context);
+        return service
+            .getClientEncryptionKey(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -3559,11 +5248,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database on successful completion of {@link Mono}.
+     * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName) {
-        return getClientEncryptionKeyWithResponseAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName)
+    public Mono<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyAsync(
+        String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName) {
+        return getClientEncryptionKeyWithResponseAsync(
+                resourceGroupName, accountName, databaseName, clientEncryptionKeyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -3581,8 +5273,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyWithResponse(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, Context context) {
-        return getClientEncryptionKeyWithResponseAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, context).block();
+    public Response<ClientEncryptionKeyGetResultsInner> getClientEncryptionKeyWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        Context context) {
+        return getClientEncryptionKeyWithResponseAsync(
+                resourceGroupName, accountName, databaseName, clientEncryptionKeyName, context)
+            .block();
     }
 
     /**
@@ -3598,12 +5297,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClientEncryptionKeyGetResultsInner getClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName) {
-        return getClientEncryptionKeyWithResponse(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, Context.NONE).getValue();
+    public ClientEncryptionKeyGetResultsInner getClientEncryptionKey(
+        String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName) {
+        return getClientEncryptionKeyWithResponse(
+                resourceGroupName, accountName, databaseName, clientEncryptionKeyName, Context.NONE)
+            .getValue();
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3616,15 +5319,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return client Encryption Key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKeyWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKeyWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3633,20 +5348,40 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (clientEncryptionKeyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
         }
         if (createUpdateClientEncryptionKeyParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateClientEncryptionKeyParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateClientEncryptionKeyParameters is required and cannot be null."));
         } else {
             createUpdateClientEncryptionKeyParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateClientEncryptionKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, clientEncryptionKeyName, this.client.getApiVersion(), createUpdateClientEncryptionKeyParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateClientEncryptionKey(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            clientEncryptionKeyName,
+                            this.client.getApiVersion(),
+                            createUpdateClientEncryptionKeyParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3660,15 +5395,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return client Encryption Key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKeyWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKeyWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3677,20 +5425,37 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (clientEncryptionKeyName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter clientEncryptionKeyName is required and cannot be null."));
         }
         if (createUpdateClientEncryptionKeyParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateClientEncryptionKeyParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateClientEncryptionKeyParameters is required and cannot be null."));
         } else {
             createUpdateClientEncryptionKeyParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateClientEncryptionKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, clientEncryptionKeyName, this.client.getApiVersion(), createUpdateClientEncryptionKeyParameters, accept, context);
+        return service
+            .createUpdateClientEncryptionKey(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                this.client.getApiVersion(),
+                createUpdateClientEncryptionKeyParameters,
+                accept,
+                context);
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3703,13 +5468,33 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateClientEncryptionKeyWithResponseAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters);
-        return this.client.<ClientEncryptionKeyGetResultsInner, ClientEncryptionKeyGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ClientEncryptionKeyGetResultsInner.class, ClientEncryptionKeyGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
+        beginCreateUpdateClientEncryptionKeyAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String clientEncryptionKeyName,
+            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateClientEncryptionKeyWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters);
+        return this
+            .client
+            .<ClientEncryptionKeyGetResultsInner, ClientEncryptionKeyGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ClientEncryptionKeyGetResultsInner.class,
+                ClientEncryptionKeyGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3723,14 +5508,36 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
+    private PollerFlux<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
+        beginCreateUpdateClientEncryptionKeyAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String clientEncryptionKeyName,
+            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateClientEncryptionKeyWithResponseAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context);
-        return this.client.<ClientEncryptionKeyGetResultsInner, ClientEncryptionKeyGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), ClientEncryptionKeyGetResultsInner.class, ClientEncryptionKeyGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateClientEncryptionKeyWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters,
+                context);
+        return this
+            .client
+            .<ClientEncryptionKeyGetResultsInner, ClientEncryptionKeyGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ClientEncryptionKeyGetResultsInner.class,
+                ClientEncryptionKeyGetResultsInner.class,
+                context);
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3743,12 +5550,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).getSyncPoller();
+    public SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
+        beginCreateUpdateClientEncryptionKey(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String clientEncryptionKeyName,
+            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters)
+            .getSyncPoller();
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3762,12 +5583,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner> beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<ClientEncryptionKeyGetResultsInner>, ClientEncryptionKeyGetResultsInner>
+        beginCreateUpdateClientEncryptionKey(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String clientEncryptionKeyName,
+            ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3780,14 +5617,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return client Encryption Key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ClientEncryptionKeyGetResultsInner> createUpdateClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters)
+    public Mono<ClientEncryptionKeyGetResultsInner> createUpdateClientEncryptionKeyAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
+        return beginCreateUpdateClientEncryptionKeyAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3801,14 +5649,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return client Encryption Key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClientEncryptionKeyGetResultsInner> createUpdateClientEncryptionKeyAsync(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
-        return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context)
+    private Mono<ClientEncryptionKeyGetResultsInner> createUpdateClientEncryptionKeyAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+        Context context) {
+        return beginCreateUpdateClientEncryptionKeyAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3821,12 +5682,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        return createUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).block();
+    public ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
+        return createUpdateClientEncryptionKeyAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters)
+            .block();
     }
 
     /**
-     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell (instead of directly).
+     * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
+     * (instead of directly).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -3840,8 +5713,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return client Encryption Key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName, String clientEncryptionKeyName, ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
-        return createUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName, clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).block();
+    public ClientEncryptionKeyGetResultsInner createUpdateClientEncryptionKey(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String clientEncryptionKeyName,
+        ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+        Context context) {
+        return createUpdateClientEncryptionKeyAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                clientEncryptionKeyName,
+                createUpdateClientEncryptionKeyParameters,
+                context)
+            .block();
     }
 
     /**
@@ -3854,18 +5740,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the storedProcedures and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlStoredProcedureGetResultsInner>> listSqlStoredProceduresSinglePageAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    private Mono<PagedResponse<SqlStoredProcedureGetResultsInner>> listSqlStoredProceduresSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3877,14 +5772,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlStoredProcedures(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlStoredProcedureGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlStoredProcedures(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlStoredProcedureGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3899,18 +5804,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the storedProcedures and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlStoredProcedureGetResultsInner>> listSqlStoredProceduresSinglePageAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<PagedResponse<SqlStoredProcedureGetResultsInner>> listSqlStoredProceduresSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -3923,14 +5837,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlStoredProcedures(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlStoredProcedures(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -3943,10 +5864,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlStoredProcedureGetResultsInner> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public PagedFlux<SqlStoredProcedureGetResultsInner> listSqlStoredProceduresAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return new PagedFlux<>(
             () -> listSqlStoredProceduresSinglePageAsync(resourceGroupName, accountName, databaseName, containerName));
     }
@@ -3962,12 +5885,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlStoredProcedureGetResultsInner> listSqlStoredProceduresAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private PagedFlux<SqlStoredProcedureGetResultsInner> listSqlStoredProceduresAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         return new PagedFlux<>(
-            () -> listSqlStoredProceduresSinglePageAsync(resourceGroupName, accountName, databaseName, containerName, context));
+            () ->
+                listSqlStoredProceduresSinglePageAsync(
+                    resourceGroupName, accountName, databaseName, containerName, context));
     }
 
     /**
@@ -3980,11 +5907,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return new PagedIterable<>(listSqlStoredProceduresAsync(resourceGroupName, accountName, databaseName, containerName));
+    public PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return new PagedIterable<>(
+            listSqlStoredProceduresAsync(resourceGroupName, accountName, databaseName, containerName));
     }
 
     /**
@@ -3998,11 +5928,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the storedProcedures and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the storedProcedures and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return new PagedIterable<>(listSqlStoredProceduresAsync(resourceGroupName, accountName, databaseName, containerName, context));
+    public PagedIterable<SqlStoredProcedureGetResultsInner> listSqlStoredProcedures(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return new PagedIterable<>(
+            listSqlStoredProceduresAsync(resourceGroupName, accountName, databaseName, containerName, context));
     }
 
     /**
@@ -4016,18 +5949,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+    public Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedureWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4039,10 +5985,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (storedProcedureName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlStoredProcedure(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlStoredProcedure(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            storedProcedureName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4058,18 +6019,32 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
+    private Mono<Response<SqlStoredProcedureGetResultsInner>> getSqlStoredProcedureWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4081,11 +6056,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (storedProcedureName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlStoredProcedure(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlStoredProcedure(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -4099,11 +6086,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
+     * @return the SQL storedProcedure under an existing Azure Cosmos DB database account on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return getSqlStoredProcedureWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+    public Mono<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        return getSqlStoredProcedureWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -4122,8 +6116,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL storedProcedure under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        return getSqlStoredProcedureWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context).block();
+    public Response<SqlStoredProcedureGetResultsInner> getSqlStoredProcedureWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
+        return getSqlStoredProcedureWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
+            .block();
     }
 
     /**
@@ -4140,8 +6142,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL storedProcedure under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlStoredProcedureGetResultsInner getSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return getSqlStoredProcedureWithResponse(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, Context.NONE).getValue();
+    public SqlStoredProcedureGetResultsInner getSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        return getSqlStoredProcedureWithResponse(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -4159,15 +6168,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedureWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4179,15 +6201,34 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (storedProcedureName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         if (createUpdateSqlStoredProcedureParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null."));
         } else {
             createUpdateSqlStoredProcedureParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlStoredProcedure(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.getApiVersion(), createUpdateSqlStoredProcedureParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlStoredProcedure(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            storedProcedureName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlStoredProcedureParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4207,15 +6248,29 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlStoredProcedureWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4227,16 +6282,32 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (storedProcedureName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         if (createUpdateSqlStoredProcedureParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlStoredProcedureParameters is required and cannot be null."));
         } else {
             createUpdateSqlStoredProcedureParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlStoredProcedure(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.getApiVersion(), createUpdateSqlStoredProcedureParameters, accept, context);
+        return service
+            .createUpdateSqlStoredProcedure(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                this.client.getApiVersion(),
+                createUpdateSqlStoredProcedureParameters,
+                accept,
+                context);
     }
 
     /**
@@ -4254,9 +6325,30 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlStoredProcedureWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters);
-        return this.client.<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlStoredProcedureGetResultsInner.class, SqlStoredProcedureGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
+        beginCreateUpdateSqlStoredProcedureAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String storedProcedureName,
+            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlStoredProcedureWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters);
+        return this
+            .client
+            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlStoredProcedureGetResultsInner.class,
+                SqlStoredProcedureGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -4275,10 +6367,33 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
+    private PollerFlux<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
+        beginCreateUpdateSqlStoredProcedureAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String storedProcedureName,
+            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlStoredProcedureWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context);
-        return this.client.<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlStoredProcedureGetResultsInner.class, SqlStoredProcedureGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlStoredProcedureWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters,
+                context);
+        return this
+            .client
+            .<SqlStoredProcedureGetResultsInner, SqlStoredProcedureGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlStoredProcedureGetResultsInner.class,
+                SqlStoredProcedureGetResultsInner.class,
+                context);
     }
 
     /**
@@ -4296,8 +6411,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
+        beginCreateUpdateSqlStoredProcedure(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String storedProcedureName,
+            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -4316,8 +6446,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner> beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlStoredProcedureGetResultsInner>, SqlStoredProcedureGetResultsInner>
+        beginCreateUpdateSqlStoredProcedure(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String storedProcedureName,
+            SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -4335,8 +6482,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlStoredProcedureGetResultsInner> createUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters)
+    public Mono<SqlStoredProcedureGetResultsInner> createUpdateSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return beginCreateUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4357,8 +6516,22 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlStoredProcedureGetResultsInner> createUpdateSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
-        return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context)
+    private Mono<SqlStoredProcedureGetResultsInner> createUpdateSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+        Context context) {
+        return beginCreateUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4378,8 +6551,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return createUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).block();
+    public SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
+        return createUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters)
+            .block();
     }
 
     /**
@@ -4398,8 +6584,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB storedProcedure.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
-        return createUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context).block();
+    public SqlStoredProcedureGetResultsInner createUpdateSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters,
+        Context context) {
+        return createUpdateSqlStoredProcedureAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                createUpdateSqlStoredProcedureParameters,
+                context)
+            .block();
     }
 
     /**
@@ -4416,15 +6617,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedureWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4436,9 +6649,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (storedProcedureName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
-        return FluxUtil.withContext(context -> service.deleteSqlStoredProcedure(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.getApiVersion(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlStoredProcedure(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            storedProcedureName,
+                            this.client.getApiVersion(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4457,15 +6684,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedureWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlStoredProcedureWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4477,10 +6717,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (storedProcedureName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter storedProcedureName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.deleteSqlStoredProcedure(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, storedProcedureName, this.client.getApiVersion(), context);
+        return service
+            .deleteSqlStoredProcedure(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                storedProcedureName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
@@ -4497,9 +6748,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlStoredProcedureWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlStoredProcedureWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -4517,10 +6778,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlStoredProcedureWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlStoredProcedureWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -4537,8 +6808,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        return this
+            .beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+            .getSyncPoller();
     }
 
     /**
@@ -4556,8 +6835,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
+        return this
+            .beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4574,8 +6862,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+    public Mono<Void> deleteSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        return beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4595,8 +6889,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlStoredProcedureAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        return beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
+    private Mono<Void> deleteSqlStoredProcedureAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
+        return beginDeleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4614,8 +6915,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName) {
-        deleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName).block();
+    public void deleteSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName) {
+        deleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName)
+            .block();
     }
 
     /**
@@ -4632,8 +6939,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        deleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context).block();
+    public void deleteSqlStoredProcedure(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String storedProcedureName,
+        Context context) {
+        deleteSqlStoredProcedureAsync(
+                resourceGroupName, accountName, databaseName, containerName, storedProcedureName, context)
+            .block();
     }
 
     /**
@@ -4646,18 +6961,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlUserDefinedFunctionGetResultsInner>> listSqlUserDefinedFunctionsSinglePageAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    private Mono<PagedResponse<SqlUserDefinedFunctionGetResultsInner>> listSqlUserDefinedFunctionsSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4669,14 +6993,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlUserDefinedFunctions(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlUserDefinedFunctionGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlUserDefinedFunctions(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlUserDefinedFunctionGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4691,18 +7025,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlUserDefinedFunctionGetResultsInner>> listSqlUserDefinedFunctionsSinglePageAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<PagedResponse<SqlUserDefinedFunctionGetResultsInner>> listSqlUserDefinedFunctionsSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4715,14 +7058,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlUserDefinedFunctions(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlUserDefinedFunctions(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -4735,12 +7085,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctionsAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public PagedFlux<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctionsAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return new PagedFlux<>(
-            () -> listSqlUserDefinedFunctionsSinglePageAsync(resourceGroupName, accountName, databaseName, containerName));
+            () ->
+                listSqlUserDefinedFunctionsSinglePageAsync(
+                    resourceGroupName, accountName, databaseName, containerName));
     }
 
     /**
@@ -4754,12 +7108,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctionsAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private PagedFlux<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctionsAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         return new PagedFlux<>(
-            () -> listSqlUserDefinedFunctionsSinglePageAsync(resourceGroupName, accountName, databaseName, containerName, context));
+            () ->
+                listSqlUserDefinedFunctionsSinglePageAsync(
+                    resourceGroupName, accountName, databaseName, containerName, context));
     }
 
     /**
@@ -4772,11 +7130,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(String resourceGroupName, String accountName, String databaseName, String containerName) {
-        return new PagedIterable<>(listSqlUserDefinedFunctionsAsync(resourceGroupName, accountName, databaseName, containerName));
+    public PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        return new PagedIterable<>(
+            listSqlUserDefinedFunctionsAsync(resourceGroupName, accountName, databaseName, containerName));
     }
 
     /**
@@ -4790,11 +7151,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the userDefinedFunctions and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return new PagedIterable<>(listSqlUserDefinedFunctionsAsync(resourceGroupName, accountName, databaseName, containerName, context));
+    public PagedIterable<SqlUserDefinedFunctionGetResultsInner> listSqlUserDefinedFunctions(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return new PagedIterable<>(
+            listSqlUserDefinedFunctionsAsync(resourceGroupName, accountName, databaseName, containerName, context));
     }
 
     /**
@@ -4808,18 +7172,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
+    public Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunctionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4831,10 +7208,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (userDefinedFunctionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlUserDefinedFunction(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlUserDefinedFunction(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            userDefinedFunctionName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4850,18 +7243,32 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
+    private Mono<Response<SqlUserDefinedFunctionGetResultsInner>> getSqlUserDefinedFunctionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4873,11 +7280,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (userDefinedFunctionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlUserDefinedFunction(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlUserDefinedFunction(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -4891,11 +7311,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return getSqlUserDefinedFunctionWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
+    public Mono<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        return getSqlUserDefinedFunctionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -4911,11 +7338,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link Response}.
+     * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
-        return getSqlUserDefinedFunctionWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context).block();
+    public Response<SqlUserDefinedFunctionGetResultsInner> getSqlUserDefinedFunctionWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
+        return getSqlUserDefinedFunctionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
+            .block();
     }
 
     /**
@@ -4932,8 +7368,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlUserDefinedFunctionGetResultsInner getSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return getSqlUserDefinedFunctionWithResponse(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, Context.NONE).getValue();
+    public SqlUserDefinedFunctionGetResultsInner getSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        return getSqlUserDefinedFunctionWithResponse(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -4944,22 +7387,37 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB userDefinedFunction along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunctionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -4971,15 +7429,35 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (userDefinedFunctionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         if (createUpdateSqlUserDefinedFunctionParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlUserDefinedFunctionParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlUserDefinedFunctionParameters is required and cannot be null."));
         } else {
             createUpdateSqlUserDefinedFunctionParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlUserDefinedFunction(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, this.client.getApiVersion(), createUpdateSqlUserDefinedFunctionParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlUserDefinedFunction(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            userDefinedFunctionName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlUserDefinedFunctionParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4991,23 +7469,39 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB userDefinedFunction along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB userDefinedFunction along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlUserDefinedFunctionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5019,16 +7513,33 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (userDefinedFunctionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         if (createUpdateSqlUserDefinedFunctionParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlUserDefinedFunctionParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlUserDefinedFunctionParameters is required and cannot be null."));
         } else {
             createUpdateSqlUserDefinedFunctionParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlUserDefinedFunction(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, this.client.getApiVersion(), createUpdateSqlUserDefinedFunctionParameters, accept, context);
+        return service
+            .createUpdateSqlUserDefinedFunction(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                this.client.getApiVersion(),
+                createUpdateSqlUserDefinedFunctionParameters,
+                accept,
+                context);
     }
 
     /**
@@ -5039,16 +7550,38 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlUserDefinedFunctionWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters);
-        return this.client.<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlUserDefinedFunctionGetResultsInner.class, SqlUserDefinedFunctionGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
+        beginCreateUpdateSqlUserDefinedFunctionAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String userDefinedFunctionName,
+            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlUserDefinedFunctionWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters);
+        return this
+            .client
+            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlUserDefinedFunctionGetResultsInner.class,
+                SqlUserDefinedFunctionGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -5059,7 +7592,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5067,10 +7601,33 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
+    private PollerFlux<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
+        beginCreateUpdateSqlUserDefinedFunctionAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String userDefinedFunctionName,
+            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlUserDefinedFunctionWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context);
-        return this.client.<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlUserDefinedFunctionGetResultsInner.class, SqlUserDefinedFunctionGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlUserDefinedFunctionWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters,
+                context);
+        return this
+            .client
+            .<SqlUserDefinedFunctionGetResultsInner, SqlUserDefinedFunctionGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlUserDefinedFunctionGetResultsInner.class,
+                SqlUserDefinedFunctionGetResultsInner.class,
+                context);
     }
 
     /**
@@ -5081,15 +7638,31 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
+        beginCreateUpdateSqlUserDefinedFunction(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String userDefinedFunctionName,
+            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -5100,7 +7673,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5108,8 +7682,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner> beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlUserDefinedFunctionGetResultsInner>, SqlUserDefinedFunctionGetResultsInner>
+        beginCreateUpdateSqlUserDefinedFunction(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String userDefinedFunctionName,
+            SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -5120,15 +7711,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlUserDefinedFunctionGetResultsInner> createUpdateSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters)
+    public Mono<SqlUserDefinedFunctionGetResultsInner> createUpdateSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
+        return beginCreateUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -5141,7 +7745,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5149,8 +7754,22 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB userDefinedFunction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlUserDefinedFunctionGetResultsInner> createUpdateSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
-        return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
+    private Mono<SqlUserDefinedFunctionGetResultsInner> createUpdateSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+        Context context) {
+        return beginCreateUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -5163,15 +7782,29 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return createUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).block();
+    public SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
+        return createUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters)
+            .block();
     }
 
     /**
@@ -5182,7 +7815,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @param databaseName Cosmos DB database name.
      * @param containerName Cosmos DB container name.
      * @param userDefinedFunctionName Cosmos DB userDefinedFunction name.
-     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL userDefinedFunction.
+     * @param createUpdateSqlUserDefinedFunctionParameters The parameters to provide for the current SQL
+     *     userDefinedFunction.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5190,8 +7824,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB userDefinedFunction.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
-        return createUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context).block();
+    public SqlUserDefinedFunctionGetResultsInner createUpdateSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
+        Context context) {
+        return createUpdateSqlUserDefinedFunctionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                createUpdateSqlUserDefinedFunctionParameters,
+                context)
+            .block();
     }
 
     /**
@@ -5208,15 +7857,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunctionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5228,9 +7889,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (userDefinedFunctionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
-        return FluxUtil.withContext(context -> service.deleteSqlUserDefinedFunction(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, this.client.getApiVersion(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlUserDefinedFunction(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            userDefinedFunctionName,
+                            this.client.getApiVersion(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5249,15 +7925,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunctionWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlUserDefinedFunctionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5269,10 +7958,22 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         if (userDefinedFunctionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter userDefinedFunctionName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.deleteSqlUserDefinedFunction(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, this.client.getApiVersion(), context);
+        return service
+            .deleteSqlUserDefinedFunction(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                userDefinedFunctionName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
@@ -5289,9 +7990,19 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlUserDefinedFunctionWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlUserDefinedFunctionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -5309,10 +8020,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlUserDefinedFunctionWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlUserDefinedFunctionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -5329,8 +8050,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
+            .getSyncPoller();
     }
 
     /**
@@ -5348,8 +8077,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5366,8 +8104,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
+    public Mono<Void> deleteSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        return beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -5387,8 +8131,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlUserDefinedFunctionAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
-        return beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
+    private Mono<Void> deleteSqlUserDefinedFunctionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
+        return beginDeleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -5406,8 +8157,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        deleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName).block();
+    public void deleteSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName) {
+        deleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName)
+            .block();
     }
 
     /**
@@ -5424,8 +8182,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName, String containerName, String userDefinedFunctionName, Context context) {
-        deleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context).block();
+    public void deleteSqlUserDefinedFunction(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String userDefinedFunctionName,
+        Context context) {
+        deleteSqlUserDefinedFunctionAsync(
+                resourceGroupName, accountName, databaseName, containerName, userDefinedFunctionName, context)
+            .block();
     }
 
     /**
@@ -5438,18 +8204,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the triggers and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlTriggerGetResultsInner>> listSqlTriggersSinglePageAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    private Mono<PagedResponse<SqlTriggerGetResultsInner>> listSqlTriggersSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5461,14 +8236,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlTriggers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlTriggerGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlTriggers(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlTriggerGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5483,18 +8268,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the triggers and their properties along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlTriggerGetResultsInner>> listSqlTriggersSinglePageAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private Mono<PagedResponse<SqlTriggerGetResultsInner>> listSqlTriggersSinglePageAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5507,14 +8301,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlTriggers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlTriggers(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -5527,10 +8328,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlTriggerGetResultsInner> listSqlTriggersAsync(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public PagedFlux<SqlTriggerGetResultsInner> listSqlTriggersAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return new PagedFlux<>(
             () -> listSqlTriggersSinglePageAsync(resourceGroupName, accountName, databaseName, containerName));
     }
@@ -5546,10 +8349,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlTriggerGetResultsInner> listSqlTriggersAsync(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+    private PagedFlux<SqlTriggerGetResultsInner> listSqlTriggersAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
         return new PagedFlux<>(
             () -> listSqlTriggersSinglePageAsync(resourceGroupName, accountName, databaseName, containerName, context));
     }
@@ -5564,10 +8369,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(String resourceGroupName, String accountName, String databaseName, String containerName) {
+    public PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
         return new PagedIterable<>(listSqlTriggersAsync(resourceGroupName, accountName, databaseName, containerName));
     }
 
@@ -5582,11 +8389,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the triggers and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains the triggers and their properties as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        return new PagedIterable<>(listSqlTriggersAsync(resourceGroupName, accountName, databaseName, containerName, context));
+    public PagedIterable<SqlTriggerGetResultsInner> listSqlTriggers(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        return new PagedIterable<>(
+            listSqlTriggersAsync(resourceGroupName, accountName, databaseName, containerName, context));
     }
 
     /**
@@ -5600,18 +8410,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlTriggerGetResultsInner>> getSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+    public Mono<Response<SqlTriggerGetResultsInner>> getSqlTriggerWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5626,7 +8445,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlTrigger(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, triggerName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlTrigger(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            triggerName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5642,18 +8475,32 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlTriggerGetResultsInner>> getSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
+    private Mono<Response<SqlTriggerGetResultsInner>> getSqlTriggerWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5669,7 +8516,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlTrigger(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, triggerName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlTrigger(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -5683,10 +8541,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL trigger under an existing Azure Cosmos DB database account on successful completion of {@link Mono}.
+     * @return the SQL trigger under an existing Azure Cosmos DB database account on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlTriggerGetResultsInner> getSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+    public Mono<SqlTriggerGetResultsInner> getSqlTriggerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         return getSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -5706,8 +8566,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL trigger under an existing Azure Cosmos DB database account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlTriggerGetResultsInner> getSqlTriggerWithResponse(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
-        return getSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context).block();
+    public Response<SqlTriggerGetResultsInner> getSqlTriggerWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
+        return getSqlTriggerWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
+            .block();
     }
 
     /**
@@ -5724,8 +8592,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the SQL trigger under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlTriggerGetResultsInner getSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        return getSqlTriggerWithResponse(resourceGroupName, accountName, databaseName, containerName, triggerName, Context.NONE).getValue();
+    public SqlTriggerGetResultsInner getSqlTrigger(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+        return getSqlTriggerWithResponse(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -5743,15 +8614,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTriggerWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5766,12 +8650,30 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         if (createUpdateSqlTriggerParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlTriggerParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlTriggerParameters is required and cannot be null."));
         } else {
             createUpdateSqlTriggerParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlTrigger(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, triggerName, this.client.getApiVersion(), createUpdateSqlTriggerParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlTrigger(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            triggerName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlTriggerParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5791,15 +8693,29 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlTriggerWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -5814,13 +8730,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         if (createUpdateSqlTriggerParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlTriggerParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlTriggerParameters is required and cannot be null."));
         } else {
             createUpdateSqlTriggerParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlTrigger(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, triggerName, this.client.getApiVersion(), createUpdateSqlTriggerParameters, accept, context);
+        return service
+            .createUpdateSqlTrigger(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                this.client.getApiVersion(),
+                createUpdateSqlTriggerParameters,
+                accept,
+                context);
     }
 
     /**
@@ -5838,9 +8769,30 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters);
-        return this.client.<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlTriggerGetResultsInner.class, SqlTriggerGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner>
+        beginCreateUpdateSqlTriggerAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String triggerName,
+            SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlTriggerWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters);
+        return this
+            .client
+            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlTriggerGetResultsInner.class,
+                SqlTriggerGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -5859,10 +8811,33 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
+    private PollerFlux<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner>
+        beginCreateUpdateSqlTriggerAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            String triggerName,
+            SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters, context);
-        return this.client.<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlTriggerGetResultsInner.class, SqlTriggerGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlTriggerWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters,
+                context);
+        return this
+            .client
+            .<SqlTriggerGetResultsInner, SqlTriggerGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlTriggerGetResultsInner.class,
+                SqlTriggerGetResultsInner.class,
+                context);
     }
 
     /**
@@ -5880,8 +8855,22 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+        return this
+            .beginCreateUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -5900,8 +8889,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+        Context context) {
+        return this
+            .beginCreateUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -5919,8 +8924,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlTriggerGetResultsInner> createUpdateSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters)
+    public Mono<SqlTriggerGetResultsInner> createUpdateSqlTriggerAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+        return beginCreateUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -5941,8 +8958,22 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB trigger on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlTriggerGetResultsInner> createUpdateSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
-        return beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters, context)
+    private Mono<SqlTriggerGetResultsInner> createUpdateSqlTriggerAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+        Context context) {
+        return beginCreateUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -5962,8 +8993,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlTriggerGetResultsInner createUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return createUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters).block();
+    public SqlTriggerGetResultsInner createUpdateSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
+        return createUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters)
+            .block();
     }
 
     /**
@@ -5982,8 +9026,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlTriggerGetResultsInner createUpdateSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
-        return createUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, createUpdateSqlTriggerParameters, context).block();
+    public SqlTriggerGetResultsInner createUpdateSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters,
+        Context context) {
+        return createUpdateSqlTriggerAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                createUpdateSqlTriggerParameters,
+                context)
+            .block();
     }
 
     /**
@@ -6000,15 +9059,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlTriggerWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -6022,7 +9089,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         if (triggerName == null) {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
-        return FluxUtil.withContext(context -> service.deleteSqlTrigger(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, triggerName, this.client.getApiVersion(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlTrigger(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            triggerName,
+                            this.client.getApiVersion(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6041,15 +9121,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlTriggerWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlTriggerWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -6064,7 +9157,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter triggerName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.deleteSqlTrigger(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, triggerName, this.client.getApiVersion(), context);
+        return service
+            .deleteSqlTrigger(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                triggerName,
+                this.client.getApiVersion(),
+                context);
     }
 
     /**
@@ -6081,9 +9184,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -6101,10 +9209,20 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlTriggerAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlTriggerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlTriggerWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -6121,8 +9239,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
-        return this.beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+        return this
+            .beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
+            .getSyncPoller();
     }
 
     /**
@@ -6140,8 +9261,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
-        return this.beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
+        return this
+            .beginDeleteSqlTriggerAsync(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6158,7 +9288,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+    public Mono<Void> deleteSqlTriggerAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -6179,8 +9310,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
-        return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context)
+    private Mono<Void> deleteSqlTriggerAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
+        return beginDeleteSqlTriggerAsync(
+                resourceGroupName, accountName, databaseName, containerName, triggerName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -6198,7 +9336,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
+    public void deleteSqlTrigger(
+        String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName) {
         deleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName).block();
     }
 
@@ -6216,8 +9355,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlTrigger(String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName, Context context) {
-        deleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context).block();
+    public void deleteSqlTrigger(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        String triggerName,
+        Context context) {
+        deleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName, context)
+            .block();
     }
 
     /**
@@ -6229,27 +9375,49 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+    public Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleDefinitionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlRoleDefinition(this.client.getEndpoint(), roleDefinitionId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlRoleDefinition(
+                            this.client.getEndpoint(),
+                            roleDefinitionId,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6263,28 +9431,47 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<SqlRoleDefinitionGetResultsInner>> getSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleDefinitionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlRoleDefinition(this.client.getEndpoint(), roleDefinitionId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlRoleDefinition(
+                this.client.getEndpoint(),
+                roleDefinitionId,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -6299,7 +9486,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+    public Mono<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
         return getSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -6317,7 +9505,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+    public Response<SqlRoleDefinitionGetResultsInner> getSqlRoleDefinitionWithResponse(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         return getSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, context).block();
     }
 
@@ -6333,8 +9522,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName) {
-        return getSqlRoleDefinitionWithResponse(roleDefinitionId, resourceGroupName, accountName, Context.NONE).getValue();
+    public SqlRoleDefinitionGetResultsInner getSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
+        return getSqlRoleDefinitionWithResponse(roleDefinitionId, resourceGroupName, accountName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -6347,32 +9538,61 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleDefinitionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (createUpdateSqlRoleDefinitionParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlRoleDefinitionParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlRoleDefinitionParameters is required and cannot be null."));
         } else {
             createUpdateSqlRoleDefinitionParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlRoleDefinition(this.client.getEndpoint(), roleDefinitionId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), createUpdateSqlRoleDefinitionParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlRoleDefinition(
+                            this.client.getEndpoint(),
+                            roleDefinitionId,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlRoleDefinitionParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6387,33 +9607,60 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link Mono}.
+     * @return an Azure Cosmos DB SQL Role Definition along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleDefinitionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (createUpdateSqlRoleDefinitionParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlRoleDefinitionParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlRoleDefinitionParameters is required and cannot be null."));
         } else {
             createUpdateSqlRoleDefinitionParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlRoleDefinition(this.client.getEndpoint(), roleDefinitionId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), createUpdateSqlRoleDefinitionParameters, accept, context);
+        return service
+            .createUpdateSqlRoleDefinition(
+                this.client.getEndpoint(),
+                roleDefinitionId,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                createUpdateSqlRoleDefinitionParameters,
+                accept,
+                context);
     }
 
     /**
@@ -6429,9 +9676,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters);
-        return this.client.<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlRoleDefinitionGetResultsInner.class, SqlRoleDefinitionGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinitionAsync(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlRoleDefinitionWithResponseAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters);
+        return this
+            .client
+            .<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlRoleDefinitionGetResultsInner.class,
+                SqlRoleDefinitionGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -6448,10 +9709,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
+    private PollerFlux<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinitionAsync(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context);
-        return this.client.<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlRoleDefinitionGetResultsInner.class, SqlRoleDefinitionGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlRoleDefinitionWithResponseAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context);
+        return this
+            .client
+            .<SqlRoleDefinitionGetResultsInner, SqlRoleDefinitionGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlRoleDefinitionGetResultsInner.class,
+                SqlRoleDefinitionGetResultsInner.class,
+                context);
     }
 
     /**
@@ -6467,8 +9743,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinition(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -6485,8 +9769,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner> beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
+        beginCreateUpdateSqlRoleDefinition(
+            String roleDefinitionId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6502,8 +9795,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters)
+    public Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return beginCreateUpdateSqlRoleDefinitionAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -6522,8 +9820,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context)
+    private Mono<SqlRoleDefinitionGetResultsInner> createUpdateSqlRoleDefinitionAsync(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+        Context context) {
+        return beginCreateUpdateSqlRoleDefinitionAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -6541,8 +9845,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return createUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters).block();
+    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
+        return createUpdateSqlRoleDefinitionAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters)
+            .block();
     }
 
     /**
@@ -6559,8 +9869,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB SQL Role Definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return createUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context).block();
+    public SqlRoleDefinitionGetResultsInner createUpdateSqlRoleDefinition(
+        String roleDefinitionId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters,
+        Context context) {
+        return createUpdateSqlRoleDefinitionAsync(
+                roleDefinitionId, resourceGroupName, accountName, createUpdateSqlRoleDefinitionParameters, context)
+            .block();
     }
 
     /**
@@ -6575,24 +9892,45 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleDefinitionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSqlRoleDefinition(this.client.getEndpoint(), roleDefinitionId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlRoleDefinition(
+                            this.client.getEndpoint(),
+                            roleDefinitionId,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6609,25 +9947,43 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleDefinitionWithResponseAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleDefinitionId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteSqlRoleDefinition(this.client.getEndpoint(), roleDefinitionId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context);
+        return service
+            .deleteSqlRoleDefinition(
+                this.client.getEndpoint(),
+                roleDefinitionId,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -6642,9 +9998,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -6660,10 +10021,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlRoleDefinitionWithResponseAsync(roleDefinitionId, resourceGroupName, accountName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -6678,7 +10043,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName) {
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
         return this.beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName).getSyncPoller();
     }
 
@@ -6695,8 +10061,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
-        return this.beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+        return this
+            .beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -6711,7 +10080,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName) {
+    public Mono<Void> deleteSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName) {
         return beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -6730,7 +10100,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlRoleDefinitionAsync(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+    private Mono<Void> deleteSqlRoleDefinitionAsync(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         return beginDeleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -6763,7 +10134,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
+    public void deleteSqlRoleDefinition(
+        String roleDefinitionId, String resourceGroupName, String accountName, Context context) {
         deleteSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName, context).block();
     }
 
@@ -6778,28 +10150,44 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsSinglePageAsync(String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsSinglePageAsync(
+        String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlRoleDefinitions(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlRoleDefinitionGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlRoleDefinitions(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlRoleDefinitionGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6815,29 +10203,42 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Definitions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsSinglePageAsync(String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<SqlRoleDefinitionGetResultsInner>> listSqlRoleDefinitionsSinglePageAsync(
+        String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlRoleDefinitions(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlRoleDefinitions(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -6851,9 +10252,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listSqlRoleDefinitionsSinglePageAsync(resourceGroupName, accountName));
+    public PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(
+        String resourceGroupName, String accountName) {
+        return new PagedFlux<>(() -> listSqlRoleDefinitionsSinglePageAsync(resourceGroupName, accountName));
     }
 
     /**
@@ -6868,9 +10269,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listSqlRoleDefinitionsSinglePageAsync(resourceGroupName, accountName, context));
+    private PagedFlux<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitionsAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listSqlRoleDefinitionsSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
@@ -6884,7 +10285,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(String resourceGroupName, String accountName) {
+    public PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(
+        String resourceGroupName, String accountName) {
         return new PagedIterable<>(listSqlRoleDefinitionsAsync(resourceGroupName, accountName));
     }
 
@@ -6900,7 +10302,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Definitions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<SqlRoleDefinitionGetResultsInner> listSqlRoleDefinitions(
+        String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listSqlRoleDefinitionsAsync(resourceGroupName, accountName, context));
     }
 
@@ -6916,24 +10319,45 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+    public Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleAssignmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSqlRoleAssignment(this.client.getEndpoint(), roleAssignmentId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getSqlRoleAssignment(
+                            this.client.getEndpoint(),
+                            roleAssignmentId,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6950,25 +10374,43 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<SqlRoleAssignmentGetResultsInner>> getSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleAssignmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getSqlRoleAssignment(this.client.getEndpoint(), roleAssignmentId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context);
+        return service
+            .getSqlRoleAssignment(
+                this.client.getEndpoint(),
+                roleAssignmentId,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -6983,7 +10425,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+    public Mono<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
         return getSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -7001,7 +10444,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+    public Response<SqlRoleAssignmentGetResultsInner> getSqlRoleAssignmentWithResponse(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         return getSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, context).block();
     }
 
@@ -7017,8 +10461,10 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName) {
-        return getSqlRoleAssignmentWithResponse(roleAssignmentId, resourceGroupName, accountName, Context.NONE).getValue();
+    public SqlRoleAssignmentGetResultsInner getSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
+        return getSqlRoleAssignmentWithResponse(roleAssignmentId, resourceGroupName, accountName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -7034,29 +10480,57 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleAssignmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (createUpdateSqlRoleAssignmentParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlRoleAssignmentParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlRoleAssignmentParameters is required and cannot be null."));
         } else {
             createUpdateSqlRoleAssignmentParameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createUpdateSqlRoleAssignment(this.client.getEndpoint(), roleAssignmentId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), createUpdateSqlRoleAssignmentParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createUpdateSqlRoleAssignment(
+                            this.client.getEndpoint(),
+                            roleAssignmentId,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            createUpdateSqlRoleAssignmentParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7074,30 +10548,56 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleAssignmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (createUpdateSqlRoleAssignmentParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter createUpdateSqlRoleAssignmentParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateSqlRoleAssignmentParameters is required and cannot be null."));
         } else {
             createUpdateSqlRoleAssignmentParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createUpdateSqlRoleAssignment(this.client.getEndpoint(), roleAssignmentId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), createUpdateSqlRoleAssignmentParameters, accept, context);
+        return service
+            .createUpdateSqlRoleAssignment(
+                this.client.getEndpoint(),
+                roleAssignmentId,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                createUpdateSqlRoleAssignmentParameters,
+                accept,
+                context);
     }
 
     /**
@@ -7113,9 +10613,23 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters);
-        return this.client.<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlRoleAssignmentGetResultsInner.class, SqlRoleAssignmentGetResultsInner.class, this.client.getContext());
+    public PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignmentAsync(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlRoleAssignmentWithResponseAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters);
+        return this
+            .client
+            .<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlRoleAssignmentGetResultsInner.class,
+                SqlRoleAssignmentGetResultsInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -7132,10 +10646,25 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
+    private PollerFlux<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignmentAsync(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context);
-        return this.client.<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResultsInner>getLroResult(mono, this.client.getHttpPipeline(), SqlRoleAssignmentGetResultsInner.class, SqlRoleAssignmentGetResultsInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateSqlRoleAssignmentWithResponseAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context);
+        return this
+            .client
+            .<SqlRoleAssignmentGetResultsInner, SqlRoleAssignmentGetResultsInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SqlRoleAssignmentGetResultsInner.class,
+                SqlRoleAssignmentGetResultsInner.class,
+                context);
     }
 
     /**
@@ -7151,8 +10680,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters).getSyncPoller();
+    public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignment(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -7169,8 +10706,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner> beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context).getSyncPoller();
+    public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
+        beginCreateUpdateSqlRoleAssignment(
+            String roleAssignmentId,
+            String resourceGroupName,
+            String accountName,
+            SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -7186,8 +10732,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters)
+    public Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return beginCreateUpdateSqlRoleAssignmentAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -7206,8 +10757,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context)
+    private Mono<SqlRoleAssignmentGetResultsInner> createUpdateSqlRoleAssignmentAsync(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+        Context context) {
+        return beginCreateUpdateSqlRoleAssignmentAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -7225,8 +10782,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return createUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters).block();
+    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
+        return createUpdateSqlRoleAssignmentAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters)
+            .block();
     }
 
     /**
@@ -7243,8 +10806,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return an Azure Cosmos DB Role Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return createUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context).block();
+    public SqlRoleAssignmentGetResultsInner createUpdateSqlRoleAssignment(
+        String roleAssignmentId,
+        String resourceGroupName,
+        String accountName,
+        SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters,
+        Context context) {
+        return createUpdateSqlRoleAssignmentAsync(
+                roleAssignmentId, resourceGroupName, accountName, createUpdateSqlRoleAssignmentParameters, context)
+            .block();
     }
 
     /**
@@ -7259,24 +10829,45 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleAssignmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSqlRoleAssignment(this.client.getEndpoint(), roleAssignmentId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteSqlRoleAssignment(
+                            this.client.getEndpoint(),
+                            roleAssignmentId,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7293,25 +10884,43 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlRoleAssignmentWithResponseAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (roleAssignmentId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteSqlRoleAssignment(this.client.getEndpoint(), roleAssignmentId, this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context);
+        return service
+            .deleteSqlRoleAssignment(
+                this.client.getEndpoint(),
+                roleAssignmentId,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context);
     }
 
     /**
@@ -7326,9 +10935,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -7344,10 +10958,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteSqlRoleAssignmentWithResponseAsync(roleAssignmentId, resourceGroupName, accountName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
@@ -7362,7 +10980,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName) {
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
         return this.beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName).getSyncPoller();
     }
 
@@ -7379,8 +10998,11 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
-        return this.beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+        return this
+            .beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -7395,7 +11017,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName) {
+    public Mono<Void> deleteSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName) {
         return beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -7414,7 +11037,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlRoleAssignmentAsync(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+    private Mono<Void> deleteSqlRoleAssignmentAsync(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         return beginDeleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -7447,7 +11071,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
+    public void deleteSqlRoleAssignment(
+        String roleAssignmentId, String resourceGroupName, String accountName, Context context) {
         deleteSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName, context).block();
     }
 
@@ -7462,28 +11087,44 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsSinglePageAsync(String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsSinglePageAsync(
+        String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listSqlRoleAssignments(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlRoleAssignmentGetResultsInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSqlRoleAssignments(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<SqlRoleAssignmentGetResultsInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7499,29 +11140,42 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Assignments along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsSinglePageAsync(String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<SqlRoleAssignmentGetResultsInner>> listSqlRoleAssignmentsSinglePageAsync(
+        String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listSqlRoleAssignments(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listSqlRoleAssignments(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
@@ -7535,9 +11189,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listSqlRoleAssignmentsSinglePageAsync(resourceGroupName, accountName));
+    public PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(
+        String resourceGroupName, String accountName) {
+        return new PagedFlux<>(() -> listSqlRoleAssignmentsSinglePageAsync(resourceGroupName, accountName));
     }
 
     /**
@@ -7552,9 +11206,9 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listSqlRoleAssignmentsSinglePageAsync(resourceGroupName, accountName, context));
+    private PagedFlux<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignmentsAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listSqlRoleAssignmentsSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
@@ -7568,7 +11222,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(String resourceGroupName, String accountName) {
+    public PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
+        String resourceGroupName, String accountName) {
         return new PagedIterable<>(listSqlRoleAssignmentsAsync(resourceGroupName, accountName));
     }
 
@@ -7584,7 +11239,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the relevant Role Assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<SqlRoleAssignmentGetResultsInner> listSqlRoleAssignments(
+        String resourceGroupName, String accountName, Context context) {
         return new PagedIterable<>(listSqlRoleAssignmentsAsync(resourceGroupName, accountName, context));
     }
 
@@ -7602,15 +11258,27 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location) {
+    public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -7627,7 +11295,21 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             location.validate();
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.retrieveContinuousBackupInformation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), location, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .retrieveContinuousBackupInformation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            databaseName,
+                            containerName,
+                            this.client.getApiVersion(),
+                            location,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7646,15 +11328,28 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -7672,7 +11367,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.retrieveContinuousBackupInformation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), location, accept, context);
+        return service
+            .retrieveContinuousBackupInformation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                containerName,
+                this.client.getApiVersion(),
+                location,
+                accept,
+                context);
     }
 
     /**
@@ -7689,9 +11395,24 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location) {
-        Mono<Response<Flux<ByteBuffer>>> mono = retrieveContinuousBackupInformationWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, location);
-        return this.client.<BackupInformationInner, BackupInformationInner>getLroResult(mono, this.client.getHttpPipeline(), BackupInformationInner.class, BackupInformationInner.class, this.client.getContext());
+    public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, location);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -7709,10 +11430,26 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link PollerFlux} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context) {
+    private PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = retrieveContinuousBackupInformationWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, location, context);
-        return this.client.<BackupInformationInner, BackupInformationInner>getLroResult(mono, this.client.getHttpPipeline(), BackupInformationInner.class, BackupInformationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                context);
     }
 
     /**
@@ -7729,8 +11466,17 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName, location).getSyncPoller();
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location) {
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location)
+            .getSyncPoller();
     }
 
     /**
@@ -7748,8 +11494,18 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return the {@link SyncPoller} for polling of backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner> beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName, location, context).getSyncPoller();
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String containerName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context)
+            .getSyncPoller();
     }
 
     /**
@@ -7766,8 +11522,14 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return backup information of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location) {
-        return beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName, location)
+    public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -7787,8 +11549,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return backup information of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context) {
-        return beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName, location, context)
+    private Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -7807,8 +11576,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location) {
-        return retrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName, location).block();
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location) {
+        return retrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location)
+            .block();
     }
 
     /**
@@ -7826,7 +11602,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
      * @return backup information of a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInformationInner retrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName, String containerName, ContinuousBackupRestoreLocation location, Context context) {
-        return retrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName, location, context).block();
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String containerName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return retrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, databaseName, containerName, location, context)
+            .block();
     }
 }

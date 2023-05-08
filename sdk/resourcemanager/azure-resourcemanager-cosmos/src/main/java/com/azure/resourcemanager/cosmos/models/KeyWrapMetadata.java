@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents key wrap metadata that a key wrapping provider can use to wrap/unwrap a client encryption key.
- */
+/** Represents key wrap metadata that a key wrapping provider can use to wrap/unwrap a client encryption key. */
 @Fluent
 public final class KeyWrapMetadata {
     /*
@@ -36,9 +34,7 @@ public final class KeyWrapMetadata {
     @JsonProperty(value = "algorithm")
     private String algorithm;
 
-    /**
-     * Creates an instance of KeyWrapMetadata class.
-     */
+    /** Creates an instance of KeyWrapMetadata class. */
     public KeyWrapMetadata() {
     }
 

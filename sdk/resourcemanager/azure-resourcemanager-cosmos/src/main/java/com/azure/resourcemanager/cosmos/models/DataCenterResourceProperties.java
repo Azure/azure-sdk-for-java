@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of a managed Cassandra data center.
- */
+/** Properties of a managed Cassandra data center. */
 @Fluent
 public final class DataCenterResourceProperties {
     /*
@@ -113,9 +111,7 @@ public final class DataCenterResourceProperties {
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
 
-    /**
-     * Creates an instance of DataCenterResourceProperties class.
-     */
+    /** Creates an instance of DataCenterResourceProperties class. */
     public DataCenterResourceProperties() {
     }
 
@@ -161,9 +157,9 @@ public final class DataCenterResourceProperties {
 
     /**
      * Get the delegatedSubnetId property: Resource id of a subnet the nodes in this data center should have their
-     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and
-     * must be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This
-     * resource id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
+     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and must
+     * be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This resource
+     * id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
      * group&gt;/providers/Microsoft.Network/virtualNetworks/&lt;virtual network&gt;/subnets/&lt;subnet&gt;'.
      *
      * @return the delegatedSubnetId value.
@@ -174,9 +170,9 @@ public final class DataCenterResourceProperties {
 
     /**
      * Set the delegatedSubnetId property: Resource id of a subnet the nodes in this data center should have their
-     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and
-     * must be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This
-     * resource id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
+     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and must
+     * be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This resource
+     * id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
      * group&gt;/providers/Microsoft.Network/virtualNetworks/&lt;virtual network&gt;/subnets/&lt;subnet&gt;'.
      *
      * @param delegatedSubnetId the delegatedSubnetId value to set.
@@ -188,9 +184,9 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Get the nodeCount property: The number of nodes the data center should have. This is the desired number. After
-     * it is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and
-     * their status, use the fetchNodeStatus method on the cluster.
+     * Get the nodeCount property: The number of nodes the data center should have. This is the desired number. After it
+     * is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and their
+     * status, use the fetchNodeStatus method on the cluster.
      *
      * @return the nodeCount value.
      */
@@ -199,9 +195,9 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Set the nodeCount property: The number of nodes the data center should have. This is the desired number. After
-     * it is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and
-     * their status, use the fetchNodeStatus method on the cluster.
+     * Set the nodeCount property: The number of nodes the data center should have. This is the desired number. After it
+     * is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and their
+     * status, use the fetchNodeStatus method on the cluster.
      *
      * @param nodeCount the nodeCount value to set.
      * @return the DataCenterResourceProperties object itself.
@@ -212,9 +208,9 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Get the seedNodes property: IP addresses for seed nodes in this data center. This is for reference. Generally
-     * you will want to use the seedNodes property on the cluster, which aggregates the seed nodes from all data
-     * centers in the cluster.
+     * Get the seedNodes property: IP addresses for seed nodes in this data center. This is for reference. Generally you
+     * will want to use the seedNodes property on the cluster, which aggregates the seed nodes from all data centers in
+     * the cluster.
      *
      * @return the seedNodes value.
      */
@@ -224,8 +220,8 @@ public final class DataCenterResourceProperties {
 
     /**
      * Get the base64EncodedCassandraYamlFragment property: A fragment of a cassandra.yaml configuration file to be
-     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and
-     * only a subset of keys are allowed.
+     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and only
+     * a subset of keys are allowed.
      *
      * @return the base64EncodedCassandraYamlFragment value.
      */
@@ -235,13 +231,14 @@ public final class DataCenterResourceProperties {
 
     /**
      * Set the base64EncodedCassandraYamlFragment property: A fragment of a cassandra.yaml configuration file to be
-     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and
-     * only a subset of keys are allowed.
+     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and only
+     * a subset of keys are allowed.
      *
      * @param base64EncodedCassandraYamlFragment the base64EncodedCassandraYamlFragment value to set.
      * @return the DataCenterResourceProperties object itself.
      */
-    public DataCenterResourceProperties withBase64EncodedCassandraYamlFragment(String base64EncodedCassandraYamlFragment) {
+    public DataCenterResourceProperties withBase64EncodedCassandraYamlFragment(
+        String base64EncodedCassandraYamlFragment) {
         this.base64EncodedCassandraYamlFragment = base64EncodedCassandraYamlFragment;
         return this;
     }
@@ -391,7 +388,8 @@ public final class DataCenterResourceProperties {
      * @param authenticationMethodLdapProperties the authenticationMethodLdapProperties value to set.
      * @return the DataCenterResourceProperties object itself.
      */
-    public DataCenterResourceProperties withAuthenticationMethodLdapProperties(AuthenticationMethodLdapProperties authenticationMethodLdapProperties) {
+    public DataCenterResourceProperties withAuthenticationMethodLdapProperties(
+        AuthenticationMethodLdapProperties authenticationMethodLdapProperties) {
         this.authenticationMethodLdapProperties = authenticationMethodLdapProperties;
         return this;
     }

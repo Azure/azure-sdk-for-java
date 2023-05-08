@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.RoleDefinitionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Azure Cosmos DB SQL Role Definition resource object.
- */
+/** Azure Cosmos DB SQL Role Definition resource object. */
 @Fluent
 public final class SqlRoleDefinitionResource {
     /*
@@ -42,15 +40,12 @@ public final class SqlRoleDefinitionResource {
     @JsonProperty(value = "permissions")
     private List<Permission> permissions;
 
-    /**
-     * Creates an instance of SqlRoleDefinitionResource class.
-     */
+    /** Creates an instance of SqlRoleDefinitionResource class. */
     public SqlRoleDefinitionResource() {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      *
      * @return the roleName value.
      */
@@ -59,8 +54,7 @@ public final class SqlRoleDefinitionResource {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      *
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionResource object itself.

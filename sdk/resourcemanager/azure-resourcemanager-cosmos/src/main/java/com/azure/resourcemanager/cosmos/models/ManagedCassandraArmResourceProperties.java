@@ -9,9 +9,7 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The core properties of ARM resources.
- */
+/** The core properties of ARM resources. */
 @Fluent
 public class ManagedCassandraArmResourceProperties extends Resource {
     /*
@@ -20,9 +18,7 @@ public class ManagedCassandraArmResourceProperties extends Resource {
     @JsonProperty(value = "identity")
     private ManagedCassandraManagedServiceIdentity identity;
 
-    /**
-     * Creates an instance of ManagedCassandraArmResourceProperties class.
-     */
+    /** Creates an instance of ManagedCassandraArmResourceProperties class. */
     public ManagedCassandraArmResourceProperties() {
     }
 
@@ -46,18 +42,14 @@ public class ManagedCassandraArmResourceProperties extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedCassandraArmResourceProperties withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedCassandraArmResourceProperties withTags(Map<String, String> tags) {
         super.withTags(tags);

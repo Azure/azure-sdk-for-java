@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The object that represents all properties related to capacity enforcement on an account.
- */
+/** The object that represents all properties related to capacity enforcement on an account. */
 @Fluent
 public final class Capacity {
     /*
@@ -20,9 +18,7 @@ public final class Capacity {
     @JsonProperty(value = "totalThroughputLimit")
     private Integer totalThroughputLimit;
 
-    /**
-     * Creates an instance of Capacity class.
-     */
+    /** Creates an instance of Capacity class. */
     public Capacity() {
     }
 

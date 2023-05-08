@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoRoleDefinitionGetResu
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The relevant Mongo Role Definitions.
- */
+/** The relevant Mongo Role Definitions. */
 @Immutable
 public final class MongoRoleDefinitionListResult {
     /*
@@ -20,9 +18,7 @@ public final class MongoRoleDefinitionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MongoRoleDefinitionGetResultsInner> value;
 
-    /**
-     * Creates an instance of MongoRoleDefinitionListResult class.
-     */
+    /** Creates an instance of MongoRoleDefinitionListResult class. */
     public MongoRoleDefinitionListResult() {
     }
 

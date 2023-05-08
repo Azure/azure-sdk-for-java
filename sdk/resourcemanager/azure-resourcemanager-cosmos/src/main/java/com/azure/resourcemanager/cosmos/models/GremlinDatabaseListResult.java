@@ -9,9 +9,7 @@ import com.azure.resourcemanager.cosmos.fluent.models.GremlinDatabaseGetResultsI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List operation response, that contains the Gremlin databases and their properties.
- */
+/** The List operation response, that contains the Gremlin databases and their properties. */
 @Immutable
 public final class GremlinDatabaseListResult {
     /*
@@ -20,9 +18,7 @@ public final class GremlinDatabaseListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<GremlinDatabaseGetResultsInner> value;
 
-    /**
-     * Creates an instance of GremlinDatabaseListResult class.
-     */
+    /** Creates an instance of GremlinDatabaseListResult class. */
     public GremlinDatabaseListResult() {
     }
 

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Specific Databases to restore.
- */
+/** Specific Databases to restore. */
 @Fluent
 public final class RestorableSqlResourcesGetResultInner {
     /*
@@ -43,9 +41,7 @@ public final class RestorableSqlResourcesGetResultInner {
     @JsonProperty(value = "collectionNames")
     private List<String> collectionNames;
 
-    /**
-     * Creates an instance of RestorableSqlResourcesGetResultInner class.
-     */
+    /** Creates an instance of RestorableSqlResourcesGetResultInner class. */
     public RestorableSqlResourcesGetResultInner() {
     }
 

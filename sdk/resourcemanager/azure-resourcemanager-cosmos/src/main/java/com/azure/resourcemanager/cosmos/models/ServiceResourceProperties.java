@@ -16,16 +16,20 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Services response resource.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType", defaultImpl = ServiceResourceProperties.class)
+/** Services response resource. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "serviceType",
+    defaultImpl = ServiceResourceProperties.class)
 @JsonTypeName("ServiceResourceProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataTransfer", value = DataTransferServiceResourceProperties.class),
     @JsonSubTypes.Type(name = "SqlDedicatedGateway", value = SqlDedicatedGatewayServiceResourceProperties.class),
     @JsonSubTypes.Type(name = "GraphAPICompute", value = GraphApiComputeServiceResourceProperties.class),
-    @JsonSubTypes.Type(name = "MaterializedViewsBuilder", value = MaterializedViewsBuilderServiceResourceProperties.class)
+    @JsonSubTypes.Type(
+        name = "MaterializedViewsBuilder",
+        value = MaterializedViewsBuilderServiceResourceProperties.class)
 })
 @Fluent
 public class ServiceResourceProperties {
@@ -56,12 +60,9 @@ public class ServiceResourceProperties {
     /*
      * Services response resource.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of ServiceResourceProperties class.
-     */
+    /** Creates an instance of ServiceResourceProperties class. */
     public ServiceResourceProperties() {
     }
 
@@ -145,7 +146,7 @@ public class ServiceResourceProperties {
     }
 
     @JsonAnySetter
-     void withAdditionalProperties(String key, Object value) {
+    void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
             additionalProperties = new HashMap<>();
         }

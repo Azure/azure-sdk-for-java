@@ -11,9 +11,7 @@ import com.azure.resourcemanager.cosmos.models.ManagedCassandraManagedServiceIde
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Representation of a managed Cassandra cluster.
- */
+/** Representation of a managed Cassandra cluster. */
 @Fluent
 public final class ClusterResourceInner extends ManagedCassandraArmResourceProperties {
     /*
@@ -22,9 +20,7 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
     @JsonProperty(value = "properties")
     private ClusterResourceProperties properties;
 
-    /**
-     * Creates an instance of ClusterResourceInner class.
-     */
+    /** Creates an instance of ClusterResourceInner class. */
     public ClusterResourceInner() {
     }
 
@@ -48,27 +44,21 @@ public final class ClusterResourceInner extends ManagedCassandraArmResourcePrope
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ClusterResourceInner withIdentity(ManagedCassandraManagedServiceIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ClusterResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ClusterResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);

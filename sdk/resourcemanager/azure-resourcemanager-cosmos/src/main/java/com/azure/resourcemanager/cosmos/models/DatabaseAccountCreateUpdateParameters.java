@@ -10,9 +10,8 @@ import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountCreateUpdat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
-/**
- * Parameters to create and update Cosmos DB database accounts.
- */
+
+/** Parameters to create and update Cosmos DB database accounts. */
 @Fluent
 public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -33,15 +32,12 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     @JsonProperty(value = "properties", required = true)
     private DatabaseAccountCreateUpdateProperties innerProperties = new DatabaseAccountCreateUpdateProperties();
 
-    /**
-     * Creates an instance of DatabaseAccountCreateUpdateParameters class.
-     */
+    /** Creates an instance of DatabaseAccountCreateUpdateParameters class. */
     public DatabaseAccountCreateUpdateParameters() {
     }
 
     /**
-     * Get the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
      *
      * @return the kind value.
      */
@@ -50,8 +46,7 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Set the kind property: Indicates the type of database account. This can only be set at database account creation.
      *
      * @param kind the kind value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -90,18 +85,14 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DatabaseAccountCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DatabaseAccountCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -219,7 +210,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
      */
-    public DatabaseAccountCreateUpdateParameters withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled) {
+    public DatabaseAccountCreateUpdateParameters withIsVirtualNetworkFilterEnabled(
+        Boolean isVirtualNetworkFilterEnabled) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
@@ -315,7 +307,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
      */
-    public DatabaseAccountCreateUpdateParameters withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
+    public DatabaseAccountCreateUpdateParameters withEnableMultipleWriteLocations(
+        Boolean enableMultipleWriteLocations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
@@ -386,7 +379,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
      */
-    public DatabaseAccountCreateUpdateParameters withDisableKeyBasedMetadataWriteAccess(Boolean disableKeyBasedMetadataWriteAccess) {
+    public DatabaseAccountCreateUpdateParameters withDisableKeyBasedMetadataWriteAccess(
+        Boolean disableKeyBasedMetadataWriteAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
@@ -551,7 +545,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
      */
-    public DatabaseAccountCreateUpdateParameters withAnalyticalStorageConfiguration(AnalyticalStorageConfiguration analyticalStorageConfiguration) {
+    public DatabaseAccountCreateUpdateParameters withAnalyticalStorageConfiguration(
+        AnalyticalStorageConfiguration analyticalStorageConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
@@ -668,7 +663,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
      * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
      */
-    public DatabaseAccountCreateUpdateParameters withNetworkAclBypassResourceIds(List<String> networkAclBypassResourceIds) {
+    public DatabaseAccountCreateUpdateParameters withNetworkAclBypassResourceIds(
+        List<String> networkAclBypassResourceIds) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseAccountCreateUpdateProperties();
         }
@@ -785,8 +781,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
-     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @return the minimalTlsVersion value.
      */
@@ -795,8 +791,8 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except
-     * for Cassandra and Mongo API's, which only work with Tls 1.2.
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
      *
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -821,7 +817,10 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

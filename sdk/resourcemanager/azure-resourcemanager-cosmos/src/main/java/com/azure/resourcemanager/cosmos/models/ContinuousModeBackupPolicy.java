@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The object representing continuous mode backup policy.
- */
+/** The object representing continuous mode backup policy. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Continuous")
 @Fluent
@@ -22,9 +20,7 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
     @JsonProperty(value = "continuousModeProperties")
     private ContinuousModeProperties continuousModeProperties;
 
-    /**
-     * Creates an instance of ContinuousModeBackupPolicy class.
-     */
+    /** Creates an instance of ContinuousModeBackupPolicy class. */
     public ContinuousModeBackupPolicy() {
     }
 
@@ -48,9 +44,7 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ContinuousModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
         super.withMigrationState(migrationState);

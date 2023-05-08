@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlContainerPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An Azure Cosmos DB SQL container event.
- */
+/** An Azure Cosmos DB SQL container event. */
 @Fluent
 public final class RestorableSqlContainerGetResultInner {
     /*
@@ -37,9 +35,7 @@ public final class RestorableSqlContainerGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /**
-     * Creates an instance of RestorableSqlContainerGetResultInner class.
-     */
+    /** Creates an instance of RestorableSqlContainerGetResultInner class. */
     public RestorableSqlContainerGetResultInner() {
     }
 

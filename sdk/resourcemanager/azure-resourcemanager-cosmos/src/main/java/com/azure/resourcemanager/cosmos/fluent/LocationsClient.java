@@ -13,16 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.LocationGetResultInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in LocationsClient.
- */
+/** An instance of this class provides access to all the operations defined in LocationsClient. */
 public interface LocationsClient {
     /**
      * List Cosmos DB locations and their properties.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response with {@link PagedFlux}.
+     * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LocationGetResultInner> listAsync();
@@ -32,7 +31,8 @@ public interface LocationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationGetResultInner> list();
@@ -44,7 +44,8 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response with {@link PagedIterable}.
+     * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationGetResultInner> list(Context context);
@@ -56,7 +57,8 @@ public interface LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an existing Cosmos DB location along with {@link Response} on successful completion of {@link Mono}.
+     * @return the properties of an existing Cosmos DB location along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LocationGetResultInner>> getWithResponseAsync(String location);

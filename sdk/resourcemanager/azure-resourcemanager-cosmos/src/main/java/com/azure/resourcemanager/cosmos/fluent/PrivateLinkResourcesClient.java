@@ -13,9 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.PrivateLinkResourceInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
- */
+/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public interface PrivateLinkResourcesClient {
     /**
      * Gets the private link resources that need to be created for a Cosmos DB account.
@@ -25,7 +23,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cosmos DB account as paginated response with {@link PagedFlux}.
+     * @return the private link resources that need to be created for a Cosmos DB account as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PrivateLinkResourceInner> listByDatabaseAccountAsync(String resourceGroupName, String accountName);
@@ -38,7 +37,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cosmos DB account as paginated response with {@link PagedIterable}.
+     * @return the private link resources that need to be created for a Cosmos DB account as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateLinkResourceInner> listByDatabaseAccount(String resourceGroupName, String accountName);
@@ -52,10 +52,12 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cosmos DB account as paginated response with {@link PagedIterable}.
+     * @return the private link resources that need to be created for a Cosmos DB account as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listByDatabaseAccount(String resourceGroupName, String accountName, Context context);
+    PagedIterable<PrivateLinkResourceInner> listByDatabaseAccount(
+        String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the private link resources that need to be created for a Cosmos DB account.
@@ -66,10 +68,12 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cosmos DB account along with {@link Response} on successful completion of {@link Mono}.
+     * @return the private link resources that need to be created for a Cosmos DB account along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName, String groupName);
+    Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, String groupName);
 
     /**
      * Gets the private link resources that need to be created for a Cosmos DB account.
@@ -80,7 +84,8 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cosmos DB account on successful completion of {@link Mono}.
+     * @return the private link resources that need to be created for a Cosmos DB account on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String accountName, String groupName);
@@ -98,7 +103,8 @@ public interface PrivateLinkResourcesClient {
      * @return the private link resources that need to be created for a Cosmos DB account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String accountName, String groupName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(
+        String resourceGroupName, String accountName, String groupName, Context context);
 
     /**
      * Gets the private link resources that need to be created for a Cosmos DB account.

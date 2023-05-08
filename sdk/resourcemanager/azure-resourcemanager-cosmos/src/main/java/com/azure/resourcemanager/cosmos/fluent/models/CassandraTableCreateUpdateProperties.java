@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to create and update Azure Cosmos DB Cassandra table.
- */
+/** Properties to create and update Azure Cosmos DB Cassandra table. */
 @Fluent
 public final class CassandraTableCreateUpdateProperties {
     /*
@@ -28,9 +26,7 @@ public final class CassandraTableCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /**
-     * Creates an instance of CassandraTableCreateUpdateProperties class.
-     */
+    /** Creates an instance of CassandraTableCreateUpdateProperties class. */
     public CassandraTableCreateUpdateProperties() {
     }
 
@@ -83,7 +79,10 @@ public final class CassandraTableCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing required property resource in model CassandraTableCreateUpdateProperties"));
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model CassandraTableCreateUpdateProperties"));
         } else {
             resource().validate();
         }

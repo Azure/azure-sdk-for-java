@@ -7,9 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Cosmos DB SQL database resource object.
- */
+/** Cosmos DB SQL database resource object. */
 @Fluent
 public final class RestorableSqlDatabasePropertiesResourceDatabase extends SqlDatabaseResource {
     /*
@@ -48,9 +46,7 @@ public final class RestorableSqlDatabasePropertiesResourceDatabase extends SqlDa
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /**
-     * Creates an instance of RestorableSqlDatabasePropertiesResourceDatabase class.
-     */
+    /** Creates an instance of RestorableSqlDatabasePropertiesResourceDatabase class. */
     public RestorableSqlDatabasePropertiesResourceDatabase() {
     }
 
@@ -110,9 +106,7 @@ public final class RestorableSqlDatabasePropertiesResourceDatabase extends SqlDa
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RestorableSqlDatabasePropertiesResourceDatabase withId(String id) {
         super.withId(id);

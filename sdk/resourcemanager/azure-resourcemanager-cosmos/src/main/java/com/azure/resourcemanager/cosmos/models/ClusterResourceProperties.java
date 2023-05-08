@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of a managed Cassandra cluster.
- */
+/** Properties of a managed Cassandra cluster. */
 @Fluent
 public final class ClusterResourceProperties {
     /*
@@ -139,9 +137,7 @@ public final class ClusterResourceProperties {
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
 
-    /**
-     * Creates an instance of ClusterResourceProperties class.
-     */
+    /** Creates an instance of ClusterResourceProperties class. */
     public ClusterResourceProperties() {
     }
 
@@ -166,8 +162,8 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore
-     * a backup into a new cluster, set this field to the resource id of the backup.
+     * Get the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore a
+     * backup into a new cluster, set this field to the resource id of the backup.
      *
      * @return the restoreFromBackupId value.
      */
@@ -176,8 +172,8 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Set the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore
-     * a backup into a new cluster, set this field to the resource id of the backup.
+     * Set the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore a
+     * backup into a new cluster, set this field to the resource id of the backup.
      *
      * @param restoreFromBackupId the restoreFromBackupId value to set.
      * @return the ClusterResourceProperties object itself.
@@ -261,8 +257,8 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the authenticationMethod property: Which authentication method Cassandra should use to authenticate clients.
-     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default
-     * password based authentication. The default is 'Cassandra'.
+     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default password
+     * based authentication. The default is 'Cassandra'.
      *
      * @return the authenticationMethod value.
      */
@@ -272,8 +268,8 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the authenticationMethod property: Which authentication method Cassandra should use to authenticate clients.
-     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default
-     * password based authentication. The default is 'Cassandra'.
+     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default password
+     * based authentication. The default is 'Cassandra'.
      *
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the ClusterResourceProperties object itself.
@@ -353,9 +349,9 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the clientCertificates property: List of TLS certificates used to authorize clients connecting to the
-     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates
-     * is set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can
-     * be validated from one or more of the public certificates in this property.
+     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates is
+     * set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can be
+     * validated from one or more of the public certificates in this property.
      *
      * @return the clientCertificates value.
      */
@@ -365,9 +361,9 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the clientCertificates property: List of TLS certificates used to authorize clients connecting to the
-     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates
-     * is set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can
-     * be validated from one or more of the public certificates in this property.
+     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates is
+     * set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can be
+     * validated from one or more of the public certificates in this property.
      *
      * @param clientCertificates the clientCertificates value to set.
      * @return the ClusterResourceProperties object itself.
@@ -435,8 +431,8 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the seedNodes property: List of IP addresses of seed nodes in the managed data centers. These should be
-     * added to the seed node lists of all unmanaged nodes.
+     * Get the seedNodes property: List of IP addresses of seed nodes in the managed data centers. These should be added
+     * to the seed node lists of all unmanaged nodes.
      *
      * @return the seedNodes value.
      */

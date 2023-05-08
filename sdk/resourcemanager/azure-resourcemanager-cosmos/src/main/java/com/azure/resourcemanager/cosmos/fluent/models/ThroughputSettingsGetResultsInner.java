@@ -10,9 +10,7 @@ import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * An Azure Cosmos DB resource throughput.
- */
+/** An Azure Cosmos DB resource throughput. */
 @Fluent
 public final class ThroughputSettingsGetResultsInner extends ArmResourceProperties {
     /*
@@ -21,9 +19,7 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
     @JsonProperty(value = "properties")
     private ThroughputSettingsGetProperties innerProperties;
 
-    /**
-     * Creates an instance of ThroughputSettingsGetResultsInner class.
-     */
+    /** Creates an instance of ThroughputSettingsGetResultsInner class. */
     public ThroughputSettingsGetResultsInner() {
     }
 
@@ -36,18 +32,14 @@ public final class ThroughputSettingsGetResultsInner extends ArmResourceProperti
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ThroughputSettingsGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ThroughputSettingsGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
