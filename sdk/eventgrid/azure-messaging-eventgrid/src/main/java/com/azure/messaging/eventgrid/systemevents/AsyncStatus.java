@@ -8,16 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AsyncStatus. */
+/** Asynchronous operation status of the operation on the app service plan. */
 public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
-    /** Static value Started for AsyncStatus. */
+    /** Async operation has started. */
     public static final AsyncStatus STARTED = fromString("Started");
 
-    /** Static value Completed for AsyncStatus. */
+    /** Async operation has completed. */
     public static final AsyncStatus COMPLETED = fromString("Completed");
 
-    /** Static value Failed for AsyncStatus. */
+    /** Async operation failed to complete. */
     public static final AsyncStatus FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of AsyncStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AsyncStatus() {}
 
     /**
      * Creates or finds a AsyncStatus from its string representation.

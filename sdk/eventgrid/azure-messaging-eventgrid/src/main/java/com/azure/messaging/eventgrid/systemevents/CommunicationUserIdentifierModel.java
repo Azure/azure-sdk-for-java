@@ -16,6 +16,9 @@ public final class CommunicationUserIdentifierModel {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of CommunicationUserIdentifierModel class. */
+    public CommunicationUserIdentifierModel() {}
+
     /**
      * Get the id property: The Id of the communication user.
      *

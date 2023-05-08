@@ -46,6 +46,9 @@ public final class AcsRecordingChunkInfoProperties {
     @JsonProperty(value = "deleteLocation")
     private String deleteLocation;
 
+    /** Creates an instance of AcsRecordingChunkInfoProperties class. */
+    public AcsRecordingChunkInfoProperties() {}
+
     /**
      * Get the documentId property: The documentId of the recording chunk.
      *
