@@ -73,7 +73,6 @@ public class IterableStream<T> implements Iterable<T> {
 
     private final Flux<T> flux;
     private final Iterable<T> iterable;
-    private final Stream<T> stream;
 
     /**
      * Creates an instance with the given {@link Flux}.
@@ -83,18 +82,6 @@ public class IterableStream<T> implements Iterable<T> {
      */
     public IterableStream(Flux<T> flux) {
         this.flux = Objects.requireNonNull(flux, "'flux' cannot be null.");
-        this.stream = null;
-        this.iterable = null;
-    }
-
-    /**
-     * Creates an instance with the given {@link Stream}.
-     *
-     * @throws NullPointerException If {@code flux} is {@code null}.
-     */
-    public IterableStream(Stream<T> stream) {
-        this.stream = Objects.requireNonNull(stream, "'flux' cannot be null.");
-        this.flux = null;
         this.iterable = null;
     }
 
@@ -106,7 +93,6 @@ public class IterableStream<T> implements Iterable<T> {
      */
     public IterableStream(Iterable<T> iterable) {
         this.iterable = Objects.requireNonNull(iterable, "'iterable' cannot be null.");
-        this.stream = null;
         this.flux = null;
     }
 
@@ -116,11 +102,9 @@ public class IterableStream<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
-        if (flux != null) {
-            return flux.toStream(DEFAULT_BATCH_SIZE);
-        }
-
-        return stream != null ? stream : StreamSupport.stream(iterable.spliterator(), false);
+        return (flux != null)
+            ? flux.toStream(DEFAULT_BATCH_SIZE)
+            : StreamSupport.stream(iterable.spliterator(), false);
     }
 
     /**
@@ -130,11 +114,9 @@ public class IterableStream<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        if (flux != null) {
-            return flux.toIterable(DEFAULT_BATCH_SIZE).iterator();
-        }
-
-        return stream != null ? stream.iterator() : iterable.iterator();
+        return (flux != null)
+            ? flux.toIterable(DEFAULT_BATCH_SIZE).iterator()
+            : iterable.iterator();
     }
 
     /**

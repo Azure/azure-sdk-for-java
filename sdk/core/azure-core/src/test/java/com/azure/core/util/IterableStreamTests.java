@@ -8,14 +8,9 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link IterableStream}.
@@ -58,29 +53,6 @@ public class IterableStreamTests {
     }
 
     /**
-     * Tests that we can stream using a Flux and control if flux is eagerly subscribed to with constructor flag.
-     */
-    @Test
-    public void fluxToStreamToStream() {
-        // Arrange
-        final Set<String> expected = Collections.singleton("foo");
-
-        AtomicBoolean subscribed = new AtomicBoolean();
-        final Flux<String> flux = Flux.fromIterable(expected)
-            .delayElements(Duration.ofMillis(30))
-            .doOnSubscribe(i -> subscribed.set(true));
-
-        final IterableStream<String> iterableStream = new IterableStream<>(flux.toStream(1));
-        assertTrue(subscribed.get());
-
-        // Act
-        final Set<String> actual = iterableStream.stream().collect(Collectors.toSet());
-
-        // Assert
-        assertSets(expected, actual);
-    }
-
-    /**
      * Tests that we can stream over the Flux multiple times. Subscribing on single, to ensure we don't hit an
      * IllegalStateException.
      */
@@ -99,29 +71,6 @@ public class IterableStreamTests {
             sink.complete();
         }).subscribeOn(Schedulers.single());
         final IterableStream<String> iterableStream = new IterableStream<>(flux);
-
-        // Act
-        final Set<String> actual = iterableStream.stream().collect(Collectors.toSet());
-        final Set<String> actual2 = iterableStream.stream().collect(Collectors.toSet());
-
-        // Assert
-        assertSets(expected, actual);
-        assertSets(expected, actual2);
-    }
-
-    /**
-     * Tests that we can stream over the Flux multiple times. Subscribing on single, to ensure we don't hit an
-     * IllegalStateException.
-     */
-    @Test
-    public void streamStreamMultipleTimes() {
-        // Arrange
-        final Set<String> expected = new HashSet<>();
-        expected.add("Something");
-        expected.add("Foo");
-        expected.add("Bar");
-
-        final IterableStream<String> iterableStream = new IterableStream<>(expected.stream());
 
         // Act
         final Set<String> actual = iterableStream.stream().collect(Collectors.toSet());
@@ -155,33 +104,7 @@ public class IterableStreamTests {
         // Act & Assert
         int counter = 0;
         for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
-            counter++;
-        }
-
-        Assertions.assertEquals(expected.size(), counter);
-    }
-
-    /**
-     * Tests that we can get iterator from Flux and control if flux is eagerly subscribed to with constructor flag.
-     */
-    @Test
-    public void fluxToStreamToIterable() {
-        // Arrange
-        final Set<String> expected = Collections.singleton("foo");
-
-        AtomicBoolean subscribed = new AtomicBoolean();
-        final Flux<String> flux = Flux.fromIterable(expected)
-            .delayElements(Duration.ofMillis(30))
-            .doOnSubscribe(i -> subscribed.set(true));
-
-        final IterableStream<String> iterableStream = new IterableStream<>(flux.toStream(1));
-        assertTrue(subscribed.get());
-
-        // Act
-        int counter = 0;
-        for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
+            Assertions.assertTrue(expected.contains(actual));
             counter++;
         }
 
@@ -211,7 +134,7 @@ public class IterableStreamTests {
         // Act & Assert
         int counter = 0;
         for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
+            Assertions.assertTrue(expected.contains(actual));
             counter++;
         }
 
@@ -219,7 +142,7 @@ public class IterableStreamTests {
 
         int counter2 = 0;
         for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
+            Assertions.assertTrue(expected.contains(actual));
             counter2++;
         }
 
@@ -284,7 +207,7 @@ public class IterableStreamTests {
         // Act & Assert
         int counter = 0;
         for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
+            Assertions.assertTrue(expected.contains(actual));
             counter++;
         }
 
@@ -307,7 +230,7 @@ public class IterableStreamTests {
         // Act & Assert
         int counter = 0;
         for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
+            Assertions.assertTrue(expected.contains(actual));
             counter++;
         }
 
@@ -315,7 +238,7 @@ public class IterableStreamTests {
 
         int counter2 = 0;
         for (String actual : iterableStream) {
-            assertTrue(expected.contains(actual));
+            Assertions.assertTrue(expected.contains(actual));
             counter2++;
         }
 
@@ -325,7 +248,7 @@ public class IterableStreamTests {
     private static void assertSets(Set<String> expected, Set<String> actual) {
         Assertions.assertEquals(expected.size(), actual.size());
         for (String str : expected) {
-            assertTrue(actual.contains(str));
+            Assertions.assertTrue(actual.contains(str));
         }
     }
 }
