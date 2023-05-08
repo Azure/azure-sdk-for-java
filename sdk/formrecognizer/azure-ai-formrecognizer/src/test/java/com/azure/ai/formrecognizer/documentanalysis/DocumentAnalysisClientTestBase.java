@@ -431,7 +431,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertEquals("34278587", itemsMap.get("ProductCode").getValueAsString());
         assertNotNull(itemsMap.get("ProductCode").getConfidence());
         Assertions.assertNotNull(analyzeResult.getPages());
-       }
+    }
 
     static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
         assertEquals(2, analyzeResult.getPages().size());
