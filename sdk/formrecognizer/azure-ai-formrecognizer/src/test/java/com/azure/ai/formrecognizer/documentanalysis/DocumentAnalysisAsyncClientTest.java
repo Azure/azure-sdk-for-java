@@ -21,6 +21,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.ResponseError;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
@@ -318,7 +319,6 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("Until file available on github main")
     public void analyzeReceiptFromUrlMultiPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(documentUrl -> {
@@ -1393,9 +1393,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         }, INVOICE_PDF);
     }
 
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/34365")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1419,23 +1419,24 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         });
 
         if (documentClassifierDetails.get() != null) {
+            String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
                 SyncPoller<OperationResult, AnalyzeResult>
                     syncPoller
-                    = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(),
+                    = client.beginClassifyDocument(classifierId,
                         BinaryData.fromStream(data, dataLength))
                     .setPollInterval(durationTestMode).getSyncPoller();
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
-                Assertions.assertTrue(analyzeResult.getContent().contains("This is a xlsx example."));
-                Assertions.assertEquals(2, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(3, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
 
+    @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/34365")
     public void testClassifyAnalyze(HttpClient httpClient,
                                              DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
@@ -1459,6 +1460,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
         });
 
         if (documentClassifierDetails.get() != null) {
+            String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
                 SyncPoller<OperationResult, AnalyzeResult>
                     syncPoller
@@ -1467,7 +1469,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .setPollInterval(durationTestMode).getSyncPoller();
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
-                Assertions.assertEquals(2, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(3, analyzeResult.getDocuments().size());
+                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
