@@ -38,15 +38,6 @@ public final class ContactsImpl implements Contacts {
         return Utils.mapPage(inner, inner1 -> new ContactImpl(inner1, this.manager()));
     }
 
-    public Contact get(String resourceGroupName, String spacecraftName, String contactName) {
-        ContactInner inner = this.serviceClient().get(resourceGroupName, spacecraftName, contactName);
-        if (inner != null) {
-            return new ContactImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Contact> getWithResponse(
         String resourceGroupName, String spacecraftName, String contactName, Context context) {
         Response<ContactInner> inner =
@@ -57,6 +48,15 @@ public final class ContactsImpl implements Contacts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ContactImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Contact get(String resourceGroupName, String spacecraftName, String contactName) {
+        ContactInner inner = this.serviceClient().get(resourceGroupName, spacecraftName, contactName);
+        if (inner != null) {
+            return new ContactImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -110,11 +110,11 @@ public final class SearchError implements JsonSerializable<SearchError> {
                         }
                     }
                     if (messageFound) {
-                        SearchError deserializedValue = new SearchError(message);
-                        deserializedValue.code = code;
-                        deserializedValue.details = details;
+                        SearchError deserializedSearchError = new SearchError(message);
+                        deserializedSearchError.code = code;
+                        deserializedSearchError.details = details;
 
-                        return deserializedValue;
+                        return deserializedSearchError;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!messageFound) {

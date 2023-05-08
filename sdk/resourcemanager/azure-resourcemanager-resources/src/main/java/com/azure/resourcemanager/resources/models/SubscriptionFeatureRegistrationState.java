@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionFeatureRegistrationState. */
+/** The state. */
 public final class SubscriptionFeatureRegistrationState
     extends ExpandableStringEnum<SubscriptionFeatureRegistrationState> {
     /** Static value NotSpecified for SubscriptionFeatureRegistrationState. */
@@ -31,6 +31,15 @@ public final class SubscriptionFeatureRegistrationState
 
     /** Static value Unregistered for SubscriptionFeatureRegistrationState. */
     public static final SubscriptionFeatureRegistrationState UNREGISTERED = fromString("Unregistered");
+
+    /**
+     * Creates a new instance of SubscriptionFeatureRegistrationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SubscriptionFeatureRegistrationState() {
+    }
 
     /**
      * Creates or finds a SubscriptionFeatureRegistrationState from its string representation.

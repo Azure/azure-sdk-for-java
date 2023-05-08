@@ -7,7 +7,9 @@ import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.JobQueue;
 import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.options.UpdateQueueOptions;
-import org.junit.jupiter.api.Test;
+import com.azure.core.http.HttpClient;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,46 +17,43 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JobQueueLiveTests extends JobRouterTestBase {
-    @Override
-    protected void beforeTest() {
-        routerClient = clientSetup(httpPipeline -> new RouterClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
+    private RouterClient routerClient;
 
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
+    private RouterAdministrationClient routerAdminClient;
 
-    @Test
-    public void createQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createQueue(HttpClient httpClient) {
         // Setup
+        routerClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
-        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
 
         // Action
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
-        queuesToDelete.add(queueId);
 
         // Verify
         assertEquals(queueId, jobQueue.getId());
+
+        // Cleanup
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-    @Test
-    public void updateQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateQueue(HttpClient httpClient) {
         // Setup
+        routerClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
-        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
-        queuesToDelete.add(queueId);
 
         Map<String, LabelValue> updatedQueueLabels = new HashMap<String, LabelValue>() {
             {
@@ -67,5 +66,9 @@ public class JobQueueLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(updatedQueueLabels.get("Label_1").getValue(), jobQueue.getLabels().get("Label_1"));
+
+        // Cleanup
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 }

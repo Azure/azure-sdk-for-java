@@ -34,6 +34,9 @@ public final class MediaStreamingConfigurationInternal {
     @JsonProperty(value = "audioChannelType", required = true)
     private MediaStreamingAudioChannelTypeInternal audioChannelType;
 
+    /** Creates an instance of MediaStreamingConfigurationInternal class. */
+    public MediaStreamingConfigurationInternal() {}
+
     /**
      * Get the transportUrl property: Transport URL for media streaming.
      *

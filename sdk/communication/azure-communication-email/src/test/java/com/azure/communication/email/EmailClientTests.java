@@ -36,7 +36,7 @@ public class EmailClientTests extends EmailTestBase {
             .setSubject("test subject")
             .setBodyHtml("<h1>test message</h1>");
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
@@ -55,7 +55,7 @@ public class EmailClientTests extends EmailTestBase {
             .setCcRecipients(RECIPIENT_ADDRESS)
             .setBccRecipients(RECIPIENT_ADDRESS);
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
@@ -79,7 +79,7 @@ public class EmailClientTests extends EmailTestBase {
             .setBodyHtml("<h1>test message</h1>")
             .setAttachments(attachment);
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);

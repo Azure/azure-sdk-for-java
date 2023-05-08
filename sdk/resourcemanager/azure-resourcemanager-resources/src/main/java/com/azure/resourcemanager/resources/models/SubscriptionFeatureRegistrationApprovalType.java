@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionFeatureRegistrationApprovalType. */
+/** The feature approval type. */
 public final class SubscriptionFeatureRegistrationApprovalType
     extends ExpandableStringEnum<SubscriptionFeatureRegistrationApprovalType> {
     /** Static value NotSpecified for SubscriptionFeatureRegistrationApprovalType. */
@@ -19,6 +19,15 @@ public final class SubscriptionFeatureRegistrationApprovalType
 
     /** Static value AutoApproval for SubscriptionFeatureRegistrationApprovalType. */
     public static final SubscriptionFeatureRegistrationApprovalType AUTO_APPROVAL = fromString("AutoApproval");
+
+    /**
+     * Creates a new instance of SubscriptionFeatureRegistrationApprovalType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SubscriptionFeatureRegistrationApprovalType() {
+    }
 
     /**
      * Creates or finds a SubscriptionFeatureRegistrationApprovalType from its string representation.

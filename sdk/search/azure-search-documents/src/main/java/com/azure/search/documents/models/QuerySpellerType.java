@@ -11,10 +11,13 @@ import java.util.Collection;
 
 /** Improve search recall by spell-correcting individual search query terms. */
 public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerType> {
-    /** Static value none for QuerySpellerType. */
+    /** Speller not enabled. */
     public static final QuerySpellerType NONE = fromString("none");
 
-    /** Static value lexicon for QuerySpellerType. */
+    /**
+     * Speller corrects individual query terms using a static lexicon for the language specified by the queryLanguage
+     * parameter.
+     */
     public static final QuerySpellerType LEXICON = fromString("lexicon");
 
     /**

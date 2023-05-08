@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
@@ -29,15 +30,20 @@ public class FaultInjectionServerErrorResultInternal {
     private final Integer times;
     private final Duration delay;
 
+    private final Boolean suppressServiceRequests;
+
+
     public FaultInjectionServerErrorResultInternal(
         FaultInjectionServerErrorType serverErrorTypes,
         Integer times,
-        Duration delay) {
+        Duration delay,
+        Boolean suppressServiceRequests) {
 
         checkArgument(serverErrorTypes != null, "Argument 'serverErrorType' can not be null");
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
+        this.suppressServiceRequests = suppressServiceRequests;
     }
 
     public FaultInjectionServerErrorType getServerErrorType() {
@@ -52,10 +58,15 @@ public class FaultInjectionServerErrorResultInternal {
         return delay;
     }
 
+    public Boolean getSuppressServiceRequests() {
+        return this.suppressServiceRequests;
+    }
+
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;
     }
 
+    // IMPORTANT: Please keep the behavior be consistent with RequestManager
     public CosmosException getInjectedServerError(RxDocumentServiceRequest request) {
 
         CosmosException cosmosException;
@@ -65,7 +76,7 @@ public class FaultInjectionServerErrorResultInternal {
 
         switch (this.serverErrorType) {
             case GONE:
-                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone));
+                GoneException goneException = new GoneException(this.getErrorMessage(RMResources.Gone), HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 goneException.setIsBasedOn410ResponseFromService();
                 cosmosException = goneException;
                 break;
@@ -83,7 +94,17 @@ public class FaultInjectionServerErrorResultInternal {
                 break;
 
             case TIMEOUT:
-                cosmosException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                // For server return 408, SDK internally will wrap into 410
+                // Details can be found in RntbdRequestManager
+                RequestTimeoutException rootException = new RequestTimeoutException(null, lsn, partitionKeyRangeId, responseHeaders);
+                cosmosException = new GoneException(
+                    null,
+                    null,
+                    lsn,
+                    partitionKeyRangeId,
+                    responseHeaders,
+                    rootException,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_408);
                 break;
 
             case INTERNAL_SERVER_ERROR:
@@ -100,6 +121,12 @@ public class FaultInjectionServerErrorResultInternal {
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION));
                 cosmosException = new PartitionIsMigratingException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
+            case PARTITION_IS_SPLITTING:
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                    Integer.toString(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE));
+                cosmosException = new PartitionKeyRangeIsSplittingException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
             default:

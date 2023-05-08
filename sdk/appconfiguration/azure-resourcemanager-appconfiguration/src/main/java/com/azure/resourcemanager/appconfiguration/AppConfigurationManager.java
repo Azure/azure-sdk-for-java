@@ -30,11 +30,13 @@ import com.azure.resourcemanager.appconfiguration.implementation.KeyValuesImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.OperationsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.appconfiguration.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.appconfiguration.implementation.ReplicasImpl;
 import com.azure.resourcemanager.appconfiguration.models.ConfigurationStores;
 import com.azure.resourcemanager.appconfiguration.models.KeyValues;
 import com.azure.resourcemanager.appconfiguration.models.Operations;
 import com.azure.resourcemanager.appconfiguration.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.appconfiguration.models.PrivateLinkResources;
+import com.azure.resourcemanager.appconfiguration.models.Replicas;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public final class AppConfigurationManager {
     private PrivateLinkResources privateLinkResources;
 
     private KeyValues keyValues;
+
+    private Replicas replicas;
 
     private final AppConfigurationManagementClient clientObject;
 
@@ -219,7 +223,7 @@ public final class AppConfigurationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.appconfiguration")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -335,6 +339,18 @@ public final class AppConfigurationManager {
             this.keyValues = new KeyValuesImpl(clientObject.getKeyValues(), this);
         }
         return keyValues;
+    }
+
+    /**
+     * Gets the resource collection API of Replicas. It manages Replica.
+     *
+     * @return Resource collection API of Replicas.
+     */
+    public Replicas replicas() {
+        if (this.replicas == null) {
+            this.replicas = new ReplicasImpl(clientObject.getReplicas(), this);
+        }
+        return replicas;
     }
 
     /**

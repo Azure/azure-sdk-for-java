@@ -35,7 +35,7 @@ public final class RedisEnterprisesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"EnterpriseFlash_F700\",\"capacity\":1572561560},\"zones\":[\"t\"],\"identity\":{\"principalId\":\"4675628b-6fa6-4f01-abc5-2c378c489f70\",\"tenantId\":\"819032f2-13cf-4bea-8411-02464c307339\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"minimumTlsVersion\":\"1.1\",\"encryption\":{},\"hostName\":\"zywbiex\",\"provisioningState\":\"Failed\",\"resourceState\":\"UpdateFailed\",\"redisVersion\":\"axibxujw\",\"privateEndpointConnections\":[]},\"location\":\"almuzyoxaepdkzja\",\"tags\":{\"zt\":\"xrhdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}]}";
+            "{\"value\":[{\"sku\":{\"name\":\"EnterpriseFlash_F700\",\"capacity\":1572561560},\"zones\":[\"t\"],\"identity\":{\"principalId\":\"a8db838c-5ddd-40c4-beff-8564c1e49c3f\",\"tenantId\":\"5b6879d8-e7f2-4945-b9c6-8fc033e50d5c\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"minimumTlsVersion\":\"1.1\",\"encryption\":{},\"hostName\":\"zywbiex\",\"provisioningState\":\"Failed\",\"resourceState\":\"UpdateFailed\",\"redisVersion\":\"axibxujw\",\"privateEndpointConnections\":[]},\"location\":\"almuzyoxaepdkzja\",\"tags\":{\"zt\":\"xrhdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

@@ -41,7 +41,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--tag=package-2022-11-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
+    "args": "--tag=package-2023-03-01 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities --preserve-model=AvailabilitySetSkuTypes"
   },
   "compute-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-compute",
@@ -53,7 +53,7 @@
     "dir": "azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
-    "args": "--tag=package-2021-10 --remove-inner=Container,Operation,CachedImages,Capabilities"
+    "args": "--tag=package-2023-05 --remove-inner=Container,Operation,CachedImages,Capabilities --rename-model=ContainerGroupPropertiesProperties:ContainerGroupProperties,UserAssignedIdentities:ContainerGroupIdentityUserAssignedIdentities"
   },
   "containerregistry": {
     "dir": "azure-resourcemanager-containerregistry",
@@ -71,7 +71,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/Microsoft.ContainerService/aks/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--tag=package-2023-01 --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
+    "args": "--tag=package-2023-03 --preserve-model=ContainerServiceVMSizeTypes --rename-model=Ossku:OSSku"
   },
   "containerservice-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-containerservice",
@@ -83,7 +83,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2022-11"
+    "args": "--tag=package-2023-03"
   },
   "dns": {
     "dir": "azure-resourcemanager-dns",
@@ -138,8 +138,8 @@
     "dir": "azure-resourcemanager-keyvault",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.keyvault",
-    "args": "--tag=package-2021-10",
-    "note": "use local azure-rest-api-specs and remove keys.json, secrets.json in README.md tag"
+    "args": "--tag=package-2023-02",
+    "note": "use local azure-rest-api-specs and remove keys.json, secrets.json and keysManagedHsm.json in README.md tag"
   },
   "keyvault-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-keyvault",
@@ -188,7 +188,8 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2021-06 --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue"
+    "args": "--tag=package-policy-2022-06 --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue",
+    "note": "Remove policyVariables.json and policyVariableValues.json from tag, as they are still in preview."
   },
   "policy-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
@@ -219,7 +220,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2021-01 --add-inner=Deployment"
+    "args": "--tag=package-resources-2022-09 --add-inner=Deployment"
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
@@ -263,7 +264,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-subscriptions-2021-01 --name-for-ungrouped-operations=ResourceName"
+    "args": "--tag=package-subscriptions-2022-12 --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations"
   },
   "subscriptions-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

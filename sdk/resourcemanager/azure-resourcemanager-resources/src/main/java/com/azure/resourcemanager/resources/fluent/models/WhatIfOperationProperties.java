@@ -18,6 +18,10 @@ public final class WhatIfOperationProperties {
     @JsonProperty(value = "changes")
     private List<WhatIfChange> changes;
 
+    /** Creates an instance of WhatIfOperationProperties class. */
+    public WhatIfOperationProperties() {
+    }
+
     /**
      * Get the changes property: List of resource changes predicted by What-If operation.
      *

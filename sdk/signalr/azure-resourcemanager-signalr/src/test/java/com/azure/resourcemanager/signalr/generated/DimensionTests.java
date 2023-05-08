@@ -7,11 +7,10 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.Dimension;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DimensionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Dimension model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class DimensionTests {
         Assertions.assertEquals(true, model.toBeExportedForShoebox());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Dimension model =
             new Dimension()
                 .withName("gsntnbybkzgcwr")

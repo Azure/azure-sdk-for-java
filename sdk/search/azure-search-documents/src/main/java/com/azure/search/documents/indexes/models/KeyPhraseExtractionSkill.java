@@ -211,15 +211,16 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        KeyPhraseExtractionSkill deserializedValue = new KeyPhraseExtractionSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.maxKeyPhraseCount = maxKeyPhraseCount;
-                        deserializedValue.modelVersion = modelVersion;
+                        KeyPhraseExtractionSkill deserializedKeyPhraseExtractionSkill =
+                                new KeyPhraseExtractionSkill(inputs, outputs);
+                        deserializedKeyPhraseExtractionSkill.setName(name);
+                        deserializedKeyPhraseExtractionSkill.setDescription(description);
+                        deserializedKeyPhraseExtractionSkill.setContext(context);
+                        deserializedKeyPhraseExtractionSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedKeyPhraseExtractionSkill.maxKeyPhraseCount = maxKeyPhraseCount;
+                        deserializedKeyPhraseExtractionSkill.modelVersion = modelVersion;
 
-                        return deserializedValue;
+                        return deserializedKeyPhraseExtractionSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

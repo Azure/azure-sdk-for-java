@@ -4,12 +4,13 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Authorization to copy a document model to the specified target resource and modelId. */
-@Fluent
+@Immutable
 public final class CopyAuthorization {
     /*
      * ID of the target Azure resource where the document model should be copied to.
@@ -47,8 +48,31 @@ public final class CopyAuthorization {
     @JsonProperty(value = "expirationDateTime", required = true)
     private OffsetDateTime expirationDateTime;
 
-    /** Creates an instance of CopyAuthorization class. */
-    public CopyAuthorization() {}
+    /**
+     * Creates an instance of CopyAuthorization class.
+     *
+     * @param targetResourceId the targetResourceId value to set.
+     * @param targetResourceRegion the targetResourceRegion value to set.
+     * @param targetModelId the targetModelId value to set.
+     * @param targetModelLocation the targetModelLocation value to set.
+     * @param accessToken the accessToken value to set.
+     * @param expirationDateTime the expirationDateTime value to set.
+     */
+    @JsonCreator
+    public CopyAuthorization(
+            @JsonProperty(value = "targetResourceId", required = true) String targetResourceId,
+            @JsonProperty(value = "targetResourceRegion", required = true) String targetResourceRegion,
+            @JsonProperty(value = "targetModelId", required = true) String targetModelId,
+            @JsonProperty(value = "targetModelLocation", required = true) String targetModelLocation,
+            @JsonProperty(value = "accessToken", required = true) String accessToken,
+            @JsonProperty(value = "expirationDateTime", required = true) OffsetDateTime expirationDateTime) {
+        this.targetResourceId = targetResourceId;
+        this.targetResourceRegion = targetResourceRegion;
+        this.targetModelId = targetModelId;
+        this.targetModelLocation = targetModelLocation;
+        this.accessToken = accessToken;
+        this.expirationDateTime = expirationDateTime;
+    }
 
     /**
      * Get the targetResourceId property: ID of the target Azure resource where the document model should be copied to.
@@ -57,17 +81,6 @@ public final class CopyAuthorization {
      */
     public String getTargetResourceId() {
         return this.targetResourceId;
-    }
-
-    /**
-     * Set the targetResourceId property: ID of the target Azure resource where the document model should be copied to.
-     *
-     * @param targetResourceId the targetResourceId value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    public CopyAuthorization setTargetResourceId(String targetResourceId) {
-        this.targetResourceId = targetResourceId;
-        return this;
     }
 
     /**
@@ -81,35 +94,12 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetResourceRegion property: Location of the target Azure resource where the document model should be
-     * copied to.
-     *
-     * @param targetResourceRegion the targetResourceRegion value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    public CopyAuthorization setTargetResourceRegion(String targetResourceRegion) {
-        this.targetResourceRegion = targetResourceRegion;
-        return this;
-    }
-
-    /**
      * Get the targetModelId property: Identifier of the target document model.
      *
      * @return the targetModelId value.
      */
     public String getTargetModelId() {
         return this.targetModelId;
-    }
-
-    /**
-     * Set the targetModelId property: Identifier of the target document model.
-     *
-     * @param targetModelId the targetModelId value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    public CopyAuthorization setTargetModelId(String targetModelId) {
-        this.targetModelId = targetModelId;
-        return this;
     }
 
     /**
@@ -122,17 +112,6 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the targetModelLocation property: URL of the copied document model in the target account.
-     *
-     * @param targetModelLocation the targetModelLocation value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    public CopyAuthorization setTargetModelLocation(String targetModelLocation) {
-        this.targetModelLocation = targetModelLocation;
-        return this;
-    }
-
-    /**
      * Get the accessToken property: Token used to authorize the request.
      *
      * @return the accessToken value.
@@ -142,33 +121,11 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Set the accessToken property: Token used to authorize the request.
-     *
-     * @param accessToken the accessToken value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    public CopyAuthorization setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-        return this;
-    }
-
-    /**
      * Get the expirationDateTime property: Date/time when the access token expires.
      *
      * @return the expirationDateTime value.
      */
     public OffsetDateTime getExpirationDateTime() {
         return this.expirationDateTime;
-    }
-
-    /**
-     * Set the expirationDateTime property: Date/time when the access token expires.
-     *
-     * @param expirationDateTime the expirationDateTime value to set.
-     * @return the CopyAuthorization object itself.
-     */
-    public CopyAuthorization setExpirationDateTime(OffsetDateTime expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
-        return this;
     }
 }

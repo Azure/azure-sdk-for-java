@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The scanning mode for the vm scan. */
+/** The scanning mode for the VM scan. */
 public final class ScanningMode extends ExpandableStringEnum<ScanningMode> {
     /** Static value Default for ScanningMode. */
     public static final ScanningMode DEFAULT = fromString("Default");
+
+    /**
+     * Creates a new instance of ScanningMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScanningMode() {
+    }
 
     /**
      * Creates or finds a ScanningMode from its string representation.

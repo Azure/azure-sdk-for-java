@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Defines an interface for operations with {@link Lease}.
@@ -55,11 +56,31 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
     /**
      * Checks whether the lease exists and creates it if it does not exist.
      *
+     * @param leaseToken the partition to work on.
+     * @param continuationToken the continuation token if it exists.
+     * @param properties the properties.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken, Map<String, String> properties);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
      * @param feedRange the epk range for the lease.
      * @param continuationToken the continuation token if it exists.
      * @return the lease.
      */
     Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the epk range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     * @param properties the properties.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken, Map<String, String> properties);
 
     /**
      * DELETE the lease.

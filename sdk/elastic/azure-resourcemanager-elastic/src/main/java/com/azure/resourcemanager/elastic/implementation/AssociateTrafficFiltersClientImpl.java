@@ -58,8 +58,7 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     public interface AssociateTrafficFiltersService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
-                + "/{monitorName}/associateTrafficFilter")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/associateTrafficFilter")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> associate(
@@ -248,7 +247,7 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAssociate(String resourceGroupName, String monitorName) {
         final String rulesetId = null;
-        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId).getSyncPoller();
+        return this.beginAssociateAsync(resourceGroupName, monitorName, rulesetId).getSyncPoller();
     }
 
     /**
@@ -266,7 +265,7 @@ public final class AssociateTrafficFiltersClientImpl implements AssociateTraffic
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAssociate(
         String resourceGroupName, String monitorName, String rulesetId, Context context) {
-        return beginAssociateAsync(resourceGroupName, monitorName, rulesetId, context).getSyncPoller();
+        return this.beginAssociateAsync(resourceGroupName, monitorName, rulesetId, context).getSyncPoller();
     }
 
     /**

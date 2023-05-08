@@ -22,6 +22,10 @@ public final class OperationResultErrorProperties {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of OperationResultErrorProperties class. */
+    public OperationResultErrorProperties() {
+    }
+
     /**
      * Get the code property: The code of the error.
      *

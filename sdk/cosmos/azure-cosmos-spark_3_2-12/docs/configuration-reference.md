@@ -8,10 +8,10 @@
 | `spark.cosmos.accountKey`        | None    | Cosmos DB Account Key                                                                                      |
 | `spark.cosmos.database`          | None    | Cosmos DB database name                                                                                    |
 | `spark.cosmos.container`         | None    | Cosmos DB container name                                                                                   |
-| `spark.cosmos.subscriptionId`    | None    | The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
-| `spark.cosmos.tenantId`          | None    | The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.                      |
-| `spark.cosmos.resourceGroupName` | None    | The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
-| `spark.cosmos.azureEnvironment`    | `Azure`    | The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`. |
+| `spark.cosmos.account.subscriptionId`    | None    | The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.account.tenantId`          | None    | The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.                      |
+| `spark.cosmos.account.resourceGroupName` | None    | The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.account.azureEnvironment`    | `Azure`    | The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`. |
 
 ### AAD Auth Config
 | Config Property Name                 | Default | Description                                                                                                                                                             |
@@ -111,3 +111,4 @@ Used to influence the json serialization/deserialization behavior
 | `spark.cosmos.throughputControl.globalControl.container`      | None    | Container which will be used for throughput global control  |
 | `spark.cosmos.throughputControl.globalControl.renewIntervalInMS`      | `5s`    | How often the client is going to update the throughput usage of itself  |
 | `spark.cosmos.throughputControl.globalControl.expireIntervalInMS`      | `11s`   | How quickly an offline client will be detected   |
+| `spark.cosmos.throughputControl.globalControl.useDedicatedContainer`      | `true`  | Flag to indicat when configured with throughput control, whether dedicated throughput control container will be provided.  |

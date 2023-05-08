@@ -24,6 +24,10 @@ public final class TestRouteResultInner {
     @JsonProperty(value = "details")
     private TestRouteResultDetails details;
 
+    /** Creates an instance of TestRouteResultInner class. */
+    public TestRouteResultInner() {
+    }
+
     /**
      * Get the result property: Result of testing route.
      *

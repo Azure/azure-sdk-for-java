@@ -38,8 +38,8 @@ public final class DataDisk {
     private VirtualHardDisk image;
 
     /*
-     * Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly**
-     * <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The defaulting
+     * behavior is: **None for Standard storage. ReadOnly for Premium storage.**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
@@ -51,19 +51,19 @@ public final class DataDisk {
     private Boolean writeAcceleratorEnabled;
 
     /*
-     * Specifies how the virtual machine should be created.<br><br> Possible values are:<br><br> **Attach** \u2013 This
-     * value is used when you are using a specialized disk to create the virtual machine.<br><br> **FromImage** \u2013
-     * This value is used when you are using an image to create the virtual machine. If you are using a platform image,
-     * you also use the imageReference element described above. If you are using a marketplace image, you  also use the
-     * plan element previously described.
+     * Specifies how the virtual machine should be created. Possible values are: **Attach.** This value is used when
+     * you are using a specialized disk to create the virtual machine. **FromImage.** This value is used when you are
+     * using an image to create the virtual machine. If you are using a platform image, you should also use the
+     * imageReference element described above. If you are using a marketplace image, you should also use the plan
+     * element previously described.
      */
     @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /*
      * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
-     * disk in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value
-     * cannot be larger than 1023
+     * disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the
+     * value cannot be larger than 1023.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -96,21 +96,20 @@ public final class DataDisk {
 
     /*
      * Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment
-     * from the virtual machine. Supported values: **ForceDetach**. <br><br> detachOption: **ForceDetach** is
-     * applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due
-     * to an unexpected failure from the virtual machine and the disk is still not released then use force-detach as a
-     * last resort option to detach the disk forcibly from the VM. All writes might not have been flushed when using
-     * this detach behavior. <br><br> This feature is still in preview mode and is not supported for
-     * VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
-     * detachOption: 'ForceDetach'.
+     * from the virtual machine. Supported values: **ForceDetach.** detachOption: **ForceDetach** is applicable only
+     * for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected
+     * failure from the virtual machine and the disk is still not released then use force-detach as a last resort
+     * option to detach the disk forcibly from the VM. All writes might not have been flushed when using this detach
+     * behavior. **This feature is still in preview** mode and is not supported for VirtualMachineScaleSet. To
+     * force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
      */
     @JsonProperty(value = "detachOption")
     private DiskDetachOptionTypes detachOption;
 
     /*
-     * Specifies whether data disk should be deleted or detached upon VM deletion.<br><br> Possible values: <br><br>
-     * **Delete** If this value is used, the data disk is deleted when VM is deleted.<br><br> **Detach** If this value
-     * is used, the data disk is retained after VM is deleted.<br><br> The default value is set to **detach**
+     * Specifies whether data disk should be deleted or detached upon VM deletion. Possible values are: **Delete.** If
+     * this value is used, the data disk is deleted when VM is deleted. **Detach.** If this value is used, the data
+     * disk is retained after VM is deleted. The default value is set to **Detach**.
      */
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
@@ -206,9 +205,8 @@ public final class DataDisk {
     }
 
     /**
-     * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @return the caching value.
      */
@@ -217,9 +215,8 @@ public final class DataDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
+     * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
      *
      * @param caching the caching value to set.
      * @return the DataDisk object itself.
@@ -252,11 +249,11 @@ public final class DataDisk {
     }
 
     /**
-     * Get the createOption property: Specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible
-     * values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is used when you are using a specialized disk to
-     * create the virtual machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an
-     * image to create the virtual machine. If you are using a platform image, you also use the imageReference element
-     * described above. If you are using a marketplace image, you also use the plan element previously described.
+     * Get the createOption property: Specifies how the virtual machine should be created. Possible values are:
+     * **Attach.** This value is used when you are using a specialized disk to create the virtual machine.
+     * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
+     * platform image, you should also use the imageReference element described above. If you are using a marketplace
+     * image, you should also use the plan element previously described.
      *
      * @return the createOption value.
      */
@@ -265,11 +262,11 @@ public final class DataDisk {
     }
 
     /**
-     * Set the createOption property: Specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible
-     * values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is used when you are using a specialized disk to
-     * create the virtual machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an
-     * image to create the virtual machine. If you are using a platform image, you also use the imageReference element
-     * described above. If you are using a marketplace image, you also use the plan element previously described.
+     * Set the createOption property: Specifies how the virtual machine should be created. Possible values are:
+     * **Attach.** This value is used when you are using a specialized disk to create the virtual machine.
+     * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
+     * platform image, you should also use the imageReference element described above. If you are using a marketplace
+     * image, you should also use the plan element previously described.
      *
      * @param createOption the createOption value to set.
      * @return the DataDisk object itself.
@@ -281,8 +278,8 @@ public final class DataDisk {
 
     /**
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
-     * x 1024^3 for the disk and the value cannot be larger than 1023.
+     * overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x
+     * 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @return the diskSizeGB value.
      */
@@ -292,8 +289,8 @@ public final class DataDisk {
 
     /**
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
-     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; diskSizeGB is the number of bytes
-     * x 1024^3 for the disk and the value cannot be larger than 1023.
+     * overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x
+     * 1024^3 for the disk and the value cannot be larger than 1023.
      *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the DataDisk object itself.
@@ -369,13 +366,13 @@ public final class DataDisk {
 
     /**
      * Get the detachOption property: Specifies the detach behavior to be used while detaching a disk or which is
-     * already in the process of detachment from the virtual machine. Supported values: **ForceDetach**.
-     * &lt;br&gt;&lt;br&gt; detachOption: **ForceDetach** is applicable only for managed data disks. If a previous
-     * detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and
-     * the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the
-     * VM. All writes might not have been flushed when using this detach behavior. &lt;br&gt;&lt;br&gt; This feature is
-     * still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update
-     * toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+     * already in the process of detachment from the virtual machine. Supported values: **ForceDetach.** detachOption:
+     * **ForceDetach** is applicable only for managed data disks. If a previous detachment attempt of the data disk did
+     * not complete due to an unexpected failure from the virtual machine and the disk is still not released then use
+     * force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been
+     * flushed when using this detach behavior. **This feature is still in preview** mode and is not supported for
+     * VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
+     * detachOption: 'ForceDetach'.
      *
      * @return the detachOption value.
      */
@@ -385,13 +382,13 @@ public final class DataDisk {
 
     /**
      * Set the detachOption property: Specifies the detach behavior to be used while detaching a disk or which is
-     * already in the process of detachment from the virtual machine. Supported values: **ForceDetach**.
-     * &lt;br&gt;&lt;br&gt; detachOption: **ForceDetach** is applicable only for managed data disks. If a previous
-     * detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and
-     * the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the
-     * VM. All writes might not have been flushed when using this detach behavior. &lt;br&gt;&lt;br&gt; This feature is
-     * still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update
-     * toBeDetached to 'true' along with setting detachOption: 'ForceDetach'.
+     * already in the process of detachment from the virtual machine. Supported values: **ForceDetach.** detachOption:
+     * **ForceDetach** is applicable only for managed data disks. If a previous detachment attempt of the data disk did
+     * not complete due to an unexpected failure from the virtual machine and the disk is still not released then use
+     * force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been
+     * flushed when using this detach behavior. **This feature is still in preview** mode and is not supported for
+     * VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
+     * detachOption: 'ForceDetach'.
      *
      * @param detachOption the detachOption value to set.
      * @return the DataDisk object itself.
@@ -402,10 +399,9 @@ public final class DataDisk {
     }
 
     /**
-     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VM
-     * deletion.&lt;br&gt;&lt;br&gt; Possible values: &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data
-     * disk is deleted when VM is deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is
-     * retained after VM is deleted.&lt;br&gt;&lt;br&gt; The default value is set to **detach**.
+     * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VM deletion.
+     * Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.**
+     * If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
      *
      * @return the deleteOption value.
      */
@@ -414,10 +410,9 @@ public final class DataDisk {
     }
 
     /**
-     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VM
-     * deletion.&lt;br&gt;&lt;br&gt; Possible values: &lt;br&gt;&lt;br&gt; **Delete** If this value is used, the data
-     * disk is deleted when VM is deleted.&lt;br&gt;&lt;br&gt; **Detach** If this value is used, the data disk is
-     * retained after VM is deleted.&lt;br&gt;&lt;br&gt; The default value is set to **detach**.
+     * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VM deletion.
+     * Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.**
+     * If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
      *
      * @param deleteOption the deleteOption value to set.
      * @return the DataDisk object itself.

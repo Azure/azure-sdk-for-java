@@ -1,14 +1,34 @@
 ## Release History
 
-### 4.43.0-beta.1 (Unreleased)
+### 4.45.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added configurability for minimum connection pool size for all containers through a system property - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
+* Added `CosmosContainerProactiveInitConfigBuilder:setAggressiveWarmupDuration(Duration aggressiveWarmupDuration)` public API to switch between aggressively opening connections
+  in a blocking manner to defensively opening connections in a non-blocking manner after `aggressiveWarmupDuration` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `IllegalArgumentException` in changeFeedProcessor when `maxScaleCount` is configured - See [PR 34618](https://github.com/Azure/azure-sdk-for-java/pull/34618)
 
 #### Other Changes
+
+### 4.44.0 (2023-04-21)
+
+#### Bugs Fixed
+* Fixed an issue where throughput control is not triggered properly when target throughput is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)
+* Fixed an issue where `IllegalStateException` being thrown during replica validation - See [PR 34538](https://github.com/Azure/azure-sdk-for-java/pull/34538)
+
+### 4.43.0 (2023-04-06)
+
+#### Features Added
+* Added option to enable automatic retries for write operations - See [34227](https://github.com/Azure/azure-sdk-for-java/pull/34227)
+* Added option to enable automatic logging of Cosmos diagnostics for errors or requests exceeding latency threshold - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+* Added support for OpenTelemetry traces following the Semantic profile for Cosmos DB - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
+
+#### Breaking Changes
+* Changed the default structure of Open Telemetry events being emitted by the SDK to follow the semantic profile for Cosmos DB. Use the `COSMOS.USE_LEGACY_TRACING` system property to retrun to the previous event structure: `-DCOSMOS.USE_LEGACY_TRACING=true` - See [33209](https://github.com/Azure/azure-sdk-for-java/pull/33209)
 
 ### 4.42.0 (2023-03-17)
 

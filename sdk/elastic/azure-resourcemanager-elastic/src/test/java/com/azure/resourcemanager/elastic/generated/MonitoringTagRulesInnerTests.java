@@ -11,39 +11,38 @@ import com.azure.resourcemanager.elastic.models.MonitoringTagRulesProperties;
 import com.azure.resourcemanager.elastic.models.ProvisioningState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoringTagRulesInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoringTagRulesInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Updating\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":false,\"filteringTags\":[]}},\"id\":\"rlovmclwhijcoej\",\"name\":\"tbzaqsqsycbkbfk\",\"type\":\"ukdkexxppofmxa\"}")
+                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[]}},\"id\":\"rjb\",\"name\":\"norcjxvsnbyxqab\",\"type\":\"mocpc\"}")
                 .toObject(MonitoringTagRulesInner.class);
-        Assertions.assertEquals(ProvisioningState.UPDATING, model.properties().provisioningState());
+        Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(true, model.properties().logRules().sendAadLogs());
         Assertions.assertEquals(true, model.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, model.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(true, model.properties().logRules().sendActivityLogs());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoringTagRulesInner model =
             new MonitoringTagRulesInner()
                 .withProperties(
                     new MonitoringTagRulesProperties()
-                        .withProvisioningState(ProvisioningState.UPDATING)
+                        .withProvisioningState(ProvisioningState.CANCELED)
                         .withLogRules(
                             new LogRules()
                                 .withSendAadLogs(true)
                                 .withSendSubscriptionLogs(true)
-                                .withSendActivityLogs(false)
+                                .withSendActivityLogs(true)
                                 .withFilteringTags(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesInner.class);
-        Assertions.assertEquals(ProvisioningState.UPDATING, model.properties().provisioningState());
+        Assertions.assertEquals(ProvisioningState.CANCELED, model.properties().provisioningState());
         Assertions.assertEquals(true, model.properties().logRules().sendAadLogs());
         Assertions.assertEquals(true, model.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, model.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals(true, model.properties().logRules().sendActivityLogs());
     }
 }

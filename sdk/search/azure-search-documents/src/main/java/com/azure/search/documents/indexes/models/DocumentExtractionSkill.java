@@ -207,15 +207,16 @@ public final class DocumentExtractionSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        DocumentExtractionSkill deserializedValue = new DocumentExtractionSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.parsingMode = parsingMode;
-                        deserializedValue.dataToExtract = dataToExtract;
-                        deserializedValue.configuration = configuration;
+                        DocumentExtractionSkill deserializedDocumentExtractionSkill =
+                                new DocumentExtractionSkill(inputs, outputs);
+                        deserializedDocumentExtractionSkill.setName(name);
+                        deserializedDocumentExtractionSkill.setDescription(description);
+                        deserializedDocumentExtractionSkill.setContext(context);
+                        deserializedDocumentExtractionSkill.parsingMode = parsingMode;
+                        deserializedDocumentExtractionSkill.dataToExtract = dataToExtract;
+                        deserializedDocumentExtractionSkill.configuration = configuration;
 
-                        return deserializedValue;
+                        return deserializedDocumentExtractionSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

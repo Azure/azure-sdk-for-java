@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.imagebuilder.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.imagebuilder.fluent.models.RunOutputInner;
 
 /** An immutable client-side representation of RunOutput. */
@@ -28,6 +29,13 @@ public interface RunOutput {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the artifactId property: The resource id of the artifact.

@@ -60,8 +60,7 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
     public interface SignalRPrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceList>> list(

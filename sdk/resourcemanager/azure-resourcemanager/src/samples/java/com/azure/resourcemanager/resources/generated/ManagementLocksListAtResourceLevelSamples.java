@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagementLocks ListAtResourceLevel. */
 public final class ManagementLocksListAtResourceLevelSamples {
     /*
@@ -29,6 +27,6 @@ public final class ManagementLocksListAtResourceLevelSamples {
                 "storageAccounts",
                 "teststorageaccount",
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

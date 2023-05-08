@@ -19,6 +19,10 @@ public final class MhsmPrivateLinkResource extends ManagedHsmResource {
     @JsonProperty(value = "properties")
     private MhsmPrivateLinkResourceProperties innerProperties;
 
+    /** Creates an instance of MhsmPrivateLinkResource class. */
+    public MhsmPrivateLinkResource() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

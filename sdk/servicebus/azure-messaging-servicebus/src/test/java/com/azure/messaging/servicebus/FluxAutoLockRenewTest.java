@@ -33,6 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,7 +60,6 @@ public class FluxAutoLockRenewTest {
     private Function<String, Mono<OffsetDateTime>> renewalFunction;
 
     private OffsetDateTime lockedUntil;
-    private AutoCloseable mocksCloseable;
     private ReceiverOptions defaultReceiverOptions;
 
     @BeforeAll
@@ -78,7 +78,7 @@ public class FluxAutoLockRenewTest {
         receivedMessage.setLockToken(LOCK_TOKEN_UUID);
         receivedMessage.setLockedUntil(lockedUntil);
         renewalFunction = (lockToken) -> Mono.just(OffsetDateTime.now().plusSeconds(10));
-        defaultReceiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+        defaultReceiverOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, true);
     }
 
@@ -144,7 +144,7 @@ public class FluxAutoLockRenewTest {
         assertThrows(NullPointerException.class, () -> new FluxAutoLockRenew(messageSource,
             defaultReceiverOptions, messageLockContainer, null));
 
-        ReceiverOptions zeroLockDurationOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+        ReceiverOptions zeroLockDurationOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             DISABLE_AUTO_LOCK_RENEW_DURATION, true);
         assertThrows(IllegalArgumentException.class, () -> new FluxAutoLockRenew(messageSource,
             zeroLockDurationOptions, messageLockContainer, renewalFunction));
@@ -466,6 +466,7 @@ public class FluxAutoLockRenewTest {
      * When auto complete is disabled by user, we do not perform message lock clean up.
      */
     @Test
+    //@RepeatedTest(1000)
     void autoCompleteDisabledLockRenewNotClosed() {
         // Arrange
         final TestContainer messageLockContainer = new TestContainer();
@@ -478,7 +479,7 @@ public class FluxAutoLockRenewTest {
             actualTokenRenewCalledTimes.getAndIncrement();
             return Mono.just(OffsetDateTime.now().plusSeconds(1));
         };
-        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
+        ReceiverOptions receiverOptions = createNonSessionOptions(ServiceBusReceiveMode.RECEIVE_AND_DELETE, 1,
             MAX_AUTO_LOCK_RENEW_DURATION, enableAutoComplete);
         final FluxAutoLockRenew renewOperator = new FluxAutoLockRenew(messageSource,
             receiverOptions, messageLockContainer, lockTokenRenewFunction);
@@ -502,7 +503,8 @@ public class FluxAutoLockRenewTest {
             .verifyComplete();
 
         assertEquals(1, messageLockContainer.addOrUpdateInvocations.get(LOCK_TOKEN_STRING));
-        assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast);
+        assertTrue(actualTokenRenewCalledTimes.get() >= renewedForAtLeast,
+            String.format("expected at least %s, but got %s", renewedForAtLeast, actualTokenRenewCalledTimes.get()));
 
         // ensure that we do not remove lockToken from 'messageLockContainer' because user can do it at their will since
         // enableAutoComplete = false

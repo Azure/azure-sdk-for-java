@@ -58,7 +58,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
     HttpTrait<KeyEncryptionKeyClientBuilder>,
     ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+
     private final CryptographyClientBuilder builder;
 
     /**
@@ -134,7 +135,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.keyIdentifier(keyId);
 
         if (Strings.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
                     + "client."));
         }
@@ -146,7 +147,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         }
 
         if (builder.getCredential() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
         }
 
@@ -171,10 +172,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(JsonWebKey key) {
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
         } else if (key.getId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "JSON Web Key's id property is not configured."));
         }
 
@@ -195,7 +196,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         builder.credential(credential);
@@ -243,7 +244,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         builder.addPolicy(policy);

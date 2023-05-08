@@ -230,17 +230,17 @@ public final class ConfigurationStoreImpl
         return serviceManager.configurationStores().listKeys(resourceGroupName, configStoreName, skipToken, context);
     }
 
-    public ApiKey regenerateKey(RegenerateKeyParameters regenerateKeyParameters) {
-        return serviceManager
-            .configurationStores()
-            .regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
-    }
-
     public Response<ApiKey> regenerateKeyWithResponse(
         RegenerateKeyParameters regenerateKeyParameters, Context context) {
         return serviceManager
             .configurationStores()
             .regenerateKeyWithResponse(resourceGroupName, configStoreName, regenerateKeyParameters, context);
+    }
+
+    public ApiKey regenerateKey(RegenerateKeyParameters regenerateKeyParameters) {
+        return serviceManager
+            .configurationStores()
+            .regenerateKey(resourceGroupName, configStoreName, regenerateKeyParameters);
     }
 
     public ConfigurationStoreImpl withRegion(Region location) {

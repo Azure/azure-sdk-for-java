@@ -399,9 +399,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             .timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
-        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
-        messages.subscribe();
 
+        // Subscribe to message flux so we can kick off this operation
+        // this works because all messages come in batched messages from management node, which is deserialized as a list and
+        // then returned as Flux.fromIterable.
+        tracedMessages.subscribe();
         return new IterableStream<>(tracedMessages);
     }
 
@@ -450,8 +452,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.peekMessages", messages);
-        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
-        messages.subscribe();
+
+        // Subscribe to message flux so we can kick off this operation
+        // this works because all messages come in batched messages from management node, which is deserialized as a list and
+        // then returned as Flux.fromIterable.
+        tracedMessages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }
@@ -460,6 +465,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
      * receive operation will wait for a default 1 minute for receiving a message before it times out. You can
      * override it by using {@link #receiveMessages(int, Duration)}.
+     *
+     * <p>
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
+     * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
+     * invocations of receiveMessages API will throw the error to the application. Once the application receives
+     * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
+     * and create a new client to continue receiving messages.
+     * <br/>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
+     * </p>
      *
      * @param maxMessages The maximum number of messages to receive.
      *
@@ -479,6 +497,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
      * default receive mode is {@link ServiceBusReceiveMode#PEEK_LOCK } unless it is changed during creation of {@link
      * ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)}.
+     *
+     * <p>
+     * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
+     * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
+     * error or exhausts the retries, the iteration (e.g., forEach) on the {@link IterableStream} returned by the further
+     * invocations of receiveMessages API will throw the error to the application. Once the application receives
+     * this error, the application should reset the client, i.e., close the current {@link ServiceBusReceiverClient}
+     * and create a new client to continue receiving messages.
+     * <br/>
+     * Note: A few examples of non-retriable errors are - the application attempting to connect to a queue that does not
+     * exist, deleting or disabling the queue in the middle of receiving, the user explicitly initiating Geo-DR.
+     * These are certain events where the Service Bus communicates to the client that a non-retriable error occurred.
+     * </p>
      *
      * @param maxMessages The maximum number of messages to receive.
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
@@ -513,8 +544,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final Flux<ServiceBusReceivedMessage> messagesFlux = emitter.asFlux();
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveMessages", messagesFlux);
 
-        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
-        messagesFlux.subscribe();
+        // Subscribe to message flux so we can kick off this operation
+        tracedMessages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }
@@ -588,8 +619,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             sessionId).timeout(operationTimeout);
 
         final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch", messages);
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
+
+        // Subscribe to message flux so we can kick off this operation
+        // this works because all messages come in batched messages from management node, which is deserialized as a list and
+        // then returned as Flux.fromIterable.
+        tracedMessages.subscribe();
 
         return new IterableStream<>(tracedMessages);
     }
@@ -762,7 +796,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     @Override
     public void close() {
-        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.getAndSet(null);
+        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
         if (messageSubscriber != null && !messageSubscriber.isDisposed()) {
             messageSubscriber.dispose();
         }

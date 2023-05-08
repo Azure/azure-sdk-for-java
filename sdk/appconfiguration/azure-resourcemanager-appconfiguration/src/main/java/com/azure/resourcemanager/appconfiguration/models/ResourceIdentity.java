@@ -11,19 +11,17 @@ import java.util.Map;
 
 /** An identity that can be associated with a resource. */
 @Fluent
-public class ResourceIdentity {
+public final class ResourceIdentity {
     /*
-     * The type of managed identity used. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of
-     * user-assigned identities. The type 'None' will remove any identities.
+     * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+     * identity and a set of user-assigned identities. The type 'None' will remove any identities.
      */
     @JsonProperty(value = "type")
     private IdentityType type;
 
     /*
-     * The list of user-assigned identities associated with the resource. The
-     * user-assigned identity dictionary keys will be ARM resource ids in the
-     * form:
+     * The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys
+     * will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
@@ -31,18 +29,21 @@ public class ResourceIdentity {
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
-     * The principal id of the identity. This property will only be provided
-     * for a system-assigned identity.
+     * The principal id of the identity. This property will only be provided for a system-assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id associated with the resource's identity. This property
-     * will only be provided for a system-assigned identity.
+     * The tenant id associated with the resource's identity. This property will only be provided for a system-assigned
+     * identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
+
+    /** Creates an instance of ResourceIdentity class. */
+    public ResourceIdentity() {
+    }
 
     /**
      * Get the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both

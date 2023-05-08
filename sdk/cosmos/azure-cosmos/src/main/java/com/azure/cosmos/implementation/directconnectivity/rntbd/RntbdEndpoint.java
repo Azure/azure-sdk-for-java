@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -84,6 +85,12 @@ public interface RntbdEndpoint extends AutoCloseable {
         double threshold,
         Class<?> eventType);
 
+    int getMinChannelsRequired();
+
+    void setMinChannelsRequired(int minChannelsRequired);
+
+    Uri getAddressUri();
+
     // endregion
 
     // region Methods
@@ -93,7 +100,7 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     RntbdRequestRecord request(RntbdRequestArgs requestArgs);
 
-    OpenConnectionRntbdRequestRecord openConnection(Uri addressUri);
+    OpenConnectionRntbdRequestRecord openConnection(RntbdRequestArgs requestArgs);
 
     // endregion
 
@@ -110,12 +117,15 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
-        RntbdEndpoint createIfAbsent(URI serviceEndpoint, URI physicalAddress);
+        RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannels);
+
         RntbdEndpoint get(URI physicalAddress);
 
         IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
+
+        boolean isClosed();
     }
 
     final class Config {

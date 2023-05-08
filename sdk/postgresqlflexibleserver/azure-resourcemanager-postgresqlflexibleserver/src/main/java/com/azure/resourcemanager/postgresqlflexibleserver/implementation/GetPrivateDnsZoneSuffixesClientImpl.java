@@ -71,7 +71,7 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> executeWithResponseAsync() {
+    public Mono<Response<String>> executeWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -116,7 +116,7 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
      * @return private DNS zone suffix in the cloud on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<String> executeAsync() {
+    public Mono<String> executeAsync() {
         return executeWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 

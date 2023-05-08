@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.models.Spacecraft;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Spacecrafts UpdateTags. */
 public final class SpacecraftsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-03-01/examples/SpacecraftUpdateTags.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/SpacecraftUpdateTags.json
      */
     /**
      * Sample code: Update Spacecraft tags.
@@ -21,7 +20,10 @@ public final class SpacecraftsUpdateTagsSamples {
      */
     public static void updateSpacecraftTags(com.azure.resourcemanager.orbital.OrbitalManager manager) {
         Spacecraft resource =
-            manager.spacecrafts().getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO_SAT", Context.NONE).getValue();
+            manager
+                .spacecrafts()
+                .getByResourceGroupWithResponse("contoso-Rgp", "CONTOSO_SAT", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

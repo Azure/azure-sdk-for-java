@@ -9,7 +9,7 @@ import com.azure.resourcemanager.cosmos.models.RegionForOnlineOffline;
 /** Samples for DatabaseAccounts OfflineRegion. */
 public final class DatabaseAccountsOfflineRegionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-11-15/examples/CosmosDBDatabaseAccountOfflineRegion.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBDatabaseAccountOfflineRegion.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountOfflineRegion.

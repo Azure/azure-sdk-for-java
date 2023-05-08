@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks ListByResourceGroup. */
 public final class TasksListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class TasksListByResourceGroupSamples {
      */
     public static void getSecurityRecommendationTasksInAResourceGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.tasks().listByResourceGroup("myRg", "westeurope", null, Context.NONE);
+        manager.tasks().listByResourceGroup("myRg", "westeurope", null, com.azure.core.util.Context.NONE);
     }
 }

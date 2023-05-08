@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AdaptiveNetworkHardenings Get. */
 public final class AdaptiveNetworkHardeningsGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class AdaptiveNetworkHardeningsGetSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .adaptiveNetworkHardenings()
-            .getWithResponse("rg1", "Microsoft.Compute", "virtualMachines", "vm1", "default", Context.NONE);
+            .getWithResponse(
+                "rg1", "Microsoft.Compute", "virtualMachines", "vm1", "default", com.azure.core.util.Context.NONE);
     }
 }

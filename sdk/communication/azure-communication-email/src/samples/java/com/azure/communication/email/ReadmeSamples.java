@@ -66,7 +66,7 @@ public class ReadmeSamples {
             .setSubject("test subject")
             .setBodyPlainText("test message");
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         System.out.println("Operation Id: " + response.getValue().getId());
@@ -85,7 +85,7 @@ public class ReadmeSamples {
             .setCcRecipients("<cc-recipient-email-address>")
             .setBccRecipients("<bcc-recipient-email-address>");
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         System.out.println("Operation Id: " + response.getValue().getId());
@@ -108,7 +108,7 @@ public class ReadmeSamples {
             .setBodyPlainText("test message")
             .setToRecipients(toAddress1, toAddress2);
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         System.out.println("Operation Id: " + response.getValue().getId());
@@ -134,7 +134,7 @@ public class ReadmeSamples {
             .setBodyPlainText("test message")
             .setAttachments(attachment);
 
-        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message, null);
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
         PollResponse<EmailSendResult> response = poller.waitForCompletion();
 
         System.out.println("Operation Id: " + response.getValue().getId());

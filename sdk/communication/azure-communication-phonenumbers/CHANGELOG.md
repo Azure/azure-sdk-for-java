@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.16 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.1 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 1.1.0 (2023-03-28)
+
+### Features Added
+- GA release of SIP routing client.
+- GA release of Phone Numbers Browse API Methods.
 
 ## 1.1.0-beta.15 (2023-03-15)
 

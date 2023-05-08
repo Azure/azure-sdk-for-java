@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http.rest;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -18,10 +19,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonSerializable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Signal;
-import reactor.util.context.ContextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,12 @@ import java.util.EnumSet;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
+
 public class AsyncRestProxy extends RestProxyBase {
+
+    private static final String TEXT_EVENT_STREAM = "text/event-stream";
+
     /**
      * Create a RestProxy.
      *
@@ -175,12 +180,18 @@ public class AsyncRestProxy extends RestProxyBase {
             // Mono<Flux<ByteBuffer>>
             asyncResult = Mono.just(sourceResponse.getBody());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
+            String contentType = sourceResponse.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             // Mono<BinaryData>
             // The raw response is directly used to create an instance of BinaryData which then provides
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            asyncResult = BinaryData.fromFlux(sourceResponse.getBody());
+            if (TEXT_EVENT_STREAM.equals(contentType)) {
+                // if the response content type is a stream, create a BinaryData instance with bufferContent set to false.
+                asyncResult = BinaryData.fromFlux(sourceResponse.getBody(), null, false);
+            } else {
+                asyncResult = BinaryData.fromFlux(sourceResponse.getBody());
+            }
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Corresponds to the Open API 2.0 type "file" which is mapped to an InputStream.
             asyncResult = sourceResponse.getBodyAsInputStream();
@@ -203,10 +214,9 @@ public class AsyncRestProxy extends RestProxyBase {
     private Object handleRestReturnType(Mono<HttpResponseDecoder.HttpDecodedResponse> asyncHttpDecodedResponse,
         SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
         EnumSet<ErrorOptions> errorOptionsSet) {
-        final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse =
-            ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet)
-                .doOnEach(this::endTracingSpan)
-                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
+        final Mono<HttpResponseDecoder.HttpDecodedResponse> asyncExpectedResponse = endSpanWhenDone(
+                ensureExpectedStatus(asyncHttpDecodedResponse, methodParser, options, errorOptionsSet),
+                context);
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
@@ -237,24 +247,22 @@ public class AsyncRestProxy extends RestProxyBase {
         return result;
     }
 
-    // This handles each onX for the response mono.
-    // The signal indicates the status and contains the metadata we need to end the tracing span.
-    private void endTracingSpan(Signal<HttpResponseDecoder.HttpDecodedResponse> signal) {
-        if (!tracer.isEnabled()) {
-            return;
+    private Mono<HttpResponseDecoder.HttpDecodedResponse> endSpanWhenDone(Mono<HttpResponseDecoder.HttpDecodedResponse> getResponse, Context span) {
+        if (isTracingEnabled(span)) {
+            return getResponse
+                .doOnEach(signal -> {
+                    if (signal.hasValue()) {
+                        int statusCode = signal.get().getSourceResponse().getStatusCode();
+                        tracer.end(statusCode >= 400 ? "" : null, null, span);
+                    } else if (signal.isOnError()) {
+                        tracer.end(null, signal.getThrowable(), span);
+                    }
+                })
+                .doOnCancel(() -> tracer.end("cancel", null, span))
+                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", span));
         }
 
-        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
-        if (signal.isOnComplete() || signal.isOnSubscribe()) {
-            return;
-        }
-
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        ContextView context = signal.getContextView();
-        HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse = signal.hasValue() ? signal.get() : null;
-        Throwable throwable = signal.hasError() ? signal.getThrowable() : null;
-
-        endTracingSpan(httpDecodedResponse, throwable, (Context) context.getOrEmpty("TRACING_CONTEXT").get());
+        return getResponse;
     }
 
     @SuppressWarnings("unchecked")
@@ -267,7 +275,7 @@ public class AsyncRestProxy extends RestProxyBase {
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
-            request.setBody(BinaryData.fromByteBuffer(serializeAsJsonSerializable(bodyContentObject)));
+            request.setBody(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject));
             return;
         }
 

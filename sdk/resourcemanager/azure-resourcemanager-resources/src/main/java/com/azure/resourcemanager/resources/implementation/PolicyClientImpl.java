@@ -92,18 +92,6 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         return this.dataPolicyManifests;
     }
 
-    /** The PolicyAssignmentsClient object to access its operations. */
-    private final PolicyAssignmentsClient policyAssignments;
-
-    /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
-     *
-     * @return the PolicyAssignmentsClient object.
-     */
-    public PolicyAssignmentsClient getPolicyAssignments() {
-        return this.policyAssignments;
-    }
-
     /** The PolicyDefinitionsClient object to access its operations. */
     private final PolicyDefinitionsClient policyDefinitions;
 
@@ -126,6 +114,18 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
      */
     public PolicySetDefinitionsClient getPolicySetDefinitions() {
         return this.policySetDefinitions;
+    }
+
+    /** The PolicyAssignmentsClient object to access its operations. */
+    private final PolicyAssignmentsClient policyAssignments;
+
+    /**
+     * Gets the PolicyAssignmentsClient object to access its operations.
+     *
+     * @return the PolicyAssignmentsClient object.
+     */
+    public PolicyAssignmentsClient getPolicyAssignments() {
+        return this.policyAssignments;
     }
 
     /** The PolicyExemptionsClient object to access its operations. */
@@ -164,9 +164,9 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
-        this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);
         this.policySetDefinitions = new PolicySetDefinitionsClientImpl(this);
+        this.policyAssignments = new PolicyAssignmentsClientImpl(this);
         this.policyExemptions = new PolicyExemptionsClientImpl(this);
     }
 }

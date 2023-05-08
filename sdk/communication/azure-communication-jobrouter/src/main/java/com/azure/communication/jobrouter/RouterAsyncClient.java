@@ -3,7 +3,7 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
+import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImpl;
 import com.azure.communication.jobrouter.implementation.JobRoutersImpl;
 import com.azure.communication.jobrouter.implementation.convertors.JobAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.WorkerAdapter;
@@ -63,7 +63,7 @@ public final class RouterAsyncClient {
 
     private final JobRoutersImpl jobRouter;
 
-    RouterAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterService) {
+    RouterAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
         this.jobRouter = jobRouterService.getJobRouters();
     }
 
@@ -570,7 +570,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterJobItem> listJobs() {
         try {
-            return jobRouter.listJobsAsync();
+            return jobRouter.listJobsAsync(null, null, null, null, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1026,7 +1026,7 @@ public final class RouterAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RouterWorkerItem> listWorkers() {
         try {
-            return jobRouter.listWorkersAsync();
+            return jobRouter.listWorkersAsync(null, null, null, null, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

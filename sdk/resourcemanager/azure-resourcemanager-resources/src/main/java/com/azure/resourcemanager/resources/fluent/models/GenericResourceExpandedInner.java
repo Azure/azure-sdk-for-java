@@ -17,25 +17,26 @@ import java.util.Map;
 @Fluent
 public final class GenericResourceExpandedInner extends GenericResourceInner {
     /*
-     * The created time of the resource. This is only present if requested via
-     * the $expand query parameter.
+     * The created time of the resource. This is only present if requested via the $expand query parameter.
      */
     @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
-     * The changed time of the resource. This is only present if requested via
-     * the $expand query parameter.
+     * The changed time of the resource. This is only present if requested via the $expand query parameter.
      */
     @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
-     * The provisioning state of the resource. This is only present if
-     * requested via the $expand query parameter.
+     * The provisioning state of the resource. This is only present if requested via the $expand query parameter.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /** Creates an instance of GenericResourceExpandedInner class. */
+    public GenericResourceExpandedInner() {
+    }
 
     /**
      * Get the createdTime property: The created time of the resource. This is only present if requested via the $expand

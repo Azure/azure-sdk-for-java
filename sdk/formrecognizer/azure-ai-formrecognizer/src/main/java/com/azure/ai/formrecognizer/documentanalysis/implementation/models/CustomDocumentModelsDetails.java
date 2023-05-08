@@ -4,11 +4,12 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details regarding custom document models. */
-@Fluent
+@Immutable
 public final class CustomDocumentModelsDetails {
     /*
      * Number of custom document models in the current resource.
@@ -22,8 +23,19 @@ public final class CustomDocumentModelsDetails {
     @JsonProperty(value = "limit", required = true)
     private int limit;
 
-    /** Creates an instance of CustomDocumentModelsDetails class. */
-    public CustomDocumentModelsDetails() {}
+    /**
+     * Creates an instance of CustomDocumentModelsDetails class.
+     *
+     * @param count the count value to set.
+     * @param limit the limit value to set.
+     */
+    @JsonCreator
+    public CustomDocumentModelsDetails(
+            @JsonProperty(value = "count", required = true) int count,
+            @JsonProperty(value = "limit", required = true) int limit) {
+        this.count = count;
+        this.limit = limit;
+    }
 
     /**
      * Get the count property: Number of custom document models in the current resource.
@@ -35,33 +47,11 @@ public final class CustomDocumentModelsDetails {
     }
 
     /**
-     * Set the count property: Number of custom document models in the current resource.
-     *
-     * @param count the count value to set.
-     * @return the CustomDocumentModelsDetails object itself.
-     */
-    public CustomDocumentModelsDetails setCount(int count) {
-        this.count = count;
-        return this;
-    }
-
-    /**
      * Get the limit property: Maximum number of custom document models supported in the current resource.
      *
      * @return the limit value.
      */
     public int getLimit() {
         return this.limit;
-    }
-
-    /**
-     * Set the limit property: Maximum number of custom document models supported in the current resource.
-     *
-     * @param limit the limit value to set.
-     * @return the CustomDocumentModelsDetails object itself.
-     */
-    public CustomDocumentModelsDetails setLimit(int limit) {
-        this.limit = limit;
-        return this;
     }
 }

@@ -19,8 +19,7 @@ import java.util.List;
 @Fluent
 public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer {
     /*
-     * URI of the shell script to be run for customizing. It can be a github
-     * link, SAS URI for Azure Storage, etc
+     * URI of the shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
      */
     @JsonProperty(value = "scriptUri")
     private String scriptUri;
@@ -36,6 +35,10 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
      */
     @JsonProperty(value = "inline")
     private List<String> inline;
+
+    /** Creates an instance of ImageTemplateShellCustomizer class. */
+    public ImageTemplateShellCustomizer() {
+    }
 
     /**
      * Get the scriptUri property: URI of the shell script to be run for customizing. It can be a github link, SAS URI

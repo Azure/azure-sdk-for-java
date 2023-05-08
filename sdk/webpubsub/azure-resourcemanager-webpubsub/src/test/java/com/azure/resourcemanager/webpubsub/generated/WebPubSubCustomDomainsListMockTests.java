@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.CustomDomain;
 import java.nio.ByteBuffer;
@@ -62,7 +61,7 @@ public final class WebPubSubCustomDomainsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CustomDomain> response =
-            manager.webPubSubCustomDomains().list("ncj", "budurgkakmo", Context.NONE);
+            manager.webPubSubCustomDomains().list("ncj", "budurgkakmo", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("jk", response.iterator().next().domainName());
         Assertions.assertEquals("fhmouwq", response.iterator().next().customCertificate().id());

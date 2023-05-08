@@ -17,7 +17,7 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.TableAzureNamedKeyCredentialPolicy;
@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * This class tests the Autorest code for the Tables track 2 SDK
  */
-public class AzureTableImplTest extends TestBase {
+public class AzureTableImplTest extends TestProxyTestBase {
     private static final int TIMEOUT_IN_MS = 100_000;
 
     private final QueryOptions defaultQueryOptions = new QueryOptions()
@@ -71,6 +71,7 @@ public class AzureTableImplTest extends TestBase {
 
     @Override
     protected void beforeTest() {
+        TestUtils.addTestProxyTestSanitizersAndMatchers(interceptorManager);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         final StorageConnectionString storageConnectionString
             = StorageConnectionString.create(connectionString, logger);

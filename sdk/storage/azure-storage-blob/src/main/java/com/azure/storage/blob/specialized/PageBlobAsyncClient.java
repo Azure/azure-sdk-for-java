@@ -72,8 +72,6 @@ import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a page blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -344,7 +342,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             options.getSequenceNumber(), null, tagsToString(options.getTags()),
             immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(rb -> {
                 PageBlobsCreateHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -541,7 +539,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
             getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(rb -> {
                 PageBlobsUploadPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -720,7 +718,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
             sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
             sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(),
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(rb -> {
                 PageBlobsUploadPagesFromURLHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -814,8 +812,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             pageBlobRequestConditions.getIfSequenceNumberEqualTo(), pageBlobRequestConditions.getIfModifiedSince(),
             pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
             pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
-            getCustomerProvidedKey(), encryptionScope,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 PageBlobsClearPagesHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -903,7 +900,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                context)
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue()));
     }
@@ -1017,7 +1014,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)),
+                context),
             timeout);
     }
 
@@ -1275,7 +1272,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                context)
             .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), response.getValue()));
     }
@@ -1339,7 +1336,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
                 requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
                 requestConditions.getTagsConditions(), null, marker, options.getMaxResultsPerPage(),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)),
+                context),
             timeout);
     }
 
@@ -1414,7 +1411,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             getCustomerProvidedKey(), encryptionScope,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(rb -> {
                 PageBlobsResizeHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
@@ -1500,7 +1497,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), sequenceNumber, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            context)
             .map(rb -> {
                 PageBlobsUpdateSequenceNumberHeaders hd = rb.getDeserializedHeaders();
                 PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), null, null, null, null,
@@ -1692,7 +1689,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 builder.toString(), null, modifiedRequestConditions.getIfModifiedSince(),
                 modifiedRequestConditions.getIfUnmodifiedSince(), modifiedRequestConditions.getIfMatch(),
                 modifiedRequestConditions.getIfNoneMatch(), modifiedRequestConditions.getTagsConditions(), null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyStatus()));
     }
 }

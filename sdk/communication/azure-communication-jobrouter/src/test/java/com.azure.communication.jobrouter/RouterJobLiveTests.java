@@ -16,6 +16,7 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -28,21 +29,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RouterJobLiveTests extends JobRouterTestBase {
+    private RouterClient routerClient;
+
+    private RouterAdministrationClient routerAdminClient;
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void unassignJob() {
-        String testName = "UnassignJob";
+    public void unassignJob(HttpClient httpClient) {
         // Setup
+        routerClient = getRouterClient(httpClient);
+        routerAdminClient = getRouterAdministrationClient(httpClient);
+        String testName = "UnassignJob";
         /**
          * Setup queue
          */
         String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
-        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
-        queuesToDelete.add(queueId);
 
         /**
          * Setup worker
@@ -82,13 +87,11 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             .setQueueAssignments(queueAssignments);
 
         RouterWorker worker = routerClient.createWorker(createWorkerOptions);
-        workersToDelete.add(workerId);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, "channel1", queueId);
 
         RouterJob job = routerClient.createJob(createJobOptions);
-        jobsToDelete.add(job.getId());
 
         List<JobOffer> jobOffers = new ArrayList<>();
         long startTimeMillis = System.currentTimeMillis();

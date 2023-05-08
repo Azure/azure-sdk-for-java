@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -12,6 +13,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
@@ -30,12 +32,10 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
-import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -73,8 +73,11 @@ public class TableClientTest extends TableClientTestBase {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
         tableClient = getClientBuilder(tableName, connectionString).buildClient();
+        tableClient.createTable(); 
+    }
 
-        tableClient.createTable();
+    protected void afterTest() {
+        tableClient.deleteTable();
     }
 
     @Test
@@ -96,26 +99,31 @@ public class TableClientTest extends TableClientTestBase {
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
         Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
-            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06); 
 
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
 
+        TokenCredential credential = null;
+        if (interceptorManager.isPlaybackMode()) {
+            credential = new MockTokenCredential();
+        } else if (interceptorManager.isRecordMode()) {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
-        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
-            .tenantId(testResourceNamer.randomUuid())
-            .additionallyAllowedTenants("*")
-            .build();
+            credential = new ClientSecretCredentialBuilder()
+                .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+                .tenantId(testResourceNamer.randomUuid())
+                .additionallyAllowedTenants("*")
+                .build();
+        }
 
         final TableClient tableClient2 =
             getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
                 "https://tablestests.table.core.windows.com"), credential, true).buildClient();
-
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
+
         assertNotNull(tableClient2.createTable());
 
         final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
@@ -771,7 +779,8 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void submitTransactionAllActions() {
-        submitTransactionAllActionsImpl("partitionKey", "rowKey");
+        Runnable func = () -> submitTransactionAllActionsImpl("partitionKey", "rowKey");
+        func.run();
     }
 
     @Test
@@ -1017,7 +1026,6 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    @Disabled
     // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
     // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
@@ -1025,7 +1033,7 @@ public class TableClientTest extends TableClientTestBase {
         // TODO: Will re-enable once the above is fixed. -vicolina
         Assumptions.assumeFalse(IS_COSMOS_TEST, "Skipping Cosmos test.");
 
-        final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
+        final OffsetDateTime expiryTime = OffsetDateTime.of(2023, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("a");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;
 

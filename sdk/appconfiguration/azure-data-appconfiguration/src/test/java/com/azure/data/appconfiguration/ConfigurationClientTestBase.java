@@ -6,7 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -21,8 +21,6 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class ConfigurationClientTestBase extends TestBase {
+public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
@@ -51,11 +49,10 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final int RESOURCE_LENGTH = 16;
 
     public static final String FAKE_CONNECTION_STRING =
-        "Endpoint=http://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
+        "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
     static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
-
     String keyPrefix;
     String labelPrefix;
 
@@ -72,16 +69,7 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
 
-        T client;
-        try {
-            client = clientBuilder.apply(new ConfigurationClientCredentials(connectionString));
-        } catch (InvalidKeyException | NoSuchAlgorithmException e) {
-            logger.error("Could not create an configuration client credentials.", e);
-            fail();
-            client = null;
-        }
-
-        return Objects.requireNonNull(client);
+        return Objects.requireNonNull(clientBuilder.apply(new ConfigurationClientCredentials(connectionString)));
     }
 
     String getKey() {

@@ -5,15 +5,18 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /** The Key model. */
 @Immutable
-public final class Key {
+public final class Key implements JsonSerializable<Key> {
     /*
      * The name of the key.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /** Creates an instance of Key class. */
@@ -26,5 +29,39 @@ public final class Key {
      */
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Key from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Key if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     *     JSON null.
+     * @throws IOException If an error occurs while reading the Key.
+     */
+    public static Key fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    Key deserializedKey = new Key();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("name".equals(fieldName)) {
+                            deserializedKey.name = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedKey;
+                });
     }
 }

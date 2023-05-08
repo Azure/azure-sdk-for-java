@@ -46,8 +46,8 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         SecretClientImpl implClient = spy(new SecretClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {

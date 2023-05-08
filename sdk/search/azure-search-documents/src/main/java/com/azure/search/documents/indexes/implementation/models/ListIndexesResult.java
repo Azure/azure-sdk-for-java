@@ -75,9 +75,9 @@ public final class ListIndexesResult implements JsonSerializable<ListIndexesResu
                         }
                     }
                     if (indexesFound) {
-                        ListIndexesResult deserializedValue = new ListIndexesResult(indexes);
+                        ListIndexesResult deserializedListIndexesResult = new ListIndexesResult(indexes);
 
-                        return deserializedValue;
+                        return deserializedListIndexesResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!indexesFound) {

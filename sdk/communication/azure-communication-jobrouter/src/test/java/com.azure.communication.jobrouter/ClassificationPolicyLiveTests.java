@@ -15,6 +15,7 @@ import com.azure.communication.jobrouter.models.StaticWorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelector;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.options.CreateClassificationPolicyOptions;
+import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -26,25 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ClassificationPolicyLiveTests extends JobRouterTestBase {
     private RouterAdministrationClient routerAdminClient;
 
-    @Override
-    protected void beforeTest() {
-        routerAdminClient = clientSetup(httpPipeline -> new RouterAdministrationClientBuilder()
-            .connectionString(getConnectionString())
-            .pipeline(httpPipeline)
-            .buildClient());
-    }
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createClassificationPolicy() {
+    public void createClassificationPolicy(HttpClient httpClient) {
         // Setup
+        routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
-        distributionPoliciesToDelete.add(distributionPolicyId);
 
         String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
         JobQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
-        queuesToDelete.add(queueId);
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -94,9 +86,13 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
 
         // Action
         ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);
-        classificationPoliciesToDelete.add(classificationPolicyId);
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());
+
+        // Cleanup
+        routerAdminClient.deleteClassificationPolicy(classificationPolicyId);
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 }

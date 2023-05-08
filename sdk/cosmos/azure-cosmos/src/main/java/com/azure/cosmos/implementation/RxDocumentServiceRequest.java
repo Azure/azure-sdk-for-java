@@ -5,16 +5,16 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -79,6 +79,8 @@ public class RxDocumentServiceRequest implements Cloneable {
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
 
+    private volatile boolean nonIdempotentWriteRetriesEnabled = false;
+
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
                 || this.operationType == OperationType.ReadFeed
@@ -100,6 +102,16 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
         }
+    }
+
+    public RxDocumentServiceRequest setNonIdempotentWriteRetriesEnabled(boolean enabled) {
+        this.nonIdempotentWriteRetriesEnabled = enabled;
+
+        return this;
+    }
+
+    public boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
     }
 
     public boolean isReadOnly() {
@@ -149,7 +161,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID();
+        this.activityId = UUID.randomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
         if (!isNameBased) {
@@ -183,7 +195,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID();
+        this.activityId = UUID.randomUUID();
         this.isFeed = false;
 
         if (StringUtils.isNotEmpty(path)) {
@@ -415,6 +427,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
+
         return request;
     }
 
@@ -1034,6 +1047,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
+        rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
         return rxDocumentServiceRequest;
     }
 

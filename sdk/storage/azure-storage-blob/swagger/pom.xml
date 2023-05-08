@@ -4,22 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <parent>
-    <artifactId>azure-autorest-parent</artifactId>
-    <groupId>com.azure.tools</groupId>
-    <version>1.0.0-beta.1</version>
-    <relativePath>../../pom.xml</relativePath>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-code-customization-parent;current} -->
+    <relativePath>../../../parents/azure-code-customization-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-customization</artifactId>
   <version>1.0.0-beta.1</version>
   <modelVersion>4.0.0</modelVersion>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.azure.tools</groupId>
-      <artifactId>azure-autorest-customization</artifactId>
-      <version>1.0.0-beta.6</version>
-    </dependency>
-  </dependencies>
 </project>

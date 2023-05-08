@@ -7,20 +7,19 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.ElasticMonitorUpgrade;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticMonitorUpgradeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticMonitorUpgrade model =
-            BinaryData.fromString("{\"version\":\"y\"}").toObject(ElasticMonitorUpgrade.class);
-        Assertions.assertEquals("y", model.version());
+            BinaryData.fromString("{\"version\":\"xibqeojnx\"}").toObject(ElasticMonitorUpgrade.class);
+        Assertions.assertEquals("xibqeojnx", model.version());
     }
 
-    @Test
-    public void testSerialize() {
-        ElasticMonitorUpgrade model = new ElasticMonitorUpgrade().withVersion("y");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ElasticMonitorUpgrade model = new ElasticMonitorUpgrade().withVersion("xibqeojnx");
         model = BinaryData.fromObject(model).toObject(ElasticMonitorUpgrade.class);
-        Assertions.assertEquals("y", model.version());
+        Assertions.assertEquals("xibqeojnx", model.version());
     }
 }

@@ -81,7 +81,7 @@ public class TextAnalyticsException extends AzureException {
      * @return {@link IterableStream} of {@link TextAnalyticsError}.
      */
     public IterableStream<TextAnalyticsError> getErrors() {
-        return this.errors;
+        return this.errors == null ? IterableStream.of(null) : this.errors;
     }
 
     /**

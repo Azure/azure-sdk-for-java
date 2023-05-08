@@ -213,15 +213,15 @@ public final class EntityLinkingSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        EntityLinkingSkill deserializedValue = new EntityLinkingSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
-                        deserializedValue.defaultLanguageCode = defaultLanguageCode;
-                        deserializedValue.minimumPrecision = minimumPrecision;
-                        deserializedValue.modelVersion = modelVersion;
+                        EntityLinkingSkill deserializedEntityLinkingSkill = new EntityLinkingSkill(inputs, outputs);
+                        deserializedEntityLinkingSkill.setName(name);
+                        deserializedEntityLinkingSkill.setDescription(description);
+                        deserializedEntityLinkingSkill.setContext(context);
+                        deserializedEntityLinkingSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedEntityLinkingSkill.minimumPrecision = minimumPrecision;
+                        deserializedEntityLinkingSkill.modelVersion = modelVersion;
 
-                        return deserializedValue;
+                        return deserializedEntityLinkingSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

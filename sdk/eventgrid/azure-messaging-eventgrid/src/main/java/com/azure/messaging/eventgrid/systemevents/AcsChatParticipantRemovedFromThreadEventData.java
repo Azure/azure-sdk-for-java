@@ -37,6 +37,9 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     @JsonProperty(value = "version")
     private Long version;
 
+    /** Creates an instance of AcsChatParticipantRemovedFromThreadEventData class. */
+    public AcsChatParticipantRemovedFromThreadEventData() {}
+
     /**
      * Get the time property: The time at which the user was removed to the thread.
      *

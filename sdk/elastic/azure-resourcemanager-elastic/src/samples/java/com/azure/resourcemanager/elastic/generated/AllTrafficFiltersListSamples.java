@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AllTrafficFilters List. */
 public final class AllTrafficFiltersListSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/AllTrafficFilters_list.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/AllTrafficFilters_list.json
      */
     /**
      * Sample code: AllTrafficFilters_list.
@@ -17,6 +15,6 @@ public final class AllTrafficFiltersListSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void allTrafficFiltersList(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.allTrafficFilters().listWithResponse("myResourceGroup", "myMonitor", Context.NONE);
+        manager.allTrafficFilters().listWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }
