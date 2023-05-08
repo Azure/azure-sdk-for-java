@@ -9,6 +9,7 @@ import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,6 +27,12 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     private static final String TEST_SUFFIX = "Sync";
     private CommunicationIdentityClient client;
 
+    @BeforeEach
+    public void setup() {
+        super.setup();
+        httpClient = buildSyncAssertingClient(httpClient);
+    }
+
     @Test
     public void createIdentityClientUsingConnectionString() {
         // Arrange
@@ -37,7 +44,6 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
     }
-
 
     @Test
     public void createUser() {
