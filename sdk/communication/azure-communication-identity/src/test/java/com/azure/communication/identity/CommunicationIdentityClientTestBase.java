@@ -68,7 +68,8 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     }
 
     protected HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
+        HttpClient client = httpClient == null ? interceptorManager.getPlaybackClient() : httpClient;
+        return new AssertingHttpClientBuilder(client)
                 .skipRequest((ignored1, ignored2) -> false)
                 .assertAsync()
                 .build();

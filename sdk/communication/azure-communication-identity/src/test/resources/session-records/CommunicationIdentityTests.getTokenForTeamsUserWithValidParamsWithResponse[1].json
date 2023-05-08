@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "32c407a0-c4de-4e99-acda-2b5ce514bdfa",
-      "Content-Type" : "application/json"
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "a8f6fab7-787a-48a8-b3f6-6549fa5f11ad",
+      "user-agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.12; Mac OS X; 13.3.1)"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01, 2023-08-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 09 Mar 2023 08:52:58 GMT",
+      "Date" : "Mon, 08 May 2023 10:54:10 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "277ms",
-      "MS-CV" : "+SmaXWbqAESxDRSD6UgAFg.0",
-      "X-Azure-Ref" : "0ap4JZAAAAAAcUaTGhJtUTLO9HXLO5fACSEVMMDFFREdFMjAwNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Content-Length" : "842",
-      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2023-03-09T09:55:49.8494339+00:00\"}",
-      "x-ms-client-request-id" : "32c407a0-c4de-4e99-acda-2b5ce514bdfa",
+      "X-Processing-Time" : "450ms",
+      "MS-CV" : "WCliyPznEUqplnD86vvjxw.0",
+      "X-Azure-Ref" : "009RYZAAAAAA28AHVtN3xTKQ+Is5EP4fpUFJHMDFFREdFMDkwNwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Content-Length" : "892",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2023-05-08T12:02:32.5620633+00:00\"}",
+      "x-ms-client-request-id" : "a8f6fab7-787a-48a8-b3f6-6549fa5f11ad",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json; charset=utf-8"
     },

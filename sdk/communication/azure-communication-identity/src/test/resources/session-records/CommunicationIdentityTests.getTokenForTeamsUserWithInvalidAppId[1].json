@@ -1,24 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "dbe8a1c0-f8b8-4a91-b472-2057baa46a3e",
-      "Content-Type" : "application/json"
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "0b166702-7161-4527-9463-23e4b6b08903",
+      "user-agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.12; Mac OS X; 13.3.1)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Thu, 09 Mar 2023 08:53:00 GMT",
+      "Date" : "Mon, 08 May 2023 10:54:19 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "103ms",
-      "MS-CV" : "Ug1NUEU92UO+ZewEinaOKQ.0",
-      "X-Azure-Ref" : "0bZ4JZAAAAABVDvSDYA/KR60lrvrbo7g1SEVMMDFFREdFMjAwNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "17ms",
+      "MS-CV" : "IXBuv6ZZNUmiczTISopBVw.0",
+      "X-Azure-Ref" : "03NRYZAAAAAAfoJxOMuHPS7WIDFjo/rR0UFJHMDFFREdFMDkwNwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"AppId: The AppId field is required.\",\"target\":\"AppId\"}}",
-      "x-ms-client-request-id" : "dbe8a1c0-f8b8-4a91-b472-2057baa46a3e",
+      "x-ms-client-request-id" : "0b166702-7161-4527-9463-23e4b6b08903",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

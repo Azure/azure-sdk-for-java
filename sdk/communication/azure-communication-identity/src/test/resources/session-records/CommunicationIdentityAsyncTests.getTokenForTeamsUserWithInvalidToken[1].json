@@ -1,24 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "91a889ff-29b5-42b9-92ba-2a76a222398f",
-      "Content-Type" : "application/json"
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "ecdb6476-7ecc-4b09-9f47-977f1b6d0bef",
+      "user-agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.12; Mac OS X; 13.3.1)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "401",
-      "Date" : "Thu, 09 Mar 2023 08:53:04 GMT",
+      "Date" : "Mon, 08 May 2023 10:53:51 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "98ms",
-      "MS-CV" : "pXEEY2iuJ0ehROB9bR6ivw.0",
-      "X-Azure-Ref" : "0cJ4JZAAAAADlI7eghI3tSo+N74hlEmDUSEVMMDFFREdFMjAxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "11ms",
+      "MS-CV" : "Nh3S0VaTEkqT8ZVgwtfJFg.0",
+      "X-Azure-Ref" : "0v9RYZAAAAABrPuob4TLOQZkK9wbPfpE8UFJHMDFFREdFMDkxNwBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "Body" : "{\"error\":{\"code\":\"InvalidAccessToken\",\"message\":\"Provided access token is not valid.\"}}",
-      "x-ms-client-request-id" : "91a889ff-29b5-42b9-92ba-2a76a222398f",
+      "x-ms-client-request-id" : "ecdb6476-7ecc-4b09-9f47-977f1b6d0bef",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },
