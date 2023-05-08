@@ -4,6 +4,7 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.implementation.TestingHelpers;
@@ -147,7 +148,9 @@ public abstract class TestBase implements BeforeEachCallback {
         } else if (testInfo.getTags().contains("Live")) {
             localTestMode = TestMode.LIVE;
         }
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled());
+        this.testContextManager =
+            new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled(),
+                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null);
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 
@@ -160,7 +163,6 @@ public abstract class TestBase implements BeforeEachCallback {
 
         if (isTestProxyEnabled()) {
             interceptorManager.setHttpClient(getHttpClients().findFirst().orElse(null));
-            interceptorManager.setProxyUrl(this.proxyUrl);
             // The supplier/consumer are used to retrieve/store variables over the wire.
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),

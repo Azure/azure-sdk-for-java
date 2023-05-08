@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The options for creating a call.
  */
 @Fluent
-public class HangUpOptions {
+public final class HangUpOptions {
     /**
      * Boolean to determine if the call should be terminated for all participants.
      */

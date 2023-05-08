@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByConfigurationStore. */
 public final class PrivateLinkResourcesListByConfigurationStoreSamples {
     /*
-     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2022-05-01/examples/PrivateLinkResourcesListByConfigurationStore.json
+     * x-ms-original-file: specification/appconfiguration/resource-manager/Microsoft.AppConfiguration/stable/2023-03-01/examples/PrivateLinkResourcesListByConfigurationStore.json
      */
     /**
      * Sample code: PrivateLinkResources_ListGroupIds.
@@ -18,6 +16,8 @@ public final class PrivateLinkResourcesListByConfigurationStoreSamples {
      */
     public static void privateLinkResourcesListGroupIds(
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager manager) {
-        manager.privateLinkResources().listByConfigurationStore("myResourceGroup", "contoso", Context.NONE);
+        manager
+            .privateLinkResources()
+            .listByConfigurationStore("myResourceGroup", "contoso", com.azure.core.util.Context.NONE);
     }
 }

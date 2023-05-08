@@ -30,8 +30,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
+    private static final ClientLogger LOGGER = new ClientLogger(RsaKeyCryptographyClient.class);
+
     private KeyPair keyPair;
-    private final ClientLogger logger = new ClientLogger(RsaKeyCryptographyClient.class);
 
     /*
      * Creates a RsaKeyCryptographyClient that uses {@code serviceClient) to service requests
@@ -188,7 +189,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (serviceCryptoAvailable()) {
             return serviceClient.sign(algorithm, digest, context);
         } else {
-            return FluxUtil.monoError(logger,
+            return FluxUtil.monoError(LOGGER,
                 new UnsupportedOperationException("Sign operation on Local RSA key is not supported currently."));
         }
     }
@@ -199,7 +200,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (serviceCryptoAvailable()) {
             return serviceClient.verify(algorithm, digest, signature, context);
         } else {
-            return FluxUtil.monoError(logger,
+            return FluxUtil.monoError(LOGGER,
                 new UnsupportedOperationException("Verify operation on Local RSA key is not supported currently."));
         }
     }

@@ -17,11 +17,13 @@ public final class RemoveParticipantRequestInternal {
     private CommunicationIdentifierModel participantToRemove;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of RemoveParticipantRequestInternal class. */
+    public RemoveParticipantRequestInternal() {}
 
     /**
      * Get the participantToRemove property: The participants to be removed from the call.

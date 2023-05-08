@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.generated;
 /** Samples for Subscriptions ListLocations. */
 public final class SubscriptionsListLocationsSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetLocationsWithExtendedLocations.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocationsWithExtendedLocations.json
      */
     /**
      * Sample code: GetLocationsWithExtendedLocations.
@@ -20,11 +20,11 @@ public final class SubscriptionsListLocationsSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .listLocations("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", true, com.azure.core.util.Context.NONE);
+            .listLocations("a1ffc958-d2c7-493e-9f1e-125a0477f536", true, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetLocations.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
      */
     /**
      * Sample code: GetLocationsWithASubscriptionId.
@@ -37,6 +37,6 @@ public final class SubscriptionsListLocationsSamples {
             .manager()
             .subscriptionClient()
             .getSubscriptions()
-            .listLocations("291bba3f-e0a5-47bc-a099-3bdcb2a50a05", null, com.azure.core.util.Context.NONE);
+            .listLocations("a1ffc958-d2c7-493e-9f1e-125a0477f536", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -50,6 +50,10 @@ public final class ConfigurationStoreInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ConfigurationStoreInner class. */
+    public ConfigurationStoreInner() {
+    }
+
     /**
      * Get the identity property: The managed identity information, if configured.
      *

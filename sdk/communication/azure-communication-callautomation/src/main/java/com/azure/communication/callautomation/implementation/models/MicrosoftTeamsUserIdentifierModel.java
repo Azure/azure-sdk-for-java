@@ -28,6 +28,9 @@ public final class MicrosoftTeamsUserIdentifierModel {
     @JsonProperty(value = "cloud")
     private CommunicationCloudEnvironmentModel cloud;
 
+    /** Creates an instance of MicrosoftTeamsUserIdentifierModel class. */
+    public MicrosoftTeamsUserIdentifierModel() {}
+
     /**
      * Get the userId property: The userId property.
      *

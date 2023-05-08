@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "c4c9ad5c-609c-4acf-859f-41d6228741bc",
@@ -115,7 +115,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "743ac1f6-14e3-43f0-831b-e5565370ff79",
@@ -350,7 +350,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "7a2c3a21-4101-40e4-bdec-937bf3abfb15",
@@ -372,7 +372,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/PutVM3Min;362,Microsoft.Compute/PutVM30Min;1832",
       "Expires" : "-1",
       "Content-Length" : "3113",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/6229d76d-4ef1-49ae-8005-82e57d68d1ab?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/6229d76d-4ef1-49ae-8005-82e57d68d1ab?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
       "x-ms-request-id" : "6229d76d-4ef1-49ae-8005-82e57d68d1ab",
       "Body" : "{\r\n  \"name\": \"javavm\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"westus3\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"properties\": {\r\n    \"vmId\": \"b1aaa788-fedc-4efd-bb5c-dbc574ff3163\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_A1_v2\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"Canonical\",\r\n        \"offer\": \"UbuntuServer\",\r\n        \"sku\": \"18.04-LTS\",\r\n        \"version\": \"latest\",\r\n        \"exactVersion\": \"18.04.202301100\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Linux\",\r\n        \"createOption\": \"FromImage\",\r\n        \"caching\": \"ReadWrite\",\r\n        \"managedDisk\": {\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        },\r\n        \"deleteOption\": \"Delete\",\r\n        \"diskSizeGB\": 30\r\n      },\r\n      \"dataDisks\": [\r\n        {\r\n          \"lun\": 0,\r\n          \"name\": \"datadisk2\",\r\n          \"createOption\": \"Attach\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\",\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/disks/datadisk2\"\r\n          },\r\n          \"deleteOption\": \"Delete\",\r\n          \"diskSizeGB\": 10,\r\n          \"toBeDetached\": false\r\n        },\r\n        {\r\n          \"lun\": 1,\r\n          \"createOption\": \"Empty\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"deleteOption\": \"Delete\",\r\n          \"diskSizeGB\": 10,\r\n          \"toBeDetached\": false\r\n        }\r\n      ]\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"testuser\",\r\n      \"linuxConfiguration\": {\r\n        \"disablePasswordAuthentication\": true,\r\n        \"ssh\": {\r\n          \"publicKeys\": [\r\n            {\r\n              \"path\": \"/home/testuser/.ssh/authorized_keys\",\r\n              \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDzcFJ3gVGLbEOLCPqZcSOkRcaT1DIDoQdb1E6MYFlvm0wErSElIPqRSIUtSUCJPKYhs0MQklNHsZIxCBNlKjbSBjbz14gbyJfRevBOIKXf9yUskA6eG7ryMY9nj0DJrPKhiyJ2qgykAStL1IdK9oGPpBVonLtJsol9IeDIAlARSQ==\"\r\n            }\r\n          ]\r\n        },\r\n        \"provisionVMAgent\": true,\r\n        \"patchSettings\": {\r\n          \"patchMode\": \"ImageDefault\",\r\n          \"assessmentMode\": \"ImageDefault\"\r\n        },\r\n        \"enableVMAgentPlatformUpdates\": false\r\n      },\r\n      \"secrets\": [],\r\n      \"allowExtensionOperations\": true,\r\n      \"requireGuestProvisionSignal\": true\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Network/networkInterfaces/nic267025e9e42\",\"properties\":{\"primary\":true,\"deleteOption\":\"Delete\"}}]},\r\n    \"provisioningState\": \"Creating\",\r\n    \"timeCreated\": \"2023-01-13T02:23:09.2994096+00:00\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "7a2c3a21-4101-40e4-bdec-937bf3abfb15",
@@ -381,7 +381,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/6229d76d-4ef1-49ae-8005-82e57d68d1ab?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/6229d76d-4ef1-49ae-8005-82e57d68d1ab?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "7c2e4347-ee6b-41b1-9390-9ba8b8177558"
@@ -409,7 +409,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/6229d76d-4ef1-49ae-8005-82e57d68d1ab?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/6229d76d-4ef1-49ae-8005-82e57d68d1ab?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "3fd9ffec-033c-470d-84c9-dce7957216fd"
@@ -437,7 +437,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "8ca27314-97fd-4291-afea-02d57439dd02"
@@ -465,7 +465,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "4349960b-a6c3-4479-9d8c-6ddfb5a54f89",
@@ -494,7 +494,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "a3175772-b2b4-4a58-be34-684ab9574d1d",
@@ -516,15 +516,15 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/DeleteVM3Min;239,Microsoft.Compute/DeleteVM30Min;1199",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
       "x-ms-request-id" : "9b794eb9-b16c-4062-8467-35e4d2faeeb9",
       "x-ms-client-request-id" : "a3175772-b2b4-4a58-be34-684ab9574d1d",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2022-11-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2023-03-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "c18fde68-cd8d-4b76-af8b-b6fc444fb3e3"
@@ -552,7 +552,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "e745bd45-1253-4280-925a-3f34f0282c59"
@@ -580,7 +580,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "4c434d4f-a1bf-4ee5-bce7-eb47ef077688"
@@ -608,7 +608,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/9b794eb9-b16c-4062-8467-35e4d2faeeb9?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "1f1711b7-bc14-46a6-9b99-d7f7a88a4dbd"
@@ -634,7 +634,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/resources?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/resources?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "c12efbea-b9c8-4ee6-89bd-d8ec1c4a6fa9",
@@ -777,7 +777,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "86e8031c-0424-429f-92c3-8a47a9981061",
@@ -865,7 +865,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "ca9d285e-33a6-4f47-b36b-3027719feb46",
@@ -887,7 +887,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/PutVM3Min;365,Microsoft.Compute/PutVM30Min;1835",
       "Expires" : "-1",
       "Content-Length" : "2515",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/5571597f-95fe-4f5f-9673-e1bf38b3d073?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/5571597f-95fe-4f5f-9673-e1bf38b3d073?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
       "x-ms-request-id" : "5571597f-95fe-4f5f-9673-e1bf38b3d073",
       "Body" : "{\r\n  \"name\": \"javavm\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"westus3\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"properties\": {\r\n    \"vmId\": \"62986836-b6b0-4810-ac9c-edc72d33db13\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_A1_v2\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"Canonical\",\r\n        \"offer\": \"UbuntuServer\",\r\n        \"sku\": \"18.04-LTS\",\r\n        \"version\": \"latest\",\r\n        \"exactVersion\": \"18.04.202301100\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Linux\",\r\n        \"createOption\": \"FromImage\",\r\n        \"caching\": \"ReadWrite\",\r\n        \"managedDisk\": {\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        },\r\n        \"deleteOption\": \"Delete\",\r\n        \"diskSizeGB\": 30\r\n      },\r\n      \"dataDisks\": []\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"testuser\",\r\n      \"linuxConfiguration\": {\r\n        \"disablePasswordAuthentication\": true,\r\n        \"ssh\": {\r\n          \"publicKeys\": [\r\n            {\r\n              \"path\": \"/home/testuser/.ssh/authorized_keys\",\r\n              \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDzcFJ3gVGLbEOLCPqZcSOkRcaT1DIDoQdb1E6MYFlvm0wErSElIPqRSIUtSUCJPKYhs0MQklNHsZIxCBNlKjbSBjbz14gbyJfRevBOIKXf9yUskA6eG7ryMY9nj0DJrPKhiyJ2qgykAStL1IdK9oGPpBVonLtJsol9IeDIAlARSQ==\"\r\n            }\r\n          ]\r\n        },\r\n        \"provisionVMAgent\": true,\r\n        \"patchSettings\": {\r\n          \"patchMode\": \"ImageDefault\",\r\n          \"assessmentMode\": \"ImageDefault\"\r\n        },\r\n        \"enableVMAgentPlatformUpdates\": false\r\n      },\r\n      \"secrets\": [],\r\n      \"allowExtensionOperations\": true,\r\n      \"requireGuestProvisionSignal\": true\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Network/networkInterfaces/nic08264f0deb9\",\"properties\":{\"primary\":true,\"deleteOption\":\"Delete\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Network/networkInterfaces/nic18181d\",\"properties\":{\"primary\":false,\"deleteOption\":\"Delete\"}}]},\r\n    \"provisioningState\": \"Creating\",\r\n    \"timeCreated\": \"2023-01-13T02:25:16.7384026+00:00\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "ca9d285e-33a6-4f47-b36b-3027719feb46",
@@ -896,7 +896,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/5571597f-95fe-4f5f-9673-e1bf38b3d073?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/5571597f-95fe-4f5f-9673-e1bf38b3d073?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "21e9cace-5495-4d4f-8e04-a63d9ea3f43d"
@@ -924,7 +924,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/5571597f-95fe-4f5f-9673-e1bf38b3d073?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/5571597f-95fe-4f5f-9673-e1bf38b3d073?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "ce5bff88-d779-446e-b345-ec9ee5a0a74d"
@@ -952,7 +952,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "9e76063b-1c32-4b3b-868c-7c096e5746d7"
@@ -980,7 +980,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "8bbb589c-aee7-462d-aa9f-4ade7188e413",
@@ -1002,15 +1002,15 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/DeleteVM3Min;237,Microsoft.Compute/DeleteVM30Min;1197",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
       "x-ms-request-id" : "afbd6d06-d3ee-4bcf-8c00-cf36c5d02041",
       "x-ms-client-request-id" : "8bbb589c-aee7-462d-aa9f-4ade7188e413",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2022-11-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2023-03-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "1d468b62-94fd-4d4e-a5ea-37b8a201d0b1"
@@ -1038,7 +1038,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "d91f183f-5d54-4079-bbac-053092815d28"
@@ -1066,7 +1066,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "df1827eb-f490-4496-b76e-c3fc2f6f258c"
@@ -1094,7 +1094,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/afbd6d06-d3ee-4bcf-8c00-cf36c5d02041?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "8a761575-637f-4463-8eaf-1c7ee1f8867b"
@@ -1120,7 +1120,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/resources?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/resources?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "664e1738-db10-4ef7-84d6-c8ce40dcd026",
@@ -1146,7 +1146,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "530ac4e3-1710-42f7-89be-37d69cf8c4cc",
@@ -1324,7 +1324,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "5a8f7033-b750-4baa-8da0-d7c379b7bb06",
@@ -1346,7 +1346,7 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/PutVM3Min;362,Microsoft.Compute/PutVM30Min;1831",
       "Expires" : "-1",
       "Content-Length" : "3267",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
       "x-ms-request-id" : "a8d2302b-c82f-4fb4-94cb-da3bf3f1e186",
       "Body" : "{\r\n  \"name\": \"javavm\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm\",\r\n  \"type\": \"Microsoft.Compute/virtualMachines\",\r\n  \"location\": \"westus3\",\r\n  \"tags\": {\r\n    \"azsecpack\": \"nonprod\",\r\n    \"platformsettings.host_environment.service.platform_optedin_for_rootcerts\": \"true\"\r\n  },\r\n  \"properties\": {\r\n    \"vmId\": \"6b02c3ec-f858-4daa-aec0-de0f886c8dea\",\r\n    \"hardwareProfile\": {\r\n      \"vmSize\": \"Standard_A1_v2\"\r\n    },\r\n    \"storageProfile\": {\r\n      \"imageReference\": {\r\n        \"publisher\": \"Canonical\",\r\n        \"offer\": \"UbuntuServer\",\r\n        \"sku\": \"18.04-LTS\",\r\n        \"version\": \"latest\",\r\n        \"exactVersion\": \"18.04.202301100\"\r\n      },\r\n      \"osDisk\": {\r\n        \"osType\": \"Linux\",\r\n        \"createOption\": \"FromImage\",\r\n        \"caching\": \"ReadWrite\",\r\n        \"managedDisk\": {\r\n          \"storageAccountType\": \"Standard_LRS\"\r\n        },\r\n        \"deleteOption\": \"Detach\",\r\n        \"diskSizeGB\": 30\r\n      },\r\n      \"dataDisks\": [\r\n        {\r\n          \"lun\": 0,\r\n          \"name\": \"datadisk2\",\r\n          \"createOption\": \"Attach\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\",\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/disks/datadisk2\"\r\n          },\r\n          \"deleteOption\": \"Detach\",\r\n          \"diskSizeGB\": 10,\r\n          \"toBeDetached\": false\r\n        },\r\n        {\r\n          \"lun\": 1,\r\n          \"createOption\": \"Empty\",\r\n          \"caching\": \"ReadWrite\",\r\n          \"managedDisk\": {\r\n            \"storageAccountType\": \"Standard_LRS\"\r\n          },\r\n          \"deleteOption\": \"Detach\",\r\n          \"diskSizeGB\": 10,\r\n          \"toBeDetached\": false\r\n        }\r\n      ]\r\n    },\r\n    \"osProfile\": {\r\n      \"computerName\": \"javavm\",\r\n      \"adminUsername\": \"testuser\",\r\n      \"linuxConfiguration\": {\r\n        \"disablePasswordAuthentication\": true,\r\n        \"ssh\": {\r\n          \"publicKeys\": [\r\n            {\r\n              \"path\": \"/home/testuser/.ssh/authorized_keys\",\r\n              \"keyData\": \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDzcFJ3gVGLbEOLCPqZcSOkRcaT1DIDoQdb1E6MYFlvm0wErSElIPqRSIUtSUCJPKYhs0MQklNHsZIxCBNlKjbSBjbz14gbyJfRevBOIKXf9yUskA6eG7ryMY9nj0DJrPKhiyJ2qgykAStL1IdK9oGPpBVonLtJsol9IeDIAlARSQ==\"\r\n            }\r\n          ]\r\n        },\r\n        \"provisionVMAgent\": true,\r\n        \"patchSettings\": {\r\n          \"patchMode\": \"ImageDefault\",\r\n          \"assessmentMode\": \"ImageDefault\"\r\n        },\r\n        \"enableVMAgentPlatformUpdates\": false\r\n      },\r\n      \"secrets\": [],\r\n      \"allowExtensionOperations\": true,\r\n      \"requireGuestProvisionSignal\": true\r\n    },\r\n    \"networkProfile\": {\"networkInterfaces\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Network/networkInterfaces/nic260753a4c9b\",\"properties\":{\"primary\":true}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Network/networkInterfaces/nic18181d\",\"properties\":{\"primary\":false}}]},\r\n    \"provisioningState\": \"Creating\",\r\n    \"timeCreated\": \"2023-01-13T02:27:40.4273198+00:00\"\r\n  }\r\n}",
       "x-ms-client-request-id" : "5a8f7033-b750-4baa-8da0-d7c379b7bb06",
@@ -1355,7 +1355,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "b8431b9c-fe6c-4b7a-9279-789c5360e493"
@@ -1383,7 +1383,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "8c81aad7-2709-4021-b98b-0d6d01ee7e7d"
@@ -1411,7 +1411,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/a8d2302b-c82f-4fb4-94cb-da3bf3f1e186?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "5fb5c22d-f48c-4a8a-9bdd-00c5ecdb0c92"
@@ -1439,7 +1439,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "a4db26c1-79f3-4061-95b8-1692ec56a3b2"
@@ -1467,7 +1467,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg39731/providers/Microsoft.Compute/virtualMachines/javavm?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "8f0116d8-8270-4a9d-a088-d453adbb22b7",
@@ -1489,15 +1489,15 @@
       "x-ms-ratelimit-remaining-resource" : "Microsoft.Compute/DeleteVM3Min;235,Microsoft.Compute/DeleteVM30Min;1193",
       "Expires" : "-1",
       "Content-Length" : "0",
-      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+      "Azure-AsyncOperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
       "x-ms-request-id" : "ccf8185a-9101-4ab4-be58-b02cea677870",
       "x-ms-client-request-id" : "8f0116d8-8270-4a9d-a088-d453adbb22b7",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2022-11-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2023-03-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "e81b3407-ea26-40d7-9a3f-5d3653d00fda"
@@ -1525,7 +1525,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "49291057-484b-4573-b63e-2934b73cd566"
@@ -1553,7 +1553,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/WestUS3/operations/ccf8185a-9101-4ab4-be58-b02cea677870?p=e31ab481-057f-4274-9ebc-4997640aef0a&monitor=true&api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "feaba952-6fbe-4471-94b8-7fa402a75f42"
@@ -1638,7 +1638,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg39731?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.23.0-beta.1 (17.0.3.1; Mac OS X; 11.7.2)",
       "x-ms-client-request-id" : "294fba7f-f9a7-43c1-86a2-58f0bb9677ec",
