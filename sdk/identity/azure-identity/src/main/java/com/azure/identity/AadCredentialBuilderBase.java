@@ -122,8 +122,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
 
-    public T disableAuthorityValidationAndInstanceDiscovery() {
-        this.identityClientOptions.disableAuthorityValidationAndInstanceDiscovery();
+    public T disableInstanceDiscovery() {
+        this.identityClientOptions.disableInstanceDiscovery();
         return (T) this;
     }
 }

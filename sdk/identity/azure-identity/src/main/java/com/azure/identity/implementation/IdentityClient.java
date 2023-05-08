@@ -219,7 +219,7 @@ public class IdentityClient extends IdentityClientBase {
                         ConfidentialClientApplication.builder(spDetails.get("client"),
                             ClientCredentialFactory.createFromSecret(spDetails.get("key")))
                             .authority(authorityUrl)
-                            .instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
+                            .instanceDiscovery(options.getDisableInstanceDiscovery());
 
                     // If http pipeline is available, then it should override the proxy options if any configured.
                     if (httpPipelineAdapter != null) {
