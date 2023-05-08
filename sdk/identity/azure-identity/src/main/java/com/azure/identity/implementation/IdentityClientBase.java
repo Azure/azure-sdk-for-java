@@ -23,6 +23,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -213,7 +214,13 @@ public abstract class IdentityClientBase {
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getDisableInstanceDiscovery());
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+
+            if (!options.isInstanceDiscoveryEnabled()) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
+                    + " state, the library will not fetch metadata to validate the specified authority host. As a"
+                    + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
+            }
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -268,7 +275,13 @@ public abstract class IdentityClientBase {
             + tenantId;
         PublicClientApplication.Builder builder = PublicClientApplication.builder(clientId);
         try {
-            builder = builder.authority(authorityUrl).instanceDiscovery(options.getDisableInstanceDiscovery());
+            builder = builder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+
+            if (!options.isInstanceDiscoveryEnabled()) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
+                    + " state, the library will not fetch metadata to validate the specified authority host. As a"
+                    + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
+            }
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }
@@ -376,7 +389,14 @@ public abstract class IdentityClientBase {
                 : clientId, credential);
 
         try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getDisableAuthorityValidationAndInstanceDiscovery());
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.isInstanceDiscoveryEnabled());
+
+            if (!options.isInstanceDiscoveryEnabled()) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Instance discovery and authority validation is disabled. In this"
+                    + " state, the library will not fetch metadata to validate the specified authority host. As a"
+                    + " result, it is crucial to ensure that the configured authority host is valid and trustworthy.");
+            }
+
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
         }

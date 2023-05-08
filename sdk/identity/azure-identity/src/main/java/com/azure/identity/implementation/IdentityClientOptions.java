@@ -674,7 +674,7 @@ public final class IdentityClientOptions implements Cloneable {
      * Gets the instance discovery policy.
      * @return boolean indicating if instance discovery is enabled.
      */
-    public boolean getDisableInstanceDiscovery() {
+    public boolean isInstanceDiscoveryEnabled() {
         return this.instanceDiscovery;
     }
 
@@ -737,7 +737,7 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies);
-        if (!getDisableInstanceDiscovery()) {
+        if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }
         return clone;
