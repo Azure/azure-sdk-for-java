@@ -3,6 +3,7 @@
 
 package com.azure.data.schemaregistry;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -40,7 +41,6 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
      */
     public void createAsyncClient() {
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.construct
-        // AAD credential to authorize with Schema Registry service.
         DefaultAzureCredential azureCredential = new DefaultAzureCredentialBuilder()
             .build();
         SchemaRegistryAsyncClient client = new SchemaRegistryClientBuilder()
@@ -99,6 +99,10 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
             .subscribe(properties -> {
                 System.out.printf("Schema id: %s, schema format: %s%n", properties.getId(),
                     properties.getFormat());
+            }, error -> {
+                System.err.println("Error occurred registering schema: " + error);
+            }, () -> {
+                System.out.println("Register schema completed.");
             });
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema-avro
     }
@@ -132,6 +136,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         response.getHeaders().forEach(header -> System.out.printf("%s: %s%n", header.getName(), header.getValue()));
 
         SchemaRegistrySchema schema = response.getValue();
+
         System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
             schema.getProperties().getFormat());
         System.out.println("Schema contents: " + schema.getDefinition());
@@ -145,12 +150,46 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema
-        client.getSchema("{schema-id}").subscribe(schema -> {
-            System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
-                schema.getProperties().getFormat());
-            System.out.println("Schema contents: " + schema.getDefinition());
-        });
+        client.getSchema("{schema-id}")
+            .subscribe(schema -> {
+                System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
+                    schema.getProperties().getFormat());
+                System.out.println("Schema contents: " + schema.getDefinition());
+            }, error -> {
+                System.err.println("Error occurred getting schema: " + error);
+            }, () -> {
+                System.out.println("Get schema completed.");
+            });
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema
+    }
+
+    /**
+     * Gets schema by name, group name, version using async client.
+     */
+    public void getSchemaWithResponseAsync() {
+        SchemaRegistryAsyncClient client = buildAsyncClient();
+
+        // BEGIN: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
+        client.getSchemaWithResponse("{group-name}",
+                "{schema-name}", 1, Context.NONE)
+            .subscribe(response -> {
+                System.out.println("Headers in HTTP response: ");
+
+                for (HttpHeader header : response.getHeaders()) {
+                    System.out.printf("%s: %s%n", header.getName(), header.getValue());
+                }
+
+                SchemaRegistrySchema schema = response.getValue();
+
+                System.out.printf("Schema id: %s, schema format: %s%n", schema.getProperties().getId(),
+                    schema.getProperties().getFormat());
+                System.out.println("Schema contents: " + schema.getDefinition());
+            }, error -> {
+                System.err.println("Error occurred getting schema: " + error);
+            }, () -> {
+                System.out.println("Get schema with response completed.");
+            });
+        // END: com.azure.data.schemaregistry.schemaregistryclient.getschemawithresponse
     }
 
     /**
@@ -176,7 +215,9 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         SchemaProperties properties = client.getSchemaProperties("{schema-group}", "{schema-name}",
             schemaContent, SchemaFormat.AVRO);
 
-        System.out.println("Retrieved schema id: " + properties.getId());
+        System.out.println("Schema id: " + properties.getId());
+        System.out.println("Format: " + properties.getFormat());
+        System.out.println("Version: " + properties.getVersion());
         // END: com.azure.data.schemaregistry.schemaregistryclient.getschemaproperties
     }
 
@@ -188,9 +229,15 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties
         String schema = "{\"type\":\"enum\",\"name\":\"TEST\",\"symbols\":[\"UNIT\",\"INTEGRATION\"]}";
-        client.getSchemaProperties("{schema-group}", "{schema-name}", schema,
-            SchemaFormat.AVRO).subscribe(properties -> {
-                System.out.println("The schema id: " + properties.getId());
+        client.getSchemaProperties("{schema-group}", "{schema-name}", schema, SchemaFormat.AVRO)
+            .subscribe(properties -> {
+                System.out.println("Schema id: " + properties.getId());
+                System.out.println("Format: " + properties.getFormat());
+                System.out.println("Version: " + properties.getVersion());
+            }, error -> {
+                System.err.println("Error occurred getting schema: " + error);
+            }, () -> {
+                System.out.println("Get schema completed.");
             });
         // END: com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties
     }
