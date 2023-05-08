@@ -3,7 +3,10 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
@@ -18,10 +21,15 @@ public class ConditionalRequest {
     public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        globalConfiguration.put(Configuration.PROPERTY_AZURE_LOG_LEVEL, "1");
 
         // Instantiate a client that will be used to call the service.
         final ConfigurationClient client = new ConfigurationClientBuilder()
+            .configuration(globalConfiguration)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
             .connectionString(connectionString)
             .buildClient();
 
