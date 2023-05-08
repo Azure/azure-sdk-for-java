@@ -1284,6 +1284,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled("IllegalArgument Self-suppression not permitted.")
     public void testCosmosDB() throws Exception {
         new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
     }

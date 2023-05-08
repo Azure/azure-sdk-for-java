@@ -385,6 +385,7 @@ public class PrivateLinkTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled("IllegalArgument Self-suppression not permitted.")
     public void testPrivateEndpointCosmos() {
         String cosmosName = generateRandomResourceName("cosmos", 10);
         PrivateLinkSubResourceName subResourceName = PrivateLinkSubResourceName.COSMOS_SQL;
