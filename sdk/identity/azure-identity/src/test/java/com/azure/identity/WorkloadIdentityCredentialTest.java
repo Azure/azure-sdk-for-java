@@ -38,7 +38,7 @@ public class WorkloadIdentityCredentialTest {
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithExchangeToken(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         })) {
             // test
             WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
@@ -66,7 +66,7 @@ public class WorkloadIdentityCredentialTest {
 
         // mock
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithExchangeTokenSync(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
         })) {
             // test
             WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()

@@ -105,7 +105,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
                 + " guide for more information."
                 + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot")));
         }
-        return identityClient.authenticateWithExchangeToken(request);
+        return identityClient.authenticateWithWorkloadIdentityConfidentialClient(request);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class WorkloadIdentityCredential implements TokenCredential {
                 + " guide for more information."
                 + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
         }
-        return identitySyncClient.authenticateWithExchangeTokenSync(request);
+        return identitySyncClient.authenticateWithWorkloadIdentityConfidentialClient(request);
     }
 
     String getClientId() {

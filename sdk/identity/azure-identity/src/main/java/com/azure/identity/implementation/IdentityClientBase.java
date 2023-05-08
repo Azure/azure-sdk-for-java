@@ -32,6 +32,7 @@ import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -78,8 +79,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
@@ -360,6 +363,42 @@ public abstract class IdentityClientBase {
 
         return applicationBuilder.build();
     }
+
+    ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
+        String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
+            + "/" + tenantId;
+
+        // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
+        IClientCredential credential = ClientCredentialFactory
+            .createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
+        ConfidentialClientApplication.Builder applicationBuilder =
+            ConfidentialClientApplication.builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY"
+                : clientId, credential);
+
+        try {
+            applicationBuilder = applicationBuilder.authority(authorityUrl).instanceDiscovery(options.getInstanceDiscovery());
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
+        }
+
+        applicationBuilder.appTokenProvider(getWorkloadIdentityTokenProvider());
+
+
+        initializeHttpPipelineAdapter();
+        if (httpPipelineAdapter != null) {
+            applicationBuilder.httpClient(httpPipelineAdapter);
+        } else {
+            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
+        }
+
+        if (options.getExecutorService() != null) {
+            applicationBuilder.executorService(options.getExecutorService());
+        }
+
+        return applicationBuilder.build();
+    }
+
+    abstract Function<AppTokenProviderParameters, CompletableFuture<TokenProviderResult>> getWorkloadIdentityTokenProvider();
 
     DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder buildDeviceCodeFlowParameters(TokenRequestContext request, Consumer<DeviceCodeInfo> deviceCodeConsumer) {
         DeviceCodeFlowParameters.DeviceCodeFlowParametersBuilder parametersBuilder =
