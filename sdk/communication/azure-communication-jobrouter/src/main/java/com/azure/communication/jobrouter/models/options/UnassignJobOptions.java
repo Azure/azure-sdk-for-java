@@ -18,11 +18,6 @@ public final class UnassignJobOptions {
     private final String assignmentId;
 
     /**
-     * If set to true, the service will not re-match the job to a worker.
-     */
-    private Boolean isWorkerRematchPending;
-
-    /**
      * Constructor for UnassignJobOptions.
      * @param jobId jobId to unassign.
      * @param assignmentId assignmentId of the job.
@@ -30,15 +25,6 @@ public final class UnassignJobOptions {
     public UnassignJobOptions(String jobId, String assignmentId) {
         this.jobId = jobId;
         this.assignmentId = assignmentId;
-    }
-
-    /**
-     * Sets isWorkerRematchPending to true or false.
-     * If set to true, the job is NOT queued for re-matching.
-     * @param isWorkerRematchPending true, if job is requested to not be queued; false, otherwise.
-     */
-    public void setIsWorkerRematchPending(Boolean isWorkerRematchPending) {
-        this.isWorkerRematchPending = isWorkerRematchPending;
     }
 
     /**
@@ -55,13 +41,5 @@ public final class UnassignJobOptions {
      */
     public String getAssignmentId() {
         return this.assignmentId;
-    }
-
-    /**
-     * Get isWorkerRematchPending.
-     * @return isWorkerRematchPending
-     */
-    public Boolean getIsWorkerRematchPending() {
-        return this.isWorkerRematchPending;
     }
 }
