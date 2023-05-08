@@ -34,7 +34,6 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-
 /**
  * {@link SchemaRegistryClient} is an HTTP-based client that interacts with Azure Schema Registry service to store and
  * retrieve schemas on demand.
