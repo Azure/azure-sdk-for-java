@@ -13,6 +13,7 @@ import com.azure.communication.jobrouter.models.QueueAssignment;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
+import com.azure.communication.jobrouter.models.options.CloseJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateJobOptions;
 import com.azure.communication.jobrouter.models.options.CreateWorkerOptions;
 import com.azure.communication.jobrouter.models.options.UnassignJobOptions;
@@ -39,7 +40,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         // Setup
         routerClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String testName = "UnassignJob";
+        String testName = "unassign-job-2";
         /**
          * Setup queue
          */
@@ -117,5 +118,12 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(1, unassignJobResult.getUnassignmentCount());
+
+        // Cleanup
+        routerClient.cancelJob(jobId, "Done.", "test");
+        routerClient.deleteJob(jobId);
+        routerClient.deleteWorker(workerId);
+        routerAdminClient.deleteQueue(queueId);
+        routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 }
