@@ -6,6 +6,7 @@
 - Added `values()` methods to all ExpandableStringEnum models.
 
 ### Breaking Changes
+> These changes do not impact the API of stable versions such as `5.2.0`. Only code written against the beta versions such as `5.3.0-beta.1` may be affected.
 - Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features, 
   which were introduced in the previous beta releases.
 
