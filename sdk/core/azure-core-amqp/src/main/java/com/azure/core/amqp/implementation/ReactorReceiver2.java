@@ -136,10 +136,9 @@ public class ReactorReceiver2 implements AmqpReceiveLink, AsyncCloseable, AutoCl
             this.tokenManager.getAuthorizationResults()
                 .onErrorResume(error -> {
                     // When we encounter an error refreshing authorization results, close the receive link.
-                    final Mono<Void> operation =
-                        closeAsync("Token renewal failure. Disposing receive link.",
-                            new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
-                                error.getMessage()));
+                    final Mono<Void> operation = closeAsync("Token renewal failure. Disposing receive link.",
+                        new ErrorCondition(Symbol.getSymbol(AmqpErrorCondition.NOT_ALLOWED.getErrorCondition()),
+                            error.getMessage()));
 
                     return operation.then(Mono.empty());
                 }).subscribe(response ->
