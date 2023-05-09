@@ -164,7 +164,7 @@ public class ReactorHandlerProvider {
     }
 
     /**
-     * Creates a new link handler for receiving messages.
+     * Creates a new v2 link handler for receiving messages.
      *
      * @param connectionId Identifier of the parent connection that created this session.
      * @param hostname Fully qualified namespace of the parent connection.
