@@ -16,6 +16,9 @@ public final class DeviceTwinMetadata {
     @JsonProperty(value = "lastUpdated")
     private String lastUpdated;
 
+    /** Creates an instance of DeviceTwinMetadata class. */
+    public DeviceTwinMetadata() {}
+
     /**
      * Get the lastUpdated property: The ISO8601 timestamp of the last time the properties were updated.
      *

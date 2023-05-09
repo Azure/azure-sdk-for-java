@@ -7,6 +7,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.util.Collection;
+
 /**
  * The {@link EntityConditionality} model.
  */
@@ -27,5 +29,10 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
     @JsonCreator
     public static EntityConditionality fromString(String name) {
         return fromString(name, EntityConditionality.class);
+    }
+
+    /** @return known EntityConditionality values. */
+    public static Collection<EntityConditionality> values() {
+        return values(EntityConditionality.class);
     }
 }

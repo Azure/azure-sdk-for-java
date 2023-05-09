@@ -3,6 +3,7 @@
 ## 5.3.0-beta.3 (Unreleased)
 
 ### Features Added
+- Added `values()` methods to all ExpandableStringEnum models.
 
 ### Breaking Changes
 - Removed `Dynamic Classification` feature, which was introduced in the previous beta release.

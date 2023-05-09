@@ -13,9 +13,9 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
-import com.azure.communication.callautomation.models.events.CallConnectedEventData;
-import com.azure.communication.callautomation.models.events.AddParticipantSucceededEventData;
-import com.azure.communication.callautomation.models.events.RemoveParticipantSucceededEventData;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -103,8 +103,8 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnectedEventData callConnectedEventData = waitForEvent(CallConnectedEventData.class, receiverConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callConnectedEventData);
+            CallConnected callConnected = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
 
             // add another receiver to the call
             AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(anotherReceiver));
@@ -125,7 +125,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(anotherAnswerCallResult.getCallConnectionAsync());
 
             // wait for addParticipantSucceed
-            AddParticipantSucceededEventData addParticipantSucceeded = waitForEvent(AddParticipantSucceededEventData.class, callerConnectionId, Duration.ofSeconds(10));
+            AddParticipantSucceeded addParticipantSucceeded = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(addParticipantSucceeded);
 
             // check participant number in the call
@@ -138,7 +138,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(removeParticipantResult);
 
             // wait for removeParticipantSucceed
-            RemoveParticipantSucceededEventData removeParticipantSucceeded = waitForEvent(RemoveParticipantSucceededEventData.class, callerConnectionId, Duration.ofSeconds(10));
+            RemoveParticipantSucceeded removeParticipantSucceeded = waitForEvent(RemoveParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(removeParticipantSucceeded);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

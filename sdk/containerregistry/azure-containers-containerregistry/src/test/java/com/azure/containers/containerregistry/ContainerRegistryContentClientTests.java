@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ContainerRegistryContentClientTests {
     private static final BinaryData SMALL_CONTENT = BinaryData.fromString("foobar");
     private static final String SMALL_CONTENT_SHA256 = "sha256:c3ab8ff13720e8ad9047dd39466b3c8974e592c2fa383d4a3960714caef0c4f2";
-    private static final String DEFAULT_MANIFEST_CONTENT_TYPE = "*/*," + ManifestMediaType.OCI_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST + ",application/vnd.oci.image.index.v1+json"
+    private static final String DEFAULT_MANIFEST_CONTENT_TYPE = "*/*," + ManifestMediaType.OCI_IMAGE_MANIFEST + "," + ManifestMediaType.DOCKER_MANIFEST + ",application/vnd.oci.image.index.v1+json"
         + ",application/vnd.docker.distribution.manifest.list.v2+json,application/vnd.cncf.oras.artifact.manifest.v1+json";
     private static final BinaryData MANIFEST_DATA = BinaryData.fromObject(MANIFEST);
     private static final BinaryData OCI_INDEX = BinaryData.fromString("{\"schemaVersion\":2,\"mediaType\":\"application/vnd.oci.image.index.v1+json\","
@@ -166,7 +166,7 @@ public class ContainerRegistryContentClientTests {
 
         assertArrayEquals(MANIFEST_DATA.toBytes(), result.getManifest().toBytes());
         assertNotNull(result.getManifest().toObject(ManifestMediaType.class));
-        assertEquals(ManifestMediaType.OCI_MANIFEST, result.getManifestMediaType());
+        assertEquals(ManifestMediaType.OCI_IMAGE_MANIFEST, result.getManifestMediaType());
     }
 
     @SyncAsyncTest
@@ -451,8 +451,8 @@ public class ContainerRegistryContentClientTests {
                 }
 
                 HttpHeaders headers = new HttpHeaders()
-                    .add("Content-Range", contentRange != null
-                        ? contentRange :  String.format("bytes %s-%s/%s", start, end, contentLength));
+                    .add("Content-Range", contentRange != null ? contentRange : String.format("bytes %s-%s/%s", start, end, contentLength))
+                    .add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(response.length));
 
                 expectedStartPosition.set(start + CHUNK_SIZE);
                 return new MockHttpResponse(request, 206, headers, response);
@@ -469,7 +469,7 @@ public class ContainerRegistryContentClientTests {
             assertEquals(DEFAULT_MANIFEST_CONTENT_TYPE, request.getHeaders().getValue(HttpHeaderName.ACCEPT));
             HttpHeaders headers = new HttpHeaders()
                 .add(UtilsImpl.DOCKER_DIGEST_HEADER_NAME, digest)
-                .add(HttpHeaderName.CONTENT_TYPE, returnContentType == null ? ManifestMediaType.OCI_MANIFEST.toString() : returnContentType.toString())
+                .add(HttpHeaderName.CONTENT_TYPE, returnContentType == null ? ManifestMediaType.OCI_IMAGE_MANIFEST.toString() : returnContentType.toString())
                 .add(HttpHeaderName.CONTENT_LENGTH, content.getLength().toString());
             return new MockHttpResponse(request, 200, headers, content.toBytes());
         });
