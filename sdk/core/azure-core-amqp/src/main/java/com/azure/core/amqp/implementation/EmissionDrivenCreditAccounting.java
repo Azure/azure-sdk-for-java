@@ -21,6 +21,7 @@ final class EmissionDrivenCreditAccounting extends CreditAccounting {
     /**
      * Create new CreditAccounting to track the messages emitted downstream and use it to compute
      * the credit to send.
+     *
      * @param receiver the receiver for sending credit to the broker.
      * @param subscription the subscription to the receiver's message publisher to request messages when
      *                    needed (the publisher won't translate these requests to network flow performative).
@@ -28,15 +29,23 @@ final class EmissionDrivenCreditAccounting extends CreditAccounting {
      * @param logger the logger.
      */
     EmissionDrivenCreditAccounting(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
-        super(receiver, subscription, validateAndBound(prefetch), logger);
+        super(receiver, subscription, validateAndGet(prefetch), logger);
         // Refill the buffer once 50% of the prefetch has emitted.
         this.limit = this.prefetch - (this.prefetch >> 1);
     }
 
+    /**
+     * Update the credit accounting based on the latest view of the downstream request and messages emitted by
+     * the emitter-loop in the last drain-loop iteration.
+     * <br/>
+     * CONTRACT: Never invoke from the outside of serialized drain-loop in message-flux; the method relies on
+     * the thread-safety and memory visibility the drain-loop provides.
+     *
+     * @param request the latest view of the downstream request.
+     * @param emitted the number of messages emitted by the latest emitter-loop run.
+     */
     @Override
     void update(long request, long emitted) {
-        // Non-thread-safe method, designed ONLY to be called from the serialized drain-loop of message-flux.
-
         if (emitted != 0L) {
             subscription.request(emitted);
             if (emissionAccumulated.addAndGet(emitted) >= limit) {
@@ -49,7 +58,7 @@ final class EmissionDrivenCreditAccounting extends CreditAccounting {
         }
     }
 
-    private static int validateAndBound(int prefetch) {
+    private static int validateAndGet(int prefetch) {
         if (prefetch <= 0) {
             throw new IllegalArgumentException("prefetch >= 1 required but it was " + prefetch);
         }
