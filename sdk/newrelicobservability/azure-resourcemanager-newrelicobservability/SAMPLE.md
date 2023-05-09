@@ -46,7 +46,7 @@
 /** Samples for Accounts List. */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Accounts_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Accounts_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MinimumSet_Gen.
@@ -59,7 +59,7 @@ public final class AccountsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Accounts_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Accounts_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MaximumSet_Gen.
@@ -98,7 +98,7 @@ import java.util.Map;
 /** Samples for Monitors CreateOrUpdate. */
 public final class MonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_CreateOrUpdate_MaximumSet_Gen.
@@ -169,7 +169,7 @@ public final class MonitorsCreateOrUpdateSamples {
 /** Samples for Monitors Delete. */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MinimumSet_Gen.
@@ -182,7 +182,7 @@ public final class MonitorsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MaximumSet_Gen.
@@ -208,7 +208,7 @@ public final class MonitorsDeleteSamples {
 /** Samples for Monitors GetByResourceGroup. */
 public final class MonitorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Get_MaximumSet_Gen.
@@ -230,7 +230,7 @@ import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
 /** Samples for Monitors GetMetricRules. */
 public final class MonitorsGetMetricRulesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MinimumSet_Gen.
@@ -249,7 +249,7 @@ public final class MonitorsGetMetricRulesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MaximumSet_Gen.
@@ -278,7 +278,7 @@ import java.util.Arrays;
 /** Samples for Monitors GetMetricStatus. */
 public final class MonitorsGetMetricStatusSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MinimumSet_Gen.
@@ -297,7 +297,7 @@ public final class MonitorsGetMetricStatusSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MaximumSet_Gen.
@@ -325,7 +325,7 @@ public final class MonitorsGetMetricStatusSamples {
 /** Samples for Monitors List. */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListBySubscription_MaximumSet_Gen.
@@ -348,7 +348,7 @@ import java.util.Arrays;
 /** Samples for Monitors ListAppServices. */
 public final class MonitorsListAppServicesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListAppServices_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListAppServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MaximumSet_Gen.
@@ -369,7 +369,7 @@ public final class MonitorsListAppServicesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListAppServices_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListAppServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MinimumSet_Gen.
@@ -395,7 +395,7 @@ public final class MonitorsListAppServicesSamples {
 /** Samples for Monitors ListByResourceGroup. */
 public final class MonitorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListByResourceGroup_MaximumSet_Gen.
@@ -418,7 +418,7 @@ import java.util.Arrays;
 /** Samples for Monitors ListHosts. */
 public final class MonitorsListHostsSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListHosts_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListHosts_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MinimumSet_Gen.
@@ -439,7 +439,7 @@ public final class MonitorsListHostsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListHosts_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListHosts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MaximumSet_Gen.
@@ -467,7 +467,7 @@ public final class MonitorsListHostsSamples {
 /** Samples for Monitors ListMonitoredResources. */
 public final class MonitorsListMonitoredResourcesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MinimumSet_Gen.
@@ -482,7 +482,7 @@ public final class MonitorsListMonitoredResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MaximumSet_Gen.
@@ -510,7 +510,7 @@ import java.time.OffsetDateTime;
 /** Samples for Monitors SwitchBilling. */
 public final class MonitorsSwitchBillingSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_SwitchBilling_MinimumSet_Gen.
@@ -529,7 +529,7 @@ public final class MonitorsSwitchBillingSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_SwitchBilling_MaximumSet_Gen.
@@ -584,7 +584,7 @@ import java.util.Map;
 /** Samples for Monitors Update. */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Update_MaximumSet_Gen.
@@ -657,7 +657,7 @@ public final class MonitorsUpdateSamples {
 /** Samples for Monitors VmHostPayload. */
 public final class MonitorsVmHostPayloadSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_VmHostPayload_MinimumSet_Gen.
@@ -672,7 +672,7 @@ public final class MonitorsVmHostPayloadSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_VmHostPayload_MaximumSet_Gen.
@@ -694,7 +694,7 @@ public final class MonitorsVmHostPayloadSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
@@ -707,7 +707,7 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
@@ -727,7 +727,7 @@ public final class OperationsListSamples {
 /** Samples for Organizations List. */
 public final class OrganizationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MinimumSet_Gen.
@@ -740,7 +740,7 @@ public final class OrganizationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Organizations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MaximumSet_Gen.
@@ -760,7 +760,7 @@ public final class OrganizationsListSamples {
 /** Samples for Plans List. */
 public final class PlansListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Plans_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Plans_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MaximumSet_Gen.
@@ -773,7 +773,7 @@ public final class PlansListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Plans_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Plans_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MinimumSet_Gen.
@@ -802,7 +802,7 @@ import java.util.Arrays;
 /** Samples for TagRules CreateOrUpdate. */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MaximumSet_Gen.
@@ -841,7 +841,7 @@ public final class TagRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MinimumSet_Gen.
@@ -865,7 +865,7 @@ public final class TagRulesCreateOrUpdateSamples {
 /** Samples for TagRules Delete. */
 public final class TagRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MinimumSet_Gen.
@@ -884,7 +884,7 @@ public final class TagRulesDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MaximumSet_Gen.
@@ -910,7 +910,7 @@ public final class TagRulesDeleteSamples {
 /** Samples for TagRules Get. */
 public final class TagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MinimumSet_Gen.
@@ -929,7 +929,7 @@ public final class TagRulesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MaximumSet_Gen.
@@ -955,7 +955,7 @@ public final class TagRulesGetSamples {
 /** Samples for TagRules ListByNewRelicMonitorResource. */
 public final class TagRulesListByNewRelicMonitorResourceSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.
@@ -971,7 +971,7 @@ public final class TagRulesListByNewRelicMonitorResourceSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.
@@ -1004,7 +1004,7 @@ import java.util.Arrays;
 /** Samples for TagRules Update. */
 public final class TagRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MaximumSet_Gen.
@@ -1050,7 +1050,7 @@ public final class TagRulesUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/TagRules_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MinimumSet_Gen.

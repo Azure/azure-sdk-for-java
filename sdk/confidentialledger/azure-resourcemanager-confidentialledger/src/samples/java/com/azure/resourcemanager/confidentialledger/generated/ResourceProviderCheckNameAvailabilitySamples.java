@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.confidentialledger.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.confidentialledger.models.CheckNameAvailabilityRequest;
 
 /** Samples for ResourceProvider CheckNameAvailability. */
 public final class ResourceProviderCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/stable/2022-05-13/examples/CheckNameAvailability.json
+     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
@@ -25,6 +24,6 @@ public final class ResourceProviderCheckNameAvailabilitySamples {
                 new CheckNameAvailabilityRequest()
                     .withName("sample-name")
                     .withType("Microsoft.ConfidentialLedger/ledgers"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

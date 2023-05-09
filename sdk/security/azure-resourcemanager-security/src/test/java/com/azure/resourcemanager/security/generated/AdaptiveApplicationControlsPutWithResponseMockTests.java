@@ -34,7 +34,7 @@ public final class AdaptiveApplicationControlsPutWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"enforcementMode\":\"None\",\"protectionMode\":{\"exe\":\"Audit\",\"msi\":\"Audit\",\"script\":\"None\",\"executable\":\"Audit\"},\"configurationStatus\":\"NotConfigured\",\"recommendationStatus\":\"NotRecommended\",\"issues\":[],\"sourceSystem\":\"NonAzure_AuditD\",\"vmRecommendations\":[],\"pathRecommendations\":[]},\"location\":\"xrjnbsconxav\",\"id\":\"pney\",\"name\":\"hbjizqfsgnwdx\",\"type\":\"edpqlrfbo\"}";
+            "{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"None\",\"msi\":\"Audit\",\"script\":\"None\",\"executable\":\"Enforce\"},\"configurationStatus\":\"InProgress\",\"recommendationStatus\":\"NoStatus\",\"issues\":[],\"sourceSystem\":\"Azure_AuditD\",\"vmRecommendations\":[],\"pathRecommendations\":[]},\"location\":\"zusitoqcahfs\",\"id\":\"bjmlreesrfwssz\",\"name\":\"lc\",\"type\":\"lisolntfxxc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,23 +65,23 @@ public final class AdaptiveApplicationControlsPutWithResponseMockTests {
         AdaptiveApplicationControlGroup response =
             manager
                 .adaptiveApplicationControls()
-                .define("kskw")
-                .withExistingLocation("i")
+                .define("uzfwo")
+                .withExistingLocation("c")
                 .withEnforcementMode(EnforcementMode.AUDIT)
                 .withProtectionMode(
                     new ProtectionMode()
                         .withExe(EnforcementMode.ENFORCE)
-                        .withMsi(EnforcementMode.AUDIT)
+                        .withMsi(EnforcementMode.ENFORCE)
                         .withScript(EnforcementMode.ENFORCE)
-                        .withExecutable(EnforcementMode.NONE))
+                        .withExecutable(EnforcementMode.ENFORCE))
                 .withVmRecommendations(Arrays.asList())
                 .withPathRecommendations(Arrays.asList())
                 .create();
 
-        Assertions.assertEquals(EnforcementMode.NONE, response.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, response.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().exe());
         Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().msi());
         Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().executable());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, response.protectionMode().executable());
     }
 }

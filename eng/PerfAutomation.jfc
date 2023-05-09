@@ -150,7 +150,7 @@
   </event>
 
   <event name="jdk.InitialSystemProperty">
-    <setting name="enabled">true</setting>
+    <setting name="enabled">false</setting>
     <setting name="period">beginChunk</setting>
   </event>
 
@@ -605,7 +605,7 @@
   </event>
 
   <event name="jdk.SystemProcess">
-    <setting name="enabled">true</setting>
+    <setting name="enabled">false</setting>
     <setting name="period">endChunk</setting>
   </event>
 
@@ -620,7 +620,7 @@
   </event>
 
   <event name="jdk.InitialEnvironmentVariable">
-    <setting name="enabled">true</setting>
+    <setting name="enabled">false</setting>
     <setting name="period">beginChunk</setting>
   </event>
 

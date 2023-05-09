@@ -12,7 +12,7 @@ public final class DefenderForDevOpsGithubOfferingTests {
     public void testDeserialize() throws Exception {
         DefenderForDevOpsGithubOffering model =
             BinaryData
-                .fromString("{\"offeringType\":\"DefenderForDevOpsGithub\",\"description\":\"ajlskzptj\"}")
+                .fromString("{\"offeringType\":\"DefenderForDevOpsGithub\",\"description\":\"zuvrzmzqmz\"}")
                 .toObject(DefenderForDevOpsGithubOffering.class);
     }
 

@@ -128,6 +128,7 @@
     <module>sdk/oep</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/orbital</module>
+    <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
@@ -138,6 +139,7 @@
     <module>sdk/providerhub</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
+    <module>sdk/qumulo</module>
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>

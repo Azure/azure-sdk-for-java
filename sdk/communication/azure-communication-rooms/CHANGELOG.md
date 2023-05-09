@@ -4,7 +4,19 @@
 
 ### Features Added
 
+- Added new function `listRooms` to list all created rooms by returning `PagedIterable<CommunicationRoom>`,
+- Added pagination support for `listParticipants` by returning `PagedIterable<RoomParticipant>`.
+
 ### Breaking Changes
+
+- Changed: `updateRoom` no longer accepts participant list as input.
+- Changed: Replaced `addParticipants` and `updateParticipants` with `addOrUpdateParticipants`.
+- Changed: Renamed `RoleType` to `ParticipantRole`.
+- Changed: Renamed `getParticipants` to `listParticipants`.
+- Changed: Renamed `CreatedOn` to `CreatedAt` in `CommunicationRoom`.
+- Changed: `removeParticipants` now takes in a `Iterable<CommunicationIdentifier>` instead of `Iterable<RoomParticipant>`.
+- Removed: `participants` from `CommunicationRoom` model.
+- Removed: `roomJoinPolicy` so all rooms are invite-only by default.
 
 ### Bugs Fixed
 

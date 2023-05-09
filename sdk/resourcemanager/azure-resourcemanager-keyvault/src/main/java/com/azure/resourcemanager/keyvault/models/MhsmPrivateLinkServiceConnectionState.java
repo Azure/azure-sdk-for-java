@@ -28,6 +28,10 @@ public final class MhsmPrivateLinkServiceConnectionState {
     @JsonProperty(value = "actionsRequired")
     private ActionsRequired actionsRequired;
 
+    /** Creates an instance of MhsmPrivateLinkServiceConnectionState class. */
+    public MhsmPrivateLinkServiceConnectionState() {
+    }
+
     /**
      * Get the status property: Indicates whether the connection has been approved, rejected or removed by the key vault
      * owner.

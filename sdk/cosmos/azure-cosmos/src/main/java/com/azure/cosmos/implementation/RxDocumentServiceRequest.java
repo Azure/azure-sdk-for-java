@@ -5,16 +5,16 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -161,7 +161,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID();
+        this.activityId = UUID.randomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
         if (!isNameBased) {
@@ -195,7 +195,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID();
+        this.activityId = UUID.randomUUID();
         this.isFeed = false;
 
         if (StringUtils.isNotEmpty(path)) {

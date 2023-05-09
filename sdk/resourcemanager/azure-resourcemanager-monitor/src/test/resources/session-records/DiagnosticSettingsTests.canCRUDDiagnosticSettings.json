@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "e96d5159-9f25-457b-99d9-ae9e5f22fb02",
@@ -146,7 +146,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "88ccff5e-0c8f-4514-b5b6-82a7554863ed",
@@ -289,7 +289,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2022-11-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/jmonitor_7786665/providers/Microsoft.Compute/virtualMachines/jmonitorvm_616165?api-version=2023-03-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.compute/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "c9221782-13b6-4450-97a0-23ca02e5f556"
@@ -344,7 +344,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "ea986e6a-0581-435d-97b7-3fdd5b7800f5",
@@ -454,7 +454,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "94924d54-03b2-407c-bd18-48fb1d7870f6",
@@ -860,7 +860,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/jmonitor_7786665?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.22.0 (17.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "3250eb48-0df3-4fd0-8a39-3317f3c635ac",

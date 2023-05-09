@@ -5,12 +5,15 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -29,6 +32,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,6 +50,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -56,17 +61,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // These tests override the environment variable so they can test playback and record in the same test run.
 // This strategy fails if we are in a LIVE test mode, so we'll just skip these entirely if that's the case.
 @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
+@DisabledIfSystemProperty(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live)")
 public class TestProxyTests extends TestProxyTestBase {
+    public static final String TEST_DATA = "{\"test\":\"proxy\"}";
     static TestProxyTestServer server;
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     private static final List<TestProxySanitizer> CUSTOM_SANITIZER = new ArrayList<>();
 
     public static final String REDACTED = "REDACTED";
-    private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     private static final HttpHeaderName OCP_APIM_SUBSCRIPTION_KEY =
         HttpHeaderName.fromString("Ocp-Apim-Subscription-Key");
-
 
     static {
         CUSTOM_SANITIZER.add(new TestProxySanitizer("$..modelId", null, REDACTED, TestProxySanitizerType.BODY_KEY));
@@ -144,6 +149,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    @RecordWithoutRequestBody
     public void testRecordWithPath() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -157,7 +163,9 @@ public class TestProxyTests extends TestProxyTestBase {
         }
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url).setBody(TEST_DATA)
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(TEST_DATA.length()));
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -329,7 +337,6 @@ public class TestProxyTests extends TestProxyTestBase {
         request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-            assertEquals(response.getStatusCode(), 200);
             assertEquals(200, response.getStatusCode());
         }
 
@@ -351,6 +358,56 @@ public class TestProxyTests extends TestProxyTestBase {
     public void canGetTestProxyVersion() {
         String version = TestProxyUtils.getTestProxyVersion();
         assertNotNull(version);
+    }
+
+    @Test
+    @Tag("Record")
+    public void testResetTestProxyData() throws MalformedURLException {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy())
+            .build();
+
+        try (HttpResponse response = pipeline.sendSync(
+            new HttpRequest(HttpMethod.GET, new URL("http://localhost:3000")), Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            HttpHeaders headers = response.getRequest().getHeaders();
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-mode")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-id")));
+            assertNull(headers.get(HttpHeaderName.fromString("x-recording-skip")));
+        }
+    }
+
+    @Test
+    @Tag("Record")
+    public void testRecordWithRedirect() {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy()).build();
+        URL url;
+        try {
+            url = new UrlBuilder()
+                .setHost("localhost")
+                .setPath("/getRedirect")
+                .setPort(3000)
+                .setScheme("http")
+                .toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals("http://localhost:3000/echoheaders", response.getRequest().getUrl().toString());
+            assertNull(response.getRequest().getHeaders().get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
+        }
     }
 
     private RecordedTestProxyData readDataFromFile() {

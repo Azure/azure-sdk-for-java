@@ -149,6 +149,11 @@ public class CosmosException extends AzureException {
     private String faultInjectionRuleId;
 
     /**
+     * Fault injection rule not applicable evaluation result.
+     */
+    private List<String> faultInjectionEvaluationResults;
+
+    /**
      * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
@@ -571,6 +576,14 @@ public class CosmosException extends AzureException {
         return this.faultInjectionRuleId;
     }
 
+    void setFaultInjectionEvaluationResults(List<String> faultInjectionEvaluationResults) {
+        this.faultInjectionEvaluationResults = faultInjectionEvaluationResults;
+    }
+
+    List<String> getFaultInjectionEvaluationResults() {
+        return this.faultInjectionEvaluationResults;
+    }
+
     List<String> getReplicaStatusList() {
         return this.replicaStatusList;
     }
@@ -615,6 +628,15 @@ public class CosmosException extends AzureException {
                         return cosmosException.getFaultInjectionRuleId();
                     }
 
+                    @Override
+                    public void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults) {
+                        cosmosException.setFaultInjectionEvaluationResults(faultInjectionRuleEvaluationResults);
+                    }
+
+                    @Override
+                    public List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionEvaluationResults();
+                    }
                 });
     }
 

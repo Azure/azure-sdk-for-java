@@ -33,7 +33,7 @@ public final class ApplicationOperationsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"wlxrhgt\",\"description\":\"vtqqy\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datakteo\"]},\"id\":\"ejogmkor\",\"name\":\"vmvm\",\"type\":\"ofnqhlbs\"}";
+            "{\"properties\":{\"displayName\":\"mgqbgcxhnq\",\"description\":\"zxlermkmer\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datakirhn\",\"dataupkcbkfukdljqnvt\"]},\"id\":\"dydshk\",\"name\":\"afyalo\",\"type\":\"ww\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class ApplicationOperationsCreateOrUpdateWithResponseMockTests {
         Application response =
             manager
                 .applicationOperations()
-                .define("ekwuyckyvn")
-                .withDisplayName("muffiwjbctvbpzu")
-                .withDescription("jtotdxposcs")
+                .define("ntojovfnybydhuih")
+                .withDisplayName("wud")
+                .withDescription("aorhjkehwvumo")
                 .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-                .withConditionSets(Arrays.asList("datauusiecktybh", "datauxidhhxomilddxj", "datad"))
+                .withConditionSets(Arrays.asList("datarcamqp", "datal", "databrugejcvjkjycz"))
                 .create();
 
-        Assertions.assertEquals("wlxrhgt", response.displayName());
-        Assertions.assertEquals("vtqqy", response.description());
+        Assertions.assertEquals("mgqbgcxhnq", response.displayName());
+        Assertions.assertEquals("zxlermkmer", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

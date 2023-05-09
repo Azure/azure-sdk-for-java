@@ -19,12 +19,13 @@ public interface Usages {
      *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
      *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
      *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource.
      */
-    CurrentUsagesBase get(String resourceName, String scope);
+    Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context);
 
     /**
      * Get the current usage of a resource.
@@ -35,13 +36,12 @@ public interface Usages {
      *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
      *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
      *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current usage of a resource.
      */
-    Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context);
+    CurrentUsagesBase get(String resourceName, String scope);
 
     /**
      * Get a list of current usage for all resources for the scope specified.
@@ -53,7 +53,8 @@ public interface Usages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<CurrentUsagesBase> list(String scope);
 
@@ -68,7 +69,8 @@ public interface Usages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of current usage for all resources for the scope specified.
+     * @return a list of current usage for all resources for the scope specified as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<CurrentUsagesBase> list(String scope, Context context);
 }

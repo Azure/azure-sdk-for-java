@@ -73,6 +73,7 @@ import com.azure.resourcemanager.security.implementation.SecurityConnectorApplic
 import com.azure.resourcemanager.security.implementation.SecurityConnectorApplicationsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityConnectorsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityContactsImpl;
+import com.azure.resourcemanager.security.implementation.SecurityOperatorsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsReferenceDatasImpl;
 import com.azure.resourcemanager.security.implementation.ServerVulnerabilityAssessmentsImpl;
@@ -133,6 +134,7 @@ import com.azure.resourcemanager.security.models.SecurityConnectorApplicationOpe
 import com.azure.resourcemanager.security.models.SecurityConnectorApplications;
 import com.azure.resourcemanager.security.models.SecurityConnectors;
 import com.azure.resourcemanager.security.models.SecurityContacts;
+import com.azure.resourcemanager.security.models.SecurityOperators;
 import com.azure.resourcemanager.security.models.SecuritySolutions;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDatas;
 import com.azure.resourcemanager.security.models.ServerVulnerabilityAssessments;
@@ -244,8 +246,6 @@ public final class SecurityManager {
 
     private SoftwareInventories softwareInventories;
 
-    private SecurityConnectors securityConnectors;
-
     private GovernanceRules governanceRules;
 
     private GovernanceAssignments governanceAssignments;
@@ -273,6 +273,10 @@ public final class SecurityManager {
     private SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults;
 
     private SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules;
+
+    private SecurityConnectors securityConnectors;
+
+    private SecurityOperators securityOperators;
 
     private final SecurityCenter clientObject;
 
@@ -439,7 +443,7 @@ public final class SecurityManager {
                 .append("-")
                 .append("com.azure.resourcemanager.security")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -1059,18 +1063,6 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of SecurityConnectors. It manages SecurityConnector.
-     *
-     * @return Resource collection API of SecurityConnectors.
-     */
-    public SecurityConnectors securityConnectors() {
-        if (this.securityConnectors == null) {
-            this.securityConnectors = new SecurityConnectorsImpl(clientObject.getSecurityConnectors(), this);
-        }
-        return securityConnectors;
-    }
-
-    /**
      * Gets the resource collection API of GovernanceRules. It manages GovernanceRule.
      *
      * @return Resource collection API of GovernanceRules.
@@ -1247,6 +1239,30 @@ public final class SecurityManager {
                     clientObject.getSqlVulnerabilityAssessmentBaselineRules(), this);
         }
         return sqlVulnerabilityAssessmentBaselineRules;
+    }
+
+    /**
+     * Gets the resource collection API of SecurityConnectors. It manages SecurityConnector.
+     *
+     * @return Resource collection API of SecurityConnectors.
+     */
+    public SecurityConnectors securityConnectors() {
+        if (this.securityConnectors == null) {
+            this.securityConnectors = new SecurityConnectorsImpl(clientObject.getSecurityConnectors(), this);
+        }
+        return securityConnectors;
+    }
+
+    /**
+     * Gets the resource collection API of SecurityOperators.
+     *
+     * @return Resource collection API of SecurityOperators.
+     */
+    public SecurityOperators securityOperators() {
+        if (this.securityOperators == null) {
+            this.securityOperators = new SecurityOperatorsImpl(clientObject.getSecurityOperators(), this);
+        }
+        return securityOperators;
     }
 
     /**

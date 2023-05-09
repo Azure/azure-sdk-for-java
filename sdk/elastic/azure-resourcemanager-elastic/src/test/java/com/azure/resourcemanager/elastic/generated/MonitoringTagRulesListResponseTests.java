@@ -11,22 +11,21 @@ import com.azure.resourcemanager.elastic.models.MonitoringTagRulesProperties;
 import com.azure.resourcemanager.elastic.models.ProvisioningState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoringTagRulesListResponseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoringTagRulesListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"dxkqpx\",\"name\":\"kajionpim\",\"type\":\"xg\"}],\"nextLink\":\"xgcp\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"jcmmxdcufufsrp\",\"name\":\"mzidnsezcxtb\",\"type\":\"sgfyccsnew\"},{\"properties\":{\"provisioningState\":\"Deleted\"},\"id\":\"iachbo\",\"name\":\"sflnrosfqp\",\"type\":\"eeh\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"qrimzinpv\",\"name\":\"wjdk\",\"type\":\"rsoodqxhcrmnoh\"}],\"nextLink\":\"ckwhds\"}")
                 .toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals(ProvisioningState.DELETING, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("xgcp", model.nextLink());
+        Assertions.assertEquals(ProvisioningState.CANCELED, model.value().get(0).properties().provisioningState());
+        Assertions.assertEquals("ckwhds", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoringTagRulesListResponse model =
             new MonitoringTagRulesListResponse()
                 .withValue(
@@ -35,10 +34,18 @@ public final class MonitoringTagRulesListResponseTests {
                             new MonitoringTagRulesInner()
                                 .withProperties(
                                     new MonitoringTagRulesProperties()
-                                        .withProvisioningState(ProvisioningState.DELETING))))
-                .withNextLink("xgcp");
+                                        .withProvisioningState(ProvisioningState.CANCELED)),
+                            new MonitoringTagRulesInner()
+                                .withProperties(
+                                    new MonitoringTagRulesProperties()
+                                        .withProvisioningState(ProvisioningState.DELETED)),
+                            new MonitoringTagRulesInner()
+                                .withProperties(
+                                    new MonitoringTagRulesProperties()
+                                        .withProvisioningState(ProvisioningState.UPDATING))))
+                .withNextLink("ckwhds");
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesListResponse.class);
-        Assertions.assertEquals(ProvisioningState.DELETING, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("xgcp", model.nextLink());
+        Assertions.assertEquals(ProvisioningState.CANCELED, model.value().get(0).properties().provisioningState());
+        Assertions.assertEquals("ckwhds", model.nextLink());
     }
 }

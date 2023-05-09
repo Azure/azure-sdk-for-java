@@ -6,7 +6,7 @@ package com.azure.core.util.polling;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.UrlBuilder;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -148,7 +148,7 @@ class PollingUtil {
 
         if (locationHeader != null) {
             try {
-                UrlBuilder.parse(getAbsolutePath(locationHeader.getValue(), endpoint, logger)).toUrl();
+                ImplUtils.createUrl(getAbsolutePath(locationHeader.getValue(), endpoint, logger));
                 return true;
             } catch (MalformedURLException e) {
                 logger.info("Failed to parse Location header into a URL.", e);
@@ -177,7 +177,7 @@ class PollingUtil {
 
         if (header != null) {
             try {
-                UrlBuilder.parse(getAbsolutePath(header.getValue(), endpoint, logger)).toUrl();
+                ImplUtils.createUrl(getAbsolutePath(header.getValue(), endpoint, logger));
                 return true;
             } catch (MalformedURLException e) {
                 return false;

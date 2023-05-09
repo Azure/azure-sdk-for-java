@@ -19,6 +19,10 @@ public final class VaultAccessPolicyProperties {
     @JsonProperty(value = "accessPolicies", required = true)
     private List<AccessPolicyEntry> accessPolicies;
 
+    /** Creates an instance of VaultAccessPolicyProperties class. */
+    public VaultAccessPolicyProperties() {
+    }
+
     /**
      * Get the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
      * in the array must use the same tenant ID as the key vault's tenant ID.

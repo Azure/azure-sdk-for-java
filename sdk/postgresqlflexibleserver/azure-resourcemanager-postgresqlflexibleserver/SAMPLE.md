@@ -757,7 +757,7 @@ public final class ServersCreateSamples {
                     .withActiveDirectoryAuth(ActiveDirectoryAuthEnum.ENABLED)
                     .withPasswordAuth(PasswordAuthEnum.ENABLED)
                     .withTenantId("tttttt-tttt-tttt-tttt-tttttttttttt"))
-            .withDataEncryption(new DataEncryption().withType(ArmServerKeyType.fromString("SystemManaged")))
+            .withDataEncryption(new DataEncryption().withType(ArmServerKeyType.SYSTEM_MANAGED))
             .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED))
             .withNetwork(
                 new Network()

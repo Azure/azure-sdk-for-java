@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.13.3 (2023-05-04)
+
+### Other Changes
+
+- Changed how timeout handlers are added to the request pipeline.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
 ## 1.13.2 (2023-04-07)
 
 ### Bugs Fixed

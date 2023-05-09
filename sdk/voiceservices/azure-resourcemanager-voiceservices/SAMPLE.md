@@ -45,10 +45,10 @@ public final class CommunicationsGatewaysCreateOrUpdateSamples {
     /**
      * Sample code: CreateCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void createCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .communicationsGateways()
             .define("myname")
@@ -93,10 +93,10 @@ public final class CommunicationsGatewaysDeleteSamples {
     /**
      * Sample code: DeleteCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void deleteCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().delete("testrg", "myname", com.azure.core.util.Context.NONE);
     }
 }
@@ -113,10 +113,10 @@ public final class CommunicationsGatewaysGetByResourceGroupSamples {
     /**
      * Sample code: GetCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void getCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .communicationsGateways()
             .getByResourceGroupWithResponse("testrg", "myname", com.azure.core.util.Context.NONE);
@@ -135,10 +135,10 @@ public final class CommunicationsGatewaysListSamples {
     /**
      * Sample code: ListCommunicationsGatewayResourceSub.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void listCommunicationsGatewayResourceSub(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -155,10 +155,10 @@ public final class CommunicationsGatewaysListByResourceGroupSamples {
     /**
      * Sample code: ListCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void listCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.communicationsGateways().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }
@@ -177,10 +177,10 @@ public final class CommunicationsGatewaysUpdateSamples {
     /**
      * Sample code: UpdateCommunicationsGatewayResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void updateCommunicationsGatewayResource(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         CommunicationsGateway resource =
             manager
                 .communicationsGateways()
@@ -204,17 +204,17 @@ public final class NameAvailabilityCheckLocalSamples {
     /**
      * Sample code: CheckLocalNameAvailability.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
     public static void checkLocalNameAvailability(
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .nameAvailabilities()
             .checkLocalWithResponse(
                 "useast",
                 new CheckNameAvailabilityRequest()
                     .withName("myname")
-                    .withType("Microsoft.VoiceServices/CommunicationsGateway"),
+                    .withType("Microsoft.VoiceServices/CommunicationsGateways"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -231,9 +231,9 @@ public final class OperationsListSamples {
     /**
      * Sample code: OperationsList.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void operationsList(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void operationsList(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
@@ -252,9 +252,9 @@ public final class TestLinesCreateOrUpdateSamples {
     /**
      * Sample code: CreateTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void createTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void createTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager
             .testLines()
             .define("myline")
@@ -278,9 +278,9 @@ public final class TestLinesDeleteSamples {
     /**
      * Sample code: DeleteTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void deleteTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void deleteTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.testLines().delete("testrg", "myname", "myline", com.azure.core.util.Context.NONE);
     }
 }
@@ -297,9 +297,9 @@ public final class TestLinesGetSamples {
     /**
      * Sample code: GetTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void getTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void getTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.testLines().getWithResponse("testrg", "myname", "myline", com.azure.core.util.Context.NONE);
     }
 }
@@ -316,9 +316,9 @@ public final class TestLinesListByCommunicationsGatewaySamples {
     /**
      * Sample code: ListTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void listTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void listTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         manager.testLines().listByCommunicationsGateway("testrg", "myname", com.azure.core.util.Context.NONE);
     }
 }
@@ -337,9 +337,9 @@ public final class TestLinesUpdateSamples {
     /**
      * Sample code: UpdateTestLineResource.
      *
-     * @param manager Entry point to VoiceservicesManager.
+     * @param manager Entry point to VoiceServicesManager.
      */
-    public static void updateTestLineResource(com.azure.resourcemanager.voiceservices.VoiceservicesManager manager) {
+    public static void updateTestLineResource(com.azure.resourcemanager.voiceservices.VoiceServicesManager manager) {
         TestLine resource =
             manager
                 .testLines()

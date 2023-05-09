@@ -56,6 +56,6 @@ public final class WorkspaceSettingsDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workspaceSettings().deleteWithResponse("sergdtpe", com.azure.core.util.Context.NONE);
+        manager.workspaceSettings().deleteWithResponse("zvdajfwnncf", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request property. */
 @Fluent
 public final class SubRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubRequest.class);
-
     /*
      * Resource name.
      */
@@ -27,9 +23,8 @@ public final class SubRequest {
     private String resourceType;
 
     /*
-     * Quota limit units, such as Count and Bytes. When requesting quota, use
-     * the **unit** value returned in the GET response in the request body of
-     * your PUT operation.
+     * Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
+     * response in the request body of your PUT operation.
      */
     @JsonProperty(value = "unit")
     private String unit;
@@ -57,6 +52,10 @@ public final class SubRequest {
      */
     @JsonProperty(value = "limit")
     private LimitJsonObject limit;
+
+    /** Creates an instance of SubRequest class. */
+    public SubRequest() {
+    }
 
     /**
      * Get the name property: Resource name.
