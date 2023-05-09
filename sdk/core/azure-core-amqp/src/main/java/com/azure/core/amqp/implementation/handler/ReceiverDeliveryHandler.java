@@ -63,12 +63,8 @@ final class ReceiverDeliveryHandler {
      *                                    from {@link ReceiverDeliveryHandler#getMessages()}'s Flux.
      * @param logger                      the logger.
      */
-    ReceiverDeliveryHandler(String entityPath,
-                            String receiveLinkName,
-                            DeliverySettleMode settlingMode,
-                            ReceiverUnsettledDeliveries unsettledDeliveries,
-                            boolean includeDeliveryTagInMessage,
-                            ClientLogger logger) {
+    ReceiverDeliveryHandler(String entityPath, String receiveLinkName, DeliverySettleMode settlingMode,
+        ReceiverUnsettledDeliveries unsettledDeliveries, boolean includeDeliveryTagInMessage, ClientLogger logger) {
         this.entityPath = entityPath;
         this.receiveLinkName = receiveLinkName;
         this.settlingMode = settlingMode;

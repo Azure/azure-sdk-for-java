@@ -30,6 +30,9 @@ import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
 
 /**
  *  Processor to pump messages from a session unaware entity.
+ *
+ *  TODO (anuchan): this prototype to be simplified by removing pause like functionality that will get rid of lock,
+ *    and buffering overhead. (Reviewer, ignore this file for now).
  */
 public final class NonSessionProcessor {
     private final ServiceBusClientBuilder builder;
