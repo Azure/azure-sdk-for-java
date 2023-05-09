@@ -6,6 +6,7 @@ package com.azure.jedis.sample;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import redis.clients.jedis.DefaultJedisClientConfig;
@@ -38,6 +39,11 @@ public class AuthenticateWithTokenCache {
         // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
         // Note: Cache Host Name, Port, Username, Azure AD Access Token and ssl connections are required below.
         Jedis jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", accessToken, useSsl);
+
+        // Configure the jedis instance for proactive authentication before token expires.
+        tokenRefreshCache
+            .setJedisInstanceToAuthenticate(jedis)
+            .setUsername("<USERNAME>");
 
         int maxTries = 3;
         int i = 0;
@@ -86,6 +92,8 @@ public class AuthenticateWithTokenCache {
         private volatile AccessToken accessToken;
         private final Duration maxRefreshOffset = Duration.ofMinutes(5);
         private final Duration baseRefreshOffset = Duration.ofMinutes(2);
+        private Jedis jedisInstanceToAuthenticate;
+        private String username;
 
         /**
          * Creates an instance of TokenRefreshCache
@@ -118,6 +126,12 @@ public class AuthenticateWithTokenCache {
             public void run() {
                 accessToken = tokenCredential.getToken(tokenRequestContext).block();
                 System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
+
+                if (jedisInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
+                    jedisInstanceToAuthenticate.auth(username, accessToken.getToken());
+                    System.out.println("Refreshed Jedis Connection with fresh access token, token expires at : "
+                        + accessToken.getExpiresAt().toEpochSecond());
+                }
                 timer.schedule(new TokenRefreshTask(), getTokenRefreshDelay());
             }
         }
@@ -126,6 +140,26 @@ public class AuthenticateWithTokenCache {
             return ((accessToken.getExpiresAt()
                 .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
                 .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
+        }
+
+        /**
+         * Sets the Jedis to proactively authenticate before token expiry.
+         * @param jedisInstanceToAuthenticate the instance to authenticate
+         * @return the updated instance
+         */
+        public TokenRefreshCache setJedisInstanceToAuthenticate(Jedis jedisInstanceToAuthenticate) {
+            this.jedisInstanceToAuthenticate = jedisInstanceToAuthenticate;
+            return this;
+        }
+
+        /**
+         * Sets the username to authenticate jedis instance with.
+         * @param username the username to authenticate with
+         * @return the updated instance
+         */
+        public TokenRefreshCache setUsername(String username) {
+            this.username = username;
+            return this;
         }
     }
 }

@@ -41,7 +41,7 @@ public class AuthenticateWithTokenCache {
         // Host Name, Port, Username and Azure AD Token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         String hostName = "<HOST_NAME>";
-        String userName = "<USER_NAME>";
+        String userName = "<USERNAME>";
         RedisClient client = createLettuceRedisClient(hostName, 6380, userName, accessToken);
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
